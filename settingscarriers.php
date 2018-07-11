@@ -282,7 +282,7 @@ host=</textarea>
 												&nbsp;
 											</label>
 											<label class="col-sm-2 checkbox-inline c-checkbox" for="gsm">
-												<input type="checkbox" id="gsm" name="codecs[]" value="GSM" checked>
+												<input type="checkbox" id="gsm" name="codecs[]" value="GSM">
 												<span class="fa fa-check"></span>GSM
 											</label>
 											<label class="col-sm-2 checkbox-inline c-checkbox" for="ulaw">
@@ -441,7 +441,7 @@ host=</textarea>
 									<div class="form-group mb">
 										<div class="welcome-header">
 										  <span><?php $lh->translateText('justgo_welcome'); ?></span><br class="clear"><br class="clear">
-										  <span><a href="https://webrtc.goautodial.com/justgocloud/" target="_new"><img src="https://webrtc.goautodial.com/img/goautodial_logo.png"></a></span><br class="clear"><br class="clear">
+										  <!-- <span><a href="https://webrtc.goautodial.com/justgocloud/" target="_new"><img src="https://webrtc.goautodial.com/img/goautodial_logo.png"></a></span><br class="clear"><br class="clear"> -->
 										  <span><?php $lh->translateText('justgo_title'); ?></span><br>
 										  <br>
 										  <span align="center" style="padding-left: 100px;">
@@ -743,7 +743,8 @@ host=</textarea>
 							type: 'POST',
 							data: $("#create_form").serialize(),
 							success: function(data) {
-							   console.log($("#create_form").serialize());
+								console.log(data);
+								//console.log($("#create_form").serialize());
 								$('#finish').text("<?php $lh->translateText("submit"); ?>");
 								$('#finish').attr("disabled", false);
 								
@@ -754,7 +755,7 @@ host=</textarea>
 										function(){ window.location.href = 'settingscarriers.php'; }
 									);
 								}else{
-									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
+									sweetAlert("<?php $lh->translateText("oops"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 								}
 							}
 						});

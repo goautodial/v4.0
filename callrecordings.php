@@ -1,20 +1,34 @@
 <?php
-
-	###################################################
-	### Name: callrecordings.php 	   ###
-	### Functions: Display, Search and Filter  	   ###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	   ###
-	### Version: 4.0 	   ###
-	### Written by: Alexander Jim H. Abenoja	   ###
-	### License: AGPLv2	   ###
-	###################################################
+/**
+ * @file 		callrecordings.php
+ * @brief 		Display call recordings
+ * @copyright 	Copyright (c) 2018 GOautodial Inc. 
+ * @author		Demian Lizandro A. Biscocho
+ * @author     	Alexander Jim H. Abenoja
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
 
 	require_once('./php/UIHandler.php');
+	require_once('./php/APIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
 
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 	
@@ -97,9 +111,9 @@
                 <!-- Main content -->
                 <section class="content">
 				<?php
-				if ($perm->recordings_display !== 'N') {
-				$callrecs = $ui->API_getListAllRecordings();
-				//var_dump($callrecs);
+					if ($perm->recordings_display !== 'N') {
+					$callrecs = $api->API_getCallRecordingList();
+					//var_dump($callrecs);
 				?>
                 	<div class="row">
 		<div class="col-lg-9">
@@ -167,9 +181,9 @@
 			</div><!-- /.body -->
 		</div><!-- /.panel -->
 	</div><!-- /.col-lg-9 -->
-<?php
-$agents = $ui->API_goGetAllUserLists($_SESSION['user']);
-?>
+						<?php
+							$agents = $api->API_getAllUsers();
+						?>
 	               		<div class="col-lg-3">
 	           				<h3 class="m0 pb-lg"><?php $lh->translateText("filters"); ?></h3>
 	           				<form id="search_form">
@@ -408,8 +422,8 @@ $agents = $ui->API_goGetAllUserLists($_SESSION['user']);
 		                		$('#search_button').attr("disabled", false);
 		                		$('#search_button').text('<?php $lh->translateText("searching"); ?>');
 		                	}else{
-				$('#search_button').text('<?php $lh->translateText("searching"); ?>');
-				$('#search_button').attr("disabled", true);
+								$('#search_button').text('<?php $lh->translateText("searching"); ?>');
+								$('#search_button').attr("disabled", true);
 		                	}
 
 		                	if($('#agent_filter').is(':visible')) {

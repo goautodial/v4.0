@@ -155,32 +155,32 @@
                 	<div class="panel panel-default">
                 		<div class="panel-body">
                 			<legend><?php $lh->translateText("campaigns"); ?></legend>
-                <?php if ($perm->campaign->campaign_read !== 'N') { ?>
-<?php
+							<?php if ($perm->campaign->campaign_read !== 'N') { ?>
+							<?php
 
-	/*
-	 * API used for display in tables
-	 */
-	$campaign = $api->API_getAllCampaigns();
-	if($campaign->result !== "success"){
-		die("API ERROR: ".$campaign->result);
-	}
-	$disposition = $api->API_getAllDispositions("custom");
-	$leadrecycling = $api->API_getAllLeadRecycling();
-
-	$dialStatus = $api->API_getAllDialStatuses($campaign->data->campaign_id);
-	$campaignStatuses = $api->getAllCampaignStatuses();
-	//var_dump($campaignStatuses);
-	$leadfilter = $api->API_getAllLeadFilters();
-	$country_codes = $api->API_getCountryCodes();
-	$list = $api->API_getAllLists();
-	$ingroup = $api->API_getAllInGroups();
-	$ivr = $api->API_getAllIVRs();
-	$voicemails = $api->API_getAllVoiceFiles();
-	$users = $api->API_getAllUsers();
-	$carriers = $api->API_getAllCarriers();
-	$checkbox_all = $ui->getCheckAll("campaign");
-?>
+								/*
+								* API used for display in tables
+								*/
+								$campaign = $api->API_getAllCampaigns();
+								if($campaign->result !== "success"){
+									die("API ERROR: ".$campaign->result);
+								}
+								$disposition = $api->API_getAllDispositions("campaign");
+								$leadrecycling = $api->API_getAllLeadRecycling();
+								$dialStatus = $api->API_getAllDispositions("custom");
+								//$campaignStatuses = $api->getAllCampaignStatuses();
+								//$leadfilter = $api->API_getAllLeadFilters();
+								//$country_codes = $api->API_getCountryCodes();
+								//$list = $api->API_getAllLists();
+								//$ingroup = $api->API_getAllInGroups();
+								//$ivr = $api->API_getAllIVRs();
+								//$voicemails = $api->API_getAllVoiceFiles();
+								//$users = $api->API_getAllUsers();
+								//$carriers = $api->API_getAllCarriers();
+								$checkbox_all = $ui->getCheckAll("campaign");
+								//echo "<pre>";
+								//var_dump($leadrecycling);
+							?>
 							 <div role="tabpanel">
 								<ul role="tablist" class="nav nav-tabs nav-justified">
 
@@ -340,32 +340,32 @@
 									   </thead>
 									   <tbody>
 										   	<?php
-												if (count($leadrecycling->campaign_id[$i]) > 0){
+												if (count($leadrecycling->campaign_id) > 0){
 													for($i=0;$i < count($campaign->campaign_id);$i++){													
 										   	?>
-												<tr>
-													<td><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="edit-leadrecycling" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></td>
-													<td class='hide-on-medium hide-on-low'><strong><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="edit-leadrecycling" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></strong></td>
-													<td><?php echo $campaign->campaign_name[$i];?></td>
-													<td class='hide-on-medium hide-on-low'>
+											<tr>
+												<td><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="edit-leadrecycling" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></td>
+												<td class='hide-on-medium hide-on-low'><strong><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="edit-leadrecycling" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></strong></td>
+												<td><?php echo $campaign->campaign_name[$i];?></td>
+												<td class='hide-on-medium hide-on-low'>
 											<?php
-														//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){												
-														for($a=0; $a<count($leadrecycling->data); $a++){
-															if($leadrecycling->data[$a]->campaign_id == $campaign->campaign_id[$i]){
-																$leadrecycles[] = $leadrecycling->data[$a]->status;
-															}
-														}
-														$imploded_leadrecycles = implode(", ", $leadrecycles);
-														unset($leadrecycles);
-														echo "<i>".$imploded_leadrecycles." </i>";
-														//}else{s
-														//	echo "- - - NONE - - -";
-														//}
-														$action_LeadRecycling = $ui->ActionMenuForLeadRecycling($campaign->campaign_id[$i]);
+												//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){												
+												for($a=0; $a<count($leadrecycling->campaign_id); $a++){
+													if($leadrecycling->campaign_id[$a] == $campaign->campaign_id[$i]){
+														$leadrecycles[] = $leadrecycling->status[$a];
+													}
+												}
+												$imploded_leadrecycles = implode(", ", $leadrecycles);
+												unset($leadrecycles);
+												echo "<i>".$imploded_leadrecycles." </i>";
+												//}else{s
+												//	echo "- - - NONE - - -";
+												//}
+												$action_LeadRecycling = $ui->ActionMenuForLeadRecycling($campaign->campaign_id[$i]);
 											?>
-													</td>
-													<td style="width:16%;"><?php echo $action_LeadRecycling;?></td>
-												</tr>
+												</td>
+												<td style="width:16%;"><?php echo $action_LeadRecycling;?></td>
+											</tr>
 											<?php
 													}
 												}
@@ -961,29 +961,31 @@
 		                                		<option value="ALL"> - - - ALL CAMPAIGNS - - - </option>
 		                                   <?php
 		                                   		for($i=0;$i < count($campaign->campaign_id);$i++){
-		                                   			echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_id[$i]." - ".$campaign->campaign_name[$i]." </option>";
+											?>
+		                                   			<option value='<?php echo $campaign->campaign_id[$i];?>'> <?php echo $campaign->campaign_id[$i] . " - " .$campaign->campaign_name[$i];?></option>
+											<?php
 		                                   		}
 		                                   ?>
 		                                </select>
 		                            </div>
 		                        </div>
 		                        <div class="form-group">
-		                            <label class="col-sm-3 control-label" for="status"><?php $lh->translateText("status"); ?></label>
+		                            <label class="col-sm-3 control-label" for="disposition_status"><?php $lh->translateText("status"); ?></label>
 		                            <div class="col-sm-9 mb">
-		                                <input type="text" name="status" id="status" class="form-control" placeholder="<?php $lh->translateText("status_mandatory"); ?>" minlength="1" maxlength="6" required>
+		                                <input type="text" name="disposition_status" id="disposition_status" class="form-control" placeholder="<?php $lh->translateText("status_mandatory"); ?>" minlength="1" maxlength="6" required>
 		                            	<label id="status-duplicate-error"></label>
 		                            </div>
 		                        </div>
 		                        <div class="form-group">
 		                            <label class="col-sm-3 control-label" for="status_name"><?php $lh->translateText("status_capital"); ?></label>
 		                            <div class="col-sm-9 mb">
-		                                <input type="text" name="status_name" id="status_name" class="form-control" placeholder="<?php $lh->translateText("status_name"); ?>" maxlength="30" required>
+		                                <input type="text" name="disposition_status_name" id="disposition_status_name" class="form-control" placeholder="<?php $lh->translateText("status_name"); ?>" maxlength="30" required>
 		                            </div>
 		                        </div>
 		                        <div class="form-group">
-		                            <label class="col-sm-3 control-label" for="priority"><?php $lh->translateText("priority"); ?></label>
+		                            <label class="col-sm-3 control-label" for="disposition_priority"><?php $lh->translateText("priority"); ?></label>
 		                            <div class="col-sm-9 mb">
-		                                <select id="priority" name="priority" class="form-control">
+		                                <select id="disposition_priority" name="disposition_priority" class="form-control">
 											<?php
 											for ($i=1; $i<=10; $i++) {
 												echo "<option value='$i'>$i</option>\n";
@@ -996,7 +998,7 @@
 		                            <label class="col-sm-3 control-label" for="color"><?php $lh->translateText("color"); ?></label>
 		                            <div class="col-sm-9 mb">
 										<div id="status-color" data-format="alias" class="input-group colorpicker-component">
-											<input type="text" name="status_color" id="status_color" class="form-control" placeholder="<?php $lh->translateText("color"); ?> (eg. #FFFFFF or white)" value="#B5B5B5" maxlength="20" required>
+											<input type="text" name="disposition_status_color" id="disposition_status_color" class="form-control" placeholder="<?php $lh->translateText("color"); ?> (eg. #FFFFFF or white)" value="#B5B5B5" maxlength="20" required>
 											<span class="input-group-addon"><i></i></span>
 										</div>
 		                            </div>
@@ -1083,10 +1085,10 @@
 		                            <label class="col-sm-3 control-label" for="leadrecycling_campaign"><?php $lh->translateText("campaign"); ?>: </label>
 		                            <div class="col-sm-9 mb">
 		                                <select id="leadrecycling_campaign" name="leadrecycling_campaign" class="form-control select2-1" style="width:100%;">
-		                                		<option value="ALL"> - - - ALL CAMPAIGNS - - - </option>
+		                                		<option value="ALL" selected> - - - ALL CAMPAIGNS - - - </option>
 		                                   <?php
 		                                   		for($i=0;$i < count($campaign->campaign_id);$i++){
-		                                   			echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_id[$i]." - ".$campaign->campaign_name[$i]." </option>";
+		                                   			echo "<option value='".$campaign->campaign_id[$i]."'>".$campaign->campaign_id[$i]." - ".$campaign->campaign_name[$i]." </option>";
 		                                   		}
 		                                   ?>
 		                                </select>
@@ -1105,11 +1107,11 @@
 													<?php } ?>
 												<?php } ?>
 											</optgroup>
-											<?php if(count($campaignStatuses) > 0){ ?>
+											<?php if(count($disposition) > 0){ ?>
 												<optgroup label="Campaign Statuses">
-												<?php for($i=0;$i<count($campaignStatuses['status']);$i++) { ?>
-														<option value="<?php echo $campaignStatuses['status'][$i];?>">
-															<?php echo $campaignStatuses['status'][$i]." - ".$campaignStatuses['status_name'][$i]?>
+												<?php for($i=0;$i<count($disposition->status);$i++) { ?>
+														<option value="<?php echo $disposition->status[$i];?>">
+															<?php echo $disposition->status[$i]." - ".$disposition->status_name[$i]?>
 														</option>
 												<?php } ?>
 												</optgroup>
@@ -1209,7 +1211,7 @@
 		
 		$footer_pc_form = '
 			<button type="button" class="btn btn-default" data-dismiss="modal">'.$lh->translationFor("close").'</button>
-			<button type="button" class="btn btn-primary btn-save-pause-code">'.$lh->translationFor("save").'</button>
+			<button type="button" class="btn btn-primary btn-save-pause-code" data-id="'.$id.'">'.$lh->translationFor("save").'</button>
 			<button type="button" class="btn btn-success btn-update-pause-code hide">'.$lh->translationFor("update").'</button>
 		';
 		
@@ -1575,166 +1577,39 @@
 		
 			isNotWanted = (keyCode == 69 || keyCode == 101);
 			return !isNotWanted;
-		}
-
-		function get_pause_codes(campaign_id){
-			$.ajax({
-				url: "./php/GetPauseCodes.php",
-				type: 'POST',
-				data: {
-					campaign_id : campaign_id,
-				},
-				dataType: 'json',
-				success: function(response) {
-						// var values = JSON.parse(response.result);
-						// console.log(response);
-						$('.btn-new-pause-code').attr('data-campaign', campaign_id);
-						$('#modal_view_pause_codes').modal('show');
-						var table = $('#pause_codes_list').DataTable();
-						table.fnClearTable();
-						table.fnDestroy();
-						$('#pause_code_data_container').html(response);
-						$('#pause_codes_list').DataTable({
-							"searching": true,
-							bFilter: true,
-							"aoColumnDefs": [{
-								"bSearchable": false,
-								"aTargets": [ 3 ]
-							},{
-								"bSortable": false,
-								"aTargets": [ 3 ]
-							}]
-						});
-						$("#pause_codes_list").css("width","100%");
-					}
-			});
-		}
-
-		function get_hotkeys(campaign_id){
-			$.ajax({
-				url: "./php/GetHotkeys.php",
-				type: 'POST',
-				data: {
-					campaign_id : campaign_id,
-				},
-				dataType: 'json',
-				success: function(response) {
-						// var values = JSON.parse(response.result);
-						// console.log(response);
-						$('.btn-new-hotkey').attr('data-campaign', campaign_id);
-						$('#modal_view_hotkeys').modal('show');
-						var table = $('#hotkeys_list').DataTable();
-						table.fnClearTable();
-						table.fnDestroy();
-						$('#hotkey_data_container').html(response);
-						$('#hotkeys_list').DataTable({
-							"searching": true,
-							bFilter: true,
-							"aoColumnDefs": [{
-								"bSearchable": false,
-								"aTargets": [ 3 ]
-							},{
-								"bSortable": false,
-								"aTargets": [ 3 ]
-							}]
-						});
-						$("#hotkeys_list").css("width","100%");
-					}
-			});
-		}
-		
-		function get_lists(campaign_id){
-			$.ajax({
-				url: "./php/GetLists.php",
-				type: 'POST',
-				data: {
-					campaign_id : campaign_id,
-				},
-				dataType: 'json',
-				success: function(response) {
-						// var values = JSON.parse(response.result);
-						// console.log(response);
-						// $('.btn-new-lists').attr('data-campaign', campaign_id);
-						$('#modal_view_lists').modal('show');
-						var table = $('#lists_list').DataTable();
-						table.fnClearTable();
-						table.fnDestroy();
-						$('#lists_data_container').html(response.data);
-						$('.count_active').text(response.count_active);
-						$('.count_inactive').text(response.count_inactive);
-						
-						$('.view-leads-on-hopper').attr('data-campaign', campaign_id);
-						$('#lists_list').DataTable({
-							"searching": true,
-							bFilter: true
-						});
-						$("#lists_list").css("width","100%");
-					}
-			});
-
-			$.ajax({
-				url: "./php/GetLeadsOnHopper.php",
-				type: 'POST',
-				data: {
-					campaign_id : campaign_id,
-				},
-				dataType: 'json',
-				success: function(response) {
-						//console.log(response);
-						$('.count_leads').text(response.count);
-					}
-			});
-		}
-
-		function get_leads_on_hopper(campaign_id){
-			$.ajax({
-				url: "./php/GetLeadsOnHopper.php",
-				type: 'POST',
-				data: {
-					campaign_id : campaign_id,
-				},
-				dataType: 'json',
-				success: function(response) {
-						console.log(response);
-						$('#modal_view_lists').modal('hide');
-						$('#modal_view_leads_on_hopper').modal('show');
-						$('body').addClass('modal-open');
-						var table = $('#leads_on_hopper').DataTable();
-						table.fnClearTable();
-						table.fnDestroy();
-						$('#leads_hopper_container').html(response.data);
-						$('#leads_on_hopper').DataTable({
-							"searching": true,
-							bFilter: true
-						});
-						$("#leads_on_hopper").css("width","100%");
-					}
-			});
-		}
-		
-		function dialPrefix(value){
-			if(value == "CUSTOM"){
-				$('#custom_prefix').removeClass('hide');
-				$("#custom_prefix").attr("required", true);
-			}else{
-				$('#custom_prefix').addClass('hide');
-				$("#custom_prefix").attr("required", false);
-			}
-		}
+		}		
 
 		$(document).ready(function(){
 			// load cookies
-				var cook_donotshow = "yes";
+			var cook_donotshow = "yes";
 
 			//$('#modal_form_lists').modal('show');
-				$('.select2').select2({
-					theme: 'bootstrap'
-				});
+			$('.select2').select2({
+				theme: 'bootstrap'
+			});
+			
+			var table = $('#pause_codes_list').DataTable({
+				destroy:true,    
+				stateSave: true,
+				drawCallback: function(settings) {
+					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+					pagination.toggle(this.api().page.info().pages > 1);
+				},
+				"columnDefs": [{
+					"searchable": false,
+					"targets": [ 3 ]
+				},{
+					"sortable": false,
+					"targets": [ 3 ]
+				}]
+			});	
+			
+			
 			
 			// FAB HOVER
-				$(".bottom-menu").on('mouseenter mouseleave', function () {
-				  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
-				});
+			$(".bottom-menu").on('mouseenter mouseleave', function () {
+				$(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
+			});
 		
 			var dial_prefix = $('#dial_prefix').val();
 			dialPrefix(dial_prefix);
@@ -2007,8 +1882,25 @@
 
 			$(document).on('click', '.view-pause-codes', function(){
 				var campaign_id = $(this).data('id');
-				// alert(campaign_id);
-				get_pause_codes(campaign_id);
+				console.log(campaign_id);
+				$.ajax({
+					url: "./php/GetPauseCodes.php",
+					type: 'POST',
+					data: {
+						campaign_id : campaign_id
+					},
+					dataType: 'json',
+					success: function(data) {
+						// var values = JSON.parse(response.result);
+						console.log(data);
+						$('.btn-new-pause-code').attr('data-campaign', campaign_id);
+						$('#modal_view_pause_codes').modal('show');
+						//var table = $('#pause_codes_list').DataTable();
+						$('#pause_code_data_container').html(data);
+						$("#pause_codes_list").css("width","100%");
+					}
+				});
+				//}				
 			});
 
 			$(document).on('click', '.view-hotkeys', function(){
@@ -2057,12 +1949,11 @@
 					url: "./php/GetDialStatuses.php",
 					type: 'POST',
 					data: {
-						campaign_id : campaign_id,
-						hotkeys_only: 1
+						campaign_id : campaign_id
 					},
 					dataType: 'json',
 					success: function(response) {
-							// console.log(response);
+							console.log(response);
 							$('.status').html(response);
 							$('.status').select2({
 								theme: 'bootstrap'
@@ -2143,8 +2034,6 @@
 			$(document).on('click', '.btn-delete-pc', function(){
 				var campaign_id = $(this).data('camp-id');
 				var pause_code = $(this).data('code');
-				var log_user = '<?=$_SESSION['user']?>';
-				var log_group = '<?=$_SESSION['usergroup']?>';
 				swal({
 					title: "<?php $lh->translateText("are_you_sure"); ?>",
 					text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
@@ -2159,35 +2048,33 @@
 					function(isConfirm){
 						if (isConfirm) {
 							$.ajax({
-											url: "./php/DeletePauseCode.php",
-											type: 'POST',
-											data: {
-												campaign_id: campaign_id,
-												pause_code: pause_code,
-												log_user: log_user,
-												log_group: log_group
-											},
-											// dataType: 'json',
-											success: function(data) {
-													// console.log(data);
-													if(data == "success"){
-														swal({
-																title: "Success",
-																text: "Pause Code Successfully Deleted",
-																type: "success"
-															},
-															function(){
-																get_pause_codes(campaign_id);
-															}
-														);
-													}else{
-															sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
-													}
-											}
-								});
-							} else {
-									swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-							}
+								url: "./php/DeletePauseCode.php",
+								type: 'POST',
+								data: {
+									campaign_id: campaign_id,
+									pause_code: pause_code
+								},
+								// dataType: 'json',
+								success: function(data) {
+									console.log(data);
+									if (data == 1) {
+										swal({
+											title: "Success",
+											text: "Pause Code Successfully Deleted",
+											type: "success"
+										},
+										function(){
+											get_pause_codes(campaign_id);
+										}
+										);
+									} else {
+										sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
+									}
+								}
+							});
+						} else {
+							swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+						}
 					}
 				);
 			});
@@ -2247,6 +2134,7 @@
 			$(document).on('click', '.btn-save-pause-code', function(){
 				var form_data = new FormData($("#form_pause_codes")[0]);
 				var campaign_id = $('.campaign-id').val();
+				console.log(campaign_id);
 				swal({
 					title: "<?php $lh->translateText("pause_code_create_question"); ?>",
 					text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
@@ -2261,37 +2149,37 @@
 					function(isConfirm){
 						if (isConfirm) {
 							$.ajax({
-											url: "./php/AddPauseCode.php",
-											type: 'POST',
-											data: form_data,
-											// dataType: 'json',
-											cache: false,
-											contentType: false,
-											processData: false,
-											success: function(data) {
-													// console.log(data);
-													if(data == "success"){
-														swal({
-																title: "Success",
-																text: "Pause Code Successfully Created",
-																type: "success"
-															},
-															function(){
-																$('.pause-code').val('');
-																$('.pause-code-name').val('');
-																$('.billable').val('YES').trigger('change');
-																$('#modal_form_pause_codes').modal('hide');
-																get_pause_codes(campaign_id);
-															}
-														);
-													}else{
-															sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
-													}
+								url: "./php/AddPauseCode.php",
+								type: 'POST',
+								data: form_data,
+								// dataType: 'json',
+								cache: false,
+								contentType: false,
+								processData: false,
+								success: function(data) {
+									console.log(data);
+									if (data == 1) {
+										swal({
+											title: "Success",
+											text: "Pause Code Successfully Created",
+											type: "success"
+											},
+											function(){
+												$('.pause-code').val('');
+												$('.pause-code-name').val('');
+												$('.billable').val('YES').trigger('change');
+												$('#modal_form_pause_codes').modal('hide');
+												get_pause_codes(campaign_id);
 											}
-								});
-							} else {
-									swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-							}
+										);
+									} else {
+										sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
+									}
+								}
+							});
+						} else {
+							swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+						}
 					}
 				);
 			});
@@ -2422,6 +2310,7 @@
 			$(document).on('click', '.btn-update-pause-code', function(){
 				var form_data = new FormData($("#form_pause_codes")[0]);
 				var campaign_id = $('.campaign-id').val();
+				console.log(campaign_id);
 				swal({
 					title: "<?php $lh->translateText("are_you_sure"); ?>",
 					text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
@@ -2436,37 +2325,37 @@
 					function(isConfirm){
 						if (isConfirm) {
 							$.ajax({
-											url: "./php/ModifyPauseCode.php",
-											type: 'POST',
-											data: form_data,
-											// dataType: 'json',
-											cache: false,
-											contentType: false,
-											processData: false,
-											success: function(data) {
-													// console.log(data);
-													if(data == "success"){
-														swal({
-																title: "Success",
-																text: "<?php $lh->translateText("pause_success"); ?>",
-																type: "success"
-															},
-															function(){
-																$('.pause-code').val('');
-																$('.pause-code-name').val('');
-																$('.billable').val('YES').trigger('change');
-																$('#modal_form_pause_codes').modal('hide');
-																get_pause_codes(campaign_id);
-															}
-														);
-													}else{
-															sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
-													}
-											}
-								});
-							} else {
-									swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-							}
+								url: "./php/ModifyPauseCode.php",
+								type: 'POST',
+								data: form_data,
+								// dataType: 'json',
+								cache: false,
+								contentType: false,
+								processData: false,
+								success: function(data) {
+									console.log(data);
+									if (data == 1) {
+										swal({
+											title: "Success",
+											text: "<?php $lh->translateText("pause_success"); ?>",
+											type: "success"
+										},
+										function(){
+											$('.pause-code').val('');
+											$('.pause-code-name').val('');
+											$('.billable').val('YES').trigger('change');
+											$('#modal_form_pause_codes').modal('hide');
+											get_pause_codes(campaign_id);
+										}
+										);
+									}else{
+										sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
+									}
+								}
+							});
+						} else {
+							swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+						}
 					}
 				);
 			});
@@ -2560,8 +2449,8 @@
 						    	if (currentIndex < newIndex)
 						    	{
 						        // To remove error styles
-						        $(".body:eq(" + newIndex + ") label.error", disposition_form).remove();
-						        $(".body:eq(" + newIndex + ") .error", disposition_form).removeClass("error");
+						        $(".body:eq(" + newIndex + ") label.error", campaign_form).remove();
+						        $(".body:eq(" + newIndex + ") .error", campaign_form).removeClass("error");
 						    	}
 
 				          campaign_form.validate().settings.ignore = ":disabled,:hidden";
@@ -2671,71 +2560,69 @@
 				});
 
 				//edit campaign
-					$(document).on('click','.edit-campaign',function() {
-						var url = './edittelephonycampaign.php';
-						var form = $('<form action="' + url + '" method="post"><input type="hidden" name="campaign" value="' + $(this).attr('data-id') + '" /></form>');
-						$('body').append(form);  // This line is not necessary
-						$(form).submit();
-					});
+				$(document).on('click','.edit-campaign',function() {
+					var url = './edittelephonycampaign.php';
+					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="campaign" value="' + $(this).attr('data-id') + '" /></form>');
+					$('body').append(form);  // This line is not necessary
+					$(form).submit();
+				});
 
 				//delete campaign
-			         $(document).on('click','.delete-campaign',function() {
-			            var id = $(this).attr('data-id');
-						var log_user = '<?=$_SESSION['user']?>';
-						var log_group = '<?=$_SESSION['usergroup']?>';
-			            swal({
-							title: "<?php $lh->translateText("are_you_sure"); ?>",
-							text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
-							type: "warning",
-							showCancelButton: true,
-							confirmButtonColor: "#DD6B55",
-							confirmButtonText: "<?php $lh->translateText("delete_campaign"); ?>!",
-							cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
-							closeOnConfirm: false,
-							closeOnCancel: false
-						},
-							function(isConfirm){
-								if (isConfirm) {
-									$.ajax({
-										url: "./php/DeleteCampaign.php",
-										type: 'POST',
-										data: {
-											campaign_id:id,
-											log_user: log_user,
-											log_group: log_group
-										},
-										success: function(data) {
-										console.log(data);
-											if(data == 1){
-												swal(
-													{
-														title: "<?php $lh->translateText("success"); ?>",
-														text: "<?php $lh->translateText("campaign_deleted"); ?>!",
-														type: "success"
-													},
-													function(){
-														window.location.href = 'telephonycampaigns.php';
-													}
-												);
-											}else{
-												sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
-												window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-											}
+				$(document).on('click','.delete-campaign',function() {
+					var id = [];
+					id.push($(this).attr('data-id'));
+					console.log(id);
+					swal({
+						title: "<?php $lh->translateText("are_you_sure"); ?>",
+						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "<?php $lh->translateText("delete_campaign"); ?>!",
+						cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
+						closeOnConfirm: false,
+						closeOnCancel: false
+					},
+						function(isConfirm){
+							if (isConfirm) {
+								$.ajax({
+									url: "./php/DeleteCampaign.php",
+									type: 'POST',
+									data: {
+										campaign_id: id,
+										action: "delete_selected"
+									},
+									success: function(data) {
+									console.log(data);
+										if (data == 1) {
+											swal(
+												{
+													title: "<?php $lh->translateText("success"); ?>",
+													text: "<?php $lh->translateText("campaign_deleted"); ?>!",
+													type: "success"
+												},
+												function(){
+													window.location.href = 'telephonycampaigns.php';
+												}
+											);
+										} else {
+											sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+											window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
 										}
-									});
-												} else {
-										swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-								}
+									}
+								});
+							} else {
+								swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
 							}
-			            );
-			         });
+						}
+					);
+				});
 				
 				$(document).on('click','.delete-multiple-campaign',function() {
 					var arr = $('input:checkbox.check_campaign').filter(':checked').map(function () {
 						return this.id;
 					}).get();
-					var log_user = '<?=$_SESSION['user']?>';
-					var log_group = '<?=$_SESSION['usergroup']?>';
+					console.log(arr);
 					swal({
 							title: "<?php $lh->translateText("are_you_sure"); ?>",
 							text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
@@ -2753,10 +2640,8 @@
 										url: "./php/DeleteCampaign.php",
 										type: 'POST',
 										data: {
-											campaign_id:arr,
-											action: "delete_selected",
-											log_user: log_user,
-											log_group: log_group
+											campaign_id: arr,
+											action: "delete_selected"
 										},
 										success: function(data) {
 										console.log(data);
@@ -2834,87 +2719,40 @@
 			        	$('#finish').text("Loading...");
 			        	$('#finish').attr("disabled", true);
 
-						var selectable = "Y";
-						var human_answered = "Y";
-						var sale = "Y";
-						var dnc = "Y";
-						var scheduled_callback = "Y";
-						var customer_contact = "Y";
-						var not_interested = "Y";
-						var unworkable = "Y";
-						var log_user = '<?=$_SESSION['user']?>';
-						var log_group = '<?=$_SESSION['usergroup']?>';
-
-			            	if(!$('#selectable').is(":checked")){
-			            		selectable = "N";
-			            	}
-			            	if(!$('#human_answered').is(":checked")){
-			            		human_answered = "N";
-			            	}
-			            	if(!$('#sale').is(":checked")){
-			            		sale = "N";
-			            	}
-			            	if(!$('#dnc').is(":checked")){
-			            		dnc = "N";
-			            	}
-			            	if(!$('#scheduled_callback').is(":checked")){
-			            		scheduled_callback = "N";
-			            	}
-			            	if(!$('#customer_contact').is(":checked")){
-			            		customer_contact = "N";
-			            	}
-			            	if(!$('#not_interested').is(":checked")){
-			            		not_interested = "N";
-			            	}
-			            	if(!$('#unworkable').is(":checked")){
-			            		unworkable = "N";
-			            	}
-
-			            // submit
-		                $.ajax({
-		                    url: "./php/AddDisposition.php",
-		                    type: 'POST',
-		                    data: {
-								userid : $('#userid').val(),
-								campaign : $('#disposition_campaign').val(),
-								status : $('#status').val(),
-								status_name : $('#status_name').val(),
-								selectable : selectable,
-								human_answered : human_answered,
-								sale : sale,
-								dnc : dnc,
-								scheduled_callback : scheduled_callback,
-								customer_contact : customer_contact,
-								not_interested : not_interested,
-								unworkable : unworkable,
-								log_user: log_user,
-								log_group: log_group,
-								priority: $('#priority').val(),
-								color: $('#status_color').val(),
-								type: 'CUSTOM'
-							},
-		                    success: function(data) {
-		                      // console.log(data);
-		                          if(data == 1){
-		                                swal(
-											{
-												title: "<?php $lh->translateText("success"); ?>",
-												text: "<?php $lh->translateText("success_statuses"); ?>!",
-												type: "success"
+						var disposition_id = $('#disposition_status').val();
+						var resultCheck = checkStatus(disposition_id);
+						console.log(resultCheck);
+						if (resultCheck == "1") {
+							$.ajax({
+								url: "./php/AddDisposition.php",
+								type: 'POST',
+								data: $("#create_disposition").serialize(),
+								success: function(data) {
+									console.log(data);
+									console.log($("#create_disposition").serialize());
+									if (data == 1) {
+										swal({
+											title: "<?php $lh->translateText("success"); ?>",
+											text: "<?php $lh->translateText("success_statuses"); ?>!",
+											type: "success"
 											},
 											function(){
 												window.location.href = 'telephonycampaigns.php';
 												$(".preloader").fadeIn();
-											}
-										);
-		                          }
-		                          else{
-		                              sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
-		                              $('#finish').val("Submit");
-									  $('#finish').prop("disabled", false);
-		                          }
-		                    }
-		                });
+											});
+									} else {
+										sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+										$('#finish').val("Submit");
+										$('#finish').prop("disabled", false);
+										disposition_form.children("div").steps("previous");
+										$('#add_disposition').modal('hide');									
+									}
+								}
+							});
+						} else {
+							disposition_form.children("div").steps("previous");
+						}
+
 
 			        }
 			    });
@@ -3029,33 +2867,28 @@
 		                $.ajax({
 		                    url: "./php/AddLeadRecycling.php",
 		                    type: 'POST',
-		                    data: {
-								leadrecycling_campaign : $('#leadrecycling_campaign').val(),
-								leadrecycling_status : $('#leadrecycling_status').val(),
-								attempt_delay : $('#attempt_delay').val(),
-								active : $('#active').val(),
-								attempt_maximum : $('#attempt_maximum').val()
-							},
+		                    data: $("#create_leadrecycling").serialize(),
 		                    success: function(data) {
-		                      // console.log(data);
-		                          if(data == "success"){
-		                                swal(
-											{
-												title: "<?php $lh->translateText("success"); ?>",
-												text: "<?php $lh->translateText("created_leadrecycling"); ?>!",
-												type: "success"
-											},
-											function(){
-												window.location.href = 'telephonycampaigns.php';
-												$(".preloader").fadeIn();
-											}
-										);
-		                          }
-		                          else{
-		                              sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
-		                              $('#finish').val("Submit");
-									  $('#finish').prop("disabled", false);
-		                          }
+							console.log(data);
+							console.log($("#create_leadrecycling").serialize());
+								if(data == 1){
+									swal(
+										{
+											title: "<?php $lh->translateText("success"); ?>",
+											text: "<?php $lh->translateText("created_leadrecycling"); ?>!",
+											type: "success"
+										},
+										function(){
+											window.location.href = 'telephonycampaigns.php';
+											$(".preloader").fadeIn();
+										}
+									);
+								}
+								else{
+									sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+									$('#finish').val("Submit");
+									$('#finish').prop("disabled", false);
+								}
 		                    }
 		                });
 
@@ -3336,13 +3169,13 @@
 
 				/*** DISPOSITION ***/
 					// check duplicates
-						$("#status").keyup(function() {
-							duplicate_status_check();
+						$("#disposition_status").keyup(function() {
+							checkStatus($('#disposition_status').val());
 						});
 
-						$('#disposition_campaign').change(function(){
-							duplicate_status_check();
-						});
+						/*$('#disposition_campaign').change(function(){
+							checkStatus();
+						});*/
 				/*** end of disposition ***/
 
 			/********
@@ -3422,6 +3255,151 @@
 				
 		}); // end of document ready
 
+		function get_pause_codes(campaign_id){
+			$.ajax({
+				url: "./php/GetPauseCodes.php",
+				type: 'POST',
+				data: {
+					campaign_id : campaign_id,
+				},
+				dataType: 'json',
+				success: function(response) {
+						// var values = JSON.parse(response.result);
+						console.log(response);
+						$('.btn-new-pause-code').attr('data-campaign', campaign_id);
+						$('#modal_view_pause_codes').modal('show');
+						var table = $('#pause_codes_list').DataTable();
+						table.fnClearTable();
+						table.fnDestroy();
+						$('#pause_code_data_container').html(response);
+						$('#pause_codes_list').DataTable({
+							destroy: true,
+							"searching": true,
+							bFilter: true,
+							"aoColumnDefs": [{
+								"bSearchable": false,
+								"aTargets": [ 3 ]
+							},{
+								"bSortable": false,
+								"aTargets": [ 3 ]
+							}]
+						});
+						$("#pause_codes_list").css("width","100%");
+					}
+			});
+		}
+
+		function get_hotkeys(campaign_id){
+			$.ajax({
+				url: "./php/GetHotkeys.php",
+				type: 'POST',
+				data: {
+					campaign_id : campaign_id,
+				},
+				dataType: 'json',
+				success: function(response) {
+						// var values = JSON.parse(response.result);
+						// console.log(response);
+						$('.btn-new-hotkey').attr('data-campaign', campaign_id);
+						$('#modal_view_hotkeys').modal('show');
+						var table = $('#hotkeys_list').DataTable();
+						table.fnClearTable();
+						table.fnDestroy();
+						$('#hotkey_data_container').html(response);
+						$('#hotkeys_list').DataTable({
+							"searching": true,
+							bFilter: true,
+							"aoColumnDefs": [{
+								"bSearchable": false,
+								"aTargets": [ 3 ]
+							},{
+								"bSortable": false,
+								"aTargets": [ 3 ]
+							}]
+						});
+						$("#hotkeys_list").css("width","100%");
+					}
+			});
+		}
+		
+		function get_lists(campaign_id){
+			$.ajax({
+				url: "./php/GetLists.php",
+				type: 'POST',
+				data: {
+					campaign_id : campaign_id,
+				},
+				dataType: 'json',
+				success: function(response) {
+						// var values = JSON.parse(response.result);
+						// console.log(response);
+						// $('.btn-new-lists').attr('data-campaign', campaign_id);
+						$('#modal_view_lists').modal('show');
+						var table = $('#lists_list').DataTable();
+						table.fnClearTable();
+						table.fnDestroy();
+						$('#lists_data_container').html(response.data);
+						$('.count_active').text(response.count_active);
+						$('.count_inactive').text(response.count_inactive);
+						
+						$('.view-leads-on-hopper').attr('data-campaign', campaign_id);
+						$('#lists_list').DataTable({
+							"searching": true,
+							bFilter: true
+						});
+						$("#lists_list").css("width","100%");
+					}
+			});
+
+			$.ajax({
+				url: "./php/GetLeadsOnHopper.php",
+				type: 'POST',
+				data: {
+					campaign_id : campaign_id,
+				},
+				dataType: 'json',
+				success: function(response) {
+						//console.log(response);
+						$('.count_leads').text(response.count);
+					}
+			});
+		}
+
+		function get_leads_on_hopper(campaign_id){
+			$.ajax({
+				url: "./php/GetLeadsOnHopper.php",
+				type: 'POST',
+				data: {
+					campaign_id : campaign_id,
+				},
+				dataType: 'json',
+				success: function(response) {
+						console.log(response);
+						$('#modal_view_lists').modal('hide');
+						$('#modal_view_leads_on_hopper').modal('show');
+						$('body').addClass('modal-open');
+						var table = $('#leads_on_hopper').DataTable();
+						table.fnClearTable();
+						table.fnDestroy();
+						$('#leads_hopper_container').html(response.data);
+						$('#leads_on_hopper').DataTable({
+							"searching": true,
+							bFilter: true
+						});
+						$("#leads_on_hopper").css("width","100%");
+					}
+			});
+		}
+		
+		function dialPrefix(value){
+			if(value == "CUSTOM"){
+				$('#custom_prefix').removeClass('hide');
+				$("#custom_prefix").attr("required", true);
+			}else{
+				$('#custom_prefix').addClass('hide');
+				$("#custom_prefix").attr("required", false);
+			}
+		}		
 
 		function clear_form(){
 
@@ -3483,15 +3461,19 @@
 				async: false,
 				data: {
 					campaign_id : campaign_id,
+					status: status
 				},
 				dataType: 'json',
 				success: function(data) {
-					// console.log(data);
-					var info = $.parseJSON(data);
-					if(info.result == "success"){
-						status = 1;
-					}else{
-						status = info.status;
+					console.log(data);
+					if (data == 1) {
+						status = "1";
+						$('#finish').attr("disabled", false);
+						$( "#campaign_form" ).removeClass("error");
+					} else {
+						$('#finish').attr("disabled", true);
+						$( "#campaign_form" ).removeClass("valid").addClass( "error" );						
+						status = "0";
 					}
 				}
 			});
@@ -3499,35 +3481,34 @@
 			return status;
 		}
 
-		function duplicate_status_check(){
-			var status_form_value = $('#status').val();
-			var campaign_form_value = $('#disposition_campaign').val();
-	        if(status_form_value != ""){
-			    $.ajax({
-				    url: "php/checkCampaign.php",
-				    type: 'POST',
-				    data: {
-				    	status : status_form_value,
-				    	campaign_id : campaign_form_value
-				    },
-				    dataType: 'json',
-					success: function(data) {
-						var returndata = $.parseJSON(data);
-						if(returndata.result == "success"){
-							$("#disposition_checker").val("0");
-
-							$( "#status" ).removeClass("error");
-							$( "#status-duplicate-error" ).text( "Status is available." ).removeClass("error").addClass("avail");
-						}else{
-							$("#disposition_checker").val("1");
-
-							$( "#status" ).addClass( "error" );
-							$( "#status-duplicate-error" ).text( returndata.status ).removeClass("avail").addClass("error");
-
-						}
+		function checkStatus(disposition_id){
+			var campaign_form_value = "";
+			$.ajax({
+				url: "php/checkCampaign.php",
+				type: 'POST',
+				data: {
+					status : disposition_id,
+					campaign_id : campaign_form_value
+				},
+				dataType: 'json',
+				success: function(data) {
+					//var returndata = $.parseJSON(data);
+					console.log(data);
+					if (data == 1) {
+						status = "1";
+						$("#disposition_checker").val("0");
+						$( "#status" ).removeClass("error");
+						$( "#status-duplicate-error" ).text( "Status is available." ).removeClass("error").addClass("avail");
+					} else {						
+						$("#disposition_checker").val("1");
+						$( "#status" ).addClass( "error" );
+						$( "#status-duplicate-error" ).text( "Status is not available." ).removeClass("avail").addClass("error");
+						status = "0";
 					}
-				});
-			}
+				}
+			});
+			
+			return status;
 		}
 
 </script>

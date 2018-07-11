@@ -22,46 +22,30 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('CRMDefaults.php');
-require_once('goCRMAPISettings.php');
+	require_once('APIHandler.php');
+	$api 							= \creamy\APIHandler::getInstance();
 
-// check required fields
-$validated = 1;
-if (!isset($_POST["usergroup_id"])) {
-	$validated = 0;
-}
+	// check required fields
+	$validated = 1;
+	if (!isset($_POST["usergroup_id"])) {
+		$validated 					= 0;
+	}
 
-if ($validated == 1) {
-    $url = gourl."/goUserGroups/goAPI.php"; #URL to GoAutoDial API. (required)    
-	$postfields = array(
-		'goUser' => goUser,
-		'goPass' => goPass,
-		'goAction' => 'goDeleteUserGroup',		
-		'responsetype' => responsetype,
-		'user_group' => $_POST['usergroup_id'],
-		'session_user' => $_POST['log_user'],
-		'log_group' => $_POST['log_group'],
-		'hostname' => $_SERVER['REMOTE_ADDR']
-	);	
-    
-	// Call the API
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $url);
-	curl_setopt($ch, CURLOPT_POST, 1);
-	curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 1);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
-	$data = curl_exec($ch);
-	curl_close($ch);
-    $output = json_decode($data);
-     
-    if ($output->result=="success") {
-    # Result was OK!
-		echo 1;
-    }else{
-        echo $output->result;
-    }
-}
+	if ($validated == 1) {
+		$postfields 				= array(
+			'goAction' 					=> 'goDeleteUserGroup',
+			'user_group' 				=> $_POST['usergroup_id']
+		);
+
+		$output 					= $api->API_Request("goUserGroups", $postfields);
+		
+		if ($output->result=="success") { 
+			$status 				= 1; 
+		} else { 
+			$status 				= $output->result; 
+		}
+		
+		echo json_encode($status);
+		
+	}
 ?>

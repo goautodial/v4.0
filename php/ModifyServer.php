@@ -1,6 +1,28 @@
 <?php
+/**
+ * @file        ModifyServer.php
+ * @brief       Handles modifying server requests
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author		Demian Lizandro A, Biscocho 
+ * @author      Alexander Jim H. Abenoja
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-require_once('goCRMAPISettings.php');
+	require_once('APIHandler.php');
+	$api = \creamy\APIHandler::getInstance();
 
 	// collect new user data.       
 	$modifyid = $_POST["modifyid"];
@@ -71,50 +93,38 @@ require_once('goCRMAPISettings.php');
 		$vicidial_balance_rank = stripslashes($vicidial_balance_rank);
 	}
 
-	$url = gourl."/goServers/goAPI.php"; #URL to GoAutoDial API. (required)
-	$postfields["goUser"]           = goUser; #Username goes here. (required)
-	$postfields["goPass"]           = goPass; #Password goes here. (required)
-	$postfields["goAction"]         = "goEditServer"; #action performed by the [[API:Functions]]
-	$postfields["responsetype"]     = responsetype; #json. (required)
-	$postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
+	$postfields = array(
+		'goUser' 						=> goUser,
+		'goPass' 						=> goPass,
+		'goAction' 						=> 'goEditServers',		
+		'responsetype' 					=> responsetype,
+		'server_id' 					=> $modifyid,
+		'server_description' 			=> $server_description,
+		'server_ip' 					=> $server_ip,
+		'active' 						=> $active,		
+		'user_group' 					=> $user_group,
+		'asterisk_version' 				=> $asterisk_version,
+		'max_vicidial_trunks' 			=> $max_vicidial_trunks,
+		'outbound_calls_per_second' 	=> $outbound_calls_per_second,
+		'vicidial_balance_active'		=> $vicidial_balance_active,
+		'vicidial_balance_rank'			=> $vicidial_balance_rank,
+		'local_gmt' 					=> $local_gmt,
+		'generate_vicidial_conf' 		=> $generate_vicidial_conf,		
+		'rebuild_conf_files' 			=> $rebuild_conf_files,
+		'rebuild_music_on_hold' 		=> $rebuild_music_on_hold,
+		'recording_web_link' 			=> $recording_web_link,
+		'alt_server_ip' 				=> $alt_server_ip,
+		'external_server_ip' 			=> $external_server_ip,
+		'session_user' 					=> $_POST['log_user'],
+		'log_user' 						=> $_POST['log_user'],
+		'log_ip' 						=> $_SERVER['REMOTE_ADDR'],
+		'hostname' 						=> $_SERVER['REMOTE_ADDR']
+	);	
+			
+	$output = $api->API_editServer($postfields);
 	
-	$postfields["server_id"] 	= $modifyid; #Desired script id. (required)
-	$postfields["server_description"]   	= $server_description;
-	$postfields["server_ip"]  	= $server_ip;
-	$postfields["active"]           	= $active;
-	$postfields["user_group"]           	= $user_group;
-	$postfields["asterisk_version"]           	= $asterisk_version;
-	$postfields["max_vicidial_trunks"]          	= $max_vicidial_trunks;
-	$postfields["outbound_calls_per_second"]    	= $outbound_calls_per_second;
-	$postfields["vicidial_balance_active"]           	= $vicidial_balance_active;
-	$postfields["vicidial_balance_rank"]	= $vicidial_balance_rank;
-	$postfields["local_gmt"]           	= $local_gmt;
-	$postfields["generate_vicidial_conf"]           	= $generate_vicidial_conf;
-	$postfields["rebuild_conf_files"]           	= $rebuild_conf_files;
-	$postfields["rebuild_music_on_hold"]           	= $rebuild_music_on_hold;
-	$postfields["recording_web_link"] 	= $recording_web_link;
-	$postfields["alt_server_ip"]	= $alt_server_ip;
-	$postfields["external_server_ip"]	= $external_server_ip;
-	
-	$postfields["log_user"]         = $_POST['log_user'];
-	$postfields["log_group"]        = $_POST['log_group'];
-	
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $url);
-	curl_setopt($ch, CURLOPT_POST, 1);
-	curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	$data = curl_exec($ch);
-	curl_close($ch);
-	$output = json_decode($data);
-	
-	if ($output->result=="success") {
-	   # Result was OK!
-			echo "success";  
-	 } else {
-	   # An error occured
-			echo $output->result;
-	}
+	if ($output->result=="success") { $status = 1; } 
+		else { $status = $output->result; }
+
+	echo json_encode($status);
 ?>

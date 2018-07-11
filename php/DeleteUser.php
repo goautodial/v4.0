@@ -1,59 +1,45 @@
 <?php
 /**
-	The MIT License (MIT)
-	
-	Copyright (c) 2015 Ignacio Nieto Carvajal
-	
-	Permission is hereby granted, free of charge, to any person obtaining a copy
-	of this software and associated documentation files (the "Software"), to deal
-	in the Software without restriction, including without limitation the rights
-	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	copies of the Software, and to permit persons to whom the Software is
-	furnished to do so, subject to the following conditions:
-	
-	The above copyright notice and this permission notice shall be included in
-	all copies or substantial portions of the Software.
-	
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	THE SOFTWARE.
+ * @file        DeleteUser.php
+ * @brief       Handles Delete User/s Requests
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author		Demian Lizandro A, Biscocho 
+ * @author      Alexander Jim Abenoja
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('CRMDefaults.php');
-require_once('LanguageHandler.php');
-require_once('DbHandler.php');
+	require_once('APIHandler.php');	
+	$api = \creamy\APIHandler::getInstance();
+	
+	if (isset($_POST["userid"])) {
+		// sanity checks	
+		$userid = $_POST["userid"];
+		$action = $_POST["action"];
+		
+		$postfields = array(
+			'goAction' => 'goDeleteUser',
+			'user_id' => $userid,
+			'action' => $action
+		);
 
-$lh = \creamy\LanguageHandler::getInstance();
-
-// check required fields
-$validated = 1;
-if (!isset($_POST["userid"])) {
-	$validated = 0;
-}
-
-if ($validated == 1) {
-	$db = new \creamy\DbHandler();
-
-	// sanity checks	
-	$userid = $_POST["userid"];
-	$currentMainAdminData = $db->getMainAdminUserData(); // check that we are not deleting the main admin user.
-	if (is_array($currentMainAdminData) && (array_key_exists("id", $currentMainAdminData))) {
-		if ($userid == $currentMainAdminData["id"]) {
-			// can't delete the main admin user.
-			print $lh->translateText("unable_delete_main_admin");
-			return;
-		}
+		$output = $api->API_Request("goUsers", $postfields);
+			
+		if ($output->result=="success") { $status = 1; } 
+			else { $status = $output->result; }
+		
+		echo json_encode($status);
 	}
-
-	// delete user
-	$result = $db->deleteUser($userid);
-	if ($result === false) {
-		ob_clean(); 
-		$lh->translateText("unable_delete_user");
-	} else { ob_clean(); print CRM_DEFAULT_SUCCESS_RESPONSE; }
-} else { ob_clean(); $lh->translateText("some_fields_missing"); }
 ?>

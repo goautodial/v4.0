@@ -395,7 +395,7 @@
                                     },
                                     success: function(data) {
                                     console.log(data);
-                                        if(data == 1){
+                                        if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
                                            swal("Success!", "Music On Hold Successfully Deleted!", "success");
                                            window.setTimeout(function(){location.reload();},1000);
                                         }else{

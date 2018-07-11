@@ -134,7 +134,7 @@
                                 <div class="form-group mt">
                                     <label class="col-sm-3 control-label" for="voicemail_id"><?php $lh->translateText("voicemail_id"); ?></label>
                                     <div class="col-sm-9 mb">
-                                        <input type="number" name="voicemail_id" min="1" id="voicemail_id" class="form-control" placeholder="<?php $lh->translateText("voicemail_id"); ?>" minlength="2" maxlength="10">
+                                        <input type="number" name="voicemail_id" min="1" id="voicemail_id" class="form-control" placeholder="<?php $lh->translateText("Numbers Only"); ?>" minlength="2" maxlength="10">
                                     </div>
                                 </div>
                                 <div class="form-group">        
@@ -250,9 +250,9 @@
                                 type: 'POST',
                                 data: $("#create_voicemail").serialize(),
                                 success: function(data) {
-								// console.log(data);
-								$('#finish').text("<?php $lh->translateText("submit"); ?>");
-								$('#finish').prop("disabled", false);
+									console.log(data);
+									$('#finish').text("<?php $lh->translateText("submit"); ?>");
+									$('#finish').prop("disabled", false);
 									if(data == 1){
 										  swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_voicemail_success"); ?>",type: "success"},function(){window.location.href = 'settingsvoicemails.php';});
 									}

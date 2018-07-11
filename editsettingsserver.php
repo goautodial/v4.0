@@ -32,10 +32,10 @@
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 
-$server_id = NULL;
-if (isset($_POST["server_id"])) {
-	$server_id = $_POST["server_id"];
-}
+	$server_id = NULL;
+	if (isset($_POST["server_id"])) {
+		$server_id = $_POST["server_id"];
+	}
 
 ?>
 <html>
@@ -372,7 +372,7 @@ if (isset($_POST["server_id"])) {
 								$('#update_button').html("<i class='fa fa-check'></i><?php $lh->translateText("update"); ?>");
 								$('#modifyButton').attr("disabled", false);
 								
-								if (data == "success") {
+								if (data == 1) {
 									swal({title: "<?php $lh->translateText("server_modify_success"); ?>",text: "<?php $lh->translateText("server_updated"); ?>",type: "success"},function(){window.location.href = 'settingsservers.php';});
 								} else {
 									swal("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");

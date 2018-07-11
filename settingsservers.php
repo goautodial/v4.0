@@ -21,8 +21,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('php/UIHandler.php');
-	require_once('php/APIHandler.php');
+	require_once('./php/UIHandler.php');
+	require_once('./php/APIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
@@ -258,22 +258,22 @@
 								$('#finish').attr("disabled", true);
 		
 								// Submit form via ajax
-									$.ajax({
-										url: "./php/AddServer.php",
-										type: 'POST',
-										data: $("#create_server").serialize(),
-										success: function(data) {
-										  // console.log(data);
+								$.ajax({
+									url: "./php/AddServer.php",
+									type: 'POST',
+									data: $("#create_server").serialize(),
+									success: function(data) {
+										console.log(data);
 										$('#finish').text("<?php $lh->translateText("submit"); ?>");
 										$('#finish').attr("disabled", false);
-											if(data == "success"){
-												swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_server_success"); ?>",type: "success"},function(){window.location.href = 'settingsservers.php';});
-											}
-											else{
-												sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
-											}
+										if(data == 1){
+											swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_server_success"); ?>",type: "success"},function(){window.location.href = 'settingsservers.php';});
 										}
-									});
+										else{
+											sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
+										}
+									}
+								});
 							}
 						});
 						
@@ -311,14 +311,10 @@
 										$.ajax({
 										url: "./php/DeleteServer.php",
 										type: 'POST',
-										data: {
-											server_id: id,
-											log_user: '<?=$_SESSION['user']?>',
-											log_group: '<?=$_SESSION['usergroup']?>'
-										},
+										data: { server_id: id },
 										success: function(data) {
 										console.log(data);
-											if(data == "success"){
+											if(data == 1){
 												swal({title: "<?php $lh->translateText("deleted"); ?>",text: "<?php $lh->translateText("server_delete_success"); ?>",type: "success"},function(){window.location.href = 'settingsservers.php';});
 											}else{
 												sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");

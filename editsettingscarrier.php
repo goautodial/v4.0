@@ -94,7 +94,8 @@ if (isset($_POST["cid"])) {
 						if(isset($cid)) {
 							$output = $api->API_getCarrierInfo($cid);
 							$servers = $api->API_getAllServers();
-							
+							//echo "<pre>";
+							//var_dump($output->data->carrier_description);
 							if ($output->result=="success") {							
 						?>
 
@@ -199,7 +200,7 @@ if (isset($_POST["cid"])) {
 						<div class="form-group registration_div" style="display:none;">
 							<label for="carrier_desc" class="col-sm-2 control-label">Port</label>
 							<div class="col-sm-10 mb">
-								<input type="text" class="form-control" name="carrier_desc" id="carrier_desc" placeholder="Carrier Description" value="<?php echo $output->data->carrier_description;?>">
+								<input type="text" class="form-control" name="carrier_desc" id="carrier_desc" placeholder="Carrier Description" value="<?php //echo $output->data->carrier_description;?>">
 							</div>
 						</div>
 						<div class="form-group">
@@ -335,13 +336,13 @@ if (isset($_POST["cid"])) {
 									<div class="form-group mt">
 										<label for="registration_string" class="col-sm-2 control-label">Registration String</label>
 										<div class="col-sm-10 mb">
-											<input type="text" class="form-control" name="registration_string" id="registration_string" placeholder="Registration String" value="<?php echo $output->data->registration_string;?>">
+											<input type="text" class="form-control" name="registration_string" id="registration_string" placeholder="Registration String" value="<?php //echo $output->data->registration_string;?>">
 										</div>
 									</div>
 									<div class="form-group mt">
 										<label for="globals_string" class="col-sm-2 control-label">Global String</label>
 										<div class="col-sm-10 mb">
-											<input type="text" class="form-control" name="globals_string" id="globals_string" placeholder="Global String" value="<?php echo $output->data->globals_string;?>">
+											<input type="text" class="form-control" name="globals_string" id="globals_string" placeholder="Global String" value="<?php //echo $output->data->globals_string;?>">
 										</div>
 									</div>
 									<div class="form-group">
@@ -349,7 +350,7 @@ if (isset($_POST["cid"])) {
 										<div class="col-sm-10 mb">
 											<div class="panel">
 												<div class="panel-body">
-													<textarea rows="11" class="form-control note-editor" id="account_entry" name="account_entry"><?php echo $output->data->account_entry;?></textarea>
+													<textarea rows="11" class="form-control note-editor" id="account_entry" name="account_entry"><?php //echo $output->data->account_entry;?></textarea>
 												</div>
 											</div>
 										</div>
@@ -359,7 +360,7 @@ if (isset($_POST["cid"])) {
 										<div class="col-sm-10 mb">
 											<div class="panel">
 												<div class="panel-body">
-													<textarea rows="3" class="form-control note-editor" id="dialplan_entry" name="dialplan_entry"><?php echo $output->data->dialplan_entry;?></textarea>
+													<textarea rows="3" class="form-control note-editor" id="dialplan_entry" name="dialplan_entry"><?php //echo $output->data->dialplan_entry;?></textarea>
 												</div>
 											</div>
 										</div>
@@ -416,7 +417,6 @@ if (isset($_POST["cid"])) {
 
 		<script type="text/javascript">
 			$(document).ready(function() {
-
 			    /* on authorization change */
 				$('input[type=radio][name=authentication]').on('change', function() {
 				//  alert( this.value ); // or $(this).val()
@@ -438,37 +438,34 @@ if (isset($_POST["cid"])) {
 					}
 				});
 
-			/** 
-			 * Modifies a telephony list
-			 */
 			$("#modifycarrier").validate({
 				submitHandler: function() {
 					//submit the form
-						$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
-						$('#modifyCarrierOkButton').prop("disabled", true);
-
-							$("#resultmessage").html();
-							$("#resultmessage").fadeOut();
-							$.post("./php/ModifyCarrier.php", //post
-							$("#modifycarrier").serialize(), 
-								function(data){
-									//if message is sent
-									$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
-									$('#modifyCarrierOkButton').prop("disabled", false);
-									
-									if (data == 1) {
-										sweetAlert("<?php $lh->translateText("carrier_modify_success"); ?>", "<?php $lh->translateText("carrier_updated"); ?>", "success");
-										window.setTimeout(function(){location.reload()},2000);
-									} else {
-										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
-									}
-									//
-								});
-						return false; //don't let the form refresh the page...
-					}					
-				});
-				
-			});
+					$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
+					$('#modifyCarrierOkButton').prop("disabled", true);
+						$("#resultmessage").html();
+						$("#resultmessage").fadeOut();
+						$.post("./php/ModifyCarrier.php", //post
+						$("#modifycarrier").serialize(), 
+						function(data){
+							console.log(data);
+							//console.log($("#modifycarrier").serialize());
+							//if message is sent
+							$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
+							$('#modifyCarrierOkButton').prop("disabled", false);
+							
+							if (data == 1) {
+								sweetAlert("<?php $lh->translateText("carrier_modify_success"); ?>", "<?php $lh->translateText("carrier_updated"); ?>", "success");
+								window.setTimeout(function(){location.reload()},2000);
+							} else {
+								sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
+							}
+							//
+						});
+					return false; //don't let the form refresh the page...
+				}					
+			});				
+		});
 		</script>
 
 		<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>

@@ -19,27 +19,17 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-require_once('APIHandler.php');
-$api = \creamy\APIHandler::getInstance();
-/*
-	$url = gourl."/goLeadRecycling/goAPI.php"; #URL to GoAutoDial API. (required)
-	$postfields["goUser"]	= goUser; #Username goes here. (required)
-	$postfields["goPass"]	= goPass; #Password goes here. (required)
-	$postfields["goAction"]	= "goAddLeadRecycling"; #action performed by the [[API:Functions]]. (required)
-	$postfields["responsetype"] = responsetype; #json. (required)
-	$postfields["log_ip"]	= $_SERVER['REMOTE_ADDR'];
-	$postfields["session_user"] = $_SESSION['user'];
+
+	require_once('APIHandler.php');
+	$api = \creamy\APIHandler::getInstance();
 	
-	$postfields["campaign_id"] 		= $_POST['leadrecycling_campaign'];
-	$postfields["status"] 			= $_POST['leadrecycling_status']; 
-	$postfields["attempt_delay"] 	= $_POST['attempt_delay'];
-	$postfields["active"] 			= $_POST['active'];
-	$postfields["attempt_maximum"] 	= $_POST['attempt_maximum'];
-*/	
+	$campaign_id = $_POST['leadrecycling_campaign'];
+	$leadrecycling_status	= $_POST['leadrecycling_status'];
+	
 	$postfields = array(
 		'goAction' => 'goAddLeadRecycling',
-		'campaign_id' => $_POST['leadrecycling_campaign'],
-		'status' => $_POST['leadrecycling_status'], 
+		'campaign_id' => $campaign_id,
+		'status' => $leadrecycling_status, 
 		'attempt_delay' => $_POST['attempt_delay'],
 		'active' => $_POST['active'],
 		'attempt_maximum' => $_POST['attempt_maximum']
@@ -47,5 +37,8 @@ $api = \creamy\APIHandler::getInstance();
 
 	$output = $api->API_addLeadRecycling($postfields);
 
-	echo $output->result;
+	if ($output->result=="success") { $status = 1; } 
+		else { $status = $output->result; }
+
+	echo json_encode($status);
 ?>

@@ -1,13 +1,29 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-require_once('CRMDefaults.php');
-//require_once('LanguageHandler.php');
-//require_once('DbHandler.php');
-require_once('goCRMAPISettings.php');
+/**
+ * @file        DeleteInbound.php
+ * @brief       Handles Delete Ingroup, IVR & DID Requests
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author      Alexander Jim H. Abenoja  <alex@goautodial.com>
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-//$lh = \creamy\LanguageHandler::getInstance();
+require_once('APIHandler.php');
+$api = \creamy\APIHandler::getInstance();
+
+require_once('CRMDefaults.php');
 
 $groupid = NULL;
 if (isset($_POST["groupid"])) {
@@ -31,6 +47,7 @@ if ($groupid != NULL) {
  * [[API:Function]] – goDeleteInbound
  * This application is used to delete a in-group. Only in-group that belongs to authenticated user can be delete.
 */
+/*
     $url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -40,28 +57,19 @@ if ($groupid != NULL) {
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 	$postfields["log_user"]			= $_POST['log_user'];
 	$postfields["log_group"]		= $_POST['log_group'];
-    
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
-     
+*/  
+    $postfields = array(
+        'goAction' => 'goDeleteIngroup',
+        'group_id' => $groupid
+    );
+
+    $output = $api->API_Request("goInbound", $postfields);
+
     if ($output->result=="success") {
-    # Result was OK!
-        echo 1;
-        //ob_clean();
-        //print CRM_DEFAULT_SUCCESS_RESPONSE;
+        ob_clean();
+        print CRM_DEFAULT_SUCCESS_RESPONSE;
     } else {
         echo $output->result;
-        //ob_clean();
-        //$lh->translateText("unable_delete_ingroup");
     }
 
 }
@@ -73,6 +81,7 @@ if ($ivr != NULL) {
  * [[API:Function]] – goDeleteIVR
  * This application is used to delete a IVR menu. Only IVR menu that belongs to authenticated user can be delete.
 */
+/*
     $url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -82,27 +91,19 @@ if ($ivr != NULL) {
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 	$postfields["log_user"]			= $_POST['log_user'];
 	$postfields["log_group"]		= $_POST['log_group'];
-    
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
-     
+*/    
+    $postfields = array(
+        'goAction' => 'goDeleteIVR',
+        'menu_id' => $ivr
+    );
+
+    $output = $api->API_Request("goInbound", $postfields);
+
     if ($output->result=="success") {
-    # Result was OK!
-        echo 1;
-		//ob_clean();
-		//print CRM_DEFAULT_SUCCESS_RESPONSE;
+		ob_clean();
+		print CRM_DEFAULT_SUCCESS_RESPONSE;
     } else {
         echo $output->result;
-		//ob_clean(); 
-		//$lh->translateText("unable_delete_ivr");
     }
 
 }
@@ -114,6 +115,7 @@ if ($did != NULL) {
  * [[API:Function]] – goDeleteDID
  * This application is used to delete a did. Only did that belongs to authenticated user can be delete.
 */
+/*
     $url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
     $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -123,27 +125,19 @@ if ($did != NULL) {
     $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 	$postfields["log_user"]			= $_POST['log_user'];
 	$postfields["log_group"]		= $_POST['log_group'];
-    
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
-     
+*/  
+    $postfields = array(
+        'goAction' => 'goDeleteDID',
+        'menu_id' => $did
+    );
+
+    $output = $api->API_Request("goInbound", $postfields);
+
     if ($output->result=="success") {
-    # Result was OK!
-        echo 1;
-       //ob_clean();
-        //print CRM_DEFAULT_SUCCESS_RESPONSE;
+        ob_clean();
+        print CRM_DEFAULT_SUCCESS_RESPONSE;
     } else {
         echo $output->result;
-        //ob_clean(); 
-        //$lh->translateText("unable_delete_phonenumber");
     }
 
 }

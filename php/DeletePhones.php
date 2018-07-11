@@ -1,10 +1,10 @@
 <?php
 /**
- * @file        checkUser.php
- * @brief       Validate user entries
+ * @file        DeletePhones.php
+ * @brief       Handles Delete Phones Requests
  * @copyright   Copyright (c) 2018 GOautodial Inc.
- * @author		Demian Lizandro A, Biscocho  
- * @author      Alexander Jim H. Abenoja
+ * @author		Demian Lizandro A, Biscocho 
+ * @author      Alexander Jim Abenoja
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -21,22 +21,24 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once('APIHandler.php');	
 	$api = \creamy\APIHandler::getInstance();
 
-	$postfields = array(
-		'goAction' => 'goCheckUser',
-		'user' => $_POST['user'],
-		'phone_login' => $_POST["phone_logins"]
-	);
-	
-	$output = $api->API_checkUser($postfields);
+	if (isset($_POST["exten_id"])) {
+		$extenid = $_POST["exten_id"];
+		$action = $_POST["action"];
+		
+		$postfields = array(
+			'goAction' => 'goDeletePhone',
+			'extension' => $extenid,
+			'action' => $action
+		);
 
-	if($output->result == "success"){
-		$status = 1;
-	}else{
-		$status = $output->data;
+		$output = $api->API_Request("goPhones", $postfields);
+
+		if ($output->result=="success") { $status = 1; } 
+			else { $status = $output->result; }
+		
+		echo json_encode($status);
 	}
-
-	echo json_encode($status);
 ?>

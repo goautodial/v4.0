@@ -20,24 +20,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('APIHandler.php');
-$api = \creamy\APIHandler::getInstance();
+	require_once('APIHandler.php');
+	$api = \creamy\APIHandler::getInstance();
 
-/*
-    require_once('goCRMAPISettings.php');
-
-    $url = gourl."/goPauseCodes/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goDeletePauseCode"; #action performed by the [[API:Functions]]. (required)
-    $postfields["responsetype"] = responsetype; #json. (required)
-		$postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
-    $postfields["pauseCampID"] = $_POST['campaign_id'];
-		$postfields["pause_code"] = $_POST['pause_code'];
-	
-	$postfields["log_user"] = $_POST['log_user'];
-	$postfields["log_group"] = $_POST['log_group'];
-*/
 	$postfields = array(
 		'goAction' => 'goDeletePauseCode',
 		'pauseCampID' => $_POST['campaign_id'],
@@ -46,11 +31,8 @@ $api = \creamy\APIHandler::getInstance();
 
 	$output = $api->API_Request("goPauseCodes", $postfields);
 
-	if ($output->result=="success") {
-		$status = "success";
-	} else {
-		$status = "error";
-	}
+	if ($output->result=="success") { $status = 1; } 
+		else { $status = $output->result; }
 
-	echo $status;
+	echo json_encode($status);
 ?>

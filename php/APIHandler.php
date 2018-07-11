@@ -180,18 +180,18 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goPackages", $postfields);
 	}
 
-    public function API_goGetGroupPermission($user_group) {
+    public function API_goGetGroupPermission() {
 		$postfields = array(
 			'goAction' => 'goGetUserGroupInfo',
-			'user_group' => $user_group
+			'user_group' => session_usergroup
 		);
 
 		return $this->API_Request("goUserGroups", $postfields);
 	}
 
-    public function goGetPermissions($type = 'dashboard', $user_group) {
+    public function goGetPermissions($type = 'dashboard') {
 		
-		$permissions = $this->API_goGetGroupPermission($user_group);
+		$permissions = $this->API_goGetGroupPermission();
 		$decoded_permission = json_decode($permissions->data->permissions);
 		
 		$return = NULL;
@@ -216,7 +216,20 @@ if(isset($_SESSION["user"])){
 
 		return $return;
 	}
+	
+	public function API_getAllPauseCodes($campaign_id) {
+		$postfields = array(
+			'goAction' => 'goGetAllPauseCodes',
+			'campaign_id' => $campaign_id
+		);	
 
+		return $this->API_Request("goPauseCodes", $postfields);
+	}
+	
+	public function API_modifyPauseCode($postfields) {
+		return $this->API_Request("goPauseCodes", $postfields);
+	}	
+	
 	public function API_getAllInGroups() {
 		$postfields = array(
 			'goAction' => 'goGetAllIngroup'
@@ -382,7 +395,7 @@ if(isset($_SESSION["user"])){
 	*/
 	public function API_getAllDispositions($custom){
 		$postfields = array(
-			'goAction' => 'getAllDispositions',
+			'goAction' => 'goGetAllDispositions',
 			'custom_request' => $custom
 		);		
 		return $this->API_Request("goDispositions", $postfields);
@@ -415,7 +428,8 @@ if(isset($_SESSION["user"])){
 	public function API_getAllDialStatuses($campaign_id){
 		$postfields = array(
 			'goAction' => 'goGetAllDialStatuses',
-			'campaign_id' => $campaign_id
+			'campaign_id' => $campaign_id,
+			'hotkeys_only' => "1"
 		);		
 		return $this->API_Request("goDialStatus", $postfields);
 	}	
@@ -424,7 +438,7 @@ if(isset($_SESSION["user"])){
 		$postfields = array(
 			'goAction' => 'goGetAllDialStatuses',
 			'campaign_id' => $campaign_id,
-			'hotkeys_only' => 1
+			'hotkeys_only' => "1"
 		);		
 		return $this->API_Request("goDialStatus", $postfields);
 	}	
@@ -539,7 +553,26 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goUserGroups", $postfields);
 	}
 	
-	public function API_actionDNC($postfields){
+	public function API_getCallRecordingList($search_phone, $start_filterdate, $end_filterdate, $agent_filter) {
+		$postfields = array(
+			'goAction' => 'goGetCallRecordingList'
+		);
+		if (isset($search_phone)) { 
+			$postfields .= array(
+				'requestDataPhone' => $search_phone
+			);
+		}
+	    if (isset($start_filterdate)) {
+			$postfields .= array(
+				'start_filterdate' => $start_filterdate,
+				'end_filterdate' => $end_filterdate,
+				'agent_filter' => $agent_filter
+			);	    
+	    }
+		return $this->API_Request("goCallRecordings", $postfields);
+	}	
+	
+	public function API_actionDNC($postfields) {
 		return $this->API_Request("goLists", $postfields);
 	}
 
@@ -555,6 +588,10 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goCarriers", $postfields);
 	}
 
+	public function API_editCarrier($postfields){
+		return $this->API_Request("goCarriers", $postfields);
+	}
+	
 	public function API_addCustomFields($postfields){
 		return $this->API_Request("goCustomFields", $postfields);
 	}
@@ -607,6 +644,10 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goServers", $postfields);
 	}
 
+	public function API_editServer($postfields){
+		return $this->API_Request("goServers", $postfields);
+	}
+	
 	public function API_addUser($postfields){
 		return $this->API_Request("goUsers", $postfields);
 	}
@@ -615,6 +656,10 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goPhones", $postfields);
 	}
 
+	public function API_editPhone($postfields){
+		return $this->API_Request("goPhones", $postfields);
+	}
+	
 	public function API_addIngroup($postfields){
 		return $this->API_Request("goInbound", $postfields);
 	}
@@ -631,6 +676,10 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goUserGroups", $postfields);
 	}
 
+	public function API_editUserGroup($postfields){
+		return $this->API_Request("goUserGroups", $postfields);
+	}
+	
 	public function API_addVoiceFiles($postfields){
 		return $this->API_Upload("goVoiceFiles", $postfields);
 	}
@@ -639,12 +688,16 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goVoicemails", $postfields);
 	}
 
+	public function API_editVoicemail($postfields){
+		return $this->API_Request("goVoicemails", $postfields);
+	}
+	
 	public function API_checkCalltimes($postfields){
 		return $this->API_Request("goCalltimes", $postfields);
 	}
 
 	public function API_checkCampaign($postfields){
-		return $this->API_Request("goCampaigns", $postfields, true);
+		return $this->API_Request("goCampaigns", $postfields);
 	}
 
 	public function API_checkUser($postfields){

@@ -1,53 +1,49 @@
 <?php
+/**
+ * @file        GetPauseCodes.php
+ * @brief       Handles Pause Code variables and HTML
+ * @copyright   Copyright (c) 2018 GOautodial Inc. 
+ * @author      Noel Umandap
+ * @author		Demian Lizandro A, Biscocho 
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-	/** Campaigns API - Add a new Campaign */
-	/**
-	 * Generates action circle buttons for different pages/module
-	 */
-
-	require_once('UIHandler.php');
-    require_once('goCRMAPISettings.php');
-	include('Session.php');
+	require_once('APIHandler.php');
+	$api 							= \creamy\APIHandler::getInstance();
 	
-	$ui = \creamy\UIHandler::getInstance();
-	$perm = $ui->goGetPermissions('pausecodes', $_SESSION['usergroup']);
+	$campaign_id 					= $_POST["campaign_id"];
+	$user_group						= $_SESSION["usergroup"];
+	$perm 							= $api->goGetPermissions('pausecodes', $user_group);
 
-    $url = gourl."/goPauseCodes/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "getAllPauseCodes"; #action performed by the [[API:Functions]]. (required)
-    $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["pauseCampID"] = $_POST['campaign_id'];
+	$output 						= $api->API_getAllPauseCodes($campaign_id);
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
-
-		if(!empty($output)){
-			$data = '';
-			$i=0;
-			for($i=0;$i<=count($output->campaign_id);$i++) {
-				if(!empty($output->pause_code[$i])){
-					$data .= '<tr>';
-					$data .= '<td>'.$output->pause_code[$i].'</td>';
-					$data .= '<td>'.str_replace("+"," ",$output->pause_code_name[$i]).'</td>';
-					$data .= '<td>'.$output->billable[$i].'</td>';
-					$data .= '<td style="width: 20%;"><a style="margin-right: 5px;" href="#"" class="btn-edit-pc btn btn-primary'.($perm->pausecodes_update === 'N' ? ' hidden' : '').'" data-camp-id="'.$output->campaign_id[$i].'" data-code="'.$output->pause_code[$i].'" data-name="'.str_replace("+"," ",$output->pause_code_name[$i]).'" data-billable="'.$output->billable[$i].'"><span class="fa fa-pencil"></span></a><a href="#" class="btn-delete-pc btn btn-danger'.($perm->pausecodes_delete === 'N' ? ' hidden' : '').'" data-camp-id="'.$output->campaign_id[$i].'" data-code="'.$output->pause_code[$i].'"><span class="fa fa-trash"></span></a></td>';
-					$data .= '</tr>';
-				}
-			}
-
-			echo json_encode($data, true);
-		}else{
-			echo json_encode("empty", true);
+	$data 						= '';
+	$i							= 0;
+	
+	for($i=0;$i<=count($output->campaign_id);$i++) {
+		if(!empty($output->pause_code[$i])){
+			$data 				.= '<tr>';
+			$data 				.= '<td>'.$output->pause_code[$i].'</td>';
+			$data 				.= '<td>'.str_replace("+"," ",$output->pause_code_name[$i]).'</td>';
+			$data 				.= '<td>'.$output->billable[$i].'</td>';
+			$data 				.= '<td style="width: 20%;"><a style="margin-right: 5px;" href="#" class="btn-edit-pc btn btn-primary'.($perm->pausecodes_update === 'N' ? ' hidden' : '').'" data-camp-id="'.$output->campaign_id[$i].'" data-code="'.$output->pause_code[$i].'" data-name="'.str_replace("+"," ",$output->pause_code_name[$i]).'" data-billable="'.$output->billable[$i].'"><span class="fa fa-pencil"></span></a><a href="#" class="btn-delete-pc btn btn-danger'.($perm->pausecodes_delete === 'N' ? ' hidden' : '').'" data-camp-id="'.$output->campaign_id[$i].'" data-code="'.$output->pause_code[$i].'"><span class="fa fa-trash"></span></a></td>';
+			$data 				.= '</tr>';
 		}
+	}
 
+	echo json_encode($data);
 
 ?>

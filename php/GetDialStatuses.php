@@ -1,43 +1,44 @@
 <?php
+/**
+ * @file        GetDialStatuses.php
+ * @brief       Handles Dial Status Request
+ * @copyright   Copyright (c) 2018 GOautoial Inc.
+ * @author      Alexander Jim Abenoja
+ * @author		Demian Lizandro A, Biscocho 
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-	/** Campaigns API - Add a new Campaign */
-	/**
-	 * Generates action circle buttons for different pages/module
-	 */
+	require_once('APIHandler.php');
+	$api = \creamy\APIHandler::getInstance();
 
-    require_once('goCRMAPISettings.php');
+	$campaign_id = $_POST["campaign_id"];
 
-		$url = gourl."/goDialStatus/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = goUser; #Username goes here. (required)
-		$postfields["goPass"] = goPass; #Password goes here. (required)
-		$postfields["goAction"] = "getAllDialStatuses"; #action performed by the [[API:Functions]]. (required)
-		$postfields["responsetype"] = responsetype; #json. (required)
-		$postfields["campaign_id"] = $_POST['campaign_id'];
-		$postfields["hotkeys_only"] = $_POST['hotkeys_only'];
+	$output = $api->API_getAllDialStatuses($campaign_id);
 
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
-
-		if(!empty($output)){
-			$data = '';
-			// $i=0;
-			foreach($output->status as $key => $val){
-			// for($i=0;$i<=count($output->status);$i++) {
-				$data .= '<option value="'.$val.'" data-name="'.$output->status_name[$key].'">'.$val.' - '.$output->status_name[$key].'</option>';
-			}
-
-			echo json_encode($data, true);
-		}else{
-			echo json_encode("empty", true);
+	if(!empty($output)){
+		$data = '';
+		// $i=0;
+		foreach($output->status as $key => $val){
+		// for($i=0;$i<=count($output->status);$i++) {
+			$data .= '<option value="'.$val.'" data-name="'.$output->status_name[$key].'">'.$val.' - '.$output->status_name[$key].'</option>';
 		}
 
+		echo json_encode($data, true);
+	}else{
+		echo json_encode("empty", true);
+	}
 
 ?>

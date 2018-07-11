@@ -1,43 +1,64 @@
 <?php
+/**
+ * @file        ModifyPauseCode.php
+ * @brief       Handles modifying pause codes requests
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author		Demian Lizandro A. Biscocho 
+ * @author      Noel Umandap
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-	/** Campaigns API - Add a new Campaign */
-	/**
-	 * Generates action circle buttons for different pages/module
-	 */
+	require_once('APIHandler.php');
+	$api 							= \creamy\APIHandler::getInstance();
 
-    require_once('goCRMAPISettings.php');
+	// collect new user data.       
+	$campaign_id					= $_POST["campaign_id"];
 
-    $url = gourl."/goPauseCodes/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goEditPauseCode"; #action performed by the [[API:Functions]]. (required)
-    $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["pauseCampID"] = $_POST['campaign_id'];
-	$postfields["pause_code"] = $_POST['pause_code'];
-	$postfields["pause_code_name"] = $_POST['pause_code_name'];
-	$postfields["billable"] = $_POST['billable'];
-	$postfields["log_user"] = $_POST['log_user'];
-	$postfields["log_group"] = $_POST['log_group'];
-	$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
+	$pause_code = NULL; if (isset($_POST["pause_code"])) { 
+		$pause_code 				= $_POST["pause_code"]; 
+		$pause_code 				= stripslashes($pause_code);
+	}
+	$pause_code_name = NULL; if (isset($_POST["pause_code_name"])) { 
+		$pause_code_name			= $_POST["pause_code_name"];
+		$pause_code_name 			= stripslashes($pause_code_name);
+	}
+	$billable = NULL; if (isset($_POST["billable"])) { 
+		$billable 					= $_POST["billable"]; 
+		$billable 					= stripslashes($billable);
+	}
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
-		
-		if ($output->result=="success") {
-			# Result was OK!
-			$status = "success";
-		} else {
-			# An error occured
-			$status = "error";
-		}
+	$postfields 					= array(
+		'goUser' 						=> goUser,
+		'goPass' 						=> goPass,
+		'goAction' 						=> 'goEditPauseCode',		
+		'responsetype' 					=> responsetype,
+		'pauseCampID' 					=> $campaign_id,
+		'pause_code' 					=> $pause_code,
+		'pause_code_name' 				=> $pause_code_name,
+		'billable' 						=> $billable,
+		'session_user' 					=> $_POST['log_user'],
+		'log_user' 						=> $_POST['log_user'],
+		'log_ip' 						=> $_SERVER['REMOTE_ADDR'],
+		'hostname' 						=> $_SERVER['REMOTE_ADDR']
+	);	
+			
+	$output 						= $api->API_modifyPauseCode($postfields);
+	
+	if ($output->result=="success") { $status = 1; } 
+		else { $status = $output->result; }
 
-		echo $status;
+	echo json_encode($status);
 ?>
