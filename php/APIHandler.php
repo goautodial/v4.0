@@ -441,6 +441,15 @@ if(isset($_SESSION["user"])){
 			'hotkeys_only' => "1"
 		);		
 		return $this->API_Request("goDialStatus", $postfields);
+	}
+	
+	public function API_getAllHotkeys($campaign_id) {
+		$postfields = array(
+			'goAction' => 'goGetAllHotkeys',
+			'campaign_id' => $campaign_id
+		);	
+
+		return $this->API_Request("goHotkeys", $postfields);
 	}	
 	/*
 	 * Displaying Lead Filter
@@ -468,6 +477,22 @@ if(isset($_SESSION["user"])){
 		);		
 		return $this->API_Request("goLists", $postfields);
 	}	
+	
+	public function API_getAllListsCampaign($campaign_id){
+		$postfields = array(
+			'goAction' => 'goGetAllListsCampaign',
+			'campaign_id' => $campaign_id
+		);		
+		return $this->API_Request("goLists", $postfields);
+	}
+	
+	public function API_getStatusesWithCountCalledNCalled($list_id){
+		$postfields = array(
+			'goAction' => 'goGetStatusesWithCountCalledNCalled',
+			'list_id' => $list_id
+		);		
+		return $this->API_Request("goLists", $postfields);
+	}
 	
 	public function API_getAllCarriers(){
 		$postfields = array(
@@ -609,7 +634,7 @@ if(isset($_SESSION["user"])){
 	}
 
 	public function API_addHotkey($postfields){
-		return $this->API_Request("goCampaigns", $postfields);
+		return $this->API_Request("goHotkeys", $postfields);
 	}
 
 	public function API_addIVR($postfields){

@@ -1,53 +1,48 @@
 <?php
+/**
+ * @file        GetHotkeys.php
+ * @brief       Handles Hotkeys variables
+ * @copyright   Copyright (c) 2018 GOautoial Inc.
+ * @author      Alexander Jim Abenoja
+ * @author		Demian Lizandro A, Biscocho 
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-	/** Campaigns API - Add a new Campaign */
-	/**
-	 * Generates action circle buttons for different pages/module
-	 */
+	require_once('APIHandler.php');
+	$api 								= \creamy\APIHandler::getInstance();
+	$campaign_id 						= $_POST["campaign_id"];
+	$user_group							= $_SESSION["usergroup"];
+	$perm 								= $api->goGetPermissions('hotkeys', $user_group);	
+	$output 							= $api->API_getAllHotkeys($campaign_id);
 
-	require_once('UIHandler.php');
-    require_once('goCRMAPISettings.php');
-	include('Session.php');
-	
-	$ui = \creamy\UIHandler::getInstance();
-	$perm = $ui->goGetPermissions('hotkeys', $_SESSION['usergroup']);
-
-    $url = gourl."/goHotkeys/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "getAllHotkeys"; #action performed by the [[API:Functions]]. (required)
-    $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["hotkeyCampID"] = $_POST['campaign_id'];
-
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
-
-		if(!empty($output)){
-			$data = '';
-			$i=0;
-			for($i=0;$i<=count($output->campaign_id);$i++) {
-				if(!empty($output->hotkey[$i])){
-					$data .= '<tr>';
-					$data .= '<td>'.$output->hotkey[$i].'</td>';
-					$data .= '<td>'.$output->status[$i].'</td>';
-					$data .= '<td>'.str_replace("+"," ",$output->status_name[$i]).'</td>';
-					$data .= '<td style="width: 20%;"><a href="#" class="btn-delete-hk btn btn-danger'.($perm->hotkeys_delete === 'N' ? ' hidden' : '').'" data-camp-id="'.$output->campaign_id[$i].'" data-hotkey="'.$output->hotkey[$i].'"><span class="fa fa-trash"></span></a></td>';
-					$data .= '</tr>';
-				}
+	if(!empty($output)){
+		$data 							= '';
+		$i								=0;
+		for($i=0;$i<=count($output->campaign_id);$i++) {
+			if(!empty($output->hotkey[$i])){
+				$data 					.= '<tr>';
+				$data 					.= '<td>'.$output->hotkey[$i].'</td>';
+				$data 					.= '<td>'.$output->status[$i].'</td>';
+				$data 					.= '<td>'.str_replace("+"," ",$output->status_name[$i]).'</td>';
+				$data 					.= '<td style="width: 20%;"><a href="#" class="btn-delete-hk btn btn-danger'.($perm->hotkeys_delete === 'N' ? ' hidden' : '').'" data-camp-id="'.$output->campaign_id[$i].'" data-hotkey="'.$output->hotkey[$i].'"><span class="fa fa-trash"></span></a></td>';
+				$data 					.= '</tr>';
 			}
-
-			echo json_encode($data, true);
-		}else{
-			echo json_encode("empty", true);
 		}
-
+	}
+	
+	echo json_encode($data);
 
 ?>

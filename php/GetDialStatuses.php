@@ -22,23 +22,19 @@
 */
 
 	require_once('APIHandler.php');
-	$api = \creamy\APIHandler::getInstance();
-
-	$campaign_id = $_POST["campaign_id"];
-
-	$output = $api->API_getAllDialStatuses($campaign_id);
+	$api 										= \creamy\APIHandler::getInstance();
+	$campaign_id 								= $_POST["campaign_id"];
+	$output 									= $api->API_getAllDialStatuses($campaign_id);
 
 	if(!empty($output)){
-		$data = '';
+		$data 									= '';
 		// $i=0;
 		foreach($output->status as $key => $val){
 		// for($i=0;$i<=count($output->status);$i++) {
-			$data .= '<option value="'.$val.'" data-name="'.$output->status_name[$key].'">'.$val.' - '.$output->status_name[$key].'</option>';
+			$data 								.= '<option value="'.$val.'" data-name="'.$output->status_name[$key].'">'.$val.' - '.$output->status_name[$key].'</option>';
 		}
-
-		echo json_encode($data, true);
-	}else{
-		echo json_encode("empty", true);
 	}
+	
+	echo json_encode($data);
 
 ?>

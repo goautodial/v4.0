@@ -1796,7 +1796,7 @@
 							
 						}
 					});
-                }else if (callroute == "IVR") {
+                } else if (callroute == "IVR") {
                     $('.call-route-div-label').html("IVR:");
 					$('.ivr-div').removeClass('hide');
 					$('.ingroup-div').addClass('hide');
@@ -1823,21 +1823,21 @@
 							
 						}
 					});
-                }else if (callroute == "AGENT") {
+                } else if (callroute == "AGENT") {
                     $('.call-route-div-label').html("AGENT:");
 					$('.agent-div').removeClass('hide');
 					$('.ingroup-div').addClass('hide');
 					$('.ivr-div').addClass('hide');
 					$('.voicemail-div').addClass('hide');
 					$('.callroute-dummy-div').addClass('hide');
-                }else if (callroute == "VOICEMAIL") {
+                } else if (callroute == "VOICEMAIL") {
                     $('.call-route-div-label').html("VOICEMAIL:");
 					$('.voicemail-div').removeClass('hide');
 					$('.ingroup-div').addClass('hide');
 					$('.ivr-div').addClass('hide');
 					$('.agent-div').addClass('hide');
 					$('.callroute-dummy-div').addClass('hide');
-                }else{
+                } else {
 					$('.call-route-div-label').html("Select Call Route");
 					$('.ingroup-div').addClass('hide');
 					$('.ivr-div').addClass('hide');
@@ -1863,55 +1863,55 @@
 				cook_donotshow = Cookies.get('donotshow');
 				
 				var dataInfo = $(this).data('info');
-                                        //console.log(dataInfo);
-                                        $('.lists-id').val(dataInfo.list_id);
-                                        $('.lists-name').val(dataInfo.list_name);
-                                        $('.lists-description').val(dataInfo.list_description);
-                                        $('.lists-campaign').val(dataInfo.campaign_id).trigger('change');
-                                        $('.lists-reset-time').val(dataInfo.reset_time);
-                                        $('.lists-lead-called-status').val(dataInfo.reset_called_lead_status).trigger('change');
-                                        $('.lists-active').val(dataInfo.active).trigger('change');
-                                        $('.lists-agent-script-override').val(dataInfo.agent_script_override).trigger('change');
-                                        $('.lists-cid-override').val(dataInfo.campaign_cid_override);
-                                        $('.lists-drop-inbound-group-override').val(dataInfo.drop_inbound_group_override).trigger('change');
-                                        $('.lists-web-form').val(dataInfo.web_from_address);
-                                        $('.lists-xferconf-a-number').val(dataInfo.xferconf_a_number);
-                                        $('.lists-xferconf-b-number').val(dataInfo.xferconf_b_number);
-                                        $('.lists-xferconf-c-number').val(dataInfo.xferconf_c_number);
-                                       $('.lists-xferconf-d-number').val(dataInfo.xferconf_d_number);
-                                  $('.lists-xferconf-e-number').val(dataInfo.xferconf_e_number);
+				console.log(dataInfo);
+				$('.lists-id').val(dataInfo.list_id);
+				$('.lists-name').val(dataInfo.list_name);
+				$('.lists-description').val(dataInfo.list_description);
+				$('.lists-campaign').val(dataInfo.campaign_id).trigger('change');
+				$('.lists-reset-time').val(dataInfo.reset_time);
+				$('.lists-lead-called-status').val(dataInfo.reset_called_lead_status).trigger('change');
+				$('.lists-active').val(dataInfo.active).trigger('change');
+				$('.lists-agent-script-override').val(dataInfo.agent_script_override).trigger('change');
+				$('.lists-cid-override').val(dataInfo.campaign_cid_override);
+				$('.lists-drop-inbound-group-override').val(dataInfo.drop_inbound_group_override).trigger('change');
+				$('.lists-web-form').val(dataInfo.web_from_address);
+				$('.lists-xferconf-a-number').val(dataInfo.xferconf_a_number);
+				$('.lists-xferconf-b-number').val(dataInfo.xferconf_b_number);
+				$('.lists-xferconf-c-number').val(dataInfo.xferconf_c_number);
+				$('.lists-xferconf-d-number').val(dataInfo.xferconf_d_number);
+				$('.lists-xferconf-e-number').val(dataInfo.xferconf_e_number);
 				
 				if(cook_donotshow === "yes"){
 					$('.nav-tabs a[href="#tab_1"]').tab('show');
-                                        $('.btn-update-lists').attr('data-campaign', dataInfo.campaign_id);
-                                        $('#modal_view_lists').modal('hide');
-                                        $('#modal_form_lists').modal('show');
-                                        $('body').addClass('modal-open');
+					$('.btn-update-lists').attr('data-campaign', dataInfo.campaign_id);
+					$('#modal_view_lists').modal('hide');
+					$('#modal_form_lists').modal('show');
+					$('body').addClass('modal-open');
 				}else{		
 					swal({
-	                                title: "<?php $lh->translateText("Warning!"); ?>",
-        	                        text: "<?php $lh->translateText("If you have large number of leads, this might take a few minutes."); ?>.<br/><br/><br/><div class='row'><input class='show' type='checkbox' id='donotshowbox' style='width: 20px!important;margin-left: 90px;margin-right:  10px;float: left;margin-top: -10px;' /><p style='float:left;'> Do not show this message again.</p></div>",
-                	                type: "warning",
+						title: "<?php $lh->translateText("Warning!"); ?>",
+						text: "<?php $lh->translateText("If you have large number of leads, this might take a few minutes."); ?>.<br/><br/><br/><div class='row'><input class='show' type='checkbox' id='donotshowbox' style='width: 20px!important;margin-left: 90px;margin-right:  10px;float: left;margin-top: -10px;' /><p style='float:left;'> Do not show this message again.</p></div>",
+						type: "warning",
 					html: true,
-                                	showCancelButton: true,
-	                                confirmButtonColor: "#DD6B55",
-        	                        confirmButtonText: "<?php $lh->translateText("Continue"); ?>...",
-                	                cancelButtonText: "<?php $lh->translateText("cancel"); ?>",
-                        	        closeOnConfirm: false,
-                                	closeOnCancel: false
-	                                },
-        	                        function(isConfirm){
-                                	if (isConfirm) {
+					showCancelButton: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "<?php $lh->translateText("Continue"); ?>...",
+					cancelButtonText: "<?php $lh->translateText("cancel"); ?>",
+					closeOnConfirm: false,
+					closeOnCancel: false
+					},
+					function(isConfirm){
+					if (isConfirm) {
 						swal.close();
 						$('.nav-tabs a[href="#tab_1"]').tab('show');
-	                                        $('.btn-update-lists').attr('data-campaign', dataInfo.campaign_id);
-	                                        $('#modal_view_lists').modal('hide');
-        	                                $('#modal_form_lists').modal('show');
-                	                        $('body').addClass('modal-open');
-                                	} else {
-                                        	swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-                                	}
-                            		});
+							$('.btn-update-lists').attr('data-campaign', dataInfo.campaign_id);
+							$('#modal_view_lists').modal('hide');
+							$('#modal_form_lists').modal('show');
+							$('body').addClass('modal-open');
+						} else {
+							swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+						}
+					});
 				}
 			});
 
@@ -1919,7 +1919,7 @@
 				if($(this).is(':checked')){
 					Cookies.set('donotshow', 'yes', { expires: 30 });
 				}
-                        });
+			});
 
 			// Feature #6605	
 			$("#modal_form_lists").on("hidden.bs.modal", function () {
@@ -1932,31 +1932,31 @@
 				var listid = $('.lists-id').val();
   				if(target === "#tab_2"){
 					$.ajax({
-                                                url: "./php/GetListsStatuses.php",
-                                                type: 'POST',
-                                                data: {
-                                                        list_id : listid,
-                                                },
-                                                dataType: 'json',
-                                                success: function(response) {
-                                                        //console.log(response);
-                                                        $('#lists_statuses_container').html(response);
-                                                }
-                                        });
+						url: "./php/GetListsStatuses.php",
+						type: 'POST',
+						data: {
+							list_id : listid,
+						},
+						dataType: 'json',
+						success: function(response) {
+							console.log(response);
+							$('#lists_statuses_container').html(response);
+						}
+					});
 				}
 				if(target === "#tab_3"){
 					$.ajax({
-                                                url: "./php/GetListsTimezones.php",
-                                                type: 'POST',
-                                                data: {
-                                                        list_id : listid,
-                                                },
-                                                dataType: 'json',
-                                                success: function(response) {
-                                                        //console.log(response);
-                                                        $('#lists_timezone_container').html(response);
-                                                }
-                                        });
+						url: "./php/GetListsTimezones.php",
+						type: 'POST',
+						data: {
+							list_id : listid,
+						},
+						dataType: 'json',
+						success: function(response) {
+							//console.log(response);
+							$('#lists_timezone_container').html(response);
+						}
+					});
 				}
 			});
 
@@ -2033,13 +2033,13 @@
 					},
 					dataType: 'json',
 					success: function(response) {
-							console.log(response);
-							$('.status').html(response);
-							$('.status').select2({
-								theme: 'bootstrap'
-							});
-							$('.status').val("").trigger("change");
-						}
+						console.log(response);
+						$('.status').html(response);
+						$('.status').select2({
+							theme: 'bootstrap'
+						});
+						$('.status').val("").trigger("change");
+					}
 				});
 
 				$('.hotkey').val('1').trigger('change');
@@ -2178,35 +2178,35 @@
 					function(isConfirm){
 						if (isConfirm) {
 							$.ajax({
-											url: "./php/DeleteHotkey.php",
-											type: 'POST',
-											data: {
-												campaign_id: campaign_id,
-												hotkey: hotkey,
-												log_user: log_user,
-												log_group: log_group
+								url: "./php/DeleteHotkey.php",
+								type: 'POST',
+								data: {
+									campaign_id: campaign_id,
+									hotkey: hotkey,
+									log_user: log_user,
+									log_group: log_group
+								},
+								// dataType: 'json',
+								success: function(data) {
+								console.log(data);
+									if (data == 1) {
+										swal({
+												title: "<?php $lh->translateText("success"); ?>",
+												text: "<?php $lh->translateText("success_deleted"); ?>",
+												type: "success"
 											},
-											// dataType: 'json',
-											success: function(data) {
-													// console.log(data);
-													if(data == "success"){
-														swal({
-																title: "<?php $lh->translateText("success"); ?>",
-																text: "<?php $lh->translateText("success_deleted"); ?>",
-																type: "success"
-															},
-															function(){
-																get_hotkeys(campaign_id);
-															}
-														);
-													}else{
-															sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
-													}
+											function(){
+												get_hotkeys(campaign_id);
 											}
-								});
-							} else {
-									swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-							}
+										);
+									} else {
+										sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
+									}
+								}
+							});
+						} else {
+							swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+						}
 					}
 				);
 			});
@@ -2308,7 +2308,7 @@
 									// dataType: 'json',
 									success: function(data) {
 											console.log(data);
-											if(data == "success"){
+											if(data == 1){
 												swal({
 														title: "<?php $lh->translateText("success"); ?>",
 														text: "<?php $lh->translateText("success_modified"); ?>",
@@ -2774,6 +2774,8 @@
 
 				//edit disposition
 					$(document).on('click','.edit_disposition',function() {
+						var disposition_id = $(this).attr('data-id');
+						console.log(disposition_id);
 						var url = './edittelephonycampaign.php';
 						var form = $('<form action="' + url + '" method="post"><input type="hidden" name="disposition_id" value="' + $(this).attr('data-id') + '" /></form>');
 						$('body').append(form);

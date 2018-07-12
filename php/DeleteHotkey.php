@@ -2,9 +2,9 @@
 /**
  * @file        DeleteHotkey.php
  * @brief       Handles Delete Hotkey Request
- * @copyright   Copyright (C) GOautodial Inc.
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
  * @author      Noel Umandap
- * @author      Alexander Jim Abenoja  <alex@goautodial.com>
+ * @author      Alexander Jim Abenoja
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -20,36 +20,23 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-require_once('APIHandler.php');
-$api = \creamy\APIHandler::getInstance();
-/*
-    require_once('goCRMAPISettings.php');
 
-    $url = gourl."/goHotkeys/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goDeleteHotkey"; #action performed by the [[API:Functions]]. (required)
-    $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["campaign_id"] = $_POST['campaign_id'];
-		$postfields["hotkey"] = $_POST['hotkey'];
-	
-	$postfields["log_user"] = $_POST['log_user'];
-	$postfields["log_group"] = $_POST['log_group'];
-	$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
-*/
-	$postfields = array(
-        'goAction' => 'goDeleteHotkey',
-        'campaign_id' => $_POST["campaign_id"],
-        'hotkey' => $_POST["hotkey"]
+	require_once('APIHandler.php');
+	$api 								= \creamy\APIHandler::getInstance();
+
+	$postfields 						= array(
+        'goAction' 							=> 'goDeleteHotkey',
+        'campaign_id' 						=> $_POST["campaign_id"],
+        'hotkey' 							=> $_POST["hotkey"]
     );
 
-    $output = $api->API_Request("goHotkeys", $postfields);
+    $output 							= $api->API_Request("goHotkeys", $postfields);
 
-	if ($output->result=="success") {
-		$status = "success";
-	} else {
-		$status = "error";
+	if ($output->result=="success") { 
+		$status 						= 1; 
+	} else { 
+		$status 						= $output->result; 
 	}
-
-	echo $status;
+	
+	echo json_encode($status);
 ?>

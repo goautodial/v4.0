@@ -30,17 +30,17 @@
 
 	$output 						= $api->API_getAllPauseCodes($campaign_id);
 
-	$data 						= '';
-	$i							= 0;
+	$data 							= '';
+	$i								= 0;
 	
 	for($i=0;$i<=count($output->campaign_id);$i++) {
 		if(!empty($output->pause_code[$i])){
-			$data 				.= '<tr>';
-			$data 				.= '<td>'.$output->pause_code[$i].'</td>';
-			$data 				.= '<td>'.str_replace("+"," ",$output->pause_code_name[$i]).'</td>';
-			$data 				.= '<td>'.$output->billable[$i].'</td>';
-			$data 				.= '<td style="width: 20%;"><a style="margin-right: 5px;" href="#" class="btn-edit-pc btn btn-primary'.($perm->pausecodes_update === 'N' ? ' hidden' : '').'" data-camp-id="'.$output->campaign_id[$i].'" data-code="'.$output->pause_code[$i].'" data-name="'.str_replace("+"," ",$output->pause_code_name[$i]).'" data-billable="'.$output->billable[$i].'"><span class="fa fa-pencil"></span></a><a href="#" class="btn-delete-pc btn btn-danger'.($perm->pausecodes_delete === 'N' ? ' hidden' : '').'" data-camp-id="'.$output->campaign_id[$i].'" data-code="'.$output->pause_code[$i].'"><span class="fa fa-trash"></span></a></td>';
-			$data 				.= '</tr>';
+			$data 					.= '<tr>';
+			$data 					.= '<td>'.$output->pause_code[$i].'</td>';
+			$data 					.= '<td>'.str_replace("+"," ",$output->pause_code_name[$i]).'</td>';
+			$data 					.= '<td>'.$output->billable[$i].'</td>';
+			$data 					.= '<td style="width: 20%;"><a style="margin-right: 5px;" href="#" class="btn-edit-pc btn btn-primary'.($perm->pausecodes_update === 'N' ? ' hidden' : '').'" data-camp-id="'.$output->campaign_id[$i].'" data-code="'.$output->pause_code[$i].'" data-name="'.str_replace("+"," ",$output->pause_code_name[$i]).'" data-billable="'.$output->billable[$i].'"><span class="fa fa-pencil"></span></a><a href="#" class="btn-delete-pc btn btn-danger'.($perm->pausecodes_delete === 'N' ? ' hidden' : '').'" data-camp-id="'.$output->campaign_id[$i].'" data-code="'.$output->pause_code[$i].'"><span class="fa fa-trash"></span></a></td>';
+			$data 					.= '</tr>';
 		}
 	}
 
