@@ -1588,10 +1588,76 @@
 				theme: 'bootstrap'
 			});
 			
+			// Datatables initialization
+			$('#table_campaign').DataTable({
+				destroy:true,    
+				stateSave:true,
+				drawCallback:function(settings) {
+					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+					pagination.toggle(this.api().page.info().pages > 1);
+				},			
+				"aaSorting": [[ 1, "asc" ]],
+				"aoColumnDefs": [{
+					"bSearchable": false,
+					<?php if($perm->campaign->campaign_delete !== 'N'){?>
+					"aTargets": [ 0, 1, 5 ]
+					<?php }else{ ?>
+					"aTargets": [ 0, 5 ]
+					<?php } ?>
+				},{
+					"bSortable": false,
+					<?php if($perm->campaign->campaign_delete !== 'N'){?>
+					"aTargets": [ 0, 1, 5 ]
+					<?php }else{ ?>
+					"aTargets": [ 0, 5 ]
+					<?php } ?>
+				}]
+			});
+			$('#table_disposition').DataTable({
+				destroy:true,    
+				stateSave:true,
+				drawCallback:function(settings) {
+					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+					pagination.toggle(this.api().page.info().pages > 1);
+				},			
+				columnDefs:[
+					{ width: "16%", targets: "action_disposition" }
+				],
+				"aaSorting": [[ 1, "asc" ]],
+				"aoColumnDefs": [{
+					"bSearchable": false,
+					"aTargets": [ 0, 4 ]
+				},{
+					"bSortable": false,
+					"aTargets": [ 0, 4 ]
+				}]
+			});
+			$('#table_leadrecycling').DataTable({
+				destroy:true,    
+				stateSave:true,
+				drawCallback:function(settings) {
+					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+					pagination.toggle(this.api().page.info().pages > 1);
+				},			
+				columnDefs:[
+					{ width: "16%", targets: "action_leadrecycling" }
+				],
+				"aaSorting": [[ 1, "asc" ]],
+				"aoColumnDefs": [{
+					"bSearchable": false,
+					"aTargets": [ 0, 4 ]
+				},{
+					"bSortable": false,
+					"aTargets": [ 0, 4 ]
+				}]
+			});
+			
+			$('#table_leadfilter').dataTable();			
+			
 			var table = $('#pause_codes_list').DataTable({
 				destroy:true,    
-				stateSave: true,
-				drawCallback: function(settings) {
+				stateSave:true,
+				drawCallback:function(settings) {
 					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 					pagination.toggle(this.api().page.info().pages > 1);
 				},
@@ -1604,7 +1670,21 @@
 				}]
 			});	
 			
-			
+			var table = $('#hotkeys_list').DataTable({
+				destroy:true,    
+				stateSave:true,
+				drawCallback:function(settings) {
+					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+					pagination.toggle(this.api().page.info().pages > 1);
+				},				
+				"columnDefs": [{
+					"searchable": false,
+					"targets": [ 3 ]
+				},{
+					"sortable": false,
+					"targets": [ 3 ]
+				}]
+			});				
 			
 			// FAB HOVER
 			$(".bottom-menu").on('mouseenter mouseleave', function () {
@@ -2274,35 +2354,34 @@
 					function(isConfirm){
 						if (isConfirm) {
 							$.ajax({
-											url: "./php/AddHotkey.php",
-											type: 'POST',
-											data: form_data,
-											// dataTbtn-delete-hkype: 'json',
-											cache: false,
-											contentType: false,
-											processData: false,
-											success: function(data) {
-													// console.log(data);
-													if(data == "success"){
-														swal({
-																title: "<?php $lh->translateText("success"); ?>",
-																text: "<?php $lh->translateText("success_create"); ?>",
-																type: "success"
-															},
-															function(){
-																$('.hotkey').val('1').trigger('change');
-																$('#modal_form_hotkeys').modal('hide');
-																get_hotkeys(campaign_id);
-															}
-														);
-													}else{
-														sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");	
-													}
+								url: "./php/AddHotkey.php",
+								type: 'POST',
+								data: form_data,
+								cache: false,
+								contentType: false,
+								processData: false,
+								success: function(data) {
+									console.log(data);
+									if (data == 1) {
+										swal({
+												title: "<?php $lh->translateText("success"); ?>",
+												text: "<?php $lh->translateText("success_create"); ?>",
+												type: "success"
+											},
+											function(){
+												$('.hotkey').val('1').trigger('change');
+												$('#modal_form_hotkeys').modal('hide');
+												get_hotkeys(campaign_id);
 											}
-								});
-							} else {
-									swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-							}
+										);
+									} else {
+										sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");	
+									}
+								}
+							});
+						} else {
+							swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+						}
 					}
 				);
 			});
@@ -2359,70 +2438,6 @@
 					}
 				);
 			});
-			/******
-			** Initializations
-			******/
-//alex
-				//initialization of the datatables
-					$('#table_campaign').dataTable({
-						"aaSorting": [[ 1, "asc" ]],
-						"aoColumnDefs": [{
-							"bSearchable": false,
-							<?php if($perm->campaign->campaign_delete !== 'N'){?>
-							"aTargets": [ 0, 1, 5 ]
-							<?php }else{ ?>
-							"aTargets": [ 0, 5 ]
-							<?php } ?>
-						},{
-							"bSortable": false,
-							<?php if($perm->campaign->campaign_delete !== 'N'){?>
-							"aTargets": [ 0, 1, 5 ]
-							<?php }else{ ?>
-							"aTargets": [ 0, 5 ]
-							<?php } ?>
-						}]
-					});
-					$('#table_disposition').dataTable({
-						columnDefs: [
-						    { width: "16%", targets: "action_disposition" }
-						],
-						"aaSorting": [[ 1, "asc" ]],
-						"aoColumnDefs": [{
-							"bSearchable": false,
-							"aTargets": [ 0, 4 ]
-						},{
-							"bSortable": false,
-							"aTargets": [ 0, 4 ]
-						}]
-					});
-					$('#table_leadrecycling').dataTable({
-						columnDefs: [
-						    { width: "16%", targets: "action_leadrecycling" }
-						],
-						"aaSorting": [[ 1, "asc" ]],
-						"aoColumnDefs": [{
-							"bSearchable": false,
-							"aTargets": [ 0, 4 ]
-						},{
-							"bSortable": false,
-							"aTargets": [ 0, 4 ]
-						}]
-					});
-					$('#table_leadfilter').dataTable();
-
-				//reloads page when modal closes
-				/*	$('#add_campaign').on('hidden.bs.modal', function () {
-						location.reload();
-					});
-
-					$('#add_campaign').on('shown.bs.modal', function () {
-					   $('#campaign-name').keyup();
-					});
-
-					$('#add_disposition').on('hidden.bs.modal', function () {
-						location.reload();
-					});
-				*/
 
 			/*************
 			** Campaign Events
@@ -3264,7 +3279,6 @@
 				},
 				dataType: 'json',
 				success: function(response) {
-						// var values = JSON.parse(response.result);
 						console.log(response);
 						$('.btn-new-pause-code').attr('data-campaign', campaign_id);
 						$('#modal_view_pause_codes').modal('show');
@@ -3298,27 +3312,26 @@
 				},
 				dataType: 'json',
 				success: function(response) {
-						// var values = JSON.parse(response.result);
-						// console.log(response);
-						$('.btn-new-hotkey').attr('data-campaign', campaign_id);
-						$('#modal_view_hotkeys').modal('show');
-						var table = $('#hotkeys_list').DataTable();
-						table.fnClearTable();
-						table.fnDestroy();
-						$('#hotkey_data_container').html(response);
-						$('#hotkeys_list').DataTable({
-							"searching": true,
-							bFilter: true,
-							"aoColumnDefs": [{
-								"bSearchable": false,
-								"aTargets": [ 3 ]
-							},{
-								"bSortable": false,
-								"aTargets": [ 3 ]
-							}]
-						});
-						$("#hotkeys_list").css("width","100%");
-					}
+					console.log(response);
+					$('.btn-new-hotkey').attr('data-campaign', campaign_id);
+					$('#modal_view_hotkeys').modal('show');
+					var table = $('#hotkeys_list').DataTable();
+					table.fnClearTable();
+					table.fnDestroy();
+					$('#hotkey_data_container').html(response);
+					$('#hotkeys_list').DataTable({
+						"searching": true,
+						bFilter: true,
+						"aoColumnDefs": [{
+							"bSearchable": false,
+							"aTargets": [ 3 ]
+						},{
+							"bSortable": false,
+							"aTargets": [ 3 ]
+						}]
+					});
+					$("#hotkeys_list").css("width","100%");
+				}
 			});
 		}
 		
