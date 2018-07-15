@@ -700,16 +700,14 @@
 				show_form_review();
 				
 				if($('#seats').val() > 1){
-					//var multipw = 'Go<?php echo date('Y');?>';
-					$('#password').attr("disabled", true);
-					//$('#password').attr("value", multipw);
-					$('#confirm').attr("disabled", true);
+					$('#password').attr("readonly", true);
+					$('#confirm').attr("readonly", true);
 					$('#submit-password-lbl').text('<?php $lh->translateText("default_pass_is"); ?>: ');
 					$('#submit-password').html('<i><?php echo 'Go'.date("Y")?></i>');
 				}else{
 					//var multipw = $('#password').val();
-					$('#password').attr("disabled", false);
-					$('#confirm').attr("disabled", false);					
+					$('#password').attr("readonly", false);
+					$('#confirm').attr("readonly", false);					
 					$('#submit-password-lbl').text('<?php $lh->translateText("password"); ?>: ');
 				}
 				
@@ -735,20 +733,13 @@
 				$('#finish').text("<?php $lh->translateText("loading"); ?>");
 				$('#finish').attr("disabled", true);
 				
-				if ($('#seats').val() > 1) {
-					var multipw = 'Go<?php echo date('Y');?>';
-				} else {
-					var multipw = $('#password').val();
-				}
-				
 				// Submit form via ajax
 				$.ajax({
 					url: "./php/AddUser.php",
 					type: 'POST',
-					data: $("#wizard_form").serialize() + '&password=' + multipw,
+					data: $("#wizard_form").serialize(),
 					success: function(data) {
 						console.log(data);
-						//console.log($("#wizard_form").serialize() + '&password=' + multipw);
 						$('#finish').text("Submit");
 						$('#finish').attr("disabled", false);
 						if(data == 1){
