@@ -21,21 +21,21 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 	require_once('APIHandler.php');
-	$api = \creamy\APIHandler::getInstance();
+	$api 										= \creamy\APIHandler::getInstance();
 
-	$postfields = array(
-		'goAction' => 'goAddUser',
-		'user' => $_POST['user_form'], 
-		'pass' => $_POST['password'], 
-		'full_name' => $_POST['fullname'], 
-		'user_group' => $_POST['user_group'], 
-		'active' => $_POST['status'], 
-		'seats' => $_POST["seats"],
-		'phone_login' => $_POST["phone_logins"],
-		'phone_pass' => $_POST["phone_pass"]
+	$postfields 								= array(
+		'goAction' 									=> 'goAddUser',
+		'user' 										=> $_POST['user_form'], 
+		'pass' 										=> $_POST['password'], 
+		'full_name' 								=> $_POST['fullname'], 
+		'user_group' 								=> $_POST['user_group'], 
+		'active' 									=> $_POST['status'], 
+		'seats' 									=> $_POST["seats"],
+		'phone_login' 								=> $_POST["phone_logins"],
+		'phone_pass' 								=> $_POST["phone_pass"]
 	);
 
-    $output = $api->API_addUser($postfields);
+    $output 									= $api->API_addUser($postfields);
 	
 	if ($output->result=="success") { $status = 1; } 
 		else { $status = $output->result; }

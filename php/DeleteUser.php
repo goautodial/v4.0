@@ -22,20 +22,20 @@
 */
 
 	require_once('APIHandler.php');	
-	$api = \creamy\APIHandler::getInstance();
+	$api 									= \creamy\APIHandler::getInstance();
 	
 	if (isset($_POST["userid"])) {
 		// sanity checks	
-		$userid = $_POST["userid"];
-		$action = $_POST["action"];
+		$userid 							= $_POST["userid"];
+		$action 							= $_POST["action"];
 		
-		$postfields = array(
-			'goAction' => 'goDeleteUser',
-			'user_id' => $userid,
-			'action' => $action
+		$postfields 						= array(
+			'goAction' 							=> 'goDeleteUser',
+			'user_id' 							=> $userid,
+			'action' 							=> $action
 		);
 
-		$output = $api->API_Request("goUsers", $postfields);
+		$output 							= $api->API_Request("goUsers", $postfields);
 			
 		if ($output->result=="success") { $status = 1; } 
 			else { $status = $output->result; }

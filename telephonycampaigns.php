@@ -1654,7 +1654,7 @@
 			
 			$('#table_leadfilter').dataTable();			
 			
-			var table = $('#pause_codes_list').DataTable({
+			var table_pause_codes_list = $('#pause_codes_list').DataTable({
 				destroy:true,    
 				stateSave:true,
 				drawCallback:function(settings) {
@@ -1670,7 +1670,7 @@
 				}]
 			});	
 			
-			var table = $('#hotkeys_list').DataTable({
+			var table_hotkeys_list = $('#hotkeys_list').DataTable({
 				destroy:true,    
 				stateSave:true,
 				drawCallback:function(settings) {
@@ -3317,7 +3317,7 @@
 					console.log(response);
 					$('.btn-new-hotkey').attr('data-campaign', campaign_id);
 					$('#modal_view_hotkeys').modal('show');
-					var table = $('#hotkeys_list').DataTable();
+					var table_hotkeys_list = $('#hotkeys_list').DataTable();
 					table.fnClearTable();
 					table.fnDestroy();
 					$('#hotkey_data_container').html(response);

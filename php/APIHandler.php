@@ -563,6 +563,17 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goUsers", $postfields);
 	}
 	
+	public function API_getAgentLog($user, $sdate, $edate, $agentlog){
+		$postfields = array(
+			'goAction' => 'goGetAgentLog',
+			'user' => $user,
+			'start_date' => $sdate,
+			'end_date' => $edate,
+			'agentlog'	=> $agentlog
+		);
+		return $this->API_Request("goUsers", $postfields);
+	}
+	
 	public function API_getAllUserGroups() {
 		$postfields = array(
 			'goAction' => 'goGetAllUserGroups'

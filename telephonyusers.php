@@ -310,12 +310,6 @@
 										<input type="password" class="form-control" id="confirm" name="confirm" placeholder="<?php $lh->translateText("reenter_pass"); ?> (<?php $lh->translateText("mandatory"); ?>)" value="Go<?php echo date('Y');?>" required>
 									</div> 
 								</div>
-								<!--
-								<div class="row">
-									<p class="col-sm-12"><small class="pull-right" style="padding-right:20px;"><i><span id="pass_result" class="control-label"></span></i></small></p>
-								</div>-->
-								<!-- <input type="hidden" name="phone_pass" id="phone_pass" class="form-control"> -->
-
 								<div class="form-group">
 									<label class="col-sm-4 control-label" for="status"><?php $lh->translateText("active"); ?> </label>
 									<div class="col-sm-8 mb">
@@ -516,91 +510,33 @@
 	}
 ?>
 	<!-- Stats -->
-	<div class="modal fade" id="stats-modal" aria-labelledby="T_User" >
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title animated bounceInRight">
-						<div class="col-sm-12 col-md-8">
-							<i class="fa fa-info-circle" title="<?php $lh->translateText("agentlog_desc"); ?>"></i> 
-							<b><?php $lh->translateText("agent_log"); ?>  </b>
-						</div>
-						<div class="col-sm-12 col-md-4 row" id="daterange">
-							<div class="col-sm-12">
-								<div class="form-group">
-									<div class='input-group date'>
-										<input date-range-picker id="daterange_input" name="date_agentlog" class="form-control date-picker" type="text" ng-model="dateRange" clearable="true" options="dateRangeOptions" />
-										<!--<input type='text' class="form-control" name="date_agentlog" id="date_agentlog" placeholder="Filter Agent Log By Date"/>-->
-										<span class="input-group-addon">
-											<!-- <span class="glyphicon glyphicon-calendar"></span>-->
-											<span class="fa fa-calendar"></span>
-										</span>
-										<input type="hidden" id="user_agentlog">
-									</div>
-								</div>
-							</div>
-						</div>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					</h4>
-				</div>
-				<div class="modal-body">
-					<br/>
-					<div class="box">
-						<div class="box-header with-border btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Show <?php $lh->translateText("Agent Log"); ?>">
-						  <em class="glyphicon glyphicon-user pull-left"></em><h3 class="box-title pull-left"> <span id="user_container"></span></h3>
-						</div>
-						<div class="box-body table-responsive">
-							<div class="report-loader" style="color:lightgray; display:none;">
-								<center>
-									<h3>
-										<i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
-										<?php $lh->translateText("loading..."); ?>
-									</h3>
-								</center>
-							</div>
-							<div id='userlog_stats' class="user_stats"></div>
-						</div>
-					</div>
-					
-					<div class="box collapsed-box">
-						<div class="box-header with-border btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Show <?php $lh->translateText("Outbound Calls Made"); ?>">
-						  <em class="glyphicon glyphicon-earphone pull-left"></em><h3 class="box-title pull-left"> <?php $lh->translateText("Outbound Calls Made"); ?></h3>
-						</div>
-						<div class="box-body table-responsive">
-							<div class="report-loader" style="color:lightgray; display:none;">
-								<center>
-									<h3>
-										<i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
-										<?php $lh->translateText("loading..."); ?>
-									</h3>
-								</center>
-							</div>
-							<div id='outbound_stats' class="user_stats"></div>
-						</div>
-					</div>
-					
-					<div class="box collapsed-box">
-						<div class="box-header with-border btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Show <?php $lh->translateText("Inbound Calls Made"); ?>">
-						  <em class="glyphicon glyphicon-earphone pull-left"></em><h3 class="box-title pull-left"> <?php $lh->translateText("Inbound Calls Made"); ?></h3>
-						</div>
-						<div class="box-body table-responsive">
-							<div class="report-loader" style="color:lightgray; display:none;">
-								<center>
-									<h3>
-										<i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
-										<?php $lh->translateText("loading..."); ?>
-									</h3>
-								</center>
-							</div>
-							<div id='inbound_stats' class="user_stats"></div>
-						</div>
-					</div>
-				</div> <!-- end of modal body -->
-			</div>
-		</div>
-	</div>
+	<?php		
+		// outbound stats table
+		$columns = array($lh->translationFor("event_time"), $lh->translationFor("status"), $lh->translationFor("phone_number"), $lh->translationFor("campaign_id"), $lh->translationFor("user_group"), $lh->translationFor("list_id"), $lh->translationFor("lead_id"), $lh->translationFor("term_reason"));
+		$hideOnMedium = array($lh->translationFor("user_group"), $lh->translationFor("list_id"));
+		$hideOnLow = array($lh->translationFor("campaign_id"), $lh->translationFor("user_group"), $lh->translationFor("status"));
+		$result = $ui->generateTableHeaderWithItems($columns, "table_outbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+	
+		
+		echo $ui->modalFormStructureAgentLog('modal_stats_outbound', 'outbound', $lh->translationFor("outbound"), $result.'</table>', '', '', '');
+		
+		// inbound stats table
+		$columns = array($lh->translationFor("event_time"), $lh->translationFor("status"), $lh->translationFor("phone_number"), $lh->translationFor("campaign_id"), $lh->translationFor("user_group"), $lh->translationFor("list_id"), $lh->translationFor("lead_id"), $lh->translationFor("term_reason"));
+		$hideOnMedium = array($lh->translationFor("user_group"), $lh->translationFor("list_id"));
+		$hideOnLow = array($lh->translationFor("campaign_id"), $lh->translationFor("user_group"), $lh->translationFor("status"));
+		$result = $ui->generateTableHeaderWithItems($columns, "table_inbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		
+		echo $ui->modalFormStructureAgentLog('modal_stats_inbound', 'inbound', $lh->translationFor("inbound"), $result.'</table>', '', '', '');	
+		
+		// agent log
+		$columns = array($lh->translationFor("log_id"), $lh->translationFor("user"), $lh->translationFor("event"), $lh->translationFor("event_time"), $lh->translationFor("campaign_id"), $lh->translationFor("user_group"));
+		$hideOnMedium = array($lh->translationFor("log_id"), $lh->translationFor("list_id"));
+		$hideOnLow = array($lh->translationFor("log_id"), $lh->translationFor("user"));
+		$result = $ui->generateTableHeaderWithItems($columns, "table_userlog", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		
+		echo $ui->modalFormStructureAgentLog('modal_stats_userlog', 'userlog', $lh->translationFor("userlog"), $result.'</table>', '', '', '');			
+	?>
 	<!-- ./stats -->
-
 <!-- end of modals -->
 
 		<?php print $ui->standardizedThemeJS();?>
@@ -611,373 +547,453 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+		// initialize select2
+		$('.select2-1').select2({ theme: 'bootstrap' });		
+		var checker = 0;
 		
-		/*********************
-		** INITIALIZATION
-		*********************/
-			var checker = 0;
-			/* init data tables */
-				//users
-				$('#T_users').dataTable({
-					stateSave: true,
-					"aaSorting": [[ 1, "asc" ]],
-					"aoColumnDefs": [{
-						"bSearchable": false,
-						<?php if($perm->user_delete !== 'N'){?>
-						"aTargets": [ 0, 1, 5 ]
-						<?php }else{ ?>
-						"aTargets": [ 0, 5 ]
-						<?php } ?>
-					},{
-						"bSortable": false,
-						<?php if($perm->user_delete !== 'N'){?>
-						"aTargets": [ 0, 1, 5 ]
-						<?php }else{ ?>
-						"aTargets": [ 0, 5 ]
-						<?php } ?>
-					}],
-					"bAutoWidth": false
-				});
-				//phones
-				$('#T_phones').dataTable({
-					stateSave: true,
-					"aoColumnDefs": [{
-						"bSearchable": false,
-						<?php if($perm->user_delete !== 'N'){?>
-						"aTargets": [ 1, 4 ]
-						<?php }else{ ?>
-						"aTargets": [ 4 ]
-						<?php } ?>
-					},{
-						"bSortable": false,
-						<?php if($perm->user_delete !== 'N'){?>
-						"aTargets": [ 1, 4 ]
-						<?php }else{ ?>
-						"aTargets": [ 4 ]
-						<?php } ?>
-					}]
-				});
-				
-			/* init wizards */
-				var uform = $("#wizard_form"); // init user form wizard 
-				var pform = $("#create_form"); // init phone form wizard 
-
-			/* enable on hover event for FAB */
-				// loads the fixed action button
-				$(".bottom-menu").on('mouseenter mouseleave', function () {
-				  $(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
-				});
+		// users table
+		$('#T_users').dataTable({
+			destroy:true,    
+			stateSave:true,
+			drawCallback:function(settings) {
+				var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+				pagination.toggle(this.api().page.info().pages > 1);
+			},
+			"aaSorting": [[ 1, "asc" ]],
+			"aoColumnDefs": [{
+				"bSearchable": false,
+				<?php if($perm->user_delete !== 'N'){?>
+				"aTargets": [ 0, 1, 5 ]
+				<?php }else{ ?>
+				"aTargets": [ 0, 5 ]
+				<?php } ?>
+			},{
+				"bSortable": false,
+				<?php if($perm->user_delete !== 'N'){?>
+				"aTargets": [ 0, 1, 5 ]
+				<?php }else{ ?>
+				"aTargets": [ 0, 5 ]
+				<?php } ?>
+			}],
+			"bAutoWidth": false
+		});
 			
-		/*********
-		** Add Wizard
-		*********/
-			//users form validate
-		    uform.validate({
-		        errorPlacement: function errorPlacement(error, element) { element.after(error); },
-		        rules: {
-		            confirm: {
-		                equalTo: "#password"
-		            }
-		        }
-		    });
+		// phones
+		$('#T_phones').DataTable({
+			destroy:true,    
+			stateSave:true,
+			drawCallback:function(settings) {
+				var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+				pagination.toggle(this.api().page.info().pages > 1);
+			},
+			"aoColumnDefs": [{
+				"bSearchable": false,
+				<?php if($perm->user_delete !== 'N'){?>
+				"aTargets": [ 1, 4 ]
+				<?php }else{ ?>
+				"aTargets": [ 4 ]
+				<?php } ?>
+			},{
+				"bSortable": false,
+				<?php if($perm->user_delete !== 'N'){?>
+				"aTargets": [ 1, 4 ]
+				<?php }else{ ?>
+				"aTargets": [ 4 ]
+				<?php } ?>
+			}]
+		});
+			
+		// agent log - outbound
+		var outboundTable = $('#table_outbound').DataTable({
+			destroy:true,    
+			stateSave:true,
+			drawCallback:function(settings) {
+				var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+				pagination.toggle(this.api().page.info().pages > 1);
+			},
+			"aaSorting": [[ 1, "asc" ]],
+			"aoColumnDefs": [{
+				"bSearchable": false,
+				"aTargets": [ 4 ]
+			},{
+				"bSortable": false,
+				"aTargets": [ 4, 6 ]
+			}]
+		});
+		
+		// agent log - inbound
+		var inboundTable = $('#table_inbound').DataTable({
+			destroy:true,    
+			stateSave:true,
+			drawCallback:function(settings) {
+				var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+				pagination.toggle(this.api().page.info().pages > 1);
+			},
+			"aaSorting": [[ 1, "asc" ]],
+			"aoColumnDefs": [{
+				"bSearchable": false,
+				"aTargets": [ 6 ]
+			},{
+				"bSortable": false,
+				"aTargets": [ 6 ]
+			}]
+		});
+			
+		// agent log - userlog
+		var userlogTable = $('#table_userlog').DataTable({
+			destroy:true,    
+			stateSave:true,
+			drawCallback:function(settings) {
+				var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+				pagination.toggle(this.api().page.info().pages > 1);
+			},
+			"aaSorting": [[ 1, "asc" ]],
+			"aoColumnDefs": [{
+				"bSearchable": false,
+				"aTargets": [ 1, 5 ]
+			},{
+				"bSortable": false,
+				"aTargets": [ 1, 5 ]
+			}]
+		});
+		
+		// init wizards
+		var uform = $("#wizard_form"); // init user form wizard 
+		var pform = $("#create_form"); // init phone form wizard 
 
-		    //phones form validate
-		    pform.validate({
-		        errorPlacement: function errorPlacement(error, element) { element.after(error); }
-		    });
+		// enable on hover event for FAB
+		// loads the fixed action button
+		$(".bottom-menu").on('mouseenter mouseleave', function () {
+			$(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
+		});
+			
+		// users form validate
+		uform.validate({
+			errorPlacement: function errorPlacement(error, element) { element.after(error); },
+			rules: {
+				confirm: {
+					equalTo: "#password"
+				}
+			}
+		});
 
-		    //users
-		    uform.children("div").steps({
-		        headerTag: "h4",
-		        bodyTag: "fieldset",
-		        transitionEffect: "slideLeft",
-		        onStepChanging: function (event, currentIndex, newIndex)
-		        {
-					
-			        // Disable next if there are duplicates
-			        if(checker > 0){
-						$(".body:eq(" + newIndex + ") .error", uform).addClass("error");
-						return false;
-			        }
-					
-			        // form review
-					show_form_review();
-					
-					if($('#seats').val() > 1){
-						$('#password').attr("disabled", true);
-						$('#confirm').attr("disabled", true);
-						$('#submit-password-lbl').text('<?php $lh->translateText("default_pass_is"); ?>: ');
-						$('#submit-password').html('<i><?php echo 'Go'.date("Y")?></i>');
-					}else{
-						$('#password').attr("disabled", false);
-						$('#confirm').attr("disabled", false);					
-						$('#submit-password-lbl').text('<?php $lh->translateText("password"); ?>: ');
+		// phones form validate
+		pform.validate({
+			errorPlacement: function errorPlacement(error, element) { element.after(error); }
+		});
+
+		// add users
+		uform.children("div").steps({
+			headerTag: "h4",
+			bodyTag: "fieldset",
+			transitionEffect: "slideLeft",
+			onStepChanging: function (event, currentIndex, newIndex)
+			{
+				
+				// Disable next if there are duplicates
+				if(checker > 0){
+					$(".body:eq(" + newIndex + ") .error", uform).addClass("error");
+					return false;
+				}
+				
+				// form review
+				show_form_review();
+				
+				if($('#seats').val() > 1){
+					//var multipw = 'Go<?php echo date('Y');?>';
+					$('#password').attr("disabled", true);
+					//$('#password').attr("value", multipw);
+					$('#confirm').attr("disabled", true);
+					$('#submit-password-lbl').text('<?php $lh->translateText("default_pass_is"); ?>: ');
+					$('#submit-password').html('<i><?php echo 'Go'.date("Y")?></i>');
+				}else{
+					//var multipw = $('#password').val();
+					$('#password').attr("disabled", false);
+					$('#confirm').attr("disabled", false);					
+					$('#submit-password-lbl').text('<?php $lh->translateText("password"); ?>: ');
+				}
+				
+				// Clean up if user went backward before
+				if (currentIndex < newIndex)
+				{
+					// To remove error styles
+					$(".body:eq(" + newIndex + ") label.error", uform).remove();
+					$(".body:eq(" + newIndex + ") .error", uform).removeClass("error");
+				}
+
+				uform.validate().settings.ignore = ":disabled";
+				return uform.valid();
+			},
+			onFinishing: function (event, currentIndex)
+			{
+				uform.validate().settings.ignore = ":disabled";
+				return uform.valid();
+			},
+			onFinished: function (event, currentIndex)
+			{
+				
+				$('#finish').text("<?php $lh->translateText("loading"); ?>");
+				$('#finish').attr("disabled", true);
+				
+				if ($('#seats').val() > 1) {
+					var multipw = 'Go<?php echo date('Y');?>';
+				} else {
+					var multipw = $('#password').val();
+				}
+				
+				// Submit form via ajax
+				$.ajax({
+					url: "./php/AddUser.php",
+					type: 'POST',
+					data: $("#wizard_form").serialize() + '&password=' + multipw,
+					success: function(data) {
+						console.log(data);
+						//console.log($("#wizard_form").serialize() + '&password=' + multipw);
+						$('#finish').text("Submit");
+						$('#finish').attr("disabled", false);
+						if(data == 1){
+							swal(
+								{
+									title: "<?php $lh->translateText("add_user_success"); ?>",
+									text: "<?php $lh->translateText("user_has_been_saved"); ?>",
+									type: "success"
+								},
+								function(){
+									window.location.href = 'telephonyusers.php';
+								}
+							);
+						}else{
+							sweetAlert("<?php $lh->translateText("add_user_failed"); ?>", data, "error");
+						}
 					}
-					
-					// Clean up if user went backward before
-				    if (currentIndex < newIndex)
-				    {
-				        // To remove error styles
-				        $(".body:eq(" + newIndex + ") label.error", uform).remove();
-				        $(".body:eq(" + newIndex + ") .error", uform).removeClass("error");
-				    }
-
-		            uform.validate().settings.ignore = ":disabled";
-		            return uform.valid();
-		        },
-		        onFinishing: function (event, currentIndex)
-		        {
-		            uform.validate().settings.ignore = ":disabled";
-		            return uform.valid();
-		        },
-		        onFinished: function (event, currentIndex)
-		        {
-					
-					$('#finish').text("<?php $lh->translateText("loading"); ?>");
-					$('#finish').attr("disabled", true);
-					
-		            // Submit form via ajax
-		            $.ajax({
-						url: "./php/AddUser.php",
+				});
+			}
+		});
+			
+		//phones
+		pform.children("div").steps({
+			headerTag: "h4",
+			bodyTag: "fieldset",
+			transitionEffect: "slideLeft",
+			onStepChanging: function (event, currentIndex, newIndex)
+			{
+				
+			$("#phone_ext").val($("#start_ext").val());
+			
+				// Allways allow step back to the previous step even if the current step is not valid!
+				if (currentIndex > newIndex) {
+					return true;
+				}
+				
+				// Clean up if user went backward before
+				if (currentIndex < newIndex)
+				{
+					// To remove error styles
+					$(".body:eq(" + newIndex + ") label.error", pform).remove();
+					$(".body:eq(" + newIndex + ") .error", pform).removeClass("error");
+				}
+				
+				pform.validate().settings.ignore = ":disabled,:hidden";
+				return pform.valid();
+			},
+			onFinishing: function (event, currentIndex)
+			{
+				pform.validate().settings.ignore = ":disabled";
+				return pform.valid();
+			},
+			onFinished: function (event, currentIndex)
+			{
+				$('#finish').text("<?php $lh->translateText("loading"); ?>");
+				$('#finish').attr("disabled", true);
+			
+				// Submit form via ajax
+					$.ajax({
+						url: "./php/AddPhone.php",
 						type: 'POST',
-						data: $("#wizard_form").serialize(),
+						data: $("#create_form").serialize(),
 						success: function(data) {
 							console.log(data);
 							$('#finish').text("Submit");
 							$('#finish').attr("disabled", false);
-							if(data == 1){
-								swal(
-								  {
-									  title: "<?php $lh->translateText("add_user_success"); ?>",
-									  text: "<?php $lh->translateText("user_has_been_saved"); ?>",
-									  type: "success"
-								  },
-								  function(){
-									  window.location.href = 'telephonyusers.php';
-								  }
-								);
-							}else{
-								sweetAlert("<?php $lh->translateText("add_user_failed"); ?>", data, "error");
-							}
+								if(data == 1){
+								swal({title: "<?php $lh->translateText("add_phone_success"); ?>",text: "<?php $lh->translateText("phone_has_been_saved"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php?phone_tab';});
+								}else{
+								sweetAlert("<?php $lh->translateText("add_phone_failed"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
+								}
 						}
 					});
-		        }
-		    });
+			}
+		});
+
+		// user edit event
+		$(document).on('click','.edit-T_user',function() {
+			var url = 'edittelephonyuser.php';
+			var userid = $(this).attr('data-id');
+			var user = $(this).attr('data-user');
+			var role = $(this).attr('data-role');
+			//console.log("userid: " + userid + " user: " + user + " role: " + role);
+			var form = $('<form action="' + url + '" method="post"><input type="hidden" name="user_id" value="'+userid+'" /><input type="hidden" name="user" value="'+user+'"><input type="hidden" name="role" value="'+role+'"></form>');
+			$('body').append(form);  // This line is not necessary
+			$(form).submit();
+		});
+		
+		// phone edit event
+		$(document).on('click','.edit-phone',function() {
+			var url = './editsettingsphones.php';
+			var extenid = $(this).attr('data-id');
+			//alert(extenid);
+			var form = $('<form action="' + url + '" method="post"><input type="hidden" name="extenid" value="'+extenid+'" /></form>');
+			$('body').append(form);  // This line is not necessary
+			$(form).submit();
+		});
+
+		// user view stats
+		$(document).on('click','.view-stats',function() {
+			var agentlog = $(this).attr('data-agentlog');
+			var userid = $(this).attr('data-user');
+			var username = $(this).attr('data-name');	
 			
-			//phones
-			pform.children("div").steps({
-		        headerTag: "h4",
-		        bodyTag: "fieldset",
-		        transitionEffect: "slideLeft",
-		        onStepChanging: function (event, currentIndex, newIndex)
-		        {
-					
-		        $("#phone_ext").val($("#start_ext").val());
-				
-					// Allways allow step back to the previous step even if the current step is not valid!
-					if (currentIndex > newIndex) {
-						return true;
-					}
-					
-					// Clean up if user went backward before
-				    if (currentIndex < newIndex)
-				    {
-				        // To remove error styles
-				        $(".body:eq(" + newIndex + ") label.error", pform).remove();
-				        $(".body:eq(" + newIndex + ") .error", pform).removeClass("error");
-				    }
-					
-		            pform.validate().settings.ignore = ":disabled,:hidden";
-		            return pform.valid();
-		        },
-		        onFinishing: function (event, currentIndex)
-		        {
-		            pform.validate().settings.ignore = ":disabled";
-		            return pform.valid();
-		        },
-		        onFinished: function (event, currentIndex)
-		        {
-					$('#finish').text("<?php $lh->translateText("loading"); ?>");
-					$('#finish').attr("disabled", true);
-				
-		            // Submit form via ajax
-			            $.ajax({
-							url: "./php/AddPhone.php",
-							type: 'POST',
-							data: $("#create_form").serialize(),
-							success: function(data) {
-								console.log(data);
-								$('#finish').text("Submit");
-								$('#finish').attr("disabled", false);
-								  if(data == 1){
-									swal({title: "<?php $lh->translateText("add_phone_success"); ?>",text: "<?php $lh->translateText("phone_has_been_saved"); ?>",type: "success"},function(){window.location.href = 'telephonyusers.php?phone_tab';});
-								  }else{
-									sweetAlert("<?php $lh->translateText("add_phone_failed"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
-								  }
-							}
-						});
-		        }
-		    });
-
-	//--------------------
-
-		/*********
-		** Edit Event
-		*********/
-			//user edit event
-				$(document).on('click','.edit-T_user',function() {
-					var url = 'edittelephonyuser.php';
-					var userid = $(this).attr('data-id');
-					var user = $(this).attr('data-user');
-					var role = $(this).attr('data-role');
-					//console.log("userid: " + userid + " user: " + user + " role: " + role);
-					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="user_id" value="'+userid+'" /><input type="hidden" name="user" value="'+user+'"><input type="hidden" name="role" value="'+role+'"></form>');
-					$('body').append(form);  // This line is not necessary
-					$(form).submit();
-				 });
-			//phone edit event
-				$(document).on('click','.edit-phone',function() {
-					var url = './editsettingsphones.php';
-					var extenid = $(this).attr('data-id');
-					//alert(extenid);
-					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="extenid" value="'+extenid+'" /></form>');
-					$('body').append(form);  // This line is not necessary
-					$(form).submit();
-				});
-
-	//--------------------
-	
-		/*********
-		** View Agent Stats Event
-		*********/
-			//user edit event
-			$(document).on('click','.view-stats',function() {
-				$(".report-loader").fadeIn("slow");
-				$(".user_stats").html("");
-				$("#daterange_input").val("");
-				var userid = $(this).attr('data-user');
-				var username = $(this).attr('data-name');
-				$('#stats-modal').modal('toggle');
-				$("#user_agentlog").val(userid);
-				$('#user_container').html(userid + " - " + username);
-
-				$('#daterange_input').daterangepicker({
-					"opens": "left"
-				}, function(start, end, label) {
-					var userid = $("#user_agentlog").val();
-					var sdate = start.format('YYYY-MM-DD');
-					var edate = end.format('YYYY-MM-DD');
-					$(".report-loader").fadeIn("slow");
-					$(".user_stats").html("");
-					$.ajax({
-						type: 'POST',
-						url: "agentlog.php",
-						data: {
-							user: userid,
-							start_date: sdate,
-							end_date: edate
-						},
-						cache: false,
-						dataType: 'json',
-						success: function(data){
-							$(".report-loader").fadeOut("slow");
-							console.log(data);
-							if(data !== ""){
-								var title = "<?php $lh->translateText("agent_log"); ?>";
-								$("#outbound_stats").html(data[0]);
-								$("#inbound_stats").html(data[1]);
-								$("#userlog_stats").html(data[2]);
-								$('#table_outbound').dataTable(/*{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } */);
-								$('#table_inbound').dataTable(/*{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } */);
-								$('#table_userstat').dataTable(/*{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } */);
-								//$('#user_container').html(data[3]);
-							}else{
-								$('#user_stats').html("<?php $lh->translateText("no_data"); ?>");
-							}
-							
-						}
-					});
-				});
-				
+			$(".report-loader").fadeIn("slow");
+			$("#daterange_input-"+agentlog+"").val("");
+			$("#modal_stats_"+agentlog+"").modal("toggle");
+			$("#user_agentlog").val(userid);
+			$('#user_container').html(userid + " - " + username);
+			
+			$("#daterange_input-"+agentlog+"").daterangepicker({
+				"opens": "left"
+			}, function(start, end, label) {
+				var userid = $("#user_agentlog").val();
+				var sdate = start.format('YYYY-MM-DD');
+				var edate = end.format('YYYY-MM-DD');
+				//$(".report-loader").fadeIn("slow");
 				$.ajax({
 					type: 'POST',
 					url: "agentlog.php",
 					data: {
 						user: userid,
+						start_date: sdate,
+						end_date: edate,
+						agentlog: agentlog
 					},
-					cache: false,
+					//cache: false,
 					dataType: 'json',
 					success: function(data){
-						$(".report-loader").fadeOut("slow");
-						if(data !== ""){
+						//console.log(data);
+						//$(".report-loader").fadeOut("slow");							
+						var JSONStringdata = data;
+						var JSONObjectdata = JSON.parse(JSONStringdata);	
+						if (data !== "") {
 							var title = "<?php $lh->translateText("agent_log"); ?>";
-							$("#outbound_stats").html(data[0]);
-							$("#inbound_stats").html(data[1]);
-							$("#userlog_stats").html(data[2]);
-							$('#table_outbound').dataTable(/*{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } */);
-							$('#table_inbound').dataTable(/*{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } */);
-							$('#table_userstat').dataTable(/*{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } */);
-						}else{
-							$('#user_stats').html("<?php $lh->translateText("no_data"); ?>");
+							if (agentlog == "outbound") {
+								var outboundTable = $('#table_outbound').DataTable({
+									data:JSONObjectdata,
+									destroy:true,    
+									stateSave:true,
+									drawCallback:function(settings) {
+										var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+										pagination.toggle(this.api().page.info().pages > 1);
+									},
+									"aaSorting": [[ 0, "desc" ]],
+									"aoColumnDefs": [{
+										"bSearchable": false,
+										"aTargets": [ 4 ]
+									},{
+										"bSortable": false,
+										"aTargets": [ 4, 6 ]
+									}]
+								});								
+							}
+							
+							if (agentlog == "inbound") {
+								var inboundTable = $('#table_inbound').DataTable({
+									data:JSONObjectdata,
+									destroy:true,    
+									stateSave:true,
+									drawCallback:function(settings) {
+										var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+										pagination.toggle(this.api().page.info().pages > 1);
+									},
+									"aaSorting": [[ 0, "desc" ]],
+									"aoColumnDefs": [{
+										"bSearchable": false,
+										"aTargets": [ 4 ]
+									},{
+										"bSortable": false,
+										"aTargets": [ 4, 6 ]
+									}]
+								});	
+							}
+							
+							if (agentlog == "userlog") {
+								var userlogTable = $('#table_userlog').DataTable({
+									data:JSONObjectdata,
+									destroy:true,    
+									stateSave:true,
+									drawCallback:function(settings) {
+										var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+										pagination.toggle(this.api().page.info().pages > 1);
+									},
+									"aaSorting": [[ 3, "desc" ]],
+									"aoColumnDefs": [{
+										"bSearchable": false,
+										"aTargets": [ 2, 5 ]
+									},{
+										"bSortable": false,
+										"aTargets": [ 2, 5 ]
+									}]
+								});	
+							}											
+							
+						} else {
+							<?php echo $lh->translateText("no_data"); ?>
 						}
 						
 					}
-				}); 
+				});
 			});
+		});
 			
-	
-		/*********
-		** Emergency Logout Event
-		*********/
-			//user edit event
-			$(document).on('click','.emergency-logout',function() {
-				var userid = $(this).attr('data-emergency-logout-username');
-				var name = $(this).attr('data-name');
-				var log_user = '<?=$_SESSION['user']?>';
-				var log_group = '<?=$_SESSION['usergroup']?>';
-				swal({   
-					title: "<?php $lh->translateText("emergency_logout"); ?> : " + name,
-					type: "warning",   
-					showCancelButton: true,   
-					confirmButtonColor: "#DD6B55",   
-					confirmButtonText: "<?php $lh->translateText("agent_logout"); ?>",   
-					cancelButtonText: "<?php $lh->translateText("cancel_agent_logout"); ?>",   
-					closeOnConfirm: false,   
-					closeOnCancel: false 
-					}, 
-					function(isConfirm){   
-						if (isConfirm) { 
-							$.ajax({
-								type: 'POST',
-								url: "php/EmergencyLogout.php",
-								data: {
-									goUserAgent: userid,
-									log_user: log_user,
-									log_group: log_group
-								},
-								cache: false,
-								//dataType: 'json',
-								success: function(data){
-									if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
-										sweetAlert("<?php $lh->translateText("agent_logout_notif"); ?>", "", "success");
-									}else{
-										sweetAlert("<?php $lh->translateText("emergency_logout"); ?>",data, "warning");
-									}
+		// user emergency logout
+		$(document).on('click','.emergency-logout',function() {
+			var userid = $(this).attr('data-emergency-logout-username');
+			var name = $(this).attr('data-name');
+			console.log(userid);
+			swal({   
+				title: "<?php $lh->translateText("emergency_logout"); ?> : " + name,
+				type: "warning",   
+				showCancelButton: true,   
+				confirmButtonColor: "#DD6B55",   
+				confirmButtonText: "<?php $lh->translateText("agent_logout"); ?>",   
+				cancelButtonText: "<?php $lh->translateText("cancel_agent_logout"); ?>",   
+				closeOnConfirm: false,   
+				closeOnCancel: false 
+				}, 
+				function(isConfirm){   
+					if (isConfirm) { 
+						$.ajax({
+							type: 'POST',
+							url: "php/EmergencyLogout.php",
+							data: {
+								goUserAgent: userid
+							},
+							cache: false,
+							//dataType: 'json',
+							success: function(data){
+								if (data == 1) {
+									sweetAlert("<?php $lh->translateText("agent_logout_notif"); ?>", "", "success");
+								} else {
+									sweetAlert("<?php $lh->translateText("emergency_logout"); ?>",data, "warning");
 								}
-							}); 
-						} else {     
-							swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
-						} 
-					}
-	            );
-			});
+							}
+						}); 
+					} else {     
+						swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
+					} 
+				}
+			);
+		});
 				
-	// ------------------
-				
-	/*********
-	** Delete Event
-	*********/
-	//delete user 
+		// delete user 
 		$(document).on('click','.delete-T_user',function() {
 			var id = [];
 			id.push($(this).attr('data-id'));
@@ -1018,7 +1034,7 @@
 			);
 		});
 	
-	//delete user 
+		//delete multiple users
 		$(document).on('click','.delete-multiple-user',function() {
 			var arr = $('input:checkbox.check_user').filter(':checked').map(function () {
 				return this.id;
@@ -1060,7 +1076,7 @@
 			);
 		});
 	
-	//delete phone
+		// delete phone
 		$(document).on('click','.delete-phone',function() {
 			var id = [];
 			id.push($(this).attr('data-id'));	
@@ -1101,12 +1117,12 @@
             );
 		});
 	
-	//delete phone 
+		// delete multiple phones
 		$(document).on('click','.delete-multiple-phone',function() {
 			var arr = $('input:checkbox.check_phone').filter(':checked').map(function () {
 				return this.id;
 			}).get();
-			console.log(arr);
+			//console.log(arr);
 			swal({
 				title: "<?php $lh->translateText("are_you_sure"); ?>",
 				text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
@@ -1141,10 +1157,9 @@
 				}
 			}
 			);
-		});
-				
-	// -------------------------
-	
+		});		
+
+		// set max length for password
 		$(document).on('change','#user_group',function() {
 			if($("#user_group").val() == "ADMIN" || $("#user_group").val() == "SUPERVISOR"){
 				$("#password").attr('maxlength','20');
@@ -1176,70 +1191,67 @@
 		});
 
 		// disable special characters on phone extension
-			$('#phone_ext').bind('keypress', function (event) {
-			    var regex = new RegExp("^[0-9]+$");
-			    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-			    if (!regex.test(key)) {
-			       event.preventDefault();
-			       return false;
-			    }
-			});
+		$('#phone_ext').bind('keypress', function (event) {
+			var regex = new RegExp("^[0-9]+$");
+			var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+			if (!regex.test(key)) {
+				event.preventDefault();
+				return false;
+			}
+		});
 
 		// disable special characters on Fullname for Phones
-			$('#pfullname').bind('keypress', function (event) {
-			    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
-			    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
-			    if (!regex.test(key)) {
-			       event.preventDefault();
-			       return false;
-			    }
-			});
-
-		/*********
-		** validations
-		*********/
-		// check duplicates
-			$("#user_form").keyup(function() {
-				$("#next").attr('disabled', true);
-				
-				clearTimeout($.data(this, 'timer'));
-				var wait = setTimeout(validate_user, 500);
-				$(this).data('timer', wait);
-				
-			});
-
-			function validate_user(){
-				var user_form_value = $('#user_form').val();
-				var phone_logins_value = "";
-		        if(user_form_value != ""){
-				    $.ajax({
-					    url: "php/checkUser.php",
-					    type: 'POST',
-					    data: {
-					    	user : user_form_value,
-					    	phone_login : phone_logins_value
-					    },
-						success: function(data) {
-							console.log(data);
-							$("#next").attr('disabled', false);
-							if(data == 1){
-								checker = 0;
-								$('#finish').attr("disabled", false);
-								$( "#user_form" ).removeClass("error");
-								$( "#user-duplicate-error" ).text( "<?php $lh->translateText("dup_check_success"); ?>" ).removeClass("error").addClass("avail");
-							}else{
-								//if(data == "user"){
-									$('#finish').attr("disabled", true);
-									$( "#user_form" ).removeClass("valid").addClass( "error" );
-									$( "#user-duplicate-error" ).text( "<?php $lh->translateText("dup_check_error"); ?>" ).removeClass("avail").addClass("error");
-								//}
-								
-								checker = 1;
-							}
-						}
-					});
-				}
+		$('#pfullname').bind('keypress', function (event) {
+			var regex = new RegExp("^[a-zA-Z0-9 ]+$");
+			var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+			if (!regex.test(key)) {
+				event.preventDefault();
+				return false;
 			}
+		});
+
+		// check duplicates
+		$("#user_form").keyup(function() {
+			$("#next").attr('disabled', true);
+			
+			clearTimeout($.data(this, 'timer'));
+			var wait = setTimeout(validate_user, 500);
+			$(this).data('timer', wait);
+			
+		});
+
+		function validate_user(){
+			var user_form_value = $('#user_form').val();
+			var phone_logins_value = "";
+			if(user_form_value != ""){
+				$.ajax({
+					url: "php/checkUser.php",
+					type: 'POST',
+					data: {
+						user : user_form_value,
+						phone_login : phone_logins_value
+					},
+					success: function(data) {
+						console.log(data);
+						$("#next").attr('disabled', false);
+						if(data == 1){
+							checker = 0;
+							$('#finish').attr("disabled", false);
+							$( "#user_form" ).removeClass("error");
+							$( "#user-duplicate-error" ).text( "<?php $lh->translateText("dup_check_success"); ?>" ).removeClass("error").addClass("avail");
+						}else{
+							//if(data == "user"){
+								$('#finish').attr("disabled", true);
+								$( "#user_form" ).removeClass("valid").addClass( "error" );
+								$( "#user-duplicate-error" ).text( "<?php $lh->translateText("dup_check_error"); ?>" ).removeClass("avail").addClass("error");
+							//}
+							
+							checker = 1;
+						}
+					}
+				});
+			}
+		}
 
 		// form review
 		function show_form_review(){
@@ -1255,29 +1267,17 @@
 			}
 		}
 
-	// -------------------------
+		// additional number custom
+		$(document).on('change','#add_phones',function() {
+			if(this.value == "CUSTOM") {
+				$('#custom_seats').show();
+			}else{
+				$('#custom_seats').hide();
+			}
+		});
 
-		/*********
-		** On Action Events
-		*********/
-
-		/* additional number custom */
-			$(document).on('change','#add_phones',function() {
-				if(this.value == "CUSTOM") {
-				  $('#custom_seats').show();
-				}else{
-					$('#custom_seats').hide();
-				}
-			});
-
-		/* initialize select2 */
-			$('.select2-1').select2({
-		        theme: 'bootstrap'
-		    });
-			
-		    //document.on("jqueryui-configure-dialog", function(e) { e.allowInteraction.push(".select2-1"); });
-		
-});
+	});
+	
 </script>
 		
 		<?php print $ui->creamyFooter();?>

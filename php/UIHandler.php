@@ -435,6 +435,45 @@ error_reporting(E_ERROR | E_PARSE);
 				</div></div>
 				</div>';
 	}
+	
+	public function modalFormStructureAgentLog($modalid, $title, $subtitle, $body, $footer, $icon = null, $messagetag = CRM_UI_DEFAULT_RESULT_MESSAGE_TAG) {
+		$iconCode = empty($icon) ? '' : '<i class="fa fa-'.$icon.'"></i> ';
+		$subtitleCode = empty($subtitle) ? '' : '<p>'.$subtitle.'</p>';
+
+		return '<div class="modal fade" id="'.$modalid.'" name="'.$modalid.'" tabindex="-1" role="dialog" aria-hidden="true">
+	        	<div class="modal-dialog modal-lg"><div class="modal-content">
+	                <div class="modal-header">
+					<h4 class="modal-title animated bounceInRight">
+						<div class="col-sm-12 col-md-8">
+							<i class="fa fa-info-circle" title='.$title.'></i> 
+							<b>'.$subtitle.'</b>
+						</div>
+						<div class="col-sm-12 col-md-4 row" id="daterange-'.$title.'">
+							<div class="col-sm-12">
+								<div class="form-group">
+									<div class="input-group date">
+										<input date-range-picker id="daterange_input-'.$title.'" name="date_agentlog" class="form-control date-picker" type="text" ng-model="dateRange" clearable="true" options="dateRangeOptions" />
+										<span class="input-group-addon">
+											<span class="fa fa-calendar"></span>
+										</span>
+										<input type="hidden" id="user_agentlog">
+									</div>
+								</div>
+							</div>
+						</div>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					</h4>
+	                </div>
+					<div class="modal-body">
+						'.$body.'
+						<div id="'.$messagetag.'" style="display: none;"></div>
+					</div>
+					<div class="modal-footer clearfix">
+						'.$footer.'
+					</div>
+				</div></div>
+				</div>';
+	}
 
 	public function formWithCustomFooterButtons($id, $content, $footer, $messagetag = CRM_UI_DEFAULT_RESULT_MESSAGE_TAG, $action = "") {
 		return '<form role="form" id="'.$id.'" name="'.$id.'" method="post" action="'.$action.'" enctype="multipart/form-data">
@@ -1068,7 +1107,9 @@ error_reporting(E_ERROR | E_PARSE);
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
 	                    <li'.($perm->user_update === 'N' ? ' class="hidden"' : '').'><a class="edit-T_user" href="#" data-id="'.$userid.'" data-user="'.$current_user.'"  data-role="'.$role.'">'.$this->lh->translationFor("modify").'</a></li>
-						<li'.($perm->user_view === 'N' ? ' class="hidden"' : '').'><a class="view-stats" href="#" data-user="'.$user.'" data-name="'.$name.'">'.$this->lh->translationFor("agent_log").'</a></li>
+	                    <li'.($perm->user_view === 'N' ? ' class="hidden"' : '').'><a class="view-stats" href="#" data-user="'.$user.'" data-name="'.$name.'" data-agentlog="userlog">'.$this->lh->translationFor("agent_log").' - '.$this->lh->translationFor("agent_log").'</a></li>
+						<li'.($perm->user_view === 'N' ? ' class="hidden"' : '').'><a class="view-stats" href="#" data-user="'.$user.'" data-name="'.$name.'" data-agentlog="outbound">'.$this->lh->translationFor("agent_log").' - '.$this->lh->translationFor("outbound").'</a></li>
+						<li'.($perm->user_view === 'N' ? ' class="hidden"' : '').'><a class="view-stats" href="#" data-user="'.$user.'" data-name="'.$name.'" data-agentlog="inbound">'.$this->lh->translationFor("agent_log").' - '.$this->lh->translationFor("inbound").'</a></li>
 	                    <li><a class="emergency-logout" href="#" data-emergency-logout-username="'.$user.'" data-name="'.$name.'">'.$this->lh->translationFor("emergency_logout").'</a></li>
 	                    <li class="divider'.($perm->user_delete === 'N' ? ' hidden' : '').'"></li>
 	                    <li'.(($perm->user_delete === 'N' || $user === $current_user) ? ' class="hidden"' : '').'><a class="delete-T_user" href="#" data-id="'.$userid.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
@@ -6148,36 +6189,14 @@ error_reporting(E_ERROR | E_PARSE);
 		return $return;
 	}
 	
-	public function API_getAgentLog($user, $session_user, $sdate, $edate) {
-		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = goUser; #Username goes here. (required)
-		$postfields["goPass"] = goPass; #Password goes here. (required)
-		$postfields["goAction"] = "goGetAgentLog"; #action performed by the [[API:Functions]]. (required)
-		$postfields["responsetype"] = responsetype; #json. (required)
-		$postfields["user"] = $user; 
-		$postfields["start_date"] = $sdate;
-		$postfields["end_date"] = $edate; 
-		$postfields["session_user"] = $session_user; #json. (required)
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
-		return $output;
-	}
-	
-	public function getAgentLog($user, $session_user, $sdate, $edate) {
-		$output = $this->API_getAgentLog($user, $session_user, $sdate, $edate);
+	public function getAgentLog($user, $sdate, $edate) {
+		$output = $this->api->API_getAgentLog($user, $sdate, $edate);
 		//var_dump($output);
 		if($output->result=="success") {
 			$columns = array($this->lh->translationFor('event_time'), $this->lh->translationFor('status'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('campaign'), $this->lh->translationFor('group'), $this->lh->translationFor('list_id'), $this->lh->translationFor('lead_id'), $this->lh->translationFor('term_reason'));
 			$hideOnMedium = array();
 			$hideOnLow = array( );
+			$outbound = "";
 			$outbound = $this->generateTableHeaderWithItems($columns, "table_outbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 			
 			for($i=0;$i < count($output->outbound->campaign_id);$i++){
@@ -6197,6 +6216,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$columns = array($this->lh->translationFor('event_time'), $this->lh->translationFor('status'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('campaign'), $this->lh->translationFor('group'), $this->lh->translationFor('list_id'), $this->lh->translationFor('lead_id'), $this->lh->translationFor('term_reason'));
 			$hideOnMedium = array();
 			$hideOnLow = array( );
+			$inbound = "";
 			$inbound = $this->generateTableHeaderWithItems($columns, "table_inbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 			
 			for($i=0;$i < count($output->inbound->campaign_id);$i++){
@@ -6216,6 +6236,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$columns = array($this->lh->translationFor('event_time'), $this->lh->translationFor('event'), $this->lh->translationFor('campaign'), $this->lh->translationFor('group'));
 			$hideOnMedium = array();
 			$hideOnLow = array( );
+			$userlog = "";
 			$userlog = $this->generateTableHeaderWithItems($columns, "table_userstat", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 			
 			for($i=0;$i < count($output->userlog->user_log_id);$i++){

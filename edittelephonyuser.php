@@ -48,10 +48,8 @@
 	$output = $api->API_getUserInfo($userid);
 	$voicemails = $api->API_getAllVoiceMails();
 	$user_groups = $api->API_getAllUserGroups();
+	$perm = $api->goGetPermissions('user');
 	
-	$log_user = $_SESSION["user"];
-	$log_group = $_SESSION["usergroup"];
-	$log_userlevel = $_SESSION["level"];
 ?>
 <html>
     <head>
@@ -88,17 +86,17 @@
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
                         <li> <?php $lh->translateText("telephony"); ?></li>
                         <?php
-							//if(isset($_POST["userid"])){
+							if(isset($_POST["userid"])){
 						?>	
 							<li><a href="./telephonyusers.php"><?php $lh->translateText("users"); ?></a></li>
                         <?php
-							//}
+							}
                         ?>	                    
                         <li class="active"><?php $lh->translateText("modify"); ?></li>
                     </ol>
                 </section>
                 <?php
-					if ($log_user !== $current_user && $log_group !== "ADMIN" && $log_group !== $output->data->user_group){
+					if ($perm->user_read !== 'R') {
 						echo "<br/><br/>";
 						print $ui->getUnauthotizedAccessMessage();
 					} else {
@@ -266,21 +264,26 @@
 													<div class="col-sm-10 mb">
 														<select class="form-control select2-1" name="voicemail" id="voicemail">
 															<?php
-																if($voicemails == NULL){
+																if ($voicemails == NULL ){
 															?>
 																<option value="" selected>--No Voicemails Available--</option>
 															<?php
-																}else{
+																} else {
 															?>
 																<option value="">- - - NONE - - -</option>
+																<?php
+																	for($a=0;$a<count($voicemails->voicemail_id);$a++){
+																		if ($voicemails->active[$a] == "Y") {
+																			$voicemail_id = $voicemails->voicemail_id[$a];
+																			$vm_status = $voicemails->active[$a];
+																			$vmname	= $voicemails->fullname[$a];																		
+																?>
+																	<option value="<?php echo $voicemail_id;?>" 
+																		<?php if($output->data->voicemail_id == $voicemail_id){echo "selected";}?> />
+																	<?php echo $voicemail_id.' - '.$vmname;?>
+																	</option>									
 															<?php
-																for($a=0;$a<count($voicemails->voicemail_id);$a++){
-															?>
-																<option value="<?php echo $voicemails->voicemail_id[$a];?>" 
-																	<?php if($output->data->voicemail_id == $voicemails->voicemail_id[$a]){echo "selected";}?> />
-																<?php echo $voicemails->voicemail_id[$a].' - '.$voicemails->fullname[$a];?>
-																</option>									
-															<?php
+																		}
 																	}
 																}
 															?>
@@ -322,15 +325,15 @@
 								<select class="form-control" name="hotkeys" id="hotkeys">
 								<?php
 									$hotkeys = NULL;
-									if($output->data->hotkeys_active == "1"){
+									if ($output->data->hotkeys_active == "1") {
 										$hotkeys .= '<option value="1" selected> Active </option>';
-									}else{
+									} else {
 										$hotkeys .= '<option value="1" > Active </option>';
 									}
 									
-									if($output->data->hotkeys_active == "0"){
+									if ($output->data->hotkeys_active == "0") {
 										$hotkeys .= '<option value="0" selected> Inactive </option>';
-									}else{
+									} else {
 										$hotkeys .= '<option value="0" > Inactive </option>';
 									}
 									echo $hotkeys;
@@ -549,7 +552,7 @@
 					<div class="box-footer">
 					   <div class="col-sm-4 pull-right">
 							<a href="telephonyusers.php" type="button" id="cancel" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-							<button type="submit" class="btn btn-primary" id="modifyUserOkButton" href="" data-id="<?php echo $output->data->user; ?>"> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
+							<button type="submit" class="btn btn-primary" id="modifyUserOkButton" href="" data-id="<?php echo $output->data->user; ?>" <?=($perm->user_update !== 'U' ? 'disabled' : '')?>> <span id="update_button"><i class="fa fa-check"></i> Update</span></button>
 					   </div>
 					</div>
 					</fieldset>
@@ -588,47 +591,36 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-
 		/* initialize select2 */
-			$('.select2-1').select2({
-		        theme: 'bootstrap'
-		    });
+		$('.select2-1').select2({ theme: 'bootstrap' });
 
 		// for cancelling
 		$(document).on('click', '#cancel', function(){
 			swal("Cancelled", "No action has been done :)", "error");
 		});
 
-		/*********
-		** validations
-		*********/
-			$('#change_pass').on('change', function() {
-			//  alert( this.value ); // or $(this).val()
-				if(this.value == "Y") 
-				  $('.form_password').show();
-				
-				if(this.value == "N") 
-				  $('.form_password').hide();
-				
-			});
-
-			// password
-			$("#password").keyup(checkPasswordMatch);
-			$("#conf_password").keyup(checkPasswordMatch);
-
-			// phone login
-			$("#phone_login").keyup(function() {
-				clearTimeout($.data(this, 'timer'));
-				var wait = setTimeout(validate_user, 500);
-				$(this).data('timer', wait);
-			});
-
-	// ------------------------
-
-		/******* 
-		** EDIT FUNCTION
-	 	*******/
+		// validations
+		$('#change_pass').on('change', function() {
+		//  alert( this.value ); // or $(this).val()
+			if(this.value == "Y") 
+				$('.form_password').show();
 			
+			if(this.value == "N") 
+				$('.form_password').hide();			
+		});
+
+		// password
+		$("#password").keyup(checkPasswordMatch);
+		$("#conf_password").keyup(checkPasswordMatch);
+
+		// phone login
+		$("#phone_login").keyup(function() {
+			clearTimeout($.data(this, 'timer'));
+			var wait = setTimeout(validate_user, 500);
+			$(this).data('timer', wait);
+		});
+
+		// modify user
 		$('#modifyUserOkButton').click(function(){ // on click submit
 			var user = $(this).attr('data-id');
 			console.log(user);
@@ -649,44 +641,44 @@
             var dotpos = x.lastIndexOf(".");
 			
 			// conditional statements
-			if(change_pass == "Y"){
-				if(password != conf_password){
-				validate_password = 1;
+			if (change_pass == "Y") {
+				if (password != conf_password) {
+					validate_password = 1;
 				}
-				if(password == ""){
-				validate_password = 2;
+				if (password == "") {
+					validate_password = 2;
 				}
 			}
 				
 			if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length) {
 				validate_email = 1;
-			}else{
+			} else {
 				validate_email = 0;
 			}
 			
-			if(email == ""){
+			if (email == "") {
 				validate_email = 0;
 			}
 
 			// validate results
-			if(validate_email == 1){
+			if (validate_email == 1) {
 				$('#update_button').html("<i class='fa fa-check'></i> Update");
 				$('#modifyUserOkButton').prop("disabled", false);	
 				$("#email_check").html("<font color='red'>Input a Valid Email Address</font>");
 				$('#email_check').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 			}
-			if(validate_password == 1){
+			if (validate_password == 1) {
 				$('#update_button').html("<i class='fa fa-check'></i> Update");
 				$('#modifyUserOkButton').prop("disabled", false);	
 			}
-			if(validate_password == 2){
+			if (validate_password == 2) {
 				$("#pass_result").html("<font color='red'><i class='fa fa-warning'></i> Input and Confirm Password, otherwise mark Change Password? as NO! </font>");
 				$('#update_button').html("<i class='fa fa-check'></i> Update");
 				$('#modifyUserOkButton').prop("disabled", false);
 			}
 
 			// validations
-			if(validate_email == 0 && validate_password == 0){
+			if (validate_email == 0 && validate_password == 0 && <?=($perm->user_update === 'U')?>) {
 				$("#phone_login").prop("disabled", false);				
 				$.ajax({
 					url: "./php/ModifyTelephonyUser.php",
@@ -749,52 +741,47 @@
 		    }
 		});
 	});
-
-	/*********
-	** phone_login validations
-	*********/
-		function validate_user(){
-			var user_form_value = "";
-			var phone_logins_value = $('#phone_login').val();
-	        if(phone_logins_value != ""){
-			    $.ajax({
-				    url: "php/checkUser.php",
-				    type: 'POST',
-				    data: {
-				    	user : user_form_value,
-				    	phone_login : phone_logins_value
-				    },
-					success: function(data) {
-						console.log(data);
-						if(data == "success"){
-							checker = 0;
-							$( "#phone_login" ).removeClass("error");
-							$( "#phone_login-error" ).text( "Phone Login is available." ).removeClass("error").addClass("avail");
-							$('#modifyUserOkButton').prop("disabled", false);
-						}else{
-							$( "#phone_login" ).addClass( "error" );
-							$( "#phone_login-error" ).text( data ).removeClass("avail").addClass("error");
-							$('#modifyUserOkButton').prop("disabled", true);
-							
-							checker = 1;
-						}
+	
+	function validate_user(){
+		var user_form_value = "";
+		var phone_logins_value = $('#phone_login').val();
+		if(phone_logins_value != ""){
+			$.ajax({
+				url: "php/checkUser.php",
+				type: 'POST',
+				data: {
+					user : user_form_value,
+					phone_login : phone_logins_value
+				},
+				success: function(data) {
+					console.log(data);
+					if(data == "success"){
+						checker = 0;
+						$( "#phone_login" ).removeClass("error");
+						$( "#phone_login-error" ).text( "Phone Login is available." ).removeClass("error").addClass("avail");
+						$('#modifyUserOkButton').prop("disabled", false);
+					}else{
+						$( "#phone_login" ).addClass( "error" );
+						$( "#phone_login-error" ).text( data ).removeClass("avail").addClass("error");
+						$('#modifyUserOkButton').prop("disabled", true);
+						
+						checker = 1;
 					}
-				});
-			}
+				}
+			});
 		}
+	}
 
-	/**************
-	** password validation
-	**************/
-		function checkPasswordMatch() {
-		    var password = $("#password").val();
-		    var confirmPassword = $("#conf_password").val();
+	function checkPasswordMatch() {
+		var password = $("#password").val();
+		var confirmPassword = $("#conf_password").val();
 
-		    if (password != confirmPassword)
-		        $("#pass_result").html("<font color='red'>Passwords Do Not Match! <font size='5'>✖</font> </font>");
-		    else
-		    	 $("#pass_result").html("<font color='green'>Passwords Match! <font size='5'>✔</font> </font>");
-		}
+		if (password != confirmPassword)
+			$("#pass_result").html("<font color='red'>Passwords Do Not Match! <font size='5'>✖</font> </font>");
+		else
+				$("#pass_result").html("<font color='green'>Passwords Match! <font size='5'>✔</font> </font>");
+	}
+	
 </script>
 
 		<?php print $ui->creamyFooter(); ?>
