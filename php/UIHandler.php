@@ -223,7 +223,7 @@ error_reporting(E_ERROR | E_PARSE);
 
     /** Tables */
 
-    public function generateTableHeaderWithItems($items, $id, $styles = "", $needsTranslation = true, $hideHeading = false, $hideOnMedium = array(), $hideOnLow = array()) {
+    public function generateTableHeaderWithItems($items, $id, $styles = "", $needsTranslation = true, $hideHeading = false, $hideOnMedium = array(), $hideOnLow = array(), $idTbody) {
 		$theadStyle = $hideHeading ? 'style="display: none!important;"' : '';
 	    $table = "<table id=\"$id\" class=\"table $styles\"><thead $theadStyle><tr>";
 	    if (is_array($items)) {
@@ -240,7 +240,7 @@ error_reporting(E_ERROR | E_PARSE);
 			    $table .= "<th $classModifiers>".($needsTranslation ? $this->lh->translationFor($item) : $item)."</th>";
 		    }
 	    }
-		$table .= "</tr></thead><tbody>";
+		$table .= "</tr></thead><tbody id=\"$idTbody\">";
 		return $table;
     }
 
@@ -445,8 +445,8 @@ error_reporting(E_ERROR | E_PARSE);
 	                <div class="modal-header">
 					<h4 class="modal-title animated bounceInRight">
 						<div class="col-sm-12 col-md-8">
-							<i class="fa fa-info-circle" title='.$title.'></i> 
-							<b>'.$subtitle.'</b>
+							'.$iconCode.$title.' 
+							<b>'.$subtitleCode.'</b>
 						</div>
 						<div class="col-sm-12 col-md-4 row" id="daterange-'.$title.'">
 							<div class="col-sm-12">
@@ -505,16 +505,37 @@ error_reporting(E_ERROR | E_PARSE);
 	    return $result;
     }
 
-    public function singleFormGroupWithSelect($label, $id, $name, $options, $selectedOption, $needsTranslation = false) {
-	    $labelCode = empty($label) ? "" : '<label>'.$label.'</label>';
-	    $selectCode = '<div class="form-group">'.$labelCode.'<select id="'.$id.'" name="'.$name.'" class="form-control">';
+    public function singleFormGroupWithSelect($label, $id, $name, $options, $selectedOption, $needsTranslation = false, $labelClass, $divClass, $selectClass) {
+	    $labelCode = empty($label) ? '<div class="'.$divClass.'">' : '<label class="control-label '.$labelClass.'">'.$label.'</label><div class="'.$divClass.'">';
+	    $selectCode = '<div class="form-group">'.$labelCode.'<select id="'.$id.'" name="'.$name.'" class="form-control '.$selectClass.'">';
 	    foreach ($options as $key => $value) {
 		    $isSelected = ($selectedOption == $key) ? " selected" : "";
 		    $selectCode .= '<option value="'.$key.'" '.$isSelected.'>'.($needsTranslation ? $this->lh->translationFor($value) : $value).'</option>';
 	    }
-		$selectCode .= '</select></div>';
+		$selectCode .= '</select></div></div>';
 		return $selectCode;
     }
+    
+    public function singleFormGroupWithSelectHiddenInput($label, $id, $name, $options, $selectedOption, $needsTranslation = false, $labelClass, $divClass, $selectClass, $hiddeninput) {
+	    $labelCode = empty($label) ? '<div class="'.$divClass.'">' : '<label class="control-label '.$labelClass.'">'.$label.'</label><div class="'.$divClass.'">';
+	    if (!empty($hiddeninput)) {
+			//foreach ($hiddeninput as $values) {
+				$inputid = $hiddeninput["id"];
+				$inputname = $hiddeninput["name"];
+				$inputvalue = $hiddeninput["value"];
+			//}
+			$hiddenInputCode = '<input type="hidden" id="'.$inputid.'" name="'.$inputname.'" value="'.$inputvalue.'">';	    
+	    } else {
+			$hiddenInputCode = "";
+	    }
+	    $selectCode = '<div class="form-group">'.$labelCode.''.$hiddenInputCode.'<select id="'.$id.'" name="'.$name.'" class="form-control '.$selectClass.'">';
+	    foreach ($options as $key => $value) {
+		    $isSelected = ($selectedOption == $key) ? " selected" : "";
+		    $selectCode .= '<option value="'.$key.'" '.$isSelected.'>'.($needsTranslation ? $this->lh->translationFor($value) : $value).'</option>';
+	    }
+		$selectCode .= '</select></div></div>';
+		return $selectCode;
+    }    
 
     public function singleFormGroupWithSelectInputGroup($label, $id, $name, $options, $selectedOption, $needsTranslation = false) {
 	    $labelCode = empty($label) ? "" : '<label>'.$label.'</label>';
@@ -527,12 +548,13 @@ error_reporting(E_ERROR | E_PARSE);
 		return $selectCode;
     }
 
-    public function singleFormInputElement($id, $name, $type, $placeholder = "", $value = null, $icon = null, $required = false, $disabled = false) {
+    public function singleFormInputElement($id, $name, $type, $placeholder = "", $value = null, $icon = null, $required = false, $disabled = false, $readonly = false, $inputClass = "", $divClass = "") {
 	    $iconCode = empty($icon) ? '' : '<span class="input-group-addon"><i class="fa fa-'.$icon.'"></i></span>';
-	    $valueCode = empty($value) ? '' : ' value="'.$value.'"';
+	    $valueCode = empty($value) ? 'value=""' : ' value="'.$value.'"';
 	    $requiredCode = $required ? "required" : "";
 	    $disabledCode = $disabled ? "disabled" : "";
-	    return $iconCode.'<input name="'.$name.'" id="'.$id.'" type="'.$type.'" class="form-control '.$requiredCode.'" placeholder="'.$placeholder.'"'.$valueCode.' '.$disabledCode.'>';
+	    $readonlyCode = $readonly ? "readonly" : "";
+	    return $iconCode.'<div class="'.$divClass.'"><input name="'.$name.'" id="'.$id.'" type="'.$type.'" class="form-control '.$inputClass.'" placeholder="'.$placeholder.'"'.$valueCode.' '.$requiredCode.' '.$disabledCode.' '.$readonlyCode.'></div>';
     }
 
     public function singleFormTextareaElement($id, $name, $placeholder = "", $text = "", $icon = null) {
@@ -573,16 +595,16 @@ error_reporting(E_ERROR | E_PARSE);
 		return $iconCode.$htmlCode."\n".$jsCode;
 	}
 
-	public function hiddenFormField($id, $value = "") {
-		return '<input type="hidden" id="'.$id.'" name="'.$id.'" value="'.$value.'">';
+	public function hiddenFormField($id, $value = "", $name = "") {
+		return '<input type="hidden" id="'.$id.'" name="'.$name.'" value="'.$value.'">';
 	}
 
 	public function singleInputGroupWithContent($content) {
 		return '<div class="input-group">'.$content.'</div>';
 	}
 
-	public function singleFormGroupWrapper($content, $label = null) {
-		$labelCode = isset($label) ? '<label>'.$label.'</label>' : '';
+	public function singleFormGroupWrapper($content, $label = null, $labelClass) {
+		$labelCode = isset($label) ? '<label class="control-label '.$labelClass.'">'.$label.'</label>' : '';
 		return '<div class="form-group">'.$labelCode.$content.'</div>';
 	}
 
@@ -606,9 +628,9 @@ error_reporting(E_ERROR | E_PARSE);
 
     /** Global buttons */
 
-    public function buttonWithLink($id, $link, $title, $type = "button", $icon = null, $style = CRM_UI_STYLE_DEFAULT, $additionalClasses = null) {
+    public function buttonWithLink($id, $link, $title, $type = "button", $icon = null, $style = CRM_UI_STYLE_DEFAULT, $additionalClasses = null, $additionalAttr = null) {
 	    $iconCode = isset($icon) ? '<i class="fa fa-'.$icon.'"></i>' : '';
-	    return '<button type="'.$type.'" class="btn btn-'.$style.' '.$additionalClasses.'" id="'.$id.'" href="'.$link.'">'.$iconCode.' '.$title.'</button>';
+	    return '<button type="'.$type.'" class="btn btn-'.$style.' '.$additionalClasses.'" id="'.$id.'" href="'.$link.'" '.$additionalAttr.'>'.$iconCode.' '.$title.'</button>';
     }
 
     /** Task list buttons */
@@ -3893,9 +3915,9 @@ error_reporting(E_ERROR | E_PARSE);
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
 			<li'.($perm->campaign->campaign_update === 'N' ? ' class="hidden"' : '').'><a class="edit-campaign" href="#" data-id="'.$id.'">'.$this->lh->translationFor("view_details").'</a></li>
-      <li'.($perm->pausecodes->pausecodes_read === 'N' ? ' class="hidden"' : '').'><a class="view-pause-codes" href="#" data-id="'.$id.'">'.$this->lh->translationFor("view_pause_codes").'</a></li>
-      <li'.($perm->hotkeys->hotkeys_read === 'N' ? ' class="hidden"' : '').'><a class="view-hotkeys" href="#" data-id="'.$id.'">'.$this->lh->translationFor("view_hotkeys").'</a></li>
-	  <li'.($perm->list->list_read === 'N' ? ' class="hidden"' : '').'><a class="view-lists" href="#" data-id="'.$id.'">'.$this->lh->translationFor("view_lists").'</a></li>
+			<li'.($perm->pausecodes->pausecodes_read === 'N' ? ' class="hidden"' : '').'><a class="view-pause-codes" href="#" data-id="'.$id.'">'.$this->lh->translationFor("view_pause_codes").'</a></li>
+			<li'.($perm->hotkeys->hotkeys_read === 'N' ? ' class="hidden"' : '').'><a class="view-hotkeys" href="#" data-id="'.$id.'">'.$this->lh->translationFor("view_hotkeys").'</a></li>
+			<li'.($perm->list->list_read === 'N' ? ' class="hidden"' : '').'><a class="view-lists" href="#" data-id="'.$id.'">'.$this->lh->translationFor("view_lists").'</a></li>
 			<li'.($perm->campaign->campaign_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-campaign" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';

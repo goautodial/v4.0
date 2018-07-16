@@ -281,7 +281,7 @@ if(isset($_SESSION["user"])){
 	//Telephony > phonenumber(DID)
 	public function API_getAllDIDs() {
 		$postfields = array(
-			'goAction' => 'goGetDIDsList'
+			'goAction' => 'goGetAllDID'
 		);				
 		return $this->API_Request("goInbound", $postfields);
 	}
@@ -374,6 +374,22 @@ if(isset($_SESSION["user"])){
 		);		
 		return $this->API_Request("goCampaigns", $postfields);
 	}	
+	
+	public function API_getSuggestedDIDs($keyword){
+		$postfields = array(
+			'goAction' => 'goGetSuggestedDIDs',
+			'keyword' => $keyword			
+		);
+		return $this->API_Request("goCampaigns", $postfields);
+	}	
+	
+	public function API_getDIDSettings($did){
+		$postfields = array(
+			'goAction' => 'goGetDIDSettings',
+			'did' => $did			
+		);
+		return $this->API_Request("goCampaigns", $postfields);
+	}
 	
 	public function getAllCampaignStatuses(){
         $campaign = $this->API_getAllCampaigns();

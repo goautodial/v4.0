@@ -1,29 +1,37 @@
 <?php
-    require_once('goCRMAPISettings.php');
-    
-    $url = gourl."/goCampaigns/goAPI.php"; # URL to GoAutoDial API file
-	$postfields["goUser"]           = goUser; #Username goes here. (required)
-	$postfields["goPass"]           = goPass; #Password goes here. (required)
-	$postfields["goAction"]         = "goGetSuggestedDIDs"; #action performed by the [[API:Functions]]
-	$postfields["responsetype"]     = responsetype; #json (required)
-	$postfields["hostname"]         = $_SERVER['REMOTE_ADDR']; #Default value
+/**
+ * @file        ModifyUsergroup.php
+ * @brief       API to handle user_group variables
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author		Demian Lizandro A, Biscocho
+ * @author      Noel Umandap
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-	$postfields['keyword']          = trim(strip_tags($_POST['term']));
-    
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
-    
-    if ($output->result=="success") {
-        echo json_encode($output->data, true);
-    } else {
-        echo json_encode("");
-    }
+	require_once('APIHandler.php');
+	
+	$api 									= \creamy\APIHandler::getInstance();	
+	$keyword								= trim(strip_tags($_POST['term']));	
+	$output 								= $api->API_getSuggestedDIDs($keyword);
+		
+	if ($output->result=="success") { 
+		echo json_encode($output->data);
+	} else { 
+		echo json_encode("");
+	}
+	
+	
 ?>

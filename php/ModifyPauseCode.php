@@ -49,8 +49,8 @@
 		'pause_code' 					=> $pause_code,
 		'pause_code_name' 				=> $pause_code_name,
 		'billable' 						=> $billable,
-		'session_user' 					=> $_POST['log_user'],
-		'log_user' 						=> $_POST['log_user'],
+		'session_user' 					=> $_SESSION['user'],
+		'log_user' 						=> $_SESSION['user'],
 		'log_ip' 						=> $_SERVER['REMOTE_ADDR'],
 		'hostname' 						=> $_SERVER['REMOTE_ADDR']
 	);	

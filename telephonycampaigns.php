@@ -56,7 +56,7 @@
         <?php print $ui->creamyThemeCSS(); ?>
 		<!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> <<< THIS IS CAUSING THE TOOLTIP PROBLEM -->
 		<!-- Data Tables -->
-        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/plugins/datatables/1.10.12/jquery.dataTables.min.js" type="text/javascript"></script>
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 		<!-- Bootstrap Color Picker -->
   		<link rel="stylesheet" href="adminlte/colorpicker/bootstrap-colorpicker.min.css">
@@ -172,11 +172,11 @@
 								//$leadfilter = $api->API_getAllLeadFilters();
 								//$country_codes = $api->API_getCountryCodes();
 								//$list = $api->API_getAllLists();
-								//$ingroup = $api->API_getAllInGroups();
-								//$ivr = $api->API_getAllIVRs();
-								//$voicemails = $api->API_getAllVoiceFiles();
-								//$users = $api->API_getAllUsers();
-								//$carriers = $api->API_getAllCarriers();
+								$ingroup = $api->API_getAllInGroups();
+								$ivr = $api->API_getAllIVRs();
+								$voicemails = $api->API_getAllVoiceFiles();
+								$users = $api->API_getAllUsers();
+								$carriers = $api->API_getAllCarriers();
 								$checkbox_all = $ui->getCheckAll("campaign");
 								//echo "<pre>";
 								//var_dump($leadrecycling);
@@ -534,8 +534,6 @@
 							</div>
 					<!-- Custom Tabs (Pulled to the right) -->
 					<form id="campaign_form" method="POST" action="./php/AddCampaign.php" enctype="multipart/form-data">
-						<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
-						<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 						<div class="row">
 							<h4><?php $lh->translateText("campaign_information"); ?>
 	                           <br>
@@ -562,7 +560,7 @@
 				    					<div class="input-group">
 									      <input id="campaign-id" name="campaign_id" type="number" class="form-control" placeholder="" value="<?php echo str_pad(mt_rand(1,99999999),8,'0',STR_PAD_LEFT); ?>" min="0" minlength="3" maxlength="8" readonly onkeydown="return FilterInput(event)">
 									      <span class="input-group-btn" style="vertical-align: top;">
-									        <button id="campaign-id-edit-btn" class="btn btn-default" type="button" style="min-height: 34px;"><i class="fa fa-pencil"></i></button>
+									        <button id="campaign-id-edit-btn" class="btn btn-default" type="button" style="min-height: 34px;" disabled><i class="fa fa-pencil"></i></button>
 									      </span>
 									    </div><!-- /input-group -->
 				    				</div>
@@ -1148,74 +1146,33 @@
     <!-- end of modal -->
 	
 	<?php
-		$pausecodeTable = '
-			<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
-				<div class="table-responsive">
-					<table id="pause_codes_list" class="table table-bordered" style="width: 100%;">
-						<thead>
-							<tr>
-								<th>'.$lh->translationFor("pause_codes").'</th>
-								<th>'.$lh->translationFor("pause_name").'</th>
-								<th>'.$lh->translationFor("billable").'</th>
-								<th>'.$lh->translationFor("action").'</th>
-							</tr>
-						</thead>
-						<tbody id="pause_code_data_container">
-							<!-- Data Here -->
-						</tbody>
-					</table>
-				</div>
-			</div>
-		';
-		$footer_pc = '
-			<button type="button" class="btn btn-default" data-dismiss="modal">'.$lh->translationFor("close").'</button>
-			<button type="button" class="btn btn-success btn-new-pause-code'.($perm->pausecodes->pausecodes_create === "N" ? " hidden": "").'" data-campaign="">Create New</button>
-		';
+		// pause codes modal + datatable
+		$modalTitle = $lh->translationFor("pause_codes");
+		$modalSubtitle = "";
+		$columns = array($lh->translationFor("pause_codes"), $lh->translationFor("pause_name"), $lh->translationFor("billable"), $lh->translationFor("action"));
+		$hideOnMedium = array($lh->translationFor("billable"));
+		$hideOnLow = array($lh->translationFor("billable"));
+		$result = $ui->generateTableHeaderWithItems($columns, "pause_codes_list", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		$bodyInputs = $result.'</tbody></table>';				
+		$modalFooter = $ui->buttonWithLink("", "", "Create New", "button", null, "success", "btn-new-pause-code", "data-campaign=''");
+		$modalForm = $ui->modalFormStructure('modal_view_pause_codes', '', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '', '');
 		
-		echo $ui->modalFormStructure('modal_view_pause_codes', '', $lh->translationFor("pause_codes"), '', $pausecodeTable, $footer_pc, '', '');
-	?>
+		echo $modalForm;
 		
-	<?php
-		$pausecodeForm = '
-			<input type="hidden" name="log_user" value="'.$_SESSION['user'].'" />
-			<input type="hidden" name="log_group" value="'.$_SESSION['usergroup'].'" />
-			<div class="form-group">
-				<label class="control-label col-lg-3">'.$lh->translationFor("campaign_id").':</label>
-				<div class="col-lg-9">
-					<input type="text" class="form-control campaign-id" name="campaign_id" readonly>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-lg-3">'.$lh->translationFor("pause_code").':</label>
-				<div class="col-lg-9">
-					<input type="text" class="form-control pause-code" name="pause_code">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-lg-3">'.$lh->translationFor("pause_name").':</label>
-				<div class="col-lg-9">
-					<input type="text" class="form-control pause-code-name" name="pause_code_name">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-lg-3">'.$lh->translationFor("billable").':</label>
-				<div class="col-lg-9">
-					<select class="form-control billable" name="billable">
-						<option value="YES">YES</option>
-						<option value="NO">NO</option>
-						<option value="HALF">HALF</option>
-					</select>
-				</div>
-			</div>
-		';
+		$modalTitle = $lh->translationFor("pause_codes");
+		$modalSubtitle = "";		
+		$campaignIdInput = $ui->singleFormGroupWrapper($ui->singleFormInputElement("", "campaign_id", "text", "", null, null, false, false, true, "campaign-id", "col-lg-9"), $lh->translationFor("campaign_id"), "col-lg-3");
+		$pauseCodeInput = $ui->singleFormGroupWrapper($ui->singleFormInputElement("", "pause_code", "text", "", null, null, false, false, false, "pause-code", "col-lg-9"), $lh->translationFor("pause_code"), "col-lg-3");
+		$pauseCodeNameInput = $ui->singleFormGroupWrapper($ui->singleFormInputElement("", "pause_code_name", "text", "", null, null, false, false, false, "pause-code-name", "col-lg-9"), $lh->translationFor("pause_name"), "col-lg-3");
+		$options = array("YES" => "YES", "NO" => "NO", "HALF" => "HALF");
+		$billableInput = $ui->singleFormGroupWithSelect($lh->translationFor("billable"), "", "billable", $options, "", true, "col-lg-3", "col-lg-9");
+		//$hiddenidinput = $ui->hiddenFormField("customer-type-id");
+		$bodyInputs = $campaignIdInput.$pauseCodeInput.$pauseCodeNameInput.$billableInput;
+		$modalFooter = $ui->buttonWithLink("", "", $lh->translationFor("save"), "button", null, "success", "btn-save-pause-code", "data-id='$id'").$ui->buttonWithLink("", "", $lh->translationFor("update"), "button", null, "success", "btn-update-pause-code", "", "hide");		
+		$modalForm = $ui->modalFormStructure('modal_form_pause_codes', 'form_pause_codes', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '');
+	
+		echo $modalForm;
 		
-		$footer_pc_form = '
-			<button type="button" class="btn btn-default" data-dismiss="modal">'.$lh->translationFor("close").'</button>
-			<button type="button" class="btn btn-primary btn-save-pause-code" data-id="'.$id.'">'.$lh->translationFor("save").'</button>
-			<button type="button" class="btn btn-success btn-update-pause-code hide">'.$lh->translationFor("update").'</button>
-		';
-		
-		echo $ui->modalFormStructure('modal_form_pause_codes', 'form_pause_codes', $lh->translationFor("pause_codes"), '', $pausecodeForm, $footer_pc_form, '', '');
 	?>
 		
 	<?php
@@ -1247,49 +1204,27 @@
 	?>
 		
 	<?php
-		$hotkeyForm = '
-			<input type="hidden" name="log_user" value="'.$_SESSION['user'].'" />
-			<input type="hidden" name="log_group" value="'.$_SESSION['usergroup'].'" />
-			<div class="form-group">
-				<label class="control-label col-lg-3" style="text-align: left;">'.$lh->translationFor("campaign_id").':</label>
-				<div class="col-lg-9">
-					<input type="text" class="form-control campaign-id" name="campaign_id" readonly>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-lg-3" style="text-align: left;">'.$lh->translationFor("hotkeys").':</label>
-				<div class="col-lg-9">
-					<select class="form-control select2 hotkey" name="hotkey">
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-						<option value="4">4</option>
-						<option value="5">5</option>
-						<option value="6">6</option>
-						<option value="7">7</option>
-						<option value="8">8</option>
-						<option value="9">9</option>
-					</select>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-lg-3" style="text-align: left;">'.$lh->translationFor("status").':</label>
-				<div class="col-lg-9">
-					<input type="hidden" id="hotkey_status_name" name="status_name" value="">
-					<select class="form-control select2 status" name="status">
-						<option>Select a Status</option>
-					</select>
-				</div>
-			</div>
-		';
+		// hotkeys modal + datatable
+		$columnsHKT = array($lh->translationFor("hotkeys"), $lh->translationFor("status"), $lh->translationFor("description"), $lh->translationFor("action"));
+		$hideOnMediumHKT = array($lh->translationFor("description"));
+		$hideOnLowHKT = array($lh->translationFor("description"));
+		$resultHKT = $ui->generateTableHeaderWithItems($columnsHKT, "hotkeys_list", "table-bordered table-striped", true, false, $hideOnMediumHKT, $hideOnLowHKT);
+		$bodyInputsHKT = $resultHKT.'</tbody></table>';				
+		$modalFooterHKT = $ui->buttonWithLink("", "", $lh->translationFor("create_new"), "button", null, "success", "btn-new-hotkey", "data-campaign=''");
+		$modalFormHKT = $ui->modalFormStructure('modal_view_hotkeys', '', $lh->translationFor("hotkeys"), "", $bodyInputsHKT, $modalFooterHKT, '', '');
 		
-		$footer_hk_form = '
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-primary btn-save-hotkey">Save</button>
-			<button type="button" class="btn btn-success btn-update-hotkey hide">Update</button>
-		';
+		echo $modalFormHKT;
 		
-		echo $ui->modalFormStructure('modal_form_hotkeys', 'form_hotkeys', $lh->translationFor("hotkey"), '', $hotkeyForm, $footer_hk_form, '', '');
+		$campaignIdInputHKF = $ui->singleFormGroupWrapper($ui->singleFormInputElement("", "campaign_id", "text", "", null, null, false, false, true, "campaign-id", "col-lg-9"), $lh->translationFor("campaign_id"), "col-lg-3");
+		$optionsHKF = array("1" => "1", "2" => "2", "3" => "3", "4" => "4", "5" => "5", "6" => "6", "7" => "7", "8" => "8", "9" => "9");
+		$hotkeyInputHKF = $ui->singleFormGroupWithSelect($lh->translationFor("hotkeys"), "", "hotkey", $optionsHKF, "", true, "col-lg-3", "col-lg-9", "select2 hotkey");
+		//$hiddenidinputHKF = $ui->hiddenFormField("hotkey_status_name", "", "status_name");
+		$statusInputHKF = $ui->singleFormGroupWithSelectHiddenInput($lh->translationFor("status"), "", "status", "", "", true, "col-lg-3", "col-lg-9", "select2 status", array("id" => "hotkey_status_name", "name" => "status_name", "value" => ""));		
+		$bodyInputsHKF = $campaignIdInputHKF.$hotkeyInputHKF.$statusInputHKF;
+		$modalFooterHKF = $ui->buttonWithLink("", "", $lh->translationFor("save"), "button", null, "success", "btn-save-hotkey", "data-id='$id'");		
+		$modalFormHKF = $ui->modalFormStructure('modal_form_hotkeys', 'form_hotkeys', $lh->translationFor("hotkeys"), "", $bodyInputsHKF, $modalFooterHKF, '');
+	
+		echo $modalFormHKF;
 	?>
 
 		<div id="modal_view_lists" class="modal fade" role="dialog">
@@ -1613,6 +1548,7 @@
 					<?php } ?>
 				}]
 			});
+			
 			$('#table_disposition').DataTable({
 				destroy:true,    
 				stateSave:true,
@@ -1632,6 +1568,7 @@
 					"aTargets": [ 0, 4 ]
 				}]
 			});
+			
 			$('#table_leadrecycling').DataTable({
 				destroy:true,    
 				stateSave:true,
@@ -1652,39 +1589,7 @@
 				}]
 			});
 			
-			$('#table_leadfilter').dataTable();			
-			
-			var table_pause_codes_list = $('#pause_codes_list').DataTable({
-				destroy:true,    
-				stateSave:true,
-				drawCallback:function(settings) {
-					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
-					pagination.toggle(this.api().page.info().pages > 1);
-				},
-				"columnDefs": [{
-					"searchable": false,
-					"targets": [ 3 ]
-				},{
-					"sortable": false,
-					"targets": [ 3 ]
-				}]
-			});	
-			
-			var table_hotkeys_list = $('#hotkeys_list').DataTable({
-				destroy:true,    
-				stateSave:true,
-				drawCallback:function(settings) {
-					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
-					pagination.toggle(this.api().page.info().pages > 1);
-				},				
-				"columnDefs": [{
-					"searchable": false,
-					"targets": [ 3 ]
-				},{
-					"sortable": false,
-					"targets": [ 3 ]
-				}]
-			});				
+			$('#table_leadfilter').dataTable();
 			
 			// FAB HOVER
 			$(".bottom-menu").on('mouseenter mouseleave', function () {
@@ -1710,13 +1615,13 @@
 								term : request.term
 							},
 							dataType: 'json',
-							success: function(responsedata) {
-								//console.log(responsedata);
-								if (responsedata){ 
-                                    response($.parseJSON(responsedata));
+							success: function(data) {
+								console.log(data);
+								if (data){ 
+                                    response(JSON.parse(data));
 									$('.call-route-mode').removeClass('hide');
 									$('.group-color').removeClass('hide');
-                                }else{
+                                } else {
 									response('');
 									$('.call-route-mode').addClass('hide');
 									$('.group-color').addClass('hide');
@@ -1736,20 +1641,20 @@
 							},
 							dataType: 'json',
 							success: function(response) {
-								//console.log(response);
+								console.log(response);
 								$('#did-tfn-extension').val(did);
 								if (response.did_route == "IN_GROUP") {
 									$('#call-route').val("INGROUP").trigger('change');
 									$('#ingroup-text').val(response.group_id).trigger('change');
 									$('.group-color').removeClass('hide');
-                                }else if (response.did_route == "CALLMENU") {
+                                } else if (response.did_route == "CALLMENU") {
 									$('#call-route').val("IVR").trigger('change');
 									$('#ivr-text').val(response.menu_id).trigger('change');
 									$('.group-color').addClass('hide');
-                                }else if (response.did_route == "AGENT") {
+                                } else if (response.did_route == "AGENT") {
 									$('#call-route').val("AGENT").trigger('change');
                                     $('#agent-text').val(response.user).trigger('change');
-                                }else if (response.did_route == "VOICEMAIL") {
+                                } else if (response.did_route == "VOICEMAIL") {
 									$('#call-route').val("VOICEMAIL").trigger('change');
                                     $('#voicemail-text').val(response.voicemail_ext).trigger('change');
                                 }
@@ -1960,8 +1865,10 @@
 				}
 			});
 
-			$(document).on('click', '.view-pause-codes', function(){
+			$(document).on('click', '.view-pause-codes', function(){				
+				$('#modal_view_pause_codes').modal("toggle");				
 				var campaign_id = $(this).data('id');
+				$('.btn-new-pause-code').attr('data-campaign', campaign_id);
 				console.log(campaign_id);
 				$.ajax({
 					url: "./php/GetPauseCodes.php",
@@ -1971,22 +1878,68 @@
 					},
 					dataType: 'json',
 					success: function(data) {
-						// var values = JSON.parse(response.result);
-						console.log(data);
-						$('.btn-new-pause-code').attr('data-campaign', campaign_id);
-						$('#modal_view_pause_codes').modal('show');
-						//var table = $('#pause_codes_list').DataTable();
-						$('#pause_code_data_container').html(data);
-						$("#pause_codes_list").css("width","100%");
+						var JSONString = data;
+						var JSONObject = JSON.parse(JSONString);
+						//console.log(JSONObject);
+						tablePClist = $('#pause_codes_list').DataTable({
+							data: JSONObject,
+							destroy: true,							
+							stateSave: true,
+							drawCallback: function(settings) {
+								var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+								pagination.toggle(this.api().page.info().pages > 1);
+							},
+							columnDefs: [{ 
+								width: "20%", 
+								targets: [ 3 ] 
+							},{
+								searchable: false,
+								targets: [ 3 ]
+							},{
+								sortable: false,
+								targets: [ 3 ]
+							}]
+						});
 					}
 				});
-				//}				
 			});
 
 			$(document).on('click', '.view-hotkeys', function(){
 				var campaign_id = $(this).data('id');
-				// alert(campaign_id);
-				get_hotkeys(campaign_id);
+				console.log(campaign_id);
+				$('#modal_view_hotkeys').modal('toggle');
+				$('.btn-new-hotkey').attr('data-campaign', campaign_id);
+				$.ajax({
+					url: "./php/GetHotkeys.php",
+					type: 'POST',
+					data: {
+						campaign_id : campaign_id,
+					},
+					dataType: 'json',
+					success: function(data) {
+						console.log(data);	
+						var JSONObject = JSON.parse(data);
+						var tableHKlist = $('#hotkeys_list').DataTable({
+							data:JSONObject,
+							destroy:true,    
+							stateSave:true,
+							drawCallback:function(settings) {
+								var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+								pagination.toggle(this.api().page.info().pages > 1);
+							},
+							columnDefs: [{ 
+								width: "20%", 
+								targets: [ 3 ] 
+							},{
+								searchable: false,
+								targets: [ 3 ]
+							},{
+								sortable: false,
+								targets: [ 3 ]
+							}]
+						});
+					}
+				});
 			});
 			
 			$(document).on('click', '.view-lists', function(){
@@ -2025,6 +1978,7 @@
 				var campaign_id = $(this).data('campaign');
 				$('.campaign-id').val(campaign_id);
 
+				// populate status drop down select
 				$.ajax({
 					url: "./php/GetDialStatuses.php",
 					type: 'POST',
@@ -2033,7 +1987,7 @@
 					},
 					dataType: 'json',
 					success: function(response) {
-						console.log(response);
+						//console.log(response);
 						$('.status').html(response);
 						$('.status').select2({
 							theme: 'bootstrap'
@@ -2107,7 +2061,7 @@
 				$('.btn-save-pause-code').addClass('hide');
 				$('.btn-update-pause-code').removeClass('hide');
 				$('#modal_view_pause_codes').modal('hide');
-				$('#modal_form_pause_codes').modal('show');
+				$('#modal_form_pause_codes').modal('toggle');
 				$('body').addClass('modal-open');
 			});
 
@@ -2479,40 +2433,39 @@
 				        },
 				        onFinished: function (event, currentIndex)
 				        {
-									var campaign_id = $('#campaign-id').val();
-									var resultCheck = checkCampaign(campaign_id);
-									console.log(resultCheck);
-									if(resultCheck == 1){
-										swal({
-											title: "<?php $lh->translateText("saving_campaign"); ?>?",
-											text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
-											type: "warning",
-											showCancelButton: true,
-											confirmButtonColor: "#DD6B55",
-											confirmButtonText: "<?php $lh->translateText("save_campaign"); ?>!",
-											cancelButtonText: "<?php $lh->translateText("no"); ?>",
-											closeOnConfirm: false,
-											closeOnCancel: false
-											},
-											function(isConfirm){
-												if (isConfirm) {
-													$('#finish').text("Loading...");
-								        	$('#finish').attr("disabled", true);
-
-								        	$('#campaign_form').submit();
-												} else {
-													swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("save_not"); ?>", "error");
-													$('#campaign-name').val('');
-													campaign_form.children("div").steps("previous");
-													$('#add_campaign').modal('hide');
-												}
-											});
-											$('.campaign-checker-message').addClass('hide');
-									}else{
-										campaign_form.children("div").steps("previous");
-										$('.campaign-checker-message').removeClass('hide');
-										$('#campaign-id').focus();
-									}
+							var campaign_id = $('#campaign-id').val();
+							var resultCheck = checkCampaign(campaign_id);
+							console.log(resultCheck);
+							if (resultCheck == 1) {
+								swal({
+									title: "<?php $lh->translateText("saving_campaign"); ?>?",
+									text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
+									type: "warning",
+									showCancelButton: true,
+									confirmButtonColor: "#DD6B55",
+									confirmButtonText: "<?php $lh->translateText("save_campaign"); ?>!",
+									cancelButtonText: "<?php $lh->translateText("no"); ?>",
+									closeOnConfirm: false,
+									closeOnCancel: false
+									},
+									function(isConfirm){
+										if (isConfirm) {
+											$('#finish').text("Loading...");
+											$('#finish').attr("disabled", true);
+											$('#campaign_form').submit();
+										} else {
+											swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("save_not"); ?>", "error");
+											$('#campaign-name').val('');
+											campaign_form.children("div").steps("previous");
+											$('#add_campaign').modal('hide');
+										}
+									});
+									$('.campaign-checker-message').addClass('hide');
+							} else {
+								campaign_form.children("div").steps("previous");
+								$('.campaign-checker-message').removeClass('hide');
+								$('#campaign-id').focus();
+							}
 
 				        }
 				    });
@@ -2912,13 +2865,18 @@
 			        }
 			    });
 				
+				$(document).on('click','.confirm',function() {
+					$(this).attr('disabled', true);
+					$('#finish').text("Loading...");
+				});
+				
 				//edit leadrecycling
-					$(document).on('click','.edit-leadrecycling',function() {
-						var url = './edittelephonycampaign.php';
-						var form = $('<form action="' + url + '" method="post"><input type="hidden" name="leadrecycling_id" value="' + $(this).attr('data-id') + '" /></form>');
-						$('body').append(form);  // This line is not necessary
-						$(form).submit();
-					});
+				$(document).on('click','.edit-leadrecycling',function() {
+					var url = './edittelephonycampaign.php';
+					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="leadrecycling_id" value="' + $(this).attr('data-id') + '" /></form>');
+					$('body').append(form);  // This line is not necessary
+					$(form).submit();
+				});
 
 		        //delete leadrecycling
 			        $(document).on('click','.delete-leadrecycling',function() {
@@ -3273,6 +3231,8 @@
 		}); // end of document ready
 
 		function get_pause_codes(campaign_id){
+			$('#modal_view_pause_codes').modal('show');
+			$('.btn-new-pause-code').attr('data-campaign', campaign_id);
 			$.ajax({
 				url: "./php/GetPauseCodes.php",
 				type: 'POST',
@@ -3280,32 +3240,34 @@
 					campaign_id : campaign_id,
 				},
 				dataType: 'json',
-				success: function(response) {
-						console.log(response);
-						$('.btn-new-pause-code').attr('data-campaign', campaign_id);
-						$('#modal_view_pause_codes').modal('show');
-						var table = $('#pause_codes_list').DataTable();
-						table.fnClearTable();
-						table.fnDestroy();
-						$('#pause_code_data_container').html(response);
-						$('#pause_codes_list').DataTable({
-							destroy: true,
-							"searching": true,
-							bFilter: true,
-							"aoColumnDefs": [{
-								"bSearchable": false,
-								"aTargets": [ 3 ]
-							},{
-								"bSortable": false,
-								"aTargets": [ 3 ]
-							}]
-						});
-						$("#pause_codes_list").css("width","100%");
-					}
+				success: function(data) {
+					var JSONObject = JSON.parse(data);
+					var tablePClist = $('#pause_codes_list').DataTable({
+						data:JSONObject,
+						destroy:true,    
+						stateSave:true,
+						drawCallback:function(settings) {
+							var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+							pagination.toggle(this.api().page.info().pages > 1);
+						},
+						columnDefs: [{ 
+							width: "20%", 
+							targets: [ 3 ] 
+						},{
+							searchable: false,
+							targets: [ 3 ]
+						},{
+							sortable: false,
+							targets: [ 3 ]
+						}]
+					});						
+				}
 			});
 		}
 
 		function get_hotkeys(campaign_id){
+			$('#modal_view_hotkeys').modal('show');
+			$('.btn-new-hotkey').attr('data-campaign', campaign_id);
 			$.ajax({
 				url: "./php/GetHotkeys.php",
 				type: 'POST',
@@ -3313,26 +3275,28 @@
 					campaign_id : campaign_id,
 				},
 				dataType: 'json',
-				success: function(response) {
-					console.log(response);
-					$('.btn-new-hotkey').attr('data-campaign', campaign_id);
-					$('#modal_view_hotkeys').modal('show');
-					var table_hotkeys_list = $('#hotkeys_list').DataTable();
-					table.fnClearTable();
-					table.fnDestroy();
-					$('#hotkey_data_container').html(response);
-					$('#hotkeys_list').DataTable({
-						"searching": true,
-						bFilter: true,
-						"aoColumnDefs": [{
-							"bSearchable": false,
-							"aTargets": [ 3 ]
+				success: function(data) {
+					console.log(data);	
+					var JSONObject = JSON.parse(data);
+					var tableHKlist = $('#hotkeys_list').DataTable({
+						data:JSONObject,
+						destroy:true,    
+						stateSave:true,
+						drawCallback:function(settings) {
+							var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+							pagination.toggle(this.api().page.info().pages > 1);
+						},
+						columnDefs: [{ 
+							width: "20%", 
+							targets: [ 3 ] 
 						},{
-							"bSortable": false,
-							"aTargets": [ 3 ]
+							searchable: false,
+							targets: [ 3 ]
+						},{
+							sortable: false,
+							targets: [ 3 ]
 						}]
 					});
-					$("#hotkeys_list").css("width","100%");
 				}
 			});
 		}
@@ -3346,24 +3310,21 @@
 				},
 				dataType: 'json',
 				success: function(response) {
-						// var values = JSON.parse(response.result);
-						// console.log(response);
-						// $('.btn-new-lists').attr('data-campaign', campaign_id);
-						$('#modal_view_lists').modal('show');
-						var table = $('#lists_list').DataTable();
-						table.fnClearTable();
-						table.fnDestroy();
-						$('#lists_data_container').html(response.data);
-						$('.count_active').text(response.count_active);
-						$('.count_inactive').text(response.count_inactive);
-						
-						$('.view-leads-on-hopper').attr('data-campaign', campaign_id);
-						$('#lists_list').DataTable({
-							"searching": true,
-							bFilter: true
-						});
-						$("#lists_list").css("width","100%");
-					}
+					$('#modal_view_lists').modal('show');
+					var table = $('#lists_list').DataTable();
+					table.fnClearTable();
+					table.fnDestroy();
+					$('#lists_data_container').html(response.data);
+					$('.count_active').text(response.count_active);
+					$('.count_inactive').text(response.count_inactive);
+					
+					$('.view-leads-on-hopper').attr('data-campaign', campaign_id);
+					$('#lists_list').DataTable({
+						"searching": true,
+						bFilter: true
+					});
+					$("#lists_list").css("width","100%");
+				}
 			});
 
 			$.ajax({

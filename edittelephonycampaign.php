@@ -443,7 +443,7 @@
 												<div class="form-group">
 													<label class="col-sm-3 control-label"><?php $lh->translateText("phone_numbers_did/ftn_on_this_campaign"); ?>:</label>
 													<span class="col-sm-9 control-label" style="text-align: left; vertical-align: top;">
-														<?php if(count($dids->did_id) != 0) {?>
+														<?php if(count($dids->did_id) > 0) {?>
 															<?php for($i=0;$i<=count($dids->did_id);$i++) { ?>
 																<?php if(!empty($dids->did_id[$i])){ ?>
 																	<p><?php echo $dids->did_pattern[$i]; ?></p>

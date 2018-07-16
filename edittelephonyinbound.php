@@ -128,7 +128,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 
 					/* APIs used for forms */
 						$call_menu = $api->API_getAllIVRs();
-						$call_time = $api->API_getCalltimes();
+						$call_time = $api->API_getAllCalltimes();
 						$scripts = $api->API_getAllScripts();
 						$voicemail = $api->API_getAllVoiceMails();
 						$ingroup = $api->API_getAllInGroups();

@@ -28,21 +28,23 @@
 	$perm 								= $api->goGetPermissions('hotkeys', $user_group);	
 	$output 							= $api->API_getAllHotkeys($campaign_id);
 
-	if(!empty($output)){
-		$data 							= '';
-		$i								=0;
-		for($i=0;$i<=count($output->campaign_id);$i++) {
-			if(!empty($output->hotkey[$i])){
-				$data 					.= '<tr>';
-				$data 					.= '<td>'.$output->hotkey[$i].'</td>';
-				$data 					.= '<td>'.$output->status[$i].'</td>';
-				$data 					.= '<td>'.str_replace("+"," ",$output->status_name[$i]).'</td>';
-				$data 					.= '<td style="width: 20%;"><a href="#" class="btn-delete-hk btn btn-danger'.($perm->hotkeys_delete === 'N' ? ' hidden' : '').'" data-camp-id="'.$output->campaign_id[$i].'" data-hotkey="'.$output->hotkey[$i].'"><span class="fa fa-trash"></span></a></td>';
-				$data 					.= '</tr>';
-			}
+	$data 							= '[';
+	$i								= 0;
+	
+	for($i=0;$i<=count($output->campaign_id);$i++) {
+		if(!empty($output->hotkey[$i])){
+			$data 					.= '[';
+			$data 					.= '"'.$output->hotkey[$i].'",';
+			$data 					.= '"'.$output->status[$i].'",';
+			$data 					.= '"'.str_replace('+',' ',$output->status_name[$i]).'",';
+			$data 					.= '"<a style=\"margin-right: 5px;\" href=\"#\" class=\"btn-delete-hk btn btn-danger'.($perm->hotkeys_delete === 'N' ? ' hidden' : '').'\" data-camp-id=\"'.$output->campaign_id[$i].'\" data-hotkey=\"'.$output->hotkey[$i].'\"><span class=\"fa fa-trash\"></span></a>"';
+			$data 					.= '],';
 		}
 	}
 	
-	echo json_encode($data);
+	$data 							= rtrim($data, ",");    
+	$data 							.= ']';
+	
+	echo json_encode($data, true);
 
 ?>
