@@ -33,45 +33,43 @@
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 
-$campaign_id = NULL;
-if (isset($_POST["campaign"])) {
-	$campaign_id = $_POST["campaign"];
-}
+	$campaign_id = NULL;
+	if (isset($_POST["campaign"])) {
+		$campaign_id = $_POST["campaign"];
+	}
 
-$did = NULL;
-if (isset($_POST["disposition_id"])) {
-	$did = $_POST["disposition_id"];
-}
+	$did = NULL;
+	if (isset($_POST["disposition_id"])) {
+		$did = $_POST["disposition_id"];
+	}
 
-$leadrecycling_id = NULL;
-if (isset($_POST["leadrecycling_id"])) {
-	$leadrecycling_id = $_POST["leadrecycling_id"];
-}
+	$leadrecycling_id = NULL;
+	if (isset($_POST["leadrecycling_id"])) {
+		$leadrecycling_id = $_POST["leadrecycling_id"];
+	}
 
-$lf_id = NULL;
-if (isset($_POST["leadfilter"])) {
-	$lf_id = $_POST["leadfilter"];
-}
+	$lf_id = NULL;
+	if (isset($_POST["leadfilter"])) {
+		$lf_id = $_POST["leadfilter"];
+	}
 
-/*
- * APIs for forms
- */
-$campaign = $api->API_getCampaignInfo($campaign_id);
-$disposition = $api->API_getDispositionInfo($campaign_id);
+	// get campaign values
+	$campaign = $api->API_getCampaignInfo($campaign_id);
+	$disposition = $api->API_getDispositionInfo($campaign_id);
 
-$calltimes = $api->API_getAllCalltimes();
-$scripts = $api->API_getAllScripts();
-$carriers = $api->API_getAllCarriers();
-$leadfilter = $api->API_getAllLeadFilters();
-$dialStatus = $api->API_getAllDialStatuses($campaign_id);
-$sdialStatus = $api->API_getAllDialStatusesSurvey($campaign_id);
-$campdialStatus = $api->API_getAllCampaignDialStatuses($campaign_id);
-$dids = $api->API_getAllDIDs();
-$voicefiles = $api->API_getAllVoiceFiles();
-$ingroups = $api->API_getAllInGroups();
-$ivr = $api->API_getAllIVRs();
-$lists = $api->API_getAllLists();
-$audiofiles = $api->API_getAllVoiceFiles();
+	$calltimes = $api->API_getAllCalltimes();
+	$scripts = $api->API_getAllScripts();
+	$carriers = $api->API_getAllCarriers();
+	$leadfilter = $api->API_getAllLeadFilters();
+	$dialStatus = $api->API_getAllDialStatuses($campaign_id);
+	$sdialStatus = $api->API_getAllDialStatusesSurvey($campaign_id);
+	$campdialStatus = $api->API_getAllCampaignDialStatuses($campaign_id);
+	$dids = $api->API_getAllDIDs();
+	$voicefiles = $api->API_getAllVoiceFiles();
+	$ingroups = $api->API_getAllInGroups();
+	$ivr = $api->API_getAllIVRs();
+	$lists = $api->API_getAllLists();
+	$audiofiles = $api->API_getAllVoiceFiles();
 
 ?>
 <html>
@@ -3149,8 +3147,10 @@ $audiofiles = $api->API_getAllVoiceFiles();
 				url: "./php/ModifyTelephonyCampaign.php",
 				type: 'POST',
 				data: $("#campaign_form_edit").serialize(),
+				dataType: "json",
 				success: function(data) {
 					console.log(data);
+					//console.log($("#campaign_form_edit").serialize());
 					if (data == 1) {
 						$('#update_button').html("<i class='fa fa-check'></i> Update");
 						$('#modifyCampaignOkButton').prop("disabled", false);
