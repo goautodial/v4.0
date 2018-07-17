@@ -510,6 +510,14 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goLists", $postfields);
 	}
 	
+	public function API_getAllLeadsOnHopper($campaign_id){
+		$postfields = array(
+			'goAction' => 'goGetAllLeadsOnHopper',
+			'campaign_id' => $campaign_id
+		);		
+		return $this->API_Request("goLists", $postfields);
+	}
+	
 	public function API_getAllCarriers(){
 		$postfields = array(
 			'goAction' => 'goGetAllCarriers'

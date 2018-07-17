@@ -1,66 +1,73 @@
 <?php
+/**
+ * @file        GetLeadsOnHopper.php
+ * @brief       Handles Leads on the hopper variables
+ * @copyright   Copyright (c) 2018 GOautoial Inc.
+ * @author      Alexander Jim Abenoja
+ * @author		Demian Lizandro A, Biscocho 
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-	/** get lists */
-	/** **/
-
-    require_once('goCRMAPISettings.php');
-
-    $url = gourl."/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goGetAllLeadsOnHopper"; #action performed by the [[API:Functions]]. (required)
-    $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["campaign_id"] = $_POST['campaign_id'];
-
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
+	require_once('APIHandler.php');
+	
+	$api 										= \creamy\APIHandler::getInstance();
+	$campaign_id 								= $_POST["campaign_id"];
+	$output 									= $api->API_getAllLeadsOnHopper($campaign_id);
 
 	if(!empty($output)){
-		$data = '';
-		$i=0;
-		$count = 0;
-		$dial_status = explode(" ", $output->camp_dial_status[0]);
-		$statuses = array();
+		$data 									= '[';
+		$i										=	0;
+		$count 									= 0;
+		$dial_status 							= explode(" ", $output->camp_dial_status[0]);
+		$statuses 								= array();
 		foreach($dial_status as $status){
 			if(!empty($status)){
 				array_push($statuses, $status);
 			}
 		}
-		$availableStats = array();
+		$availableStats 						= array();
 		for($i=0;$i<=count($output->lead_id);$i++) {
 			array_push($availableStats, $output->status[$i]);
 			if(!empty($output->hopper_id[$i]) && in_array($output->status[$i], $statuses)){
-				$count = $count + 1;
-				$data .= '<tr>';
-				$data .= '<td>'.$output->hopper_id[$i].'</td>';
-				$data .= '<td>'.$output->priority[$i].'</td>';
-				$data .= '<td>'.$output->lead_id[$i].'</td>';
-				$data .= '<td>'.$output->list_id[$i].'</td>';
-				$data .= '<td>'.$output->phone_number[$i].'</td>';
-				$data .= '<td>'.$output->state[$i].'</td>';
-				$data .= '<td>'.$output->status[$i].'</td>';
-				$data .= '<td>'.$output->called_count[$i].'</td>';
-				$data .= '<td>'.$output->gmt_offset_now[$i].'</td>';
-				$data .= '<td>'.$output->alt_dial[$i].'</td>';
-				$data .= '<td>'.$output->source[$i].'</td>';
-				$data .= '</tr>';
+				$count 							= $count + 1;
+				$data 							.= '[';
+				$data 							.= '"'.$output->hopper_id[$i].'",';
+				$data 							.= '"'.$output->priority[$i].'",';
+				$data 							.= '"'.$output->lead_id[$i].'",';
+				$data 							.= '"'.$output->list_id[$i].'",';
+				$data 							.= '"'.$output->phone_number[$i].'",';
+				$data 							.= '"'.$output->state[$i].'",';
+				$data 							.= '"'.$output->status[$i].'",';
+				$data 							.= '"'.$output->called_count[$i].'",';
+				$data 							.= '"'.$output->gmt_offset_now[$i].'",';
+				$data 							.= '"'.$output->alt_dial[$i].'",';
+				$data 							.= '"'.$output->source[$i].'"';
+				$data 							.= '],';
 			}
 		}
+
+		$data 									= rtrim($data, ",");    
+		$data 									.= ']';
 		
-		$details['count'] = $count;
-		$details['data'] = $data;
-		$details['stats'] = $statuses;
-		$details['data_stats'] = $availableStats;
+		$details['count'] 						= $count;
+		$details['data'] 						= $data;
+		$details['stats'] 						= $statuses;
+		$details['data_stats'] 					= $availableStats;
 		echo json_encode($details, true);
-	}else{
+	} else {
 		echo json_encode("empty", true);
 	}
 

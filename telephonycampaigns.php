@@ -1155,9 +1155,9 @@
 		$result = $ui->generateTableHeaderWithItems($columns, "pause_codes_list", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 		$bodyInputs = $result.'</tbody></table>';				
 		$modalFooter = $ui->buttonWithLink("", "", "Create New", "button", null, "success", "btn-new-pause-code", "data-campaign=''");
-		$modalForm = $ui->modalFormStructure('modal_view_pause_codes', '', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '', '');
+		$modalFormPC = $ui->modalFormStructure('modal_view_pause_codes', '', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '', '');
 		
-		echo $modalForm;
+		echo $modalFormPC;
 		
 		$modalTitle = $lh->translationFor("pause_codes");
 		$modalSubtitle = "";		
@@ -1169,38 +1169,10 @@
 		//$hiddenidinput = $ui->hiddenFormField("customer-type-id");
 		$bodyInputs = $campaignIdInput.$pauseCodeInput.$pauseCodeNameInput.$billableInput;
 		$modalFooter = $ui->buttonWithLink("", "", $lh->translationFor("save"), "button", null, "success", "btn-save-pause-code", "data-id='$id'").$ui->buttonWithLink("", "", $lh->translationFor("update"), "button", null, "success", "btn-update-pause-code", "", "hide");		
-		$modalForm = $ui->modalFormStructure('modal_form_pause_codes', 'form_pause_codes', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '');
+		$modalFormPCF = $ui->modalFormStructure('modal_form_pause_codes', 'form_pause_codes', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '');
 	
-		echo $modalForm;
+		echo $modalFormPCF;
 		
-	?>
-		
-	<?php
-		$hotkeyTable = '
-			<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
-				<div class="table-responsive">
-					<table id="hotkeys_list" class="table table-bordered" style="width: 100%;">
-						<thead>
-							<tr>
-								<th>'.$lh->translationFor("hotkeys").'</th>
-								<th>'.$lh->translationFor("status").'</th>
-								<th>'.$lh->translationFor("description").'</th>
-								<th>'.$lh->translationFor("action").'</th>
-							</tr>
-						</thead>
-						<tbody id="hotkey_data_container">
-							<!-- Data Here -->
-						</tbody>
-					</table>
-				</div>
-			</div>
-		';
-		$footer_hk = '
-			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-success btn-new-hotkey'.($perm->hotkeys->hotkeys_create === "N" ? " hidden" : "").'" data-campaign="">Create New</button>
-		';
-		
-		echo $ui->modalFormStructure('modal_view_hotkeys', '', $lh->translationFor("hotkeys"), '', $hotkeyTable, $footer_hk, '', '');
 	?>
 		
 	<?php
@@ -1225,60 +1197,21 @@
 		$modalFormHKF = $ui->modalFormStructure('modal_form_hotkeys', 'form_hotkeys', $lh->translationFor("hotkeys"), "", $bodyInputsHKF, $modalFooterHKF, '');
 	
 		echo $modalFormHKF;
+		
+		// view lists modal + datatable
+		$modalTitle = $lh->translationFor("lists");
+		$modalSubtitle = "";
+		$columns = array($lh->translationFor("list_id"), $lh->translationFor("list_name"), $lh->translationFor("description"), $lh->translationFor("leads_count"), $lh->translationFor("active"), $lh->translationFor("last_call_date"), $lh->translationFor("action"));
+		$hideOnMedium = array($lh->translationFor("list_id"), $lh->translationFor("description"));
+		$hideOnLow = array($lh->translationFor("list_id"), $lh->translationFor("description"), $lh->translationFor("last_call_date"));
+		$result = $ui->generateTableHeaderWithItems($columns, "lists_list", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		$bodyInputs = $result.'</tbody></table>';
+		$appendToBody = '<div class="form-group pull-left" style="margin-left: 5px;"><p style="text-align: left;"> This Campaign has <b><span class="count_active"></span> active</b> lists and <b><span class="count_inactive"></span> inactive</b> lists<br/> This Campaign has <b><span class="count_leads"></span> leads</b> in the queue (hopper)<br/><a href="#" style="color: green;" class="view-leads-on-hopper" data-campaign="">'.$lh->translationFor("view_leads").'</a></p></div>';
+		$modalFooter = $ui->modalDismissButton("", $lh->translationFor("close"));
+		$modalFormLists = $ui->modalFormStructure('modal_view_lists', '', $modalTitle, $modalSubtitle, $bodyInputs, $appendToBody.$modalFooter, '', '', 'modal-lg');
+		
+		echo $modalFormLists;		
 	?>
-
-		<div id="modal_view_lists" class="modal fade" role="dialog">
-		  <div class="modal-dialog" style="width: 70%;">
-		    <!-- Modal content-->
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        <h4 class="modal-title"><b><?php $lh->translateText("lists"); ?></b></h4>
-		      </div>
-		      <div class="modal-body">
-		      		<div class="form-group">
-						<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
-							<div class="table-responsive">
-								<table id="lists_list" class="table table-bordered" style="width: 100%;">
-									<thead>
-										<tr>
-											<th><?php $lh->translateText("list_id"); ?></th>
-											<th><?php $lh->translateText("list_name"); ?></th>
-											<th><?php $lh->translateText("description"); ?></th>
-											<th><?php $lh->translateText("leads_count"); ?></th>
-											<th><?php $lh->translateText("active"); ?></th>
-											<th><?php $lh->translateText("last_call_date"); ?></th>
-											<th><?php $lh->translateText("action"); ?></th>
-										</tr>
-									</thead>
-									<tbody id="lists_data_container">
-										<!-- Data Here -->
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-					<div class="form-group">
-						<p>
-							This Campaign has <b><span class="count_active"></span> active</b> lists and <b><span class="count_inactive"></span> inactive</b> lists
-						</p>
-						<p>
-							This Campaign has <b><span class="count_leads"></span> leads</b> in the queue (hopper dial)
-						</p>
-						<p>
-							<a href="#" style="color: green;" class="view-leads-on-hopper" data-campaign="">
-								<?php $lh->translateText("view_leads"); ?>
-							</a>
-						</p>
-					</div>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal"><?php $lh->translateText("close"); ?></button>
-				<!--<button type="button" class="btn btn-success btn-new-lists" data-campaign="">Create New</button>-->
-		      </div>
-		    </div>
-		  </div>
-		</div>
 		
 		<div id="modal_form_lists" class="modal fade" role="dialog">
 		  <div class="modal-dialog">
@@ -1453,49 +1386,20 @@
 		  </div>
 		</div>
 
-		<div id="modal_view_leads_on_hopper" class="modal fade" role="dialog">
-		  <div class="modal-dialog" style="width: 70%;">
-		    <!-- Modal content-->
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal">&times;</button>
-		        <h4 class="modal-title"><b><?php $lh->translateText("lists"); ?></b></h4>
-		      </div>
-		      <div class="modal-body">
-					<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
-						<div class="table-responsive">
-							<table id="leads_on_hopper" class="table table-bordered" style="width: 100%;">
-								<thead>
-									<tr>
-										<th><?php $lh->translateText("order"); ?></th>
-										<th><?php $lh->translateText("priority"); ?></th>
-										<th><?php $lh->translateText("lead_id"); ?></th>
-										<th><?php $lh->translateText("list_id"); ?></th>
-										<th><?php $lh->translateText("phone_number"); ?></th>
-										<th><?php $lh->translateText("state"); ?></th>
-										<th><?php $lh->translateText("status"); ?></th>
-										<th><?php $lh->translateText("count"); ?></th>
-										<th><?php $lh->translateText("gmt"); ?></th>
-										<th><?php $lh->translateText("alt"); ?></th>
-										<th><?php $lh->translateText("source"); ?></th>
-									</tr>
-								</thead>
-								<tbody id="leads_hopper_container">
-									<!-- Data Here -->
-								</tbody>
-							</table>
-						</div>
-					</div>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal"><?php $lh->translateText("close"); ?></button>
-				<!--<button type="button" class="btn btn-success btn-new-lists" data-campaign="">Create New</button>-->
-		      </div>
-		    </div>
-		    <!-- End of modal content -->
-		  </div>
-		</div>
-
+		<?php
+			// view leads on hopper modal
+			$modalTitle = $lh->translationFor("lists");
+			$modalSubtitle = "";
+			$columns = array($lh->translationFor("order"), $lh->translationFor("priority"), $lh->translationFor("lead_id"), $lh->translationFor("list_id"), $lh->translationFor("phone_number"), $lh->translationFor("state"), $lh->translationFor("status"), $lh->translationFor("count"), $lh->translationFor("gmt"), $lh->translationFor("alt"), $lh->translationFor("source"));
+			$hideOnMedium = array($lh->translationFor("order"), $lh->translationFor("priority"), $lh->translationFor("state"), $lh->translationFor("count"), $lh->translationFor("gmt"));
+			$hideOnLow = array($lh->translationFor("order"), $lh->translationFor("priority"), $lh->translationFor("state"), $lh->translationFor("count"), $lh->translationFor("gmt"), $lh->translationFor("alt"), $lh->translationFor("source"));
+			$result = $ui->generateTableHeaderWithItems($columns, "leads_on_hopper", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+			$bodyInputs = $result.'</tbody></table>';
+			$modalFooter = $ui->modalDismissButton("", $lh->translationFor("close"));
+			$modalFormVLH = $ui->modalFormStructure('modal_view_leads_on_hopper', '', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '', '', 'modal-lg');
+			
+			echo $modalFormVLH;		
+		?>
 
 	<!-- End of modal -->
 
@@ -3301,7 +3205,9 @@
 			});
 		}
 		
-		function get_lists(campaign_id){
+		function get_lists(campaign_id) {
+			$('#modal_view_lists').modal('show');
+			$('.view-leads-on-hopper').attr('data-campaign', campaign_id);
 			$.ajax({
 				url: "./php/GetLists.php",
 				type: 'POST',
@@ -3310,20 +3216,29 @@
 				},
 				dataType: 'json',
 				success: function(response) {
-					$('#modal_view_lists').modal('show');
-					var table = $('#lists_list').DataTable();
-					table.fnClearTable();
-					table.fnDestroy();
-					$('#lists_data_container').html(response.data);
+					console.log(response);	
+					var JSONObject = JSON.parse(response.data);
+					var tableLists = $('#lists_list').DataTable({
+						data:JSONObject,
+						destroy:true,    
+						stateSave:true,
+						drawCallback:function(settings) {
+							var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+							pagination.toggle(this.api().page.info().pages > 1);
+						},
+						columnDefs: [{ 
+							width: "15%", 
+							targets: [ 6 ] 
+						},{
+							searchable: false,
+							targets: [ 6 ]
+						},{
+							sortable: false,
+							targets: [ 6 ]
+						}]
+					});
 					$('.count_active').text(response.count_active);
 					$('.count_inactive').text(response.count_inactive);
-					
-					$('.view-leads-on-hopper').attr('data-campaign', campaign_id);
-					$('#lists_list').DataTable({
-						"searching": true,
-						bFilter: true
-					});
-					$("#lists_list").css("width","100%");
 				}
 			});
 
@@ -3342,6 +3257,9 @@
 		}
 
 		function get_leads_on_hopper(campaign_id){
+			$('#modal_view_lists').modal('hide');
+			$('#modal_view_leads_on_hopper').modal('show');
+			$('body').addClass('modal-open');		
 			$.ajax({
 				url: "./php/GetLeadsOnHopper.php",
 				type: 'POST',
@@ -3350,20 +3268,25 @@
 				},
 				dataType: 'json',
 				success: function(response) {
-						console.log(response);
-						$('#modal_view_lists').modal('hide');
-						$('#modal_view_leads_on_hopper').modal('show');
-						$('body').addClass('modal-open');
-						var table = $('#leads_on_hopper').DataTable();
-						table.fnClearTable();
-						table.fnDestroy();
-						$('#leads_hopper_container').html(response.data);
-						$('#leads_on_hopper').DataTable({
-							"searching": true,
-							bFilter: true
-						});
-						$("#leads_on_hopper").css("width","100%");
-					}
+					console.log(response);
+					var JSONObject = JSON.parse(response.data);
+					var tableLeadsHopper = $('#leads_on_hopper').DataTable({
+						data:JSONObject,
+						destroy:true,    
+						stateSave:true,
+						drawCallback:function(settings) {
+							var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+							pagination.toggle(this.api().page.info().pages > 1);
+						},
+						columnDefs: [{
+							searchable: false,
+							targets: [ 0, 1 ]
+						},{
+							sortable: false,
+							targets: [ 0 ]
+						}]
+					});
+				}
 			});
 		}
 		

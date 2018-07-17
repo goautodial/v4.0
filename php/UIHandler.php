@@ -412,12 +412,12 @@ error_reporting(E_ERROR | E_PARSE);
 		return $this->formWithContent($id, $hiddenFields.$content, $submit_text, CRM_UI_STYLE_DEFAULT, $messagetag, $action);
 	}
 
-	public function modalFormStructure($modalid, $formid, $title, $subtitle, $body, $footer, $icon = null, $messagetag = CRM_UI_DEFAULT_RESULT_MESSAGE_TAG) {
+	public function modalFormStructure($modalid, $formid, $title, $subtitle, $body, $footer, $icon = null, $messagetag = CRM_UI_DEFAULT_RESULT_MESSAGE_TAG, $divClass) {
 		$iconCode = empty($icon) ? '' : '<i class="fa fa-'.$icon.'"></i> ';
 		$subtitleCode = empty($subtitle) ? '' : '<p>'.$subtitle.'</p>';
 
 		return '<div class="modal fade" id="'.$modalid.'" name="'.$modalid.'" tabindex="-1" role="dialog" aria-hidden="true">
-	        	<div class="modal-dialog"><div class="modal-content">
+	        	<div class="modal-dialog '.$divClass.'"><div class="modal-content">
 	                <div class="modal-header">
 	                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	                    <h4 class="modal-title">'.$iconCode.$title.'</h4>

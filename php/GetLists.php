@@ -27,7 +27,7 @@
 	$output 										= $api->API_getAllListsCampaign($campaign_id);
 	
 	if(!empty($output)){
-		$data 										= '';
+		$data 										= '[';
 		$i											= 0;
 		$count_active 								= 0;
 		$count_inactive 							= 0;
@@ -61,18 +61,21 @@
 					'xferconf_e_number' 				=> $output->xferconf_e_number[$i]
 				);
 				
-				$data 								.= '<tr>';
-				$data 								.= '<td>'.$output->list_id[$i].'</td>';
-				$data 								.= '<td>'.$output->list_name[$i].'</td>';
-				$data 								.= '<td>'.$output->list_name[$i].'</td>';
-				$data 								.= '<td>'.$output->tally[$i].'</td>';
-				$data 								.= '<td>'.$output->active[$i].'</td>';
-				$data 								.= '<td>'.$output->list_lastcalldate[$i].'</td>';
-				$data 								.= "<td><a title='Modify/View List' class='edit-list' data-info='".json_encode($info)."' data-id='".$output->list_id[$i]."' data-campaign='".$output->campaign_id[$i]."'><span class='fa fa-eye'></span></a></td>";
-				$data 								.= '</tr>';
+				$data 								.= '[';
+				$data 								.= '"'.$output->list_id[$i].'",';
+				$data 								.= '"'.$output->list_name[$i].'",';
+				$data 								.= '"'.$output->list_name[$i].'",';
+				$data 								.= '"'.$output->tally[$i].'",';
+				$data 								.= '"'.$output->active[$i].'",';
+				$data 								.= '"'.$output->list_lastcalldate[$i].'",';
+				$data 								.= '"<a title=\"Modify/View List\" class=\"edit-list\" data-info=\"'.json_encode($info).'\" data-id=\"'.$output->list_id[$i].'\" data-campaign=\"'.$output->campaign_id[$i].'\"><span class=\"fa fa-eye\"></span></a></td>"';
+				$data 								.= '],';
 			}
 		}
 
+		$data 										= rtrim($data, ",");    
+		$data 										.= ']';
+		
 		$details['data'] 							= $data;
 		$details['count_active'] 					= $count_active;
 		$details['count_inactive'] 					= $count_inactive;
