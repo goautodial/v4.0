@@ -305,25 +305,25 @@
 			$per_call_notes 						= stripslashes($per_call_notes);
 		}
 		
-		$url_tab_first_title 						= NULL; 
+		$url_tab_first_title 						= 0; 
 		if (isset($_POST["url_tab_first_title"])) { 
 			$url_tab_first_title 					= $_POST["url_tab_first_title"]; 
 			$url_tab_first_title 					= stripslashes($url_tab_first_title);
 		}
 		
-		$url_tab_first_url 							= NULL; 
+		$url_tab_first_url 							= 0; 
 		if (isset($_POST["url_tab_first_url"])) { 
 			$url_tab_first_url 						= $_POST["url_tab_first_url"]; 
 			$url_tab_first_url 						= stripslashes($url_tab_first_url);
 		}
 		
-		$url_tab_second_title 						= NULL; 
+		$url_tab_second_title 						= 0; 
 		if (isset($_POST["url_tab_second_title"])) { 
 			$url_tab_second_title 					= $_POST["url_tab_second_title"]; 
 			$url_tab_second_title 					= stripslashes($url_tab_second_title);
 		}
 
-		$url_tab_second_url 						= NULL; 
+		$url_tab_second_url 						= 0; 
 		if (isset($_POST["url_tab_second_url"])) { 
 			$url_tab_second_url 					= $_POST["url_tab_second_url"]; 
 			$url_tab_second_url 					= stripslashes($url_tab_second_url);
@@ -365,19 +365,19 @@
 			$alt_number_dialing 					= stripslashes($alt_number_dialing);
 		}
 		
-		$enable_callback_alert 						= NULL; 
+		$enable_callback_alert 						= 0; 
 		if (isset($_POST["enable_callback_alert"])) { 
 			$enable_callback_alert 					= $_POST["enable_callback_alert"]; 
 			$enable_callback_alert 					= stripslashes($enable_callback_alert);
 		}
 		
-		$cb_noexpire 								= NULL; 
+		$cb_noexpire 								= 0; 
 		if (isset($_POST["cb_noexpire"])) { 
 			$cb_noexpire 							= $_POST["cb_noexpire"]; 
 			$cb_noexpire 							= stripslashes($cb_noexpire);
 		}
 		
-		$cb_sendemail 								= NULL; 
+		$cb_sendemail 								= 0; 
 		if (isset($_POST["cb_sendemail"])) { 
 			$cb_sendemail 							= $_POST["cb_sendemail"]; 
 			$cb_sendemail 							= stripslashes($cb_sendemail);

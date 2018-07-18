@@ -4738,7 +4738,7 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li'.($perm->disposition->disposition_update === 'N' ? ' class="hidden"' : '').'><a class="edit_disposition" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
+			<li'.($perm->disposition->disposition_update === 'N' ? ' class="hidden"' : '').'><a class="view_disposition" href="#" data-id="'.$id.'">'.$this->lh->translationFor("view").'</a></li>
 			<li'.($perm->disposition->disposition_delete === 'N' ? ' class="hidden"' : '').'><a class="delete_disposition" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';

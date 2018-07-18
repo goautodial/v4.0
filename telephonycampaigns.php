@@ -1410,8 +1410,125 @@
 			$modalFormVLH = $ui->modalFormStructure('modal_view_leads_on_hopper', '', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '', '', 'modal-lg');
 			
 			echo $modalFormVLH;		
+			
+			// view campaign dispositions on hopper modal
+			$modalTitle = $lh->translationFor("dispositions");
+			$modalSubtitle = "";
+			$columns = array($lh->translationFor("status"), $lh->translationFor("status_name"), $lh->translationFor("SEL"), $lh->translationFor("human"), $lh->translationFor("sale"), $lh->translationFor("DNC"), $lh->translationFor("CC"), $lh->translationFor("NI"), $lh->translationFor("UW"), $lh->translationFor("SCB"), $lh->translationFor("action"));
+			$result = $ui->generateTableHeaderWithItems($columns, "table_campaign_disposition", "table-bordered table-striped", true, false);
+			$bodyInputs = $result.'</tbody></table>';
+			$modalFooter = $ui->modalDismissButton("", $lh->translationFor("close"));
+			$modalFormVCP = $ui->modalFormStructure('modal_view_dispositions', '', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '', '', 'modal-lg');
+			
+			echo $modalFormVCP;				
 		?>
 
+							<!-- EDIT DISPOSITION MODAL -->
+						    <div id="modal_edit_disposition" class="modal fade">
+						        <div class="modal-dialog modal-lg">
+						            <div class="modal-content">
+						                <div class="modal-header">
+						                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+						                    <h4 class="modal-title animate-header" id="ingroup_modal"><b>Modify Status <span id="status_id_edit"></span> in » Campaign <span id="campaign_id_edit"></span></b></h4>
+						                </div>
+						                <div class="modal-body" style="background:#fff;">
+						                	<form id="form_edit_disposition">
+						                		<div class="form-group mt mb">
+						                			<div class="row">&nbsp;</div>
+						                		</div>
+							                	<div class="form-group mt">
+								                	<input type="hidden" name="edit_campaign" id="edit_campaign">
+
+							                		<label class="col-sm-3 control-label" for="status"><?php $lh->translateText("status"); ?>:</label>
+							                        <div class="col-sm-9">
+							                            <input type="text" name="edit_status" id="edit_status" class="form-control" placeholder="Status" minlength="1" maxlenght="6" required readonly>
+							                            <br/><small><label id="status-duplicate-error"></label></small>
+							                    	</div>
+								                </div>
+								                <div class="form-group">
+								                	<label class="col-sm-3 control-label" for="status_name"> <?php $lh->translateText("status_name"); ?>: </label>
+							                        <div class="col-sm-9 mb">
+							                            <input type="text" name="edit_status_name" id="edit_status_name" class="form-control" placeholder="Status Name" maxlenght="30" required>
+							                        </div>
+								                </div>
+												<!-- <div class="form-group">
+													<label class="col-sm-3 control-label" for="edit_priority"><?php //$lh->translateText("priority"); ?></label>
+													<div class="col-sm-9 mb">
+														<select id="edit_priority" name="edit_priority" class="form-control">
+															<?php
+															//for ($i=1; $i<=10; $i++) {
+															//	echo "<option value='$i'>$i</option>\n";
+															//}
+															?>
+														</select>
+													</div>
+												</div>
+												<div class="form-group">
+													<label class="col-sm-3 control-label" for="edit_color"><?php //$lh->translateText("color"); ?></label>
+													<div class="col-sm-9 mb">
+														<div id="status-color" data-format="alias" class="input-group colorpicker-component">
+															<input type="text" name="edit_color" id="edit_color" class="form-control" placeholder="<?php $lh->translateText("color"); ?> (eg. #FFFFFF or white)" value="" maxlength="20" required>
+															<span class="input-group-addon"><i></i></span>
+														</div>
+													</div>
+												</div> -->
+								                <div class="form-group">
+										                        <!--<label class="col-sm-2 control-label" for="grouplevel" style="padding-top:15px;"> </label>-->
+								                    <div class="col-lg-1">
+								                   	</div>
+								                    <div class="col-lg-11 mt">
+								                    	<div class="row mb">
+								                    		<label class="col-sm-3 checkbox-inline c-checkbox" for="edit_selectable">
+																<input type="checkbox" id="edit_selectable" name="edit_selectable" checked>
+																<span class="fa fa-check"></span> <?php $lh->translateText("selectable"); ?> 
+															</label>
+															<label class="col-sm-4 checkbox-inline c-checkbox" for="edit_human_answered">
+																<input type="checkbox" id="edit_human_answered" name="edit_human_answered">
+																<span class="fa fa-check"></span> <?php $lh->translateText("human_answered"); ?> 
+															</label>
+															<label class="col-sm-3 checkbox-inline c-checkbox" for="edit_sale">
+																<input type="checkbox" id="edit_sale" name="edit_sale">
+																<span class="fa fa-check"></span> <?php $lh->translateText("sale"); ?> 
+															</label>
+												        </div>
+												        <div class="row mb">
+												        	<label class="col-sm-3 checkbox-inline c-checkbox" for="edit_dnc">
+																<input type="checkbox" id="edit_dnc" name="edit_dnc">
+																<span class="fa fa-check"></span> <?php $lh->translateText("dnc"); ?> 
+															</label>
+															<label class="col-sm-4 checkbox-inline c-checkbox" for="edit_customer_contact">
+																<input type="checkbox" id="edit_customer_contact" name="edit_customer_contact">
+																<span class="fa fa-check"></span> <?php $lh->translateText("customer_contact"); ?> 
+															</label>
+															<label class="col-sm-4 checkbox-inline c-checkbox" for="edit_not_interested">
+																<input type="checkbox" id="edit_not_interested" name="edit_not_interested">
+																<span class="fa fa-check"></span> <?php $lh->translateText("not_interested"); ?> 
+															</label>
+											            </div>
+												        <div class="row mb">
+												        	<label class="col-sm-3 checkbox-inline c-checkbox" for="edit_unworkable">
+																<input type="checkbox" id="edit_unworkable" name="edit_unworkable">
+																<span class="fa fa-check"></span> <?php $lh->translateText("unworkable"); ?> 
+															</label>
+															<label class="col-sm-4 checkbox-inline c-checkbox" for="edit_scheduled_callback">
+																<input type="checkbox" id="edit_scheduled_callback" name="edit_scheduled_callback">
+																<span class="fa fa-check"></span> <?php $lh->translateText("scheduled_callback"); ?> 
+															</label>
+											            </div>
+								                    </div>
+							                    </div>
+							            	</form>
+						                </div>
+						                <div class="modal-footer">
+						                	<div class="col-sm-5 pull-right">
+						                		<button type="button" class="btn btn-danger" id="cancel_edit" data-dismiss="modal"><i class='fa fa-remove'></i> <?php $lh->translateText("cancel"); ?></button>
+						                    	<button type="button" class="btn btn-primary" id="modify_disposition"><span id="update_button"><i class='fa fa-check'></i> <?php $lh->translateText("update"); ?></span></button>
+						              		</div>
+						              	</div>
+
+						            </div>
+						        </div>
+						    </div>		
 	<!-- End of modal -->
 
 	<?php print $ui->standardizedThemeJS(); ?>
@@ -1504,7 +1621,7 @@
 					//console.log(data[3]);
 					if ( data[3] == "" ) {
 						$(row).addClass('no_leadrecycle_row');
-						console.log(row);
+						//console.log(row);
 						$('.no_leadrecycle_row').find($('li')).addClass('disabled');
 						$('.no_leadrecycle_row').find($('.edit-leadrecycling')).removeClass('edit-leadrecycling').addClass('disabled_edit-leadrecycling');
 						$('.no_leadrecycle_row').find($('.delete-leadrecycling')).removeClass('delete-leadrecycling').addClass('disabled_delete-leadrecycling');
@@ -1815,7 +1932,7 @@
 						var JSONString = data;
 						var JSONObject = JSON.parse(JSONString);
 						//console.log(JSONObject);
-						tablePClist = $('#pause_codes_list').DataTable({
+						var tablePClist = $('#pause_codes_list').DataTable({
 							data: JSONObject,
 							destroy: true,							
 							stateSave: true,
@@ -2660,14 +2777,117 @@
 			    });
 
 				//edit disposition
-					$(document).on('click','.edit_disposition',function() {
-						var disposition_id = $(this).attr('data-id');
-						console.log(disposition_id);
-						var url = './edittelephonycampaign.php';
-						var form = $('<form action="' + url + '" method="post"><input type="hidden" name="disposition_id" value="' + $(this).attr('data-id') + '" /></form>');
-						$('body').append(form);
-						$(form).submit();
-					});
+				$(document).on('click','.view_disposition',function() {
+					var campaign_id = $(this).attr('data-id');
+					console.log(campaign_id);
+					$('#modal_view_dispositions').modal('toggle');
+					$.ajax({
+						url: "./php/ViewDisposition.php",
+						type: 'POST',
+						data: {
+							campaign_id : campaign_id
+						},
+						dataType: 'json',
+						success: function(data) {
+							var JSONString = data;
+							var JSONObject = JSON.parse(JSONString);
+							var tableCP = $('#table_campaign_disposition').DataTable({
+								data:JSONObject,
+								destroy:true,    
+								stateSave:true,
+								drawCallback:function(settings) {
+									var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+									pagination.toggle(this.api().page.info().pages > 1);
+								},
+								"aaSorting": [[ 1, "asc" ]],
+								"aoColumnDefs": [{
+									"bSearchable": false,
+									"aTargets": [ 10 ]
+								},{
+									"bSortable": false,
+									"aTargets": [ 10 ]
+								}],				
+							});	
+						}
+					});					
+
+				});
+				
+				$(document).on('click','#modify_disposition',function() {
+					$('#update_button').html("<i class='fa fa-edit'></i> Updating...");
+					$('#modify_disposition').attr("disabled", true);
+
+					var selectable = "Y";
+					if(!$('#edit_selectable').is(":checked")){
+						selectable = "N";
+					}
+						var human_answered = "Y";
+					if(!$('#edit_human_answered').is(":checked")){
+						human_answered = "N";
+					}
+						var sale = "Y";
+					if(!$('#edit_sale').is(":checked")){
+						sale = "N";
+					}
+						var dnc = "Y";
+					if(!$('#edit_dnc').is(":checked")){
+						dnc = "N";
+					}
+						var scheduled_callback = "Y";
+					if(!$('#edit_scheduled_callback').is(":checked")){
+						scheduled_callback = "N";
+					}
+						var customer_contact = "Y";
+					if(!$('#edit_customer_contact').is(":checked")){
+						customer_contact = "N";
+					}
+						var not_interested = "Y";
+					if(!$('#edit_not_interested').is(":checked")){
+						not_interested = "N";
+					}
+						var unworkable = "Y";
+					if(!$('#edit_unworkable').is(":checked")){
+						unworkable = "N";
+					}
+
+						$.ajax({
+							url: "./php/ModifyDisposition.php",
+							type: 'POST',
+							data: $('#form_edit_disposition').serialize(),
+							/*data: {
+								disposition : $('#edit_campaign').val(),
+								status : $('#edit_status').val(),
+								status_name : $('#edit_status_name').val(),
+								selectable : selectable,
+								human_answered : human_answered,
+								sale : sale,
+								dnc : dnc,
+								scheduled_callback : scheduled_callback,
+								customer_contact : customer_contact,
+								not_interested : not_interested,
+								unworkable : unworkable,
+								log_user: log_user,
+								log_group: log_group,
+								// priority: $('#edit_priority').val(),
+								// color: $('#edit_color').val(),
+								type: 'CUSTOM'
+							},*/
+							success: function(data) {
+							console.log(data);
+							console.log($('#form_edit_disposition').serialize());
+								if(data == 1){
+									swal("Success!", "Disposition Successfully Updated!", "success");
+									$('#update_button').html("<i class='fa fa-check'></i> Update");
+									$('#modify_disposition').attr("disabled", false);
+									window.setTimeout(function(){location.reload();},2000);
+								}else{
+									swal("Ooops!", "Something went wrong! "+ data, "error");
+									$('#update_button').html("<i class='fa fa-check'></i> Update");
+									$('#modify_disposition').attr("disabled", false);
+								}
+							}
+						});
+				});					
 
 				//delete disposition
 			        $(document).on('click','.delete_disposition', function() {

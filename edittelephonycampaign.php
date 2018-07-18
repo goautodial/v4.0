@@ -55,7 +55,7 @@
 
 	// get campaign values
 	$campaign = $api->API_getCampaignInfo($campaign_id);
-	$disposition = $api->API_getDispositionInfo($campaign_id);
+	//$disposition = $api->API_getCampaignDispositions($campaign_id);
 
 	$calltimes = $api->API_getAllCalltimes();
 	$scripts = $api->API_getAllScripts();
@@ -2316,15 +2316,12 @@
 							<?php
 							// ---- IF DID
 							if($did != NULL){
-								//var_dump($disposition->result);
-
-								//var_dump($did);
 								if ($disposition->result == "success") {
 							?>
 
 					            <!-- /.box-header -->
 					            <div class="box-body table-responsive no-padding">
-					              <table class="table table-hover">
+					              <table id="table_edit_disposition" class="table table-hover">
 					              	<thead>
 					              		<style>
 					              		.head_custom_statuses{
