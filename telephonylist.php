@@ -760,7 +760,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	                              // console.log(data);
 									$('#finish').text("<?php $lh->translateText("submit"); ?>");
 									$('#finish').attr("disabled", false);
-									if(data == 1){
+									if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
 									  swal({title: "<?php $lh->translateText("add_list_success"); ?>",text: "<?php $lh->translateText("add_list_success"); ?>",type: "success"},function(){window.location.href = 'telephonylist.php';});
 									}else{
 										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>", "error");

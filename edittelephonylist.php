@@ -41,7 +41,7 @@ if (isset($_POST["modifyid"])) {
 $statuses = $ui->API_ListsStatuses($modifyid);
 $timezones = $ui->API_ListsTimezone($modifyid);
 
-$perm = $api->goGetPermissions('customfields', $_SESSION['usergroup']);
+$perm = $api->goGetPermissions('customfields');
 
 $scripts = $api->API_getAllScripts($_SESSION['user']);
 ?>
@@ -96,42 +96,19 @@ $scripts = $api->API_getAllScripts($_SESSION['user']);
                     </ol>
                 </section>
 
-						<!-- standard custom edition form -->
-					<?php
-					$errormessage = NULL;
-					//$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
-					$campaign = $api->API_getAllCampaigns();
+		<!-- standard custom edition form -->
+		<?php
+			$errormessage = NULL;
+			//$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
+			$campaign = $api->API_getAllCampaigns();
 
-					/*
-					//if(isset($extenid)) {
-						$url = gourl."/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
-				        $postfields["goUser"] = goUser; #Username goes here. (required)
-				        $postfields["goPass"] = goPass; #Password goes here. (required)
-				        $postfields["goAction"] = "goGetListInfo"; #action performed by the [[API:Functions]]. (required)
-				        $postfields["responsetype"] = responsetype; #json. (required)
-				        $postfields["list_id"] = $modifyid; #Desired exten ID. (required)
-						$postfields["log_user"] = $_SESSION['user'];
-						$postfields["log_group"] = $_SESSION['usergroup'];
-						$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
+			$postfields = array(
+				'goAction' => 'goGetListInfo',
+				'list_id' => $modifyid
+			);
 
-				         $ch = curl_init();
-				         curl_setopt($ch, CURLOPT_URL, $url);
-				         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-				         curl_setopt($ch, CURLOPT_POST, 1);
-				         curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-				         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-						 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-				         $data = curl_exec($ch);
-				         curl_close($ch);
-				         $output = json_decode($data);
-				        //var_dump($output);
-						if ($output->result=="success") {
-
-						# Result was OK!
-							for($i=0;$i<count($output->list_id);$i++){
-					*/
-					?>
+		    $output = $api->API_list($postfields);
+		?>
 
             <!-- Main content -->
             <section class="content">
