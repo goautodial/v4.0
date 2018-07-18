@@ -415,15 +415,6 @@ if(isset($_SESSION["user"])){
 			'custom_request' => $custom
 		);		
 		return $this->API_Request("goDispositions", $postfields);
-	}	
-	
-	public function API_getDispositionInfo($campid){
-		$postfields = array(
-			'goAction' => 'goGetDispositionInfo',
-			'campaign_id' => $campid,
-			'user_group' => session_usergroup
-		);		
-		return $this->API_Request("goDispositions", $postfields);
 	}
 	
 	public function API_getAllLeadRecycling(){
@@ -571,6 +562,14 @@ if(isset($_SESSION["user"])){
 		);		
 		return $this->API_Request("goCampaigns", $postfields);
 	}	
+	
+	public function API_getCampaignDispositions($campaign_id){
+		$postfields = array(
+			'goAction' => 'goGetCampaignDispositions',
+			'campaign_id' => $campaign_id
+		);		
+		return $this->API_Request("goCampaigns", $postfields);
+	}
 	
 	public function API_getAllUsers(){
 		$postfields = array(
