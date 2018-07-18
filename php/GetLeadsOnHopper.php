@@ -27,18 +27,20 @@
 	$campaign_id 								= $_POST["campaign_id"];
 	$output 									= $api->API_getAllLeadsOnHopper($campaign_id);
 
-	if(!empty($output)){
+	if (!empty($output)) {
 		$data 									= '[';
-		$i										=	0;
+		$i										= 0;
 		$count 									= 0;
 		$dial_status 							= explode(" ", $output->camp_dial_status[0]);
 		$statuses 								= array();
+		$availableStats 						= array();
+		
 		foreach($dial_status as $status){
 			if(!empty($status)){
 				array_push($statuses, $status);
 			}
 		}
-		$availableStats 						= array();
+		
 		for($i=0;$i<=count($output->lead_id);$i++) {
 			array_push($availableStats, $output->status[$i]);
 			if(!empty($output->hopper_id[$i]) && in_array($output->status[$i], $statuses)){

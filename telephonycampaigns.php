@@ -289,24 +289,26 @@
 											   	<?php			
 													if (count($disposition->campaign_id[$i]) > 0){
 														for($i=0;$i < count($campaign->campaign_id);$i++){
-															$action_DISPOSITION = $ui->ActionMenuForDisposition($campaign->campaign_id[$i], $campaign->campaign_name[$i], $perm);
+															
 											   	?>
 													<tr>
 														<td><?php 																
-																if ($perm->disposition->disposition_update !== 'N') { 
+																if ($perm->disposition->disposition_update !== 'N') {
 																	echo '<a class="edit_disposition" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; 
 																} ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></td>
 														<td class='hide-on-medium hide-on-low'><strong><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="edit_disposition" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></strong></td>
 														<td><?php echo $campaign->campaign_name[$i];?></td>
 														<td class='hide-on-medium hide-on-low'>
 												<?php
-															//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){
+															$dispoStatuses = "";
+															//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){															
 															for($a=0; $a<count($disposition->status); $a++){
-																
+																$dispoStatus[] = $disposition->status[$a];
 																if($disposition->campaign_id[$a] == $campaign->campaign_id[$i]){
-																	echo "<i>".$disposition->status[$a]."</i>";
+																	$dispoStatuses = $dispoStatus[$a];																	
+																	echo "<i>".$dispoStatuses."</i>";
 																	
-																	if($disposition->campaign_id[$a+1] == $campaign->campaign_id[$i]){
+																	if($disposition->campaign_id[$a+1] == $campaign->campaign_id[$i]){																		
 																		echo ", ";
 																	}
 																}
@@ -314,6 +316,7 @@
 															/*}else{
 																echo "- - - NONE - - -";
 															}*/
+															$action_DISPOSITION = $ui->ActionMenuForDisposition($campaign->campaign_id[$i], $campaign->campaign_name[$i], $perm);
 												?>
 														</td>
 														<td style="width:16%;"><?php echo $action_DISPOSITION;?></td>
@@ -349,19 +352,27 @@
 												<td><?php echo $campaign->campaign_name[$i];?></td>
 												<td class='hide-on-medium hide-on-low'>
 											<?php
+												$leadrecycle = "";
 												//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){												
 												for($a=0; $a<count($leadrecycling->campaign_id); $a++){
+													$leadrecycles[] = $leadrecycling->status[$a];
 													if($leadrecycling->campaign_id[$a] == $campaign->campaign_id[$i]){
-														$leadrecycles[] = $leadrecycling->status[$a];
+														//$leadrecycles[] = $leadrecycling->status[$a];
+														$leadrecycle	= $leadrecycles[$a];
+														echo "<i>".$leadrecycle."</i>";
+														
+														if($leadrecycling->campaign_id[$a+1] == $campaign->campaign_id[$i]){																		
+															echo ", ";
+														}														
 													}
 												}
-												$imploded_leadrecycles = implode(", ", $leadrecycles);
-												unset($leadrecycles);
-												echo "<i>".$imploded_leadrecycles." </i>";
+												//$imploded_leadrecycles = implode(", ", $leadrecycles);
+												//unset($leadrecycles);
+												//echo "<i>".$imploded_leadrecycles."</i>";
 												//}else{s
 												//	echo "- - - NONE - - -";
 												//}
-												$action_LeadRecycling = $ui->ActionMenuForLeadRecycling($campaign->campaign_id[$i]);
+												$action_LeadRecycling = $ui->ActionMenuForLeadRecycling($campaign->campaign_id[$i], $imploded_leadrecycles);
 											?>
 												</td>
 												<td style="width:16%;"><?php echo $action_LeadRecycling;?></td>
@@ -1390,7 +1401,7 @@
 			// view leads on hopper modal
 			$modalTitle = $lh->translationFor("lists");
 			$modalSubtitle = "";
-			$columns = array($lh->translationFor("order"), $lh->translationFor("priority"), $lh->translationFor("lead_id"), $lh->translationFor("list_id"), $lh->translationFor("phone_number"), $lh->translationFor("state"), $lh->translationFor("status"), $lh->translationFor("count"), $lh->translationFor("gmt"), $lh->translationFor("alt"), $lh->translationFor("source"));
+			$columns = array($lh->translationFor("order"), $lh->translationFor("priority"), $lh->translationFor("lead_id"), $lh->translationFor("list_id"), $lh->translationFor("phone_number"), $lh->translationFor("state"), $lh->translationFor("status"), $lh->translationFor("count"), $lh->translationFor("gmt"), $lh->translationFor("alt_phone"), $lh->translationFor("source"));
 			$hideOnMedium = array($lh->translationFor("order"), $lh->translationFor("priority"), $lh->translationFor("state"), $lh->translationFor("count"), $lh->translationFor("gmt"));
 			$hideOnLow = array($lh->translationFor("order"), $lh->translationFor("priority"), $lh->translationFor("state"), $lh->translationFor("count"), $lh->translationFor("gmt"), $lh->translationFor("alt"), $lh->translationFor("source"));
 			$result = $ui->generateTableHeaderWithItems($columns, "leads_on_hopper", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
@@ -1459,7 +1470,16 @@
 				drawCallback:function(settings) {
 					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 					pagination.toggle(this.api().page.info().pages > 1);
-				},			
+				},	
+				rowCallback: function( row, data ) {
+					//console.log(data[3]);
+					if ( data[3] == "" ) {
+						$(row).addClass('no_status_row');						
+						$('.no_status_row').find($('li')).addClass('disabled');
+						$('.no_status_row').find($('.edit_disposition')).removeClass('edit_disposition').addClass('disabled_edit_disposition');
+						$('.no_status_row').find($('.delete_disposition')).removeClass('delete_disposition').addClass('disabled_delete_disposition');
+					}
+				},	
 				columnDefs:[
 					{ width: "16%", targets: "action_disposition" }
 				],
@@ -1470,7 +1490,7 @@
 				},{
 					"bSortable": false,
 					"aTargets": [ 0, 4 ]
-				}]
+				}],				
 			});
 			
 			$('#table_leadrecycling').DataTable({
@@ -1479,7 +1499,17 @@
 				drawCallback:function(settings) {
 					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 					pagination.toggle(this.api().page.info().pages > 1);
-				},			
+				},
+				rowCallback: function( row, data ) {
+					//console.log(data[3]);
+					if ( data[3] == "" ) {
+						$(row).addClass('no_leadrecycle_row');
+						console.log(row);
+						$('.no_leadrecycle_row').find($('li')).addClass('disabled');
+						$('.no_leadrecycle_row').find($('.edit-leadrecycling')).removeClass('edit-leadrecycling').addClass('disabled_edit-leadrecycling');
+						$('.no_leadrecycle_row').find($('.delete-leadrecycling')).removeClass('delete-leadrecycling').addClass('disabled_delete-leadrecycling');
+					}
+				},				
 				columnDefs:[
 					{ width: "16%", targets: "action_leadrecycling" }
 				],
@@ -3226,10 +3256,7 @@
 							var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 							pagination.toggle(this.api().page.info().pages > 1);
 						},
-						columnDefs: [{ 
-							width: "15%", 
-							targets: [ 6 ] 
-						},{
+						columnDefs: [{
 							searchable: false,
 							targets: [ 6 ]
 						},{

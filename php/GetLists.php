@@ -33,12 +33,12 @@
 		$count_inactive 							= 0;
 		$lead_count 								= 0;
 		
-		for($i=0;$i<=count($output->campaign_id);$i++) {
-			if(!empty($output->list_id[$i])){
-				if($output->active[$i] == "Y"){
+		for ($i=0;$i<=count($output->list_id);$i++) {
+			if (!empty($output->list_id[$i])) {
+				if ($output->active[$i] == "Y") {
 					$count_active 					= $count_active + 1;
 					$lead_count 					= $lead_count + $output->tally[$i];
-				}else{
+				} else {
 					$count_inactive 				= $count_inactive +1;
 				}
 
@@ -61,14 +61,22 @@
 					'xferconf_e_number' 				=> $output->xferconf_e_number[$i]
 				);
 				
+				$calldate							= $output->list_lastcalldate[$i];
+				
+				if (is_null($calldate) || empty($calldate) || strstr($calldate, "0000-00-00")) {
+					$calldate						= "";
+				} else {
+					$calldate						= strtotime($calldate);
+				}
+				
 				$data 								.= '[';
 				$data 								.= '"'.$output->list_id[$i].'",';
 				$data 								.= '"'.$output->list_name[$i].'",';
-				$data 								.= '"'.$output->list_name[$i].'",';
+				$data 								.= '"'.$output->list_description[$i].'",';
 				$data 								.= '"'.$output->tally[$i].'",';
 				$data 								.= '"'.$output->active[$i].'",';
-				$data 								.= '"'.$output->list_lastcalldate[$i].'",';
-				$data 								.= '"<a title=\"Modify/View List\" class=\"edit-list\" data-info=\"'.json_encode($info).'\" data-id=\"'.$output->list_id[$i].'\" data-campaign=\"'.$output->campaign_id[$i].'\"><span class=\"fa fa-eye\"></span></a></td>"';
+				$data 								.= '"'.date('M. d, Y h:i A', $calldate).'",';
+				$data 								.= '"<a title=\"Modify View List\" class=\"edit-list\" data-info=\"'.$info.'\" data-id=\"'.$output->list_id[$i].'\" data-campaign=\"'.$output->campaign_id[$i].'\"><span class=\"fa fa-eye\"></span></a></td>"';
 				$data 								.= '],';
 			}
 		}
