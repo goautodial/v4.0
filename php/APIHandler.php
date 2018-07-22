@@ -569,6 +569,13 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goCampaigns", $postfields);
 	}
 	
+	public function API_getCampaignLeadRecycling($campaign_id){
+		$postfields = array(
+			'goAction' => 'goGetCampaignLeadRecycling',
+			'campaign_id' => $campaign_id
+		);		
+		return $this->API_Request("goCampaigns", $postfields);
+	}	
 	public function API_getAllUsers(){
 		$postfields = array(
 			'goAction' => 'goGetAllUsers'
@@ -658,6 +665,10 @@ if(isset($_SESSION["user"])){
 	}
 
 	public function API_addDisposition($postfields){
+		return $this->API_Request("goDispositions", $postfields);
+	}
+	
+	public function API_editDisposition($postfields){
 		return $this->API_Request("goDispositions", $postfields);
 	}
 	

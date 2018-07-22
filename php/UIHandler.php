@@ -488,8 +488,8 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
     public function checkboxInputWithLabel($label, $id, $name, $enabled) {
-	    return '<div class="checkbox"><label for="'.$id.'">
-	    <input type="checkbox" id="'.$id.'" name="'.$name.'"'.($enabled ? "checked": "").'/> '.$label.'</label></div>';
+	    return '<div class="checkbox"><label for="'.$id.'" class="checkbox-inline c-checkbox">
+	    <input type="checkbox" id="'.$id.'" name="'.$name.'"'.($enabled ? "checked": "").'/><span class="fa fa-check"></span> '.$label.'</label></div>';
     }
 
     public function radioButtonInputGroup($name, $values, $labels, $ids = null, $checkedIndex = 0) {
@@ -4738,12 +4738,26 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li'.($perm->disposition->disposition_update === 'N' ? ' class="hidden"' : '').'><a class="view_disposition" href="#" data-id="'.$id.'">'.$this->lh->translationFor("view").'</a></li>
+			<li'.($perm->disposition->disposition_update === 'N' ? ' class="hidden"' : '').'><a class="view_disposition" href="#" data-toggle="modal" data-target="#modal_view_dispositions" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
 			<li'.($perm->disposition->disposition_delete === 'N' ? ' class="hidden"' : '').'><a class="delete_disposition" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 	}
 
+	public function ActionMenuForLeadRecycling($id) {
+
+	    return '<div class="btn-group">
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+			<li><a class="view_leadrecycling" href="#" data-toggle="modal" data-target="#modal_view_leadrecycling" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
+			<li><a class="delete_leadrecycling" href="#" data-id="'.$id.'">'.$this->lh->translationFor("delete").'</a></li>
+		    </ul>
+		</div>';
+	}	
 //--------- Lead Filter ---------
 
 	public function ActionMenuForLeadFilters($id, $name) {
@@ -6327,20 +6341,7 @@ error_reporting(E_ERROR | E_PARSE);
 		
 	}
 	
-	public function ActionMenuForLeadRecycling($id) {
 
-	    return '<div class="btn-group">
-		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
-		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
-					    <span class="caret"></span>
-					    <span class="sr-only">Toggle Dropdown</span>
-		    </button>
-		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-leadrecycling" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
-			<li><a class="delete-leadrecycling" href="#" data-id="'.$id.'">'.$this->lh->translationFor("delete").'</a></li>
-		    </ul>
-		</div>';
-	}
 	
 	public function escapeJsonString($value) { # list from www.json.org: (\b backspace, \f formfeed)
 		$escapers = array("\\", "/", "\"", "\n", "\r", "\t", "\x08", "\x0c", "	");

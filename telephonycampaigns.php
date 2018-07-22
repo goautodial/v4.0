@@ -294,9 +294,9 @@
 													<tr>
 														<td><?php 																
 																if ($perm->disposition->disposition_update !== 'N') {
-																	echo '<a class="edit_disposition" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; 
+																	echo '<a class="view_disposition" data-toggle="modal" data-target="#modal_view_dispositions" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; 
 																} ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></td>
-														<td class='hide-on-medium hide-on-low'><strong><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="edit_disposition" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></strong></td>
+														<td class='hide-on-medium hide-on-low'><strong><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="view_disposition" data-toggle="modal" data-target="#modal_view_dispositions" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></strong></td>
 														<td><?php echo $campaign->campaign_name[$i];?></td>
 														<td class='hide-on-medium hide-on-low'>
 												<?php
@@ -347,8 +347,8 @@
 													for($i=0;$i < count($campaign->campaign_id);$i++){													
 										   	?>
 											<tr>
-												<td><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="edit-leadrecycling" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></td>
-												<td class='hide-on-medium hide-on-low'><strong><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="edit-leadrecycling" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></strong></td>
+												<td><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="view_leadrecycling" data-toggle="modal" data-target="#modal_view_leadrecycling" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></td>
+												<td class='hide-on-medium hide-on-low'><strong><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="view_leadrecycling" data-toggle="modal" data-target="#modal_view_leadrecycling" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></strong></td>
 												<td><?php echo $campaign->campaign_name[$i];?></td>
 												<td class='hide-on-medium hide-on-low'>
 											<?php
@@ -451,7 +451,7 @@
 									?>
 									<ul class="fab-ul" style="height: <?=$menuHeight?>;">
 										<li class="li-style<?=$hideCampaign?>"><a class="fa fa-dashboard fab-div-item" data-toggle="modal" data-target="#add_campaign" title="Add Campaign"></a></li><br/>
-										<li class="li-style<?=$hideDisposition?>"><a class="fa fa-tty fab-div-item" data-toggle="modal" data-target="#add_disposition" title="Add Disposition"></a></li><br/>
+										<li class="li-style<?=$hideDisposition?>"><a class="fa fa-tty fab-div-item" data-toggle="modal" data-target="#modal_add_disposition" title="Add Disposition"></a></li><br/>
 										<li class="li-style<?=$hideLeadRecycling?>"><a class="fa fa-recycle fab-div-item" data-toggle="modal" data-target="#add_leadrecycling" title="Add Lead Recycling"></a></li><br/>
 										<!--<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_leadfilter" title="Add Phone Numbers"> </a></li>-->
 									</ul>
@@ -942,7 +942,7 @@
 	<!-- End of modal -->
 
 	<!-- Disposition Modal -->
-	    <div class="modal fade" id="add_disposition" aria-labelledby="add_disposition" >
+	    <div class="modal fade" id="modal_add_disposition" aria-labelledby="modal_add_disposition" >
 	        <div class="modal-dialog" role="document">
 	            <div class="modal-content">
 
@@ -1398,7 +1398,7 @@
 		</div>
 
 		<?php
-			// view leads on hopper modal
+			// view leads on hopper modal + datatable
 			$modalTitle = $lh->translationFor("lists");
 			$modalSubtitle = "";
 			$columns = array($lh->translationFor("order"), $lh->translationFor("priority"), $lh->translationFor("lead_id"), $lh->translationFor("list_id"), $lh->translationFor("phone_number"), $lh->translationFor("state"), $lh->translationFor("status"), $lh->translationFor("count"), $lh->translationFor("gmt"), $lh->translationFor("alt_phone"), $lh->translationFor("source"));
@@ -1411,124 +1411,32 @@
 			
 			echo $modalFormVLH;		
 			
-			// view campaign dispositions on hopper modal
-			$modalTitle = $lh->translationFor("dispositions");
+			// view campaign dispositions + datatable
+			$modalTitle = $lh->translationFor("custom_disposition");
 			$modalSubtitle = "";
-			$columns = array($lh->translationFor("status"), $lh->translationFor("status_name"), $lh->translationFor("SEL"), $lh->translationFor("human"), $lh->translationFor("sale"), $lh->translationFor("DNC"), $lh->translationFor("CC"), $lh->translationFor("NI"), $lh->translationFor("UW"), $lh->translationFor("SCB"), $lh->translationFor("action"));
+			$columns = array($lh->translationFor("status"), $lh->translationFor("status_name"), $lh->translationFor("Sel"), $lh->translationFor("Human"), $lh->translationFor("sale"), "DNC", $lh->translationFor("contact"), $lh->translationFor("NI"), $lh->translationFor("Unwork"), $lh->translationFor("SCB"), $lh->translationFor("action"));
 			$result = $ui->generateTableHeaderWithItems($columns, "table_campaign_disposition", "table-bordered table-striped", true, false);
-			$bodyInputs = $result.'</tbody></table>';
-			$modalFooter = $ui->modalDismissButton("", $lh->translationFor("close"));
-			$modalFormVCP = $ui->modalFormStructure('modal_view_dispositions', '', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '', '', 'modal-lg');
+			$hiddenidinput = $ui->hiddenFormField("edit_campaign", "", "edit_campaign");
+			$bodyInputs = $hiddenidinput.$result.'</tbody></table>';
+			$appendToBody = '<div class="form-group pull-left" style="margin-left: 5px;"><h4>LEGEND</h4><p style="text-align: left;"><b>SEL:</b>  '.$lh->translationFor("selectable").'<br/><b>Human:</b>  '.$lh->translationFor("human_answered").'<br/><b>DNC:</b>  '.$lh->translationFor("DNC").'<br/><b>Contact:</b>  '.$lh->translationFor("customer_contact").'<br/><b>Unwork:</b>  '.$lh->translationFor("unworkable").'<br/><b>SCB:</b>  '.$lh->translationFor("scheduled_callback").'</p></div>';
+			$modalFooter = $ui->buttonWithLink("update_disposition_button", "", $lh->translationFor("update"), "button", "edit", "success", "btn-update-disposition", "data-id='$id'");
+			$modalFormVCD = $ui->modalFormStructure('modal_view_dispositions', 'form_edit_dispositions', $modalTitle, $modalSubtitle, $bodyInputs, $appendToBody.$modalFooter, '', '', 'modal-lg');
 			
-			echo $modalFormVCP;				
+			echo $modalFormVCD;
+			
+			// view campaign lead recycling + datatable
+			$modalTitle = $lh->translationFor("leadrecycling");
+			$modalSubtitle = "";
+			$columns = array($lh->translationFor("campaign"), $lh->translationFor("status"), $lh->translationFor("Attempt Delay"), $lh->translationFor("Max Attempts"), $lh->translationFor("active"), $lh->translationFor("action"));
+			$result = $ui->generateTableHeaderWithItems($columns, "table_campaign_leadrecycling", "table-bordered table-striped", true, false);
+			$hiddenidinput = $ui->hiddenFormField("edit_campaign", "", "edit_campaign");
+			$bodyInputs = $hiddenidinput.$result.'</tbody></table>';
+			$modalFooter = $ui->buttonWithLink("update_leadrecycling_button", "", $lh->translationFor("update"), "button", "edit", "success", "btn-update-leadrecycling", "data-id='$id'");
+			$modalForm = $ui->modalFormStructure('modal_view_leadrecycling', 'form_edit_leadrecycling', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '', '');
+			
+			echo $modalForm;
 		?>
 
-							<!-- EDIT DISPOSITION MODAL -->
-						    <div id="modal_edit_disposition" class="modal fade">
-						        <div class="modal-dialog modal-lg">
-						            <div class="modal-content">
-						                <div class="modal-header">
-						                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-						                    <h4 class="modal-title animate-header" id="ingroup_modal"><b>Modify Status <span id="status_id_edit"></span> in » Campaign <span id="campaign_id_edit"></span></b></h4>
-						                </div>
-						                <div class="modal-body" style="background:#fff;">
-						                	<form id="form_edit_disposition">
-						                		<div class="form-group mt mb">
-						                			<div class="row">&nbsp;</div>
-						                		</div>
-							                	<div class="form-group mt">
-								                	<input type="hidden" name="edit_campaign" id="edit_campaign">
-
-							                		<label class="col-sm-3 control-label" for="status"><?php $lh->translateText("status"); ?>:</label>
-							                        <div class="col-sm-9">
-							                            <input type="text" name="edit_status" id="edit_status" class="form-control" placeholder="Status" minlength="1" maxlenght="6" required readonly>
-							                            <br/><small><label id="status-duplicate-error"></label></small>
-							                    	</div>
-								                </div>
-								                <div class="form-group">
-								                	<label class="col-sm-3 control-label" for="status_name"> <?php $lh->translateText("status_name"); ?>: </label>
-							                        <div class="col-sm-9 mb">
-							                            <input type="text" name="edit_status_name" id="edit_status_name" class="form-control" placeholder="Status Name" maxlenght="30" required>
-							                        </div>
-								                </div>
-												<!-- <div class="form-group">
-													<label class="col-sm-3 control-label" for="edit_priority"><?php //$lh->translateText("priority"); ?></label>
-													<div class="col-sm-9 mb">
-														<select id="edit_priority" name="edit_priority" class="form-control">
-															<?php
-															//for ($i=1; $i<=10; $i++) {
-															//	echo "<option value='$i'>$i</option>\n";
-															//}
-															?>
-														</select>
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label" for="edit_color"><?php //$lh->translateText("color"); ?></label>
-													<div class="col-sm-9 mb">
-														<div id="status-color" data-format="alias" class="input-group colorpicker-component">
-															<input type="text" name="edit_color" id="edit_color" class="form-control" placeholder="<?php $lh->translateText("color"); ?> (eg. #FFFFFF or white)" value="" maxlength="20" required>
-															<span class="input-group-addon"><i></i></span>
-														</div>
-													</div>
-												</div> -->
-								                <div class="form-group">
-										                        <!--<label class="col-sm-2 control-label" for="grouplevel" style="padding-top:15px;"> </label>-->
-								                    <div class="col-lg-1">
-								                   	</div>
-								                    <div class="col-lg-11 mt">
-								                    	<div class="row mb">
-								                    		<label class="col-sm-3 checkbox-inline c-checkbox" for="edit_selectable">
-																<input type="checkbox" id="edit_selectable" name="edit_selectable" checked>
-																<span class="fa fa-check"></span> <?php $lh->translateText("selectable"); ?> 
-															</label>
-															<label class="col-sm-4 checkbox-inline c-checkbox" for="edit_human_answered">
-																<input type="checkbox" id="edit_human_answered" name="edit_human_answered">
-																<span class="fa fa-check"></span> <?php $lh->translateText("human_answered"); ?> 
-															</label>
-															<label class="col-sm-3 checkbox-inline c-checkbox" for="edit_sale">
-																<input type="checkbox" id="edit_sale" name="edit_sale">
-																<span class="fa fa-check"></span> <?php $lh->translateText("sale"); ?> 
-															</label>
-												        </div>
-												        <div class="row mb">
-												        	<label class="col-sm-3 checkbox-inline c-checkbox" for="edit_dnc">
-																<input type="checkbox" id="edit_dnc" name="edit_dnc">
-																<span class="fa fa-check"></span> <?php $lh->translateText("dnc"); ?> 
-															</label>
-															<label class="col-sm-4 checkbox-inline c-checkbox" for="edit_customer_contact">
-																<input type="checkbox" id="edit_customer_contact" name="edit_customer_contact">
-																<span class="fa fa-check"></span> <?php $lh->translateText("customer_contact"); ?> 
-															</label>
-															<label class="col-sm-4 checkbox-inline c-checkbox" for="edit_not_interested">
-																<input type="checkbox" id="edit_not_interested" name="edit_not_interested">
-																<span class="fa fa-check"></span> <?php $lh->translateText("not_interested"); ?> 
-															</label>
-											            </div>
-												        <div class="row mb">
-												        	<label class="col-sm-3 checkbox-inline c-checkbox" for="edit_unworkable">
-																<input type="checkbox" id="edit_unworkable" name="edit_unworkable">
-																<span class="fa fa-check"></span> <?php $lh->translateText("unworkable"); ?> 
-															</label>
-															<label class="col-sm-4 checkbox-inline c-checkbox" for="edit_scheduled_callback">
-																<input type="checkbox" id="edit_scheduled_callback" name="edit_scheduled_callback">
-																<span class="fa fa-check"></span> <?php $lh->translateText("scheduled_callback"); ?> 
-															</label>
-											            </div>
-								                    </div>
-							                    </div>
-							            	</form>
-						                </div>
-						                <div class="modal-footer">
-						                	<div class="col-sm-5 pull-right">
-						                		<button type="button" class="btn btn-danger" id="cancel_edit" data-dismiss="modal"><i class='fa fa-remove'></i> <?php $lh->translateText("cancel"); ?></button>
-						                    	<button type="button" class="btn btn-primary" id="modify_disposition"><span id="update_button"><i class='fa fa-check'></i> <?php $lh->translateText("update"); ?></span></button>
-						              		</div>
-						              	</div>
-
-						            </div>
-						        </div>
-						    </div>		
 	<!-- End of modal -->
 
 	<?php print $ui->standardizedThemeJS(); ?>
@@ -1594,6 +1502,7 @@
 						$(row).addClass('no_status_row');						
 						$('.no_status_row').find($('li')).addClass('disabled');
 						$('.no_status_row').find($('.edit_disposition')).removeClass('edit_disposition').addClass('disabled_edit_disposition');
+						$('.no_status_row').find($('.view_disposition')).removeClass('view_disposition').addClass('disabled_view_disposition');
 						$('.no_status_row').find($('.delete_disposition')).removeClass('delete_disposition').addClass('disabled_delete_disposition');
 					}
 				},	
@@ -2685,7 +2594,7 @@
 			*************/
 
 				// initialization and add of disposition
-					$('#add_disposition').on('shown.bs.modal', function () {
+					$('#modal_add_disposition').on('shown.bs.modal', function () {
 						$("#status-color").colorpicker();
 					});
 					
@@ -2764,7 +2673,7 @@
 										$('#finish').val("Submit");
 										$('#finish').prop("disabled", false);
 										disposition_form.children("div").steps("previous");
-										$('#add_disposition').modal('hide');									
+										$('#modal_add_disposition').modal('hide');									
 									}
 								}
 							});
@@ -2779,8 +2688,9 @@
 				//edit disposition
 				$(document).on('click','.view_disposition',function() {
 					var campaign_id = $(this).attr('data-id');
+					$('#edit_campaign').val(campaign_id);
 					console.log(campaign_id);
-					$('#modal_view_dispositions').modal('toggle');
+					//$('#modal_view_dispositions').modal('toggle');
 					$.ajax({
 						url: "./php/ViewDisposition.php",
 						type: 'POST',
@@ -2799,6 +2709,17 @@
 									var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 									pagination.toggle(this.api().page.info().pages > 1);
 								},
+								rowCallback: function( row, data ) {
+									var id = [];
+									id.push(data[0]);									
+									//console.log(id);
+									$(row).addClass('status_row');
+									$(row).attr('id', 'status_row-'+id);
+									$('#update_disposition_button').attr('disabled', true);
+								},
+								columnDefs:[
+									{ width: "20%", targets: "action" }
+								],								
 								"aaSorting": [[ 1, "asc" ]],
 								"aoColumnDefs": [{
 									"bSearchable": false,
@@ -2807,139 +2728,247 @@
 									"bSortable": false,
 									"aTargets": [ 10 ]
 								}],				
+							});
+							
+							$(document).on('click','.btn-edit-disposition',function() {
+								var status	= $(this).attr('data-status');
+								$('#status_row-'+status).find($('input')).attr('disabled', false);
+								$('.btn-edit-disposition').attr('disabled', true);
+								$('#btn-cancel-disposition-'+status).attr('disabled', false);
+								$('#update_disposition_button').attr('disabled', false);
+								$('.btn-delete-disposition').attr('disabled', true);
+									
+								$(document).on('click','#update_disposition_button',function() {
+									$.ajax({
+										url: "./php/ModifyDisposition.php",
+										type: 'POST',
+										data: $('#form_edit_dispositions').serialize() + '&status=' + status,
+										success: function(data) {
+										console.log(data);
+											if (data == 1) {
+												swal("Success!", "Disposition Successfully Updated!", "success");
+												$('#update_disposition_button').html("<i class='fa fa-check'></i> Update");
+												$('#update_disposition_button').attr("disabled", true);
+												window.setTimeout(function(){location.reload();},2000);
+											} else {
+												swal("Ooops!", "Something went wrong! "+ data, "error");
+												$('#update_disposition_button').html("<i class='fa fa-check'></i> Update");
+												$('#update_disposition_button').attr("disabled", false);
+											}
+										}
+									});
+								});									
+							});
+							
+							$(document).on('click','.btn-cancel-disposition',function() {
+								var status	= $(this).attr('data-status');
+								console.log(status);
+								$('.status_row').find($('input')).attr('disabled', true);
+								$('.btn-edit-disposition').attr('disabled', false);
+								$('.btn-cancel-disposition').attr('disabled', true);
+								$('#update_disposition_button').attr('disabled', true);
+								$('.btn-delete-disposition').attr('disabled', false);
 							});	
-						}
-					});					
-
-				});
-				
-				$(document).on('click','#modify_disposition',function() {
-					$('#update_button').html("<i class='fa fa-edit'></i> Updating...");
-					$('#modify_disposition').attr("disabled", true);
-
-					var selectable = "Y";
-					if(!$('#edit_selectable').is(":checked")){
-						selectable = "N";
-					}
-						var human_answered = "Y";
-					if(!$('#edit_human_answered').is(":checked")){
-						human_answered = "N";
-					}
-						var sale = "Y";
-					if(!$('#edit_sale').is(":checked")){
-						sale = "N";
-					}
-						var dnc = "Y";
-					if(!$('#edit_dnc').is(":checked")){
-						dnc = "N";
-					}
-						var scheduled_callback = "Y";
-					if(!$('#edit_scheduled_callback').is(":checked")){
-						scheduled_callback = "N";
-					}
-						var customer_contact = "Y";
-					if(!$('#edit_customer_contact').is(":checked")){
-						customer_contact = "N";
-					}
-						var not_interested = "Y";
-					if(!$('#edit_not_interested').is(":checked")){
-						not_interested = "N";
-					}
-						var unworkable = "Y";
-					if(!$('#edit_unworkable').is(":checked")){
-						unworkable = "N";
-					}
-
-						$.ajax({
-							url: "./php/ModifyDisposition.php",
-							type: 'POST',
-							data: $('#form_edit_disposition').serialize(),
-							/*data: {
-								disposition : $('#edit_campaign').val(),
-								status : $('#edit_status').val(),
-								status_name : $('#edit_status_name').val(),
-								selectable : selectable,
-								human_answered : human_answered,
-								sale : sale,
-								dnc : dnc,
-								scheduled_callback : scheduled_callback,
-								customer_contact : customer_contact,
-								not_interested : not_interested,
-								unworkable : unworkable,
-								log_user: log_user,
-								log_group: log_group,
-								// priority: $('#edit_priority').val(),
-								// color: $('#edit_color').val(),
-								type: 'CUSTOM'
-							},*/
-							success: function(data) {
-							console.log(data);
-							console.log($('#form_edit_disposition').serialize());
-								if(data == 1){
-									swal("Success!", "Disposition Successfully Updated!", "success");
-									$('#update_button').html("<i class='fa fa-check'></i> Update");
-									$('#modify_disposition').attr("disabled", false);
-									window.setTimeout(function(){location.reload();},2000);
-								}else{
-									swal("Ooops!", "Something went wrong! "+ data, "error");
-									$('#update_button').html("<i class='fa fa-check'></i> Update");
-									$('#modify_disposition').attr("disabled", false);
-								}
-							}
-						});
-				});					
-
-				//delete disposition
-			        $(document).on('click','.delete_disposition', function() {
-			            var id = $(this).attr('data-id');
-						var log_user = '<?=$_SESSION['user']?>';
-						var log_group = '<?=$_SESSION['usergroup']?>';
-			            swal({
-			            	title: "<?php $lh->translateText("are_you_sure"); ?>",
-			            	text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
-			            	type: "warning",
-			            	showCancelButton: true,
-			            	confirmButtonColor: "#DD6B55",
-			            	confirmButtonText: "<?php $lh->translateText("dispostion"); ?>!",
-			            	cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
-			            	closeOnConfirm: false,
-			            	closeOnCancel: false
-			            	},
-			            	function(isConfirm){
-			            		if (isConfirm) {
-			            			$.ajax({
-				                        url: "./php/DeleteDisposition.php",
-				                        type: 'POST',
-				                        data: {
-				                            disposition_id:id,
-											log_user: log_user,
-											log_group: log_group
-				                        },
-				                        success: function(data) {
-				                        console.log(data);
-				                            if(data == 1){
-				                            	swal({
-														title: "<?php $lh->translateText("success"); ?>",
-														text: "<?php $lh->translateText("disposition_delete"); ?>!",
-														type: "success"
-													},
-													function(){
-														window.location.href = 'telephonycampaigns.php';
-														$(".preloader").fadeIn();
+							
+							$(document).on('click','.delete_disposition', function() {
+								var id = $(this).attr('data-id');
+								var log_user = '<?=$_SESSION['user']?>';
+								var log_group = '<?=$_SESSION['usergroup']?>';
+								swal({
+									title: "<?php $lh->translateText("are_you_sure"); ?>",
+									text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
+									type: "warning",
+									showCancelButton: true,
+									confirmButtonColor: "#DD6B55",
+									confirmButtonText: "<?php $lh->translateText("dispostion"); ?>!",
+									cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
+									closeOnConfirm: false,
+									closeOnCancel: false
+									},
+									function(isConfirm){
+										if (isConfirm) {
+											$.ajax({
+												url: "./php/DeleteDisposition.php",
+												type: 'POST',
+												data: {
+													disposition_id:id,
+													log_user: log_user,
+													log_group: log_group
+												},
+												success: function(data) {
+												console.log(data);
+													if(data == 1){
+														swal({
+																title: "<?php $lh->translateText("success"); ?>",
+																text: "<?php $lh->translateText("disposition_delete"); ?>!",
+																type: "success"
+															},
+															function(){
+																window.location.href = 'telephonycampaigns.php';
+																$(".preloader").fadeIn();
+															}
+														);
+													}else{
+														sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+														window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
 													}
-												);
-				                            }else{
-				                                sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
-				                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-				                            }
-				                        }
-				                    });
-												} else {
-			                			swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-			                	}
-			            	}
-			            );
-			        });
+												}
+											});
+														} else {
+												swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+										}
+									}
+								);
+							});							
+							
+						
+						}
+					});
+				});
+										
+				// view leads_recycling
+				$(document).on('click','.view_leadrecycling',function() {
+					var campaign_id = $(this).attr('data-id');
+					$('#edit_campaign').val(campaign_id);
+					console.log(campaign_id);
+					//$('#modal_view_leadrecycling').modal('toggle');
+					$.ajax({
+						url: "./php/ViewLeadRecycling.php",
+						type: 'POST',
+						data: {
+							campaign_id : campaign_id
+						},
+						dataType: 'json',
+						success: function(data) {
+							var JSONString = data;
+							var JSONObject = JSON.parse(JSONString);
+							var tableCP = $('#table_campaign_leadrecycling').DataTable({
+								data:JSONObject,
+								destroy:true,    
+								stateSave:true,
+								drawCallback:function(settings) {
+									var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+									pagination.toggle(this.api().page.info().pages > 1);
+								},
+								rowCallback: function( row, data ) {
+									var id = [];
+									id.push(data[1]);									
+									//console.log(id);
+									$(row).addClass('status_row');
+									$(row).attr('id', 'status_row-'+id);
+									$('#update_leadrecycling_button').attr('disabled', true);
+								},
+								columnDefs:[
+									{ width: "25%", targets: "Action" }
+								],								
+								"aaSorting": [[ 1, "asc" ]],
+								"aoColumnDefs": [{
+									"bSearchable": false,
+									"aTargets": [ 0, 5 ]
+								},{
+									"bSortable": false,
+									"aTargets": [ 0, 5 ]
+								}],				
+							});
+							
+							$(document).on('click','.btn-edit-leadrecycling',function() {
+								var status	= $(this).attr('data-status');
+								$('#status_row-'+status).find($('input')).attr('disabled', false);
+								$('#status_row-'+status).find($('select')).attr('disabled', false);
+								$('.btn-edit-leadrecycling').attr('disabled', true);
+								$('#btn-cancel-leadrecycling-'+status).attr('disabled', false);
+								$('#update_leadrecycling_button').attr('disabled', false);
+								$('.btn-delete-leadrecycling').attr('disabled', true);
+									
+								$(document).on('click','#update_leadrecycling_button',function() {
+									$.ajax({
+										url: "./php/ModifyLeadRecycling.php",
+										type: 'POST',
+										data: $('#form_edit_leadrecyclings').serialize() + '&status=' + status,
+										success: function(data) {
+										console.log(data);
+											if (data == 1) {
+												swal("Success!", "Disposition Successfully Updated!", "success");
+												$('#update_leadrecycling_button').html("<i class='fa fa-check'></i> Update");
+												$('#update_leadrecycling_button').attr("disabled", true);
+												window.setTimeout(function(){location.reload();},2000);
+											} else {
+												swal("Ooops!", "Something went wrong! "+ data, "error");
+												$('#update_leadrecycling_button').html("<i class='fa fa-check'></i> Update");
+												$('#update_leadrecycling_button').attr("disabled", false);
+											}
+										}
+									});
+								});									
+							});
+							
+							$(document).on('click','.btn-cancel-leadrecycling',function() {
+								var status	= $(this).attr('data-status');
+								console.log(status);
+								$('.status_row').find($('input')).attr('disabled', true);
+								$('#status_row-'+status).find($('select')).attr('disabled', true);
+								$('.btn-edit-leadrecycling').attr('disabled', false);
+								$('.btn-cancel-leadrecycling').attr('disabled', true);
+								$('#update_leadrecycling_button').attr('disabled', true);
+								$('.btn-delete-leadrecycling').attr('disabled', false);
+							});	
+							
+							$(document).on('click','.delete_leadrecycling', function() {
+								var id = $(this).attr('data-id');
+								var log_user = '<?=$_SESSION['user']?>';
+								var log_group = '<?=$_SESSION['usergroup']?>';
+								swal({
+									title: "<?php $lh->translateText("are_you_sure"); ?>",
+									text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
+									type: "warning",
+									showCancelButton: true,
+									confirmButtonColor: "#DD6B55",
+									confirmButtonText: "<?php $lh->translateText("leadrecycling"); ?>!",
+									cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
+									closeOnConfirm: false,
+									closeOnCancel: false
+									},
+									function(isConfirm){
+										if (isConfirm) {
+											$.ajax({
+												url: "./php/DeleteLeadRecycling.php",
+												type: 'POST',
+												data: {
+													disposition_id:id,
+													log_user: log_user,
+													log_group: log_group
+												},
+												success: function(data) {
+												console.log(data);
+													if(data == 1){
+														swal({
+																title: "<?php $lh->translateText("success"); ?>",
+																text: "<?php $lh->translateText("leadrecycling_delete"); ?>!",
+																type: "success"
+															},
+															function(){
+																window.location.href = 'telephonycampaigns.php';
+																$(".preloader").fadeIn();
+															}
+														);
+													}else{
+														sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+														window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+													}
+												}
+											});
+														} else {
+												swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+										}
+									}
+								);
+							});							
+							
+						
+						}
+					});
+				});
+
 			// ----------------- end of disposition
 
 			/*************
@@ -3024,13 +3053,6 @@
 					$('#finish').text("Loading...");
 				});
 				
-				//edit leadrecycling
-				$(document).on('click','.edit-leadrecycling',function() {
-					var url = './edittelephonycampaign.php';
-					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="leadrecycling_id" value="' + $(this).attr('data-id') + '" /></form>');
-					$('body').append(form);  // This line is not necessary
-					$(form).submit();
-				});
 
 		        //delete leadrecycling
 			        $(document).on('click','.delete-leadrecycling',function() {
