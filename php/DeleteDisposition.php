@@ -3,7 +3,8 @@
  * @file        DeleteDisposition.php
  * @brief       Handles Delete Disposition Requests
  * @copyright   Copyright (c) 2018 GOautodial Inc.
- * @author      Alexander Jim H. Abenoja  <alex@goautodial.com>
+ * @author		Demian Lizandro A, Biscocho 
+ * @author      Alexander Jim H. Abenoja
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -20,58 +21,46 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('APIHandler.php');
-$api = \creamy\APIHandler::getInstance();
+	require_once('APIHandler.php');
+	
+	$api 											= \creamy\APIHandler::getInstance();
+	$campaign_id 									= $_POST["disposition_id"];
+	$status 										= $_POST["status"];
 
-$validated = 1;
-if (!isset($_POST["disposition_id"])) {
-	$validated = 0;
-}
+	if (!empty($campaign_id) && !empty($status)) {        
 
-if ($validated == 1) {
-	$disposition_id = $_POST["disposition_id"];
+		$postfields 								= array(
+			'goAction' 									=> 'goDeleteDisposition',
+			'campaign_id' 								=> $campaign_id,
+			'statuses' 									=> $status
+		);
 
-	if(isset($_POST['status'])){
-        $status = $_POST["status"];
+		$output 									= $api->API_Request("goDispositions", $postfields);
 
-        $postfields = array(
-            'goAction' => 'goDeleteDisposition',
-            'campaign_id' => $disposition_id,
-            'statuses' => $status
-        );
+		if ($output->result=="success") { 
+			$status 								= 1; 
+		} else { 
+			$status 								= $output->result; 
+		}
 
-        $output = $api->API_Request("goDispositions", $postfields);
+		echo json_encode($status);
+		
+	} elseif (!empty($campaign_id) && empty($status)) {
 
-        if ($output->result=="success") {
-            echo 1;
-        }else{
-            echo $output->result;
-        }
-    }else{
-        /*
-        $url = gourl."/goDispositions/goAPI.php"; #URL to GoAutoDial API. (required)
-        $postfields["goUser"] = goUser; #Username goes here. (required)
-        $postfields["goPass"] = goPass; #Password goes here. (required)
-        $postfields["goAction"] = "goDeleteDisposition"; #action performed by the [[API:Functions]]. (required)
-        $postfields["responsetype"] = responsetype; #json. (required)
-        $postfields["campaign_id"] = $disposition_id; #Desired User ID. (required)
-        $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
-        */
+		$postfields 								= array(
+			'goAction' 									=> 'goDeleteDisposition',
+			'campaign_id' 								=> $campaign_id
+		);
 
-        $postfields = array(
-            'goAction' => 'goDeleteDisposition',
-            'campaign_id' => $disposition_id
-        );
+		$output 									= $api->API_Request("goDispositions", $postfields);
 
-        $output = $api->API_Request("goDispositions", $postfields);
+		if ($output->result=="success") { 
+			$status 								= 1; 
+		} else { 
+			$status 								= $output->result; 
+		}
 
-        if ($output->result=="success") {
-    		echo 1;
-        }else{
-            echo $output->result;
-        }
-    }
-}
-
+		echo json_encode($status);
+	}
 
 ?>

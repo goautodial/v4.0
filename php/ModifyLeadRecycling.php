@@ -1,64 +1,74 @@
 <?php
+/**
+ * @file        ModifyLeadRecycling.php
+ * @brief       Handles modifying lead recycling requests
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author		Demian Lizandro A. Biscocho 
+ * @author      Noel Umandap
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-require_once('CRMDefaults.php');
-require_once('goCRMAPISettings.php');
+	require_once('APIHandler.php');
+	$api 										= \creamy\APIHandler::getInstance();	
 
-// check required fields
-$reason = "Unable to Modify Lead Recycling";
+	// check required fields
+	$reason 									= "Unable to Modify Disposition";	
+	$modifyid 									= $_POST["edit_leadrecycling"];
+	$campaign_id								= $_POST["edit_leadrecycling_campaign"];
 
-$validated = 1;
-if (!isset($_POST["recycleid"])) {
-	$validated = 0;
-}
+	if ($modifyid != NULL) {		
+		$attempt_delay 							= NULL; 
+		if (isset($_POST["attempt_delay"])) { 
+			$attempt_delay 						= $_POST["attempt_delay"]; 
+			$attempt_delay 						= stripslashes($attempt_delay);
+		}
+		
+		$attempt_maximum 						= NULL; 
+		if (isset($_POST["attempt_maximum"])) { 
+			$attempt_maximum 					= $_POST["attempt_maximum"];
+			$attempt_maximum 					= stripslashes($attempt_maximum);
+		}
 
-if ($validated == 1) {
-    
-	// collect new user data.	
-	$modifyid = $_POST["recycleid"];
-    
-	$attempt_delay = NULL; if (isset($_POST["attempt_delay"])) { 
-		$attempt_delay = $_POST["attempt_delay"]; 
-		$attempt_delay = stripslashes($attempt_delay);
+		$active 								= NULL; 
+		if (isset($_POST["active"])) { 
+			$active 							= $_POST["active"]; 
+			$active 							= stripslashes($active);
+		}
+
+		$postfields 						= array(
+			'goAction' 							=> 'goEditLeadRecycling',		
+			'recycle_id' 						=> $modifyid,
+			'campaign_id'						=> $campaign_id,
+			'attempt_delay'						=> $attempt_delay,
+			'attempt_maximum' 					=> $attempt_maximum,
+			'active' 							=> $active
+		);				
+
+		$output 							= $api->API_editLeadRecycling($postfields);
+
+		if ($output->result=="success") {
+			$status 						= 1; 
+		} else { 
+			$status 						= $output->result; 
+		}
+
+		echo json_encode($status);
+		
+	} else {
+		echo $reason;
 	}
 	
-    $attempt_maximum = NULL; if (isset($_POST["attempt_maximum"])) { 
-		$attempt_maximum = $_POST["attempt_maximum"];
-		$attempt_maximum = stripslashes($attempt_maximum);
-	}
-
-    $active = NULL; if (isset($_POST["active"])) { 
-		$active = $_POST["active"]; 
-		$active = stripslashes($active);
-	}
-
-    $url = gourl."/goLeadRecycling/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"]             = goUser; #Username goes here. (required)
-    $postfields["goPass"]             = goPass; #Password goes here. (required)
-    $postfields["goAction"]           = "goEditLeadRecycling"; #action performed by the [[API:Functions]]. (required)
-    $postfields["responsetype"]       = responsetype; #json. (required)
-    $postfields["hostname"]           = $_SERVER['REMOTE_ADDR']; #Default value
-
-    $postfields["recycle_id"] 			= $modifyid; #Desired uniqueid. (required)
-    $postfields["attempt_delay"] 		= $attempt_delay;
-    $postfields["attempt_maximum"] 		= $attempt_maximum;
-    $postfields["active"] 				= $active;
-	$postfields["session_user"]         = $_POST['session_user'];
-
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $data = curl_exec($ch);
-    curl_close($ch);
-    $output = json_decode($data);
-
-	echo $output->result;
-} else { 
-	//ob_clean(); 
-	print $reason; 
-}
 ?>

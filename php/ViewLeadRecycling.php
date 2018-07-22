@@ -30,6 +30,7 @@
 	
 	$data 							= '[';
 	$i								= 0;
+	
 	$optionsHKF 					= array(
 		"1" 							=> "1", 
 		"2" 							=> "2", 
@@ -42,15 +43,20 @@
 		"9" 							=> "9"
 	);
 	
-	for($i=0;$i<=count($output->campaign_id);$i++) {
+	$optionsYN	 					= array(
+		"Y" 							=> "Y", 
+		"N" 							=> "N"
+	);
+	
+	for($i=0;$i<=count($output->recycle_id);$i++) {
 		if(!empty($output->status[$i])){
 			$data 					.= '[';
-			$data 					.= '"'.$campaign_id.'",';
+			$data 					.= '"'.$output->recycle_id[$i].'",';
 			$data 					.= '"'.$output->status[$i].'",';
 			$data 					.= '"'.singleFormInputElement("attempt_delay-".$output->status[$i], "attempt_delay", "number", $output->attempt_delay[$i]).'",';
 			$data 					.= '"'.singleFormGroupWithSelect("", "attempt_maximum-".$output->status[$i], "attempt_maximum", $optionsHKF, $output->attempt_maximum[$i]).'",';			
-			$data 					.= '"'.$output->active[$i].'",';
-			$data					.= '"<a id=\"btn-edit-leadrecycling-'.$output->status[$i].'\" class=\"btn btn-primary btn-edit-leadrecycling\" href=\"#\" data-id=\"'.$output->campaign_id.'\" data-status=\"'.$output->status[$i].'\"><i class=\"fa fa-pencil\"></i></a><a id=\"btn-cancel-leadrecycling-'.$output->status[$i].'\" class=\"btn btn-warning btn-cancel-leadrecycling\" href=\"#\" data-id=\"'.$output->campaign_id.'\" data-status=\"'.$output->status[$i].'\" disabled><i class=\"fa fa-recycle\"></i></a><a class=\"delete_leadrecycling btn btn-danger btn-delete-leadrecycling\" href=\"#\" data-id=\"'.$output->campaign_id.'\" data-status=\"'.$output->status[$i].'\"><i class=\"fa fa-trash\"></i></a>"';
+			$data 					.= '"'.singleFormGroupWithSelect("", "active-".$output->status[$i], "active", $optionsYN, $output->active[$i]).'",';
+			$data					.= '"<a id=\"btn-edit-leadrecycling-'.$output->status[$i].'\" class=\"btn btn-primary btn-edit-leadrecycling\" href=\"#\" data-id=\"'.$output->recycle_id[$i].'\" data-status=\"'.$output->status[$i].'\"><i class=\"fa fa-pencil\"></i></a><a id=\"btn-cancel-leadrecycling-'.$output->status[$i].'\" class=\"btn btn-warning btn-cancel-leadrecycling\" href=\"#\" data-id=\"'.$output->recycle_id[$i].'\" data-status=\"'.$output->status[$i].'\" disabled><i class=\"fa fa-recycle\"></i></a><a class=\"delete_leadrecycling btn btn-danger btn-delete-leadrecycling\" href=\"#\" data-id=\"'.$output->recycle_id[$i].'\" data-status=\"'.$output->status[$i].'\" data-campaign=\"'.$output->campaign_id.'\"><i class=\"fa fa-trash\"></i></a>"';
 			$data 					.= '],';
 		}
 	}

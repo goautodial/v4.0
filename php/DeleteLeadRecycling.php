@@ -2,9 +2,10 @@
 /**
  * @file        DeleteLeadRecycling.php
  * @brief       Handles Delete Lead Recycling Request
- * @copyright   Copyright (C) GOautodial Inc.
- * @author      Noel Umandap
- * @author      Alexander Jim Abenoja  <alex@goautodial.com>
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author		Demian Lizandro A, Biscocho
+ * @author      Noel Umandap 
+ * @author      Alexander Jim H. Abenoja
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -20,36 +21,46 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-require_once('APIHandler.php');
-$api = \creamy\APIHandler::getInstance();
 
-    $campaign_id = NULL;
-    if(isset($_POST['campaign_id'])){
-        $campaign_id = $_POST['campaign_id'];
-    }
-    $recycleid = NULL;
-    if(isset($_POST['recycleid'])){
-        $recycleid = $_POST['recycleid'];
-    }
-/*
-    $url = gourl."/goLeadRecycling/goAPI.php"; #URL to GoAutoDial API. (required)
+	require_once('APIHandler.php');
+	
+	$api 											= \creamy\APIHandler::getInstance();
+	$campaign_id 									= $_POST["campaign_id"];
+	$recycleid 										= $_POST["recycle_id"];
+
+    if (!empty($campaign_id) && !empty($recycleid)) {
     
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goDeleteLeadRecycling"; #action performed by the [[API:Functions]]. (required)
-    $postfields["responsetype"] = responsetype; #json. (required)
+		$postfields 								= array(
+			'goAction' 									=> 'goDeleteLeadRecycling',
+			'campaign_id' 								=> $campaign_id,
+			'recycle_id' 								=> $recycleid
+		);
 
-    $postfields["campaign_id"] = $campaign_id;
-    $postfields["recycle_id"] = $recycleid;
-    $postfields["session_user"] = $_POST['session_user'];
-*/
-    $postfields = array(
-        'goAction' => 'goDeleteLeadRecycling',
-        'campaign_id' => $campaign_id,
-        'recycle_id' => $recycleid
-    );
+		$output 									= $api->API_Request("goLeadRecycling", $postfields);
 
-    $output = $api->API_Request("goLeadRecycling", $postfields);
-    
-    echo $output->result;
+		if ($output->result=="success") { 
+			$status 								= 1; 
+		} else { 
+			$status 								= $output->result; 
+		}
+
+		echo json_encode($status);
+		
+	} elseif (!empty($campaign_id) && empty($recycleid)) {
+
+		$postfields 								= array(
+			'goAction' 									=> 'goDeleteLeadRecycling',
+			'campaign_id' 								=> $campaign_id
+		);
+
+		$output 									= $api->API_Request("goLeadRecycling", $postfields);
+
+		if ($output->result=="success") { 
+			$status 								= 1; 
+		} else { 
+			$status 								= $output->result; 
+		}
+
+		echo json_encode($status);
+	}
 ?>

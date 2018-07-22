@@ -244,6 +244,22 @@ error_reporting(E_ERROR | E_PARSE);
 		return $table;
     }
 
+    public function generateTableHeaderWithItemsResponsive($items, $id, $needsTranslation = true, $hideHeading = false) {
+		$theadStyle = $hideHeading ? 'style="display: none!important;"' : '';
+	    $table = "<table id=\"$id\" class=\"display responsive no-wrap\" width=\"100%\"><thead $theadStyle><tr>";
+	    if (is_array($items)) {
+			foreach ($items as $item) {
+		    	if($item == "CONCAT_WS(' ', first_name, middle_initial, last_name)"){
+		    		$item = "Name";
+		    	}
+			    // build header item
+			    $table .= "<th>".($needsTranslation ? $this->lh->translationFor($item) : $item)."</th>";
+		    }
+	    }
+		$table .= "</tr></thead><tbody>";
+		return $table;
+    }
+    
     public function generateTableFooterWithItems($items, $needsTranslation = true, $hideHeading = false, $hideOnMedium = array(), $hideOnLow = array()) {
 	    $hideOnMedium = array("email", "Phone");
 		$hideOnLow = array("email", "Phone");
@@ -4754,7 +4770,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
 			<li><a class="view_leadrecycling" href="#" data-toggle="modal" data-target="#modal_view_leadrecycling" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
-			<li><a class="delete_leadrecycling" href="#" data-id="'.$id.'">'.$this->lh->translationFor("delete").'</a></li>
+			<li><a class="delete_leadrecycling" href="#" data-id="'.$id.'" data-campaign="'.$id.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 	}	

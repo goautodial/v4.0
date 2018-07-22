@@ -43,9 +43,12 @@
 
         <?php print $ui->standardizedThemeCSS(); ?>
 
-        <!-- DATA TABLES -->
-        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-
+        <!-- DATA TABLES 1.10.19 CSS-->        
+        <link href="css/datatables/1.10.19/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/datatables/1.10.19/dataTables.jqueryui.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/datatables/1.10.19/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
+		<link href="css/datatables/1.10.19/responsive.dataTables.min.css" rel="stylesheet" type="text/css" />
+		<link href="css/datatables/1.10.19/responsive.jqueryui.min.css" rel="stylesheet" type="text/css" />
     	<!-- iCheck for checkboxes and radio inputs -->
   		<link rel="stylesheet" href="css/iCheck/all.css">
 
@@ -56,8 +59,12 @@
         <?php print $ui->creamyThemeCSS(); ?>
 		<!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> <<< THIS IS CAUSING THE TOOLTIP PROBLEM -->
 		<!-- Data Tables -->
-        <script src="js/plugins/datatables/1.10.12/jquery.dataTables.min.js" type="text/javascript"></script>
-        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+        <script src="js/datatables/1.10.19/jquery.dataTables.min.js" type="text/javascript"></script>
+        <script src="js/datatables/1.10.19/dataTables.jqueryui.min.js" type="text/javascript"></script>
+        <script src="js/datatables/1.10.19/dataTables.bootstrap.min.js" type="text/javascript"></script>
+        <script src="js/datatables/1.10.19/dataTables.responsive.min.js" type="text/javascript"></script>        
+        <script src="js/datatables/1.10.19/responsive.jqueryui.min.js" type="text/javascript"></script>
+        
 		<!-- Bootstrap Color Picker -->
   		<link rel="stylesheet" href="adminlte/colorpicker/bootstrap-colorpicker.min.css">
 		<!-- bootstrap color picker -->
@@ -126,6 +133,17 @@
 					  }
 					}
 				}
+				@media (min-width: 992px) {
+					.modal-lg {
+						width: 900px;
+					}
+				}
+				@media (min-width: 768px) {
+					.modal-xl {
+						width: 90%;
+					max-width:1600px;
+					}
+				}				
 			</style>
     </head>
      <?php print $ui->creamyBody(); ?>
@@ -165,7 +183,7 @@
 								if($campaign->result !== "success"){
 									die("API ERROR: ".$campaign->result);
 								}
-								$disposition = $api->API_getAllDispositions("campaign");
+								$disposition = $api->API_getAllDispositions();
 								$leadrecycling = $api->API_getAllLeadRecycling();
 								$dialStatus = $api->API_getAllDispositions("custom");
 								//$campaignStatuses = $api->getAllCampaignStatuses();
@@ -185,17 +203,17 @@
 								<ul role="tablist" class="nav nav-tabs nav-justified">
 
 								 <!-- Campaign panel tabs-->
-									 <li role="presentation" <?php if(!isset($_GET['disposition']) && !isset($_GET['leadrecycling']) ) echo 'class="active"'; ?> >
+									 <li role="presentation" <?php if(!isset($_GET['T_disposition']) && !isset($_GET['T_recycling']) ) echo 'class="active"'; ?> >
 										<a href="#T_campaign" aria-controls="T_campaign" role="tab" data-toggle="tab" class="bb0">
 										   <?php $lh->translateText("campaigns"); ?> </a>
 									 </li>
 								<!-- Disposition panel tab -->
-									 <li role="presentation" <?php if(isset($_GET['disposition']))echo 'class="active"'; ?> >
+									 <li role="presentation" <?php if(isset($_GET['T_disposition']))echo 'class="active"'; ?> >
 										<a href="#T_disposition" aria-controls="T_disposition" role="tab" data-toggle="tab" class="bb0">
 										   <?php $lh->translateText("disposition"); ?> </a>
 									 </li>
 								<!-- Lead Recycling panel tab -->
-									 <li role="presentation" <?php if(isset($_GET['leadrecycling']))echo 'class="active"'; ?>  >
+									 <li role="presentation" <?php if(isset($_GET['T_recycling']))echo 'class="active"'; ?>  >
 										<a href="#T_recycling" aria-controls="T_recycling" role="tab" data-toggle="tab" class="bb0">
 										   <?php $lh->translateText("Lead Recycling"); ?> </a>
 									 </li>
@@ -211,19 +229,27 @@
 								<div class="tab-content bg-white">
 									
 								<!--==== Campaigns ====-->
-								  <div id="T_campaign" role="tabpanel" class="tab-pane <?php if(!isset($_GET['disposition']) && !isset($_GET['leadrecycling']) ) echo 'active'; ?> ">
-										<table class="table table-striped table-bordered table-hover" id="table_campaign">
+								<?php
+									/*// Campaign datatable
+									$columns = array("  ", ($perm->campaign->campaign_delete !== 'N') ? $checkbox_all : '', $lh->translationFor("campaign_id"), $lh->translationFor("campaign_name"), $lh->translationFor("dial_method"), $lh->translationFor("status"), $lh->translationFor("action"));
+									$result = $ui->generateTableHeaderWithItemsResponsive($columns, "table_campaign", true, false);
+									$result .= '</tbody></table>';
+									
+									echo $result;*/
+								?>								
+								  <div id="T_campaign" role="tabpanel" class="tab-pane <?php if(!isset($_GET['T_disposition']) && !isset($_GET['T_recycling']) ) echo 'active'; ?> ">
+										<table class="display responsive no-wrap table-bordered table-striped" width="100%" id="table_campaign">
 										   <thead>
 											  <tr>
-												 <th style="color: white;">Pic</th>
+												 <th></th>
+												 <th><?php $lh->translateText("campaign_id"); ?></th>
+												 <th><?php $lh->translateText("campaign_name"); ?></th>
+												 <th><?php $lh->translateText("dial_method"); ?></th>
+												 <th><?php $lh->translateText("status"); ?></th>
 												 <?php if ($perm->campaign->campaign_delete !== 'N'){ ?>
 												 <th><?php echo $checkbox_all;?></th>
-												 <?php } ?>
-												 <th class='hide-on-medium hide-on-low' style='width:0px;'><?php $lh->translateText("campaign_id"); ?></th>
-												 <th><?php $lh->translateText("campaign_name"); ?></th>
-												 <th class='hide-on-medium hide-on-low'><?php $lh->translateText("dial_method"); ?></th>
-												 <th class='hide-on-medium hide-on-low'><?php $lh->translateText("status"); ?></th>
-												 <th style="width:16%;"><?php $lh->translateText("action"); ?></th>
+												 <?php } ?>													 
+												 <th class='action_disposition'><?php $lh->translateText("action"); ?></th>											 
 											  </tr>
 										   </thead>
 										   <tbody>
@@ -257,14 +283,14 @@
 											   	?>
 													<tr>
 														<td><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="edit-campaign" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></td>
-														<?php if ($perm->campaign->campaign_delete !== 'N'){ ?>
-														<td style="width:10%;"><?php echo $checkbox;?></td>
-														<?php } ?>
-														<td class='hide-on-medium hide-on-low'><strong><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="edit-campaign" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></strong></td>
+														<td><strong><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="edit-campaign" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></strong></td>
 														<td><?php echo $campaign->campaign_name[$i];?></td>
-														<td class='hide-on-medium hide-on-low'><?php echo $dial_method;?></td>
-														<td class='hide-on-medium hide-on-low'><?php echo $campaign->active[$i];?></td>
-														<td nowrap><?php echo $action_CAMPAIGN;?></td>
+														<td><?php echo $dial_method;?></td>
+														<td><?php echo $campaign->active[$i];?></td>
+														<?php if ($perm->campaign->campaign_delete !== 'N'){ ?>
+														<td><?php echo $checkbox;?></td>
+														<?php } ?>															
+														<td><?php echo $action_CAMPAIGN;?></td>													
 													</tr>
 												<?php
 													}
@@ -274,20 +300,21 @@
 								 </div>
 
 								<!--==== Disposition ====-->
-								  <div id="T_disposition" role="tabpanel" class="tab-pane <?php if(isset($_GET['disposition']))echo 'active'; ?>  ">
-										<table class="table table-striped table-bordered table-hover" id="table_disposition">
+
+								  <div id="T_disposition" role="tabpanel" class="tab-pane <?php if(isset($_GET['T_disposition']))echo 'active'; ?>  ">
+										<table class="display responsive no-wrap table-bordered table-striped" width="100%" id="table_disposition">
 										   <thead>
 											  <tr>
-                         						 <th style="color: white;">Pic</th>
-												 <th class='hide-on-medium hide-on-low'><?php $lh->translateText("campaign_id"); ?></th>
+                         						 <th></th>
+												 <th><?php $lh->translateText("campaign_id"); ?></th>
 												 <th><?php $lh->translateText("campaign_name"); ?></th>
-												 <th class='hide-on-medium hide-on-low'><?php $lh->translateText("custom_disposition"); ?></th>
+												 <th><?php $lh->translateText("custom_disposition"); ?></th>
 												 <th class='action_disposition'><?php $lh->translateText("action"); ?></th>
 											  </tr>
 										   </thead>
 										   <tbody>
 											   	<?php			
-													if (count($disposition->campaign_id[$i]) > 0){
+													if (count($disposition->campaign_id) > 0){
 														for($i=0;$i < count($campaign->campaign_id);$i++){
 															
 											   	?>
@@ -296,9 +323,9 @@
 																if ($perm->disposition->disposition_update !== 'N') {
 																	echo '<a class="view_disposition" data-toggle="modal" data-target="#modal_view_dispositions" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; 
 																} ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></td>
-														<td class='hide-on-medium hide-on-low'><strong><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="view_disposition" data-toggle="modal" data-target="#modal_view_dispositions" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></strong></td>
+														<td><strong><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="view_disposition" data-toggle="modal" data-target="#modal_view_dispositions" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></strong></td>
 														<td><?php echo $campaign->campaign_name[$i];?></td>
-														<td class='hide-on-medium hide-on-low'>
+														<td>
 												<?php
 															$dispoStatuses = "";
 															//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){															
@@ -319,7 +346,7 @@
 															$action_DISPOSITION = $ui->ActionMenuForDisposition($campaign->campaign_id[$i], $campaign->campaign_name[$i], $perm);
 												?>
 														</td>
-														<td style="width:16%;"><?php echo $action_DISPOSITION;?></td>
+														<td><?php echo $action_DISPOSITION;?></td>
 													</tr>
 												<?php
 														}
@@ -330,14 +357,14 @@
 								 </div>
 
 								<!--==== Lead Recycling ====-->
-								  <div id="T_recycling" role="tabpanel" class="tab-pane <?php if(isset($_GET['leadrecycling']))echo 'active'; ?> ">
-									<table class="table table-striped table-bordered table-hover" id="table_leadrecycling">
+								  <div id="T_recycling" role="tabpanel" class="tab-pane <?php if(isset($_GET['T_recycling']))echo 'active'; ?> ">
+									<table class="display responsive no-wrap table-bordered table-striped" width="100%" id="table_leadrecycling">
 									   <thead>
 										  <tr>
-                     						 <th style="color: white;">Pic</th>
-											 <th class='hide-on-medium hide-on-low'><?php $lh->translateText("campaign_id"); ?></th>
+                     						 <th></th>
+											 <th><?php $lh->translateText("campaign_id"); ?></th>
 											 <th><?php $lh->translateText("campaign_name"); ?></th>
-											 <th class='hide-on-medium hide-on-low'><?php $lh->translateText("Lead Recycles"); ?></th>
+											 <th><?php $lh->translateText("Lead Recycles"); ?></th>
 											 <th class='action_disposition'><?php $lh->translateText("action"); ?></th>
 										  </tr>
 									   </thead>
@@ -348,9 +375,9 @@
 										   	?>
 											<tr>
 												<td><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="view_leadrecycling" data-toggle="modal" data-target="#modal_view_leadrecycling" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></td>
-												<td class='hide-on-medium hide-on-low'><strong><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="view_leadrecycling" data-toggle="modal" data-target="#modal_view_leadrecycling" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></strong></td>
+												<td><strong><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="view_leadrecycling" data-toggle="modal" data-target="#modal_view_leadrecycling" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><?php echo $campaign->campaign_id[$i];?><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></strong></td>
 												<td><?php echo $campaign->campaign_name[$i];?></td>
-												<td class='hide-on-medium hide-on-low'>
+												<td>
 											<?php
 												$leadrecycle = "";
 												//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){												
@@ -366,16 +393,10 @@
 														}														
 													}
 												}
-												//$imploded_leadrecycles = implode(", ", $leadrecycles);
-												//unset($leadrecycles);
-												//echo "<i>".$imploded_leadrecycles."</i>";
-												//}else{s
-												//	echo "- - - NONE - - -";
-												//}
-												$action_LeadRecycling = $ui->ActionMenuForLeadRecycling($campaign->campaign_id[$i], $imploded_leadrecycles);
+												$action_LeadRecycling = $ui->ActionMenuForLeadRecycling($campaign->campaign_id[$i]);
 											?>
 												</td>
-												<td style="width:16%;"><?php echo $action_LeadRecycling;?></td>
+												<td><?php echo $action_LeadRecycling;?></td>
 											</tr>
 											<?php
 													}
@@ -1161,9 +1182,9 @@
 		$modalTitle = $lh->translationFor("pause_codes");
 		$modalSubtitle = "";
 		$columns = array($lh->translationFor("pause_codes"), $lh->translationFor("pause_name"), $lh->translationFor("billable"), $lh->translationFor("action"));
-		$hideOnMedium = array($lh->translationFor("billable"));
-		$hideOnLow = array($lh->translationFor("billable"));
-		$result = $ui->generateTableHeaderWithItems($columns, "pause_codes_list", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		//$hideOnMedium = array($lh->translationFor("billable"));
+		//$hideOnLow = array($lh->translationFor("billable"));
+		$result = $ui->generateTableHeaderWithItems($columns, "pause_codes_list", "display responsive no-wrap table-bordered table-striped", true, false);
 		$bodyInputs = $result.'</tbody></table>';				
 		$modalFooter = $ui->buttonWithLink("", "", "Create New", "button", null, "success", "btn-new-pause-code", "data-campaign=''");
 		$modalFormPC = $ui->modalFormStructure('modal_view_pause_codes', '', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '', '');
@@ -1189,9 +1210,9 @@
 	<?php
 		// hotkeys modal + datatable
 		$columnsHKT = array($lh->translationFor("hotkeys"), $lh->translationFor("status"), $lh->translationFor("description"), $lh->translationFor("action"));
-		$hideOnMediumHKT = array($lh->translationFor("description"));
-		$hideOnLowHKT = array($lh->translationFor("description"));
-		$resultHKT = $ui->generateTableHeaderWithItems($columnsHKT, "hotkeys_list", "table-bordered table-striped", true, false, $hideOnMediumHKT, $hideOnLowHKT);
+		//$hideOnMediumHKT = array($lh->translationFor("description"));
+		//$hideOnLowHKT = array($lh->translationFor("description"));
+		$resultHKT = $ui->generateTableHeaderWithItems($columnsHKT, "hotkeys_list", "display responsive no-wrap table-bordered table-striped", true, false);
 		$bodyInputsHKT = $resultHKT.'</tbody></table>';				
 		$modalFooterHKT = $ui->buttonWithLink("", "", $lh->translationFor("create_new"), "button", null, "success", "btn-new-hotkey", "data-campaign=''");
 		$modalFormHKT = $ui->modalFormStructure('modal_view_hotkeys', '', $lh->translationFor("hotkeys"), "", $bodyInputsHKT, $modalFooterHKT, '', '');
@@ -1213,9 +1234,9 @@
 		$modalTitle = $lh->translationFor("lists");
 		$modalSubtitle = "";
 		$columns = array($lh->translationFor("list_id"), $lh->translationFor("list_name"), $lh->translationFor("description"), $lh->translationFor("leads_count"), $lh->translationFor("active"), $lh->translationFor("last_call_date"), $lh->translationFor("action"));
-		$hideOnMedium = array($lh->translationFor("list_id"), $lh->translationFor("description"));
-		$hideOnLow = array($lh->translationFor("list_id"), $lh->translationFor("description"), $lh->translationFor("last_call_date"));
-		$result = $ui->generateTableHeaderWithItems($columns, "lists_list", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		//$hideOnMedium = array($lh->translationFor("list_id"), $lh->translationFor("description"));
+		//$hideOnLow = array($lh->translationFor("list_id"), $lh->translationFor("description"), $lh->translationFor("last_call_date"));
+		$result = $ui->generateTableHeaderWithItems($columns, "lists_list", "display responsive no-wrap table-bordered table-striped", true, false);
 		$bodyInputs = $result.'</tbody></table>';
 		$appendToBody = '<div class="form-group pull-left" style="margin-left: 5px;"><p style="text-align: left;"> This Campaign has <b><span class="count_active"></span> active</b> lists and <b><span class="count_inactive"></span> inactive</b> lists<br/> This Campaign has <b><span class="count_leads"></span> leads</b> in the queue (hopper)<br/><a href="#" style="color: green;" class="view-leads-on-hopper" data-campaign="">'.$lh->translationFor("view_leads").'</a></p></div>';
 		$modalFooter = $ui->modalDismissButton("", $lh->translationFor("close"));
@@ -1402,9 +1423,9 @@
 			$modalTitle = $lh->translationFor("lists");
 			$modalSubtitle = "";
 			$columns = array($lh->translationFor("order"), $lh->translationFor("priority"), $lh->translationFor("lead_id"), $lh->translationFor("list_id"), $lh->translationFor("phone_number"), $lh->translationFor("state"), $lh->translationFor("status"), $lh->translationFor("count"), $lh->translationFor("gmt"), $lh->translationFor("alt_phone"), $lh->translationFor("source"));
-			$hideOnMedium = array($lh->translationFor("order"), $lh->translationFor("priority"), $lh->translationFor("state"), $lh->translationFor("count"), $lh->translationFor("gmt"));
-			$hideOnLow = array($lh->translationFor("order"), $lh->translationFor("priority"), $lh->translationFor("state"), $lh->translationFor("count"), $lh->translationFor("gmt"), $lh->translationFor("alt"), $lh->translationFor("source"));
-			$result = $ui->generateTableHeaderWithItems($columns, "leads_on_hopper", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+			//$hideOnMedium = array($lh->translationFor("order"), $lh->translationFor("priority"), $lh->translationFor("state"), $lh->translationFor("count"), $lh->translationFor("gmt"));
+			//$hideOnLow = array($lh->translationFor("order"), $lh->translationFor("priority"), $lh->translationFor("state"), $lh->translationFor("count"), $lh->translationFor("gmt"), $lh->translationFor("alt"), $lh->translationFor("source"));
+			$result = $ui->generateTableHeaderWithItems($columns, "leads_on_hopper", "display responsive no-wrap table-bordered table-striped", true, false);
 			$bodyInputs = $result.'</tbody></table>';
 			$modalFooter = $ui->modalDismissButton("", $lh->translationFor("close"));
 			$modalFormVLH = $ui->modalFormStructure('modal_view_leads_on_hopper', '', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '', '', 'modal-lg');
@@ -1414,25 +1435,26 @@
 			// view campaign dispositions + datatable
 			$modalTitle = $lh->translationFor("custom_disposition");
 			$modalSubtitle = "";
-			$columns = array($lh->translationFor("status"), $lh->translationFor("status_name"), $lh->translationFor("Sel"), $lh->translationFor("Human"), $lh->translationFor("sale"), "DNC", $lh->translationFor("contact"), $lh->translationFor("NI"), $lh->translationFor("Unwork"), $lh->translationFor("SCB"), $lh->translationFor("action"));
-			$result = $ui->generateTableHeaderWithItems($columns, "table_campaign_disposition", "table-bordered table-striped", true, false);
+			$columns = array($lh->translationFor("status"), $lh->translationFor("status_name"), $lh->translationFor("Sel"), $lh->translationFor("Human"), $lh->translationFor("sale"), "D N C", $lh->translationFor("contact"), $lh->translationFor("N I"), $lh->translationFor("Unwork"), $lh->translationFor("SCB"), $lh->translationFor("action"));
+			$result = $ui->generateTableHeaderWithItems($columns, "table_campaign_disposition", "display responsive compact table-bordered table-striped", true, false);
 			$hiddenidinput = $ui->hiddenFormField("edit_campaign", "", "edit_campaign");
 			$bodyInputs = $hiddenidinput.$result.'</tbody></table>';
-			$appendToBody = '<div class="form-group pull-left" style="margin-left: 5px;"><h4>LEGEND</h4><p style="text-align: left;"><b>SEL:</b>  '.$lh->translationFor("selectable").'<br/><b>Human:</b>  '.$lh->translationFor("human_answered").'<br/><b>DNC:</b>  '.$lh->translationFor("DNC").'<br/><b>Contact:</b>  '.$lh->translationFor("customer_contact").'<br/><b>Unwork:</b>  '.$lh->translationFor("unworkable").'<br/><b>SCB:</b>  '.$lh->translationFor("scheduled_callback").'</p></div>';
+			$appendToBody = '<div class="form-group pull-left" style="margin-left: 5px;"><h4>LEGEND</h4><p style="text-align: left;"><b>SEL:</b>  '.$lh->translationFor("selectable").'<br/><b>Human:</b>  '.$lh->translationFor("human_answered").'<br/><b>D N C:</b>  '.$lh->translationFor("DNC").'<br/><b>N I:</b>  '.$lh->translationFor("NI").'<br/><b>Contact:</b>  '.$lh->translationFor("customer_contact").'<br/><b>Unwork:</b>  '.$lh->translationFor("unworkable").'<br/><b>SCB:</b>  '.$lh->translationFor("scheduled_callback").'</p></div>';
 			$modalFooter = $ui->buttonWithLink("update_disposition_button", "", $lh->translationFor("update"), "button", "edit", "success", "btn-update-disposition", "data-id='$id'");
 			$modalFormVCD = $ui->modalFormStructure('modal_view_dispositions', 'form_edit_dispositions', $modalTitle, $modalSubtitle, $bodyInputs, $appendToBody.$modalFooter, '', '', 'modal-lg');
 			
 			echo $modalFormVCD;
 			
 			// view campaign lead recycling + datatable
-			$modalTitle = $lh->translationFor("leadrecycling");
+			$modalTitle = $lh->translationFor("Lead Recycling");
 			$modalSubtitle = "";
-			$columns = array($lh->translationFor("campaign"), $lh->translationFor("status"), $lh->translationFor("Attempt Delay"), $lh->translationFor("Max Attempts"), $lh->translationFor("active"), $lh->translationFor("action"));
-			$result = $ui->generateTableHeaderWithItems($columns, "table_campaign_leadrecycling", "table-bordered table-striped", true, false);
-			$hiddenidinput = $ui->hiddenFormField("edit_campaign", "", "edit_campaign");
-			$bodyInputs = $hiddenidinput.$result.'</tbody></table>';
+			$columns = array($lh->translationFor("ID"), $lh->translationFor("status"), $lh->translationFor("Attempt Delay"), $lh->translationFor("Max Attempts"), $lh->translationFor("active"), $lh->translationFor("action"));
+			$result = $ui->generateTableHeaderWithItems($columns, "table_campaign_leadrecycling", "display responsive compact no-wrap table-bordered table-striped", true, false);
+			$hiddenidinput = $ui->hiddenFormField("edit_leadrecycling_campaign", "", "edit_leadrecycling_campaign");
+			$hiddenidinputLR = $ui->hiddenFormField("edit_leadrecycling", "", "edit_leadrecycling");
+			$bodyInputs = $hiddenidinput.$hiddenidinputLR.$result.'</tbody></table>';
 			$modalFooter = $ui->buttonWithLink("update_leadrecycling_button", "", $lh->translationFor("update"), "button", "edit", "success", "btn-update-leadrecycling", "data-id='$id'");
-			$modalForm = $ui->modalFormStructure('modal_view_leadrecycling', 'form_edit_leadrecycling', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '', '');
+			$modalForm = $ui->modalFormStructure('modal_view_leadrecycling', 'form_edit_leadrecycling', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '', '', 'modal-lg');
 			
 			echo $modalForm;
 		?>
@@ -1464,33 +1486,47 @@
 			});
 			
 			// Datatables initialization
-			$('#table_campaign').DataTable({
+			var tableCampaign = $('#table_campaign').DataTable({
 				destroy:true,    
+				responsive:true,
 				stateSave:true,
 				drawCallback:function(settings) {
 					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 					pagination.toggle(this.api().page.info().pages > 1);
-				},			
-				"aaSorting": [[ 1, "asc" ]],
-				"aoColumnDefs": [{
-					"bSearchable": false,
-					<?php if($perm->campaign->campaign_delete !== 'N'){?>
-					"aTargets": [ 0, 1, 5 ]
-					<?php }else{ ?>
-					"aTargets": [ 0, 5 ]
-					<?php } ?>
-				},{
-					"bSortable": false,
-					<?php if($perm->campaign->campaign_delete !== 'N'){?>
-					"aTargets": [ 0, 1, 5 ]
-					<?php }else{ ?>
-					"aTargets": [ 0, 5 ]
-					<?php } ?>
-				}]
+				},	
+				"columnDefs": [
+					{
+						"targets": [ 1 ],
+						"visible": false,
+						"searchable": false
+					},
+					{
+						"targets": [ 0, 5, 6 ],
+						"searchable": false
+					},
+					{
+						"targets": [ 0, 5, 6 ],
+						"sortable": false
+					},
+					{
+						"width": "16%",
+						"targets": 6
+					},
+					{
+						"width": "5%",
+						"targets": 5
+					},					
+					{
+						"targets": -1,
+						"className": "dt-body-right"
+					}					
+				]				
+				//"aaSorting": [[ 1, "desc" ]],
 			});
-			
-			$('#table_disposition').DataTable({
-				destroy:true,    
+		
+			var tableDisposition = $('#table_disposition').DataTable({
+				destroy:true, 
+				responsive:true,
 				stateSave:true,
 				drawCallback:function(settings) {
 					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
@@ -1519,8 +1555,9 @@
 				}],				
 			});
 			
-			$('#table_leadrecycling').DataTable({
-				destroy:true,    
+			var tableLeadRecycling = $('#table_leadrecycling').DataTable({
+				destroy:true,
+				responsive:true,
 				stateSave:true,
 				drawCallback:function(settings) {
 					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
@@ -1536,17 +1573,29 @@
 						$('.no_leadrecycle_row').find($('.delete-leadrecycling')).removeClass('delete-leadrecycling').addClass('disabled_delete-leadrecycling');
 					}
 				},				
-				columnDefs:[
-					{ width: "16%", targets: "action_leadrecycling" }
-				],
-				"aaSorting": [[ 1, "asc" ]],
-				"aoColumnDefs": [{
-					"bSearchable": false,
-					"aTargets": [ 0, 4 ]
-				},{
-					"bSortable": false,
-					"aTargets": [ 0, 4 ]
-				}]
+				"columnDefs": [
+					{
+						"targets": [ 1 ],
+						"visible": false,
+						"searchable": false
+					},
+					{
+						"targets": [ 0, 1, 4 ],
+						"searchable": false
+					},
+					{
+						"targets": [ 0, 1, 4 ],
+						"sortable": false
+					},
+					{
+						"width": "16%",
+						"targets": 4
+					},					
+					{
+						"targets": -1,
+						"className": "dt-body-right"
+					}					
+				]
 			});
 			
 			$('#table_leadfilter').dataTable();
@@ -1843,21 +1892,25 @@
 						//console.log(JSONObject);
 						var tablePClist = $('#pause_codes_list').DataTable({
 							data: JSONObject,
-							destroy: true,							
+							destroy: true,
+							responsive: true,
 							stateSave: true,
 							drawCallback: function(settings) {
 								var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 								pagination.toggle(this.api().page.info().pages > 1);
 							},
 							columnDefs: [{ 
-								width: "20%", 
-								targets: [ 3 ] 
+								width: "25%", 
+								targets:  3 
 							},{
 								searchable: false,
 								targets: [ 3 ]
 							},{
 								sortable: false,
 								targets: [ 3 ]
+							},{
+								"targets": -1,
+								"className": "dt-body-right"							
 							}]
 						});
 					}
@@ -1881,21 +1934,25 @@
 						var JSONObject = JSON.parse(data);
 						var tableHKlist = $('#hotkeys_list').DataTable({
 							data:JSONObject,
-							destroy:true,    
+							destroy:true, 
+							responsive:true,
 							stateSave:true,
 							drawCallback:function(settings) {
 								var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 								pagination.toggle(this.api().page.info().pages > 1);
 							},
 							columnDefs: [{ 
-								width: "20%", 
-								targets: [ 3 ] 
+								width: "25%", 
+								targets: 3 
 							},{
 								searchable: false,
 								targets: [ 3 ]
 							},{
 								sortable: false,
 								targets: [ 3 ]
+							},{
+								"targets": -1,
+								"className": "dt-body-right"							
 							}]
 						});
 					}
@@ -2647,8 +2704,9 @@
 			        	$('#finish').text("Loading...");
 			        	$('#finish').attr("disabled", true);
 
-						var disposition_id = $('#disposition_status').val();
-						var resultCheck = checkStatus(disposition_id);
+			        	var campaign_id = $('#disposition_campaign option:selected').val();
+						var status_id = $('#disposition_status').val();
+						var resultCheck = checkStatus(campaign_id, status_id);
 						console.log(resultCheck);
 						if (resultCheck == "1") {
 							$.ajax({
@@ -2665,7 +2723,7 @@
 											type: "success"
 											},
 											function(){
-												window.location.href = 'telephonycampaigns.php';
+												window.location.href = 'telephonycampaigns.php?T_disposition';
 												$(".preloader").fadeIn();
 											});
 									} else {
@@ -2703,7 +2761,8 @@
 							var JSONObject = JSON.parse(JSONString);
 							var tableCP = $('#table_campaign_disposition').DataTable({
 								data:JSONObject,
-								destroy:true,    
+								destroy:true,   
+								responsive:true,
 								stateSave:true,
 								drawCallback:function(settings) {
 									var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
@@ -2718,16 +2777,14 @@
 									$('#update_disposition_button').attr('disabled', true);
 								},
 								columnDefs:[
-									{ width: "20%", targets: "action" }
-								],								
-								"aaSorting": [[ 1, "asc" ]],
-								"aoColumnDefs": [{
-									"bSearchable": false,
-									"aTargets": [ 10 ]
-								},{
-									"bSortable": false,
-									"aTargets": [ 10 ]
-								}],				
+									{ width: "18%", targets: 10 },
+									{ visible: false, targets: 0 },
+									{ searchable: false, targets: 10 },
+									{ sortable: false, targets: 10 },
+									{ responsivePriority: 1, targets: 10 },
+									{ responsivePriority: 2, targets: 1 },
+									{ targets: -1, className: "dt-body-right" }
+								]			
 							});
 							
 							$(document).on('click','.btn-edit-disposition',function() {
@@ -2769,69 +2826,64 @@
 								$('#update_disposition_button').attr('disabled', true);
 								$('.btn-delete-disposition').attr('disabled', false);
 							});	
-							
-							$(document).on('click','.delete_disposition', function() {
-								var id = $(this).attr('data-id');
-								var log_user = '<?=$_SESSION['user']?>';
-								var log_group = '<?=$_SESSION['usergroup']?>';
-								swal({
-									title: "<?php $lh->translateText("are_you_sure"); ?>",
-									text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
-									type: "warning",
-									showCancelButton: true,
-									confirmButtonColor: "#DD6B55",
-									confirmButtonText: "<?php $lh->translateText("dispostion"); ?>!",
-									cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
-									closeOnConfirm: false,
-									closeOnCancel: false
-									},
-									function(isConfirm){
-										if (isConfirm) {
-											$.ajax({
-												url: "./php/DeleteDisposition.php",
-												type: 'POST',
-												data: {
-													disposition_id:id,
-													log_user: log_user,
-													log_group: log_group
-												},
-												success: function(data) {
-												console.log(data);
-													if(data == 1){
-														swal({
-																title: "<?php $lh->translateText("success"); ?>",
-																text: "<?php $lh->translateText("disposition_delete"); ?>!",
-																type: "success"
-															},
-															function(){
-																window.location.href = 'telephonycampaigns.php';
-																$(".preloader").fadeIn();
-															}
-														);
-													}else{
-														sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
-														window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-													}
-												}
-											});
-														} else {
-												swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-										}
-									}
-								);
-							});							
-							
-						
 						}
 					});
 				});
-										
+									
+				$(document).on('click','.delete_disposition', function() {
+					var campaign_id = $(this).attr('data-id');
+					var status_id = $(this).attr('data-status');
+					swal({
+						title: "<?php $lh->translateText("are_you_sure"); ?>",
+						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "<?php $lh->translateText("Yes"); ?>!",
+						cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
+						closeOnConfirm: false,
+						closeOnCancel: false
+						},
+						function(isConfirm){
+							if (isConfirm) {
+								$.ajax({
+									url: "./php/DeleteDisposition.php",
+									type: 'POST',
+									data: {
+										disposition_id: campaign_id,
+										status: status_id
+									},
+									success: function(data) {
+									console.log(data);
+										if(data == 1){
+											swal({
+													title: "<?php $lh->translateText("success"); ?>",
+													text: "<?php $lh->translateText("Delete Success"); ?>!",
+													type: "success"
+												},
+												function(){
+													window.location.href = 'telephonycampaigns.php?T_disposition';
+													$(".preloader").fadeIn();
+												}
+											);
+										}else{
+											sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+											window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+										}
+									}
+								});
+											} else {
+									swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+							}
+						}
+					);
+				});
+						
 				// view leads_recycling
 				$(document).on('click','.view_leadrecycling',function() {
 					var campaign_id = $(this).attr('data-id');
-					$('#edit_campaign').val(campaign_id);
+					$('#edit_leadrecycling_campaign').val(campaign_id);
 					console.log(campaign_id);
-					//$('#modal_view_leadrecycling').modal('toggle');
 					$.ajax({
 						url: "./php/ViewLeadRecycling.php",
 						type: 'POST',
@@ -2844,7 +2896,8 @@
 							var JSONObject = JSON.parse(JSONString);
 							var tableCP = $('#table_campaign_leadrecycling').DataTable({
 								data:JSONObject,
-								destroy:true,    
+								destroy:true,  
+								responsive:true,
 								stateSave:true,
 								drawCallback:function(settings) {
 									var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
@@ -2858,21 +2911,26 @@
 									$(row).attr('id', 'status_row-'+id);
 									$('#update_leadrecycling_button').attr('disabled', true);
 								},
-								columnDefs:[
-									{ width: "25%", targets: "Action" }
-								],								
-								"aaSorting": [[ 1, "asc" ]],
-								"aoColumnDefs": [{
-									"bSearchable": false,
-									"aTargets": [ 0, 5 ]
+								columnDefs: [{ 
+									width: "18%", 
+									targets: 5 
 								},{
-									"bSortable": false,
-									"aTargets": [ 0, 5 ]
-								}],				
+									searchable: false,
+									targets: [ 0, 5 ]
+								},{
+									sortable: false,
+									targets: [ 0, 5 ]
+								},{
+									"targets": -1,
+									"className": "dt-body-right"							
+								}]				
 							});
 							
 							$(document).on('click','.btn-edit-leadrecycling',function() {
-								var status	= $(this).attr('data-status');
+								var recycling_id = $(this).attr('data-id');
+								var status = $(this).attr('data-status');
+								$('#edit_leadrecycling').val(recycling_id);
+								
 								$('#status_row-'+status).find($('input')).attr('disabled', false);
 								$('#status_row-'+status).find($('select')).attr('disabled', false);
 								$('.btn-edit-leadrecycling').attr('disabled', true);
@@ -2881,17 +2939,21 @@
 								$('.btn-delete-leadrecycling').attr('disabled', true);
 									
 								$(document).on('click','#update_leadrecycling_button',function() {
+									console.log($('#form_edit_leadrecycling').serialize());
 									$.ajax({
 										url: "./php/ModifyLeadRecycling.php",
 										type: 'POST',
-										data: $('#form_edit_leadrecyclings').serialize() + '&status=' + status,
+										data: $('#form_edit_leadrecycling').serialize(),
 										success: function(data) {
-										console.log(data);
+											console.log(data);											
 											if (data == 1) {
-												swal("Success!", "Disposition Successfully Updated!", "success");
+												swal("Success!", "Lead Recycling Status Successfully Updated!", "success");
 												$('#update_leadrecycling_button').html("<i class='fa fa-check'></i> Update");
 												$('#update_leadrecycling_button').attr("disabled", true);
-												window.setTimeout(function(){location.reload();},2000);
+												window.setTimeout(function(){
+													window.location.href = 'telephonycampaigns.php?T_recycling';
+													//location.reload();
+												},2000);
 											} else {
 												swal("Ooops!", "Something went wrong! "+ data, "error");
 												$('#update_leadrecycling_button').html("<i class='fa fa-check'></i> Update");
@@ -2911,60 +2973,7 @@
 								$('.btn-cancel-leadrecycling').attr('disabled', true);
 								$('#update_leadrecycling_button').attr('disabled', true);
 								$('.btn-delete-leadrecycling').attr('disabled', false);
-							});	
-							
-							$(document).on('click','.delete_leadrecycling', function() {
-								var id = $(this).attr('data-id');
-								var log_user = '<?=$_SESSION['user']?>';
-								var log_group = '<?=$_SESSION['usergroup']?>';
-								swal({
-									title: "<?php $lh->translateText("are_you_sure"); ?>",
-									text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
-									type: "warning",
-									showCancelButton: true,
-									confirmButtonColor: "#DD6B55",
-									confirmButtonText: "<?php $lh->translateText("leadrecycling"); ?>!",
-									cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
-									closeOnConfirm: false,
-									closeOnCancel: false
-									},
-									function(isConfirm){
-										if (isConfirm) {
-											$.ajax({
-												url: "./php/DeleteLeadRecycling.php",
-												type: 'POST',
-												data: {
-													disposition_id:id,
-													log_user: log_user,
-													log_group: log_group
-												},
-												success: function(data) {
-												console.log(data);
-													if(data == 1){
-														swal({
-																title: "<?php $lh->translateText("success"); ?>",
-																text: "<?php $lh->translateText("leadrecycling_delete"); ?>!",
-																type: "success"
-															},
-															function(){
-																window.location.href = 'telephonycampaigns.php';
-																$(".preloader").fadeIn();
-															}
-														);
-													}else{
-														sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
-														window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-													}
-												}
-											});
-														} else {
-												swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-										}
-									}
-								);
-							});							
-							
-						
+							});						
 						}
 					});
 				});
@@ -3023,7 +3032,7 @@
 		                    data: $("#create_leadrecycling").serialize(),
 		                    success: function(data) {
 							console.log(data);
-							console.log($("#create_leadrecycling").serialize());
+							//console.log($("#create_leadrecycling").serialize());
 								if(data == 1){
 									swal(
 										{
@@ -3032,7 +3041,7 @@
 											type: "success"
 										},
 										function(){
-											window.location.href = 'telephonycampaigns.php';
+											window.location.href = 'telephonycampaigns.php?T_recycling';
 											$(".preloader").fadeIn();
 										}
 									);
@@ -3055,62 +3064,69 @@
 				
 
 		        //delete leadrecycling
-			        $(document).on('click','.delete-leadrecycling',function() {
-			            var id = $(this).attr('data-id');
-						var session_user = '<?=$_SESSION['user']?>';
-			            swal({
-			            	title: "<?php $lh->translateText("are_you_sure"); ?>",
-			            	text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
-			            	type: "warning",
-			            	showCancelButton: true,
-			            	confirmButtonColor: "#DD6B55",
-			            	confirmButtonText: "<?php $lh->translateText("leadrecycling_confirm_delete"); ?>!",
-			            	cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
-			            	closeOnConfirm: false,
-			            	closeOnCancel: false
-			            	},
-			            	function(isConfirm){
-			            		if (isConfirm) {
-			            			$.ajax({
-				                        url: "./php/DeleteLeadRecycling.php",
-				                        type: 'POST',
-				                        data: {
-				                            campaign_id: id,
-											session_user: session_user
-				                        },
-				                        success: function(data) {
-				                        console.log(data);
-				                            if(data == "success"){
-				                            	swal({
-														title: "<?php $lh->translateText("success"); ?>",
-														text: "<?php $lh->translateText("leadrecycling_delete"); ?>!",
-														type: "success"
-													},
-													function(){
-														window.location.href = 'telephonycampaigns.php?leadrecycling';
-												});
-				                            }else{
-				                                sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
-				                                window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-				                            }
-				                        }
-				                    });
-								} else {
-		                			swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-			                	}
-			            	}
-			            );
-			        });
+				$(document).on('click','.delete_leadrecycling', function() {
+					var recycle_id = $(this).attr('data-id');
+					var campaign_id	= $(this).attr('data-campaign');
+					
+					if (campaign_id === recycle_id) {
+						recycle_id = "";
+					}
+					
+					swal({
+						title: "<?php $lh->translateText("are_you_sure"); ?>",
+						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "<?php $lh->translateText("Yes"); ?>!",
+						cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
+						closeOnConfirm: false,
+						closeOnCancel: false
+						},
+						function(isConfirm){
+							if (isConfirm) {
+								$.ajax({
+									url: "./php/DeleteLeadRecycling.php",
+									type: 'POST',
+									data: {
+										recycle_id: recycle_id,
+										campaign_id: campaign_id
+									},
+									success: function(data) {
+									console.log(data);
+										if(data == 1){
+											swal({
+													title: "<?php $lh->translateText("success"); ?>",
+													text: "<?php $lh->translateText("Delete Success"); ?>!",
+													type: "success"
+												},
+												function(){
+													window.location.href = 'telephonycampaigns.php?T_recycling';
+													$(".preloader").fadeIn();
+												}
+											);
+										}else{
+											sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+											window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+										}
+									}
+								});
+											} else {
+									swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+							}
+						}
+					);
+				});
 			/*************
 			** Lead Filter Events
 			*************/
 
 				//edit leadfilter
 					$(document).on('click','.edit-leadfilter',function() {
-						var url = './edittelephonycampaign.php';
+						/*var url = './edittelephonycampaign.php';
 						var form = $('<form action="' + url + '" method="post"><input type="hidden" name="leadfilter" value="' + $(this).attr('data-id') + '" /></form>');
 						$('body').append(form);  // This line is not necessary
-						$(form).submit();
+						$(form).submit();*/
 					});
 
 		        //delete leadfilter
@@ -3321,12 +3337,18 @@
 				/*** DISPOSITION ***/
 					// check duplicates
 						$("#disposition_status").keyup(function() {
-							checkStatus($('#disposition_status').val());
+							var campaign_id = $('#disposition_campaign option:selected').val();
+							var status_id =  $('#disposition_status').val();
+							console.log(campaign_id);
+							console.log(status_id);
+							checkStatus(campaign_id, status_id);
 						});
 
-						/*$('#disposition_campaign').change(function(){
-							checkStatus();
-						});*/
+						$('#disposition_campaign').change(function(){
+							var campaign_id = $('#disposition_campaign option:selected').val();
+							var status_id =  $('#disposition_status').val();						
+							checkStatus(campaign_id, status_id);
+						});
 				/*** end of disposition ***/
 
 			/********
@@ -3420,21 +3442,25 @@
 					var JSONObject = JSON.parse(data);
 					var tablePClist = $('#pause_codes_list').DataTable({
 						data:JSONObject,
-						destroy:true,    
+						destroy:true,   
+						responsive:true,
 						stateSave:true,
 						drawCallback:function(settings) {
 							var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 							pagination.toggle(this.api().page.info().pages > 1);
 						},
 						columnDefs: [{ 
-							width: "20%", 
-							targets: [ 3 ] 
+							width: "25%", 
+							targets: 3 
 						},{
 							searchable: false,
 							targets: [ 3 ]
 						},{
 							sortable: false,
 							targets: [ 3 ]
+						},{
+							"targets": -1,
+							"className": "dt-body-right"							
 						}]
 					});						
 				}
@@ -3456,21 +3482,25 @@
 					var JSONObject = JSON.parse(data);
 					var tableHKlist = $('#hotkeys_list').DataTable({
 						data:JSONObject,
-						destroy:true,    
+						destroy:true,
+						responsive:true,
 						stateSave:true,
 						drawCallback:function(settings) {
 							var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 							pagination.toggle(this.api().page.info().pages > 1);
 						},
 						columnDefs: [{ 
-							width: "20%", 
-							targets: [ 3 ] 
+							width: "25%", 
+							targets: 3 
 						},{
 							searchable: false,
 							targets: [ 3 ]
 						},{
 							sortable: false,
 							targets: [ 3 ]
+						},{
+							"targets": -1,
+							"className": "dt-body-right"							
 						}]
 					});
 				}
@@ -3492,18 +3522,25 @@
 					var JSONObject = JSON.parse(response.data);
 					var tableLists = $('#lists_list').DataTable({
 						data:JSONObject,
-						destroy:true,    
+						destroy:true,  
+						responsive:true,
 						stateSave:true,
 						drawCallback:function(settings) {
 							var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 							pagination.toggle(this.api().page.info().pages > 1);
 						},
-						columnDefs: [{
+						columnDefs: [{ 
+							width: "16%", 
+							targets: 6 
+						},{
 							searchable: false,
 							targets: [ 6 ]
 						},{
 							sortable: false,
-							targets: [ 6 ]
+							targets: [ 6 ]							
+						},{
+							"targets": -1,
+							"className": "dt-body-center"							
 						}]
 					});
 					$('.count_active').text(response.count_active);
@@ -3541,7 +3578,8 @@
 					var JSONObject = JSON.parse(response.data);
 					var tableLeadsHopper = $('#leads_on_hopper').DataTable({
 						data:JSONObject,
-						destroy:true,    
+						destroy:true,
+						responsive:true,
 						stateSave:true,
 						drawCallback:function(settings) {
 							var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
@@ -3604,26 +3642,10 @@
 			}
 			
 		}
-		//function dialMethod(value){
-		//	if(value == "RATIO"){
-		//		$('#auto-dial-level').prop('disabled', false);
-		//		$('#auto-dial-level option[value="1.0"]').prop('selected', true);
-		//		$('div.auto-dial-level').removeClass('hide');
-		//	}else if(value == "ADAPT_TAPERED"){
-		//		$('#auto-dial-level').prop('disabled', true);
-		//		$('#auto-dial-level option[value="0"]').prop('selected', true);
-		//		$('div.auto-dial-level').addClass('hide');
-		//	}else{
-		//		$('#auto-dial-level').prop('disabled', true);
-		//		$('#auto-dial-level option[value="0"]').prop('selected', true);
-		//		$('div.auto-dial-level').addClass('hide');
-		//	}
-		//}
 
 		function checkCampaign(campaign_id){
 			var status = '';
 			$.ajax({
-				/*url: ".\php\ViewCampaign.php",*/
 				url: "./php/checkCampaign.php",
 				type: 'POST',
 				async: false,
@@ -3649,18 +3671,16 @@
 			return status;
 		}
 
-		function checkStatus(disposition_id){
-			var campaign_form_value = "";
+		function checkStatus(campaign_id, status_id){
 			$.ajax({
 				url: "php/checkCampaign.php",
 				type: 'POST',
 				data: {
-					status : disposition_id,
-					campaign_id : campaign_form_value
+					status : status_id,
+					campaign_id : campaign_id
 				},
 				dataType: 'json',
 				success: function(data) {
-					//var returndata = $.parseJSON(data);
 					console.log(data);
 					if (data == 1) {
 						status = "1";

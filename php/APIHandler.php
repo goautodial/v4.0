@@ -407,10 +407,9 @@ if(isset($_SESSION["user"])){
 	 * [[API: Function]] - getAllDispositions
 	 * 	This application is used to get list of campaign belongs to user.
 	*/
-	public function API_getAllDispositions($custom){
+	public function API_getAllDispositions(){
 		$postfields = array(
-			'goAction' => 'goGetAllDispositions',
-			'custom_request' => $custom
+			'goAction' => 'goGetAllDispositions'
 		);		
 		return $this->API_Request("goDispositions", $postfields);
 	}
@@ -692,6 +691,10 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goLeadRecycling", $postfields);
 	}
 
+	public function API_editLeadRecycling($postfields){
+		return $this->API_Request("goLeadRecycling", $postfields);
+	}
+	
 	public function API_addLoadLeads($postfields){
 		return $this->API_Upload("goUploadLeads", $postfields);
 	}

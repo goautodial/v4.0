@@ -26,11 +26,7 @@
 
 	// check required fields
 	$reason 								= "Unable to Modify Disposition";
-
-	$disposition 							= NULL;
-	if (isset($_POST["edit_campaign"])) {
-		$disposition 						= $_POST["edit_campaign"];
-	}
+	$disposition 							= $_POST["edit_campaign"];
 
 	// DISPOSITION
 	if ($disposition != NULL) {
@@ -111,8 +107,11 @@
 
 		$output 							= $api->API_editDisposition($postfields);
 
-		if ($output->result=="success") { $status = 1; } 
-			else { $status = $output->result; }
+		if ($output->result=="success") {
+			$status 						= 1; 
+		} else { 
+			$status 						= $output->result; 
+		}
 
 		echo json_encode($status);
 		
