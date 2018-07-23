@@ -1004,7 +1004,7 @@
 																<div class="col-sm-9 mb">
 																	<select class="form-control" id="customer_3way_hangup_action" name="customer_3way_hangup_action">
 																		<option value="DISPO" <?php if($campaign->data->customer_3way_hangup_action == "DISPO") echo "selected";?>>DISPO</option>
-																		<option value="NONE" <?php if($campaign->data->customer_3way_hangup_action == "NONE") echo "selected";?>></option>
+																		<option value="NONE" <?php if($campaign->data->customer_3way_hangup_action == "NONE") echo "selected";?>>NONE</option>
 																	</select>
 																</div>
 															</div>
@@ -1235,7 +1235,7 @@
 																	<div class="col-sm-9 mb">
 																		<select class="form-control" id="customer_3way_hangup_action" name="customer_3way_hangup_action">
 																			<option value="DISPO" <?php if($campaign->data->customer_3way_hangup_action == "DISPO") echo "selected";?>>DISPO</option>
-																			<option value="NONE" <?php if($campaign->data->customer_3way_hangup_action == "NONE") echo "selected";?>></option>
+																			<option value="NONE" <?php if($campaign->data->customer_3way_hangup_action == "NONE") echo "selected";?>>NONE</option>
 																		</select>
 																	</div>
 																</div>
