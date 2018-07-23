@@ -1438,11 +1438,11 @@
 			// view campaign dispositions + datatable
 			$modalTitle = $lh->translationFor("custom_disposition");
 			$modalSubtitle = "";
-			$columns = array($lh->translationFor("status"), $lh->translationFor("status_name"), $lh->translationFor("Sel"), $lh->translationFor("Human"), $lh->translationFor("sale"), "D N C", $lh->translationFor("contact"), $lh->translationFor("N I"), $lh->translationFor("Unwork"), $lh->translationFor("SCB"), $lh->translationFor("action"));
+			$columns = array($lh->translationFor("status"), $lh->translationFor("status_name"), $lh->translationFor("Sel"), $lh->translationFor("HA"), $lh->translationFor("sale"), "D N C", $lh->translationFor("CC"), $lh->translationFor("N I"), $lh->translationFor("UW"), $lh->translationFor("SCB"), $lh->translationFor("action"));
 			$result = $ui->generateTableHeaderWithItems($columns, "table_campaign_disposition", "display responsive compact table-bordered table-striped", true, false);
 			$hiddenidinput = $ui->hiddenFormField("edit_campaign", "", "edit_campaign");
 			$bodyInputs = $hiddenidinput.$result.'</tbody></table>';
-			$appendToBody = '<div class="form-group pull-left" style="margin-left: 5px;"><h4>LEGEND</h4><p style="text-align: left;"><b>SEL:</b>  '.$lh->translationFor("selectable").'<br/><b>Human:</b>  '.$lh->translationFor("human_answered").'<br/><b>D N C:</b>  '.$lh->translationFor("DNC").'<br/><b>N I:</b>  '.$lh->translationFor("NI").'<br/><b>Contact:</b>  '.$lh->translationFor("customer_contact").'<br/><b>Unwork:</b>  '.$lh->translationFor("unworkable").'<br/><b>SCB:</b>  '.$lh->translationFor("scheduled_callback").'</p></div>';
+			$appendToBody = '<div class="form-group pull-left" style="margin-left: 5px;"><h4>LEGEND</h4><p style="text-align: left;"><b>SEL:</b>  '.$lh->translationFor("selectable").'<br/><b>HW:</b>  '.$lh->translationFor("human_answered").'<br/><b>D N C:</b>  '.$lh->translationFor("DNC").'<br/><b>N I:</b>  '.$lh->translationFor("NI").'<br/><b>CC:</b>  '.$lh->translationFor("customer_contact").'<br/><b>UW:</b>  '.$lh->translationFor("unworkable").'<br/><b>SCB:</b>  '.$lh->translationFor("scheduled_callback").'</p></div>';
 			$modalFooter = $ui->buttonWithLink("update_disposition_button", "", $lh->translationFor("update"), "button", "edit", "success", "btn-update-disposition", "data-id='$id'");
 			$modalFormVCD = $ui->modalFormStructure('modal_view_dispositions', 'form_edit_dispositions', $modalTitle, $modalSubtitle, $bodyInputs, $appendToBody.$modalFooter, '', '', 'modal-lg');
 			
