@@ -2208,8 +2208,6 @@
 			
 			$(document).on('click', '.btn-update-lists', function(){
 				var campaign_id = $(this).data('campaign');
-				var log_user = '<?=$_SESSION['user']?>';
-				var log_group = '<?=$_SESSION['usergroup']?>';
 				swal({
 					title: "<?php $lh->translateText("are_you_sure"); ?>",
 					text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",

@@ -641,8 +641,11 @@
 		
 		$output 									= $api->API_Request("goCampaigns", $postfields);
 
-		if ($output->result=="success") { $status = 1; } 
-			else { $status = $output->result; }
+		if ($output->result=="success") { 
+			$status 								= 1; 
+		} else { 
+			$status 								= $output->result; 
+		}
 
 		echo json_encode($status);
 		
