@@ -19,26 +19,27 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-require_once('APIHandler.php');
-$api = \creamy\APIHandler::getInstance();
 
-	$postfields = array(
-		'goAction' => 'goAddList',
-		'list_id' => $_POST['add_list_id'], 
-		'list_name' => $_POST['list_name'], 
-		'list_description' => $_POST['list_desc'],
-		'campaign_id' => $_POST['campaign_select'],
-		'active' => $_POST['status']
+	require_once('APIHandler.php');
+	$api 											= \creamy\APIHandler::getInstance();
+
+	$postfields 									= array(
+		'goAction' 										=> 'goAddList',
+		'list_id' 										=> $_POST['add_list_id'], 
+		'list_name' 									=> $_POST['list_name'], 
+		'list_description' 								=> $_POST['list_desc'],
+		'campaign_id' 									=> $_POST['campaign_select'],
+		'active' 										=> $_POST['status']
 	);
 
-    $output = $api->API_addList($postfields);
+    $output 										= $api->API_addList($postfields);
 	
-	if ($output->result=="success") {
-		$status = "success";
-	} else {
-        $status = $output->result;
+	if ($output->result=="success") { 
+		$status 									= 1; 
+	} else { 
+		$status 									= $output->result; 
 	}
-
-	echo $status;
+	
+	echo json_encode($status);
 
 ?>

@@ -3005,7 +3005,7 @@
 									swal(
 										{
 											title: "<?php $lh->translateText("success"); ?>",
-											text: "<?php $lh->translateText("created_leadrecycling"); ?>!",
+											text: "<?php $lh->translateText("New call status set for recycling"); ?>!",
 											type: "success"
 										},
 										function(){

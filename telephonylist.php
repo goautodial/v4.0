@@ -753,16 +753,17 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							$('#add_list_id').attr("disabled", false);
 							// Submit form via ajax
 							$.ajax({
-	                            url: "./php/AddTelephonyList.php",
+	                            url: "./php/AddList.php",
 	                            type: 'POST',
 	                            data: $('#create_form').serialize(),
 	                            success: function(data) {
-	                              // console.log(data);
+									console.log(data);
+									console.log($('#create_form').serialize());
 									$('#finish').text("<?php $lh->translateText("submit"); ?>");
 									$('#finish').attr("disabled", false);
-									if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
+									if (data == 1) {
 									  swal({title: "<?php $lh->translateText("add_list_success"); ?>",text: "<?php $lh->translateText("add_list_success"); ?>",type: "success"},function(){window.location.href = 'telephonylist.php';});
-									}else{
+									} else {
 										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>", "error");
 									}
 	                            }
