@@ -185,7 +185,7 @@
 								}
 								$disposition = $api->API_getAllDispositions();
 								$leadrecycling = $api->API_getAllLeadRecycling();
-								$dialStatus = $api->API_getAllDispositions("custom");
+								//$dialStatus = $api->API_getAllDialStatuses();
 								//$campaignStatuses = $api->getAllCampaignStatuses();
 								//$leadfilter = $api->API_getAllLeadFilters();
 								//$country_codes = $api->API_getCountryCodes();
@@ -1129,7 +1129,10 @@
 		                            <div class="col-sm-9 mb">
 		                                <select id="leadrecycling_status" name="leadrecycling_status" class="form-control select2-1" style="width:100%;">
 											<optgroup label="System Statuses">
-												<?php for($i=0;$i<=count($dialStatus->status);$i++) { ?>
+												<?php 
+													$dialStatus = $api->API_getAllDialStatuses();
+													for($i=0;$i<=count($dialStatus->status);$i++) { 
+												?>
 													<?php if( !empty($dialStatus->status[$i]) && !in_array($dialStatus->status[$i], $dial_statuses) ){ ?>
 														<option value="<?php echo $dialStatus->status[$i]?>" selected>
 															<?php echo $dialStatus->status[$i]." - ".$dialStatus->status_name[$i]?>
@@ -1493,35 +1496,17 @@
 				drawCallback:function(settings) {
 					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 					pagination.toggle(this.api().page.info().pages > 1);
-				},	
-				"columnDefs": [
-					{
-						"targets": [ 1 ],
-						"visible": false,
-						"searchable": false
-					},
-					{
-						"targets": [ 0, 5, 6 ],
-						"searchable": false
-					},
-					{
-						"targets": [ 0, 5, 6 ],
-						"sortable": false
-					},
-					{
-						"width": "16%",
-						"targets": 6
-					},
-					{
-						"width": "5%",
-						"targets": 5
-					},					
-					{
-						"targets": -1,
-						"className": "dt-body-right"
-					}					
-				]				
-				//"aaSorting": [[ 1, "desc" ]],
+				},
+				columnDefs:[
+					{ width: "12%", targets: 6 },
+					{ width: "4%", targets: 5 },
+					//{ visible: false, targets: 1 },
+					{ searchable: false, targets: [ 0, 5, 6 ] },
+					{ sortable: false, targets: [ 0, 5, 6 ] },
+					{ responsivePriority: 1, targets: 6 },
+					{ responsivePriority: 2, targets: 2 },
+					{ targets: -1, className: "dt-body-right" }
+				]
 			});
 		
 			var tableDisposition = $('#table_disposition').DataTable({
@@ -2304,7 +2289,7 @@
 
 			$(document).on('change', '.status', function(){
 				var stat_name = $(this).select2({theme: 'bootstrap'}).find(":selected").data("name");
-				// console.log(stat_name);
+				console.log(stat_name);
 				$('#hotkey_status_name').val(stat_name);
 			});
 
@@ -3344,13 +3329,36 @@
 							checkStatus(campaign_id, status_id);
 						});
 
+						$('#leadrecycling_campaign').change(function(){
+							var campaign_id = $('#leadrecycling_campaign option:selected').val();
+							var status_id =  $('#leadrecycling_status').val();
+							console.log(campaign_id);
+							console.log(status_id);		
+							$.ajax({
+								url: "./php/GetDialStatuses.php",
+								type: 'POST',
+								data: {
+									campaign_id : campaign_id
+								},
+								dataType: 'json',
+								success: function(data) {
+									//console.log(data);
+									$('#leadrecycling_status').html(data);
+									$('#leadrecycling_status').select2({
+										theme: 'bootstrap'
+									});
+									$('#leadrecycling_status').val("").trigger("change");
+								}
+							});							
+							//checkStatus(campaign_id, status_id);
+						});
+				/*** end of disposition ***/
+
 						$('#disposition_campaign').change(function(){
 							var campaign_id = $('#disposition_campaign option:selected').val();
 							var status_id =  $('#disposition_status').val();						
 							checkStatus(campaign_id, status_id);
-						});
-				/*** end of disposition ***/
-
+						});				
 			/********
 			** Other Filters
 			********/
