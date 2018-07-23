@@ -61,6 +61,9 @@
 					'xferconf_e_number' 				=> $output->xferconf_e_number[$i]
 				);
 				
+				$info								= json_encode($info);
+				$info								= base64_encode($info);
+				
 				$calldate							= $output->list_lastcalldate[$i];
 				
 				if (is_null($calldate) || empty($calldate) || strstr($calldate, "0000-00-00")) {
@@ -76,7 +79,7 @@
 				$data 								.= '"'.$output->tally[$i].'",';
 				$data 								.= '"'.$output->active[$i].'",';
 				$data 								.= '"'.date('M. d, Y h:i A', $calldate).'",';
-				$data 								.= '"<a title=\"Modify View List\" class=\"edit-list\" data-info=\"'.$info.'\" data-id=\"'.$output->list_id[$i].'\" data-campaign=\"'.$output->campaign_id[$i].'\"><span class=\"fa fa-eye\"></span></a></td>"';
+				$data 								.= '"<a title=\"Modify View List\" class=\"btn btn-primary btn-edit-list edit-list\" href=\"#\" data-info=\"'.$info.'\" data-id=\"'.$output->list_id[$i].'\" data-campaign=\"'.$output->campaign_id[$i].'\"><span class=\"fa fa-pencil\"></span></a></td>"';
 				$data 								.= '],';
 			}
 		}
