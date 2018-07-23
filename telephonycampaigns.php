@@ -43,21 +43,21 @@
 
         <?php print $ui->standardizedThemeCSS(); ?>
 
+    	<!-- iCheck for checkboxes and radio inputs -->
+  		<link rel="stylesheet" href="css/iCheck/all.css">
+
+    	<!-- Wizard Form style -->
+    	<link href="css/style.css" rel="stylesheet" type="text/css" />		
+
+        <?php print $ui->creamyThemeCSS(); ?>
+        
         <!-- DATA TABLES 1.10.19 CSS-->        
         <link href="css/datatables/1.10.19/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
         <link href="css/datatables/1.10.19/dataTables.jqueryui.min.css" rel="stylesheet" type="text/css" />
         <link href="css/datatables/1.10.19/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
 		<link href="css/datatables/1.10.19/responsive.dataTables.min.css" rel="stylesheet" type="text/css" />
 		<link href="css/datatables/1.10.19/responsive.jqueryui.min.css" rel="stylesheet" type="text/css" />
-    	<!-- iCheck for checkboxes and radio inputs -->
-  		<link rel="stylesheet" href="css/iCheck/all.css">
-
-    	<!-- Wizard Form style -->
-    	<link href="css/style.css" rel="stylesheet" type="text/css" />
 		
-
-        <?php print $ui->creamyThemeCSS(); ?>
-		<!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> <<< THIS IS CAUSING THE TOOLTIP PROBLEM -->
 		<!-- Data Tables -->
         <script src="js/datatables/1.10.19/jquery.dataTables.min.js" type="text/javascript"></script>
         <script src="js/datatables/1.10.19/dataTables.jqueryui.min.js" type="text/javascript"></script>

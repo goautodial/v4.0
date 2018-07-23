@@ -20,46 +20,26 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('APIHandler.php');
-$api = \creamy\APIHandler::getInstance();
-require_once('CRMDefaults.php');
-
-// check required fields
-$validated = 1;
-if (!isset($_POST["listid"])) {
-	$validated = 0;
-}
-
-if ($validated == 1) {
-	$listid = $_POST["listid"];
-    $listid = implode(",",$listid);
+	require_once("APIHandler.php");
 	
-/*uncomment to work	
-    $url = gourl."/goLists/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goDeleteList"; #action performed by the [[API:Functions]]. (required)
-    $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["list_id"] = $listid; #Desired User ID. (required)
-	$postfields["action"] = $action; 
-    $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
-	$postfields["session_user"] = $_POST['log_user'];
-	$postfields["log_user"] = $_POST['log_user'];
-	$postfields["log_group"] = $_POST['log_group'];
-*/    
-    $postfields = array(
-        'goAction' => 'goDeleteList',
-        'list_id' => $listid
-    );
+	$api 										= \creamy\APIHandler::getInstance();
+	$listid 									= $_POST["listid"];
+	//$action 									= $_POST["action"];
+	
+	$postfields 								= array(
+		"goAction" 									=> "goDeleteList",
+		"list_id" 									=> $listid,
+		"action"									=> "delete_selected"
+	);
 
-    $output = $api->API_Request("goLists", $postfields);
+	$output 									= $api->API_Request("goLists", $postfields);
 
-    if ($output->result=="success") {
-		ob_clean();
-        print CRM_DEFAULT_SUCCESS_RESPONSE;
-    } else {
-		echo $output->result; 
-    }
-
-}
+	if ($output->result=="success") { 
+		$status 								= 1; 
+	} else { 
+		$status 								= $output->result; 
+	}
+	
+	echo json_encode($status);
+	
 ?>

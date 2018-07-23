@@ -469,7 +469,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	$datenow = date("j-n-Y");
 	$next_listdesc = "Auto-generated - ListID - ".$datenow;
 ?>
-	<div class="modal fade" id="list-modal" tabindex="-1"aria-labelledby="list-modal" >
+	<div class="modal fade" id="list-modal" tabindex="-1" aria-labelledby="list-modal" >
         <div class="modal-dialog" role="document">
             <div class="modal-content" style="border-radius:5px;">
 
@@ -691,7 +691,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 
 					// initialize datatable
 					$('#table_lists').DataTable( {
-			            deferRender:    true,
+			            destroy: true,
 				    	select: true,
 				    	stateSave: true,
 						"aaSorting": [[ 1, "asc" ]],
@@ -758,7 +758,6 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	                            data: $('#create_form').serialize(),
 	                            success: function(data) {
 									console.log(data);
-									console.log($('#create_form').serialize());
 									$('#finish').text("<?php $lh->translateText("submit"); ?>");
 									$('#finish').attr("disabled", false);
 									if (data == 1) {
@@ -801,9 +800,9 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					** Delete
 					***/
 		            $(document).on('click','.delete-list',function() {
-						var id = $(this).attr('data-id');
-						var log_user = '<?=$_SESSION['user']?>';
-						var log_group = '<?=$_SESSION['usergroup']?>';
+						var listid = [];
+						listid.push($(this).attr('data-id'));
+						console.log(listid);
 						swal({
 							title: "<?php $lh->translateText("are_you_sure"); ?>?",
 							text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
@@ -817,18 +816,15 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							},
 							function(isConfirm){
 								if (isConfirm) {
-	
 									$.ajax({
 										url: "./php/DeleteList.php",
 										type: 'POST',
 										data: {
-											listid: id,
-											log_user: log_user,
-											log_group: log_group
+											listid: listid
 										},
 										success: function(data) {
 										console.log(data);
-											if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
+											if(data == 1){
 												swal({title: "<?php $lh->translateText("delete_list_success"); ?>",text: "<?php $lh->translateText("delete_list_success_msg"); ?>",type: "success"},function(){window.location.href = 'telephonylist.php';});
 											}else{
 											   sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>!", "error");
@@ -847,8 +843,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					var arr = $('input:checkbox.check_list').filter(':checked').map(function () {
 						return this.id;
 					}).get();
-					var log_user = '<?=$_SESSION['user']?>';
-					var log_group = '<?=$_SESSION['usergroup']?>';
+					console.log(arr);
 					swal({
 							title: "<?php $lh->translateText("are_you_sure"); ?>",
 							text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
@@ -863,13 +858,10 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							function(isConfirm){
 								if (isConfirm) {
 									$.ajax({
-										url: "./php/DeleteTelephonyList.php",
+										url: "./php/DeleteList.php",
 										type: 'POST',
 										data: {
-											listid:arr,
-											action: "delete_selected",
-											log_user: log_user,
-											log_group: log_group
+											listid: arr
 										},
 										success: function(data) {
 										console.log(data);
