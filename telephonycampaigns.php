@@ -1249,7 +1249,7 @@
 	?>
 		
 		<div id="modal_form_lists" class="modal fade" role="dialog">
-		  <div class="modal-dialog">
+		  <div class="modal-dialog modal-lg">
 		    <!-- Modal content-->
 		    <div class="modal-content">
 		      <div class="modal-header">
@@ -1258,7 +1258,7 @@
 		      </div>
 		      <div class="modal-body">
 				<form id="form_lists" class="form-horizontal" style="margin-top: 10px;">
-					<input type="hidden" name="lists_id" class="lists-id">
+					<input type="hidden" name="lists_id" class="lists-id" value="">
 					<div role="tabpanel">
 						<!--<div class="nav-tabs-custom">-->
 							<ul role="tablist" class="nav nav-tabs nav-justified">
@@ -1272,17 +1272,17 @@
 			               			<div class="form-group">
 										<label class="control-label col-lg-4" style="text-align: left;"><?php $lh->translateText("name"); ?>:</label>
 										<div class="col-lg-8">
-											<input type="text" class="form-control lists-name" name="lists_name">
+											<input type="text" class="form-control lists-name" name="lists_name" value="">
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="control-label col-lg-4" style="text-align: left;"><?php $lh->translateText("description"); ?>:</label>
 										<div class="col-lg-8">
-											<input type="text" class="form-control lists-description" name="lists_description">
+											<input type="text" class="form-control lists-description" name="lists_description" value="">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-lg-4" style="text-align: left;"><?php $lh->translateText("compaign"); ?>:</label>
+										<label class="control-label col-lg-4" style="text-align: left;"><?php $lh->translateText("campaign"); ?>:</label>
 										<div class="col-lg-8">
 											<select name="lists_campaign" class="form-control select2 lists-campaign">
 												<?php
@@ -1296,7 +1296,7 @@
 									<div class="form-group">
 										<label class="control-label col-lg-4" style="text-align: left;"><?php $lh->translateText("reset_time"); ?>:</label>
 										<div class="col-lg-8">
-											<input type="text" class="form-control lists-reset-time" name="lists_reset_time">
+											<input type="text" class="form-control lists-reset-time" name="lists_reset_time" value="">
 										</div>
 									</div>
 									<div class="form-group">
@@ -1326,11 +1326,11 @@
 									<div class="form-group">
 										<label class="control-label col-lg-4" style="text-align: left;"><?php $lh->translateText("campaign_override"); ?>:</label>
 										<div class="col-lg-8">
-											<input type="text" class="form-control lists-cid-override" name="lists_cid_override">
+											<input type="text" class="form-control lists-cid-override" name="lists_cid_override" value="">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-lg-4" style="text-align: left;"></label>
+										<label class="control-label col-lg-4" style="text-align: left;"><?php $lh->translateText("drop_inbound_group_override"); ?>:</label>
 										<div class="col-lg-3">
 											<select name="lists_drop_inbound_group_override" class="form-control lists-drop-inbound-group-override">
 												<option value="NONE">NONE</option>
@@ -1340,31 +1340,31 @@
 									<div class="form-group">
 										<label class="control-label col-lg-4" style="text-align: left;"><?php $lh->translateText("Web Form"); ?>:</label>
 										<div class="col-lg-8">
-											<input type="text" class="form-control lists-web-form" name="lists_web_form">
+											<input type="text" class="form-control lists-web-form" name="lists_web_form" placeholder="https://goautodial.org" value="">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-lg-4" style="text-align: left;"><?php $lh->translateText("transfor"); ?>:</label>
+										<label class="control-label col-lg-4" style="text-align: left;"><?php $lh->translateText("TransferConf Numbers"); ?>:</label>
 										<div class="col-lg-4">
-											<input type="text" class="form-control lists-xferconf-a-number" name="xferconf_a_number">
+											<input type="text" class="form-control lists-xferconf-a-number" name="xferconf_a_number" placeholder="xferconf_a_number" value="">
 										</div>
 										<div class="col-lg-4">
-											<input type="text" class="form-control lists-xferconf-b-number" name="xferconf_b_number">
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-lg-4" style="text-align: left;">&nbsp;</label>
-										<div class="col-lg-4">
-											<input type="text" class="form-control lists-xferconf-c-number" name="xferconf_c_number">
-										</div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control lists-xferconf-d-number" name="xferconf_d_number">
+											<input type="text" class="form-control lists-xferconf-b-number" name="xferconf_b_number" placeholder="xferconf_b_number" alue="">
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="control-label col-lg-4" style="text-align: left;">&nbsp;</label>
 										<div class="col-lg-4">
-											<input type="text" class="form-control lists-xferconf-e-number" name="xferconf_e_number">
+											<input type="text" class="form-control lists-xferconf-c-number" name="xferconf_c_number" placeholder="xferconf_c_number" value="">
+										</div>
+										<div class="col-lg-4">
+											<input type="text" class="form-control lists-xferconf-d-number" name="xferconf_d_number" placeholder="xferconf_d_number" value="">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-4" style="text-align: left;">&nbsp;</label>
+										<div class="col-lg-4">
+											<input type="text" class="form-control lists-xferconf-e-number" name="xferconf_e_number" placeholder="xferconf_e_number" value="">
 										</div>
 									</div>
 									<!-- for feature 6605 -->
@@ -1743,7 +1743,10 @@
 			$(document).on('click','.edit-list',function() {
 				cook_donotshow = Cookies.get('donotshow');
 				
-				var dataInfo = $(this).data('info');
+				var dataInfo = $(this).attr('data-info');
+				dataInfo = window.atob(dataInfo);
+				dataInfo = JSON.parse(dataInfo);
+				//console.log(dataInfo);
 				console.log(dataInfo);
 				$('.lists-id').val(dataInfo.list_id);
 				$('.lists-name').val(dataInfo.list_name);
