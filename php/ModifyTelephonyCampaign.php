@@ -150,7 +150,7 @@
 			$lead_order_secondary 					= stripslashes($lead_order_secondary);
 		}
 		
-		$lead_filter 								= NULL; 
+		$lead_filter 								= ""; 
 		if (isset($_POST["lead_filter"])) { 
 			$lead_filter 							= $_POST["lead_filter"]; 
 			$lead_filter 							= stripslashes($lead_filter);
@@ -269,7 +269,7 @@
 			$customer_3way_hangup_seconds 			= stripslashes($customer_3way_hangup_seconds);
 		}
 		
-		$customer_3way_hangup_action 				= NULL; 
+		$customer_3way_hangup_action 				= 'NONE'; 
 		if (isset($_POST["customer_3way_hangup_action"])) { 
 			$customer_3way_hangup_action 			= $_POST["customer_3way_hangup_action"]; 
 			$customer_3way_hangup_action 			= stripslashes($customer_3way_hangup_action);

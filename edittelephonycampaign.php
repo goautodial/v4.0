@@ -213,7 +213,7 @@
 								<!--<div class="nav-tabs-custom">-->
 									<ul role="tablist" class="nav nav-tabs nav-justified">
 										<li class="active"><a href="#tab_1" data-toggle="tab"><?php $lh->translateText("basic_settings"); ?></a></li>
-										<li><a href="#tab_2" data-toggle="tab"><?php $lh->translateText("advanced_settings"); ?></a></li>
+										<li><a id="advanced_settings_tab" href="#tab_2" data-toggle="tab" data-id="<?php echo $campaign_id;?>"><?php $lh->translateText("advanced_settings"); ?></a></li>
 									</ul>
 										<!-- Tab contents-->
 										<div class="tab-content">
@@ -967,7 +967,7 @@
 																<label class="col-sm-3 control-label">Caller ID for 3-way Calls:</label>
 																<div class="col-sm-9 mb">
 																	<select class="form-control" id="three_way_call_cid" name="three_way_call_cid">
-																		<option value="CUSTOM" <?php if($campaign->data->three_way_call_cid == "CUSTOM") echo "selected";?>>CUSTOM</option>
+																		<option value="CUSTOM_CID" <?php if($campaign->data->three_way_call_cid == "CUSTOM_CID") echo "selected";?>>CUSTOM_CID</option>
 																		<option value="CAMPAIGN" <?php if($campaign->data->three_way_call_cid == "CAMPAIGN") echo "selected";?>>CAMPAIGN</option>
 																		<option value="CUSTOMER" <?php if($campaign->data->three_way_call_cid == "CUSTOMER") echo "selected";?>>CUSTOMER</option>
 																		<option value="AGENT_PHONE" <?php if($campaign->data->three_way_call_cid == "AGENT_PHONE") echo "selected";?>>AGENT PHONE</option>
@@ -1198,7 +1198,7 @@
 																	<label class="col-sm-3 control-label">Caller ID for 3-way Calls:</label>
 																	<div class="col-sm-9 mb">
 																		<select class="form-control" id="three_way_call_cid" name="three_way_call_cid">
-																			<option value="CUSTOM" <?php if($campaign->data->three_way_call_cid == "CUSTOM") echo "selected";?>>CUSTOM</option>
+																			<option value="CUSTOM_CID" <?php if($campaign->data->three_way_call_cid == "CUSTOM_CID") echo "selected";?>>CUSTOM_CID</option>
 																			<option value="CAMPAIGN" <?php if($campaign->data->three_way_call_cid == "CAMPAIGN") echo "selected";?>>CAMPAIGN</option>
 																			<option value="CUSTOMER" <?php if($campaign->data->three_way_call_cid == "CUSTOMER") echo "selected";?>>CUSTOMER</option>
 																			<option value="AGENT_PHONE" <?php if($campaign->data->three_way_call_cid == "AGENT_PHONE") echo "selected";?>>AGENT PHONE</option>
@@ -1583,7 +1583,7 @@
 																<label class="col-sm-3 control-label">Caller ID for 3-way Calls:</label>
 																<div class="col-sm-9 mb">
 																	<select class="form-control" id="three_way_call_cid" name="three_way_call_cid">
-																		<option value="CUSTOM" <?php if($campaign->data->three_way_call_cid == "CUSTOM") echo "selected";?>>CUSTOM</option>
+																		<option value="CUSTOM_CID" <?php if($campaign->data->three_way_call_cid == "CUSTOM_CID") echo "selected";?>>CUSTOM_CID</option>
 																		<option value="CAMPAIGN" <?php if($campaign->data->three_way_call_cid == "CAMPAIGN") echo "selected";?>>CAMPAIGN</option>
 																		<option value="CUSTOMER" <?php if($campaign->data->three_way_call_cid == "CUSTOMER") echo "selected";?>>CUSTOMER</option>
 																		<option value="AGENT_PHONE" <?php if($campaign->data->three_way_call_cid == "AGENT_PHONE") echo "selected";?>>AGENT PHONE</option>
@@ -2828,6 +2828,29 @@
 				$('#dial_status').select2({
 					theme: 'bootstrap'
 				});
+
+				// update dial_status entries
+				$(document).on('click', '#advanced_settings_tab', function(){
+					var campaign_id = $(this).data('id');
+					console.log(campaign_id);				
+					$.ajax({
+						url: "./php/GetDialStatuses.php",
+						type: 'POST',
+						data: {
+							campaign_id : campaign_id
+						},
+						dataType: 'json',
+						success: function(data) {
+							//console.log(data);
+							$('#dial_status').html(data);
+							$('#dial_status').select2({
+								theme: 'bootstrap'
+							});
+							$('#dial_status').val("").trigger("change");
+						}
+					});
+				});
+
 				
 				$("#add_color").colorpicker();
 				$('#add_color').colorpicker().on('changeColor', function(e) {
@@ -3146,7 +3169,7 @@
 				dataType: "json",
 				success: function(data) {
 					console.log(data);
-					//console.log($("#campaign_form_edit").serialize());
+					console.log($("#campaign_form_edit").serialize());
 					if (data == 1) {
 						$('#update_button').html("<i class='fa fa-check'></i> Update");
 						$('#modifyCampaignOkButton').prop("disabled", false);
@@ -3211,7 +3234,7 @@
 				*************/
 
 			   		//Add Status
-				        $('#add_new_status').click(function(){
+				    /*    $('#add_new_status').click(function(){
 
 					        $('#add_button').html("<i class='fa fa-check'></i> Saving...");
 							$('#add_new_status').attr("disabled", true);
@@ -3219,8 +3242,6 @@
 					        var validate = 0;
 					        var status = $("#add_status").val();
 					        var status_name = $("#add_status_name").val();
-							var log_user = '<?=$_SESSION['user']?>';
-							var log_group = '<?=$_SESSION['usergroup']?>';
 
 					        if(status === ""){
 					            validate = 1;
@@ -3289,8 +3310,8 @@
 										  if(data == 1){
 												swal(
 													{
-														title: "<?php $lh->translateText("success"); ?>",
-														text: "<?php $lh->translateText("new_status_successfully_added"); ?>!",
+														title: "",
+														text: "",
 														type: "success"
 													},
 													function(){
@@ -3316,14 +3337,13 @@
 								$('#add_new_status').attr("disabled", false);
 								validate = 0;
 							}
-				        });
+				        });*/
 
 					// GET DETAILS FOR EDIT DISPOSITION
-						$(document).on('click','.edit_disposition',function() {
+					/*	$(document).on('click','.edit_disposition',function() {
 							var id = $(this).attr('data-id');
 							var status = $(this).attr('data-status');
-							var log_user = '<?=$_SESSION['user']?>';
-							var log_group = '<?=$_SESSION['usergroup']?>';
+
 
 							$.ajax({
 							  url: "./php/ViewDisposition.php",
@@ -3401,14 +3421,12 @@
 							  	}
 							  }
 							});
-						});
+						});*/
 					
 					//edit disposition
-						$(document).on('click','#modify_disposition',function() {
+					/*	$(document).on('click','#modify_disposition',function() {
 							$('#update_button').html("<i class='fa fa-edit'></i> Updating...");
 							$('#modify_disposition').attr("disabled", true);
-							var log_user = '<?=$_SESSION['user']?>';
-							var log_group = '<?=$_SESSION['usergroup']?>';
 
 								var selectable = "Y";
 				            	if(!$('#edit_selectable').is(":checked")){
@@ -3478,7 +3496,7 @@
 				                        }
 			                    }
 			                });
-						});
+						});*/
 					
 				/*************
 				** Lead Filter Events

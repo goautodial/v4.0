@@ -1528,16 +1528,13 @@
 					}
 				},	
 				columnDefs:[
-					{ width: "16%", targets: "action_disposition" }
-				],
-				"aaSorting": [[ 1, "asc" ]],
-				"aoColumnDefs": [{
-					"bSearchable": false,
-					"aTargets": [ 0, 4 ]
-				},{
-					"bSortable": false,
-					"aTargets": [ 0, 4 ]
-				}],				
+					{ width: "18%", targets: 4 },
+					{ searchable: false, targets: [ 0, 4 ] },
+					{ sortable: false, targets: [ 0, 4 ] },
+					{ responsivePriority: 1, targets: 4 },
+					{ responsivePriority: 2, targets: 2 },
+					{ targets: -1, className: "dt-body-right" }
+				]			
 			});
 			
 			var tableLeadRecycling = $('#table_leadrecycling').DataTable({
@@ -1558,28 +1555,13 @@
 						$('.no_leadrecycle_row').find($('.delete-leadrecycling')).removeClass('delete-leadrecycling').addClass('disabled_delete-leadrecycling');
 					}
 				},				
-				"columnDefs": [
-					{
-						"targets": [ 1 ],
-						"visible": false,
-						"searchable": false
-					},
-					{
-						"targets": [ 0, 1, 4 ],
-						"searchable": false
-					},
-					{
-						"targets": [ 0, 1, 4 ],
-						"sortable": false
-					},
-					{
-						"width": "16%",
-						"targets": 4
-					},					
-					{
-						"targets": -1,
-						"className": "dt-body-right"
-					}					
+				columnDefs:[
+					{ width: "18%", targets: 4 },
+					{ searchable: false, targets: [ 0, 4 ] },
+					{ sortable: false, targets: [ 0, 4 ] },
+					{ responsivePriority: 1, targets: 4 },
+					{ responsivePriority: 2, targets: 3 },
+					{ targets: -1, className: "dt-body-right" }
 				]
 			});
 			
