@@ -42,43 +42,24 @@
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
         <?php print $ui->standardizedThemeCSS(); ?>
-
         <?php print $ui->creamyThemeCSS(); ?>
-
-		<!-- DATA TABLES -->
-        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 	
     	<!-- Wizard Form style -->
 		<link href="css/style.css" rel="stylesheet" type="text/css" />
-
-		<!-- DATA TABLES -->
-        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-		<link href="css/datatables/1.10.12/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
-		<!--<link href="css/datatables/buttons/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />-->
-        <!-- Data Tables -->
-        <script src="js/plugins/datatables/1.10.12/jquery.dataTables.min.js" type="text/javascript"></script>
-        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-			<!-- FOR EXPORT -->
-			<!--<script src="js/plugins/datatables/bpampuch/pdfmake/vfs_fonts.js" type="text/javascript"></script>
-			<script src="js/plugins/datatables/bpampuch/pdfmake/pdfmake.min.js" type="text/javascript"></script>-->
-			<script src="js/plugins/datatables/buttons/buttons.html5.min.js" type="text/javascript"></script>
-			<script src="js/plugins/datatables/buttons/buttons.print.min.js" type="text/javascript"></script>
-			<script src="js/plugins/datatables/buttons/buttons.flash.min.js" type="text/javascript"></script>
-			<script src="js/plugins/datatables/buttons/dataTables.buttons.min.js" type="text/javascript"></script>
-			<script src="js/plugins/datatables/jszip.min.js" type="text/javascript"></script>
+		
+        <!-- DATA TABLES 1.10.19 CSS-->        
+        <link href="css/datatables/1.10.19/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/datatables/1.10.19/dataTables.jqueryui.min.css" rel="stylesheet" type="text/css" />
+        <link href="css/datatables/1.10.19/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
+		<link href="css/datatables/1.10.19/responsive.dataTables.min.css" rel="stylesheet" type="text/css" />
+		<link href="css/datatables/1.10.19/responsive.jqueryui.min.css" rel="stylesheet" type="text/css" />  		
 			
         <!-- CHOSEN-->
-   		<link rel="stylesheet" href="theme_dashboard/chosen_v1.2.0/chosen.min.css">
-        <!-- SELECT2-->
-   		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
-   		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+   		<link rel="stylesheet" href="js/dashboard/chosen_v1.2.0/chosen.min.css">
 		
 		<!-- Date Range Picker -->	
         <script type="text/javascript" src="js/plugins/daterangepicker/daterangepicker.js"></script>
 		<link rel="stylesheet" href="css/daterangepicker/daterangepicker-bs3.css"></link>
-		
-   		<!-- SELECT2-->
-   		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
     </head>
 
     <?php print $ui->creamyBody(); ?>
@@ -541,9 +522,23 @@
 
 		<?php print $ui->standardizedThemeJS();?>
 		<!-- JQUERY STEPS-->
-  		<script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
+  		<script src="js/dashboard/js/jquery.steps/build/jquery.steps.js"></script>
   		<!-- SELECT2-->
-        <script src="theme_dashboard/select2/dist/js/select2.js"></script>
+        <script src="js/dashboard/select2/dist/js/select2.js"></script>
+        
+		<!-- Datatables 1.10.19 -->
+		<script src="js/datatables/1.10.19/jquery.dataTables.min.js" type="text/javascript"></script>
+		<script src="js/datatables/1.10.19/dataTables.jqueryui.min.js" type="text/javascript"></script>
+		<script src="js/datatables/1.10.19/dataTables.bootstrap.min.js" type="text/javascript"></script>
+		<script src="js/datatables/1.10.19/dataTables.responsive.min.js" type="text/javascript"></script>        
+		<script src="js/datatables/1.10.19/responsive.jqueryui.min.js" type="text/javascript"></script>
+		
+		<!-- Datatables Export -->
+		<script src="js/plugins/datatables/buttons/buttons.html5.min.js" type="text/javascript"></script>
+		<script src="js/plugins/datatables/buttons/buttons.print.min.js" type="text/javascript"></script>
+		<script src="js/plugins/datatables/buttons/buttons.flash.min.js" type="text/javascript"></script>
+		<script src="js/plugins/datatables/buttons/dataTables.buttons.min.js" type="text/javascript"></script>
+		<script src="js/plugins/datatables/jszip.min.js" type="text/javascript"></script>        
 
 <script type="text/javascript">
 	$(document).ready(function() {

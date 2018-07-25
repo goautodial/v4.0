@@ -44,30 +44,30 @@
         <!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
         <!-- FONT AWESOME-->
-        <link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">
+        <link rel="stylesheet" src="js/dashboard/fontawesome/css/font-awesome.min.css">
         <!-- SIMPLE LINE ICONS-->
-        <link rel="stylesheet" href="theme_dashboard/simple-line-icons/css/simple-line-icons.css">
+        <link rel="stylesheet" src="js/dashboard/simple-line-icons/css/simple-line-icons.css">
         <!-- ANIMATE.CSS-->
-        <link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">
+        <link rel="stylesheet" src="js/dashboard/animate.css/animate.min.css">
         <!-- WHIRL (spinners)-->
-        <link rel="stylesheet" href="theme_dashboard/whirl/dist/whirl.css">
+        <link rel="stylesheet" src="js/dashboard/whirl/dist/whirl.css">
         <!-- =============== PAGE VENDOR STYLES ===============-->
         <link rel="stylesheet" href="adminlte/css/AdminLTE.css">
         <!-- =============== BOOTSTRAP STYLES ===============-->
-        <link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
+        <link rel="stylesheet" src="js/dashboard/css/bootstrap.css" id="bscss">
         <!-- =============== APP STYLES ===============-->
-        <link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
+        <link rel="stylesheet" src="js/dashboard/css/app.css" id="maincss">
         <!-- <link rel="stylesheet" href="css/material/app.css" id="maincss"> -->
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
         <!-- croppeie -->
         <link rel="Stylesheet" type="text/css" href="css/prism.css" />
-        <link rel="Stylesheet" type="text/css" href="theme_dashboard/sweetalert/dist/sweetalert.css" />        
+        <link rel="Stylesheet" type="text/css" src="js/dashboard/sweetalert/dist/sweetalert.css" />        
         <link rel="Stylesheet" type="text/css" href="css/croppie.css" />
         <!-- <link rel="Stylesheet" type="text/css" href="css/demo.css" /> -->
         
         <!-- Data Tables -->
-        <script src="theme_dashboard/js/datatables/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
+        <script src="js/dashboard/js/datatables/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
         
         <script type="text/javascript">
             $(window).ready(function(){
@@ -1057,18 +1057,18 @@
     <!--<script src="./vendor/matchMedia/matchMedia.js"></script>-->
     <!-- JQUERY-->
     
-    <!-- conflict <script src="theme_dashboard/js/jquery/dist/jquery.js"></script> -->
+    <!-- conflict <script src="js/dashboard/js/jquery/dist/jquery.js"></script> -->
     <!-- BOOTSTRAP-->
-    <!-- <script src="theme_dashboard/js/bootstrap/dist/js/bootstrap.js"></script> -->
+    <!-- <script src="js/dashboard/js/bootstrap/dist/js/bootstrap.js"></script> -->
     
     <!-- STORAGE API-->
     <!--<script src="./vendor/jQuery-Storage-API/jquery.storageapi.js"></script>-->
     <!-- JQUERY EASING-->
     <!--<script src="./vendor/jquery.easing/js/jquery.easing.js"></script>-->
     <!-- ANIMO-->
-    <script src="theme_dashboard/js/animo.js/animo.js"></script>
+    <script src="js/dashboard/js/animo.js/animo.js"></script>
     <!-- SLIMSCROLL-->
-    <script src="theme_dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
+    <script src="js/dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- SCREENFULL-->
     <!--<script src="./vendor/screenfull/dist/screenfull.js"></script>-->
     <!-- LOCALIZE-->
@@ -1081,7 +1081,7 @@
     <!--<script src="./vendor/jQuery-gMap/jquery.gmap.min.js"></script>-->
     <!-- =============== APP SCRIPTS ===============-->
     <script src="js/prism.js"></script>
-    <script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="js/dashboard/sweetalert/dist/sweetalert.min.js"></script>
     <script src="js/croppie.js"></script> 
     <!-- <script src="js/demo.js"></script> -->
     <script src="js/exif.js"></script>

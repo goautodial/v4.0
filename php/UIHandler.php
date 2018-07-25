@@ -5813,14 +5813,14 @@ error_reporting(E_ERROR | E_PARSE);
 		$css .= '<link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />'."\n"; // ionicons
 		$css .= '<link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />'."\n"; // bootstrap3 css
 		$css .= '<link rel="stylesheet" href="css/fontawesome/css/font-awesome.min.css">'."\n"; // font-awesome css
-		$css .= '<link rel="stylesheet" href="theme_dashboard/simple-line-icons/css/simple-line-icons.css">'; // line css
-		$css .= '<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">'."\n"; // animate css
-		$css .= '<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">'; // bootstrap css
-		$css .= '<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">'."\n"; // app css
+		$css .= '<link rel="stylesheet" href="css/dashboard/simple-line-icons/css/simple-line-icons.css">'; // line css
+		$css .= '<link rel="stylesheet" href="css/dashboard/animate.css/animate.min.css">'."\n"; // animate css
+		$css .= '<link rel="stylesheet" href="css/dashboard/css/bootstrap.css" id="bscss">'; // bootstrap css
+		$css .= '<link rel="stylesheet" href="css/dashboard/css/app.css" id="maincss">'."\n"; // app css
 		$css .= '<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">'."\n";
 		$css .= '<link href="css/bootstrap-glyphicons.css" rel="stylesheet">'."\n";
 		$css .= '<link rel="stylesheet" href="css/customizedLoader.css">'."\n"; // preloader css
-		$css .= '<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">'."\n"; // sweetalert
+		$css .= '<link rel="stylesheet" href="js/dashboard/sweetalert/dist/sweetalert.css">'."\n"; // sweetalert
 
 		/* JS that needs to be declared first */
 		$css .= '<script src="js/jquery.min.js"></script>'."\n"; // required JS
@@ -5836,7 +5836,7 @@ error_reporting(E_ERROR | E_PARSE);
 	public function standardizedThemeJS() {
 		$js = '';
 		$js .= '<script src="js/jquery.validate.min.js" type="text/javascript"></script>'."\n"; // forms and action js
-		$js .= '<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>'."\n"; // sweetalert js
+		$js .= '<script src="js/dashboard/sweetalert/dist/sweetalert.min.js"></script>'."\n"; // sweetalert js
 		$js .= '<script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>'."\n"; // bootstrap 3 js
 		$js .= '<script src="adminlte/js/app.min.js" type="text/javascript"></script>'."\n"; // creamy app js
 		$js .= '<script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>'."\n";

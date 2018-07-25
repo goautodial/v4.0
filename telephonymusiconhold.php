@@ -45,10 +45,10 @@
 	    <!-- Bootstrap Player -->
 	    <script src="js/bootstrap-player.js" type="text/javascript"></script>
         <!-- SELECT2-->
-        <link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
-        <link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+        <link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
+        <link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
         <!-- SELECT2-->
-        <script src="theme_dashboard/select2/dist/js/select2.js"></script>
+        <script src="js/dashboard/select2/dist/js/select2.js"></script>
         
     </head>
     <?php print $ui->creamyBody(); ?>

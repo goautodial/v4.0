@@ -127,7 +127,7 @@ error_reporting(E_ALL)
 		
         <!-- dashboard status boxes -->
         <script src="js/bootstrap-editable.js" type="text/javascript"></script> 
-        <script src="theme_dashboard/moment/min/moment-with-locales.min.js" type="text/javascript"></script>
+        <script src="js/dashboard/moment/min/moment-with-locales.min.js" type="text/javascript"></script>
         <script src="js/modules/now.js" type="text/javascript"></script>         
 	    <!-- ChartJS 1.0.1 -->
 	    <script src="js/plugins/chartjs/Chart.min.js" type="text/javascript"></script>
@@ -137,12 +137,12 @@ error_reporting(E_ALL)
         <script src="js/plugins/datatables/FROMjquery.dataTables.js" type="text/javascript"></script>
         <script src="js/fnProcessingIndicator.js" type="text/javascript"></script>
 
-         <!-- theme_dashboard folder -->
+         <!-- css/dashboard folder -->
 					<!-- WHIRL (spinners)-->
-			<link rel="stylesheet" href="theme_dashboard/whirl/dist/whirl.css">
+			<link rel="stylesheet" href="js/dashboard/whirl/dist/whirl.css">
 				<!-- =============== PAGE VENDOR STYLES ===============-->
 					<!-- WEATHER ICONS-->
-			<link rel="stylesheet" href="theme_dashboard/weather-icons/css/weather-icons.min.css">
+			<link rel="stylesheet" href="js/dashboard/weather-icons/css/weather-icons.min.css">
 			
     </head>
     <?php print $ui->creamyBody(); ?>
@@ -174,7 +174,7 @@ error_reporting(E_ALL)
 											<em class="icon-earphones fa-3x"></em>
 										</div>
 										<div class="col-xs-8 pv-lg" style="padding-top:10px !important;">
-											<div class="h2 mt0"><span class="text-lg" id="refresh_totalagentscall"></span></div>
+											<div class="h2 mt0"><span class="text-lg" id="refresh_totalagentscall">0</span></div>
 											<div class="text-sm"><?=$lh->translateText("agents_on_call")?></div>
 										</div>
 									</div>
@@ -255,27 +255,27 @@ error_reporting(E_ALL)
 									<a href="#" data-toggle="modal" data-target="#realtime_calls_monitoring">
 										<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center bg-info info_sun_boxes">
 											<em class="fa fa-sun-o fa-3x"></em><div class="h2 m0"><span class="text-lg"></span></div>
-											<div class="text-white"><?=$lh->translateText("realtime_calls_monitor")?></div>                                 
+											<div class="text-white"><?=$lh->translateText("realtime_calls_monitor")?>0</div>                                 
 										</div>
 									</a>
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
-										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_RingingCalls"></span></div>
+										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_RingingCalls">0</span></div>
 										<div class="text"><?=$lh->translateText("ringing_calls")?></div>
 									</div>
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
-										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_IncomingQueue"></span></div>
+										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_IncomingQueue">0</span></div>
 										<div class="text"><?=$lh->translateText("incoming_calls")?></div>
 									</div>	                	
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
-										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_AnsweredCalls"></span></div>
+										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_AnsweredCalls">0</span></div>
 											<div class="text"><?=$lh->translateText("answered_calls")?></div>
 									</div>
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
-										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_TotalInCalls"></span></div>
+										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_TotalInCalls">0</span></div>
 										<div class="text"><?=$lh->translateText("inbound_calls_today")?></div>
 									</div>	                	
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
-										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_TotalOutCalls"></span></div>
+										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_TotalOutCalls">0</span></div>
 											<div class="text" style="font-size: small;"><?=$lh->translateText("outbound_calls_today")?></div>
 									</div>
 								</div>
@@ -730,7 +730,7 @@ error_reporting(E_ALL)
         */
         include_once ("./php/ModalPasswordDialogs.php");
 ?>
-<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
+<script src="js/dashboard/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 	/*
 	 * JQuery Knob = need for dropped calls percentage and other pie loader
@@ -1329,35 +1329,35 @@ function goGetInSession(type) {
 					load_totalagentspaused();
 					load_totalagentswaitingcall();
 				// ---- sales
-					load_totalSales();
-					load_INSalesHour();
-					load_OUTSalesPerHour();
+					//load_totalSales();
+					//load_INSalesHour();
+					//load_OUTSalesPerHour();
 				// ---- leads
-					load_TotalActiveLeads();
-					load_LeadsinHopper();
-					load_TotalDialableLeads();
+					//load_TotalActiveLeads();
+					//load_LeadsinHopper();
+					//load_TotalDialableLeads();
 				// ---- calls
-					load_RingingCalls();
-					load_IncomingQueue();
-					load_AnsweredCalls();
-					load_DroppedCalls();
+					//load_RingingCalls();
+					//load_IncomingQueue();
+					//load_AnsweredCalls();
+					//load_DroppedCalls();
 					//load_TotalCalls();
-					load_TotalInboundCalls();
-					load_TotalOutboundCalls();
-					load_LiveOutbound();
+					//load_TotalInboundCalls();
+					//load_TotalOutboundCalls();
+					//load_LiveOutbound();
 					
 			// ---- clusterstatus table
 					load_cluster_status();
 				// ---- agent and campaign resources
 					load_campaigns_resources();
 					load_campaigns_monitoring();
-					load_agents_monitoring_summary();
+					//load_agents_monitoring_summary();
 				// ---- realtime monitoring
 					load_realtime_agents_monitoring();
 					load_realtime_calls_monitoring();
-					load_realtime_sla_monitoring();
+					//load_realtime_sla_monitoring();
 				// ---- view agent information modal
-					load_view_agent_information();
+					//load_view_agent_information();
 		});
 		/*
 		//Refresh functions() after 5000 milliseconds
@@ -1399,7 +1399,7 @@ function goGetInSession(type) {
 			// ... view agent information modal  ...
 				var int_18 = setInterval(load_view_agent_information,3000);
 		*/
-		$('#view_agent_information').on('show.bs.modal', function () {
+		/*$('#view_agent_information').on('show.bs.modal', function () {
 			clearInterval(int_1);
 			clearInterval(int_2);
 			clearInterval(int_3);
@@ -1418,7 +1418,7 @@ function goGetInSession(type) {
 			clearInterval(int_16);
 			clearInterval(int_17);
 			clearInterval(int_18);
-		});
+		});*/
 		
 		/*$('#view_agent_information').on('hidden.bs.modal', function () {
 			int_1 = setInterval(load_totalagentscall,5000);
@@ -1443,26 +1443,26 @@ function goGetInSession(type) {
 	</script>
 	
    <!-- FLOT CHART-->
-   <script src="theme_dashboard/js/Flot/jquery.flot.js"></script>
-   <script src="theme_dashboard/js/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
-   <script src="theme_dashboard/js/Flot/jquery.flot.resize.js"></script>
-   <script src="theme_dashboard/js/Flot/jquery.flot.time.js"></script>
-   <script src="theme_dashboard/js/Flot/jquery.flot.categories.js"></script>
-   <script src="theme_dashboard/js/flot-spline/js/jquery.flot.spline.min.js"></script>
+   <script src="js/dashboard/js/Flot/jquery.flot.js"></script>
+   <script src="js/dashboard/js/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+   <script src="js/dashboard/js/Flot/jquery.flot.resize.js"></script>
+   <script src="js/dashboard/js/Flot/jquery.flot.time.js"></script>
+   <script src="js/dashboard/js/Flot/jquery.flot.categories.js"></script>
+   <script src="js/dashboard/js/flot-spline/js/jquery.flot.spline.min.js"></script>
    <!-- VECTOR MAP-->
-   <script src="theme_dashboard/js/ika.jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-   <script src="theme_dashboard/js/ika.jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-   <script src="theme_dashboard/js/ika.jvectormap/jquery-jvectormap-us-mill-en.js"></script>
+   <script src="js/dashboard/js/ika.jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+   <script src="js/dashboard/js/ika.jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+   <script src="js/dashboard/js/ika.jvectormap/jquery-jvectormap-us-mill-en.js"></script>
    
-   <!--<script src="theme_dashboard/js/demo/demo-vector-map.js"></script>-->
+   <!--<script src="js/dashboard/js/demo/demo-vector-map.js"></script>-->
    
    <!-- CLASSY LOADER-->
-   <script src="theme_dashboard/js/jquery-classyloader/js/jquery.classyloader.min.js"></script>
+   <script src="js/dashboard/js/jquery-classyloader/js/jquery.classyloader.min.js"></script>
    
    <!-- =============== APP SCRIPTS ===============-->
-    <!--<script src="theme_dashboard/js/app.js"></script>-->
+    <!--<script src="js/dashboard/js/app.js"></script>-->
 	<script src="adminlte/js/app.min.js" type="text/javascript"></script>
-    <script src="theme_dashboard/js/jquery-knob/dist/jquery.knob.min.js"></script>
+    <script src="js/dashboard/js/jquery-knob/dist/jquery.knob.min.js"></script>
 			
 	<!-- Vue Avatar -->
 	<script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>

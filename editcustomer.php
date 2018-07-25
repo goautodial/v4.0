@@ -103,25 +103,25 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 		-->
         <!-- theme_dashboard folder -->
 		<!-- FONT AWESOME-->
-		<link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">
+		<link rel="stylesheet" src="js/dashboard/fontawesome/css/font-awesome.min.css">
 		<!-- SIMPLE LINE ICONS-->
-		<link rel="stylesheet" href="theme_dashboard/simple-line-icons/css/simple-line-icons.css">
+		<link rel="stylesheet" src="js/dashboard/simple-line-icons/css/simple-line-icons.css">
 		<!-- ANIMATE.CSS-->
-		<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">
+		<link rel="stylesheet" src="js/dashboard/animate.css/animate.min.css">
 		<!-- WHIRL (spinners)-->
-		<link rel="stylesheet" href="theme_dashboard/whirl/dist/whirl.css">
+		<link rel="stylesheet" src="js/dashboard/whirl/dist/whirl.css">
 		<!-- =============== PAGE VENDOR STYLES ===============-->
 		<!-- WEATHER ICONS-->
-		<link rel="stylesheet" href="theme_dashboard/weather-icons/css/weather-icons.min.css">
+		<link rel="stylesheet" src="js/dashboard/weather-icons/css/weather-icons.min.css">
 		<!-- =============== BOOTSTRAP STYLES ===============-->
-		<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
+		<link rel="stylesheet" src="js/dashboard/css/bootstrap.css" id="bscss">
 		<!-- =============== APP STYLES ===============-->
-		<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-		<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
+		<link rel="stylesheet" src="js/dashboard/css/app.css" id="maincss">
+		<link rel="stylesheet" src="js/dashboard/sweetalert/dist/sweetalert.css">
 		<!-- SLIMSCROLL-->
-		<script src="theme_dashboard/slimScroll/jquery.slimscroll.min.js"></script>
+		<script src="js/dashboard/slimScroll/jquery.slimscroll.min.js"></script>
 		<!-- SWEETALERT-->
-		<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
+		<script src="js/dashboard/sweetalert/dist/sweetalert.min.js"></script>
 		<!-- MD5 HASH-->
 		<script src="js/jquery.md5.js" type="text/javascript"></script>
 

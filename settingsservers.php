@@ -52,10 +52,10 @@
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 		
 		<!-- SELECT2-->
-   		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
-   		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+   		<link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
+   		<link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
    		<!-- SELECT2-->
-   		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
+   		<script src="js/dashboard/select2/dist/js/select2.js"></script>
 		
     </head>
     <?php print $ui->creamyBody(); ?>
@@ -194,7 +194,7 @@
     <!-- Forms and actions -->
         <?php print $ui->standardizedThemeJS(); ?> 
         <!-- JQUERY STEPS-->
-        <script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
+        <script src="js/dashboard/js/jquery.steps/build/jquery.steps.js"></script>
 	
 		<script src="js/plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
 		<script src="js/plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>

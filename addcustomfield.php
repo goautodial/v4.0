@@ -52,10 +52,10 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 		        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
 		        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 		        <!-- SELECT2-->
-   		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
-   		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+   		<link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
+   		<link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
 				<!-- SELECT2-->
-	   		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
+	   		<script src="js/dashboard/select2/dist/js/select2.js"></script>
         <script type="text/javascript">
 			$(window).ready(function() {
 				$(".preloader").fadeOut("slow");

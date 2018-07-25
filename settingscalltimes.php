@@ -56,17 +56,17 @@
         <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 
         <!-- datetime picker --> 
-		<link rel="stylesheet" href="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+		<link rel="stylesheet" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
 
 		<!-- Date Picker -->
-        <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
-		<script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+        <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
+		<script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 
 		<!-- SELECT2-->
-   		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
-   		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+   		<link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
+   		<link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
    		<!-- SELECT2-->
-   		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
+   		<script src="js/dashboard/select2/dist/js/select2.js"></script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -544,7 +544,7 @@
 		<!-- Forms and actions -->
 		<?php print $ui->standardizedThemeJS(); ?>
 		<!-- JQUERY STEPS-->
-  		<script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
+  		<script src="js/dashboard/js/jquery.steps/build/jquery.steps.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function() {

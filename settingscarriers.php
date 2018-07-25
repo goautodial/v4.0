@@ -664,7 +664,7 @@ host=</textarea>
 		<!-- Forms and actions -->
 		<?php print $ui->standardizedThemeJS(); ?>
 		<!-- JQUERY STEPS-->
-  		<script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
+  		<script src="js/dashboard/js/jquery.steps/build/jquery.steps.js"></script>
 		<script src="js/plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
 		<script src="js/plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
 		<script type="text/javascript">

@@ -44,16 +44,16 @@
 			<script src="js/plugins/datatables/buttons/dataTables.buttons.min.js" type="text/javascript"></script>
 			<script src="js/plugins/datatables/jszip.min.js" type="text/javascript"></script>
         <!-- Datetime picker --> 
-        <link rel="stylesheet" href="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
         <!-- Date Picker -->
-        <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
-        <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+        <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
+        <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 		
 		<!-- CHOSEN-->
-   		<link rel="stylesheet" href="theme_dashboard/chosen_v1.2.0/chosen.min.css">
+   		<link rel="stylesheet" src="js/dashboard/chosen_v1.2.0/chosen.min.css">
         <!-- SELECT2 CSS -->
-        <link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
-        <link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+        <link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
+        <link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
 
     </head>
     <?php print $ui->creamyBody(); ?>
@@ -248,15 +248,15 @@
         <?php print $ui->standardizedThemeJS();?>
 
         <!-- SELECT2-->
-            <script src="theme_dashboard/select2/dist/js/select2.js"></script>
+            <script src="js/dashboard/select2/dist/js/select2.js"></script>
         <!-- FLOT CHART-->
-            <script src="theme_dashboard/js/Flot/jquery.flot.js"></script>
-            <script src="theme_dashboard/js/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
-            <script src="theme_dashboard/js/Flot/jquery.flot.resize.js"></script>
-            <script src="theme_dashboard/js/Flot/jquery.flot.pie.js"></script>
-            <script src="theme_dashboard/js/Flot/jquery.flot.time.js"></script>
-            <script src="theme_dashboard/js/Flot/jquery.flot.categories.js"></script>
-            <script src="theme_dashboard/js/flot-spline/js/jquery.flot.spline.min.js"></script>
+            <script src="js/dashboard/js/Flot/jquery.flot.js"></script>
+            <script src="js/dashboard/js/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+            <script src="js/dashboard/js/Flot/jquery.flot.resize.js"></script>
+            <script src="js/dashboard/js/Flot/jquery.flot.pie.js"></script>
+            <script src="js/dashboard/js/Flot/jquery.flot.time.js"></script>
+            <script src="js/dashboard/js/Flot/jquery.flot.categories.js"></script>
+            <script src="js/dashboard/js/flot-spline/js/jquery.flot.spline.min.js"></script>
         <script>
 			$(document).on('click','.edit-contact',function() {
 				var url = './editcontacts.php';

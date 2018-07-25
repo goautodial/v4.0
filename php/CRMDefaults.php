@@ -33,7 +33,7 @@
  */
 
 // global constants
-define ('BASE_URL', 'http://localhost/CreamCRM');
+define ('BASE_URL', 'https://vaglxc01.goautodial.com');
 
 define ('CRM_INSTALL_VERSION', '1.0');
 define ('CRM_INSTALLED_FILE', 'installed.txt');

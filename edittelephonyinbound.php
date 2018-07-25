@@ -76,8 +76,8 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
         <!-- Bootstrap Color Picker -->
   		<link rel="stylesheet" href="adminlte/colorpicker/bootstrap-colorpicker.min.css">
   		<!-- SELECT2 CSS -->
-        <link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
-        <link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+        <link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
+        <link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
     </head>
     <style>
     	select{
@@ -2169,7 +2169,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
     	<!-- bootstrap color picker -->
 			<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>
 		<!-- SELECT2-->
-            <script src="theme_dashboard/select2/dist/js/select2.js"></script>
+            <script src="js/dashboard/select2/dist/js/select2.js"></script>
 
 		<script type="text/javascript">
 			$(document).ready(function() {

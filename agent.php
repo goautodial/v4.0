@@ -113,6 +113,9 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
         <!-- Customized Style -->
         <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
         <?php print $ui->creamyThemeCSS(); ?>
+        
+   		<!-- Call for standardized css -->
+   		<?php print $ui->standardizedThemeCSS();?>        
 
 		<!-- javascript -->
         <script src="js/jquery.min.js"></script>
@@ -135,23 +138,23 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
   		<link rel="stylesheet" href="css/select2/dist/css/select2.css">
   		<link rel="stylesheet" href="css/select2-bootstrap-theme/dist/select2-bootstrap.css">
 		<!-- FONT AWESOME-->
-		<link rel="stylesheet" href="theme_dashboard/fontawesome/css/font-awesome.min.css">
+		<link rel="stylesheet" src="js/dashboard/fontawesome/css/font-awesome.min.css">
 		<!-- SIMPLE LINE ICONS-->
-		<link rel="stylesheet" href="theme_dashboard/simple-line-icons/css/simple-line-icons.css">
+		<link rel="stylesheet" src="js/dashboard/simple-line-icons/css/simple-line-icons.css">
 		<!-- ANIMATE.CSS-->
-		<link rel="stylesheet" href="theme_dashboard/animate.css/animate.min.css">
+		<link rel="stylesheet" src="js/dashboard/animate.css/animate.min.css">
 		<!-- WHIRL (spinners)-->
-		<link rel="stylesheet" href="theme_dashboard/whirl/dist/whirl.css">
+		<link rel="stylesheet" src="js/dashboard/whirl/dist/whirl.css">
 		<!-- =============== PAGE VENDOR STYLES ===============-->
 		<!-- WEATHER ICONS-->
-		<link rel="stylesheet" href="theme_dashboard/weather-icons/css/weather-icons.min.css">
+		<link rel="stylesheet" src="js/dashboard/weather-icons/css/weather-icons.min.css">
 		<!-- =============== BOOTSTRAP STYLES ===============-->
-		<link rel="stylesheet" href="theme_dashboard/css/bootstrap.css" id="bscss">
+		<link rel="stylesheet" src="js/dashboard/css/bootstrap.css" id="bscss">
 		<!-- =============== APP STYLES ===============-->
-		<link rel="stylesheet" href="theme_dashboard/css/app.css" id="maincss">
-		<link rel="stylesheet" href="theme_dashboard/sweetalert/dist/sweetalert.css">
+		<link rel="stylesheet" src="js/dashboard/css/app.css" id="maincss">
+		<link rel="stylesheet" src="js/dashboard/sweetalert/dist/sweetalert.css">
 		<!-- Datetime picker --> 
-        <link rel="stylesheet" href="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
 		<!-- DATA TABLES -->
         <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 		<!-- iCheck for checkboxes and radio inputs -->
@@ -165,20 +168,20 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 		<!-- iCheck -->
 		<script src="js/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
 		<!-- SLIMSCROLL-->
-		<script src="theme_dashboard/slimScroll/jquery.slimscroll.min.js"></script>
+		<script src="js/dashboard/slimScroll/jquery.slimscroll.min.js"></script>
 		<!-- SWEETALERT-->
-		<script src="theme_dashboard/sweetalert/dist/sweetalert.min.js"></script>
+		<script src="js/dashboard/sweetalert/dist/sweetalert.min.js"></script>
 		<!-- FastClick -->
 		<!--<script src="js/plugins/fastclick/fastclick.min.js" type="text/javascript"></script>-->
 		<!-- MD5 HASH-->
 		<script src="js/jquery.md5.js" type="text/javascript"></script>
         <!-- Date Picker -->
-        <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
-        <script type="text/javascript" src="theme_dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+        <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
+        <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 		
         <!-- X-Editable -->
-        <link rel="stylesheet" href="theme_dashboard/x-editable/dist/css/bootstrap-editable.css">
-        <script type="text/javascript" src="theme_dashboard/x-editable/dist/js/bootstrap-editable.min.js"></script>
+        <link rel="stylesheet" src="js/dashboard/x-editable/dist/css/bootstrap-editable.css">
+        <script type="text/javascript" src="js/dashboard/x-editable/dist/js/bootstrap-editable.min.js"></script>
 
   		<!-- Theme style -->
   		<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
@@ -187,7 +190,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
         <link rel="stylesheet" href="css/customizedLoader.css">
 		
 		<!-- flag sprites -->
-		<link rel="stylesheet" href="css/flags/flags.min.css">
+		<link rel="stylesheet" href="css/flags/flags.min. css">
 
         <script type="text/javascript">
 			history.pushState('', document.title, window.location.pathname);

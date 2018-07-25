@@ -50,101 +50,89 @@
     	<link href="css/style.css" rel="stylesheet" type="text/css" />		
 
         <?php print $ui->creamyThemeCSS(); ?>
-        
+
         <!-- DATA TABLES 1.10.19 CSS-->        
         <link href="css/datatables/1.10.19/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
         <link href="css/datatables/1.10.19/dataTables.jqueryui.min.css" rel="stylesheet" type="text/css" />
         <link href="css/datatables/1.10.19/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
 		<link href="css/datatables/1.10.19/responsive.dataTables.min.css" rel="stylesheet" type="text/css" />
-		<link href="css/datatables/1.10.19/responsive.jqueryui.min.css" rel="stylesheet" type="text/css" />
+		<link href="css/datatables/1.10.19/responsive.jqueryui.min.css" rel="stylesheet" type="text/css" />        
 		
-		<!-- Data Tables -->
-        <script src="js/datatables/1.10.19/jquery.dataTables.min.js" type="text/javascript"></script>
-        <script src="js/datatables/1.10.19/dataTables.jqueryui.min.js" type="text/javascript"></script>
-        <script src="js/datatables/1.10.19/dataTables.bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/datatables/1.10.19/dataTables.responsive.min.js" type="text/javascript"></script>        
-        <script src="js/datatables/1.10.19/responsive.jqueryui.min.js" type="text/javascript"></script>
-        
 		<!-- Bootstrap Color Picker -->
   		<link rel="stylesheet" href="adminlte/colorpicker/bootstrap-colorpicker.min.css">
 		<!-- bootstrap color picker -->
 		<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>
-        <!-- SELECT2-->
-   		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
-   		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
-   		<!-- SELECT2-->
-   		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
 		
-			<style type="text/css">
-				.select2-container{
-					width: 100% !important;
-				}
+		<style type="text/css">
+			.select2-container{
+				width: 100% !important;
+			}
+			
+			.select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
+				margin-top: 1px;
+			}
+			
+			.ui-autocomplete {
+				position: absolute;
+				top: 100%;
+				left: 0;
+				z-index: 1000;
+				float: left;
+				display: none;
+				min-width: 160px;
+				_width: 160px;
+				padding: 5px 4px;
+				/*margin: 2px 0 0 0;*/
+				list-style: none;
+				background-color: #ffffff;
+				border-color: #ccc;
+				border-color: rgba(0, 0, 0, 0.2);
+				border-style: solid;
+				border-width: 1px;
+				-webkit-border-radius: 5px;
+				-moz-border-radius: 5px;
+				border-radius: 5px;
+				-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+				-moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+				box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+				-webkit-background-clip: padding-box;
+				-moz-background-clip: padding;
+				background-clip: padding-box;
+				/**border-right-width: 2px;*/
+				/**border-bottom-width: 2px;*/
 				
-				.select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
-					margin-top: 1px;
-				}
+				.ui-menu-item > a.ui-corner-all {
+					display: block;
+					padding: 3px 15px;
+					clear: both;
+					font-weight: normal;
+					line-height: 18px;
+					color: #555555;
+					white-space: nowrap;
 				
-				.ui-autocomplete {
-					position: absolute;
-					top: 100%;
-					left: 0;
-					z-index: 1000;
-					float: left;
-					display: none;
-					min-width: 160px;
-					_width: 160px;
-					padding: 5px 4px;
-					/*margin: 2px 0 0 0;*/
-					list-style: none;
-					background-color: #ffffff;
-					border-color: #ccc;
-					border-color: rgba(0, 0, 0, 0.2);
-					border-style: solid;
-					border-width: 1px;
-					-webkit-border-radius: 5px;
-					-moz-border-radius: 5px;
-					border-radius: 5px;
-					-webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-					-moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-					box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-					-webkit-background-clip: padding-box;
-					-moz-background-clip: padding;
-					background-clip: padding-box;
-					/**border-right-width: 2px;*/
-					/**border-bottom-width: 2px;*/
-				  
-					.ui-menu-item > a.ui-corner-all {
-					  display: block;
-					  padding: 3px 15px;
-					  clear: both;
-					  font-weight: normal;
-					  line-height: 18px;
-					  color: #555555;
-					  white-space: nowrap;
-				  
-					  &.ui-state-hover, &.ui-state-active {
-						color: #ffffff;
-						text-decoration: none;
-						background-color: #0088cc;
-						border-radius: 0px;
-						-webkit-border-radius: 0px;
-						-moz-border-radius: 0px;
-						background-image: none;
-					  }
+					&.ui-state-hover, &.ui-state-active {
+					color: #ffffff;
+					text-decoration: none;
+					background-color: #0088cc;
+					border-radius: 0px;
+					-webkit-border-radius: 0px;
+					-moz-border-radius: 0px;
+					background-image: none;
 					}
 				}
-				@media (min-width: 992px) {
-					.modal-lg {
-						width: 900px;
-					}
+			}
+			@media (min-width: 992px) {
+				.modal-lg {
+					width: 900px;
 				}
-				@media (min-width: 768px) {
-					.modal-xl {
-						width: 90%;
-					max-width:1600px;
-					}
-				}				
-			</style>
+			}
+			@media (min-width: 768px) {
+				.modal-xl {
+					width: 90%;
+				max-width:1600px;
+				}
+			}				
+		</style>
     </head>
      <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -1466,8 +1454,18 @@
 
 	<?php print $ui->standardizedThemeJS(); ?>
 	<!-- JQUERY STEPS-->
-  	<script src="theme_dashboard/js/jquery.steps/build/jquery.steps.js"></script>
+  	<script src="js/dashboard/js/jquery.steps/build/jquery.steps.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
+	<!-- Datatables 1.10.19 -->
+	<script src="js/datatables/1.10.19/jquery.dataTables.min.js" type="text/javascript"></script>
+	<script src="js/datatables/1.10.19/dataTables.jqueryui.min.js" type="text/javascript"></script>
+	<script src="js/datatables/1.10.19/dataTables.bootstrap.min.js" type="text/javascript"></script>
+	<script src="js/datatables/1.10.19/dataTables.responsive.min.js" type="text/javascript"></script>        
+	<script src="js/datatables/1.10.19/responsive.jqueryui.min.js" type="text/javascript"></script>
+        
+	<!-- SELECT2-->
+	<script src="js/dashboard/select2/dist/js/select2.js"></script>	
     <!-- iCheck 1.0.1 -->
 	<script src="js/plugins/iCheck/icheck.min.js"></script>
 
@@ -1504,7 +1502,7 @@
 					{ searchable: false, targets: [ 0, 5, 6 ] },
 					{ sortable: false, targets: [ 0, 5, 6 ] },
 					{ responsivePriority: 1, targets: 6 },
-					{ responsivePriority: 2, targets: 2 },
+					{ responsivePriority: 2, targets: 5 },
 					{ targets: -1, className: "dt-body-right" }
 				]
 			});

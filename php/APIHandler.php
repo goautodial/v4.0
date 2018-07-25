@@ -402,11 +402,62 @@ if(isset($_SESSION["user"])){
 		return $output;
 	}
 		
-	/*
-	 * Displaying Disposition
-	 * [[API: Function]] - getAllDispositions
-	 * 	This application is used to get list of campaign belongs to user.
-	*/
+	public function API_getRealtimeAgentsMonitoring(){
+		$postfields = array(
+			'goAction' => 'goGetRealtimeAgentsMonitoring'
+		);		
+		return $this->API_Request("goDashboard", $postfields);
+	}
+	
+	public function API_getRealtimeCallsMonitoring(){
+		$postfields = array(
+			'goAction' => 'goGetRealtimeCallsMonitoring'
+		);		
+		return $this->API_Request("goDashboard", $postfields);
+	}
+	
+	public function API_getCampaignsResources(){
+		$postfields = array(
+			'goAction' => 'goGetCampaignsResources'
+		);		
+		return $this->API_Request("goDashboard", $postfields);
+	}
+
+	public function API_getCampaignsMonitoring(){
+		$postfields = array(
+			'goAction' => 'goGetCampaignsResources'
+		);		
+		return $this->API_Request("goDashboard", $postfields);
+	}	
+	
+	public function API_getTotalAgentsPaused(){
+		$postfields = array(
+			'goAction' => 'goGetTotalAgentsPaused'
+		);		
+		return $this->API_Request("goDashboard", $postfields);
+	}	
+	
+	public function API_getTotalAgentsWaitCalls(){
+		$postfields = array(
+			'goAction' => 'goGetTotalAgentsWaitCalls'
+		);		
+		return $this->API_Request("goDashboard", $postfields);
+	}
+	
+	public function API_getTotalAgentsCall(){
+		$postfields = array(
+			'goAction' => 'goGetTotalAgentsCall'
+		);		
+		return $this->API_Request("goDashboard", $postfields);
+	}
+	
+	public function API_getClusterStatus(){
+		$postfields = array(
+			'goAction' => 'goGetClusterStatus'
+		);		
+		return $this->API_Request("goDashboard", $postfields);
+	}	
+	
 	public function API_getAllDispositions(){
 		$postfields = array(
 			'goAction' => 'goGetAllDispositions'
@@ -777,6 +828,15 @@ if(isset($_SESSION["user"])){
 
 	public function API_list($postfields){
 		return $this->API_Request("goLists", $postfields);
+	}
+	
+	// escape existing special characters already in the database
+	function escapeJsonString($value) { # list from www.json.org: (\b backspace, \f formfeed)
+		$escapers = array("\\", "/", "\"", "\n", "\r", "\t", "\x08", "\x0c", "	");
+		$replacements = array("\\\\", "\\/", "\\\"", "\\n", "\\r", "\\t", "\\f", "\\b", " ");
+		$result = str_replace($escapers, $replacements, $value);
+
+		return $result;
 	}
 }
 ?>

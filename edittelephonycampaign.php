@@ -91,8 +91,8 @@
         <!-- iCheck for checkboxes and radio inputs -->
   		<link rel="stylesheet" href="css/iCheck/all.css">
 			<!-- SELECT2-->
-   		<link rel="stylesheet" href="theme_dashboard/select2/dist/css/select2.css">
-   		<link rel="stylesheet" href="theme_dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+   		<link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
+   		<link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
 		<!-- Bootstrap Color Picker -->
   		<link rel="stylesheet" href="adminlte/colorpicker/bootstrap-colorpicker.min.css">
 		<!-- bootstrap color picker -->
@@ -2784,7 +2784,7 @@
     	<!-- iCheck 1.0.1 -->
 		<script src="js/plugins/iCheck/icheck.min.js"></script>
 		<!-- SELECT2-->
-   		<script src="theme_dashboard/select2/dist/js/select2.js"></script>
+   		<script src="js/dashboard/select2/dist/js/select2.js"></script>
 
 		<script type="text/javascript">
 			
