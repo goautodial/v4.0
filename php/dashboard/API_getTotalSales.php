@@ -1,42 +1,38 @@
 <?php
-require_once('../goCRMAPISettings.php');
-require_once('../Session.php');
-/*
-* Displaying Total Sales
-* [[API: Function]] - goGetTotalSales
-* This application is used to get total number of total sales.
+/**
+ * @file        API_getTotalSales.php
+ * @brief       Displays total inbound and outbound calls
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author		Demian Lizandro A. Biscocho 
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-   $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-   $postfields["goUser"] = goUser; #Username goes here. (required)
-   $postfields["goPass"] = goPass;
-   $postfields["goAction"] = "goGetTotalSales"; #action performed by the [[API:Functions]]
-   $postfields["session_user"] = $_SESSION['user']; #current user
-   
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $data = curl_exec($ch);
-    curl_close($ch);
-   
-   //var_dump($data);
-    $data = explode(";",$data);
-    foreach ($data AS $temp) {
-      $temp = explode("=",$temp);
-      $results[$temp[0]] = $temp[1];
+	require_once('APIHandler.php');
+	
+	$api 										= \creamy\APIHandler::getInstance();
+	$type										= $_POST['type'];
+
+	$output 									= $api->API_getTotalSales($type); 
+	
+    $sales 										= $output->data;
+    
+    if($sales == NULL || $sales == 0){
+        $sales 									= 0;
     }
-   
-    if ($results["result"]=="success") {
-      # Result was OK!
-      //var_dump($results); #to see the returned arrays.
-           echo number_format($results["TotalSales"]);
-    } else {
-      # An error occurred
-      echo "0";
-    }
+        
+    echo json_encode($sales);
    
 ?>
