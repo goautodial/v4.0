@@ -225,7 +225,7 @@ error_reporting(E_ERROR | E_PARSE);
 
     public function generateTableHeaderWithItems($items, $id, $styles = "", $needsTranslation = true, $hideHeading = false, $hideOnMedium = array(), $hideOnLow = array(), $idTbody) {
 		$theadStyle = $hideHeading ? 'style="display: none!important;"' : '';
-	    $table = "<table id=\"$id\" class=\"table $styles\"><thead $theadStyle><tr>";
+	    $table = "<table id=\"$id\" class=\"table $styles\" width=\"100%\"><thead $theadStyle><tr>";
 	    if (is_array($items)) {
 			foreach ($items as $item) {
 		    	if($item == "CONCAT_WS(' ', first_name, middle_initial, last_name)"){
@@ -3402,13 +3402,13 @@ error_reporting(E_ERROR | E_PARSE);
 		$checkbox_all = $this->getCheckAll("user");
 		
 		if($perm->user_delete !== 'N') {
-       	    $columns = array("     ", $checkbox_all,$this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $this->lh->translationFor("action"));
+       	    $columns = array("  ", $this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $checkbox_all, $this->lh->translationFor("action"));
 		} else {
-			$columns = array("     ",$this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $this->lh->translationFor("action"));
+			$columns = array("  ",$this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $this->lh->translationFor("action"));
 		}
-		$hideOnMedium = array($this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
-		$hideOnLow = array($this->lh->translationFor("agent_id"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
-		$result = $this->generateTableHeaderWithItems($columns, "T_users", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		//$hideOnMedium = array($this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
+		//$hideOnLow = array($this->lh->translationFor("agent_id"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
+		$result = $this->generateTableHeaderWithItems($columns, "T_users", "responsive display no-wrap table-bordered table-striped", true, false);
 	
 		// iterate through all users
 		for($i=0;$i<count($output->user_id);$i++){
@@ -3444,14 +3444,13 @@ error_reporting(E_ERROR | E_PARSE);
 			$checkbox = '<label for="'.$user_id.'"'.(($perm->user_delete === 'N' || $user === $_SESSION['user']) ? ' class="hidden"' : '').'><div class="checkbox c-checkbox"><label><input name="" class="check_user" id="'.$user_id.'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';				
 			$result .= "<tr>
 							<td style='width:5%;'>".$sessionAvatar."</a></td>";
-							
-			if($perm->user_delete !== 'N')
-				$result .= "<td style='width:10%;'>".$checkbox."</td>";
-				$result .= "<td class='hide-on-low'>".$preFix."<strong>".$user."</strong>".$sufFix."</td>
+				$result .= "<td>".$preFix."<strong>".$user."</strong>".$sufFix."</td>
 							<td>".$full_name."</td>
-							<td class=' hide-on-low hide-on-medium'>".$user_group."</td>
-							<td class='hide-on-low hide-on-medium'>".$active."</td>
-							<td nowrap style='width:16%;'>".$action."</td>
+							<td>".$user_group."</td>
+							<td>".$active."</td>";
+				if($perm->user_delete !== 'N')							
+				$result .= "<td style='width:5%;'>".$checkbox."</td>";
+				$result .= "<td nowrap style='width:16%;'>".$action."</td>
 						</tr>";
 		}
 		// print suffix
@@ -3739,12 +3738,12 @@ error_reporting(E_ERROR | E_PARSE);
 		# Result was OK!
 		$checkbox_all = $this->getCheckAll("phone");
 		//if($perm->user_delete !== 'N')
-			$columns = array($this->lh->translationFor("extension"), $checkbox_all,$this->lh->translationFor("protocol"),$this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("voicemail"), $this->lh->translationFor("action"));
+			$columns = array($this->lh->translationFor("extension"), $this->lh->translationFor("protocol"),$this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("voicemail"), $checkbox_all, $this->lh->translationFor("action"));
 	    //else
 		//	$columns = array($this->lh->translationFor("extension"), $this->lh->translationFor("protocol"), $this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("voicemail"), $this->lh->translationFor("action"));
-	    $hideOnMedium = array($this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("vmail"));
-	    $hideOnLow = array($this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("vmail"));
-		$result = $this->generateTableHeaderWithItems($columns, "T_phones", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+	    //$hideOnMedium = array($this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("vmail"));
+	    //$hideOnLow = array($this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("vmail"));
+		$result = $this->generateTableHeaderWithItems($columns, "T_phones", "responsive display no-wrap table-bordered table-striped", true, false);
 
 			for($i=0;$i < count($output->extension);$i++){
 
@@ -3765,12 +3764,12 @@ error_reporting(E_ERROR | E_PARSE);
                 //$sessionAvatar = "<avatar username='".$output->messages[$i]."' :size='36'></avatar><td>".$sessionAvatar."</a></td>";
 				
 				$result = $result."<tr>
-	                    <td><a class='edit-phone' data-id='".$output->extension[$i]."'><strong>".$output->extension[$i]."</strong></a></td>";
-				$result .= "<td style='width:10%;'>".$checkbox."</td>
-						<td class='hide-on-medium hide-on-low'>".$output->protocol[$i]."</td>
-						<td class='hide-on-medium hide-on-low'>".$output->server_ip[$i]."</td>
-	                    <td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
-						<td class='hide-on-medium hide-on-low'>".$output->messages[$i]."&nbsp;<font style='padding-left: 50px;'>".$output->old_messages[$i]."</font></td>
+	                    <td><a class='edit-phone' data-id='".$output->extension[$i]."'><strong>".$output->extension[$i]."</strong></a></td>				
+						<td>".$output->protocol[$i]."</td>
+						<td>".$output->server_ip[$i]."</td>
+	                    <td>".$output->active[$i]."</td>
+						<td>".$output->messages[$i]."&nbsp;<font style='padding-left: 50px;'>".$output->old_messages[$i]."</font></td>";
+				$result .= "<td style='width:5%;'>".$checkbox."</td>						
 						<td nowrap style='width:16%;'>".$action."</td>
 	                </tr>";
 

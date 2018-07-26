@@ -543,60 +543,48 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		// initialize select2
-		//$('.select2-1').select2({ theme: 'bootstrap' });		
 		$('.select2').select2({ theme: 'bootstrap' });
 		var checker = 0;
 		
 		// users table
-		$('#T_users').dataTable({
-			destroy:true,    
+		$('#T_users').DataTable({
+			destroy:true, 
+			responsive:true,
 			stateSave:true,
 			drawCallback:function(settings) {
 				var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 				pagination.toggle(this.api().page.info().pages > 1);
 			},
-			"aaSorting": [[ 1, "asc" ]],
-			"aoColumnDefs": [{
-				"bSearchable": false,
-				<?php if($perm->user_delete !== 'N'){?>
-				"aTargets": [ 0, 1, 5 ]
-				<?php }else{ ?>
-				"aTargets": [ 0, 5 ]
-				<?php } ?>
-			},{
-				"bSortable": false,
-				<?php if($perm->user_delete !== 'N'){?>
-				"aTargets": [ 0, 1, 5 ]
-				<?php }else{ ?>
-				"aTargets": [ 0, 5 ]
-				<?php } ?>
-			}],
-			"bAutoWidth": false
+			columnDefs:[
+				{ width: "16%", targets: 6 },
+				{ width: "5%", targets: [ 0, 5 ] },
+				//{ visible: false, targets: 1 },
+				{ searchable: false, targets: [ 0, 5, 6 ] },
+				{ sortable: false, targets: [ 0, 5, 6 ] },
+				{ responsivePriority: 1, targets: 6 },
+				{ responsivePriority: 2, targets: 1 },
+				{ targets: -1, className: "dt-body-right" }
+			]
 		});
 			
 		// phones
 		$('#T_phones').DataTable({
-			destroy:true,    
+			destroy:true, 
+			responsive:true,
 			stateSave:true,
 			drawCallback:function(settings) {
 				var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 				pagination.toggle(this.api().page.info().pages > 1);
 			},
-			"aoColumnDefs": [{
-				"bSearchable": false,
-				<?php if($perm->user_delete !== 'N'){?>
-				"aTargets": [ 1, 4 ]
-				<?php }else{ ?>
-				"aTargets": [ 4 ]
-				<?php } ?>
-			},{
-				"bSortable": false,
-				<?php if($perm->user_delete !== 'N'){?>
-				"aTargets": [ 1, 4 ]
-				<?php }else{ ?>
-				"aTargets": [ 4 ]
-				<?php } ?>
-			}]
+			columnDefs:[
+				{ width: "16%", targets: 6 },
+				{ width: "5%", targets: [ 0, 5 ] },
+				{ searchable: false, targets: [ 0, 5, 6 ] },
+				{ sortable: false, targets: [ 0, 5, 6 ] },
+				{ responsivePriority: 1, targets: 6 },
+				{ responsivePriority: 2, targets: 1 },
+				{ targets: -1, className: "dt-body-right" }
+			]
 		});
 			
 		// agent log - outbound
