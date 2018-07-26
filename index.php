@@ -1351,7 +1351,7 @@ function goGetInSession(type) {
 				// ---- agent and campaign resources
 					load_campaigns_resources();
 					load_campaigns_monitoring();
-					//load_agents_monitoring_summary();
+					load_agents_monitoring_summary();
 				// ---- realtime monitoring
 					load_realtime_agents_monitoring();
 					load_realtime_calls_monitoring();

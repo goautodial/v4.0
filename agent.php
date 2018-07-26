@@ -190,7 +190,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
         <link rel="stylesheet" href="css/customizedLoader.css">
 		
 		<!-- flag sprites -->
-		<link rel="stylesheet" href="css/flags/flags.min. css">
+		<link rel="stylesheet" href="css/flags/flags.min.css">
 
         <script type="text/javascript">
 			history.pushState('', document.title, window.location.pathname);

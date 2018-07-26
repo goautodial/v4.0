@@ -415,6 +415,13 @@ if(isset($_SESSION["user"])){
 		);		
 		return $this->API_Request("goDashboard", $postfields);
 	}
+
+	public function API_getTotalDroppedCalls(){
+		$postfields = array(
+			'goAction' => 'goGetTotalDroppedCalls'
+		);		
+		return $this->API_Request("goDashboard", $postfields);
+	}
 	
 	public function API_getCampaignsResources(){
 		$postfields = array(
