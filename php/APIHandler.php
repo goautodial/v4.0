@@ -465,6 +465,21 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goDashboard", $postfields);
 	}	
 	
+	public function API_getTotalRingingCalls(){
+		$postfields = array(
+			'goAction' => 'goGetRingingCalls'
+		);		
+		return $this->API_Request("goDashboard", $postfields);
+	}
+	
+	public function API_getTotalCalls($type){
+		$postfields = array(
+			'goAction' => 'goGetTotalCalls',
+			'type' => $type
+		);		
+		return $this->API_Request("goDashboard", $postfields);
+	}
+	
 	public function API_getAllDispositions(){
 		$postfields = array(
 			'goAction' => 'goGetAllDispositions'

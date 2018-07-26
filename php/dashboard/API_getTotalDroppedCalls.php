@@ -25,7 +25,7 @@
 	$api 										= \creamy\APIHandler::getInstance();
 	$output 									= $api->API_getTotalDroppedCalls();
     
-    $total_dropped_calls = $output->data->getTotalDroppedCalls;
+    $total_dropped_calls = $output->data;
     
     if($total_dropped_calls == NULL || $total_dropped_calls == 0){
         $total_dropped_calls = 0;
