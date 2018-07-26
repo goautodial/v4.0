@@ -596,7 +596,8 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		/* initialize select2 */
-		$('.select2-1').select2({ theme: 'bootstrap' });
+		//$('.select2-1').select2({ theme: 'bootstrap' });
+		$('.select2').select2({ theme: 'bootstrap' });
 
 		// for cancelling
 		$(document).on('click', '#cancel', function(){

@@ -309,14 +309,7 @@ $disposition = $api->API_getAllDispositions();
                 	"bDestroy" : true
                 });
 
-				// initialize single selecting
-				$('.select2-1').select2({
-			        theme: 'bootstrap'
-			    });
-			    // initialize multiple selecting
-				$('.select2-3').select2({
-			        theme: 'bootstrap'
-			    });
+				$('.select2').select2({ theme: 'bootstrap' });
 
 				// limits checkboxes to single selecting
 				$("input:checkbox").on('click', function() {

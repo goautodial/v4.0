@@ -730,9 +730,7 @@
 			});
 
 		/* initialize select2 */
-			$('.select2-1').select2({
-		        theme: 'bootstrap'
-		    });
+			$('.select2').select2({ theme: 'bootstrap' });
 
 		//initialize timepicker
 			$('.start_time').datetimepicker({

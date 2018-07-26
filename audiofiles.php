@@ -863,9 +863,7 @@
 				});
 
 		/* initialize select2 */
-			$('.select2-1').select2({
-		        theme: 'bootstrap'
-		    });
+			$('.select2').select2({ theme: 'bootstrap' });
 	});
 </script>
 

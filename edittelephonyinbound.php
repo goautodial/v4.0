@@ -3730,9 +3730,9 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					});
 					<?php } ?>
 			
-			 $('.select2-2').select2({
+			/* $('.select2-2').select2({
 				theme: 'bootstrap'
-			});
+			});*/
 		});
 		
 		function checkdatas(groupID) {

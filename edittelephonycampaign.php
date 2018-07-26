@@ -90,16 +90,35 @@
         <?php print $ui->creamyThemeCSS(); ?>
         <!-- iCheck for checkboxes and radio inputs -->
   		<link rel="stylesheet" href="css/iCheck/all.css">
-			<!-- SELECT2-->
-   		<link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
-   		<link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
 		<!-- Bootstrap Color Picker -->
   		<link rel="stylesheet" href="adminlte/colorpicker/bootstrap-colorpicker.min.css">
 		<!-- bootstrap color picker -->
 		<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>
+		<!-- SELECT2-->
+   		<link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
+   		<link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">		
 		<style type="text/css">
 			.select2-container{
 				width: 100% !important;
+			}
+			
+			/*.select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
+				padding-left: 0;
+				padding-right: 0;
+				height: auto;
+				width: 100% !important;
+				margin-top: -4px;
+			}*/
+			.add_color {
+				padding: 0;
+				border: 1px solid #888;
+				cursor: pointer;
+			}
+			.disable-select {
+				-webkit-user-select: none;  
+				-moz-user-select: none;    
+				-ms-user-select: none;      
+				user-select: none;
 			}
 		</style>
         <script type="text/javascript">
@@ -108,29 +127,6 @@
 			});
 		</script>
     </head>
-    <style>
-    	select{
-    		font-weight: normal;
-    	}
-		.select2-container{
-			width: 100% !important;
-		}
-		
-		.select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
-			margin-top: 1px;
-		}
-		.add_color {
-			 padding: 0;
-			 border: 1px solid #888;
-			 cursor: pointer;
-		}
-		.disable-select {
-			-webkit-user-select: none;  
-			-moz-user-select: none;    
-			-ms-user-select: none;      
-			user-select: none;
-		}
-    </style>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
@@ -2825,10 +2821,6 @@
 					theme: 'bootstrap'
 				});
 				
-				$('#dial_status').select2({
-					theme: 'bootstrap'
-				});
-
 				// update dial_status entries
 				$(document).on('click', '#advanced_settings_tab', function(){
 					var campaign_id = $(this).data('id');
@@ -2843,9 +2835,6 @@
 						success: function(data) {
 							//console.log(data);
 							$('#dial_status').html(data);
-							$('#dial_status').select2({
-								theme: 'bootstrap'
-							});
 							$('#dial_status').val("").trigger("change");
 						}
 					});

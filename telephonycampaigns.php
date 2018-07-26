@@ -63,14 +63,14 @@
 		<!-- bootstrap color picker -->
 		<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>
 		
+		<!-- SELECT2-->
+   		<link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
+   		<link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">			
 		<style type="text/css">
 			.select2-container{
 				width: 100% !important;
 			}
-			
-			.select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
-				margin-top: 1px;
-			}
+		
 			
 			.ui-autocomplete {
 				position: absolute;
@@ -216,15 +216,7 @@
 								<!-- Tab panes-->
 								<div class="tab-content bg-white">
 									
-								<!--==== Campaigns ====-->
-								<?php
-									/*// Campaign datatable
-									$columns = array("  ", ($perm->campaign->campaign_delete !== 'N') ? $checkbox_all : '', $lh->translationFor("campaign_id"), $lh->translationFor("campaign_name"), $lh->translationFor("dial_method"), $lh->translationFor("status"), $lh->translationFor("action"));
-									$result = $ui->generateTableHeaderWithItemsResponsive($columns, "table_campaign", true, false);
-									$result .= '</tbody></table>';
-									
-									echo $result;*/
-								?>								
+								<!--==== Campaigns ====-->							
 								  <div id="T_campaign" role="tabpanel" class="tab-pane <?php if(!isset($_GET['T_disposition']) && !isset($_GET['T_recycling']) ) echo 'active'; ?> ">
 										<table class="display responsive no-wrap table-bordered table-striped" width="100%" id="table_campaign">
 										   <thead>
@@ -1481,10 +1473,7 @@
 			// load cookies
 			var cook_donotshow = "yes";
 
-			//$('#modal_form_lists').modal('show');
-			$('.select2').select2({
-				theme: 'bootstrap'
-			});
+			$('.select2').select2({ theme: 'bootstrap' });
 			
 			// Datatables initialization
 			var tableCampaign = $('#table_campaign').DataTable({
@@ -1974,9 +1963,6 @@
 					success: function(response) {
 						//console.log(response);
 						$('.status').html(response);
-						$('.status').select2({
-							theme: 'bootstrap'
-						});
 						$('.status').val("").trigger("change");
 					}
 				});
@@ -2269,7 +2255,7 @@
 			});
 
 			$(document).on('change', '.status', function(){
-				var stat_name = $(this).select2({theme: 'bootstrap'}).find(":selected").data("name");
+				var stat_name = $(this).select2().find(":selected").data("name");
 				console.log(stat_name);
 				$('#hotkey_status_name').val(stat_name);
 			});
@@ -2737,7 +2723,6 @@
 								rowCallback: function( row, data ) {
 									var id = [];
 									id.push(data[0]);									
-									//console.log(id);
 									$(row).addClass('status_row');
 									$(row).attr('id', 'status_row-'+id);
 									$('#update_disposition_button').attr('disabled', true);
@@ -3277,9 +3262,9 @@
 								$('.copy-from').removeClass('hide');
 								$('.carrier-to-use').addClass('hide');
 								
-								$('#copy-from-campaign').select2({
+								/*$('#copy-from-campaign').select2({
 									theme: 'bootstrap'
-								});
+								});*/
 							}else if(selectedTypeVal == 'blended'){
 								$('.outbound').addClass('hide');
 								$('.inbound').addClass('hide');
@@ -3325,9 +3310,6 @@
 								success: function(data) {
 									//console.log(data);
 									$('#leadrecycling_status').html(data);
-									$('#leadrecycling_status').select2({
-										theme: 'bootstrap'
-									});
 									$('#leadrecycling_status').val("").trigger("change");
 								}
 							});							
@@ -3400,11 +3382,6 @@
 						      e.preventDefault();
 						});
 				/*** end of disposition filters ***/
-
-			/* initialize select2 */
-				$('.select2-1').select2({
-			        theme: 'bootstrap'
-			    });
 
 				$('#auto-dial-level').change(function(){
 					var val = $(this).val();
