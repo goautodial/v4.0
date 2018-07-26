@@ -25,12 +25,12 @@
 	$api 										= \creamy\APIHandler::getInstance();
 	$output 									= $api->API_getTotalRingingCalls();
     
-    $ringing_calls 								= $output->data;
+    $calls 										= $output->data;
     
-    if($ringing_calls == NULL || $ringing_calls == 0){
-        $ringing_calls 							= 0;
+    if($calls == NULL || $calls == 0){
+        $calls 									= 0;
     }
         
-    echo number_format($ringing_calls);  
+    echo number_format($calls);  
 
 ?>

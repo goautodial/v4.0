@@ -25,7 +25,7 @@
 	$api 										= \creamy\APIHandler::getInstance();
 	$output 									= $api->API_getCampaignsResources();
 	
-    if (count($output->data) < 1){
+    if ( empty($output->data) || is_null($output->data) ) {
         echo '<div class="media-box">
 				<div class="pull-left">
 				   <span class="fa-stack">
@@ -45,54 +45,54 @@
         foreach ($output->data as $key => $value) {        
             if(++$max > 6) break; 
             
-				$campname 						= $api->escapeJsonString($value->campaign_name);
-				$leadscount 					= $api->escapeJsonString($value->mycnt);
-				$campid 						= $api->escapeJsonString($value->campaign_id);
-				$campdesc	 					= $api->escapeJsonString($value->campaign_description);
-				$callrecordings 				= $api->escapeJsonString($value->campaign_recording);
-				$campaigncid 					= $api->escapeJsonString($value->campaign_cid);
-				$localcalltime 					= $api->escapeJsonString($value->local_call_time);
-				$usergroup 						= $api->escapeJsonString($value->user_group);
-				$camptype 						= $api->escapeJsonString($value->campaign_type);
+			$campname 							= $api->escapeJsonString($value->campaign_name);
+			$leadscount 						= $api->escapeJsonString($value->mycnt);
+			$campid 							= $api->escapeJsonString($value->campaign_id);
+			//$campdesc	 						= $api->escapeJsonString($value->campaign_description);
+			//$callrecordings 					= $api->escapeJsonString($value->campaign_recording);
+			//$campaigncid 						= $api->escapeJsonString($value->campaign_cid);
+			$localcalltime 						= $api->escapeJsonString($value->local_call_time);
+			//$usergroup 							= $api->escapeJsonString($value->user_group);
+			//$camptype 							= $api->escapeJsonString($value->campaign_type);
     
             if ($leadscount == 0){               
                 $sessionAvatar 					= "<avatar username='$localcalltime' :size='32'></avatar>";
                 
 				echo '<div class="media-box">
-						<div class="pull-left">
-							'.$sessionAvatar.'
-						</div>                                                
-							<div class="media-box-body clearfix">
-								<small class="text-muted pull-right ml">'.$leadscount.'</small>
-								<div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text m0">'.$campname.'</strong></a>
-								</div>
-									<p class="m0">
-										<small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-black">'.$campid.'</strong></a>
-										</small>
-									</p>
+					<div class="pull-left">
+						'.$sessionAvatar.'
+					</div>                                                
+						<div class="media-box-body clearfix">
+							<small class="text-muted pull-right ml">'.$leadscount.'</small>
+							<div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text m0">'.$campname.'</strong></a>
 							</div>
+								<p class="m0">
+									<small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-black">'.$campid.'</strong></a>
+									</small>
+								</p>
 						</div>
-					</div>';
+					</div>
+				</div>';
             }
             
             if ($leadscount > 0){                 
 				$sessionAvatar 					= "<avatar username='$localcalltime' :size='32'></avatar>";
 				
 				echo '<div class="media-box">
-						<div class="pull-left">
-							'.$sessionAvatar.'
-						</div>                                                
-							<div class="media-box-body clearfix">
-								<small class="text-muted pull-right ml">'.$leadscount.'</small>
-								<div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text m0">'.$campname.'</strong></a>
-								</div>
-									<p class="m0">
-										<small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-black">'.$campid.'</strong></a>
-										</small>
-									</p>
+					<div class="pull-left">
+						'.$sessionAvatar.'
+					</div>                                                
+						<div class="media-box-body clearfix">
+							<small class="text-muted pull-right ml">'.$leadscount.'</small>
+							<div class="media-box-heading"><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text m0">'.$campname.'</strong></a>
 							</div>
+								<p class="m0">
+									<small><strong><a id="onclick-campaigninfo" data-toggle="modal" data-target="#view_campaign_information" data-id="'.$campid.'" class="text-black">'.$campid.'</strong></a>
+									</small>
+								</p>
 						</div>
-					</div>';
+					</div>
+				</div>';
             }
         }
     }

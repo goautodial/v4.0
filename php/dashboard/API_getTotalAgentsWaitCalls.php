@@ -24,11 +24,11 @@
 	
 	$api 										= \creamy\APIHandler::getInstance();
 	$output 									= $api->API_getTotalAgentsWaitCalls();        
-    $ready 										= $output->data;
+    $agent 										= $output->data;
         
-    if (empty($ready) || is_null($ready)){
-        $ready									= 0;
+    if (empty($agent) || is_null($agent)){
+        $agent									= 0;
     }
         
-    echo number_format($ready); 
+    echo number_format($agent); 
 ?>

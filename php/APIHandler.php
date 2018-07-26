@@ -488,6 +488,34 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goDashboard", $postfields);
 	}	
 	
+	public function API_getTotalAnsweredCalls(){
+		$postfields = array(
+			'goAction' => 'goGetTotalAnsweredCalls'
+		);		
+		return $this->API_Request("goDashboard", $postfields);
+	}
+	
+	public function API_getRingingCalls(){
+		$postfields = array(
+			'goAction' => 'goGetRingingCalls'
+		);		
+		return $this->API_Request("goDashboard", $postfields);
+	}	
+	
+	public function API_getIncomingQueue(){
+		$postfields = array(
+			'goAction' => 'goGetIncomingQueue'
+		);		
+		return $this->API_Request("goDashboard", $postfields);
+	}	
+	
+	public function API_getLiveOutbound(){
+		$postfields = array(
+			'goAction' => 'goGetLiveOutbound'
+		);		
+		return $this->API_Request("goDashboard", $postfields);
+	}
+	
 	public function API_getAllDispositions(){
 		$postfields = array(
 			'goAction' => 'goGetAllDispositions'
@@ -635,8 +663,7 @@ if(isset($_SESSION["user"])){
 	public function API_getCampaignInfo($campid){
 		$postfields = array(
 			'goAction' => 'goGetCampaignInfo',
-			'campaign_id' => $campid,
-			'user_group' => session_usergroup			
+			'campaign_id' => $campid
 		);		
 		return $this->API_Request("goCampaigns", $postfields);
 	}	
@@ -663,10 +690,11 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goUsers", $postfields);
 	}
 
-	public function API_getUserInfo($user_id){
+	public function API_getUserInfo($user, $type = null){
 		$postfields = array(
-			'goAction' => 'goGetUserInfoNew',
-			'user_id' => $user_id
+			'goAction' => 'goGetUserInfo',
+			'user' => $user,
+			'type' => $type
 		);
 		return $this->API_Request("goUsers", $postfields);
 	}

@@ -24,12 +24,12 @@
 	
 	$api 										= \creamy\APIHandler::getInstance();
 	$output 									= $api->API_getTotalAgentsCall();        
-    $talking 									= $output->data;
+    $agent 										= $output->data;
         
-    if (empty($talking) || is_null($talking)){
-        $talking								= 0;
+    if (empty($agent) || is_null($agent)){
+        $agent									= 0;
     }
         
-    echo number_format($talking); 
+    echo number_format($agent); 
     
 ?>

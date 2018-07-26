@@ -45,7 +45,7 @@
 		$userrole = $_POST["role"];
 	}
 
-	$output = $api->API_getUserInfo($userid);
+	$output = $api->API_getUserInfo($current_user, "userInfo");
 	$voicemails = $api->API_getAllVoiceMails();
 	$user_groups = $api->API_getAllUserGroups();
 	$perm = $api->goGetPermissions('user');
@@ -111,6 +111,7 @@
 							if(isset($userid)) {
 								if ($output->result=="success") {
 								# Result was OK!
+
 						?>
 							<div class="panel-body">
 							<legend><?php $lh->translateText("modify_user"); ?> : <u><?php echo $output->data->user; ?></u></legend>
@@ -129,7 +130,10 @@
 						               	<!-- BASIC SETTINGS -->
 						                <div id="tab_1" class="tab-pane fade in active">
 										<input type="hidden" name="modifyid" value="<?php echo $userid;?>" />
-										
+											<?php
+												//echo "<pre>";
+												//var_dump($output);											
+											?>
 											<fieldset>
 												<div class="form-group mt">
 													<label for="fullname" class="col-sm-2 control-label"><?php $lh->translateText("full_name"); ?></label>

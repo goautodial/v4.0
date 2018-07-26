@@ -603,7 +603,7 @@ error_reporting(E_ALL)
 		<!-- End of Realtime Service Level Monitoring -->
 		
         <!-- Agent Information -->
-		<div class="modal fade" id="view_agent_information" tabindex="-1" role="dialog" aria-hidden="true"> 
+		<div class="modal fade" id="modal_view_agent_information" tabindex="-1" role="dialog" aria-hidden="true"> 
 			<div class="modal-dialog"> 
 				<div class="modal-content"> 
 					<div class="modal-header"> 
@@ -1066,7 +1066,7 @@ function goGetModalUsernameValue(){
 			success: function(data){
 				clear_agent_form();
 				sweetAlert("Emergency Logout",data, "warning");
-				$('#view_agent_information').modal('hide');
+				$('#modal_view_agent_information').modal('hide');
 			}
 		});
 	});
@@ -1195,7 +1195,7 @@ function goGetInSession(type) {
 		$(document).ready(function(){
 			
 			// Clear previous agent info
-			$('#view_agent_information').on('hidden.bs.modal', function () {
+			$('#modal_view_agent_information').on('hidden.bs.modal', function () {
 				clear_agent_form();
 			});
 			
@@ -1204,44 +1204,39 @@ function goGetInSession(type) {
 			
 			// Get user information and post results in view_agent_information modal
 			$(document).on('click','#onclick-userinfo',function(){
-				var userid = $(this).attr('data-id');
+				var user = $(this).attr('data-user');
 				$.ajax({                            
 					type: 'POST',
-					url: "./php/ViewUserInfo.php",
+					url: "./php/dashboard/API_getAgentInformation.php",
 					data: {
-						user: userid,
-						log_user: '<?=$_SESSION['user']?>',
-						log_group: '<?=$_SESSION['usergroup']?>'
+						user: user
 					},
 					cache: false,
-					//dataType: 'json',
-						success: function(data){ 
-							//console.log(data);
-							var JSONString = data;
-							var JSONObject = JSON.parse(JSONString);
-							//console.log(JSONObject);
-								$('#modal-userid').html(JSONObject.data[0].vu_user_id);
-								//global_userid = JSONObject.data[0].vu_user_id;                                        
-								$('#modal-username').html(JSONObject.data[0].vla_user);
-								$('#modal-fullname').html(JSONObject.data[0].vu_full_name);
-								$('#modal-status-vu').html(JSONObject.data[0].vla_status);
-								$('#modal-campaign').html(JSONObject.data[0].vla_campaign_id);
-								$('#modal-usergroup-vu').html(JSONObject.data[0].vu_user_group);     
-								//$('#modal-userlevel-vu').html(JSONObject.data[0].vu_user_level);                                        
-								$('#modal-phonelogin-vu').html(JSONObject.data[0].vu_phone_login);
-								$('#modal-custphone').html(JSONObject.data[0].vl_phone_number);
-								$('#modal-conf-exten').html(JSONObject.data[0].vla_conf_exten);
-								$('#modal-server-ip').html(JSONObject.data[0].vla_server_ip);
-								//$('#modal-campaign_cid').html(JSONObject.data[0].campaign_cid);
-								var avatar = '<avatar username="'+ JSONObject.data[0].vu_full_name +'" :size="160"></avatar>';
-								$('#modal-avatar').html(avatar);
-								goAvatar._init(goOptions);
-						}
+					dataType: 'json',
+					success: function(JSONObject){ 
+						//console.log(JSONObject);
+						$('#modal-userid').html(JSONObject.data[0].vu_user_id);
+						//global_userid = JSONObject.data[0].vu_user_id;                                        
+						$('#modal-username').html(JSONObject.data[0].vla_user);
+						$('#modal-fullname').html(JSONObject.data[0].vu_full_name);
+						$('#modal-status-vu').html(JSONObject.data[0].vla_status);
+						$('#modal-campaign').html(JSONObject.data[0].vla_campaign_id);
+						$('#modal-usergroup-vu').html(JSONObject.data[0].vu_user_group);     
+						//$('#modal-userlevel-vu').html(JSONObject.data[0].vu_user_level);                                        
+						$('#modal-phonelogin-vu').html(JSONObject.data[0].vu_phone_login);
+						$('#modal-custphone').html(JSONObject.data[0].vl_phone_number);
+						$('#modal-conf-exten').html(JSONObject.data[0].vla_conf_exten);
+						$('#modal-server-ip').html(JSONObject.data[0].vla_server_ip);
+						//$('#modal-campaign_cid').html(JSONObject.data[0].campaign_cid);
+						var avatar = '<avatar username="'+ JSONObject.data[0].vu_full_name +'" :size="160"></avatar>';
+						$('#modal-avatar').html(avatar);
+						goAvatar._init(goOptions);
+					}
 				});                        
 			});
 
 			// Clear previous agent info
-			$('#view_campaign_information').on('hidden.bs.modal', function () {
+			/*$('#view_campaign_information').on('hidden.bs.modal', function () {
 				clear_campaign_form();
 			});
 			
@@ -1254,51 +1249,51 @@ function goGetInSession(type) {
 					data: {campaign_id: campid},
 					cache: false,
 					//dataType: 'json',
-						success: function(campaigndata){ 
-							//console.log(campaigndata);
-							var JSONStringcampaign = campaigndata;
-							var JSONObjectcampaign = JSON.parse(JSONStringcampaign);                                    
-							//console.log(JSONObjectcampaign);
-							$('#modal-campaignid-mod').html(JSONObjectcampaign.data.campaign_id);                                    
-							$('#modal-campaigndesc').html(JSONObjectcampaign.data.campaign_description);                                    
-							$('#modal-camptype').html(JSONObjectcampaign.campaign_type);
-							$('#modal-campaigncid-mod').html(JSONObjectcampaign.data.campaign_cid);                                        
-							$('#modal-localcalltime-mod').html(JSONObjectcampaign.data.local_call_time);
-							$('#modal-dial_method').html(JSONObjectcampaign.data.dial_method);
-							$('#modal-auto_dial_level-mod').html(JSONObjectcampaign.data.auto_dial_level);
-							//$('#modal-hopper_level-mod').html(JSONObjectcampaign.data.hopper_level);
-							//$('#modal-campaignscript').html(JSONObjectcampaign.data.campaign_script);
-							var campname = JSONObjectcampaign.data.campaign_name;
-							var avatar = '<avatar username="'+campname+'" :size="160"></avatar>';
-							$('#modal-avatar-campaign').html(avatar);
-							$('#modal-campaignname-mod').html(campname);
-							
-							var callrecordings = JSONObjectcampaign.data.campaign_recording;
-								if (callrecordings == "ALLFORCE") {
-									var callrecordings = "ENABLED";
-								}
-								if (callrecordings == "ONDEMAND") {
-									var callrecordings = "ON-DEMAND";
-								}                                        
-								if (callrecordings == "NEVER") {
-									var callrecordings = "DISABLED";
-								}                                        
-							$('#modal-callrecordings-mod').html(callrecordings);
-							
-							var campaignscript = JSONObjectcampaign.data.campaign_script;
-								if (campaignscript == null) {
-									var campaignscript = "NONE";
-								}
-								if (campaignscript == "") {
-									var campaignscript = "NONE";
-								}                                        
-							$('#modal-campaignscript').html(campaignscript);
-							
-							goAvatar._init(goOptions);                                        
-						}
+					success: function(data){ 
+						console.log(data);
+						var JSONString = data;
+						var JSONObject = JSON.parse(JSONString);                                    
+						//console.log(JSONObject);
+						$('#modal-campaignid-mod').html(JSONObject.data.campaign_id);                                    
+						$('#modal-campaigndesc').html(JSONObject.data.campaign_description);                                    
+						$('#modal-camptype').html(JSONObject.campaign_type);
+						$('#modal-campaigncid-mod').html(JSONObject.data.campaign_cid);                                        
+						$('#modal-localcalltime-mod').html(JSONObject.data.local_call_time);
+						$('#modal-dial_method').html(JSONObject.data.dial_method);
+						$('#modal-auto_dial_level-mod').html(JSONObject.data.auto_dial_level);
+						//$('#modal-hopper_level-mod').html(JSONObject.data.hopper_level);
+						//$('#modal-campaignscript').html(JSONObject.data.campaign_script);
+						var campname = JSONObject.data.campaign_name;
+						var avatar = '<avatar username="'+campname+'" :size="160"></avatar>';
+						$('#modal-avatar-campaign').html(avatar);
+						$('#modal-campaignname-mod').html(campname);
+						
+						var callrecordings = JSONObject.data.campaign_recording;
+							if (callrecordings == "ALLFORCE") {
+								var callrecordings = "ENABLED";
+							}
+							if (callrecordings == "ONDEMAND") {
+								var callrecordings = "ON-DEMAND";
+							}                                        
+							if (callrecordings == "NEVER") {
+								var callrecordings = "DISABLED";
+							}                                        
+						$('#modal-callrecordings-mod').html(callrecordings);
+						
+						var campaignscript = JSONObject.data.campaign_script;
+							if (campaignscript == null) {
+								var campaignscript = "NONE";
+							}
+							if (campaignscript == "") {
+								var campaignscript = "NONE";
+							}                                        
+						$('#modal-campaignscript').html(campaignscript);
+						
+						goAvatar._init(goOptions);                                        
+					}
 				 });                        
 			 });
-    
+			*/
 			// ---- loads datatable functions
 			
 			// ---- Fixed Action Button
@@ -1342,49 +1337,52 @@ function goGetInSession(type) {
 					load_realtime_calls_monitoring();
 					//load_realtime_sla_monitoring();
 				// ---- view agent information modal
-					//load_view_agent_information();
+					load_view_agent_information();
 		});
-		/*
+		
 		//Refresh functions() after 5000 milliseconds
 			// ... status boxes ...
 				var int_1 = setInterval(load_totalagentscall,5000);
 				var int_2 = setInterval(load_totalagentspaused,5000);
 				var int_3 = setInterval(load_totalagentswaitingcall,5000);
 				
-				//setInterval(load_totalSales,5000);
-				//setInterval(load_INSalesHour,5000);
-				//setInterval(load_OUTSalesPerHour,5000);
-				
 				//setInterval(load_TotalActiveLeads,5000);
 				//setInterval(load_LeadsinHopper,5000);
 				//setInterval(load_TotalDialableLeads,5000);
 				
-				var int_4 = setInterval(load_RingingCalls,5000);
-				var int_5 = setInterval(load_IncomingQueue,5000);
-				var int_6 = setInterval(load_AnsweredCalls,5000);
-				var int_7 = setInterval(load_DroppedCalls,5000);
+				var int_4 = setInterval(load_RingingCalls,15000);
+				var int_5 = setInterval(load_IncomingQueue,15000);
+				var int_6 = setInterval(load_AnsweredCalls,15000);
+				var int_7 = setInterval(load_DroppedCalls,15000);
 				//setInterval(load_TotalCalls,5000);
-				var int_8 = setInterval(load_TotalInboundCalls,5000);
-				var int_9 = setInterval(load_TotalOutboundCalls,5000);
-				var int_10 = setInterval(load_LiveOutbound,5000);
+				var int_8 = setInterval(load_TotalInboundCalls,30000);
+				var int_9 = setInterval(load_TotalOutboundCalls,30000);
+				var int_10 = setInterval(load_LiveOutbound,30000);
 				
 			// ... cluster status table ...
-				var int_11 = setInterval(load_cluster_status,10000);
+				var int_11 = setInterval(load_cluster_status,60000);
 				
 			// ... agent and campaign resources ...
 				var int_12 = setInterval(load_campaigns_resources,30000);
 				var int_13 = setInterval(load_campaigns_monitoring,20000);
-				var int_14 = setInterval(load_agents_monitoring_summary,5000);
+				var int_14 = setInterval(load_agents_monitoring_summary,15000);
 			
 			// ... realtime monitoring ...
 				var int_15 = setInterval(load_realtime_agents_monitoring,3000);
 				var int_16 = setInterval(load_realtime_calls_monitoring,3000);
-				var int_17 = setInterval(load_realtime_sla_monitoring,10000);
+				//var int_17 = setInterval(load_realtime_sla_monitoring,10000);
 			
 			// ... view agent information modal  ...
 				var int_18 = setInterval(load_view_agent_information,3000);
-		*/
-		/*$('#view_agent_information').on('show.bs.modal', function () {
+				
+			// ... sales
+				var int_19 = setInterval(load_totalSales,30000);
+				var int_20 = setInterval(load_totalOutSales,30000);
+				var int_21 = setInterval(load_totalInSales,30000);
+				var int_22 = setInterval(load_INSalesHour,60000);
+				var int_23 = setInterval(load_OUTSalesPerHour,60000);			
+		
+		$('#modal_view_agent_information').on('show.bs.modal', function () {
 			clearInterval(int_1);
 			clearInterval(int_2);
 			clearInterval(int_3);
@@ -1401,30 +1399,30 @@ function goGetInSession(type) {
 			clearInterval(int_14);
 			clearInterval(int_15);
 			clearInterval(int_16);
-			clearInterval(int_17);
+			//clearInterval(int_17);
 			clearInterval(int_18);
-		});*/
+		});
 		
-		/*$('#view_agent_information').on('hidden.bs.modal', function () {
+		$('#modal_view_agent_information').on('hidden.bs.modal', function () {
 			int_1 = setInterval(load_totalagentscall,5000);
 			int_2 = setInterval(load_totalagentspaused,5000);
 			int_3 = setInterval(load_totalagentswaitingcall,5000);
-			int_4 = setInterval(load_RingingCalls,5000);
-			int_5 = setInterval(load_IncomingQueue,5000);
-			int_6 = setInterval(load_AnsweredCalls,5000);
-			int_7 = setInterval(load_DroppedCalls,5000);
-			int_8 = setInterval(load_TotalInboundCalls,5000);
-			int_9 = setInterval(load_TotalOutboundCalls,5000);
-			int_10 = setInterval(load_LiveOutbound,5000);
-			int_11 = setInterval(load_cluster_status,10000);
+			int_4 = setInterval(load_RingingCalls,15000);
+			int_5 = setInterval(load_IncomingQueue,15000);
+			int_6 = setInterval(load_AnsweredCalls,15000);
+			int_7 = setInterval(load_DroppedCalls,15000);
+			int_8 = setInterval(load_TotalInboundCalls,30000);
+			int_9 = setInterval(load_TotalOutboundCalls,30000);
+			int_10 = setInterval(load_LiveOutbound,30000);
+			int_11 = setInterval(load_cluster_status,60000);
 			int_12 = setInterval(load_campaigns_resources,30000);
 			int_13 = setInterval(load_campaigns_monitoring,20000);
-			int_14 = setInterval(load_agents_monitoring_summary,5000);
+			int_14 = setInterval(load_agents_monitoring_summary,15000);
 			int_15 = setInterval(load_realtime_agents_monitoring,3000);
 			int_16 = setInterval(load_realtime_calls_monitoring,3000);
-			int_17 = setInterval(load_realtime_sla_monitoring,10000);
+			//int_17 = setInterval(load_realtime_sla_monitoring,10000);
 			int_18 = setInterval(load_view_agent_information,3000);
-		});*/
+		});
 	</script>
 	
    <!-- FLOT CHART-->

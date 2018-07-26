@@ -24,8 +24,6 @@
 	
 	$api 										= \creamy\APIHandler::getInstance();
 	$output 									= $api->API_getRealtimeAgentsMonitoring();
-
-    $barracks 									= '['; 
         
     if (empty($output->data)) {    
 		echo '<span class="list-group-item">
@@ -62,7 +60,7 @@
 			$lead_id 							= $api->escapeJsonString($value->vla_lead_id);
 			$agent_log_id 						= $api->escapeJsonString($value->vla_agent_log_id);
 			$vla_callerid 						= $api->escapeJsonString($value->vla_callerid);    
-			$cust_phone 						= $api->escapeJsonString($value->vl_phone_number);
+			//$cust_phone 						= $api->escapeJsonString($value->vl_phone_number);
 			$pausecode 							= $api->escapeJsonString($value->vla_pausecode);              
 			$STARTtime 							= date("U"); 
             
@@ -114,7 +112,7 @@
 					</div>            
 					<div class="media-box-body clearfix">
 						<strong class="media-box-heading text-primary">
-						<b id="onclick-userinfo" data-toggle="modal" data-target="#view_agent_information" data-id="'.$agentid.'"><span class="'.$class.'"></span>'.$agentname.'</b>
+						<b id="onclick-userinfo" data-toggle="modal" data-target="#modal_view_agent_information" data-id="'.$userid.'" data-user="'.$agentid.'"><span class="'.$class.'"></span>'.$agentname.'</b>
 						</strong><br/>
 						<strong style="padding-left:20px;">'.$campname.'</strong>
 						<small class="text-muted pull-right ml" style="padding-right:20px;">'.$call_time_MS.'</small>

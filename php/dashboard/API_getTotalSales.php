@@ -23,13 +23,16 @@
 	require_once('APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();
-	$type										= $_POST['type'];
-
-	$output 									= $api->API_getTotalSales($type); 
+	$type										= "all-daily";
 	
+	if ( isset($_POST['type']) ) {
+		$type									= $_POST['type'];
+	}	
+
+	$output 									= $api->API_getTotalSales($type);	
     $sales 										= $output->data;
     
-    if($sales == NULL || $sales == 0){
+    if ( empty($sales) || is_null($sales) ) {
         $sales 									= 0;
     }
         

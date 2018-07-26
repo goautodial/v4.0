@@ -25,11 +25,11 @@
 	$api 										= \creamy\APIHandler::getInstance();
 	$output 									= $api->API_getTotalDroppedCalls();
     
-    $total_dropped_calls = $output->data;
+    $calls 										= $output->data;
     
-    if($total_dropped_calls == NULL || $total_dropped_calls == 0){
-        $total_dropped_calls = 0;
+    if($calls == NULL || $calls == 0){
+        $calls 									= 0;
     }
         
-    echo number_format($total_dropped_calls);  
+    echo number_format($calls);  
 ?>

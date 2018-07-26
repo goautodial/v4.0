@@ -48,25 +48,17 @@
 		});
     }
     
-    function load_view_agent_information(){
-        
-		var agentiformationid = document.getElementById("modal-username").innerText;
-		
+    function load_view_agent_information(){        
+		var user = document.getElementById("modal-username").innerText;
 		$.ajax({
 			type: 'POST',
 			url: "./php/dashboard/API_getAgentInformation.php",
-			data: {user: agentiformationid},
+			data: {user: user},
 			cache: false,
 			dataType: 'json',
-			success: function(values){
-				//console.log(values);            
-				//$("#refresh_agents_monitoring_summary").html(data);
-				var JSONStringrealtime = values;
-				var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
-				//console.log(JSONStringrealtime);
-				//console.log(JSONObjectrealtime); 
+			success: function(data){					
 				var table = $('#view_agent_information_table').DataTable({ 
-					data:JSONObjectrealtime,
+					data:data,
 					"paging":   false,
 					"bPaginate": false,
 					"searching": false,

@@ -23,16 +23,19 @@
 	require_once('APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();
-	$type										= $_POST['type'];
+	$type										= "all";
 
-	$output 									= $api->API_getTotalCalls($type); 
+	if ( isset($_POST['type']) ) {
+		$type									= $_POST['type'];
+	}
 	
-    $numberofcalls 								= $output->data;
+	$output 									= $api->API_getTotalCalls($type); 	
+    $calls 										= $output->data;
     
-    if($numberofcalls == NULL || $numberofcalls == 0){
-        $numberofcalls 							= 0;
+    if ( empty($calls) || is_null($calls) ) {
+        $calls 									= 0;
     }
         
-    echo json_encode($numberofcalls);
+    echo json_encode($calls);
     
 ?>

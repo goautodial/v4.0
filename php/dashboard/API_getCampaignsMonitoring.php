@@ -24,54 +24,52 @@
 	
 	$api 										= \creamy\APIHandler::getInstance();
 	$output 									= $api->API_getCampaignsMonitoring();
+	$max 										= 0;
+	$jsonv 										= '['; 	
 
     if (count($output->data) < 1){
         echo  "No data available";
 
-    } else {
-		$max 									= 0;
-		$campaignsmonitoring 					= '['; 
-		
-		foreach ($output->data as $key => $value) {
-		
-		if(++$max > 100) break;
+    } elseif (!empty($output->data)) {
+		foreach ($output->data as $key => $value) {		
+			if(++$max > 100) break;
 
-		$campname 								= $api->escapeJsonString($value->campaign_name);
-		$leadscount 							= $api->escapeJsonString($value->mycnt);
-		$campid 								= $api->escapeJsonString($value->campaign_id);
-		$campdesc	 							= $api->escapeJsonString($value->campaign_description);
-		$callrecordings 						= $api->escapeJsonString($value->campaign_recording);
-		$campaigncid 							= $api->escapeJsonString($value->campaign_cid);
-		$localcalltime 							= $api->escapeJsonString($value->local_call_time);
-		$usergroup 								= $api->escapeJsonString($value->user_group);
-		$camptype 								= $api->escapeJsonString($value->campaign_type);
-		
-		if ($leadscount == 0){ 
-			$textclass 							= "text-blue";
-			$sessionAvatar 						= "<div class='media'><avatar username='$localcalltime' :size='32'></avatar></div>";
+			$campname 							= $api->escapeJsonString($value->campaign_name);
+			$leadscount 						= $api->escapeJsonString($value->mycnt);
+			$campid 							= $api->escapeJsonString($value->campaign_id);
+			//$campdesc	 						= $api->escapeJsonString($value->campaign_description);
+			//$callrecordings 					= $api->escapeJsonString($value->campaign_recording);
+			//$campaigncid 						= $api->escapeJsonString($value->campaign_cid);
+			$localcalltime 						= $api->escapeJsonString($value->local_call_time);
+			$usergroup 							= $api->escapeJsonString($value->user_group);
+			//$camptype 								= $api->escapeJsonString($value->campaign_type);
 			
-		} 
-		
-		if ($leadscount > 0){ 
-			$textclass 							= "text-blue";
-			$sessionAvatar 						= "<div class='media'><avatar username='$localcalltime' :size='32'></avatar></div>";
+			if ($leadscount == 0){ 
+				$textclass 						= "text-blue";
+				$sessionAvatar 					= "<div class='media'><avatar username='$localcalltime' :size='32'></avatar></div>";
+				
+			} 
 			
-		} 
-		$campaignsmonitoring 					.= '[';
-		$campaignsmonitoring 					.= '"'.$sessionAvatar.'",';
-		//$campaignsmonitoring 					.= '"<b class=\"'.$textclass.'\">'.$campid.'</b>",'; 
-		$campaignsmonitoring 					.= '"<a id=\"onclick-campaigninfo\" data-toggle=\"modal\" data-target=\"#view_campaign_information\" data-id=\"'.$campid.'\" class=\"text-blue\"><strong>'.$campid.'</strong></a>",';        
-		$campaignsmonitoring 					.= '"'.$campname.'",'; 
-		$campaignsmonitoring 					.= '"'.$leadscount.'",';      
-		$campaignsmonitoring 					.= '"'.$localcalltime.'",';      
-		$campaignsmonitoring 					.= '"'.$usergroup.'"';
-		$campaignsmonitoring 					.= '],';
+			if ($leadscount > 0){ 
+				$textclass 						= "text-blue";
+				$sessionAvatar 					= "<div class='media'><avatar username='$localcalltime' :size='32'></avatar></div>";
+				
+			} 
+			
+			$jsonv 								.= '[';
+			$jsonv 								.= '"'.$sessionAvatar.'",';
+			$jsonv 								.= '"<a id=\"onclick-campaigninfo\" data-toggle=\"modal\" data-target=\"#view_campaign_information\" data-id=\"'.$campid.'\" class=\"text-blue\"><strong>'.$campid.'</strong></a>",';        
+			$jsonv 								.= '"'.$campname.'",'; 
+			$jsonv 								.= '"'.$leadscount.'",';      
+			$jsonv 								.= '"'.$localcalltime.'",';      
+			$jsonv 								.= '"'.$usergroup.'"';
+			$jsonv 								.= '],';
 
 		}
 
-		$campaignsmonitoring 					= rtrim($campaignsmonitoring, ",");    
-		$campaignsmonitoring 					.= ']';
-
-		echo json_encode($campaignsmonitoring);
-   } 
+		$jsonv 									= rtrim($jsonv, ",");    
+	} 
+   
+	$jsonv 										.= ']';
+	echo json_encode($jsonv);   
 ?>

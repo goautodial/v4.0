@@ -24,12 +24,12 @@
 	
 	$api 										= \creamy\APIHandler::getInstance();
 	$output 									= $api->API_getTotalAgentsPaused();        
-    $paused 									= $output->data;
+    $agent 										= $output->data;
         
-    if (empty($paused) || is_null($paused)){
-        $paused									= 0;
+    if (empty($agent) || is_null($agent)){
+        $agent									= 0;
     }
         
-    echo number_format($paused); 
+    echo number_format($agent); 
 
 ?>

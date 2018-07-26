@@ -1,45 +1,36 @@
 <?php
-    ####################################################
-    #### Name: GetIncomingQueue.php                 ####
-    #### Type: API for dashboard php encode         ####
-    #### Version: 0.9                               ####
-    #### Copyright: GOAutoDial Inc. (c) 2011-2016   ####
-    #### Written by: Demian Lizandro Biscocho       ####
-    #### License: AGPLv2                            ####
-    ####################################################
-    
-    require_once('../goCRMAPISettings.php');
-	require_once('../Session.php');
-    /*
-    * Displaying Call(s) Incoming
-    * [[API: Function]] - goGetIncomingCall
-    * This application is used to get calls ringing
-    */
-    $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass;
-    $postfields["goAction"] = "goGetIncomingQueue"; #action performed by the [[API:Functions]]
-    $postfields["responsetype"] = responsetype;
-    $postfields["session_user"] = $_SESSION['user']; #current user
-	
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    $data = curl_exec($ch);
-    curl_close($ch);
+/**
+ * @file        API_getIncomingQueue.php
+ * @brief       Displays calls in inbound queue
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author		Demian Lizandro A. Biscocho 
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-    $output = json_decode($data);
-    
-    $incoming_calls = $output->data->getIncomingQueue;
-    
-    if($incoming_calls == NULL || $incoming_calls == 0){
-        $incoming_calls = 0;
+	require_once('APIHandler.php');
+	
+	$api 										= \creamy\APIHandler::getInstance();
+	$output 									= $api->API_getIncomingQueue(); 
+	
+    $calls 										= $output->data;
+
+    if ( empty($calls) || is_null($calls) ) {
+        $calls 									= 0;
     }
         
-    echo number_format($incoming_calls); 
+    echo number_format($calls);  
 
 ?>
