@@ -480,6 +480,14 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goDashboard", $postfields);
 	}
 	
+	public function API_getTotalSales($type){
+		$postfields = array(
+			'goAction' => 'goGetTotalSales',
+			'type' => $type
+		);		
+		return $this->API_Request("goDashboard", $postfields);
+	}	
+	
 	public function API_getAllDispositions(){
 		$postfields = array(
 			'goAction' => 'goGetAllDispositions'

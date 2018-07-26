@@ -232,33 +232,67 @@
     * Sales status box 
     */
     function load_totalSales(){
-    $.ajax({
-        url: "./php/dashboard/API_getTotalSales.php",
-        cache: false,
-        success: function(data){
-            $("#refresh_GetTotalSales").html(data);
-        } 
-    });
+		$.ajax({
+			type: "POST",
+			url: "./php/dashboard/API_getTotalSales.php",
+			data: { type: "all-daily" },			
+			cache: false,
+			success: function(data){
+				//console.log(data);
+				$("#refresh_GetTotalSales").html(data);
+			} 
+		});
     }
 
+    function load_totalOutSales(){
+		$.ajax({
+			type: "POST",
+			url: "./php/dashboard/API_getTotalSales.php",
+			data: { type: "out-daily" },			
+			cache: false,
+			success: function(data){
+				//console.log(data);
+				$("#refresh_GetTotalOutSales").html(data);
+			} 
+		});
+	}
+	
+	function load_totalInSales(){
+		$.ajax({
+			type: "POST",
+			url: "./php/dashboard/API_getTotalSales.php",
+			data: { type: "in-daily" },			
+			cache: false,
+			success: function(data){
+				//console.log(data);
+				$("#refresh_GetTotalInSales").html(data);
+			} 
+		});
+	}
+	
     function load_INSalesHour(){
-    $.ajax({
-        url: "./php/dashboard/API_getINSalesHour.php",
-        cache: false,
-        success: function(data){
-            $("#refresh_GetINSalesHour").html(data);
-        } 
-    });
+		$.ajax({
+			type: "POST",
+			url: "./php/dashboard/API_getTotalSales.php",
+			data: { type: "in-hourly" },			
+			cache: false,
+			success: function(data){
+				//console.log(data);
+				$("#refresh_GetInSalesHour").html(data);
+			} 
+		});
     }
 
     function load_OUTSalesPerHour(){
-    $.ajax({
-        url: "./php/dashboard/API_getOUTSalesPerHour.php",
-        cache: false,
-        success: function(data){
-            $("#refresh_GetOUTSalesPerHour").html(data);
-        } 
-    });
+		$.ajax({
+			url: "./php/dashboard/API_getTotalSales.php",
+			data: { type: "out-hourly" },			
+			cache: false,
+			success: function(data){
+				console.log(data);
+				$("#refresh_GetOutSalesHour").html(data);
+			} 
+		});
     }
     /*
     * Leads status box 

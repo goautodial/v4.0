@@ -79,12 +79,6 @@ error_reporting(E_ALL)
 		$max = 0;
 		$callsperhour = explode(";",trim($callsperhour, ';'));
 		
-	/* Sales */
-		//$totalSales = $ui->API_goGetTotalSales($_SESSION['user']);
-		$inboundSales =  $ui->API_goGetInboundSales($_SESSION['user']);
-		$outboundSales = $ui->API_goGetOutboundSales($_SESSION['user']);
-		$inSalesHour = $ui->API_goGetINSalesPerHour($_SESSION['user']);
-		$outSalesHour = $ui->API_goGetOUTSalesPerHour($_SESSION['user']);
 	
 	foreach ($callsperhour AS $temp){
 	   $temp = explode("=",$temp);
@@ -290,41 +284,30 @@ error_reporting(E_ALL)
 									</div>
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
 										<div class="h2 m0">
-											<span class="text-lg text-muted" id="total_sales">
-												<?php echo intval($inboundSales + $outboundSales);?>
-											</span>
+											<span class="text-lg text-muted" id="refresh_GetTotalSales">0</span>
 										</div>
 										<div class="text"><?=$lh->translateText("total_sales")?></div>
 									</div>
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
 										<div class="h2 m0">
-											<span class="text-lg text-muted" id="inbound_sales">
-												<?php echo intval($inboundSales); ?>
-											</span>
-										</div>
+											<span class="text-lg text-muted" id="refresh_GetTotalInSales">0</div>
 										<div class="text"><?=$lh->translateText("inbound_sales")?></div>
 									</div>	                	
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
 										<div class="h2 m0">
-											<span class="text-lg text-muted" id="outbound_sales">
-												<?php echo intval($outboundSales); ?>
-											</span>
+											<span class="text-lg text-muted" id="refresh_GetTotalOutSales">0</span>
 										</div>
 										<div class="text"><?=$lh->translateText("outbound_sales")?></div>
 									</div>
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
 										<div class="h2 m0">
-											<span class="text-lg text-muted" id="in_sales_hour">
-												<?php echo intval($inSalesHour); ?>
-											</span>
+											<span class="text-lg text-muted" id="refresh_GetInSalesHour">0</span>
 										</div>
 										<div class="text"><?=$lh->translateText("in_sale")?></div>
 									</div>	                	
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
 										<div class="h2 m0">
-											<span class="text-lg text-muted" id="out_sales_hour">
-												<?php echo intval($outSalesHour); ?>
-											</span>
+											<span class="text-lg text-muted" id="refresh_GetOutSalesHour">0</span>
 										</div>
 										<div class="text"><?=$lh->translateText("out_sale")?></div>
 									</div>
@@ -1329,22 +1312,24 @@ function goGetInSession(type) {
 					load_totalagentspaused();
 					load_totalagentswaitingcall();
 				// ---- sales
-					//load_totalSales();
-					//load_INSalesHour();
-					//load_OUTSalesPerHour();
+					load_totalSales();
+					load_totalOutSales();
+					load_totalInSales();
+					load_INSalesHour();
+					load_OUTSalesPerHour();
 				// ---- leads
 					//load_TotalActiveLeads();
 					//load_LeadsinHopper();
 					//load_TotalDialableLeads();
 				// ---- calls
-					//load_RingingCalls();
-					//load_IncomingQueue();
-					//load_AnsweredCalls();
-					//load_DroppedCalls();
+					load_RingingCalls();
+					load_IncomingQueue();
+					load_AnsweredCalls();
+					load_DroppedCalls();
 					//load_TotalCalls();
-					//load_TotalInboundCalls();
-					//load_TotalOutboundCalls();
-					//load_LiveOutbound();
+					load_TotalInboundCalls();
+					load_TotalOutboundCalls();
+					load_LiveOutbound();
 					
 			// ---- clusterstatus table
 					load_cluster_status();

@@ -1,7 +1,7 @@
 <?php
 /**
- * @file        API_getRealtimeAgentsMonitoring.php
- * @brief       Displays realtime monitoring data and HTML
+ * @file        API_getAgentsMonitoringSummary.php
+ * @brief       Displays summary of agents monitoring data and HTML
  * @copyright   Copyright (c) 2018 GOautodial Inc.
  * @author		Demian Lizandro A. Biscocho 
  *
