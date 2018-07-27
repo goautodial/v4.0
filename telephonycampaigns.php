@@ -960,7 +960,7 @@
 		                    	<div class="form-group mt">
 		                            <label class="col-sm-3 control-label" for="disposition_campaign"><?php $lh->translateText("campaign"); ?>: </label>
 		                            <div class="col-sm-9 mb">
-		                                <select id="disposition_campaign" name="disposition_campaign" class="form-control select2-1" style="width:100%;">
+		                                <select id="disposition_campaign" name="disposition_campaign" class="form-control select2" style="width:100%;">
 		                                		<option value="ALL"> - - - ALL CAMPAIGNS - - - </option>
 		                                   <?php
 		                                   		for($i=0;$i < count($campaign->campaign_id);$i++){
@@ -1087,7 +1087,7 @@
 		                    	<div class="form-group mt">
 		                            <label class="col-sm-3 control-label" for="leadrecycling_campaign"><?php $lh->translateText("campaign"); ?>: </label>
 		                            <div class="col-sm-9 mb">
-		                                <select id="leadrecycling_campaign" name="leadrecycling_campaign" class="form-control select2-1" style="width:100%;">
+		                                <select id="leadrecycling_campaign" name="leadrecycling_campaign" class="form-control select2" style="width:100%;">
 		                                		<option value="ALL" selected> - - - ALL CAMPAIGNS - - - </option>
 		                                   <?php
 		                                   		for($i=0;$i < count($campaign->campaign_id);$i++){
@@ -1100,7 +1100,7 @@
 		                        <div class="form-group mt">
 		                            <label class="col-sm-3 control-label" for="leadrecycling_status"><?php $lh->translateText("status"); ?>: </label>
 		                            <div class="col-sm-9 mb">
-		                                <select id="leadrecycling_status" name="leadrecycling_status" class="form-control select2-1" style="width:100%;">
+		                                <select id="leadrecycling_status" name="leadrecycling_status" class="form-control select2" style="width:100%;">
 											<optgroup label="System Statuses">
 												<?php 
 													$dialStatus = $api->API_getAllDialStatuses();
@@ -1134,7 +1134,7 @@
 		                        <div class="form-group">
 		                            <label class="col-sm-3 control-label" for="attempt_maximum"><?php $lh->translateText("Attempt Maximum"); ?></label>
 		                            <div class="col-sm-9 mb">
-		                                <select id="attempt_maximum" name="attempt_maximum" class="form-control select2-1" style="width:100%;">
+		                                <select id="attempt_maximum" name="attempt_maximum" class="form-control select2" style="width:100%;">
 		                                   <?php
 		                                   		for($i=1;$i <= 10;$i++){
 		                                   			echo "<option value='".$i."' "; if($i == 2)echo "selected"; echo "> ".$i." </option>";
@@ -1158,8 +1158,6 @@
 		$modalTitle = $lh->translationFor("pause_codes");
 		$modalSubtitle = "";
 		$columns = array($lh->translationFor("pause_codes"), $lh->translationFor("pause_name"), $lh->translationFor("billable"), $lh->translationFor("action"));
-		//$hideOnMedium = array($lh->translationFor("billable"));
-		//$hideOnLow = array($lh->translationFor("billable"));
 		$result = $ui->generateTableHeaderWithItems($columns, "pause_codes_list", "display responsive no-wrap table-bordered table-striped", true, false);
 		$bodyInputs = $result.'</tbody></table>';				
 		$modalFooter = $ui->buttonWithLink("", "", "Create New", "button", null, "success", "btn-new-pause-code", "data-campaign=''");
@@ -1186,8 +1184,6 @@
 	<?php
 		// hotkeys modal + datatable
 		$columnsHKT = array($lh->translationFor("hotkeys"), $lh->translationFor("status"), $lh->translationFor("description"), $lh->translationFor("action"));
-		//$hideOnMediumHKT = array($lh->translationFor("description"));
-		//$hideOnLowHKT = array($lh->translationFor("description"));
 		$resultHKT = $ui->generateTableHeaderWithItems($columnsHKT, "hotkeys_list", "display responsive no-wrap table-bordered table-striped", true, false);
 		$bodyInputsHKT = $resultHKT.'</tbody></table>';				
 		$modalFooterHKT = $ui->buttonWithLink("", "", $lh->translationFor("create_new"), "button", null, "success", "btn-new-hotkey", "data-campaign=''");
@@ -1210,8 +1206,6 @@
 		$modalTitle = $lh->translationFor("lists");
 		$modalSubtitle = "";
 		$columns = array($lh->translationFor("list_id"), $lh->translationFor("list_name"), $lh->translationFor("description"), $lh->translationFor("leads_count"), $lh->translationFor("active"), $lh->translationFor("last_call_date"), $lh->translationFor("action"));
-		//$hideOnMedium = array($lh->translationFor("list_id"), $lh->translationFor("description"));
-		//$hideOnLow = array($lh->translationFor("list_id"), $lh->translationFor("description"), $lh->translationFor("last_call_date"));
 		$result = $ui->generateTableHeaderWithItems($columns, "lists_list", "display responsive no-wrap table-bordered table-striped", true, false);
 		$bodyInputs = $result.'</tbody></table>';
 		$appendToBody = '<div class="form-group pull-left" style="margin-left: 5px;"><p style="text-align: left;"> This Campaign has <b><span class="count_active"></span> active</b> lists and <b><span class="count_inactive"></span> inactive</b> lists<br/> This Campaign has <b><span class="count_leads"></span> leads</b> in the queue (hopper)<br/><a href="#" style="color: green;" class="view-leads-on-hopper" data-campaign="">'.$lh->translationFor("view_leads").'</a></p></div>';
@@ -1466,7 +1460,7 @@
 			// load cookies
 			var cook_donotshow = "yes";
 
-			$('.select2').select2({ theme: 'bootstrap' });
+			$('.select2-1').select2({ theme: 'bootstrap' });
 			
 			// Datatables initialization
 			var tableCampaign = $('#table_campaign').DataTable({
@@ -2217,11 +2211,9 @@
 										'xferconf_b_number' : $('.lists-xferconf-b-number').val(),
 										'xferconf_c_number' : $('.lists-xferconf-c-number').val(),
 										'xferconf_d_number' : $('.lists-xferconf-d-number').val(),
-										'xferconf_e_number' : $('.lists-xferconf-e-number').val(),
-										'log_user' : log_user,
-										'log_group' : log_group
+										'xferconf_e_number' : $('.lists-xferconf-e-number').val()
 									},
-									// dataType: 'json',
+									dataType: 'json',
 									success: function(data) {
 											console.log(data);
 											if(data == 1){

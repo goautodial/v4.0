@@ -28,6 +28,7 @@
 	// check required fields
 	$reason 								= "Unable to Modify List";
 	$validated 								= 1;
+	
 	if (!isset($_POST["modifyid"])) {
 		$validated 							= 0;
 	}
@@ -35,9 +36,9 @@
 	if ($validated == 1) {
 
 		// collect new user data.	
-		$modifyid 							= $_POST["modifyid"];
-		
+		$modifyid 							= $_POST["modifyid"];		
 		$name 								= NULL; 
+		
 		if (isset($_POST["name"])) { 
 			$name 							= $_POST["name"]; 
 			$name 							= stripslashes($name);
