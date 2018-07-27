@@ -421,10 +421,10 @@
 					type: 'POST',
 					data: $("#modifylist").serialize(),
 					success: function(data) {
-						// console.log(data);
+						console.log(data);
 						$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
 						$('#modifyListOkButton').prop("disabled", false);
-						if(data == "success"){
+						if(data == 1){
 							swal({title: "<?php $lh->translateText("success"); ?>", text: "<?php $lh->translateText("list_update_success"); ?>", type: "success"}, function(){window.location.href = 'telephonylist.php';});
 							window.setTimeout(function(){location.reload();},2000);
 						} else {
