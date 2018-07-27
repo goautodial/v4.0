@@ -373,6 +373,13 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goCampaigns", $postfields);
 	}	
 	
+	public function API_getAllAudioFiles(){
+		$postfields = array(
+			'goAction' => 'getAllAudioFiles'
+		);		
+		return $this->API_Request("goCampaigns", $postfields);
+	}
+	
 	public function API_getSuggestedDIDs($keyword){
 		$postfields = array(
 			'goAction' => 'goGetSuggestedDIDs',

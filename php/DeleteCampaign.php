@@ -21,18 +21,22 @@
 */
 
 	require_once('APIHandler.php');
-	$api = \creamy\APIHandler::getInstance();
+	
+	$api 										= \creamy\APIHandler::getInstance();
 
-	$postfields = array(
-        'goAction' 				=> 'goDeleteCampaign',
-        'campaign_id' 			=> $_POST['campaign_id'],
-        'action'				=> $_POST['action']
+	$postfields 								= array(
+        'goAction' 									=> 'goDeleteCampaign',
+        'campaign_id' 								=> $_POST['campaign_id'],
+        'action'									=> $_POST['action']
     );
 
-    $output = $api->API_Request("goCampaigns", $postfields);
+    $output 									= $api->API_Request( "goCampaigns", $postfields );
 
-	if ($output->result=="success") { $status = 1; } 
-		else { $status = $output->result; }
+	if ( $output->result=="success" ) { 
+		$status 								= 1; 
+	} else { 
+		$status 								= $output->result; 
+	}
 
-	echo json_encode($status);
+	echo json_encode( $status );
 ?>

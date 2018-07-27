@@ -2030,7 +2030,7 @@
 																				<button class="btn btn-default show-view-audio-files" data-label="survey_ni_audio_file" type="button">[Audio Chooser...]</button>
 																			</span>
 																		</div><!-- /input-group -->
-																		<select class="form-control survey_ni_audio_file_dropdown" id="survey_ni_audio_file_dropdown" data-label="survey_ni_audio_file">
+																		<select class="form-control select2 survey_ni_audio_file_dropdown" id="survey_ni_audio_file_dropdown" data-label="survey_ni_audio_file">
 																			<option value="">-- Default Value --</option>
 																			<?php for($i=0;$i<=count($audiofiles->data);$i++) { ?>
 																				<?php if(!empty($audiofiles->data[$i]) && (strpos($audiofiles->data[$i], "go_") !== false)) { ?>
@@ -2098,7 +2098,7 @@
 																				<button class="btn btn-default show-view-audio-files" data-label="survey_third_audio_file" type="button">[Audio Chooser...]</button>
 																			</span>
 																		</div><!-- /input-group -->
-																		<select class="form-control survey_third_audio_file_dropdown" id="survey_third_audio_file_dropdown" data-label="survey_third_audio_file">
+																		<select class="form-control select2 survey_third_audio_file_dropdown" id="survey_third_audio_file_dropdown" data-label="survey_third_audio_file">
 																			<option value="">-- Default Value --</option>
 																			<?php for($i=0;$i<=count($audiofiles->data);$i++) { ?>
 																				<?php if(!empty($audiofiles->data[$i]) && (strpos($audiofiles->data[$i], "go_") !== false)) { ?>
@@ -2145,7 +2145,7 @@
 																				<button class="btn btn-default show-view-audio-files" data-label="survey_fourth_audio_file" type="button">[Audio Chooser...]</button>
 																			</span>
 																		</div><!-- /input-group -->
-																		<select class="form-control survey_fourth_audio_file_dropdown" id="survey_fourth_audio_file_dropdown" data-label="survey_fourth_audio_file">
+																		<select class="form-control select2 survey_fourth_audio_file_dropdown" id="survey_fourth_audio_file_dropdown" data-label="survey_fourth_audio_file">
 																			<option value="">-- Default Value --</option>
 																			<?php for($i=0;$i<=count($audiofiles->data);$i++) { ?>
 																				<?php if(!empty($audiofiles->data[$i]) && (strpos($audiofiles->data[$i], "go_") !== false)) { ?>
@@ -2177,7 +2177,7 @@
 														<div class="form-group">
 															<label class="col-sm-3 control-label"><?php $lh->translateText("agent_lead_search"); ?>:</label>
 															<div class="col-sm-9 mb">
-																<select id="agent_lead_search" name="agent_lead_search" class="form-control">
+																<select id="agent_lead_search" name="agent_lead_search" class="form-control select2">
 																	<option value="ENABLED" <?php if($campaign->data->agent_lead_search == "ENABLED") echo "selected";?>>ENABLED</option>
 																	<option value="DISABLED" <?php if($campaign->data->agent_lead_search == "DISABLED") echo "selected";?>>DISABLED</option>
 																</select>
@@ -2186,7 +2186,7 @@
 														<div class="form-group">
 															<label class="col-sm-3 control-label"><?php $lh->translateText("agent_lead_search_method"); ?>:</label>
 															<div class="col-sm-9 mb">
-																<select id="agent_lead_search_method" name="agent_lead_search_method" class="form-control">
+																<select id="agent_lead_search_method" name="agent_lead_search_method" class="form-control select2">
 																	<option value="SYSTEM" <?php if($campaign->data->agent_lead_search_method == "SYSTEM") echo "selected";?>>SYSTEM</option>
 																	<option value="CAMPLISTS_ALL" <?php if($campaign->data->agent_lead_search_method == "CAMPLISTS_ALL") echo "selected";?>>CAMPLISTS ALL</option>
 																</select>
@@ -2195,7 +2195,7 @@
 														<div class="form-group<?=($campaign->enable_callback_alert === '' ? ' hidden': '')?>">
 															<label class="col-sm-3 control-label"><?php $lh->translateText("enable_callback_alert"); ?>:</label>
 															<div class="col-sm-9 mb">
-																<select id="enable_callback_alert" name="enable_callback_alert" class="form-control">
+																<select id="enable_callback_alert" name="enable_callback_alert" class="form-control select2">
 																	<option value="0" <?php if($campaign->enable_callback_alert == 0) echo "selected";?>>DISABLED</option>
 																	<option value="1" <?php if($campaign->enable_callback_alert == 1) echo "selected";?>>ENABLED</option>
 																</select>
@@ -2204,7 +2204,7 @@
 														<div class="form-group<?=($campaign->cb_noexpire === '' ? ' hidden': '')?>">
 															<label class="col-sm-3 control-label"><?php $lh->translateText("cb_noexpire"); ?>:</label>
 															<div class="col-sm-9 mb">
-																<select id="cb_noexpire" name="cb_noexpire" class="form-control">
+																<select id="cb_noexpire" name="cb_noexpire" class="form-control select2">
 																	<option value="0" <?php if($campaign->cb_noexpire == 0) echo "selected";?>>DISABLED</option>
 																	<option value="1" <?php if($campaign->cb_noexpire == 1) echo "selected";?>>ENABLED</option>
 																</select>
@@ -2213,7 +2213,7 @@
 														<div class="form-group<?=($campaign->cb_sendemail === '' ? ' hidden': '')?>">
 															<label class="col-sm-3 control-label"><?php $lh->translateText("cb_sendemail"); ?>:</label>
 															<div class="col-sm-9 mb">
-																<select id="cb_sendemail" name="cb_sendemail" class="form-control">
+																<select id="cb_sendemail" name="cb_sendemail" class="form-control select2">
 																	<option value="0" <?php if($campaign->cb_sendemail == 0) echo "selected";?>>DISABLED</option>
 																	<option value="1" <?php if($campaign->cb_sendemail == 1) echo "selected";?>>ENABLED</option>
 																</select>
@@ -2247,7 +2247,7 @@
 														<div class="form-group<?=(empty($googleAPIKey) ? ' hidden' : '')?>">
 															<label class="col-sm-3 control-label"><?php $lh->translateText("google_sheet_list_id"); ?>:</label>
 															<div class="col-sm-9 mb">
-																<select id="google_sheet_list_id" name="google_sheet_list_id" class="form-control">
+																<select id="google_sheet_list_id" name="google_sheet_list_id" class="form-control select2">
 																	<option value="">--- NONE ---</option>
 																	<?php
 																	foreach ($campaign->campaign_list_ids as $list_id => $list_name) {
@@ -2817,9 +2817,7 @@
 			
 			$(document).ready(function() {
 			
-				$('.select2').select2({
-					theme: 'bootstrap'
-				});
+				$('.select2-1').select2({ theme: 'bootstrap' });
 				
 				// update dial_status entries
 				$(document).on('click', '#advanced_settings_tab', function(){
@@ -2866,12 +2864,12 @@
 						},
 						dataType: 'json',
 						success: function(response) {
-								// var values = JSON.parse(response.result);
-								//console.log(response);
-								$('#modal_view_audio_file').modal('show');
-								$('#audio_file_list_container').html(response);
-								$('#audio_file_list_container').attr("data-target", label);
-							}
+							// var values = JSON.parse(response.result);
+							console.log(response);
+							$('#modal_view_audio_file').modal('show');
+							$('#audio_file_list_container').html(response);
+							$('#audio_file_list_container').attr("data-target", label);
+						}
 					});
 				});
 				
@@ -2884,7 +2882,7 @@
 					$('.' + targetDropdown + '_dropdown').toggle('show');
 				});
 				
-				$(document).on('change', '.survey_first_audio_file_dropdown, .survey_ni_audio_file_dropdown, .survey_third_audio_file_dropdown, survey_fourth_audio_file_dropdown', function(){
+				$(document).on('change', '.survey_first_audio_file_dropdown, .survey_ni_audio_file_dropdown, .survey_third_audio_file_dropdown, .survey_fourth_audio_file_dropdown', function(){
 					var AudioText = $(this).val();
 					var targetText = $(this).data('label');
 					
@@ -3158,7 +3156,7 @@
 				dataType: "json",
 				success: function(data) {
 					console.log(data);
-					//console.log($("#campaign_form_edit").serialize());
+					console.log($("#campaign_form_edit").serialize());
 					if (data == 1) {
 						$('#update_button').html("<i class='fa fa-check'></i> Update");
 						$('#modifyCampaignOkButton').prop("disabled", false);
