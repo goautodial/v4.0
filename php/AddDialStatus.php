@@ -21,28 +21,32 @@
 */
 
 	require_once('APIHandler.php');
-	$api = \creamy\APIHandler::getInstance();
+	
+	$api 											= \creamy\APIHandler::getInstance();
 
-	if (isset($_POST['old_dial_status'])) {
-		$statuses = explode(" ", $_POST['old_dial_status']);
+	if ( isset($_POST['old_dial_status']) ) {
+		$statuses 									= explode(" ", $_POST['old_dial_status']);
 	}
 	
-	if (in_array($_POST['dial_status'], $statuses)) {
-		$new_status = $_POST['old_dial_status'];
+	if ( in_array($_POST['dial_status'], $statuses) ) {
+		$new_status 								= $_POST['old_dial_status'];
 	} else {
-		$new_status = " ".$_POST['dial_status']." ".$_POST['old_dial_status'];
+		$new_status 								= " ".$_POST['dial_status']." ".$_POST['old_dial_status'];
 	}		
 
-	$postfields = array(
-		'goAction' 			=> 'goUpdateCampaignDialStatus',
-		'campaign_id' 		=> $_POST['campaign_id'],
-		'dial_statuses' 	=> $new_status
+	$postfields 									= array(
+		'goAction' 										=> 'goUpdateCampaignDialStatus',
+		'campaign_id' 									=> $_POST['campaign_id'],
+		'dial_statuses' 								=> $new_status
 	);
 
-	$output = $api->API_addDialStatus($postfields);
+	$output 										= $api->API_addDialStatus( $postfields );
 	
-	if ($output->result=="success") { $status = 1; } 
-		else { $status = $output->result; }
+	if ( $output->result=="success" ) { 
+		$status 									= 1; 
+	} else { 
+		$status 									= $output->result; 
+	}
 
 	echo json_encode($status);
 

@@ -174,10 +174,6 @@
 								$disposition = $api->API_getAllDispositions();
 								$leadrecycling = $api->API_getAllLeadRecycling();
 								//$dialStatus = $api->API_getAllDialStatuses();
-								//$campaignStatuses = $api->getAllCampaignStatuses();
-								//$leadfilter = $api->API_getAllLeadFilters();
-								//$country_codes = $api->API_getCountryCodes();
-								//$list = $api->API_getAllLists();
 								$ingroup = $api->API_getAllInGroups();
 								$ivr = $api->API_getAllIVRs();
 								$voicemails = $api->API_getAllVoiceFiles();
@@ -320,9 +316,6 @@
 																	}
 																}
 															}
-															/*}else{
-																echo "- - - NONE - - -";
-															}*/
 															$action_DISPOSITION = $ui->ActionMenuForDisposition($campaign->campaign_id[$i], $campaign->campaign_name[$i], $perm);
 												?>
 														</td>
@@ -2438,25 +2431,7 @@
 
 				        }
 				    });
-				/*
-				$("#add_campaign").wizard({
-					onnext:function(){
-						//alert("Nexted!");
-						var campaignType = document.getElementById('campaignType').value;
-						var campaign_id = document.getElementById('campaign-id').value;
-						var campaign_name = document.getElementById('campaign-name').value;
 
-						if(campaignType == null || campaignType == "" && campaign_name == null || campaign_name == ""){
-						  alert("Please Fill All Required Field");
-						  return false;
-						}
-					},
-		            onfinish:function(){
-						$('#campaign_form').submit();
-		            }
-
-		        });
-				*/
 				//view campaign
 				$('.view-campaign').click(function(){
 					var camp_id = $(this).attr('data-id');

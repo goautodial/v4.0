@@ -3156,7 +3156,7 @@
 				dataType: "json",
 				success: function(data) {
 					console.log(data);
-					console.log($("#campaign_form_edit").serialize());
+					//console.log($("#campaign_form_edit").serialize());
 					if (data == 1) {
 						$('#update_button').html("<i class='fa fa-check'></i> Update");
 						$('#modifyCampaignOkButton').prop("disabled", false);
