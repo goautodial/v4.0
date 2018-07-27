@@ -41,32 +41,24 @@
         <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("Lists"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
-        <!-- Call for standardized css -->
-        <?php print $ui->standardizedThemeCSS();?>
+        <?php 
+			print $ui->standardizedThemeCSS(); 
+			print $ui->creamyThemeCSS();
+			print $ui->dataTablesTheme();
+		?>
 
         <!-- Wizard Form style -->
         <link href="css/wizard-form.css" rel="stylesheet" type="text/css" />
         <link href="css/style.css" rel="stylesheet" type="text/css" />
 
-        <!-- DATA TABLES CSS -->
-        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-
-        <?php print $ui->creamyThemeCSS(); ?>
-
         <!-- Datetime picker CSS -->
 		<link rel="stylesheet" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
-
-        <!-- Data Tables JS -->
-        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
-        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 
         <!-- Date Picker JS -->
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
 		<script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.71/jquery.csv-0.71.min.js"></script>
-		<!-- SELECT2 CSS -->
-   		<link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
-   		<link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+
 		<style type="text/css">
 			#progress-wrp {
 				border: 1px solid #0099CC;
@@ -652,9 +644,6 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 		<!-- JQUERY STEPS-->
   		<script src="js/dashboard/js/jquery.steps/build/jquery.steps.js"></script>
 		
-		<!-- SELECT2-->
-   		<script src="js/dashboard/select2/dist/js/select2.js"></script>
-		
 		<script type="text/javascript">
 			$(document).ready(function() {
 				
@@ -958,13 +947,9 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 				** Functions for upload leads
 				*****/
 					//initialize single selecting
-					$('#select2-1').select2({
-				        theme: 'bootstrap'
-				    });
+					$('#select2-1').select2({ theme: 'bootstrap' });
+					$.fn.select2.defaults.set( "theme", "bootstrap" );
 
-						$('.select2').select2({
-									theme: 'bootstrap'
-						});
 
 					$('.browse-btn').click(function(){
 						$('.file-box').click();

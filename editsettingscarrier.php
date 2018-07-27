@@ -417,6 +417,10 @@ if (isset($_POST["cid"])) {
 
 		<script type="text/javascript">
 			$(document).ready(function() {
+				// initialize selec2
+				$('.select').select2({ theme: 'bootstrap' });
+				$.fn.select2.defaults.set( "theme", "bootstrap" );		
+				
 			    /* on authorization change */
 				$('input[type=radio][name=authentication]').on('change', function() {
 				//  alert( this.value ); // or $(this).val()

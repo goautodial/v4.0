@@ -36,15 +36,11 @@
         <title><?php $lh->translateText("portal_title"); ?> - <?php $lh->translateText("user_groups"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
-        <?php print $ui->standardizedThemeCSS(); ?> 
-
-        <?php print $ui->creamyThemeCSS(); ?>
-        
-        <!-- DATA TABLES -->
-        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-        <!-- Data Tables -->
-        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
-        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+        <?php 
+			print $ui->standardizedThemeCSS(); 
+			print $ui->creamyThemeCSS();
+			print $ui->dataTablesTheme();
+		?>
 
     </head>
     <?php print $ui->creamyBody(); ?>

@@ -5820,7 +5820,9 @@ error_reporting(E_ERROR | E_PARSE);
 		$css .= '<link href="css/bootstrap-glyphicons.css" rel="stylesheet">'."\n";
 		$css .= '<link rel="stylesheet" href="css/customizedLoader.css">'."\n"; // preloader css
 		$css .= '<link rel="stylesheet" href="js/dashboard/sweetalert/dist/sweetalert.css">'."\n"; // sweetalert
-
+   		$css .= '<link href="css/select2/select2.min.css" rel="stylesheet" type="text/css"/>'."\n";
+   		$css .= '<link href="css/select2/select2-bootstrap.min.css" rel="stylesheet" type="text/css"/>'."\n";
+   		
 		/* JS that needs to be declared first */
 		$css .= '<script src="js/jquery.min.js"></script>'."\n"; // required JS
 		$css .= '<script src="js/bootstrap.min.js" type="text/javascript"></script>'."\n"; // required JS
@@ -5829,6 +5831,22 @@ error_reporting(E_ERROR | E_PARSE);
 		return $css;
 	}
 
+	public function dataTablesTheme() {
+		$css = "";
+        $css .= '<link href="css/datatables/1.10.19/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />'."\n";
+        $css .= '<link href="css/datatables/1.10.19/dataTables.jqueryui.min.css" rel="stylesheet" type="text/css" />'."\n";
+        $css .= '<link href="css/datatables/1.10.19/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />'."\n";
+		$css .= '<link href="css/datatables/1.10.19/responsive.dataTables.min.css" rel="stylesheet" type="text/css" />'."\n";
+		$css .= '<link href="css/datatables/1.10.19/responsive.jqueryui.min.css" rel="stylesheet" type="text/css" />'."\n";  
+
+		$css .= '<script src="js/datatables/1.10.19/jquery.dataTables.min.js" type="text/javascript"></script>'."\n";
+		$css .= '<script src="js/datatables/1.10.19/dataTables.jqueryui.min.js" type="text/javascript"></script>'."\n";
+		$css .= '<script src="js/datatables/1.10.19/dataTables.bootstrap.min.js" type="text/javascript"></script>'."\n";
+		$css .= '<script src="js/datatables/1.10.19/dataTables.responsive.min.js" type="text/javascript"></script> '."\n";       
+		$css .= '<script src="js/datatables/1.10.19/responsive.jqueryui.min.js" type="text/javascript"></script>'."\n";		
+
+		return $css;
+	}	
 	/**
 	 * Returns the standardized theme js for all pages.
 	 */
@@ -5840,6 +5858,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$js .= '<script src="adminlte/js/app.min.js" type="text/javascript"></script>'."\n"; // creamy app js
 		$js .= '<script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>'."\n";
 		$js .= '<script src="js/vue-avatar/vue-avatar.min.js" type="text/javascript"></script>'."\n";
+		$js .= '<script src="js/select2/select2.full.min.js" type="text/javascript" ></script>'."\n";
 		$js .= "<script type='text/javascript'>
 
 			var goOptions = {

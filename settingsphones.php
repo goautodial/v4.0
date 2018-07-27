@@ -26,14 +26,11 @@
         <title>Phones</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 		
-		<?php print $ui->standardizedThemeCSS(); ?>       
-
-		<!-- DATA TABLES -->
-        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-        <?php print $ui->creamyThemeCSS(); ?>
-		<!-- Data Tables -->
-        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
-        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+        <?php 
+			print $ui->standardizedThemeCSS(); 
+			print $ui->creamyThemeCSS();
+			print $ui->dataTablesTheme();
+		?>
 
     </head>
     <?php print $ui->creamyBody(); ?>
@@ -268,7 +265,9 @@
 		*********************/
 
 			var checker = 0;
-
+				$('.select2-1').select2({ theme: 'bootstrap' });
+				$.fn.select2.defaults.set( "theme", "bootstrap" );
+					
 			/* init data tables */
 				$('#T_phones').dataTable({
 					stateSave: true

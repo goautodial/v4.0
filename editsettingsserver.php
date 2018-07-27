@@ -48,11 +48,6 @@
         <?php print $ui->standardizedThemeCSS();?>
         <?php print $ui->creamyThemeCSS(); ?>
 		
-		<!-- SELECT2-->
-   		<link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
-   		<link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
-   		<!-- SELECT2-->
-   		<script src="js/dashboard/select2/dist/js/select2.js"></script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -352,9 +347,8 @@
 				$("[data-mask]").inputmask();
 			
 			/* initialize select2 */
-				$('.select2').select2({
-					theme: 'bootstrap'
-				});
+			$('.select2').select2({ theme: 'bootstrap' });
+			$.fn.select2.defaults.set( "theme", "bootstrap" );
 				
 			/** 
 			 * Modifies a telephony list

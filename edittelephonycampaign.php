@@ -93,10 +93,7 @@
 		<!-- Bootstrap Color Picker -->
   		<link rel="stylesheet" href="adminlte/colorpicker/bootstrap-colorpicker.min.css">
 		<!-- bootstrap color picker -->
-		<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>
-		<!-- SELECT2-->
-   		<link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
-   		<link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">		
+		<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>   		
 		<style type="text/css">
 			.select2-container{
 				width: 100% !important;
@@ -2779,8 +2776,6 @@
 
     	<!-- iCheck 1.0.1 -->
 		<script src="js/plugins/iCheck/icheck.min.js"></script>
-		<!-- SELECT2-->
-   		<script src="js/dashboard/select2/dist/js/select2.js"></script>
 
 		<script type="text/javascript">
 			
@@ -2817,7 +2812,8 @@
 			
 			$(document).ready(function() {
 			
-				$('.select2-1').select2({ theme: 'bootstrap' });
+			$('.select').select2({ theme: 'bootstrap' });
+			$.fn.select2.defaults.set( "theme", "bootstrap" );
 				
 				// update dial_status entries
 				$(document).on('click', '#advanced_settings_tab', function(){

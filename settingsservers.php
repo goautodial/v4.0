@@ -40,22 +40,11 @@
         <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("servers"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
-        <?php print $ui->standardizedThemeCSS(); ?>
-
-        <?php print $ui->creamyThemeCSS(); ?>
-
-		<!-- DATA TABLES -->
-        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-
-		<!-- Data Tables -->
-        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
-        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-		
-		<!-- SELECT2-->
-   		<link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
-   		<link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
-   		<!-- SELECT2-->
-   		<script src="js/dashboard/select2/dist/js/select2.js"></script>
+        <?php 
+			print $ui->standardizedThemeCSS(); 
+			print $ui->creamyThemeCSS();
+			print $ui->dataTablesTheme();
+		?>
 		
     </head>
     <?php print $ui->creamyBody(); ?>
@@ -356,9 +345,8 @@
 					$("[data-mask]").inputmask();
 				
 				/* initialize select2 */
-					$('.select2').select2({
-						theme: 'bootstrap'
-					});
+					$('.select2').select2({ theme: 'bootstrap' });
+					$.fn.select2.defaults.set( "theme", "bootstrap" );
 			}); // end of document ready
 		</script>
 		

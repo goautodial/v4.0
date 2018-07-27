@@ -44,28 +44,18 @@
         <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("inbound"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
-        <?php print $ui->standardizedThemeCSS(); ?>
-    	
-    	<!-- DATA TABLES -->
-        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-       
-        <?php print $ui->creamyThemeCSS(); ?>
+        <?php 
+			print $ui->standardizedThemeCSS(); 
+			print $ui->creamyThemeCSS();
+			print $ui->dataTablesTheme();
+		?>
 		
 		<!-- Bootstrap Color Picker -->
   		<link rel="stylesheet" href="adminlte/colorpicker/bootstrap-colorpicker.min.css">
 		
-		<!-- Data Tables -->
-        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
-        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-
      	<!-- bootstrap color picker -->
 		<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>
 
-     	<!-- SELECT2-->
-   		<link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
-   		<link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
-   		<!-- SELECT2-->
-   		<script src="js/dashboard/select2/dist/js/select2.js"></script>
     </head>
     
     <?php print $ui->creamyBody(); ?>
@@ -1699,9 +1689,8 @@
     			$(".colorpicker").colorpicker();
 
     		/* initialize select2 */
-				$('.select2-1').select2({
-			        theme: 'bootstrap'
-			    });
+				$('.select2-1').select2({ theme: 'bootstrap' });
+				$.fn.select2.defaults.set( "theme", "bootstrap" );
 				
 			/*** INGROUP ***/
 				// disable special characters on Ingroup ID

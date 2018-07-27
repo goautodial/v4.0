@@ -41,31 +41,23 @@
         <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("campaigns"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
-        <?php print $ui->standardizedThemeCSS(); ?>
+        <?php 
+			print $ui->standardizedThemeCSS(); 
+			print $ui->creamyThemeCSS();
+			print $ui->dataTablesTheme();
+		?>
 
     	<!-- iCheck for checkboxes and radio inputs -->
   		<link rel="stylesheet" href="css/iCheck/all.css">
 
     	<!-- Wizard Form style -->
-    	<link href="css/style.css" rel="stylesheet" type="text/css" />		
-
-        <?php print $ui->creamyThemeCSS(); ?>
-
-        <!-- DATA TABLES 1.10.19 CSS-->        
-        <link href="css/datatables/1.10.19/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/datatables/1.10.19/dataTables.jqueryui.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/datatables/1.10.19/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
-		<link href="css/datatables/1.10.19/responsive.dataTables.min.css" rel="stylesheet" type="text/css" />
-		<link href="css/datatables/1.10.19/responsive.jqueryui.min.css" rel="stylesheet" type="text/css" />        
+    	<link href="css/style.css" rel="stylesheet" type="text/css" />		    
 		
 		<!-- Bootstrap Color Picker -->
   		<link rel="stylesheet" href="adminlte/colorpicker/bootstrap-colorpicker.min.css">
 		<!-- bootstrap color picker -->
 		<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>
-		
-		<!-- SELECT2-->
-   		<link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
-   		<link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">			
+   		
 		<style type="text/css">
 			.select2-container{
 				width: 100% !important;
@@ -132,7 +124,7 @@
 				max-width:1600px;
 				}
 			}				
-		</style>
+		</style>   				
     </head>
      <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -173,7 +165,7 @@
 								}
 								$disposition = $api->API_getAllDispositions();
 								$leadrecycling = $api->API_getAllLeadRecycling();
-								//$dialStatus = $api->API_getAllDialStatuses();
+								$dialStatus = $api->API_getAllDialStatuses();
 								$ingroup = $api->API_getAllInGroups();
 								$ivr = $api->API_getAllIVRs();
 								$voicemails = $api->API_getAllVoiceFiles();
@@ -1435,16 +1427,7 @@
 	<!-- JQUERY STEPS-->
   	<script src="js/dashboard/js/jquery.steps/build/jquery.steps.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
-
-	<!-- Datatables 1.10.19 -->
-	<script src="js/datatables/1.10.19/jquery.dataTables.min.js" type="text/javascript"></script>
-	<script src="js/datatables/1.10.19/dataTables.jqueryui.min.js" type="text/javascript"></script>
-	<script src="js/datatables/1.10.19/dataTables.bootstrap.min.js" type="text/javascript"></script>
-	<script src="js/datatables/1.10.19/dataTables.responsive.min.js" type="text/javascript"></script>        
-	<script src="js/datatables/1.10.19/responsive.jqueryui.min.js" type="text/javascript"></script>
         
-	<!-- SELECT2-->
-	<script src="js/dashboard/select2/dist/js/select2.js"></script>	
     <!-- iCheck 1.0.1 -->
 	<script src="js/plugins/iCheck/icheck.min.js"></script>
 
@@ -1460,7 +1443,8 @@
 			// load cookies
 			var cook_donotshow = "yes";
 
-			$('.select2-1').select2({ theme: 'bootstrap' });
+			$('.select').select2({ theme: 'bootstrap' });			
+			$.fn.select2.defaults.set( "theme", "bootstrap" );
 			
 			// Datatables initialization
 			var tableCampaign = $('#table_campaign').DataTable({

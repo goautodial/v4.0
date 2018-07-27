@@ -32,26 +32,27 @@
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 
-$modifyid = NULL;
-if (isset($_POST["modifyid"])) {
-	$modifyid = $_POST["modifyid"];
-}else{
-	header("location: telephonylist.php");
-}
-$statuses = $ui->API_ListsStatuses($modifyid);
-$timezones = $ui->API_ListsTimezone($modifyid);
-
-$perm = $api->goGetPermissions('customfields');
-
-$scripts = $api->API_getAllScripts($_SESSION['user']);
+	$modifyid = NULL;
+	if (isset($_POST["modifyid"])) {
+		$modifyid = $_POST["modifyid"];
+	}else{
+		header("location: telephonylist.php");
+	}
+	$statuses = $ui->API_ListsStatuses($modifyid);
+	$timezones = $ui->API_ListsTimezone($modifyid);
+	$scripts = $api->API_getAllScripts($_SESSION['user']);
+	$perm = $api->goGetPermissions('customfields');
 ?>
 <html>
     <head>
         <meta charset="UTF-8">
         <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("edit_list"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <?php print $ui->standardizedThemeCSS();?>
-        <?php print $ui->creamyThemeCSS(); ?>
+        <?php 
+			print $ui->standardizedThemeCSS(); 
+			print $ui->creamyThemeCSS();
+			print $ui->dataTablesTheme();
+		?>
     </head>
     <style>
     	select{
@@ -101,13 +102,7 @@ $scripts = $api->API_getAllScripts($_SESSION['user']);
 			$errormessage = NULL;
 			//$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
 			$campaign = $api->API_getAllCampaigns();
-
-			$postfields = array(
-				'goAction' => 'goGetListInfo',
-				'list_id' => $modifyid
-			);
-
-		    $output = $api->API_list($postfields);
+		    $output = $api->API_getListInfo($modifyid);
 		?>
 
             <!-- Main content -->
@@ -137,24 +132,24 @@ $scripts = $api->API_getAllScripts($_SESSION['user']);
 									<div class="form-group clearfix">
 										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("name"); ?>:</label>
 										<div class="col-lg-9">
-											<input type="text" pattern=".{2,20}" class="form-control" name="name" value="<?php echo $output->list_name[$i];?>" maxlength="30">
+											<input type="text" pattern=".{2,20}" class="form-control" name="name" value="<?php echo $output->list_name[0];?>" maxlength="30">
 										</div>
 									</div>
 									<div class="form-group clearfix">
 										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("description"); ?>:</label>
 										<div class="col-lg-9">
-											<input type="text" class="form-control" name="desc" value="<?php echo $output->list_description[$i];?>" maxlength="255">
+											<input type="text" class="form-control" name="desc" value="<?php echo $output->list_description[0];?>" maxlength="255">
 										</div>
 									</div>
 									<div class="form-group clearfix">
 										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("campaign"); ?>:</label>
 										<div class="col-lg-9">
-											<select class="form-control" name="campaign" id="campaign">
+											<select class="form-control select2" name="campaign" id="campaign">
 											<?php
 												$campaign_option = NULL;
 												$campaign_option .= '<option value="">'.$lh->translationFor("-none-").'</option>';
 												for($a=0; $a < count($campaign->campaign_id);$a++){
-													if($campaign->campaign_id[$a] == $output->campaign_id[$i]){
+													if($campaign->campaign_id[$a] == $output->campaign_id[0]){
 														echo "<option value='".$campaign->campaign_id[$a]."' selected> ".$campaign->campaign_name[$a]." </option>";
 													}else{
 														echo "<option value='".$campaign->campaign_id[$a]."'> ".$campaign->campaign_name[$a]." </option>";
@@ -170,7 +165,7 @@ $scripts = $api->API_getAllScripts($_SESSION['user']);
 									<div class="form-group clearfix">
 										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("reset_time"); ?>:</label>
 										<div class="col-lg-9">
-											<input type="text" class="form-control" name="reset_time" value="<?php echo $output->reset_time[$i];?>">
+											<input type="text" class="form-control" name="reset_time" value="<?php echo $output->reset_time[0];?>">
 										</div>
 									</div>
 									<div class="form-group clearfix">
@@ -184,21 +179,21 @@ $scripts = $api->API_getAllScripts($_SESSION['user']);
 										<label class="control-label col-lg-2" style="text-align: left;"><?php $lh->translateText("active"); ?>:</label>
 										<div class="col-lg-3">
 											<select name="active" class="form-control select2">
-												<option value="N"  <?php if($output->active[$i] == 'N') echo 'selected';?>><?php $lh->translateText("go_no"); ?></option>
-												<option value="Y"  <?php if($output->active[$i] == 'Y') echo 'selected';?>><?php $lh->translateText("go_yes"); ?></option>
+												<option value="N"  <?php if($output->active[0] == 'N') echo 'selected';?>><?php $lh->translateText("go_no"); ?></option>
+												<option value="Y"  <?php if($output->active[0] == 'Y') echo 'selected';?>><?php $lh->translateText("go_yes"); ?></option>
 											</select>
 										</div>
 									</div>
 									<div class="form-group clearfix">
 										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("agent_script"); ?>:</label>
 										<div class="col-lg-9">
-											<select name="agent_script_override" class="form-control">
+											<select name="agent_script_override" class="form-control select2">
 												<option value="" selected="selected">NONE - INACTIVE</option>
 												<?php
 												if ($scripts->result == 'success') {
 													foreach($scripts->script_id as $x => $script) {
 														$isSelected = '';
-														if ($script == $output->agent_script_override[$i]) {
+														if ($script == $output->agent_script_override[0]) {
 															$isSelected = ' selected';
 														}
 														echo '<option value="'.$script.'"'.$isSelected.'>'.$scripts->script_name[$x].'</option>';
@@ -211,13 +206,13 @@ $scripts = $api->API_getAllScripts($_SESSION['user']);
 									<div class="form-group clearfix">
 										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("campaign_override"); ?>:</label>
 										<div class="col-lg-9">
-											<input type="text" class="form-control" name="campaign_cid_override" value="<?php echo $output->campaign_cid_override[$i];?>">
+											<input type="text" class="form-control" name="campaign_cid_override" value="<?php echo $output->campaign_cid_override[0];?>">
 										</div>
 									</div>
 									<div class="form-group clearfix">
 										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("drop_inbound_group_override"); ?></label>
 										<div class="col-lg-9">
-											<select name="drop_inbound_group_override" class="form-control">
+											<select name="drop_inbound_group_override" class="form-control select2">
 												<option value="NONE">NONE</option>
 											</select>
 										</div>
@@ -225,31 +220,31 @@ $scripts = $api->API_getAllScripts($_SESSION['user']);
 									<div class="form-group clearfix">
 										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("web"); ?>:</label>
 										<div class="col-lg-9">
-											<input type="text" class="form-control" name="web_form">
+											<input type="text" class="form-control" name="web_form" placeholder="https://goautodial.org">
 										</div>
 									</div>
 									<div class="form-group clearfix">
 										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("transfer"); ?>:</label>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" name="xferconf_a_number">
+											<input type="text" class="form-control" name="xferconf_a_number" placeholder="xferconf_a_number">
 										</div>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" name="xferconf_b_number">
-										</div>
-									</div>
-									<div class="form-group clearfix">
-										<label class="control-label col-lg-3" style="text-align: left;"></label>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" name="xferconf_c_number">
-										</div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" name="xferconf_d_number">
+											<input type="text" class="form-control" name="xferconf_b_number" placeholder="xferconf_b_number">
 										</div>
 									</div>
 									<div class="form-group clearfix">
 										<label class="control-label col-lg-3" style="text-align: left;"></label>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" name="xferconf_e_number">
+											<input type="text" class="form-control" name="xferconf_c_number" placeholder="xferconf_c_number">
+										</div>
+										<div class="col-lg-4">
+											<input type="text" class="form-control" name="xferconf_d_number" placeholder="xferconf_d_number">
+										</div>
+									</div>
+									<div class="form-group clearfix">
+										<label class="control-label col-lg-3" style="text-align: left;"></label>
+										<div class="col-lg-4">
+											<input type="text" class="form-control" name="xferconf_e_number" placeholder="xferconf_e_number">
 										</div>
 									</div>
 								
@@ -257,7 +252,7 @@ $scripts = $api->API_getAllScripts($_SESSION['user']);
 								<div id="tab_2" class="tab-pane">
 									<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
 										<div class="table-responsive">
-											<table id="lists_statuses" class="table table-bordered" style="width: 100%;">
+											<table id="lists_statuses" class="responsive display no-wrap" style="width: 100%;">
 												<thead>
 													<tr>
 														<th><?php $lh->translateText("status"); ?></th>
@@ -314,7 +309,7 @@ $scripts = $api->API_getAllScripts($_SESSION['user']);
 								<div id="tab_3" class="tab-pane">
 									<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
 										<div class="table-responsive">
-											<table id="lists_statuses" class="table table-bordered" style="width: 100%;">
+											<table id="lists_statuses" class="responsive display no-wrap" style="width: 100%;">
 												<thead>
 													<tr>
 														<th><?php $lh->translateText("local_time"); ?></th>

@@ -63,21 +63,15 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
         </title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
        
-       <!-- Call for standardized css -->
-        <?php print $ui->standardizedThemeCSS();?>
-
-        <?php print $ui->creamyThemeCSS(); ?>
+        <?php 
+			print $ui->standardizedThemeCSS(); 
+			print $ui->creamyThemeCSS();
+			print $ui->dataTablesTheme();
+		?>
         
-        <!-- DATA TABLES -->
-        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-		<!-- Data Tables -->
-        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
-        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
         <!-- Bootstrap Color Picker -->
   		<link rel="stylesheet" href="adminlte/colorpicker/bootstrap-colorpicker.min.css">
-  		<!-- SELECT2 CSS -->
-        <link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
-        <link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
+
     </head>
     <style>
     	select{
@@ -2168,16 +2162,14 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
     	<!-- bootstrap color picker -->
 			<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>
-		<!-- SELECT2-->
-            <script src="js/dashboard/select2/dist/js/select2.js"></script>
 
 		<script type="text/javascript">
 			$(document).ready(function() {
 
 			//Initialize Select2 Elements
-                $('.select2').select2({
-                    theme: 'bootstrap'
-                });
+                $('.select2').select2({ theme: 'bootstrap' });
+                $.fn.select2.defaults.set( "theme", "bootstrap" );
+                
 			// init datatables
 				$('#agent_rank_table').dataTable();
 

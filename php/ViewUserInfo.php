@@ -22,6 +22,7 @@ $postfields["user"] = $_POST['user']; #User ID (required)
 $postfields["log_user"] = $_POST['log_user'];
 $postfields["log_group"] = $_POST['log_group'];
 $postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
+$postfields["session_user"] = $_POST['log_user'];
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);

@@ -38,7 +38,15 @@
 
 		<!-- Bootstrap Player -->
 		<script src="js/bootstrap-player.js" type="text/javascript"></script>
-
+		
+		<!-- SELECT2-->
+   		<link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
+   		<link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">			
+		<style type="text/css">
+			.select2-container{
+				width: 100% !important;
+			}
+		</style>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -297,7 +305,7 @@ $callrecs = $ui->API_getListAllRecordings();
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="status">Campaign: </label>
 							<div class="col-sm-9">
-								<select name="status" class="form-control">
+								<select name="status" class="form-control select2">
 									<?php
 										for($i=0; $i < count($campaign->campaign_id);$i++){
 											echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_name[$i]." </option>";
@@ -309,7 +317,7 @@ $callrecs = $ui->API_getListAllRecordings();
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="status">Active: </label>
 							<div class="col-sm-9">
-								<select name="status" class="form-control">
+								<select name="status" class="form-control select2">
 									<option value="Y" selected>Yes</option>
 									<option value="N" >No</option>						
 								</select>
@@ -378,10 +386,13 @@ $callrecs = $ui->API_getListAllRecordings();
 	<!-- End of modal -->
 
 	<?php print $ui->standardizedThemeJS();?>
-   		
+	<!-- SELECT2-->
+	<script src="js/dashboard/select2/dist/js/select2.js"></script>   		
 		<script type="text/javascript">
 
 			$(document).ready(function() {
+				$('.select2-1').select2({ theme: 'bootstrap' });
+				
 				$('#table_lists').dataTable();
 
 				$('#table_callrecs').DataTable( {

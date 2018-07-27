@@ -38,19 +38,14 @@
         <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("crm"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
-   		<!-- Call for standardized css -->
-   		<?php print $ui->standardizedThemeCSS();?>
-
-        <!-- DATA TABLES -->
-        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-        <?php print $ui->creamyThemeCSS(); ?>
-
+        <?php 
+			print $ui->standardizedThemeCSS(); 
+			print $ui->creamyThemeCSS();
+			print $ui->dataTablesTheme();
+		?>
+		
         <!-- Datetime picker -->
 		<link rel="stylesheet" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
-
-        <!-- Data Tables -->
-        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
-        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
 
         <!-- Date Picker -->	
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
@@ -58,10 +53,6 @@
 
 		<!-- CHOSEN-->
    		<link rel="stylesheet" src="js/dashboard/chosen_v1.2.0/chosen.min.css">
-   		<!-- SELECT2-->
-   		<link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
-   		<link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
-
 		<style>
 		/*
 		* CUSTOM CSS for disable function
@@ -290,9 +281,6 @@ $disposition = $api->API_getAllDispositions();
 
 		<!-- CHOSEN-->
    		<script src="js/dashboard/chosen_v1.2.0/chosen.jquery.min.js"></script>
-   		<!-- SELECT2-->
-   		<script src="js/dashboard/select2/dist/js/select2.js"></script>
-
 		<script type="text/javascript">
 
 			$(document).ready(function() {
@@ -309,8 +297,9 @@ $disposition = $api->API_getAllDispositions();
                 	"bDestroy" : true
                 });
 
-				$('.select2').select2({ theme: 'bootstrap' });
-
+				$('.select').select2({ theme: 'bootstrap' });
+				$.fn.select2.defaults.set( "theme", "bootstrap" );
+				
 				// limits checkboxes to single selecting
 				$("input:checkbox").on('click', function() {
 				  var $box = $(this);

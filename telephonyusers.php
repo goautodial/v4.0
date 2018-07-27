@@ -41,25 +41,21 @@
         <title><?php $lh->translateText("portal_title"); ?> <?php $lh->translateText("users"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
-        <?php print $ui->standardizedThemeCSS(); ?>
-        <?php print $ui->creamyThemeCSS(); ?>
+        <?php 
+			print $ui->standardizedThemeCSS(); 
+			print $ui->creamyThemeCSS();
+			print $ui->dataTablesTheme();
+		?>
 	
     	<!-- Wizard Form style -->
 		<link href="css/style.css" rel="stylesheet" type="text/css" />
-		
-        <!-- DATA TABLES 1.10.19 CSS-->        
-        <link href="css/datatables/1.10.19/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/datatables/1.10.19/dataTables.jqueryui.min.css" rel="stylesheet" type="text/css" />
-        <link href="css/datatables/1.10.19/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
-		<link href="css/datatables/1.10.19/responsive.dataTables.min.css" rel="stylesheet" type="text/css" />
-		<link href="css/datatables/1.10.19/responsive.jqueryui.min.css" rel="stylesheet" type="text/css" />  		
-			
+
         <!-- CHOSEN-->
    		<link rel="stylesheet" href="js/dashboard/chosen_v1.2.0/chosen.min.css">
 		
 		<!-- Date Range Picker -->	
         <script type="text/javascript" src="js/plugins/daterangepicker/daterangepicker.js"></script>
-		<link rel="stylesheet" href="css/daterangepicker/daterangepicker-bs3.css"></link>
+		<link rel="stylesheet" href="css/daterangepicker/daterangepicker-bs3.css"></link>  		
     </head>
 
     <?php print $ui->creamyBody(); ?>
@@ -523,16 +519,7 @@
 		<?php print $ui->standardizedThemeJS();?>
 		<!-- JQUERY STEPS-->
   		<script src="js/dashboard/js/jquery.steps/build/jquery.steps.js"></script>
-  		<!-- SELECT2-->
-        <script src="js/dashboard/select2/dist/js/select2.js"></script>
-        
-		<!-- Datatables 1.10.19 -->
-		<script src="js/datatables/1.10.19/jquery.dataTables.min.js" type="text/javascript"></script>
-		<script src="js/datatables/1.10.19/dataTables.jqueryui.min.js" type="text/javascript"></script>
-		<script src="js/datatables/1.10.19/dataTables.bootstrap.min.js" type="text/javascript"></script>
-		<script src="js/datatables/1.10.19/dataTables.responsive.min.js" type="text/javascript"></script>        
-		<script src="js/datatables/1.10.19/responsive.jqueryui.min.js" type="text/javascript"></script>
-		
+	
 		<!-- Datatables Export -->
 		<script src="js/plugins/datatables/buttons/buttons.html5.min.js" type="text/javascript"></script>
 		<script src="js/plugins/datatables/buttons/buttons.print.min.js" type="text/javascript"></script>
@@ -543,7 +530,9 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		// initialize select2
-		$('.select2').select2({ theme: 'bootstrap' });
+		$('.select').select2({ theme: 'bootstrap' });		
+		$.fn.select2.defaults.set( "theme", "bootstrap" );
+		
 		var checker = 0;
 		
 		// users table

@@ -233,6 +233,8 @@ if (isset($_POST["vmid"])) {
 
 		<script type="text/javascript">
 			$(document).ready(function() {
+				$('.select').select2({ theme: 'bootstrap' });
+				$.fn.select2.defaults.set( "theme", "bootstrap" );
 				
 				// for cancelling
 				$(document).on('click', '#cancel', function(){

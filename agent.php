@@ -1620,7 +1620,8 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 		<script src="adminlte/js/app.min.js"></script>
 		
 		<!-- Select2 -->
-        <script src="js/select2.js" type="text/javascript"></script>
+		<!-- already in UIHandler.php -->
+        <!-- <script src="js/select2.js" type="text/javascript"></script> -->
 		
 		<script type="text/javascript">
 			$("#compose-textarea").wysihtml5();
@@ -2023,9 +2024,9 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 					}
 				}, 5000);
 				
-				$(".select2").select2({
-					theme: 'bootstrap'
-				});
+				$('.select2').select2({ theme: 'bootstrap' });
+				$.fn.select2.defaults.set( "theme", "bootstrap" );
+				
 			});
 			
 			// generates the reply-to or forward message text. This text will be suitable for placing in the reply-to/forward content

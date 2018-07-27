@@ -59,12 +59,6 @@
         
         <?php print $ui->standardizedThemeCSS(); ?>
         <?php print $ui->creamyThemeCSS(); ?>
-
-        <!-- SELECT2-->
-   		<link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
-   		<link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
-   		<!-- SELECT2-->
-   		<script src="js/dashboard/select2/dist/js/select2.js"></script>
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -596,9 +590,9 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		/* initialize select2 */
-		//$('.select2-1').select2({ theme: 'bootstrap' });
-		$('.select2').select2({ theme: 'bootstrap' });
-
+		$('.select2-1').select2({ theme: 'bootstrap' });
+		$.fn.select2.defaults.set( "theme", "bootstrap" );
+		
 		// for cancelling
 		$(document).on('click', '#cancel', function(){
 			swal("Cancelled", "No action has been done :)", "error");

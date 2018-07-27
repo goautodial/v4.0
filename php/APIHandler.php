@@ -622,6 +622,14 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goLists", $postfields);
 	}
 	
+	public function API_getListInfo($list_id){
+		$postfields = array(
+			'goAction' => 'goGetListInfo',
+			'list_id' => $list_id
+		);		
+		return $this->API_Request("goLists", $postfields);
+	}	
+	
 	public function API_getAllCarriers(){
 		$postfields = array(
 			'goAction' => 'goGetAllCarriers'

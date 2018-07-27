@@ -39,21 +39,12 @@
         <title><?php $lh->translateText("portal_title"); ?> - <?php $lh->translateText("voice_mails"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
-        <?php print $ui->standardizedThemeCSS(); ?> 
-
-        <?php print $ui->creamyThemeCSS(); ?>
+        <?php 
+			print $ui->standardizedThemeCSS(); 
+			print $ui->creamyThemeCSS();
+			print $ui->dataTablesTheme();
+		?>
         
-        <!-- DATA TABLES -->
-        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-        <!-- Data Tables -->
-        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
-        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-
-        <!-- SELECT2-->
-        <link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
-        <link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
-        <!-- SELECT2-->
-        <script src="js/dashboard/select2/dist/js/select2.js"></script>  
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
