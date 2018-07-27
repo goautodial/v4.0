@@ -22,8 +22,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('CRMDefaults.php');
-	require_once('goCRMAPISettings.php');
+	//require_once('CRMDefaults.php');
+	//require_once('goCRMAPISettings.php');
 	require_once('APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 	

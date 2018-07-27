@@ -630,6 +630,14 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goLists", $postfields);
 	}	
 	
+	public function API_getLeadsInfo($lead_id){
+		$postfields = array(
+			'goAction' => 'goGetLeadsInfo',
+			'lead_id' => $lead_id
+		);		
+		return $this->API_Request("goGetLeads", $postfields);
+	}
+	
 	public function API_getAllCarriers(){
 		$postfields = array(
 			'goAction' => 'goGetAllCarriers'
@@ -877,6 +885,10 @@ if(isset($_SESSION["user"])){
 
 	public function API_editUserGroup($postfields){
 		return $this->API_Request("goUserGroups", $postfields);
+	}
+	
+	public function API_editLeads($postfields){
+		return $this->API_Request("goGetLeads", $postfields);
 	}
 	
 	public function API_addVoiceFiles($postfields){

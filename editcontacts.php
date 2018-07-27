@@ -1,55 +1,72 @@
 <?php
-//ini_set('display_errors', 1);
-//ini_set('display_startup_errors', 1);
-//error_reporting(E_ALL);
+/**
+ * @file 		editcontacts.php
+ * @brief 		Modify customer accounts
+ * @copyright 	Copyright (c) 2018 GOautodial Inc. 
+ * @author     	Alexander Jim H. Abenoja 
+ * @author		Demian Lizandro A. Biscocho
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
 
-require_once('./php/CRMDefaults.php');
-require_once('./php/UIHandler.php');
-require_once('./php/DbHandler.php');
-require_once('./php/LanguageHandler.php');
-require('./php/Session.php');
+	require_once('./php/UIHandler.php');
+	require_once('./php/APIHandler.php');
+	require_once('./php/CRMDefaults.php');
+    require_once('./php/LanguageHandler.php');
+    include('./php/Session.php');
 
-// initialize structures
-$ui = \creamy\UIHandler::getInstance();
-$lh = \creamy\LanguageHandler::getInstance();
-$user = \creamy\CreamyUser::currentUser();
+	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
+	$lh = \creamy\LanguageHandler::getInstance();
+	$user = \creamy\CreamyUser::currentUser();
 
+	$lead_id = $_POST['modifyid'];
+	$output = $api->API_getLeadsInfo($lead_id);
+	$list_id_ct = $output->data->list_id;
 
-$lead_id = $_POST['modifyid'];
-$output = $ui->API_GetLeadInfo($lead_id);
-$list_id_ct = $output->data->list_id;
+	if($output->result !== "success"){
+		die($output->result);
+	}
 
-if($output->result !== "success"){
-	die($output->result);
-}
-
-
-if ($list_id_ct != NULL) {
-	$first_name 	= $output->data->first_name;
-	$middle_initial 	= $output->data->middle_initial;
-	$last_name 	= $output->data->last_name;
-	$email 	= $output->data->email;
-	$phone_number 	= $output->data->phone_number;
-	$alt_phone 	= $output->data->alt_phone;
-	$address1 	= $output->data->address1;
-	$address2 	= $output->data->address2;
-	$address3 	= $output->data->address3;
-	$city 	= $output->data->city;
-	$state 	= $output->data->state;
-	$country 	= $output->data->country_code;
-	$postal_code	= $output->data->postal_code;
-	$gender 	= $output->data->gender;
-	$date_of_birth 	= $output->data->date_of_birth;
-	$comments 	= $output->data->comments;
-	$title 	= $output->data->title;
-	$call_count 	= $output->data->call_count;
-	$last_local_call_time 	= $output->data->last_local_call_time;
-	$is_customer 	= $output->is_customer;
-}
+	if ($list_id_ct != NULL) {
+		$first_name 	= $output->data->first_name;
+		$middle_initial 	= $output->data->middle_initial;
+		$last_name 	= $output->data->last_name;
+		$email 	= $output->data->email;
+		$phone_number 	= $output->data->phone_number;
+		$alt_phone 	= $output->data->alt_phone;
+		$address1 	= $output->data->address1;
+		$address2 	= $output->data->address2;
+		$address3 	= $output->data->address3;
+		$city 	= $output->data->city;
+		$state 	= $output->data->state;
+		$country 	= $output->data->country_code;
+		$postal_code	= $output->data->postal_code;
+		$gender 	= $output->data->gender;
+		$date_of_birth 	= $output->data->date_of_birth;
+		$comments 	= $output->data->comments;
+		$title 	= $output->data->title;
+		$call_count 	= $output->data->call_count;
+		$last_local_call_time 	= $output->data->last_local_call_time;
+		$is_customer 	= $output->is_customer;
+	}
+	
 	$fullname 			= $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
 	$date_of_birth 			= date('m/d/Y', strtotime($date_of_birth));
 	$output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, $phone_number, $alt_phone, $address1, $address2, $address3, $city, $province, $state, $postal_code, $country);
-	$disposition = $ui->API_getAllDispositions();
+	$disposition = $api->API_getAllDispositions();
 	
 	$avatarHash = md5( strtolower( trim( $user->getUserId() ) ) );
 	$avatarURL50 = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=50&default=wavatar";
@@ -63,19 +80,15 @@ if ($list_id_ct != NULL) {
         <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("contact_information"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
-		<!-- Call for standardized css -->
-        <?php print $ui->standardizedThemeCSS();?>
-
+        <?php 
+			print $ui->standardizedThemeCSS(); 
+			print $ui->creamyThemeCSS();
+			print $ui->dataTablesTheme();
+		?>
+		
         <!-- Customized Style -->
         <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
-        <?php print $ui->creamyThemeCSS(); ?>
-		
-		<!-- DATA TABLES -->
-        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-		<!-- Data Tables -->
-        <script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
-        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-		
+
 		<!-- Datetime picker CSS --> 
 		<link rel="stylesheet" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
 		<!-- DateTime Picker JS -->
@@ -672,13 +685,13 @@ if ($list_id_ct != NULL) {
 									type: 'POST',
 									data: postData,
 									success: function(data) {
-									  // console.log(data);
+									  console.log(data);
 									  $('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("update"); ?>");
 									  $('#submit_edit_form').prop("disabled", false);
-										if(data == "success"){
+										if(data == 1){
 											swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("contact_update_success"); ?>",type: "success"},function(){location.reload();});
 										}else{
-											sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>", "error");
+											sweetAlert("<?php $lh->translateText("oops"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>", "error");
 										}
 									}
 								});
