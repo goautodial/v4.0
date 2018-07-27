@@ -63,6 +63,9 @@
 		$is_customer 	= $output->is_customer;
 	}
 	
+	if (empty($is_customer) || is_null($is_customer)) {
+		$is_customer = 0;
+	}
 	$fullname 			= $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
 	$date_of_birth 			= date('m/d/Y', strtotime($date_of_birth));
 	$output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, $phone_number, $alt_phone, $address1, $address2, $address3, $city, $province, $state, $postal_code, $country);
@@ -534,7 +537,7 @@
 															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">
 														<label for="date_of_birth"><?php $lh->translateText("date_of_birth"); ?></label>
 													</div>
-												</div>
+												</div>									
 											</div><!-- /.gender & title -->
 											
 											<div class="mda-form-group label-floating">
@@ -662,10 +665,19 @@
 				$('#heading_lead_id').text("<?php echo $lead_id;?>");
 				$('#comments').text("<?php echo $comments;?>");
 
-	            $('#date_of_birth').datetimepicker({
-	                viewMode: 'years',
-	                format: 'MM/DD/YYYY'
-	            });
+				$('#date_of_birth').datetimepicker({ //start date contacts
+				icons: {
+						//time: 'fa fa-clock-o',
+						date: 'fa fa-calendar',
+						up: 'fa fa-chevron-up',
+						down: 'fa fa-chevron-down',
+						previous: 'fa fa-chevron-left',
+						next: 'fa fa-chevron-right',
+						today: 'fa fa-crosshairs',
+						clear: 'fa fa-trash'
+					},
+				format: 'MM/DD/YYYY'					
+				});				
 
 				$("#submit_edit_form").click(function(){
 				//alert("User Created!");
