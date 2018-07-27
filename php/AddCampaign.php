@@ -26,9 +26,9 @@
 	$dial_prefix								= ( !isset($_POST['dial_prefix']) ) ? 9 : $_POST['dial_prefix'];
 	$auto_dial_level							= ( !isset($_POST['auto_dial_level']) ) ? 'OFF': $_POST['auto_dial_level'];
 	
-	$lead_file									= "";
-	$leads										= "";
-	$uploaded_wav								= "";		
+	//$lead_file									= "";
+	//$leads										= "";
+	//$uploaded_wav								= "";		
 	$custom_dial_prefix							= 0;
 	
 	if ( $dial_prefix == "CUSTOM") {
