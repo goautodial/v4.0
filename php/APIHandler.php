@@ -158,10 +158,10 @@ if(isset($_SESSION["user"])){
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT , 0); //gg
-		curl_setopt ($ch, CURLOPT_TIMEOUT  , 10000); //gg
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT , 0); //gg
+		curl_setopt($ch, CURLOPT_TIMEOUT  , 10000); //gg
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
 		curl_close($ch);
@@ -768,6 +768,10 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goCustomFields", $postfields);
 	}
 
+	public function API_addCampaign($postfields){
+		return $this->API_Request("goCampaigns", $postfields);
+	}
+	
 	public function API_addDialStatus($postfields){
 		return $this->API_Request("goCampaigns", $postfields);
 	}

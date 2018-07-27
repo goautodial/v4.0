@@ -33,12 +33,12 @@
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 	
-	$gopackage = $api->API_getGOPackage();
+	//$gopackage = $api->API_getGOPackage();
 	$perm = $api->goGetPermissions('carriers', $_SESSION['usergroup']);
 	
-	if( ($gopackage->show_carrier_settings === "N" || $gopackage->show_carrier_settings === NULL) && ($_SESSION['user'] !== "goautodial" && $_SESSION !== "goAPI") ){
+	/*if( ($gopackage->show_carrier_settings === "N" || $gopackage->show_carrier_settings === NULL) && ($_SESSION['usergroup'] !== "ADMIN" && $_SESSION !== "goAPI") ){
 		header("location:index.php");
-	}
+	}*/
 	
 ?>
 <html>

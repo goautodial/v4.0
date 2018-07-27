@@ -3623,13 +3623,13 @@
 				success: function(data) {
 					console.log(data);
 					if (data == 1) {
-						status = "1";
+						status = 1;
 						$('#finish').attr("disabled", false);
 						$( "#campaign_form" ).removeClass("error");
 					} else {
 						$('#finish').attr("disabled", true);
 						$( "#campaign_form" ).removeClass("valid").addClass( "error" );						
-						status = "0";
+						status = 0;
 					}
 				}
 			});
@@ -3649,7 +3649,7 @@
 				success: function(data) {
 					console.log(data);
 					if (data == 1) {
-						status = "1";
+						status = 1;
 						$("#disposition_checker").val("0");
 						$( "#status" ).removeClass("error");
 						$( "#status-duplicate-error" ).text( "Status is available." ).removeClass("error").addClass("avail");
@@ -3657,7 +3657,7 @@
 						$("#disposition_checker").val("1");
 						$( "#status" ).addClass( "error" );
 						$( "#status-duplicate-error" ).text( "Status is not available." ).removeClass("avail").addClass("error");
-						status = "0";
+						status = 0;
 					}
 				}
 			});

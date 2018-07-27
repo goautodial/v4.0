@@ -21,26 +21,16 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-require_once('APIHandler.php');
-$api = \creamy\APIHandler::getInstance();
 
-/*
-   $url = gourl."/goVoiceFiles/goAPI.php"; #URL to GoAutoDial API. (required)
-   $postfields["goUser"] 		= goUser; #Username goes here. (required)
-   $postfields["goPass"] 		= goPass; #Password goes here. (required)
-   $postfields["goAction"] 		= "goAddVoiceFiles"; #action performed by the [[API:Functions]]. (required)
-   $postfields["responsetype"] 		= responsetype; #json. (required)
-   $postfields["hostname"] 		= $_SERVER['REMOTE_ADDR']; #Default value
-   $postfields["files"] 		= curl_file_create($_FILES['voice_file']['tmp_name'], $_FILES['voice_file']['type'], $_FILES["voice_file"]["name"]);
-   $postfields["stage"] 		= "upload";
-   $postfields["session_user"] 		= $_POST['session_user'];
-*/
-   $postfields = array(
-      'goAction' => 'goAddVoiceFiles',
-      'files' => curl_file_create($_FILES['voice_file']['tmp_name'], $_FILES['voice_file']['type'], $_FILES["voice_file"]["name"]),
-      'stage' => "upload"
-   );
+	require_once('APIHandler.php');
+	$api = \creamy\APIHandler::getInstance();
 
-   $output = $api->API_addVoiceFiles($postfields);
+	$postfields = array(
+		'goAction' => 'goAddVoiceFiles',
+		'files' => curl_file_create($_FILES['voice_file']['tmp_name'], $_FILES['voice_file']['type'], $_FILES["voice_file"]["name"]),
+		'stage' => "upload"
+	);
 
-   header("location: ../audiofiles.php?upload_result=".$output->result);
+	$output = $api->API_addVoiceFiles($postfields);
+
+	header("location: ../audiofiles.php?upload_result=".$output->result);

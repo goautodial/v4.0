@@ -154,7 +154,7 @@
 							<div class="form-group mt">
 								<label class="col-sm-2 control-label" for="user_group"><?php $lh->translateText("user_groups"); ?></label>
 								<div class="col-sm-10 mb">
-									<select id="user_group" class="form-control select2" name="user_group" style="width:100%;">
+									<select id="user_group" class="form-control select2-1" name="user_group" style="width:100%;">
 										<option value="---ALL---" <?php if($output->data->user_group == "---ALL---")echo "selected";?> ><?php $lh->translateText("all_usergroups"); ?></option>
 										<?php
 											for($i=0;$i<count($user_groups->user_group);$i++){
