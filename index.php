@@ -1236,7 +1236,7 @@ function goGetInSession(type) {
 			});
 
 			// Clear previous agent info
-			/*$('#view_campaign_information').on('hidden.bs.modal', function () {
+			$('#view_campaign_information').on('hidden.bs.modal', function () {
 				clear_campaign_form();
 			});
 			
@@ -1250,7 +1250,6 @@ function goGetInSession(type) {
 					cache: false,
 					//dataType: 'json',
 					success: function(data){ 
-						console.log(data);
 						var JSONString = data;
 						var JSONObject = JSON.parse(JSONString);                                    
 						//console.log(JSONObject);
@@ -1293,7 +1292,7 @@ function goGetInSession(type) {
 					}
 				 });                        
 			 });
-			*/
+			
 			// ---- loads datatable functions
 			
 			// ---- Fixed Action Button
