@@ -48,7 +48,7 @@
 			$lead_id 								= $api->escapeJsonString($value->vla_lead_id);
 			$agent_log_id 							= $api->escapeJsonString($value->vla_agent_log_id);
 			$vla_callerid 							= $api->escapeJsonString($value->vla_callerid);    
-			//$cust_phone 							= $api->escapeJsonString($value->vl_phone_number);
+			$cust_phone 							= $api->escapeJsonString($value->vl_phone_number);
 			$pausecode 								= $api->escapeJsonString($value->vla_pausecode);
 			
 			foreach ($output->callerids as $key => $callerids) {
