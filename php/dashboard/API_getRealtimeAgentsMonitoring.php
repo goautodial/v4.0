@@ -71,6 +71,14 @@
 			$STARTtime 								= date("U");       
 			$sessionAvatar 							= "<div class='media'><avatar username='$agentname' :size='32'></avatar></div>";
 			
+			$call_time_S 							= ($STARTtime - $last_state_change);
+			$call_time_M 							= ($call_time_S / 60);
+			$call_time_M 							= round($call_time_M, 2);
+			$call_time_M_int 						= intval("$call_time_M");
+			$call_time_SEC 							= ($call_time_M - $call_time_M_int);
+			$call_time_SEC 							= ($call_time_SEC * 60);
+			$call_time_SEC 							= round($call_time_SEC, 0);
+			
 			if ($status == "INCALL") {
 				$textclass 							= "text-success";        
 				
@@ -124,13 +132,7 @@
 				$textclass 							= "text-success";
 			}
 		
-			$call_time_S 							= ($STARTtime - $last_state_change);
-			$call_time_M 							= ($call_time_S / 60);
-			$call_time_M 							= round($call_time_M, 2);
-			$call_time_M_int 						= intval("$call_time_M");
-			$call_time_SEC 							= ($call_time_M - $call_time_M_int);
-			$call_time_SEC 							= ($call_time_SEC * 60);
-			$call_time_SEC 							= round($call_time_SEC, 0);
+
 				
 			if ($call_time_SEC < 10) { 
 				$call_time_SEC 						= "0$call_time_SEC"; 

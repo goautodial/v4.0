@@ -5603,7 +5603,7 @@ error_reporting(E_ERROR | E_PARSE);
 	if($limit > 0){
 		$postfields["goVarLimit"] = $limit;
 	}else{
-		$postfields["goVarLimit"] = "500";
+		$postfields["goVarLimit"] = "50";
 	}
 
 	$postfields["user"] = $userName;
