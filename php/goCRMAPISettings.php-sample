@@ -1,0 +1,6 @@
+<?php
+define ('gourl', 'https://HOSTNAME/goAPIv2'); //replace with your HOSTNAME
+define ('goUser', 'goAPI');
+define ('goPass', 'goAPIpass1234'); //replace with your goAPI user password
+define ('responsetype', 'json');
+?>
