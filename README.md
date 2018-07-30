@@ -45,6 +45,24 @@ Edit the 3 configuration files (inside /var/www/html/):
 2. php/Config.php
 3. php/goCRMAPISettings.php
 
+<pre>
+cd /var/www/html/
+cp astguiclient.conf-sample astguiclient.conf
+nano astguiclient.conf
+</pre>
+
+<pre>
+cd /var/www/html/php/
+cp Config.php-sample Config.php
+nano Config.php
+</pre>
+
+<pre>
+cd /var/www/html/php/
+cp goCRMAPISettings.php-sample goCRMAPISettings.php
+nano goCRMAPISettings.php
+</pre>
+
 Replace the default database name, users and passwords according to your preference.
 
 
