@@ -1620,8 +1620,7 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 		<script src="adminlte/js/app.min.js"></script>
 		
 		<!-- Select2 -->
-		<!-- already in UIHandler.php -->
-        <!-- <script src="js/select2.js" type="text/javascript"></script> -->
+        <script src="js/select2.js" type="text/javascript"></script>
 		
 		<script type="text/javascript">
 			$("#compose-textarea").wysihtml5();

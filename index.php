@@ -1045,9 +1045,8 @@ function clear_campaign_form(){
 }
 
 function goGetModalUsernameValue(){
-   
 	var goModalUsername = document.getElementById("modal-username").innerText;
-
+	console.log(goModalUsername);
 	swal({
 		title: "Are you sure?",
 		text: "Agent "+goModalUsername+" will be logged out of the dialer.",
@@ -1062,7 +1061,7 @@ function goGetModalUsernameValue(){
 			url: "./php/APIs/API_EmergencyLogout.php",
 			data: {goUserAgent: goModalUsername},
 			cache: false,
-			//dataType: 'json',
+			dataType: 'json',
 			success: function(data){
 				clear_agent_form();
 				sweetAlert("Emergency Logout",data, "warning");
@@ -1209,12 +1208,13 @@ function goGetInSession(type) {
 					type: 'POST',
 					url: "./php/dashboard/API_getAgentInformation.php",
 					data: {
-						user: user
+						user: user,
+						filter: 'userInfo'
 					},
 					cache: false,
 					dataType: 'json',
 					success: function(JSONObject){ 
-						//console.log(JSONObject);
+						console.log(JSONObject);
 						$('#modal-userid').html(JSONObject.data[0].vu_user_id);
 						//global_userid = JSONObject.data[0].vu_user_id;                                        
 						$('#modal-username').html(JSONObject.data[0].vla_user);

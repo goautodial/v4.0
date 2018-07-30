@@ -48,19 +48,19 @@
 			$lead_id 								= $api->escapeJsonString($value->vla_lead_id);
 			$agent_log_id 							= $api->escapeJsonString($value->vla_agent_log_id);
 			$vla_callerid 							= $api->escapeJsonString($value->vla_callerid);    
-			$cust_phone 							= $api->escapeJsonString($value->vl_phone_number);
+			$cust_phone 							= ( !isset ( $value->vl_phone_number ) ) ? "" : $api->escapeJsonString ( $value->vl_phone_number );
 			$pausecode 								= $api->escapeJsonString($value->vla_pausecode);
 			
 			foreach ($output->callerids as $key => $callerids) {
 			
-				$vac_callerid 						= $api->escapeJsonString($callerids->vac_callerid);        
+				$vac_callerid 						= ( !isset ( $callerids->vac_callerid ) ) ? "" : $api->escapeJsonString ( $callerids->vac_callerid );       
 				$vac_lead_id 						= $api->escapeJsonString($callerids->vac_lead_id);
 				$vac_phone_number 					= $api->escapeJsonString($callerids->vac_phone_number);
 			}
 			
 			foreach ($output->parked as $key => $parked){
 			
-				$pc_channel 						= $parked->pc_channel;
+				$pc_channel 						= ( !isset ( $parked->pc_channel ) ) ? "" : $api->escapeJsonString ( $parked->pc_channel );
 				$pc_channel_group 					= $parked->pc_channel_group;
 				$pc_extension 						= $parked->pc_extension;
 				$pc_parked_by 						= $parked->pc_parked_by;

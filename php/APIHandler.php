@@ -713,11 +713,11 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goUsers", $postfields);
 	}
 
-	public function API_getUserInfo($user, $type = null){
+	public function API_getUserInfo($user, $filter = null){
 		$postfields = array(
 			'goAction' => 'goGetUserInfo',
 			'user' => $user,
-			'type' => $type
+			'filter' => $filter
 		);
 		return $this->API_Request("goUsers", $postfields);
 	}

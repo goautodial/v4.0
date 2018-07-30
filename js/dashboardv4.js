@@ -51,13 +51,16 @@
     function load_view_agent_information(){        
 		var user = document.getElementById("modal-username").innerText;
 		$.ajax({
-			type: 'POST',
+			type: "POST",
 			url: "./php/dashboard/API_getAgentInformation.php",
-			data: {user: user},
+			data: {
+				user: user,
+				filter: "userInfo"
+			},
 			cache: false,
-			dataType: 'json',
+		 dataType: "json",
 			success: function(data){					
-				var table = $('#view_agent_information_table').DataTable({ 
+				var table = $("#view_agent_information_table").DataTable({ 
 					data:data,
 					"paging":   false,
 					"bPaginate": false,
