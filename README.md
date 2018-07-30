@@ -29,7 +29,7 @@ Multi-language
 
 To install (assumming your document root directory is /var/www/html):
 
-cd /var/www
+cd /var/www<br>
 git clone https://github.com/goautodial/v4.0 html
 
 Edit the 3 configuration files (inside /var/www/html/):
