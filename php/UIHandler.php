@@ -1167,7 +1167,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    <ul class="dropdown-menu" role="menu">
 			<li'.(($perm->list->list_update === 'N' || preg_match("/^(998|999)$/", $listid)) ? ' class="hidden"' : '').'><a class="edit-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">'.$this->lh->translationFor("modify").'</a></li>
 			<li'.(($perm->customfields->customfields_create === 'N' || preg_match("/^(998|999)$/", $listid)) ? ' class="hidden"' : '').'><a class="copy-custom-fields" href="#" data-id="'.$listid.'" data-name="'.$listname.'">'.$this->lh->translationFor("copy_list_custom_fields").'</a></li>
-			<li'.($perm->list->list_download === 'N' ? ' class="hidden"' : '').'><a class="download-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">'.$this->lh->translationFor("download_list").'</a></li>
+			<li'.($perm->list->list_download === 'N' ? ' class="hidden"' : '').'><a class="download-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">'.$this->lh->translationFor("download").'</a></li>
 			<li class="divider'.(($perm->list->list_delete === 'N' || preg_match("/^(998|999)$/", $listid)) ? ' hidden' : '').'"></li>
 			<li'.(($perm->list->list_delete === 'N' || preg_match("/^(998|999)$/", $listid)) ? ' class="hidden"' : '').'><a class="delete-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
@@ -3929,10 +3929,11 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li'.($perm->campaign->campaign_update === 'N' ? ' class="hidden"' : '').'><a class="edit-campaign" href="#" data-id="'.$id.'">'.$this->lh->translationFor("view_details").'</a></li>
-			<li'.($perm->pausecodes->pausecodes_read === 'N' ? ' class="hidden"' : '').'><a class="view-pause-codes" href="#" data-id="'.$id.'">'.$this->lh->translationFor("view_pause_codes").'</a></li>
-			<li'.($perm->hotkeys->hotkeys_read === 'N' ? ' class="hidden"' : '').'><a class="view-hotkeys" href="#" data-id="'.$id.'">'.$this->lh->translationFor("view_hotkeys").'</a></li>
-			<li'.($perm->list->list_read === 'N' ? ' class="hidden"' : '').'><a class="view-lists" href="#" data-id="'.$id.'">'.$this->lh->translationFor("view_lists").'</a></li>
+			<li'.($perm->campaign->campaign_update === 'N' ? ' class="hidden"' : '').'><a class="edit-campaign" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
+			<li'.($perm->pausecodes->pausecodes_read === 'N' ? ' class="hidden"' : '').'><a class="view-pause-codes" href="#" data-id="'.$id.'">'.$this->lh->translationFor("pause_codes").'</a></li>
+			<li'.($perm->hotkeys->hotkeys_read === 'N' ? ' class="hidden"' : '').'><a class="view-hotkeys" href="#" data-id="'.$id.'">'.$this->lh->translationFor("hotkeys").'</a></li>
+			<li'.($perm->list->list_read === 'N' ? ' class="hidden"' : '').'><a class="view-lists" href="#" data-id="'.$id.'">'.$this->lh->translationFor("lists").'</a></li>
+			<li class="divider'.($perm->campaign->campaign_delete === 'N' ? ' hidden' : '').'"></li>
 			<li'.($perm->campaign->campaign_delete === 'N' ? ' class="hidden"' : '').'><a class="delete-campaign" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
@@ -5838,7 +5839,7 @@ error_reporting(E_ERROR | E_PARSE);
         $css .= '<link href="css/datatables/1.10.19/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />'."\n";
 		$css .= '<link href="css/datatables/1.10.19/responsive.dataTables.min.css" rel="stylesheet" type="text/css" />'."\n";
 		$css .= '<link href="css/datatables/1.10.19/responsive.jqueryui.min.css" rel="stylesheet" type="text/css" />'."\n";  
-
+		$css .= '<style rel="stylesheet" type="text/css"> .content { padding-bottom: 75px; } </style>';		
 		$css .= '<script src="js/datatables/1.10.19/jquery.dataTables.min.js" type="text/javascript"></script>'."\n";
 		$css .= '<script src="js/datatables/1.10.19/dataTables.jqueryui.min.js" type="text/javascript"></script>'."\n";
 		$css .= '<script src="js/datatables/1.10.19/dataTables.bootstrap.min.js" type="text/javascript"></script>'."\n";

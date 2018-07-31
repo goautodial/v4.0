@@ -213,14 +213,14 @@
 
                 <!-- Main content -->
                 <section class="content">
-		<?php
-			if ($perm->list->list_read !== 'N') {
-				/****
-				** API to get data of tables
-				****/
-				$lists = $api->API_getAllLists($_SESSION['usergroup']);
-				//var_dump($lists);
-		?>
+				<?php
+					if ($perm->list->list_read !== 'N') {
+						/****
+						** API to get data of tables
+						****/
+						$lists = $api->API_getAllLists($_SESSION['usergroup']);
+						//var_dump($lists);
+				?>
                 	<div class="row">
                         <div class="col-lg-<?=($perm->list->list_upload === 'N' ? '12' : '9')?>">
 		                <div class="panel panel-default">
@@ -245,21 +245,21 @@
 									<!-- Tab panes-->
 									<div class="tab-content bg-white">
 										<!--==== List ====-->
-										<div id="list_tab" role="tabpanel" class="tab-pane active table-responsive">
-											<table class="table table-striped table-bordered table-hover" id="table_lists">
+										<div id="list_tab" role="tabpanel" class="tab-pane active">
+											<table class="display responsive no-wrap table table-striped table-bordered" width="100%" id="table_lists">
 												<thead>
 													<tr>
 													<!--<th style="color: white;">Pic</th>-->
+													<th><?php $lh->translateText("list_id"); ?></th>
+													<th><?php $lh->translateText("name"); ?></th>
+													<th><?php $lh->translateText("status"); ?></th>
+													<th><?php $lh->translateText("leads_count"); ?></th>
+													<th><?php $lh->translateText("campaign"); ?></th>
+													<th><?php $lh->translateText("field"); ?></th>
 													<?php if ($perm->list->list_delete !== 'N'){ ?>
 													<th><?php echo $checkbox_all;?></th>
-													<?php } ?>
-													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("list_id"); ?></th>
-													<th><?php $lh->translateText("name"); ?></th>
-													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("status"); ?></th>
-													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("leads_count"); ?></th>
-													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("campaign"); ?></th>
-													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("field"); ?></th>
-													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("action"); ?></th>
+													<?php } ?>													
+													<th><?php $lh->translateText("action"); ?></th>
 													</tr>
 												</thead>
 												<tbody>
@@ -278,10 +278,7 @@
 												?>
 												<tr>
 												<!--<td><avatar username='<?php echo $lists->list_name[$i];?>' :size='36'></avatar></td>-->
-												<?php if ($perm->list->list_delete !== 'N'){ ?>
-												<td style="width:10%;"><?php echo $checkbox;?></td>
-												<?php } ?>
-												<td class='hide-on-low'><strong>
+												<td><strong>
 													<?php
 													if (($perm->list->list_update !== 'N' && !preg_match("/^(998|999)$/", $lists->list_id[$i]))) {
 													?>
@@ -291,10 +288,13 @@
 													?><?php echo $lists->list_id[$i];?>
 												</strong></td>
 												<td><?php echo $lists->list_name[$i];?></td>
-												<td class='hide-on-medium hide-on-low'><?php echo $lists->active[$i];?></td>
-												<td class='hide-on-medium hide-on-low'><?php echo $lists->tally[$i];?></td>
-												<td class='hide-on-medium hide-on-low'><?php echo $lists->campaign_name[$i];?></td>
-												<td class='hide-on-medium hide-on-low'><?php echo $lists->cf_count[$i];?></td>
+												<td><?php echo $lists->active[$i];?></td>
+												<td><?php echo $lists->tally[$i];?></td>
+												<td><?php echo $lists->campaign_name[$i];?></td>
+												<td><?php echo $lists->cf_count[$i];?></td>
+												<?php if ($perm->list->list_delete !== 'N'){ ?>
+												<td><?php echo $checkbox;?></td>
+												<?php } ?>												
 												<td><?php echo $action_list;?></td>
 												</tr>
 												<?php
@@ -306,11 +306,11 @@
 										</div><!-- /.list-tab -->
 										<!--==== DNC ====-->
 										<div id="dnc_tab" role="tabpanel" class="tab-pane">
-											<table class="table table-striped table-bordered table-hover" id="table_dnc">
+											<table class="display responsive no-wrap table table-striped table-bordered" width="100%" id="table_dnc">
 												<thead>
 													<tr>
 													<th><?php $lh->translateText("phone_number"); ?></th>
-													<th class='hide-on-medium hide-on-low'><?php $lh->translateText("campaign"); ?></th>
+													<th><?php $lh->translateText("campaign"); ?></th>
 													<th><?php $lh->translateText("action"); ?></th>
 													</tr>
 												</thead>
@@ -681,6 +681,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					// initialize datatable
 					$('#table_lists').DataTable( {
 			            destroy: true,
+			            responsive: true,
 				    	select: true,
 				    	stateSave: true,
 						"aaSorting": [[ 1, "asc" ]],
