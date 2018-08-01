@@ -54,7 +54,7 @@
 
      <?php print $ui->creamyBody(); ?>
      <?php 
-     	$standard_fields = $ui->API_getAllStandardFields();
+     	$standard_fields = $api->API_getStandardFields();
      ?>
         <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
@@ -109,7 +109,7 @@
 	$scripts = $api->API_getAllScripts();
 
 ?>
-	<div class="modal fade" id="scripts-modal" tabindex="-1"aria-labelledby="scripts">
+	<div class="modal fade" id="scripts-modal" tabindex="-1" aria-labelledby="scripts">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
 				<div class="modal-header">
@@ -133,8 +133,8 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="script_id"><?php $lh->translateText("script_id"); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="script_id" id="script_id" value="<?php print_r($scripts->script_count);?>" maxlength="15" disabled required />
-										<input type="hidden" name="script_id" value="<?php print_r($scripts->script_count);?>">
+										<input type="text" class="form-control" name="script_id" id="script_id" value="<?php echo ($scripts->script_count);?>" maxlength="15" disabled required />
+										<input type="hidden" name="script_id" value="<?php echo ($scripts->script_count);?>">
 										<input type="hidden" name="script_user" value="<?php echo $user->getUserName();?>">
 									</div>
 									<div class="col-sm-1">&nbsp;</div>
@@ -168,6 +168,7 @@
 									<div class="col-sm-8 mb">
 										<select name="script_user_group" class="form-control">
 											<option value="" disabled selected> - - - <?php $lh->translateText('Select User Group'); ?> - - -</option>
+											<option value="---ALL---" selected> - - - ALL - - -</option>
 											<?php
 											if ($user_groups->result == 'success') {
 												foreach ($user_groups->user_group as $i => $group) {
@@ -194,7 +195,7 @@
 														<button type="button" class="btn btn-default" onClick="addtext();"><?php $lh->translateText("insert"); ?></button>
 													</span>
 													<select class="form-control" name="script_text_dropdown" id="script_text_dropdown">
-														<?php foreach($standard_fields as $sf) { ?>
+														<?php foreach($standard_fields->field_name as $sf) { ?>
 															<option value="--A--<?php echo $sf; ?>--B-- "><?php echo $sf; ?></option>
 														<?php } ?>
 													</select>
@@ -274,16 +275,21 @@
 		** INITIALIZATIONS
 		*******************/
 
-			// init data table
-				$('#scripts_table').dataTable({
-					"aoColumnDefs": [{
-						"bSearchable": false,
-						"aTargets": [ 5 ]
-					},{
-						"bSortable": false,
-						"aTargets": [ 5 ]
-					}]
-				});
+		$('#scripts_table').DataTable({
+			destroy:true, 
+			responsive:true,
+			stateSave:true,
+			drawCallback:function(settings) {
+				var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+				pagination.toggle(this.api().page.info().pages > 1);
+			},
+			columnDefs:[
+				{ width: "12%", targets: 5 },
+				{ searchable: false, targets: 5 },
+				{ sortable: false, targets: 5 },
+				{ targets: -1, className: "dt-body-right" }
+			]
+		});
 
 		/*******************
 		** INIT WIZARD & ADD EVENT
@@ -335,10 +341,11 @@
 							type: 'POST',
 							data: $("#create_form").serialize() + '&script_text_value=' + encodeURIComponent(CKEDITOR.instances['script_text'].getData()),
 							success: function(data) {
-								// console.log(data);
+								console.log(data);
+								console.log($("#create_form").serialize() + '&script_text_value=' + encodeURIComponent(CKEDITOR.instances['script_text'].getData()));
 								$('#finish').text("<?php $lh->translateText("submit"); ?>");
 								$('#finish').attr("disabled", false);
-								if(data == "success"){
+								if(data == 1){
 									swal({title: "<?php $lh->translateText("add_script_success"); ?>",text: "<?php $lh->translateText("add_script_success_msg"); ?>",type: "success"},function(){window.location.href = 'telephonyscripts.php';});
 								}else{
 									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
@@ -388,7 +395,7 @@
 								},
 								success: function(data) {
 								//console.log(data);
-									if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
+									if(data == 1){
 										swal({title: "<?php $lh->translateText("delete_script_success"); ?>",text: "<?php $lh->translateText("delete_script_success_msg"); ?>",type: "success"},function(){window.location.href = 'telephonyscripts.php';});
 									}else{
 										sweetAlert("<?php $lh->translateText("oups"); ?>", data, "error");

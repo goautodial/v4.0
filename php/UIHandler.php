@@ -4243,10 +4243,10 @@ error_reporting(E_ERROR | E_PARSE);
 	    if ($output->result=="success") {
 	    # Result was OK!
 	    $columns = array($this->lh->translationFor("script_id"), $this->lh->translationFor("script_name"), $this->lh->translationFor("status"), $this->lh->translationFor("type"), $this->lh->translationFor("user_group"), $this->lh->translationFor("action"));
-	    $hideOnMedium = array($this->lh->translationFor("type"), $this->lh->translationFor("status"), $this->lh->translationFor("user_group"));
-	    $hideOnLow = array($this->lh->translationFor("script_id"), $this->lh->translationFor("type"), $this->lh->translationFor("status"), $this->lh->translationFor("user_group"));
+	    //$hideOnMedium = array($this->lh->translationFor("type"), $this->lh->translationFor("status"), $this->lh->translationFor("user_group"));
+	    //$hideOnLow = array($this->lh->translationFor("script_id"), $this->lh->translationFor("type"), $this->lh->translationFor("status"), $this->lh->translationFor("user_group"));
 
-		$result = $this->generateTableHeaderWithItems($columns, "scripts_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		$result = $this->generateTableHeaderWithItems($columns, "scripts_table", "display responsive no-wrap table-bordered table-striped", true, false);
 
 	    for($i=0;$i<count($output->script_id);$i++){
 		$action = $this->getUserActionMenuForScripts($output->script_id[$i], $output->script_name[$i], $perm);
@@ -4265,11 +4265,11 @@ error_reporting(E_ERROR | E_PARSE);
 			}
 
 			$result .= "<tr>
-				<td class='hide-on-low'>".$preFix."".$output->script_id[$i]."".$sufFix."</td>
+				<td>".$preFix."".$output->script_id[$i]."".$sufFix."</td>
 				<td>".$output->script_name[$i]."</td>
-				<td class='hide-on-medium hide-on-low'>".$active."</td>
-				<td class='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
-				<td class='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>
+				<td>".$active."</td>
+				<td>".$output->active[$i]."</td>
+				<td>".$output->user_group[$i]."</td>
 				<td>".$action."</td>
 			    </tr>";
 		    }

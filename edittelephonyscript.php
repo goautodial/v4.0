@@ -62,7 +62,7 @@
     </style>
     <?php print $ui->creamyBody(); ?>
     <?php 
-	 	$standard_fields = $ui->API_getAllStandardFields();
+	 	$standard_fields = $api->API_getStandardFields();
 	?>
         <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
@@ -182,7 +182,7 @@
 										<button type="button" class="btn btn-default" onClick="addtext();"><?php $lh->translateText("insert"); ?></button>
 									</span>
 									<select class="form-control" name="script_text_dropdown" id="script_text_dropdown">
-										<?php foreach($standard_fields as $sf) { ?>
+										<?php foreach($standard_fields->field_name as $sf) { ?>
 											<option value="--A--<?php echo $sf; ?>--B--"><?php echo $sf; ?></option>
 										<?php } ?>
 									</select>
@@ -280,7 +280,7 @@
 				/** 
 				 * Modifies a telephony script
 			 	 */
-			 	$('#modifyOkButton').click(function(){
+			 	$(document).on('click', '#modifyOkButton', function(){
 			 		$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
 					$('#modifyOkButton').prop("disabled", true);
 					$.ajax({
@@ -288,11 +288,12 @@
                         type: 'POST',
                         data: $("#modifyform").serialize() + '&script_text_value=' + encodeURIComponent(CKEDITOR.instances['script_text'].getData()),
                         success: function(data) {
-                        	// console.log(data);
+                        	console.log(data);
+                        	//console.log($("#modifyform").serialize() + '&script_text_value=' + encodeURIComponent(CKEDITOR.instances['script_text'].getData()));
 							$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
 	                        $('#modifyOkButton').prop("disabled", false);
 							
-	                        if (data == "success") {
+	                        if (data == 1) {
 								swal({title: "<?php $lh->translateText("edit_script_success"); ?>",text: "<?php $lh->translateText("edit_script_success_msg"); ?>",type: "success"},function(){window.location.href = 'telephonyscripts.php';});
 							} else {
 								sweetAlert("<?php $lh->translateText("oups"); ?>", data, "error");
@@ -308,39 +309,39 @@
 				var text = document.getElementById('script_text_dropdown').value;
 				CKEDITOR.instances.script_text.insertText( text );
 
-				// if (!txtarea) { return; }
+				/* if (!txtarea) { return; }
 
-				// var scrollPos = txtarea.scrollTop;
-				// var strPos = 0;
-				// var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ?
-				// 	"ff" : (document.selection ? "ie" : false ) );
-				// if (br == "ie") {
-				// 	txtarea.focus();
-				// 	var range = document.selection.createRange();
-				// 	range.moveStart ('character', -txtarea.value.length);
-				// 	strPos = range.text.length;
-				// } else if (br == "ff") {
-				// 	strPos = txtarea.selectionStart;
-				// }
+				 var scrollPos = txtarea.scrollTop;
+				 var strPos = 0;
+				 var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ?
+				 	"ff" : (document.selection ? "ie" : false ) );
+				 if (br == "ie") {
+				 	txtarea.focus();
+				 	var range = document.selection.createRange();
+				 	range.moveStart ('character', -txtarea.value.length);
+				 	strPos = range.text.length;
+				 } else if (br == "ff") {
+				 	strPos = txtarea.selectionStart;
+				 }
 
-				// var front = (txtarea.value).substring(0, strPos);
-				// var back = (txtarea.value).substring(strPos, txtarea.value.length);
-				// txtarea.value = front + text + back;
-				// strPos = strPos + text.length;
-				// if (br == "ie") {
-				// 	txtarea.focus();
-				// 	var ieRange = document.selection.createRange();
-				// 	ieRange.moveStart ('character', -txtarea.value.length);
-				// 	ieRange.moveStart ('character', strPos);
-				// 	ieRange.moveEnd ('character', 0);
-				// 	ieRange.select();
-				// } else if (br == "ff") {
-				// 	txtarea.selectionStart = strPos;
-				// 	txtarea.selectionEnd = strPos;
-				// 	txtarea.focus();
-				// }
+				 var front = (txtarea.value).substring(0, strPos);
+				 var back = (txtarea.value).substring(strPos, txtarea.value.length);
+				 txtarea.value = front + text + back;
+				 strPos = strPos + text.length;
+				 if (br == "ie") {
+					txtarea.focus();
+				 	var ieRange = document.selection.createRange();
+				 	ieRange.moveStart ('character', -txtarea.value.length);
+				 	ieRange.moveStart ('character', strPos);
+				 	ieRange.moveEnd ('character', 0);
+				 	ieRange.select();
+				 } else if (br == "ff") {
+				 	txtarea.selectionStart = strPos;
+				 	txtarea.selectionEnd = strPos;
+				 	txtarea.focus();
+				 }
 				
-				// txtarea.scrollTop = scrollPos;
+				 txtarea.scrollTop = scrollPos;*/
 			}
 		</script>
 

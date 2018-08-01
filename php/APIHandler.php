@@ -318,15 +318,20 @@ if(isset($_SESSION["user"])){
 	
 	// API Scripts
 	public function API_getAllScripts(){
-		$url = gourl."/goScripts/goAPI.php";
         $postfields = array(
 			'goAction' => 'goGetAllScripts'
 		);				
         return $this->API_Request("goScripts", $postfields);
 	}
 
+	public function API_getStandardFields(){
+        $postfields = array(
+			'goAction' => 'goGetStandardFields'
+		);				
+        return $this->API_Request("goScripts", $postfields);
+	}
+	
 	public function API_getScriptInfo($scriptid){
-		$url = gourl."/goScripts/goAPI.php";
         $postfields = array(
 			'goAction' => 'goGetScriptInfo',
 			'script_id' => $scriptid
@@ -846,6 +851,10 @@ if(isset($_SESSION["user"])){
 	public function API_addScript($postfields){
 		return $this->API_Request("goScripts", $postfields);
 	}
+	
+	public function API_editScript($postfields){
+		return $this->API_Request("goScripts", $postfields);
+	}	
 
 	public function API_addServer($postfields){
 		return $this->API_Request("goServers", $postfields);
