@@ -94,98 +94,6 @@
 				width: 100% !important;
 			}
 		</style>
-		
-        <script type="text/javascript">
-			
-			// Progress bar function
-			function goProgressBar() {
-				
-				var formData = new FormData($('#upload_form')[0]);
-				var progress_bar_id 		= '#progress-wrp'; //ID of an element for response output
-				var percent = 0;
-				
-				var result_output 			= '#output'; //ID of an element for response output
-				var my_form_id 				= '#upload_form'; //ID of an element for response output
-				var submit_btn  = $(this).find("input[type=button]"); //btnUpload
-	
-				formData.append('tax_file', $('input[type=file]')[0].files);
-				
-				$.ajax({
-					url : "./php/AddLoadLeads.php",
-					type: "POST",
-					data : formData,
-					contentType: false,
-					cache: false,
-					processData:false,
-					maxChunkSize: 1000000000,
-					maxRetries: 100000000,
-					retryTimeout: 5000000000,
-					xhr: function(){
-						//upload Progress
-						var xhr = $.ajaxSettings.xhr();
-						if (xhr.upload) {
-							xhr.upload.addEventListener('progress', function(event) {
-								
-								var position = event.loaded || event.position;
-								var total = event.total;
-								if (event.lengthComputable) {
-									percent = Math.ceil(position / total * 100);
-								}
-								
-								//update progressbar
-								$(progress_bar_id +" .progress-bar").css("width", + percent +"%");
-								$(progress_bar_id + " .status").text(percent +"%");
-								//$(progress_bar_id + " .status").innerHTML = percent + '%';
-								
-								if(percent === 100) {
-									
-									//$('#dStatus').css("display", "block");
-									//$('#dStatus').css("color", "#4CAF50");
-									//$('#qstatus').text("File Uploaded Successfully. Please wait for the TOTAL of leads uploaded.(Do not refresh the page)");
-									//$('#qstatus').text("Data Processing. Please Wait.");
-									//sweetAlert("Oops...", "Something went wrong!", "error");
-									
-									//var uploadMsgTotal = "Total Leads Uploaded: "+res;
-					
-									swal({
-										title: "<?php $lh->translateText('csv_upload_complete'); ?>",
-										text: "<?php $lh->translateText('data_processing'); ?>",
-										type: "info",
-										showCancelButton: false,
-										closeOnConfirm: false
-									  });
-									
-								}
-								
-							}, true);
-							
-						}
-						return xhr;
-					},
-					mimeType:"multipart/form-data"
-				}).done(function(res){
-					
-					var uploadMsgTotal = "<?php $lh->translateText('total_leads_upload'); ?>: "+res;
-					
-					swal({
-							title: "<?php $lh->translateText('data_processing_complete'); ?>",
-							text: uploadMsgTotal,
-							type: "success"
-						},
-						function(){
-							location.reload();
-							$(".preloader").fadeIn();
-						}
-					);
-					
-				});
-								
-			}
-			// End Progress bar function
-			
-		</script>
-
-
     </head>
 
     <?php print $ui->creamyBody(); ?>
@@ -222,7 +130,7 @@
 						//var_dump($lists);
 				?>
                 	<div class="row">
-                        <div class="col-lg-<?=($perm->list->list_upload === 'N' ? '12' : '9')?>">
+                        <div class="col-lg-9">
 		                <div class="panel panel-default">
 							<div class="panel-body">
 							<legend id="legend_title"><?php $lh->translateText("lists"); ?></legend>
@@ -329,7 +237,7 @@
 					</div><!-- /.col-lg-9 -->
 
 <?php
-if ($perm->list->list_upload !== 'N') {
+//if ($perm->list->list_upload !== 'N') {
 ?>
 	<div class="col-lg-3" id="list_sidebar">
 	<h3 class="m0 pb-lg"><?php $lh->translateText("upload_import"); ?></h3>
@@ -433,7 +341,7 @@ if ($perm->list->list_upload !== 'N') {
 		</div>
 	</div><!-- ./ dnc search -->
 <?php
-}
+//}
 ?>
 
 </div>
@@ -640,423 +548,412 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	  </div>
 	</div>
 	
-		<?php print $ui->standardizedThemeJS();?>
-		<!-- JQUERY STEPS-->
-  		<script src="js/dashboard/js/jquery.steps/build/jquery.steps.js"></script>
+	<?php print $ui->standardizedThemeJS();?>
+	<!-- JQUERY STEPS-->
+	<script src="js/dashboard/js/jquery.steps/build/jquery.steps.js"></script>
 		
-		<script type="text/javascript">
-			$(document).ready(function() {
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var list_create = <?php echo ($perm->list->list_create !== "N" ? 1 : 0 ) ?>;
+			var list_read 	= <?php echo ($perm->list->list_create !== "N" ? 1 : 0 ) ?>;
+			var list_update = <?php echo ($perm->list->list_create !== "N" ? 1 : 0 ) ?>;			
+			var list_delete = <?php echo ($perm->list->list_delete !== "N" ? 1 : 0 ) ?>;
+			var list_upload = <?php echo ($perm->list->list_upload !== "N" ? 1 : 0 ) ?>;
+
+			if (list_create != 1) {
+				$("#list_fab").attr("disabled", true);
+				$("#list_fab").attr("hidden", true);
+			} else {
+				$("#list_fab").attr("disabled", false);
+				$("#list_fab").attr("hidden", false);			
+			}
+			if (list_upload != 1) {
+				console.log(list_upload);
+				$("#list_sidebar").find("select, textarea, input, .browse-btn").each(function() {
+					//console.log($(this).attr('name'));
+					$(this).attr("disabled", true);
+				});
+			} else {
+				console.log(list_upload);
+				$("#list_sidebar").find("select, textarea, input, .browse-btn").each(function() {
+					//console.log($(this).attr('name'));
+					$(this).attr("disabled", false);
+				});			
+			}
+
 				
-				// on tab change, change sidebar
-				$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-					var target = $(e.target).attr("href"); // activated tab
-					
-					if(target == "#list_tab"){
-						$("#list_sidebar").show();
-						$("#list_fab").show();
-						$("#dnc_sidebar").hide();
-						$("#dnc_fab").hide();
-						$("#legend_title").text("Lists");
-					}
-					if(target == "#dnc_tab"){
-						$("#dnc_sidebar").show();
-						$("#dnc_fab").show();
-						$("#list_sidebar").hide();
-						$("#list_fab").hide();
-						$("#legend_title").text("DNC");
-					}
+			// on tab change, change sidebar
+			$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+				var target = $(e.target).attr("href"); // activated tab
+				
+				if(target == "#list_tab"){
+					$("#list_sidebar").show();
+					$("#list_fab").show();
+					$("#dnc_sidebar").hide();
+					$("#dnc_fab").hide();
+					$("#legend_title").text("Lists");
+				}
+				if(target == "#dnc_tab"){
+					$("#dnc_sidebar").show();
+					$("#dnc_fab").show();
+					$("#list_sidebar").hide();
+					$("#list_fab").hide();
+					$("#legend_title").text("DNC");
+				}
+			});
+			
+			$('body').on('keypress', '#search_dnc', function(args) {
+				if (args.keyCode == 13) {
+					$("#dnc_search_button").click();
+					return false;
+				}
+			});
+			
+			// initialize datatable
+			$('#table_lists').DataTable( {
+				destroy: true,
+				responsive: true,
+				select: true,
+				stateSave: true,
+				//"aaSorting": [[ 1, "asc" ]],
+				"aoColumnDefs": [{
+					"bSearchable": false,
+					<?php if($perm->list->list_delete !== 'N'){?>
+					"aTargets": [ 0, 7 ]
+					<?php }else{ ?>
+					"aTargets": [ 0, 6 ]
+					<?php } ?>
+				},{
+					"bSortable": false,
+					<?php if($perm->list->list_delete !== 'N'){?>
+					"aTargets": [ 0, 7 ]
+					<?php }else{ ?>
+					"aTargets": [ 0, 6 ]
+					<?php } ?>
+				}]
+			});
+			
+			$('#table_dnc').DataTable({
+				destroy: true,
+				responsive: true
+			});				
+				
+			// add list
+			if (list_create == 1) {
+				console.log(list_create);
+				var form = $("#create_form"); // init form wizard
+
+				form.validate({
+					errorPlacement: function errorPlacement(error, element) { element.after(error); }
 				});
 				
-				$('body').on('keypress', '#search_dnc', function(args) {
-				    if (args.keyCode == 13) {
-				        $("#dnc_search_button").click();
-				        return false;
-				    }
-				});
-				
-				/*****
-				** Functions for List
-				*****/
-
-					// initialize datatable
-					$('#table_lists').DataTable( {
-			            destroy: true,
-			            responsive: true,
-				    	select: true,
-				    	stateSave: true,
-						"aaSorting": [[ 1, "asc" ]],
-						"aoColumnDefs": [{
-							"bSearchable": false,
-							<?php if($perm->list->list_delete !== 'N'){?>
-							"aTargets": [ 0, 7 ]
-							<?php }else{ ?>
-							"aTargets": [ 0, 6 ]
-							<?php } ?>
-						},{
-							"bSortable": false,
-							<?php if($perm->list->list_delete !== 'N'){?>
-							"aTargets": [ 0, 7 ]
-							<?php }else{ ?>
-							"aTargets": [ 0, 6 ]
-							<?php } ?>
-						}]
-					});
-					
-					/**
-					* Add list
-					**/
-					var form = $("#create_form"); // init form wizard
-
-				    form.validate({
-				        errorPlacement: function errorPlacement(error, element) { element.after(error); }
-				    });
-					
-					form.children("div").steps({
-						headerTag: "h4",
-						bodyTag: "fieldset",
-						transitionEffect: "slideLeft",
-						onStepChanging: function (event, currentIndex, newIndex)
-						{
-							// Allways allow step back to the previous step even if the current step is not valid!
-							if (currentIndex > newIndex) {
-								return true;
-							}
-		
-							// Clean up if user went backward before
-							if (currentIndex < newIndex)
-							{
-								// To remove error styles
-								$(".body:eq(" + newIndex + ") label.error", form).remove();
-								$(".body:eq(" + newIndex + ") .error", form).removeClass("error");
-							}
-		
-							form.validate().settings.ignore = "";
-							return form.valid();
-						},
-						onFinishing: function (){
-							form.validate().settings.ignore = "";
-							return form.valid();
-						},
-						onFinished: function (){
-							$('#finish').text("<?php $lh->translateText("loading"); ?>");
-							$('#finish').attr("disabled", true);
-							$('#add_list_id').attr("disabled", false);
-							// Submit form via ajax
-							$.ajax({
-	                            url: "./php/AddList.php",
-	                            type: 'POST',
-	                            data: $('#create_form').serialize(),
-	                            success: function(data) {
-									console.log(data);
-									$('#finish').text("<?php $lh->translateText("submit"); ?>");
-									$('#finish').attr("disabled", false);
-									if (data == 1) {
-									  swal({title: "<?php $lh->translateText("add_list_success"); ?>",text: "<?php $lh->translateText("add_list_success"); ?>",type: "success"},function(){window.location.href = 'telephonylist.php';});
-									} else {
-										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>", "error");
-									}
-	                            }
-	                        });
+				form.children("div").steps({
+					headerTag: "h4",
+					bodyTag: "fieldset",
+					transitionEffect: "slideLeft",
+					onStepChanging: function (event, currentIndex, newIndex)
+					{
+						// Allways allow step back to the previous step even if the current step is not valid!
+						if (currentIndex > newIndex) {
+							return true;
 						}
-					});
-
-					/**
-					  * Edit user details
-					 */
-					$(document).on('click','.edit-list',function() {
-						var url = './edittelephonylist.php';
-						var id = $(this).attr('data-id');
-						//alert(extenid);
-						var form = $('<form action="' + url + '" method="post"><input type="hidden" name="modifyid" value="'+id+'" /></form>');
-						$('body').append(form);  // This line is not necessary
-						
-						$(form).submit();
-					});
-					
-					/**
-					  * Edit user details
-					 */
-					$(document).on('click','.download-list',function() {
-						var url = 'php/ExportList.php';
-						var id = $(this).attr('data-id');
-						//alert(extenid);
-						var form = $('<form action="' + url + '" method="post"><input type="hidden" name="listid" value="'+id+'" /></form>');
-						$('body').append(form);  // This line is not necessary
-						$(form).submit();
-					});
-					
-
-					/***
-					** Delete
-					***/
-		            $(document).on('click','.delete-list',function() {
-						var listid = [];
-						listid.push($(this).attr('data-id'));
-						console.log(listid);
-						swal({
-							title: "<?php $lh->translateText("are_you_sure"); ?>?",
-							text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
-							type: "warning",
-							showCancelButton: true,
-							confirmButtonColor: "#DD6B55",
-							confirmButtonText: "<?php $lh->translateText("confirm_list_delete"); ?>!",
-							cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
-							closeOnConfirm: false,
-							closeOnCancel: false
-							},
-							function(isConfirm){
-								if (isConfirm) {
-									$.ajax({
-										url: "./php/DeleteList.php",
-										type: 'POST',
-										data: {
-											listid: listid
-										},
-										success: function(data) {
-										console.log(data);
-											if(data == 1){
-												swal({title: "<?php $lh->translateText("delete_list_success"); ?>",text: "<?php $lh->translateText("delete_list_success_msg"); ?>",type: "success"},function(){window.location.href = 'telephonylist.php';});
-											}else{
-											   sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>!", "error");
-											}
-										}
-									});
 	
-								} else {
-									swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-								}
-							}
-						);
-		            });
-					
-					$(document).on('click','.delete-multiple-list',function() {
-					var arr = $('input:checkbox.check_list').filter(':checked').map(function () {
-						return this.id;
-					}).get();
-					console.log(arr);
-					swal({
-							title: "<?php $lh->translateText("are_you_sure"); ?>",
-							text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
-							type: "warning",
-							showCancelButton: true,
-							confirmButtonColor: "#DD6B55",
-							confirmButtonText: "<?php $lh->translateText("delete_multiple_list"); ?>!",
-							cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
-							closeOnConfirm: false,
-							closeOnCancel: false
-						},
-							function(isConfirm){
-								if (isConfirm) {
-									$.ajax({
-										url: "./php/DeleteList.php",
-										type: 'POST',
-										data: {
-											listid: arr
-										},
-										success: function(data) {
-										console.log(data);
-											if(data == 1){
-												swal({title: "<?php $lh->translateText("delete_list_success"); ?>",text: "<?php $lh->translateText("delete_list_success_msg"); ?>!",type: "success"},function(){window.location.href = 'telephonylist.php';});
-											}else{
-												sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
-											}
-										}
-									});
-								} else {
-										swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-								}
-							}
-			            );
-			        });
-					
-					$(document).on('click', '.copy-custom-fields', function(){
-						var list_id = $(this).data('id');
-						var list_name = $(this).data('name');
-
-						$('.list-from').val(list_id);
-						$('.list-from-label').val(list_id + ' - ' + list_name);
-						$('#modal_custom_field_copy').modal('show');
-					});
-
-					$(document).on('click', '.btn-copy-cf', function(){
-						var form_data = new FormData($("#copy_cf_form")[0]);
-						swal({
-							title: "<?php $lh->translateText("are_you_sure"); ?>",
-							text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
-							type: "warning",
-							showCancelButton: true,
-							confirmButtonColor: "#DD6B55",
-							confirmButtonText: "<?php $lh->translateText("yes_copy_custom_fields"); ?>",
-							cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",
-							closeOnConfirm: false,
-							closeOnCancel: false
-							},
-							function(isConfirm){
-								if (isConfirm) {
-									$.ajax({
-										url: "./php/CopyCustomFields.php",
-										type: 'POST',
-										data: form_data,
-										// dataType: 'json',
-										cache: false,
-										contentType: false,
-										processData: false,
-										success: function(data) {
-											// console.log(data);
-											if(data == "success"){
-												swal({
-														title: "<?php $lh->translateText("success"); ?>",
-														text: "<?php $lh->translateText("custom_fields_copied"); ?>",
-														type: "success"
-													},
-													function(){
-														location.reload();
-														$(".preloader").fadeIn();
-													}
-												);
-											}else{
-													sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
-											}
-										}
-									});
-								} else {
-								swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-								}
-							}
-						);
-					});
-
-					// $('#call-playback-modal').modal('show');
-					
-					$(document).on('click', '#auto_generate', function(){
-					//  alert( this.value ); // or $(this).val()
-						if($('#auto_generate').is(":checked")){
-							$('#add_list_id').val("<?php echo $next_list;?>");
-							$('#list_name').val("<?php echo $next_listname;?>");
-							$('#list_desc').val("<?php echo $next_listdesc;?>");
-							$('#add_list_id').prop("disabled", true);
+						// Clean up if user went backward before
+						if (currentIndex < newIndex)
+						{
+							// To remove error styles
+							$(".body:eq(" + newIndex + ") label.error", form).remove();
+							$(".body:eq(" + newIndex + ") .error", form).removeClass("error");
 						}
-						if(!$('#auto_generate').is(":checked")){
-							$('#add_list_id').val("");
-							$('#list_name').val("");
-							$('#list_desc').val("");
-							$('#add_list_id').prop("disabled", false);
-						}
-					});
-
-				/****
-				** Functions for upload leads
-				*****/
-					//initialize single selecting
-					$('#select2-1').select2({ theme: 'bootstrap' });
-					$.fn.select2.defaults.set( "theme", "bootstrap" );
-
-
-					$('.browse-btn').click(function(){
-						$('.file-box').click();
-					});
-
-					$('.file-box').change(function(){
-						var myFile = $(this).prop('files');
-						var Filename = myFile[0].name;
-
-						$('.file-name').val(Filename);
-						console.log($(this).val());
-					});
-
-				//-- end
-				
-				// DNC Search
-					$(document).on('click','#dnc_search_button',function() {
-					//init_contacts_table.destroy();
-						if($('#search_dnc').val() != ""){
-							$('#dnc_search_button').text("<?php $lh->translateText("searching"); ?>");
-							$('#dnc_search_button').attr("disabled", true);
-						}else{
-							$('#dnc_search_button').text("<?php $lh->translateText("search"); ?>");
-							$('#dnc_search_button').attr("disabled", false);
-						}
-						
+	
+						form.validate().settings.ignore = "";
+						return form.valid();
+					},
+					onFinishing: function (){
+						form.validate().settings.ignore = "";
+						return form.valid();
+					},
+					onFinished: function (){
+						$('#finish').text("<?php $lh->translateText("loading"); ?>");
+						$('#finish').attr("disabled", true);
+						$('#add_list_id').attr("disabled", false);
+						// Submit form via ajax
 						$.ajax({
-							url: "search_dnc.php",
+							url: "./php/AddList.php",
 							type: 'POST',
-							data: {
-								search_dnc : $('#search_dnc').val()
-							},
+							data: $('#create_form').serialize(),
 							success: function(data) {
-								$('#dnc_search_button').text("<?php $lh->translateText("search"); ?>");
-								$('#dnc_search_button').attr("disabled", false);
-								//console.log(data);
-								if(data != ""){
-									$('#table_dnc').html(data);
-									$('#table_dnc').DataTable({
-									"bDestroy" : true
-									});
-									$('#dnc_error').html("");
-								}else{
-									$('#dnc_error').text("<?php $lh->translateText("no_results"); ?>");
+								console.log(data);
+								$('#finish').text("<?php $lh->translateText("submit"); ?>");
+								$('#finish').attr("disabled", false);
+								if (data == 1) {
+									swal({title: "<?php $lh->translateText("add_list_success"); ?>",text: "<?php $lh->translateText("add_list_success"); ?>",type: "success"},function(){window.location.href = 'telephonylist.php';});
+								} else {
+									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>", "error");
 								}
 							}
 						});
-					});
+					}
+				});
+			}
+
+			// edit
+			if (list_update == 1) {
+				$(document).on('click','.edit-list',function() {
+					var url = './edittelephonylist.php';
+					var id = $(this).attr('data-id');
+					//alert(extenid);
+					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="modifyid" value="'+id+'" /></form>');
+					$('body').append(form);  // This line is not necessary
+					
+					$(form).submit();
+				});
+			}
 				
-				// DNC Submit
-					$(document).on('click','#submit_dnc',function() {
-						$('#submit_dnc').text("<?php $lh->translateText("submitting"); ?>");
-						$('#submit_dnc').attr("disabled", true);
-						
-						if ($('#phone_numbers').val() !== ''){
-							$.ajax({
-								url: "php/ActionDNC.php",
-								type: 'POST',
-								data: $('#dnc_form').serialize(),
-								success: function(data) {
+			if (list_read == 1) {
+				$(document).on('click','.download-list',function() {
+					var url = 'php/ExportList.php';
+					var id = $(this).attr('data-id');
+					//alert(extenid);
+					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="listid" value="'+id+'" /></form>');
+					$('body').append(form);  // This line is not necessary
+					$(form).submit();
+				});
+			}
+
+			// delete
+			if (list_delete == 1) {
+				console.log(list_delete);
+				$(document).on('click','.delete-list',function() {
+					var listid = [];
+					listid.push($(this).attr('data-id'));
+					console.log(listid);
+					swal({
+						title: "<?php $lh->translateText("are_you_sure"); ?>?",
+						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "<?php $lh->translateText("confirm_list_delete"); ?>!",
+						cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
+						closeOnConfirm: false,
+						closeOnCancel: false
+						},
+						function(isConfirm){
+							if (isConfirm) {
+								$.ajax({
+									url: "./php/DeleteList.php",
+									type: 'POST',
+									data: {
+										listid: listid
+									},
+									success: function(data) {
 									console.log(data);
-									$('#submit_dnc').text("<?php $lh->translateText("add_delete_dnc"); ?>");
-									$('#submit_dnc').attr("disabled", false);
-									
-									if(data == "added"){
-										swal({title: "<?php $lh->translateText("added_new"); ?> DNC", text: "<?php $lh->translateText("add_dnc"); ?>", type: "success"},function(){location.reload();});
-									} else if(data == "deleted"){
-										swal({title: "<?php $lh->translateText("deleted"); ?> DNC", text: "<?php $lh->translateText("delete_dnc"); ?>", type: "success"},function(){location.reload();});
-									} else if(data == "already exist"){
-										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("dnc_already_exist"); ?>", "error");
-									} else if(data == "does not exist"){
-										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("dnc_do_not_exist"); ?>", "error");
-									} else{
-										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+ data, "error");
+										if(data == 1){
+											swal({title: "<?php $lh->translateText("delete_list_success"); ?>",text: "<?php $lh->translateText("delete_list_success_msg"); ?>",type: "success"},function(){window.location.href = 'telephonylist.php';});
+										}else{
+											sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>!", "error");
+										}
 									}
-								}
-							});
-						} else {
-							$('#submit_dnc').text("<?php $lh->translateText("submit"); ?>");
-							$('#submit_dnc').attr("disabled", false);
-							swal("<?php $lh->translateText("dnc_incomplete"); ?>", "<?php $lh->translateText("dnc_incomplete_msg"); ?>", "error");
+								});
+
+							} else {
+								swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+							}
+						}
+					);
+				});
+				
+				$(document).on('click','.delete-multiple-list',function() {
+				var arr = $('input:checkbox.check_list').filter(':checked').map(function () {
+					return this.id;
+				}).get();
+				console.log(arr);
+				swal({
+						title: "<?php $lh->translateText("are_you_sure"); ?>",
+						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "<?php $lh->translateText("delete_multiple_list"); ?>!",
+						cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
+						closeOnConfirm: false,
+						closeOnCancel: false
+					},
+						function(isConfirm){
+							if (isConfirm) {
+								$.ajax({
+									url: "./php/DeleteList.php",
+									type: 'POST',
+									data: {
+										listid: arr
+									},
+									success: function(data) {
+									console.log(data);
+										if(data == 1){
+											swal({title: "<?php $lh->translateText("delete_list_success"); ?>",text: "<?php $lh->translateText("delete_list_success_msg"); ?>!",type: "success"},function(){window.location.href = 'telephonylist.php';});
+										}else{
+											sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+										}
+									}
+								});
+							} else {
+									swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+							}
+						}
+					);
+				});
+			}
+					
+			if (list_read == 1) {
+				$(document).on('click', '.copy-custom-fields', function(){
+					var list_id = $(this).data('id');
+					var list_name = $(this).data('name');
+
+					$('.list-from').val(list_id);
+					$('.list-from-label').val(list_id + ' - ' + list_name);
+					$('#modal_custom_field_copy').modal('show');
+				});
+
+				$(document).on('click', '.btn-copy-cf', function(){
+					var form_data = new FormData($("#copy_cf_form")[0]);
+					swal({
+						title: "<?php $lh->translateText("are_you_sure"); ?>",
+						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "<?php $lh->translateText("yes_copy_custom_fields"); ?>",
+						cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",
+						closeOnConfirm: false,
+						closeOnCancel: false
+						},
+						function(isConfirm){
+							if (isConfirm) {
+								$.ajax({
+									url: "./php/CopyCustomFields.php",
+									type: 'POST',
+									data: form_data,
+									// dataType: 'json',
+									cache: false,
+									contentType: false,
+									processData: false,
+									success: function(data) {
+										// console.log(data);
+										if(data == "success"){
+											swal({
+													title: "<?php $lh->translateText("success"); ?>",
+													text: "<?php $lh->translateText("custom_fields_copied"); ?>",
+													type: "success"
+												},
+												function(){
+													location.reload();
+													$(".preloader").fadeIn();
+												}
+											);
+										}else{
+												sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
+										}
+									}
+								});
+							} else {
+							swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+							}
+						}
+					);
+				});
+			}
+					
+			$(document).on('click', '#auto_generate', function(){
+			// alert( this.value ); // or $(this).val()
+				if($('#auto_generate').is(":checked")){
+					$('#add_list_id').val("<?php echo $next_list;?>");
+					$('#list_name').val("<?php echo $next_listname;?>");
+					$('#list_desc').val("<?php echo $next_listdesc;?>");
+					$('#add_list_id').prop("disabled", true);
+				}
+				if(!$('#auto_generate').is(":checked")){
+					$('#add_list_id').val("");
+					$('#list_name').val("");
+					$('#list_desc').val("");
+					$('#add_list_id').prop("disabled", false);
+				}
+			});
+
+			//initialize single selecting
+			$('#select2-1').select2({ theme: 'bootstrap' });
+			$.fn.select2.defaults.set( "theme", "bootstrap" );
+
+
+			$('.browse-btn').click(function(){
+				$('.file-box').click();
+			});
+
+			$('.file-box').change(function(){
+				var myFile = $(this).prop('files');
+				var Filename = myFile[0].name;
+
+				$('.file-name').val(Filename);
+				console.log($(this).val());
+			});
+
+			// DNC Search
+			if (list_read == 1) {
+				$(document).on('click','#dnc_search_button',function() {
+				//init_contacts_table.destroy();
+					if ($('#search_dnc').val() != "") {
+						$('#dnc_search_button').text("<?php $lh->translateText("searching"); ?>");
+						$('#dnc_search_button').attr("disabled", true);
+					} else {
+						$('#dnc_search_button').text("<?php $lh->translateText("search"); ?>");
+						$('#dnc_search_button').attr("disabled", false);
+					}
+					
+					$.ajax({
+						url: "search_dnc.php",
+						type: 'POST',
+						data: {
+							search_dnc : $('#search_dnc').val()
+						},
+						success: function(data) {
+							$('#dnc_search_button').text("<?php $lh->translateText("search"); ?>");
+							$('#dnc_search_button').attr("disabled", false);
+							//console.log(data);
+							if (data != "") {
+								$('#table_dnc').html(data);
+								$('#table_dnc').DataTable({
+									destroy: true,
+									responsive: true
+								});
+								$('#dnc_error').html("");
+							} else {
+								$('#dnc_error').text("<?php $lh->translateText("no_results"); ?>");
+							}
 						}
 					});
-				
-				// Delete DNC
-					$(document).on('click','.delete-dnc',function() {
-						var phone_number = $(this).data('id');
-						var campaign = $(this).data('campaign');
-						
+				});
+			
+				// DNC Submit
+				$(document).on('click','#submit_dnc',function() {
+					$('#submit_dnc').text("<?php $lh->translateText("submitting"); ?>");
+					$('#submit_dnc').attr("disabled", true);
+					
+					if ($('#phone_numbers').val() !== ''){
 						$.ajax({
 							url: "php/ActionDNC.php",
 							type: 'POST',
-							data: {
-								phone_numbers : phone_number,
-								campaign_id : campaign,
-								stageDNC : "DELETE",
-								user_id : <?php echo $user->getUserId();?>,
-								log_user: '<?php echo $_SESSION['user'];?>',
-								log_group: '<?php echo $_SESSION['usergroup'];?>'
-							},
+							data: $('#dnc_form').serialize(),
 							success: function(data) {
-								//console.log(data);
-								if(data == "deleted"){
-									swal({title: "<?php $lh->translateText("deleted"); ?>", text: "<?php $lh->translateText("delete_dnc"); ?>", type: "success"},function(){location.reload();});
+								console.log(data);
+								$('#submit_dnc').text("<?php $lh->translateText("add_delete_dnc"); ?>");
+								$('#submit_dnc').attr("disabled", false);
+								
+								if(data == "added"){
+									swal({title: "<?php $lh->translateText("added_new"); ?> DNC", text: "<?php $lh->translateText("add_dnc"); ?>", type: "success"},function(){location.reload();});
+								} else if(data == "deleted"){
+									swal({title: "<?php $lh->translateText("deleted"); ?> DNC", text: "<?php $lh->translateText("delete_dnc"); ?>", type: "success"},function(){location.reload();});
 								} else if(data == "already exist"){
-									swal({title: "<?php $lh->translateText("oups"); ?>", text: "<?php $lh->translateText("dnc_already_exist"); ?>", type: "error"},function(){location.reload();});
+									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("dnc_already_exist"); ?>", "error");
 								} else if(data == "does not exist"){
 									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("dnc_do_not_exist"); ?>", "error");
 								} else{
@@ -1064,30 +961,153 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 								}
 							}
 						});
-					});
-				
-				$('#phone_numbers').keypress(function(event){
-					if((event.ctrlKey === false && ((event.which < 48 || event.which > 57) && event.which !== 13 && event.which !== 8)) && (event.keyCode !== 9 && event.keyCode !== 46 && (event.keyCode < 37 || event.keyCode > 40)))
-					return false;
-				});
-				
-				var lines = 25;
-				
-				$('#phone_numbers').keydown(function(e) {
-					newLines = $(this).val().split("\n").length;
-				
-					if(e.keyCode == 13 && newLines >= lines) {
-						return false;
+					} else {
+						$('#submit_dnc').text("<?php $lh->translateText("submit"); ?>");
+						$('#submit_dnc').attr("disabled", false);
+						swal("<?php $lh->translateText("dnc_incomplete"); ?>", "<?php $lh->translateText("dnc_incomplete_msg"); ?>", "error");
 					}
 				});
-
-				$('#phone_numbers').blur(function() {
-					this.value = this.value.replace('/[^0-9\r\n]/g','');
-				});
+			}
 				
+			// Delete DNC
+			if (list_delete == 1) {				
+				$(document).on('click','.delete-dnc',function() {
+					var phone_number = $(this).data('id');
+					var campaign = $(this).data('campaign');
+					
+					$.ajax({
+						url: "php/ActionDNC.php",
+						type: 'POST',
+						data: {
+							phone_numbers : phone_number,
+							campaign_id : campaign,
+							stageDNC : "DELETE",
+							user_id : <?php echo $user->getUserId();?>,
+							log_user: '<?php echo $_SESSION['user'];?>',
+							log_group: '<?php echo $_SESSION['usergroup'];?>'
+						},
+						success: function(data) {
+							//console.log(data);
+							if(data == "deleted"){
+								swal({title: "<?php $lh->translateText("deleted"); ?>", text: "<?php $lh->translateText("delete_dnc"); ?>", type: "success"},function(){location.reload();});
+							} else if(data == "already exist"){
+								swal({title: "<?php $lh->translateText("oups"); ?>", text: "<?php $lh->translateText("dnc_already_exist"); ?>", type: "error"},function(){location.reload();});
+							} else if(data == "does not exist"){
+								sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("dnc_do_not_exist"); ?>", "error");
+							} else{
+								sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+ data, "error");
+							}
+						}
+					});
+				});
+			}
+			
+			$('#phone_numbers').keypress(function(event){
+				if((event.ctrlKey === false && ((event.which < 48 || event.which > 57) && event.which !== 13 && event.which !== 8)) && (event.keyCode !== 9 && event.keyCode !== 46 && (event.keyCode < 37 || event.keyCode > 40)))
+				return false;
 			});
-		</script>
+			
+			var lines = 25;
+			
+			$('#phone_numbers').keydown(function(e) {
+				newLines = $(this).val().split("\n").length;
+			
+				if(e.keyCode == 13 && newLines >= lines) {
+					return false;
+				}
+			});
 
-		<?php print $ui->creamyFooter();?>
+			$('#phone_numbers').blur(function() {
+				this.value = this.value.replace('/[^0-9\r\n]/g','');
+			});
+			
+		});
+		
+		// Progress bar function
+		function goProgressBar() {
+			
+			var formData = new FormData($('#upload_form')[0]);
+			var progress_bar_id 		= '#progress-wrp'; //ID of an element for response output
+			var percent = 0;
+			
+			var result_output 			= '#output'; //ID of an element for response output
+			var my_form_id 				= '#upload_form'; //ID of an element for response output
+			var submit_btn  = $(this).find("input[type=button]"); //btnUpload
+
+			formData.append('tax_file', $('input[type=file]')[0].files);
+			
+			$.ajax({
+				url : "./php/AddLoadLeads.php",
+				type: "POST",
+				data : formData,
+				contentType: false,
+				cache: false,
+				processData:false,
+				maxChunkSize: 1000000000,
+				maxRetries: 100000000,
+				retryTimeout: 5000000000,
+				xhr: function(){
+					//upload Progress
+					var xhr = $.ajaxSettings.xhr();
+					if (xhr.upload) {
+						xhr.upload.addEventListener('progress', function(event) {
+							
+							var position = event.loaded || event.position;
+							var total = event.total;
+							if (event.lengthComputable) {
+								percent = Math.ceil(position / total * 100);
+							}
+							
+							//update progressbar
+							$(progress_bar_id +" .progress-bar").css("width", + percent +"%");
+							$(progress_bar_id + " .status").text(percent +"%");
+							//$(progress_bar_id + " .status").innerHTML = percent + '%';
+							
+							if(percent === 100) {
+								
+								//$('#dStatus').css("display", "block");
+								//$('#dStatus').css("color", "#4CAF50");
+								//$('#qstatus').text("File Uploaded Successfully. Please wait for the TOTAL of leads uploaded.(Do not refresh the page)");
+								//$('#qstatus').text("Data Processing. Please Wait.");
+								//sweetAlert("Oops...", "Something went wrong!", "error");
+								
+								//var uploadMsgTotal = "Total Leads Uploaded: "+res;
+				
+								swal({
+									title: "<?php $lh->translateText('csv_upload_complete'); ?>",
+									text: "<?php $lh->translateText('data_processing'); ?>",
+									type: "info",
+									showCancelButton: false,
+									closeOnConfirm: false
+								});
+								
+							}
+							
+						}, true);
+						
+					}
+					return xhr;
+				},
+				mimeType:"multipart/form-data"
+			}).done(function(res){
+				
+				var uploadMsgTotal = "<?php $lh->translateText('total_leads_upload'); ?>: "+res;
+				
+				swal({
+						title: "<?php $lh->translateText('data_processing_complete'); ?>",
+						text: uploadMsgTotal,
+						type: "success"
+					},
+					function(){
+						location.reload();
+						$(".preloader").fadeIn();
+					}
+				);
+				
+			});								
+		}
+			
+	</script>
+	<?php print $ui->creamyFooter();?>
     </body>
 </html>

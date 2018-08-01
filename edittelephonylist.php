@@ -401,48 +401,52 @@
 		
 		<script type="text/javascript">
 			$(document).ready(function() {
-				
-				/**
-				 * Modifies a telephony list
-				 */
-				//$("#modifylist").validate({
-				//	submitHandler: function() {
+				var list_read 	= <?php echo ($perm->list->list_create !== "N" ? 1 : 0 ) ?>;
+				var list_update = <?php echo ($perm->list->list_create !== "N" ? 1 : 0 ) ?>;
 				
 				$(document).on('click', '#cancel', function(){
 					swal({title: "<?php $lh->translateText("cancelled"); ?>", text: "<?php $lh->translateText("cancel_msg"); ?>", type: "error"},function(){window.location.href = 'telephonylist.php';});
 				});
 				
-				$(document).on('click','#modifyListOkButton',function() {
-					//submit the form
-					$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
-					$('#modifyListOkButton').prop("disabled", true);
-					$.ajax({
-					url: "./php/ModifyTelephonyList.php",
-					type: 'POST',
-					data: $("#modifylist").serialize(),
-					success: function(data) {
-						console.log(data);
-						$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
-						$('#modifyListOkButton').prop("disabled", false);
-						if(data == 1){
-							swal({title: "<?php $lh->translateText("success"); ?>", text: "<?php $lh->translateText("list_update_success"); ?>", type: "success"}, function(){window.location.href = 'telephonylist.php';});
-							window.setTimeout(function(){location.reload();},2000);
-						} else {
-							sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>" + data, "error");
-						}
-					}
-				});
-					//return false; //don't let the form refresh the page...
-				});
-	
-				$(document).on('click','#add_custom_field',function() {
-					var url = './addcustomfield.php';
-					var id = $(this).attr('data-id');
-					//alert(extenid);
-					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="modifyid" value="'+id+'" /></form>');
-					$('body').append(form);  // This line is not necessary
-					$(form).submit();
-				});
+				if (list_read == 1 && list_update == 1) {
+					$('#modifyListOkButton').attr('disabled', false);
+					$('#add_custom_field').attr('disabled', false);
+					
+					$(document).on('click','#modifyListOkButton',function() {
+						//submit the form
+						$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
+						$('#modifyListOkButton').prop("disabled", true);
+						$.ajax({
+							url: "./php/ModifyTelephonyList.php",
+							type: 'POST',
+							data: $("#modifylist").serialize(),
+							success: function(data) {
+								console.log(data);
+								$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
+								$('#modifyListOkButton').prop("disabled", false);
+								if(data == 1){
+									swal({title: "<?php $lh->translateText("success"); ?>", text: "<?php $lh->translateText("list_update_success"); ?>", type: "success"}, function(){window.location.href = 'telephonylist.php';});
+									window.setTimeout(function(){location.reload();},2000);
+								} else {
+									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>" + data, "error");
+								}
+							}
+						});
+						//return false; //don't let the form refresh the page...
+					});
+		
+					$(document).on('click','#add_custom_field',function() {
+						var url = './addcustomfield.php';
+						var id = $(this).attr('data-id');
+						//alert(extenid);
+						var form = $('<form action="' + url + '" method="post"><input type="hidden" name="modifyid" value="'+id+'" /></form>');
+						$('body').append(form);  // This line is not necessary
+						$(form).submit();
+					});
+				} else {
+					$('#modifyListOkButton').attr('disabled', true);
+					$('#add_custom_field').attr('disabled', false);
+				}
 	
 			});
 		</script>
