@@ -342,7 +342,7 @@
 							data: $("#create_form").serialize() + '&script_text_value=' + encodeURIComponent(CKEDITOR.instances['script_text'].getData()),
 							success: function(data) {
 								console.log(data);
-								console.log($("#create_form").serialize() + '&script_text_value=' + encodeURIComponent(CKEDITOR.instances['script_text'].getData()));
+								//console.log($("#create_form").serialize() + '&script_text_value=' + encodeURIComponent(CKEDITOR.instances['script_text'].getData()));
 								$('#finish').text("<?php $lh->translateText("submit"); ?>");
 								$('#finish').attr("disabled", false);
 								if(data == 1){
