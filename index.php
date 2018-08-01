@@ -1058,10 +1058,9 @@ function goGetModalUsernameValue(){
 	}, function(){
 		$.ajax({
 			type: 'POST',
-			url: "./php/APIs/API_EmergencyLogout.php",
+			url: "./php/dashboard/API_EmergencyLogout.php",
 			data: {goUserAgent: goModalUsername},
 			cache: false,
-			dataType: 'json',
 			success: function(data){
 				clear_agent_form();
 				sweetAlert("Emergency Logout",data, "warning");
