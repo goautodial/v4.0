@@ -223,8 +223,10 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr id="#dnc_result">
+													<tr id="dnc_result">														
 														<td colspan="3"><center><span id="dnc_error">- - - <?php $lh->translateText("search_filter_dnc");?> - - -</span></center></td>
+														<td></td>
+														<td></td>													
 													</tr>
 												</tbody>
 											</table>
@@ -610,27 +612,27 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 			});
 			
 			// initialize datatable
-			$('#table_lists').DataTable( {
+			$('#table_lists').DataTable({
 				destroy: true,
 				responsive: true,
 				select: true,
 				stateSave: true,
-				//"aaSorting": [[ 1, "asc" ]],
-				"aoColumnDefs": [{
-					"bSearchable": false,
+				drawCallback:function(settings) {
+					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+					pagination.toggle(this.api().page.info().pages > 1);
+				},
+				columnDefs:[
+					{ width: "16%", targets: 7 },
+					{ width: "5%", targets: 6 },
 					<?php if($perm->list->list_delete !== 'N'){?>
-					"aTargets": [ 0, 7 ]
+						{ searchable: false, targets: [ 6, 7 ] },
+						{ sortable: false, targets: [ 6, 7 ] },
 					<?php }else{ ?>
-					"aTargets": [ 0, 6 ]
+						{ searchable: false, targets: 6 },
+						{ sortable: false, targets: 6 },
 					<?php } ?>
-				},{
-					"bSortable": false,
-					<?php if($perm->list->list_delete !== 'N'){?>
-					"aTargets": [ 0, 7 ]
-					<?php }else{ ?>
-					"aTargets": [ 0, 6 ]
-					<?php } ?>
-				}]
+					{ targets: -1, className: "dt-body-right" }
+				]
 			});
 			
 			$('#table_dnc').DataTable({
