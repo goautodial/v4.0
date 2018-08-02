@@ -21,26 +21,27 @@
 */
 	require_once('APIHandler.php');
 
-	$api = \creamy\APIHandler::getInstance();
+	$api 											= \creamy\APIHandler::getInstance();
 
-	$campaign_id = $_POST['campaign_id'];
-	$phone_numbers = rawurlencode($_POST['phone_numbers']);
-	$stage = $_POST['stageDNC'];
+	$campaign_id 									= $_POST['campaign_id'];
+	$phone_numbers 									= $_POST['phone_numbers'];
+	$stage 											= $_POST['stageDNC'];
 	
-    $postfields = array(
-		'goAction' => 'goActionDNC',
-		'campaign_id' => $campaign_id,
-		'phone_numbers' => $phone_numbers,
-		'stage' => $stage
+    $postfields 									= array(
+		'goAction' 										=> 'goActionDNC',
+		'campaign_id' 									=> $campaign_id,
+		'phone_numbers'									=> $phone_numbers,
+		'stage'											=> $stage
 	);	
     
-	$output = $api->API_actionDNC($postfields);
+	$output 										= $api->API_actionDNC($postfields);
 
-	if($output->result == "success"){
-		$status = $output->msg;
-	}else{
-		$status = "error";
+	if ($output->result=="success" ) { 
+		$status 									= 1; 
+	} else { 
+		$status 									= intval($output->code);
 	}
 	
-	echo $status;
+	echo json_encode($status);
+
 ?>

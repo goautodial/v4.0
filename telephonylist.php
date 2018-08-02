@@ -139,12 +139,12 @@
 									<ul role="tablist" class="nav nav-tabs nav-justified">
 			
 									<!-- List panel tabs-->
-										 <li role="presentation" class="active">
+										 <li role="presentation" <?php if(!isset($_GET['dnc_tab']))echo 'class="active"';?>>
 											<a href="#list_tab" aria-controls="list_tab" role="tab" data-toggle="tab" class="bb0">
 												<?php $lh->translateText("list"); ?></a>
 										 </li>
 									<!-- DNC panel tab -->
-										 <li role="presentation">
+										 <li role="presentation" <?php if(isset($_GET['dnc_tab']))echo 'class="active"';?>>
 											<a href="#dnc_tab" aria-controls="dnc_tab" role="tab" data-toggle="tab" class="bb0">
 												<?php $lh->translateText("dnc"); ?> </a>
 										 </li>
@@ -153,7 +153,7 @@
 									<!-- Tab panes-->
 									<div class="tab-content bg-white">
 										<!--==== List ====-->
-										<div id="list_tab" role="tabpanel" class="tab-pane active">
+										<div id="list_tab" role="tabpanel" class="tab-pane <?php if(!isset($_GET['dnc_tab']))echo 'active'?>">
 											<table class="display responsive no-wrap table table-striped table-bordered" width="100%" id="table_lists">
 												<thead>
 													<tr>
@@ -213,7 +213,7 @@
 											</table>
 										</div><!-- /.list-tab -->
 										<!--==== DNC ====-->
-										<div id="dnc_tab" role="tabpanel" class="tab-pane">
+										<div id="dnc_tab" role="tabpanel" class="tab-pane <?php if(isset($_GET['dnc_tab']))echo 'active'?>">
 											<table class="display responsive no-wrap table table-striped table-bordered" width="100%" id="table_dnc">
 												<thead>
 													<tr>
@@ -925,7 +925,17 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 								$('#table_dnc').html(data);
 								$('#table_dnc').DataTable({
 									destroy: true,
-									responsive: true
+									responsive: true,
+									drawCallback:function(settings) {
+										var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+										pagination.toggle(this.api().page.info().pages > 1);
+									},
+									columnDefs:[
+										//{ width: "16%", targets: 7 },
+										{ searchable: false, targets: 2 },
+										{ sortable: false, targets: 2 },
+										{ targets: -1, className: "dt-body-right" }
+									]									
 								});
 								$('#dnc_error').html("");
 							} else {
@@ -939,28 +949,35 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 				$(document).on('click','#submit_dnc',function() {
 					$('#submit_dnc').text("<?php $lh->translateText("submitting"); ?>");
 					$('#submit_dnc').attr("disabled", true);
-					
+					var stageDNC = $('#stageDNC option:selected').val();
+					console.log(stageDNC);
 					if ($('#phone_numbers').val() !== ''){
 						$.ajax({
 							url: "php/ActionDNC.php",
 							type: 'POST',
 							data: $('#dnc_form').serialize(),
+							//type: 'json',
 							success: function(data) {
 								console.log(data);
 								$('#submit_dnc').text("<?php $lh->translateText("add_delete_dnc"); ?>");
-								$('#submit_dnc').attr("disabled", false);
+								$('#submit_dnc').attr("disabled", false);										
 								
-								if(data == "added"){
-									swal({title: "<?php $lh->translateText("added_new"); ?> DNC", text: "<?php $lh->translateText("add_dnc"); ?>", type: "success"},function(){location.reload();});
-								} else if(data == "deleted"){
-									swal({title: "<?php $lh->translateText("deleted"); ?> DNC", text: "<?php $lh->translateText("delete_dnc"); ?>", type: "success"},function(){location.reload();});
-								} else if(data == "already exist"){
-									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("dnc_already_exist"); ?>", "error");
-								} else if(data == "does not exist"){
-									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("dnc_do_not_exist"); ?>", "error");
-								} else{
-									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+ data, "error");
+								if (data == 1) {
+									if (stageDNC == "ADD") {
+										swal({title: "<?php $lh->translateText("added_new"); ?> DNC", text: "<?php $lh->translateText("add_dnc"); ?>", type: "success"},function(){window.location.href = 'telephonylist.php?dnc_tab';});
+									}
+									if (stageDNC == "DELETE") {
+										swal({title: "<?php $lh->translateText("deleted"); ?> DNC", text: "<?php $lh->translateText("delete_dnc"); ?>", type: "success"},function(){window.location.href = 'telephonylist.php?dnc_tab';});
+									}								
+								} else {
+									if (data == 10116) {
+										sweetAlert("<?php echo $lh->translateText("oups"); ?>", "<?php echo $lh->translateText("dnc_already_exist"); ?>", "error");
+									}		
+									if (data == 10117) {
+										sweetAlert("<?php echo $lh->translateText("oups"); ?>", "<?php echo $lh->translateText("dnc_do_not_exist"); ?>", "error");
+									}									
 								}
+								
 							}
 						});
 					} else {
@@ -968,6 +985,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						$('#submit_dnc').attr("disabled", false);
 						swal("<?php $lh->translateText("dnc_incomplete"); ?>", "<?php $lh->translateText("dnc_incomplete_msg"); ?>", "error");
 					}
+					
 				});
 			}
 				
@@ -983,21 +1001,26 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						data: {
 							phone_numbers : phone_number,
 							campaign_id : campaign,
-							stageDNC : "DELETE",
-							user_id : <?php echo $user->getUserId();?>,
-							log_user: '<?php echo $_SESSION['user'];?>',
-							log_group: '<?php echo $_SESSION['usergroup'];?>'
+							stageDNC : "DELETE"
 						},
+						//type: 'json',
 						success: function(data) {
-							//console.log(data);
-							if(data == "deleted"){
-								swal({title: "<?php $lh->translateText("deleted"); ?>", text: "<?php $lh->translateText("delete_dnc"); ?>", type: "success"},function(){location.reload();});
-							} else if(data == "already exist"){
-								swal({title: "<?php $lh->translateText("oups"); ?>", text: "<?php $lh->translateText("dnc_already_exist"); ?>", type: "error"},function(){location.reload();});
-							} else if(data == "does not exist"){
-								sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("dnc_do_not_exist"); ?>", "error");
-							} else{
-								sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+ data, "error");
+							console.log(data);
+							
+							if (data == 1) {
+								swal({title: "<?php $lh->translateText("deleted"); ?> DNC", text: "<?php $lh->translateText("delete_dnc"); ?>", type: "success"},function(){window.location.href = 'telephonylist.php?dnc_tab';});								
+								$("#dnc_sidebar").show();
+								$("#dnc_fab").show();
+								$("#list_sidebar").hide();
+								$("#list_fab").hide();
+								$("#legend_title").text("DNC");								
+							} else {
+								if (data == 10116) {
+									sweetAlert("<?php echo $lh->translateText("oups"); ?>", "<?php echo $lh->translateText("dnc_already_exist"); ?>", "error");
+								}		
+								if (data == 10117) {
+									sweetAlert("<?php echo $lh->translateText("oups"); ?>", "<?php echo $lh->translateText("dnc_do_not_exist"); ?>", "error");
+								}									
 							}
 						}
 					});
@@ -1022,6 +1045,14 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 			$('#phone_numbers').blur(function() {
 				this.value = this.value.replace('/[^0-9\r\n]/g','');
 			});
+			
+			if (window.location.href.indexOf("dnc_tab") > -1) {
+				$("#dnc_sidebar").show();
+				$("#dnc_fab").show();
+				$("#list_sidebar").hide();
+				$("#list_fab").hide();
+				$("#legend_title").text("DNC");						
+			}			
 			
 		});
 		

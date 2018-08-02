@@ -633,7 +633,15 @@ if(isset($_SESSION["user"])){
 			'list_id' => $list_id
 		);		
 		return $this->API_Request("goLists", $postfields);
-	}	
+	}
+	
+	public function API_GetDNC($search){
+		$postfields = array(
+			'goAction' => 'goGetAllDNC',
+			'search' => $search
+		);		
+		return $this->API_Request("goLists", $postfields);
+	}
 	
 	public function API_getLeadsInfo($lead_id){
 		$postfields = array(
