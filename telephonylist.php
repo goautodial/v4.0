@@ -929,7 +929,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						success: function(data) {
 							$('#dnc_search_button').text("<?php $lh->translateText("search"); ?>");
 							$('#dnc_search_button').attr("disabled", false);
-							console.log(data);
+							//console.log(data);
 							if (data != "") {
 								$('#table_dnc').html(data);
 								$('#table_dnc').DataTable({
