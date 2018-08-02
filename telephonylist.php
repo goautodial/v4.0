@@ -637,8 +637,17 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 			
 			$('#table_dnc').DataTable({
 				destroy: true,
-				responsive: true
-			});				
+				responsive: true,
+				drawCallback:function(settings) {
+					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+					pagination.toggle(this.api().page.info().pages > 1);
+				},
+				columnDefs:[
+					{ searchable: false, targets: 2 },
+					{ sortable: false, targets: 2 },
+					{ targets: -1, className: "dt-body-right" }
+				]									
+			});			
 				
 			// add list
 			if (list_create == 1) {
@@ -920,7 +929,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						success: function(data) {
 							$('#dnc_search_button').text("<?php $lh->translateText("search"); ?>");
 							$('#dnc_search_button').attr("disabled", false);
-							//console.log(data);
+							console.log(data);
 							if (data != "") {
 								$('#table_dnc').html(data);
 								$('#table_dnc').DataTable({
