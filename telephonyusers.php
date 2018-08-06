@@ -567,9 +567,9 @@
 			},
 			columnDefs:[
 				{ width: "16%", targets: 6 },
-				{ width: "5%", targets: [ 0, 5 ] },
-				{ searchable: false, targets: [ 0, 5, 6 ] },
-				{ sortable: false, targets: [ 0, 5, 6 ] },
+				{ width: "5%", targets: 5 },
+				{ searchable: false, targets: [  5, 6 ] },
+				{ sortable: false, targets: [  5, 6 ] },
 				{ responsivePriority: 1, targets: 6 },
 				{ responsivePriority: 2, targets: 1 },
 				{ targets: -1, className: "dt-body-right" }
