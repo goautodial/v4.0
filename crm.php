@@ -297,7 +297,7 @@ $disposition = $api->API_getAllDispositions();
                 	"bDestroy" : true
                 });
 
-				$('.select').select2({ theme: 'bootstrap' });
+				$('.select2-3').select2({ theme: 'bootstrap' });
 				$.fn.select2.defaults.set( "theme", "bootstrap" );
 				
 				// limits checkboxes to single selecting
@@ -665,53 +665,49 @@ $disposition = $api->API_getAllDispositions();
 				*** Delete functions
 				*****/
 				$(document).on('click','.delete-contact', function() {
-						var id = $(this).attr('data-id');
-						var log_user = '<?=$_SESSION['user']?>';
-						var log_group = '<?=$_SESSION['usergroup']?>';
-						swal({
-							title: "<?php $lh->translateText("are_you_sure"); ?>",
-							text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
-							type: "warning",
-							showCancelButton: true,
-							confirmButtonColor: "#DD6B55",
-							confirmButtonText: "<?php $lh->translateText("confirm_delete_contact"); ?>",
-							cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",
-							closeOnConfirm: false,
-							closeOnCancel: false
-							},
-							function(isConfirm){
-								if (isConfirm) {
-										$.ajax({
-											url: "./php/DeleteContact.php",
-												type: 'POST',
-												data: {
-														leadid: id,
-														log_user: log_user,
-														log_group: log_group
-												},
-												success: function(data) {
-												//console.log(data);
-													if(data == "success"){
-														swal({
-																title: "<?php $lh->translateText("success"); ?>",
-																text: "<?php $lh->translateText("contact_delete_success"); ?>",
-																type: "success"
-															},
-															function(){
-																window.location.href = 'contactsandcallrecordings.php';
-															}
-														);
-													}else{
-															sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
-															window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+					var id = $(this).attr('data-id');
+					swal({
+						title: "<?php $lh->translateText("are_you_sure"); ?>",
+						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "<?php $lh->translateText("confirm_delete_contact"); ?>",
+						cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",
+						closeOnConfirm: false,
+						closeOnCancel: false
+						},
+						function(isConfirm){
+							if (isConfirm) {
+								$.ajax({
+									url: "./php/DeleteContact.php",
+										type: 'POST',
+										data: {
+											leadid: id
+										},
+										success: function(data) {
+										console.log(data);
+											if (data == 1) {
+												swal({
+													title: "<?php $lh->translateText("success"); ?>",
+													text: "<?php $lh->translateText("contact_delete_success"); ?>",
+													type: "success"
+													},
+													function(){
+														window.location.href = 'crm.php';
 													}
-												}
-										});
-									} else {
-											swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_message"); ?>", "error");
-									}
+												);
+											} else {
+												sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
+												window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+											}
+										}
+								});
+							} else {
+									swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_message"); ?>", "error");
 							}
-						);
+						}
+					);
 				});
 			});
 		</script>

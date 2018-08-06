@@ -800,6 +800,14 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goCarriers", $postfields);
 	}
 	
+	public function API_getAllCustomFields($list_id) {
+		$postfields = array(
+			'goAction' => 'goGetAllCustomFields',
+			'list_id' => $list_id
+		);
+		return $this->API_Request("goCustomFields", $postfields);
+	}
+	
 	public function API_addCustomFields($postfields){
 		return $this->API_Request("goCustomFields", $postfields);
 	}

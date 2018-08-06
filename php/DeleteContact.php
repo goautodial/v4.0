@@ -20,46 +20,31 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('APIHandler.php');
-$api = \creamy\APIHandler::getInstance();
-/*
-require_once('CRMDefaults.php');
-require_once('goCRMAPISettings.php');
-*/
-// check required fields
-$validated = 1;
-if (!isset($_POST["leadid"])) {
-	$validated = 0;
-}
+	require_once("APIHandler.php");
+	$api 										= \creamy\APIHandler::getInstance();
 
-if ($validated == 1) {
-	//$leadid = $_POST["leadid"];
-/*	
-    $url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
-    $postfields["goUser"] = goUser; #Username goes here. (required)
-    $postfields["goPass"] = goPass; #Password goes here. (required)
-    $postfields["goAction"] = "goDeleteLead"; #action performed by the [[API:Functions]]. (required)
-    $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["lead_id"] = $leadid; #Desired User ID. (required)
-	$postfields["session_user"] = $_POST['log_user'];
-    $postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
-	$postfields["log_user"] = $_POST['log_user'];
-	$postfields["log_group"] = $_POST['log_group'];
-*/    
-    $postfields = array(
-        'goAction' => 'goDeleteLead',
-        'leadid' => $_POST["leadid"]
-    );
+	$validated 									= 1;
+	if (!isset($_POST["leadid"])) {
+		$validated 								= 0;
+	}
 
-    $output = $api->API_Request("goGetLeads", $postfields);
+	if ($validated == 1) {
+		$postfields 							= array(
+			"goAction" 								=> "goDeleteLead",
+			"lead_id" 								=> $_POST["leadid"]
+		);
 
-    if ($output->result=="success") {
-        echo $output->result;
-    } else {
-        echo $output->result;
-    }
+		$output 								= $api->API_Request("goGetLeads", $postfields);
 
-} else {
-	echo "Error: Please Contact System Administrator.";
-}
+		if ($output->result=="success") { 
+			$status 							= 1; 
+		} else { 
+			$status 							= $output->result; 
+		}
+
+		echo json_encode($status);
+
+	} else {
+		echo "Error: Please Contact System Administrator.";
+	}
 ?>
