@@ -651,6 +651,25 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goGetLeads", $postfields);
 	}
 	
+	public function API_getLeads($search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter, $limit = 0, $search_customers = 0) {
+		if ($limit == 0) {
+			$limit = 50;
+		}
+		
+		$postfields = array(
+			"goAction" => "goGetLeads",
+			"search" => $search,
+			"disposition_filter" => $disposition_filter,
+			"list_filter" => $list_filter,
+			"address_filter" => $address_filter,
+			"city_filter" => $city_filter,
+			"state_filter" => $state_filter,
+			"search_customers" => $search_customers,
+			"goVarLimit" => $limit
+		);		
+		return $this->API_Request("goGetLeads", $postfields);
+	}
+	
 	public function API_getAllCarriers(){
 		$postfields = array(
 			'goAction' => 'goGetAllCarriers'
