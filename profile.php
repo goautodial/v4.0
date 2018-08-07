@@ -1,24 +1,37 @@
 <?php
+/**
+ * @file 		profile.php
+ * @brief 		Profile page
+ * @copyright 	Copyright (c) 2018 GOautodial Inc. 
+ * @author     	Alexander Jim H. Abenoja
+ * @author		Demian Lizandro A. Biscocho
+ * @author     	Noel Umandap
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
 
-    ###########################################################
-    ### Name: edittelephonyuser.php                         ###
-    ### Functions: Edit Users                               ###
-    ### Copyright: GOAutoDial Ltd. (c) 2011-2016            ###
-    ### Version: 4.0                                        ###
-    ### Written by: Alexander Abenoja                       ###
-    ###             Noel Umandap                            ###
-    ###             Demian Lizandro A. Biscocho             ###
-    ### License: AGPLv2                                     ###
-    ###########################################################
-    
-    require_once('./php/UIHandler.php');
-    require_once('./php/CRMDefaults.php');
+	require_once('./php/UIHandler.php');
+	require_once('./php/APIHandler.php');
+	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
 
-    $ui = \creamy\UIHandler::getInstance();
-    $lh = \creamy\LanguageHandler::getInstance();
-    $user = \creamy\CreamyUser::currentUser();
+	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
+	$lh = \creamy\LanguageHandler::getInstance();
+	$user = \creamy\CreamyUser::currentUser();
     
     $userid = $user->getUserId();
     $userrole = $user->getUserRole(); 
@@ -33,16 +46,13 @@
         <meta name="description" content="Bootstrap Admin App + jQuery">
         <meta name="keywords" content="app, responsive, jquery, bootstrap, dashboard, admin">
         
-        <?php print $ui->creamyThemeCSS(); ?>
-
-        <!-- javascript -->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>    
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <script src="js/jquery.validate.min.js" type="text/javascript"></script>             
+        <?php 
+			print $ui->standardizedThemeCSS(); 
+			print $ui->creamyThemeCSS();
+			print $ui->dataTablesTheme();
+		?>            
             
-        <!-- DATA TABLES -->
-        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
+
         <!-- FONT AWESOME-->
         <link rel="stylesheet" src="js/dashboard/fontawesome/css/font-awesome.min.css">
         <!-- SIMPLE LINE ICONS-->
@@ -65,9 +75,7 @@
         <link rel="Stylesheet" type="text/css" src="js/dashboard/sweetalert/dist/sweetalert.css" />        
         <link rel="Stylesheet" type="text/css" href="css/croppie.css" />
         <!-- <link rel="Stylesheet" type="text/css" href="css/demo.css" /> -->
-        
-        <!-- Data Tables -->
-        <script src="js/dashboard/js/datatables/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
+
         
         <script type="text/javascript">
             $(window).ready(function(){
@@ -120,13 +128,13 @@
 <?php
             $userobj = NULL;
             $errormessage = NULL;            
-            $output = $ui->goGetUserInfo($userid, "user_id");
+            $output = $api->API_getUserInfo($userid);
             $creamyAvatar = $ui->getSessionAvatar();
             $sessionAvatar = "<div class='media'><avatar username='$agentname' src='$creamyAvatar' :size='32'></avatar></div>";
             //echo ("pre");
             //var_dump($output);
 
-            $userid = $output->data->user_id;
+            $user_id = $output->data->user_id;
             $agentid = $output->data->user;
             $agentname =  $output->data->full_name;
             $email = $output->data->email;
@@ -173,7 +181,7 @@
                 $status = "INACTIVE";
             }
 
-    $vmArray = $ui->API_goGetVoiceMails();
+    $vmArray = $api->API_getAllVoiceMails();
     //echo "<pre>";
     //print_r($vmArray);
     //die();    
@@ -742,13 +750,13 @@
 
     <!-- End of Lead Information -->    
     
-<script>
+<script type="text/javascript">
 
-    function load_agent_latest_outbound_calls(){    
-        var userid = <?=$userid?>;         
+    function load_agent_latest_outbound_calls(userid){    
+        //var userid = <?=$userid?>;         
         $.ajax({
             type: 'POST',
-            url: "./php/APIs/API_GetAgentLatestOutboundCalls.php",
+            url: "./php/dashboard/API_getAgentLatestOutboundCalls.php",
             cache: false,
             data: {user_id: userid},
             dataType: 'json',
@@ -781,7 +789,7 @@
         var userid = <?=$userid?>;         
         $.ajax({
             type: 'POST',
-            url: "./php/APIs/API_GetAgentLatestInboundCalls.php",
+            url: "./php/dashboard/API_getAgentLatestInboundCalls.php",
             cache: false,
             data: {user_id: userid},
             dataType: 'json',
@@ -814,7 +822,7 @@
         var userid = <?=$userid?>;         
         $.ajax({
             type: 'POST',
-            url: "./php/APIs/API_GetAgentLatestOutboundCallsSummary.php",
+            url: "./php/dashboard/API_getAgentLatestOutboundCallsSummary.php",
             cache: false,
             data: {user_id: userid},
             success: function(data){
@@ -828,7 +836,7 @@
         var userid = <?=$userid?>;         
         $.ajax({
             type: 'POST',
-            url: "./php/APIs/API_GetAgentLatestInboundCallsSummary.php",
+            url: "./php/dashboard/API_getAgentLatestInboundCallsSummary.php",
             cache: false,
             data: {user_id: userid},
             success: function(data){
@@ -1043,45 +1051,13 @@
         load_agent_latest_inbound_calls_summary();
     });
 </script>
-               
-        
-    <!-- ChartJS 1.0.1 -->
-    <!-- <script src="js/plugins/chartjs/Chart.min.js" type="text/javascript"></script> -->
-        
-    <!-- Creamy App -->
-        
-    <!-- =============== VENDOR SCRIPTS ===============-->
-    <!-- MODERNIZR-->
-    <!--<script src="./vendor/modernizr/modernizr.custom.js"></script>-->
-    <!-- MATCHMEDIA POLYFILL-->
-    <!--<script src="./vendor/matchMedia/matchMedia.js"></script>-->
-    <!-- JQUERY-->
-    
-    <!-- conflict <script src="js/dashboard/js/jquery/dist/jquery.js"></script> -->
-    <!-- BOOTSTRAP-->
-    <!-- <script src="js/dashboard/js/bootstrap/dist/js/bootstrap.js"></script> -->
-    
-    <!-- STORAGE API-->
-    <!--<script src="./vendor/jQuery-Storage-API/jquery.storageapi.js"></script>-->
-    <!-- JQUERY EASING-->
-    <!--<script src="./vendor/jquery.easing/js/jquery.easing.js"></script>-->
+
     <!-- ANIMO-->
     <script src="js/dashboard/js/animo.js/animo.js"></script>
     <!-- SLIMSCROLL-->
     <script src="js/dashboard/js/slimScroll/jquery.slimscroll.min.js"></script>
-    <!-- SCREENFULL-->
-    <!--<script src="./vendor/screenfull/dist/screenfull.js"></script>-->
-    <!-- LOCALIZE-->
-    <!--<script src="./vendor/jquery-localize-i18n/dist/jquery.localize.js"></script>-->
-    <!-- RTL demo-->
-    <!-- <script src="js/demo/demo-rtl.js"></script> -->
-    <!-- =============== PAGE VENDOR SCRIPTS ===============-->
-    <!-- GOOGLE MAPS-->
-    <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>-->
-    <!--<script src="./vendor/jQuery-gMap/jquery.gmap.min.js"></script>-->
     <!-- =============== APP SCRIPTS ===============-->
     <script src="js/prism.js"></script>
-    <script src="js/dashboard/sweetalert/dist/sweetalert.min.js"></script>
     <script src="js/croppie.js"></script> 
     <!-- <script src="js/demo.js"></script> -->
     <script src="js/exif.js"></script>

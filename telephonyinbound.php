@@ -101,7 +101,7 @@
 	$user_groups = $api->API_getAllUserGroups();
 	$campaign = $api->API_getAllCampaigns();
 	$voicemails = $api->API_getAllVoicemails();
-	$phones = $api->API_getAllDIDs();
+	$phones = $api->API_getAllPhones();
 	$scripts = $api->API_getAllScripts();
 	$voicefiles = $api->API_getAllVoiceFiles();
 	$calltimes = $api->API_getAllCalltimes();
@@ -350,7 +350,7 @@
 				</div>
 				<div class="modal-body wizard-content">
 				
-				<form action="AddyIngroup.php" method="POST" id="create_ingroup" role="form">
+				<form action="" method="POST" id="create_ingroup" role="form">
 					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
 					<div class="row">
@@ -516,9 +516,7 @@
 				</div>
 				<div class="modal-body wizard-content">
 				
-				<form action="AddIVR.php" method="POST" id="create_ivr" role="form">
-					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
-					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
+				<form action="" method="POST" id="create_ivr" role="form">
 					<div class="row">
 					<h4><?php $lh->translateText("call_menu_details"); ?>
 					   <br>
@@ -1342,24 +1340,23 @@
 						*********/
 				            // Submit form via ajax
 					            $.ajax({
-									url: "./php/AddTelephonyIngroup.php",
+									url: "./php/AddIngroup.php",
 									type: 'POST',
 									data: $("#create_ingroup").serialize(),
 									success: function(data) {
-									  // console.log(data);
-										  if(data == "success"){
-												swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("add_ingroup_success"); ?>", "success");
-										  		window.setTimeout(function(){location.reload()},1000);
+										console.log(data);
+										if (data == 1) {
+											swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("add_ingroup_success"); ?>", "success");
+											window.setTimeout(function(){location.reload()},1000);
 
-										  		$('#finish').text("<?php $lh->translateText("submit"); ?>");
-												$('#finish').attr("disabled", false);
-										  }
-										  else{
-											  sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
+											$('#finish').text("<?php $lh->translateText("submit"); ?>");
+											$('#finish').attr("disabled", false);
+										} else {
+											sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 
-											  $('#finish').text("<?php $lh->translateText("submit"); ?>");
-											  $('#finish').attr("disabled", false);
-										  }
+											$('#finish').text("<?php $lh->translateText("submit"); ?>");
+											$('#finish').attr("disabled", false);
+										}
 									}
 								});
 			        }
@@ -1381,8 +1378,6 @@
 			*********/
 				$(document).on('click','.delete-ingroup',function() {
 				 	var id = $(this).attr('data-id');
-					var log_user = '<?=$_SESSION['user']?>';
-					var log_group = '<?=$_SESSION['usergroup']?>';
 	                swal({   
 	                	title: "<?php $lh->translateText("are_you_sure"); ?>",   
 	                	text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",   
@@ -1400,15 +1395,13 @@
 									url: "./php/DeleteInbound.php",
 									type: 'POST',
 									data: { 
-										groupid: id,
-										log_user: log_user,
-										log_group: log_group
+										groupid: id
 									},
 									success: function(data) {
 									console.log(data);
-								  		if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
+								  		if (data == 1){
 											swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("inbound_delete_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
-										}else{
+										} else {
 											sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 										}
 									}
@@ -1479,13 +1472,12 @@
 									type: 'POST',
 									data: $("#create_ivr").serialize(),
 									success: function(data) {
-									  // console.log(data);
+									  console.log(data);
 								  		$('#finish').text("<?php $lh->translateText("submit"); ?>");
 										$('#finish').attr("disabled", false);
-										if(data == "success"){
-												swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_ivr_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
-										}
-										else{
+										if (data == 1) {
+											swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_ivr_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
+										} else {
 											  sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 										}
 									}
@@ -1537,9 +1529,9 @@
 									},
 									success: function(data) {
 									console.log(data);
-								  		if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
+								  		if (data == 1) {
 											swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("ivr_delete_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
-										}else{
+										} else {
 											sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 										}
 									}
@@ -1666,9 +1658,9 @@
 									success: function(data) {
 									//console.log(modify_did);
 									console.log(data);
-								  		if(data == "<?=CRM_DEFAULT_SUCCESS_RESPONSE?>"){
+								  		if (data == 1) {
 											swal({title: "<?php $lh->translateText('success'); ?>",text: "<?php $lh->translateText('phonenumber_delete_success'); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
-										}else{
+										} else {
 											sweetAlert("<?php $lh->translateText('oups'); ?>", "<?php $lh->translateText('something_went_wrong'); ?> "+data, "error");
 										}
 									}
