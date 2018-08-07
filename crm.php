@@ -480,7 +480,7 @@ $dialStatus = $api->API_getAllDialStatuses("ALL");
 					function(isConfirm){
 						if (isConfirm) {
 							$.ajax({
-								url: "./php/DeleteContact.php",
+								url: "./php/crm/DeleteContact.php",
 									type: 'POST',
 									data: {
 										leadid: id
@@ -516,14 +516,14 @@ $dialStatus = $api->API_getAllDialStatuses("ALL");
 			// need to have at least 1 checked
 			if ($("#search_customers").is(":checked") || $('#search_contacts').is(":checked")) {														
 				$.ajax({
-					url: "filter_contacts.php",
+					url: "./php/crm/API_getLeads.php",
 					type: 'POST',
 					data: $('#search_form').serialize(),
 					dataType: 'json',
 					success: function(data) {
 						$('#search_button').text("<?php print $lh->translationFor("search"); ?>");
 						$('#search_button').attr("disabled", false);
-						//console.log($('#search_form').serialize());						
+						console.log($('#search_form').serialize());						
 						if (data !== "") {
 							var JSONString = data;
 							var JSONObject = JSON.parse(JSONString);
