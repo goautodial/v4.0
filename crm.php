@@ -523,11 +523,9 @@ $dialStatus = $api->API_getAllDialStatuses("ALL");
 					success: function(data) {
 						$('#search_button').text("<?php print $lh->translationFor("search"); ?>");
 						$('#search_button').attr("disabled", false);
-						console.log($('#search_form').serialize());						
 						if (data !== "") {
 							var JSONString = data;
 							var JSONObject = JSON.parse(JSONString);
-							console.log(JSONObject);
 							var tableContacts = $('#table_contacts').DataTable({
 								destroy: true,
 								data: JSONObject,
