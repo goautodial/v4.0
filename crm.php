@@ -94,9 +94,9 @@
 						<li class="active"><?php $lh->translateText("crm_title"); ?>
                     </ol>
                 </section>
-<?php
-	$leads = $api->API_getLeads();
-?>
+			<?php
+				$leads = $api->API_getLeads();
+			?>
                 <!-- Main content -->
                 <section class="content">
                 <div class="row">
@@ -157,17 +157,17 @@
 								   </tbody>
 								</table>
 							</div>
-</div><!-- /.body -->
-</div><!-- /.panel -->
-</div><!-- /.col-lg-9 -->
-<?php
-$lists = $api->API_getAllLists();
-$disposition = $api->API_getAllDispositions();
-$dialStatus = $api->API_getAllDialStatuses("ALL");
-//echo "<pre>";
-//var_dump($dialStatus);
-?>
-	               		<div class="col-lg-3">
+						</div><!-- /.body -->
+					</div><!-- /.panel -->
+				</div><!-- /.col-lg-9 -->
+			<?php
+				$lists = $api->API_getAllLists();
+				$disposition = $api->API_getAllDispositions();
+				$dialStatus = $api->API_getAllDialStatuses("ALL");
+				//echo "<pre>";
+				//var_dump($dialStatus);
+			?>
+			<div class="col-lg-3">
 				<h3 class="m0 pb-lg"><?php $lh->translateText("filters"); ?></h3>
 				<!-- <form id="search_form"> -->
 					<div class="form-group">

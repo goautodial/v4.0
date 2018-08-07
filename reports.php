@@ -1,70 +1,88 @@
 <?php
-/*
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);*/
-ini_set('memory_limit', '2048M');
-require_once('php/goCRMAPISettings.php');
-include('./php/Session.php');
+/**
+ * @file        reports.php
+ * @brief       Handles report requests
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author		Demian Lizandro A, Biscocho
+ * @author      Alexander Jim H. Abenoja
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-$pageTitle = $_POST['pageTitle'];
-$log_user = $_POST['log_user'];
-$log_group = $_POST['log_group'];
+	require_once('./php/APIHandler.php');
+	
+	$api 										= \creamy\APIHandler::getInstance();
+	$pageTitle									= $_POST['pageTitle'];
+	$fromDate 									= date('Y-m-d H:i:s');
+	$toDate 									= date('Y-m-d H:i:s');
+	$campaignID 								= NULL;
+	$request									= NULL;
+	$userID										= NULL;
+	$userGroup									= NULL;
+	$statuses									= NULL;
+	
+	if (isset($_POST['pageTitle']) && $pageTitle != "call_export_report") {
+		$pageTitle 								= $_POST['pageTitle'];
+		$pageTitle								= stripslashes($pageTitle);
+	}
+			
+	if (isset($_POST["fromDate"])) {
+		$fromDate 								= date('Y-m-d H:i:s', strtotime($_POST['fromDate']));
+	}
+	
+	if ($_POST["toDate"] != "" && $_POST["fromDate"] != "") {
+		$toDate 								= date('Y-m-d H:i:s', strtotime($_POST['toDate']));
+	}
+	
+			
+	if (isset($_POST["campaignID"])) { 
+		$campaignID 							= $_POST["campaignID"]; 
+		$campaignID 							= stripslashes($campaignID);
+	}
 		
-		$url = gourl."/goReports/goAPI.php"; //URL to GoAutoDial API. (required)
-		$postfields["goUser"] = goUser; //Username goes here. (required)
-		$postfields["goPass"] = goPass; //Password goes here. (required)
-		$postfields["goAction"] = "goGetReports"; //action performed by the [[API:Functions]]. (required)
-		$postfields["responsetype"] = responsetype; //json. (required)
-		$postfields["session_user"] = $_SESSION['user']; //current user
-		$postfields["log_user"] = $log_user;
-		$postfields["log_group"] = $log_group;
-		$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
+	if (isset($_POST["request"])) {
+		$request 								= $_POST["request"];
+		$request								= stripslashes($request);
+	}
+			
+	if (isset($_POST["userID"])) {
+		$userID 								= $_POST["userID"];
+		$userID									= stripslashes($userID);
+	}
+	
+	if (isset($_POST["userGroup"])) {
+		$userGroup 								= $_POST["userGroup"];
+		$userGroup								= stripslashes($userGroup);
+	}
 		
-		if($pageTitle != "call_export_report"){
-			$postfields["pageTitle"] = $pageTitle;
-		}
+	if(isset($_POST["statuses"])) {
+		$statuses 								= $_POST["statuses"];
+		$statuses								= stripslashes($statuses);
+	}
 		
-		if(isset($_POST["fromDate"])){
-			$fromDate = date('Y-m-d H:i:s', strtotime($_POST['fromDate']));
-		}else{
-			$fromDate = date('Y-m-d H:i:s');
-		}
-		
-		if($_POST["toDate"] != "" && $_POST["fromDate"] != ""){
-			$toDate = date('Y-m-d H:i:s', strtotime($_POST['toDate']));
-		}else{
-			$toDate = date('Y-m-d H:i:s');
-		}
-		
-		$postfields["fromDate"] 	= $fromDate;
-		$postfields["toDate"] 		= $toDate;
-		
-		if(isset($_POST["campaignID"]))
-		$postfields["campaignID"] 	= $_POST["campaignID"];
-		
-		if(isset($_POST["request"]))
-		$postfields["request"] 		= $_POST["request"];
-		
-		if(isset($_POST["userID"]))
-		$postfields["userID"] 		= $_POST["userID"];
-		
-		if(isset($_POST["userGroup"]))
-		$postfields["userGroup"] 	= $_POST["userGroup"];
-		
-		if(isset($_POST["statuses"]))
-		$postfields["statuses"] 	= $_POST["statuses"];
-		
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
+	$postfields 								= array(
+		'goAction'									=> 'goGetReports',		
+		'pageTitle' 								=> $pageTitle,
+		'fromDate' 									=> $fromDate,
+		'toDate' 									=> $toDate,
+		'campaignID' 								=> $campaignID,
+		'request' 									=> $request,
+		'statuses' 									=> $statuses
+	);				
+
+	$output 									= $api->API_getReports($postfields);
 
 if($output->result == "success"){
 	echo '<div class="responsive animated bounceInUp">';
@@ -74,8 +92,8 @@ if($output->result == "success"){
 		$agent_detail = '';
 
 		// top table
-			$agent_detail .= '<div class="table-responsive">
-				<table class="table table-striped table-bordered table-hover" id="agent_detail_top">
+			$agent_detail .= '<div>
+				<table class="display responsive no-wrap table table-striped table-bordered table-hover" width="100%" id="agent_detail_top">
 					<thead>
 						<tr>
 				            <th nowrap> Full Name </th>
@@ -133,8 +151,8 @@ if($output->result == "success"){
 
 	    // login table
 		    if($output->getReports->sub_statusesTOP != NULL){
-			    $agent_detail .= '<div class="table-responsive">
-					<table class="table table-striped table-bordered table-hover" id="agent_detail_login">
+			    $agent_detail .= '<div>
+					<table class="display responsive no-wrap table table-striped table-bordered table-hover" width="100%" id="agent_detail_login">
 						<thead>
 							<tr>
 								<th nowrap> User </th>';
@@ -200,8 +218,8 @@ if($output->result == "success"){
 	if($pageTitle == "agent_pdetail"){
 		$agent_pdetail = '';
 		// start of top table
-			$agent_pdetail .= '<div class="table-responsive">
-				<table class="table table-striped table-bordered table-hover" id="agent_pdetail_top">
+			$agent_pdetail .= '<div>
+					<table class="display responsive no-wrap table table-striped table-bordered table-hover" width="100%" id="agent_pdetail_top">
 					<thead>
 						<tr>
 				            <th nowrap> Full Name </th>
@@ -257,8 +275,8 @@ if($output->result == "success"){
 
 	    // start of middle table
 			if($output->getReports->MIDsorted_output != NULL){
-			    $agent_pdetail .= '<br/><div class="table-responsive">
-				    <table class="table table-striped table-bordered table-hover" id="agent_pdetail_mid">
+			    $agent_pdetail .= '<br/><div>
+					<table class="display responsive no-wrap table table-striped table-bordered table-hover" width="100%" id="agent_pdetail_mid">
 				    	<thead>
 							<tr>
 					            <th nowrap> Full Name </th>';
@@ -301,8 +319,8 @@ if($output->result == "success"){
 		// end of legend
 
 		// start of bottom table
-			$agent_pdetail .= '<div class="table-responsive">
-				<table class="table table-striped table-bordered table-hover" id="agent_pdetail_bottom">
+			$agent_pdetail .= '<div>
+					<table class="display responsive no-wrap table table-striped table-bordered table-hover" width="100%" id="agent_pdetail_bottom">
 			    	<thead>
 						<tr>
 				            <th nowrap> Full Name </th>
@@ -337,8 +355,8 @@ if($output->result == "success"){
 
 		// start of login table
 			if($output->getReports->SstatusesBOT != NULL){
-				$agent_pdetail .= '<div class="table-responsive">
-					<table class="table table-striped table-bordered table-hover" id="agent_pdetail_login">
+				$agent_pdetail .= '<div>
+					<table class="display responsive no-wrap table table-striped table-bordered table-hover" width="100%" id="agent_pdetail_login">
 				    	<thead>
 							<tr>';
 								$agent_pdetail .= $output->getReports->SstatusesBOT;
@@ -373,7 +391,7 @@ if($output->result == "success"){
 // DIAL STATUSES SUMMARY
 	if($pageTitle == "dispo"){
 		//var_dump($output->getReports->queryx);
-		echo '<div class="table-responsive">'.$output->getReports->TOPsorted_output.'</div>';
+		echo '<div>'.$output->getReports->TOPsorted_output.'</div>';
 	}// end of dispo
 
 // STATISTICAL REPORT
@@ -862,9 +880,9 @@ if($output->result == "success"){
 			$outbound = '';
 			
 			// Outbound table
-				$outbound .= '<div class="table-responsive">
+				$outbound .= '<div>
 					<legend><small><em class="fa fa-arrow-right"></em><i> OUTBOUND </i></small></legend>
-						<table class="table table-striped table-bordered table-hover" id="outbound">
+						<table class="display responsive no-wrap table table-striped table-bordered table-hover" id="outbound">
 							<thead>
 								<tr>
 						            <th nowrap> Agent Name </th>
@@ -900,9 +918,9 @@ if($output->result == "success"){
 		if($_POST['request'] == "inbound"){
 			$inbound = '';
 		    // inbound table
-			    $inbound .= '<div class="table-responsive">
+			    $inbound .= '<div>
 				    <legend><small><em class="fa fa-arrow-right"></em><i> INBOUND </i></small></legend>
-						<table class="table table-striped table-bordered table-hover" id="inbound">
+						<table class="display responsive no-wrap table table-striped table-bordered table-hover" id="inbound">
 							<thead>
 								<tr>
 					            <th nowrap> Agent Name </th>
@@ -941,9 +959,9 @@ if($output->result == "success"){
 		if($_POST['request'] == "outbound"){
 		// Outbound table
 			$sales_tracker .= '
-			<div class="table-responsive">
+			<div>
 				<legend><small><em class="fa fa-arrow-right"></em><i> OUTBOUND </i></small></legend>
-					<table class="table table-striped table-bordered table-hover" id="outbound_table">
+					<table class="display responsive no-wrap table table-striped table-bordered table-hover" id="outbound_table">
 						<thead>
 							<tr>
 								<th nowrap> Lead ID </th>
@@ -981,9 +999,9 @@ if($output->result == "success"){
 		if($_POST['request'] == "inbound"){
 	    // inbound table
 		    $sales_tracker .= '
-		    <div class="table-responsive">
+		    <div>
 			    <legend><small><em class="fa fa-arrow-right"></em><i> INBOUND </i></small></legend>
-					<table class="table table-striped table-bordered table-hover" id="inbound_table">
+					<table class="display responsive no-wrap table table-striped table-bordered table-hover"  id="inbound_table">
 						<thead>
 							<tr>
 				            	<th nowrap> Lead ID </th>
@@ -1028,8 +1046,8 @@ if($output->result == "success"){
 		$inbound_report = "";
 
 		$inbound_report .= '
-		<div class="table-responsive">
-			<table class="table table-striped table-bordered table-hover" id="inbound_report">
+		<div>
+			<table class="display responsive no-wrap table table-striped table-bordered table-hover" id="inbound_report">
 				<thead>
 					<tr>
 			            <th nowrap> # </th>

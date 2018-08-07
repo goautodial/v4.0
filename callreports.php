@@ -1,14 +1,38 @@
 <?php	
+/**
+ * @file 		crm.php
+ * @brief 		Manage leads and contacts
+ * @copyright 	Copyright (c) 2018 GOautodial Inc. 
+ * @author     	Alexander Jim H. Abenoja 
+ * @author		Demian Lizandro A. Biscocho
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
+
 	require_once('./php/UIHandler.php');
+	require_once('./php/APIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
 
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 	
-	$perm = $ui->goGetPermissions('reportsanalytics', $_SESSION['usergroup']);
+	$perm = $api->goGetPermissions('reportsanalytics');
 	
 	$allowed_page = 0;
 	foreach ($perm as $key => $value) {
@@ -23,26 +47,20 @@
         <title><?php $lh->translateText("reports_and_go_analytics"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         
-        <!-- Call for standardized css -->
-        <?php print $ui->standardizedThemeCSS();?>
-
-        <?php print $ui->creamyThemeCSS(); ?>
-
-        <!-- DATA TABLES -->
-        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
-		<link href="css/datatables/1.10.12/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
-		<!--<link href="css/datatables/buttons/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />-->
-        <!-- Data Tables -->
-        <script src="js/plugins/datatables/1.10.12/jquery.dataTables.min.js" type="text/javascript"></script>
-        <script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-			<!-- FOR EXPORT -->
-			<!--<script src="js/plugins/datatables/bpampuch/pdfmake/vfs_fonts.js" type="text/javascript"></script>
-			<script src="js/plugins/datatables/bpampuch/pdfmake/pdfmake.min.js" type="text/javascript"></script>-->
-			<script src="js/plugins/datatables/buttons/buttons.html5.min.js" type="text/javascript"></script>
-			<script src="js/plugins/datatables/buttons/buttons.print.min.js" type="text/javascript"></script>
-			<script src="js/plugins/datatables/buttons/buttons.flash.min.js" type="text/javascript"></script>
-			<script src="js/plugins/datatables/buttons/dataTables.buttons.min.js" type="text/javascript"></script>
-			<script src="js/plugins/datatables/jszip.min.js" type="text/javascript"></script>
+        <?php 
+			print $ui->standardizedThemeCSS(); 
+			print $ui->creamyThemeCSS();
+			print $ui->DataTablesTheme();
+		?>
+		
+		<!-- FOR EXPORT -->
+		<!--<script src="js/plugins/datatables/bpampuch/pdfmake/vfs_fonts.js" type="text/javascript"></script>
+		<script src="js/plugins/datatables/bpampuch/pdfmake/pdfmake.min.js" type="text/javascript"></script>-->
+		<script src="js/plugins/datatables/buttons/buttons.html5.min.js" type="text/javascript"></script>
+		<script src="js/plugins/datatables/buttons/buttons.print.min.js" type="text/javascript"></script>
+		<script src="js/plugins/datatables/buttons/buttons.flash.min.js" type="text/javascript"></script>
+		<script src="js/plugins/datatables/buttons/dataTables.buttons.min.js" type="text/javascript"></script>
+		<script src="js/plugins/datatables/jszip.min.js" type="text/javascript"></script>
         <!-- Datetime picker --> 
         <link rel="stylesheet" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
         <!-- Date Picker -->
@@ -51,9 +69,6 @@
 		
 		<!-- CHOSEN-->
    		<link rel="stylesheet" src="js/dashboard/chosen_v1.2.0/chosen.min.css">
-        <!-- SELECT2 CSS -->
-        <link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
-        <link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
 
     </head>
     <?php print $ui->creamyBody(); ?>
@@ -79,9 +94,9 @@
                 </section>
             
             <?php
-                $campaigns = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
-				$ingroups = $ui->API_getInGroups($_SESSION['usergroup']);
-				$disposition = $ui->API_getAllDispositions();
+                $campaigns = $api->API_getAllCampaigns();
+				$ingroups = $api->API_getAllInGroups();
+				$disposition = $api->API_getAllDispositions();
             ?>
                 <!-- Main content -->
                 <section class="content">
@@ -111,25 +126,28 @@
                                 </div><!-- /.panel-body -->
                             </div><!--/.panel-->
                         </div>
+						<form id="search_form">
                         <div class="col-lg-3">
-                            <h3 class="m0 pb-lg"><?php $lh->translateText("filters"); ?></h3>
-                            <form id="search_form">
+                            <h3 class="m0 pb-lg"><?php $lh->translateText("filters"); ?></h3>                           
 
                                 <!-- HIDDEN POSTS -->
-                                <input type="hidden" name="userID" id="userID" value="<?php echo $user->getUserName();?>">
+                                <!-- <input type="hidden" name="userID" id="userID" value="<?php //echo $user->getUserName();?>"> deprecated -->
                                 <div class="form-group">
                                     <label for="filter_type"><?php $lh->translateText("type"); ?></label>
                                     <select class="form-control select2" id="filter_type" style="width:100%;">
 									<?php
-									
-                                        if ($perm->reportsanalytics_statistical_display == 'Y') { echo '<option value="stats">'.$lh->translationFor("stats").'</option>'; }
-                                        if ($perm->reportsanalytics_agent_time_display == 'Y') { echo '<option value="agent_detail">'.$lh->translationFor("agent_detail").'</option>'; }
-                                        if ($perm->reportsanalytics_agent_performance_display == 'Y') { echo '<option value="agent_pdetail">'.$lh->translationFor("agent_pdetail").'</option>'; }
-                                        if ($perm->reportsanalytics_dial_status_display == 'Y') { echo '<option value="dispo">'.$lh->translationFor("dispo").'</option>'; }
-                                        if ($perm->reportsanalytics_agent_sales_display == 'Y') { echo '<option value="sales_agent">'.$lh->translationFor("sales_agent").'</option>'; }
-                                        if ($perm->reportsanalytics_sales_tracker_display == 'Y') { echo '<option value="sales_tracker">'.$lh->translationFor("sales_tracker").'</option>'; }
-                                        if ($perm->reportsanalytics_inbound_call_display == 'Y') { echo '<option value="inbound_report">'.$lh->translationFor("inbound_call_report").'</option>'; }
-                                        if ($perm->reportsanalytics_export_call_display == 'Y') { echo '<option value="call_export_report">'.$lh->translationFor("export_call_report").'</option>'; }
+										if ($perm->reportsanalytics_display == 'Y') {
+									?>
+										<option value="stats" selected><?php echo $lh->translationFor("stats"); ?></option>
+										<option value="agent_detail"><?php echo $lh->translationFor("agent_detail"); ?></option>
+										<option value="agent_pdetail"><?php echo $lh->translationFor("agent_pdetail"); ?></option>
+										<option value="dispo"><?php echo $lh->translationFor("dispo"); ?></option>
+										<option value="sales_agent"><?php echo $lh->translationFor("sales_agent"); ?></option>
+										<option value="sales_tracker"><?php echo $lh->translationFor("sales_tracker"); ?></option>
+										<option value="inbound_report"><?php echo $lh->translationFor("inbound_call_report"); ?></option>
+										<option value="call_export_report"><?php echo$lh->translationFor("export_call_report"); ?></option>
+									<?php
+										}
 									?>
                                         <!--<option value="dashboard">Dashboard</option>
                                         <option value="cdr">Call History (CDRs)</option>-->
@@ -247,17 +265,17 @@
         
         <?php print $ui->standardizedThemeJS();?>
 
-        <!-- SELECT2-->
-            <script src="js/dashboard/select2/dist/js/select2.js"></script>
-        <!-- FLOT CHART-->
-            <script src="js/dashboard/js/Flot/jquery.flot.js"></script>
-            <script src="js/dashboard/js/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
-            <script src="js/dashboard/js/Flot/jquery.flot.resize.js"></script>
-            <script src="js/dashboard/js/Flot/jquery.flot.pie.js"></script>
-            <script src="js/dashboard/js/Flot/jquery.flot.time.js"></script>
-            <script src="js/dashboard/js/Flot/jquery.flot.categories.js"></script>
-            <script src="js/dashboard/js/flot-spline/js/jquery.flot.spline.min.js"></script>
-        <script>
+	<!-- FLOT CHART-->
+	<script src="js/dashboard/js/Flot/jquery.flot.js"></script>
+	<script src="js/dashboard/js/flot.tooltip/js/jquery.flot.tooltip.min.js"></script>
+	<script src="js/dashboard/js/Flot/jquery.flot.resize.js"></script>
+	<script src="js/dashboard/js/Flot/jquery.flot.pie.js"></script>
+	<script src="js/dashboard/js/Flot/jquery.flot.time.js"></script>
+	<script src="js/dashboard/js/Flot/jquery.flot.categories.js"></script>
+	<script src="js/dashboard/js/flot-spline/js/jquery.flot.spline.min.js"></script>
+	
+	<script type="text/javascript">
+		$(document).ready(function() {	
 			$(document).on('click','.edit-contact',function() {
 				var url = './editcontacts.php';
 				var id = $(this).attr('data-id');
@@ -267,921 +285,930 @@
 				$(form).submit();
 			});
 			
-            $(function () {
-                //Initialize Select2 Elements
-                $('.select2').select2({
-                    theme: 'bootstrap'
-                });
+			$('.select2-3').select2({ theme: 'bootstrap' });
+			$.fn.select2.defaults.set( "theme", "bootstrap" );
 
-                $('#datetimepicker1').datetimepicker({
-                    icons: {
-                        time: "fa fa-clock-o",
-                        date: "fa fa-calendar",
-                        up: "fa fa-arrow-up",
-                        down: "fa fa-arrow-down"
-                    }
-                });
-                $('#datetimepicker2').datetimepicker({
-                    icons: {
-                        time: "fa fa-clock-o",
-                        date: "fa fa-calendar",
-                        up: "fa fa-arrow-up",
-                        down: "fa fa-arrow-down"
-                    },
-                    useCurrent: false,
-                });
-                $("#datetimepicker1").on("dp.change", function (e) {
-                    $('#datetimepicker2').data("DateTimePicker").minDate(e.date);
+			$('#datetimepicker1').datetimepicker({
+				icons: {
+						//time: 'fa fa-clock-o',
+						date: 'fa fa-calendar',
+						up: 'fa fa-chevron-up',
+						down: 'fa fa-chevron-down',
+						previous: 'fa fa-chevron-left',
+						next: 'fa fa-chevron-right',
+						today: 'fa fa-crosshairs',
+						clear: 'fa fa-trash'
+					},
+				format: 'MM/DD/YYYY'
+			});
+			$('#datetimepicker2').datetimepicker({
+				icons: {
+						//time: 'fa fa-clock-o',
+						date: 'fa fa-calendar',
+						up: 'fa fa-chevron-up',
+						down: 'fa fa-chevron-down',
+						previous: 'fa fa-chevron-left',
+						next: 'fa fa-chevron-right',
+						today: 'fa fa-crosshairs',
+						clear: 'fa fa-trash'
+					},
+				format: 'MM/DD/YYYY',
+				useCurrent: false
+			});
+			
+			$("#datetimepicker1").on("dp.change", function (e) {
+				var filter_type = $('#filter_type').val();
+				$('#datetimepicker2').data("DateTimePicker").minDate(e.date);
+				console.log(filter_type);
+				if (filter_type == "call_export_report") {
+				} else {
 					
-					if($("#filter_type").val() == "call_export_report"){
-                    }else{
-						
-						$('#table').empty();
-						$(".report-loader").fadeIn("slow");
-						
-						var request = "";
-						var campaignID = $("#campaign_id").val();
-						
-						if($("#filter_type").val() == "stats"){
-							request = $("#request1").val();
-						}
-						if($("#filter_type").val() == "sales_agent"){
-							request = $("#request2").val();
-						}
-						if($("#filter_type").val() == "sales_tracker"){
-							request = $("#request2").val();
-						}
-						if($("#filter_type").val() == "inbound_report"){
-							campaignID = $("#ingroup_id").val();
-						}
-							$.ajax({
-								url: "reports.php",
-								type: 'POST',
-								data: {
-									pageTitle : $("#filter_type").val(),
-									campaignID : campaignID,
-									request : request,
-									userID : $("#userID").val(),
-									userGroup : $("#userGroup").val(),
-									fromDate : $("#start_filterdate").val(),
-									toDate : $("#end_filterdate").val(),
-									log_user: '<?php echo $_SESSION['user']?>',
-									log_group: '<?php echo $_SESSION['usergroup']?>'
-								},
-								success: function(data) {
-									//console.log(data);
-									if(data !== ""){
-										$(".report-loader").fadeOut("slow");
-										$('#table').html(data);
-										
-										if($("#filter_type").val() == "agent_detail"){
-											var title = "<?php $lh->translateText("agent_detail"); ?>";
-											$('#agent_detail_top').dataTable(
-                                            {
-                                                dom: 'Bfrtip',
-                                                buttons: [
-                                                    {
-                                                        text: 'Export Agent Time Detail',
-                                                        action: function ( ) {
-                                                            console.log("Exporting...");
-                                                            $( "#export_agentdetail_form" ).submit();
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                            //{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } 
-                                        );
-                                            //$('#agent_detail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-										}
-										if($("#filter_type").val() == "agent_pdetail"){
-											var title = "<?php $lh->translateText("agent_pdetail"); ?>";
-											$('#agent_pdetail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-										}
-										if($("#filter_type").val() == "dispo"){
-											var title = "<?php $lh->translateText("dispo"); ?>";
-											$('#dispo').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-										}
-										if($("#filter_type").val() == "sales_agent"){
-											var title = "<?php $lh->translateText("sales_agent"); ?>";
-											if ($("#request2").val() == "outbound") {
-												title = title + " - <?php $lh->translateText("outbound"); ?>";
-											}else{
-												title = title + " - <?php $lh->translateText("inbound"); ?>";
-											}
-											$('#outbound').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('#inbound').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-										}
-										if($("#filter_type").val() == "sales_tracker"){
-											var title = "<?php $lh->translateText("sales_tracker"); ?>";
-											if ($("#request2").val() == "outbound") {
-												title = title + " - <?php $lh->translateText("outbound"); ?>";
-											}else{
-												title = title + " - <?php $lh->translateText("inbound"); ?>";
-											}
-											$('#outbound_table').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('#inbound_table').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-										}
-										if($("#filter_type").val() == "inbound_report"){
-											var title = "<?php $lh->translateText("inbound"); ?> Call Report";
-											$('#inbound_report').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('.campaign_div').hide();
-											$('.ingroup_div').show();
-										}
-	
-									}else{
-										$(".report-loader").fadeOut("slow");
-										$('#table').html("<?php $lh->translateText("no_data"); ?>");
-									}
-								}
-							});
-					}
-                });
-                $("#datetimepicker2").on("dp.change", function (e) {
-                    $('#datetimepicker1').data("DateTimePicker").maxDate(e.date);
+					$('#table').empty();
+					$(".report-loader").fadeIn("slow");
 					
-					if($("#filter_type").val() == "call_export_report"){
-                    }else{
-					
-						$('#table').empty();
-						$(".report-loader").fadeIn("slow");
-						
-						var request = "";
-						var campaignID = $("#campaign_id").val();
-						
-						if($("#filter_type").val() == "stats"){
-							request = $("#request1").val();
-						}
-						if($("#filter_type").val() == "sales_agent"){
-							request = $("#request2").val();
-						}
-						if($("#filter_type").val() == "sales_tracker"){
-							request = $("#request2").val();
-						}
-						if($("#filter_type").val() == "inbound_report"){
-							campaignID = $("#ingroup_id").val();
-						}
-							$.ajax({
-								url: "reports.php",
-								type: 'POST',
-								data: {
-									pageTitle : $("#filter_type").val(),
-									campaignID : campaignID,
-									request : request,
-									userID : $("#userID").val(),
-									userGroup : $("#userGroup").val(),
-									fromDate : $("#start_filterdate").val(),
-									toDate : $("#end_filterdate").val(),
-									log_user: '<?php echo $_SESSION['user']?>',
-									log_group: '<?php echo $_SESSION['usergroup']?>'
-								},
-								success: function(data) {
-									//console.log(data);
-	
-									if(data != ""){
-										$(".report-loader").fadeOut("slow");
-										$('#table').html(data);
-	
-										if($("#filter_type").val() == "agent_detail"){
-											var title = "<?php $lh->translateText("agent_detail"); ?>";
-											$('#agent_detail_top').dataTable(
-                                            {
-                                                dom: 'Bfrtip',
-                                                buttons: [
-                                                    {
-                                                        text: 'Export Agent Time Detail',
-                                                        action: function ( ) {
-                                                            console.log("Exporting...");
-                                                            $( "#export_agentdetail_form" ).submit();
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                            //{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } 
-                                        );
-                                            //$('#agent_detail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-										}
-										if($("#filter_type").val() == "agent_pdetail"){
-											var title = "<?php $lh->translateText("agent_pdetail"); ?>";
-											$('#agent_pdetail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-										}
-										if($("#filter_type").val() == "dispo"){
-											var title = "<?php $lh->translateText("dispo"); ?>";
-											$('#dispo').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-										}
-										if($("#filter_type").val() == "sales_agent"){
-											var title = "<?php $lh->translateText("sales_agent"); ?>";
-											if ($("#request2").val() == "outbound") {
-												title = title + " - <?php $lh->translateText("outbound"); ?>";
-											}else{
-												title = title + " - <?php $lh->translateText("inbound"); ?>";
-											}
-											$('#outbound').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('#inbound').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-										}
-										if($("#filter_type").val() == "sales_tracker"){
-											var title = "<?php $lh->translateText("sales_tracker"); ?>";
-											if ($("#request2").val() == "outbound") {
-												title = title + " - <?php $lh->translateText("outbound"); ?>";
-											}else{
-												title = title + " - <?php $lh->translateText("inbound"); ?>";
-											}
-											$('#outbound_table').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-											$('#inbound_table').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-										}
-										if($("#filter_type").val() == "inbound_report"){
-											var title = "<?php $lh->translateText("inbound"); ?> Call Report";
-											$('#inbound_report').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-										}
-	
-									}else{
-										$(".report-loader").fadeOut("slow");
-										$('#table').html("<?php $lh->translateText("no_data"); ?>");
-									}
-								}
-							});
-					}
-                });
-
-                
-                 /* changing reports */
-                $('#filter_type').on('change', function() {
-                    $('#table').empty();
-                    $(".report-loader").fadeIn("slow");
-                    
-                    var request = "";
+					var request = "";
 					var campaignID = $("#campaign_id").val();
 					
-                    if($("#filter_type").val() == "stats"){
-                        request = $("#request1").val();
-						$('.request_div').show();
-						$('.stats_request').show();
-						$('.sales_agent_request').hide();
-						$('.campaign_div').show();
-						$('.ingroup_div').hide();
-                    }
-					if($("#filter_type").val() == "agent_detail"){
-						$('.request_div').hide();
-						$('.campaign_div').show();
-						$('.ingroup_div').hide();
+					if(filter_type == "stats"){
+						request = $("#request1").val();
 					}
-					if($("#filter_type").val() == "agent_pdetail"){
-						$('.request_div').hide();
-						$('.campaign_div').show();
-						$('.ingroup_div').hide();
+					if(filter_type == "sales_agent"){
+						request = $("#request2").val();
 					}
-					if($("#filter_type").val() == "dispo"){
-						$('.request_div').hide();
-						$('.campaign_div').show();
-						$('.ingroup_div').hide();
+					if(filter_type == "sales_tracker"){
+						request = $("#request2").val();
 					}
-                    if($("#filter_type").val() == "sales_agent"){
-                        request = $("#request2").val();
-						$('.request_div').show();
-						$('.sales_agent_request').show();
-						$('.stats_request').hide();
-						$('.campaign_div').show();
-						$('.ingroup_div').hide();
-                    }
-					if($("#filter_type").val() == "sales_tracker"){
-                        request = $("#request2").val();
-						$('.request_div').show();
-						$('.sales_agent_request').show();
-						$('.stats_request').hide();
-						$('.campaign_div').show();
-						$('.ingroup_div').hide();
-                    }
-					if($("#filter_type").val() == "inbound_report"){
-                        campaignID = $("#ingroup_id").val();
-						$('.request_div').hide();
-						$('.campaign_div').hide();
-						$('.ingroup_div').show();
-                    }
-					if($("#filter_type").val() == "call_export_report"){
-                        $('.campaign_div').hide();
-						$('.ingroup_div').hide();                                        
-						$('.request_div').hide();
-                    }
-					
-                        $.ajax({
-                            url: "reports.php",
-                            type: 'POST',
-                            data: {
-                                pageTitle : $("#filter_type").val(),
-                                campaignID : campaignID,
-                                request : request,
-                                userID : $("#userID").val(),
-                                userGroup : $("#userGroup").val(),
-                                fromDate : $("#start_filterdate").val(),
-                                toDate : $("#end_filterdate").val(),
-								log_user: '<?php echo $_SESSION['user']?>',
-								log_group: '<?php echo $_SESSION['usergroup']?>'
-                            },
-                            success: function(data) {
-                                //console.log(data);
-                                if(data !== ""){
-                                    $(".report-loader").fadeOut("slow");
-                                    $('#table').html(data);
-
-                                    if($("#filter_type").val() == "agent_detail"){
+					if(filter_type == "inbound_report"){
+						campaignID = $("#ingroup_id").val();
+					}
+						$.ajax({
+							url: "reports.php",
+							type: 'POST',
+							data: $('#search_form').serialize() + '&pageTitle=' + filter_type,
+							/*data: {
+								pageTitle : filter_type,
+								campaignID : campaignID,
+								request : request,
+								userID : $("#userID").val(),
+								userGroup : $("#userGroup").val(),
+								fromDate : $("#start_filterdate").val(),
+								toDate : $("#end_filterdate").val()
+							},*/
+							success: function(data) {
+								////console.log(data);
+								console.log($('#search_form').serialize() + '&pageTitle=' + filter_type);
+								if(data !== ""){
+									$(".report-loader").fadeOut("slow");
+									$('#table').html(data);
+									
+									if(filter_type == "agent_detail"){
 										var title = "<?php $lh->translateText("agent_detail"); ?>";
-                                        $('#agent_detail_top').dataTable(
-                                            {
-                                                dom: 'Bfrtip',
-                                                buttons: [
-                                                    {
-                                                        text: 'Export Agent Time Detail',
-                                                        action: function ( ) {
-                                                            console.log("Exporting...");
-                                                            $( "#export_agentdetail_form" ).submit();
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                            //{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } 
-                                        );
-                                        //$('#agent_detail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        //$('#agent_detail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                    }
-                                    if($("#filter_type").val() == "agent_pdetail"){
+										$('#agent_detail_top').DataTable(
+										{
+											dom: 'Bfrtip',
+											buttons: [
+												{
+													text: 'Export Agent Time Detail',
+													action: function ( ) {
+														console.log("Exporting...");
+														$( "#export_agentdetail_form" ).submit();
+													}
+												}
+											]
+										}
+										//{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } 
+									);
+										//$('#agent_detail_top').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									}
+									if(filter_type == "agent_pdetail"){
 										var title = "<?php $lh->translateText("agent_pdetail"); ?>";
-                                        $('#agent_pdetail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        //$('#agent_pdetail_mid').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        //$('#agent_pdetail_bottom').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        //$('#agent_pdetail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                    }
-                                    if($("#filter_type").val() == "dispo"){
+										$('#agent_pdetail_top').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									}
+									if(filter_type == "dispo"){
 										var title = "<?php $lh->translateText("dispo"); ?>";
-                                        $('#dispo').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                    }
-                                    if($("#filter_type").val() == "sales_agent"){
+										$('#dispo').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									}
+									if(filter_type == "sales_agent"){
 										var title = "<?php $lh->translateText("sales_agent"); ?>";
 										if ($("#request2").val() == "outbound") {
-                                            title = title + " - <?php $lh->translateText("outbound"); ?>";
-                                        }else{
+											title = title + " - <?php $lh->translateText("outbound"); ?>";
+										}else{
 											title = title + " - <?php $lh->translateText("inbound"); ?>";
 										}
-                                        $('#outbound').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#inbound').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                    }
-                                    if($("#filter_type").val() == "sales_tracker"){
+										$('#outbound').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+										$('#inbound').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									}
+									if(filter_type == "sales_tracker"){
 										var title = "<?php $lh->translateText("sales_tracker"); ?>";
 										if ($("#request2").val() == "outbound") {
-                                            title = title + " - <?php $lh->translateText("outbound"); ?>";
-                                        }else{
+											title = title + " - <?php $lh->translateText("outbound"); ?>";
+										}else{
 											title = title + " - <?php $lh->translateText("inbound"); ?>";
 										}
-                                        $('#outbound_table').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#inbound_table').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                    }
-                                    if($("#filter_type").val() == "inbound_report"){
+										$('#outbound_table').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+										$('#inbound_table').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									}
+									if(filter_type == "inbound_report"){
 										var title = "<?php $lh->translateText("inbound"); ?> Call Report";
-                                        $('#inbound_report').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                       
-                                    }
-
-                                }else{
-                                    $(".report-loader").fadeOut("slow");
-                                    $('#table').html("<?php $lh->translateText("no_data"); ?>");
-                                }
-                            }
-                        });
-                });
-                
-                 /* changing reports */
-                $('#campaign_id').on('change', function() {
-                    $('#table').empty();
-                    $(".report-loader").fadeIn("slow");
-
-                    var request = "";
-
-                    if($("#filter_type").val() == "stats"){
-                        request = $("#request1").val();
-                    }
-                    if($("#filter_type").val() == "sales_agent"){
-                        request = $("#request2").val();
-                    }
-					if($("#filter_type").val() == "sales_tracker"){
-                        request = $("#request2").val();
-                    }
-                        $.ajax({
-                            url: "reports.php",
-                            type: 'POST',
-                            data: {
-                                pageTitle : $("#filter_type").val(),
-                                campaignID : $("#campaign_id").val(),
-                                request : request,
-                                userID : $("#userID").val(),
-                                userGroup : $("#userGroup").val(),
-                                fromDate : $("#start_filterdate").val(),
-                                toDate : $("#end_filterdate").val(),
-								log_user: '<?php echo $_SESSION['user']?>',
-								log_group: '<?php echo $_SESSION['usergroup']?>'
-                            },
-                            success: function(data) {
-                                //console.log(data);
-                                if(data !== ""){
-                                    $(".report-loader").fadeOut("slow");
-                                    $('#table').html(data);
-
-                                    if($("#filter_type").val() == "stats"){
-                                        $('.request_div').show();
-                                        $('.stats_request').show();
-                                        $('.sales_agent_request').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
-                                    }
-                                    if($("#filter_type").val() == "agent_detail"){
-										var title = "<?php $lh->translateText("agent_detail"); ?>";
-                                        $('#agent_detail_top').dataTable(
-                                            {
-                                                dom: 'Bfrtip',
-                                                buttons: [
-                                                    {
-                                                        text: 'Export Agent Time Detail',
-                                                        action: function ( ) {
-                                                            console.log("Exporting...");
-                                                            $( "#export_agentdetail_form" ).submit();
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                            //{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } 
-                                        );
-                                        //$('#agent_detail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        
-                                        $('.request_div').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
-                                    }
-                                    if($("#filter_type").val() == "agent_pdetail"){
-										var title = "<?php $lh->translateText("agent_pdetail"); ?>";
-                                        $('#agent_pdetail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#agent_pdetail_mid').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#agent_pdetail_bottom').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#agent_pdetail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
-                                    }
-                                    if($("#filter_type").val() == "dispo"){
-										var title = "<?php $lh->translateText("dispo"); ?>";
-                                        $('#dispo').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
-                                    }
-                                    if($("#filter_type").val() == "sales_agent"){
-										var title = "<?php $lh->translateText("sales_agent"); ?>";
-										if ($("#request2").val() == "outbound") {
-                                            title = title + " - <?php $lh->translateText("outbound"); ?>";
-                                        }else{
-											title = title + " - <?php $lh->translateText("inbound"); ?>";
-										}
-                                        $('#outbound').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#inbound').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').show();
-                                        $('.sales_agent_request').show();
-                                        $('.stats_request').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
-                                    }
-                                    if($("#filter_type").val() == "sales_tracker"){
-										var title = "<?php $lh->translateText("sales_tracker"); ?>";
-										if ($("#request2").val() == "outbound") {
-                                            title = title + " - <?php $lh->translateText("outbound"); ?>";
-                                        }else{
-											title = title + " - <?php $lh->translateText("inbound"); ?>";
-										}
-                                        $('#outbound_table').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#inbound_table').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').show();
-										$('.sales_agent_request').show();
-                                        $('.stats_request').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
-                                    }
-                                    if($("#filter_type").val() == "inbound_report"){
-										var title = "<?php $lh->translateText("inbound"); ?> Call Report";
-                                        $('#inbound_report').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').hide();
+										$('#inbound_report').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
 										$('.campaign_div').hide();
 										$('.ingroup_div').show();
-                                    }
-                                    if($("#filter_type").val() == "call_export_report"){
-										var title = "Export Call Report";
-                                        $('.campaign_div').hide(); 										$('.ingroup_div').hide();                                        
-                                        $('.request_div').hide();
-                                    }
+									}
 
-                                }else{
-                                    $(".report-loader").fadeOut("slow");
-                                    $('#table').html("<?php $lh->translateText("no_data"); ?>");
-                                }
-                            }
-                        });
-                });
-
-                $('#request1').on('change', function() {
-                    $('#table').empty();
-                    $(".report-loader").fadeIn("slow");
-                    
-                    var request = "";
-
-                    if($("#filter_type").val() == "stats"){
-                        request = $("#request1").val();
-                    }
-                    if($("#filter_type").val() == "sales_agent"){
-                        request = $("#request2").val();
-                    }
-					if($("#filter_type").val() == "sales_tracker"){
-                        request = $("#request2").val();
-                    }
-                        $.ajax({
-                            url: "reports.php",
-                            type: 'POST',
-                            data: {
-                                pageTitle : $("#filter_type").val(),
-                                campaignID : $("#campaign_id").val(),
-                                request : request,
-                                userID : $("#userID").val(),
-                                userGroup : $("#userGroup").val(),
-                                fromDate : $("#start_filterdate").val(),
-                                toDate : $("#end_filterdate").val(),
-								log_user: '<?php echo $_SESSION['user']?>',
-								log_group: '<?php echo $_SESSION['usergroup']?>'
-                            },
-                            success: function(data) {
-                                //console.log(data);
-                                if(data !== ""){
-                                    $(".report-loader").fadeOut("slow");
-                                    $('#table').html(data);
-
-                                    if($("#filter_type").val() == "stats"){
-                                        $('.request_div').show();
-                                        $('.stats_request').show();
-                                        $('.sales_agent_request').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
-                                    }
-                                    if($("#filter_type").val() == "agent_detail"){
-										var title = "<?php $lh->translateText("agent_detail"); ?>";
-                                        $('#agent_detail_top').dataTable(
-                                            {
-                                                dom: 'Bfrtip',
-                                                buttons: [
-                                                    {
-                                                        text: 'Export Agent Time Detail',
-                                                        action: function ( ) {
-                                                            console.log("Exporting...");
-                                                            $( "#export_agentdetail_form" ).submit();
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                            //{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } 
-                                        );
-                                        //$('#agent_detail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        //$('#agent_detail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
-                                    }
-                                    if($("#filter_type").val() == "agent_pdetail"){
-										var title = "<?php $lh->translateText("agent_pdetail"); ?>";
-                                        $('#agent_pdetail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#agent_pdetail_mid').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#agent_pdetail_bottom').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#agent_pdetail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
-                                    }
-                                    if($("#filter_type").val() == "dispo"){
-										var title = "<?php $lh->translateText("dispo"); ?>";
-                                        $('#dispo').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
-                                    }
-                                    if($("#filter_type").val() == "sales_agent"){
-										var title = "<?php $lh->translateText("sales_agent"); ?>";
-										if ($("#request2").val() == "outbound") {
-                                            title = title + " - <?php $lh->translateText("outbound"); ?>";
-                                        }else{
-											title = title + " - <?php $lh->translateText("inbound"); ?>";
-										}
-                                        $('#outbound').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#inbound').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').show();
-                                        $('.sales_agent_request').show();
-                                        $('.stats_request').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
-                                    }
-                                    if($("#filter_type").val() == "sales_tracker"){
-										var title = "<?php $lh->translateText("sales_tracker"); ?>";
-										if ($("#request2").val() == "outbound") {
-                                            title = title + " - <?php $lh->translateText("outbound"); ?>";
-                                        }else{
-											title = title + " - <?php $lh->translateText("inbound"); ?>";
-										}
-                                        $('#outbound_table').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#inbound_table').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').show();
-										$('.sales_agent_request').show();
-                                        $('.stats_request').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
-                                    }
-                                    if($("#filter_type").val() == "inbound_report"){
-										var title = "<?php $lh->translateText("inbound"); ?> Call Report";
-                                        $('#inbound_report').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').hide();
-										$('.campaign_div').hide();
-										$('.ingroup_div').show();
-                                    }
-                                    if($("#filter_type").val() == "call_export_report"){
-										var title = "Export Call Report";
-                                        $('.campaign_div').hide(); 										$('.ingroup_div').hide();                                        
-                                        $('.request_div').hide();
-                                    }
-
-                                }else{
-                                    $(".report-loader").fadeOut("slow");
-                                    $('#table').html("<?php $lh->translateText("no_data"); ?>");
-                                }
-                            }
-                        });
-                });
-                
-                $('#request2').on('change', function() {
-                    $('#table').empty();
-                    $(".report-loader").fadeIn("slow");
-                    
-                    var request = "";
-
-                    if($("#filter_type").val() == "stats"){
-                        request = $("#request1").val();
-                    }
-                    if($("#filter_type").val() == "sales_agent"){
-                        request = $("#request2").val();
-                    }
-					if($("#filter_type").val() == "sales_tracker"){
-                        request = $("#request2").val();
-                    }
-					
-                        $.ajax({
-                            url: "reports.php",
-                            type: 'POST',
-                            data: {
-                                pageTitle : $("#filter_type").val(),
-                                campaignID : $("#campaign_id").val(),
-                                request : request,
-                                userID : $("#userID").val(),
-                                userGroup : $("#userGroup").val(),
-                                fromDate : $("#start_filterdate").val(),
-                                toDate : $("#end_filterdate").val(),
-								log_user: '<?php echo $_SESSION['user']?>',
-								log_group: '<?php echo $_SESSION['usergroup']?>'
-                            },
-                            success: function(data) {
-                                //console.log(data);
-                                if(data !== ""){
-                                    $(".report-loader").fadeOut("slow");
-                                    $('#table').html(data);
-
-                                    if($("#filter_type").val() == "stats"){
-                                        $('.request_div').show();
-                                        $('.stats_request').show();
-                                        $('.sales_agent_request').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
-                                    }
-                                    if($("#filter_type").val() == "agent_detail"){
-										var title = "<?php $lh->translateText("agent_detail"); ?>";
-                                        $('#agent_detail_top').dataTable(
-                                            {
-                                                dom: 'Bfrtip',
-                                                buttons: [
-                                                    {
-                                                        text: 'Export Agent Time Detail',
-                                                        action: function ( ) {
-                                                            console.log("Exporting...");
-                                                            $( "#export_agentdetail_form" ).submit();
-                                                        }
-                                                    }
-                                                ]
-                                            }
-                                            //{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } 
-                                        );
-                                        //$('#agent_detail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        //$('#agent_detail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
-                                    }
-                                    if($("#filter_type").val() == "agent_pdetail"){
-										var title = "<?php $lh->translateText("agent_pdetail"); ?>";
-                                        $('#agent_pdetail_top').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#agent_pdetail_mid').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#agent_pdetail_bottom').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#agent_pdetail_login').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
-                                    }
-                                    if($("#filter_type").val() == "dispo"){
-										var title = "<?php $lh->translateText("dispo"); ?>";
-                                        $('#dispo').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
-                                    }
-                                    if($("#filter_type").val() == "sales_agent"){
-										var title = "<?php $lh->translateText("sales_agent"); ?>";
-										if ($("#request2").val() == "outbound") {
-                                            title = title + " - <?php $lh->translateText("outbound"); ?>";
-                                        }else{
-											title = title + " - <?php $lh->translateText("inbound"); ?>";
-										}
-                                        $('#outbound').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#inbound').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').show();
-                                        $('.sales_agent_request').show();
-                                        $('.stats_request').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
-                                    }
-                                    if($("#filter_type").val() == "sales_tracker"){
-										var title = "<?php $lh->translateText("sales_tracker"); ?>";
-										if ($("#request2").val() == "outbound") {
-                                            title = title + " - <?php $lh->translateText("outbound"); ?>";
-                                        }else{
-											title = title + " - <?php $lh->translateText("inbound"); ?>";
-										}
-                                        $('#outbound_table').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('#inbound_table').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').show();
-										$('.sales_agent_request').show();
-                                        $('.stats_request').hide();
-										$('.campaign_div').show();
-										$('.ingroup_div').hide();
-                                    }
-                                    if($("#filter_type").val() == "inbound_report"){
-										var title = "<?php $lh->translateText("inbound"); ?> Call Report";
-                                        $('#inbound_report').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').hide();
-										$('.campaign_div').hide();
-										$('.ingroup_div').show();
-                                    }
-                                    if($("#filter_type").val() == "call_export_report"){
-										var title = "Export Call Report";
-                                        $('.campaign_div').hide(); 										$('.ingroup_div').hide();                                        
-                                        $('.request_div').hide();
-                                    }
-
-                                }else{
-                                    $(".report-loader").fadeOut("slow");
-                                    $('#table').html("<?php $lh->translateText("no_data"); ?>");
-                                }
-                            }
-                        });
-                });
+								}else{
+									$(".report-loader").fadeOut("slow");
+									$('#table').html("<?php $lh->translateText("no_data"); ?>");
+								}
+							}
+						});
+				}
+			});
+			$("#datetimepicker2").on("dp.change", function (e) {
+				$('#datetimepicker1').data("DateTimePicker").maxDate(e.date);
 				
-				$('#ingroup_id').on('change', function() {
-                    $('#table').empty();
-                    $(".report-loader").fadeIn("slow");
-                    
-                    var request = "";
-					
-                        $.ajax({
-                            url: "reports.php",
-                            type: 'POST',
-                            data: {
-                                pageTitle : $("#filter_type").val(),
-                                campaignID : $("#ingroup_id").val(),
-                                request : request,
-                                userID : $("#userID").val(),
-                                userGroup : $("#userGroup").val(),
-                                fromDate : $("#start_filterdate").val(),
-                                toDate : $("#end_filterdate").val(),
-								statuses : $("#statuses").val(),
-								log_user: '<?php echo $_SESSION['user']?>',
-								log_group: '<?php echo $_SESSION['usergroup']?>'
-                            },
-                            success: function(data) {
-                                //console.log(data);
-                                if(data !== ""){
-                                    $(".report-loader").fadeOut("slow");
-                                    $('#table').html(data);
-
-                                    if($("#filter_type").val() == "inbound_report"){
-										var title = "<?php $lh->translateText("inbound"); ?> Call Report";
-                                        $('#inbound_report').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').hide();
-										$('.campaign_div').hide();
-										$('.ingroup_div').show();
-                                    }
-
-                                }else{
-                                    $(".report-loader").fadeOut("slow");
-                                    $('#table').html("<?php $lh->translateText("no_data"); ?>");
-                                }
-                            }
-                        });
-                });
+				if(filter_type == "call_export_report"){
+				}else{
 				
-				$('#statuses').on('change', function() {
-                    $('#table').empty();
-                    $(".report-loader").fadeIn("slow");
-                    
-                    var request = "";
+					$('#table').empty();
+					$(".report-loader").fadeIn("slow");
 					
-                        $.ajax({
-                            url: "reports.php",
-                            type: 'POST',
-                            data: {
-                                pageTitle : $("#filter_type").val(),
-                                campaignID : $("#ingroup_id").val(),
-                                request : request,
-                                userID : $("#userID").val(),
-                                userGroup : $("#userGroup").val(),
-                                fromDate : $("#start_filterdate").val(),
-                                toDate : $("#end_filterdate").val(),
-								statuses : $("#statuses").val(),
-								log_user: '<?php echo $_SESSION['user']?>',
-								log_group: '<?php echo $_SESSION['usergroup']?>'
-                            },
-                            success: function(data) {
-                                //console.log(data);
-                                if(data !== ""){
-                                    $(".report-loader").fadeOut("slow");
-                                    $('#table').html(data);
+					var request = "";
+					var campaignID = $("#campaign_id").val();
+					
+					if(filter_type == "stats"){
+						request = $("#request1").val();
+					}
+					if(filter_type == "sales_agent"){
+						request = $("#request2").val();
+					}
+					if(filter_type == "sales_tracker"){
+						request = $("#request2").val();
+					}
+					if(filter_type == "inbound_report"){
+						campaignID = $("#ingroup_id").val();
+					}
+						$.ajax({
+							url: "reports.php",
+							type: 'POST',
+							data: $('#search_form').serialize() + '&pageTitle=' + filter_type,
+							/*data: {
+								pageTitle : filter_type,
+								campaignID : campaignID,
+								request : request,
+								userID : $("#userID").val(),
+								userGroup : $("#userGroup").val(),
+								fromDate : $("#start_filterdate").val(),
+								toDate : $("#end_filterdate").val(),
+							},*/
+							success: function(data) {
+								////console.log(data);
 
-                                    if($("#filter_type").val() == "inbound_report"){
+								if(data != ""){
+									$(".report-loader").fadeOut("slow");
+									$('#table').html(data);
+
+									if(filter_type == "agent_detail"){
+										var title = "<?php $lh->translateText("agent_detail"); ?>";
+										$('#agent_detail_top').DataTable(
+										{
+											dom: 'Bfrtip',
+											buttons: [
+												{
+													text: 'Export Agent Time Detail',
+													action: function ( ) {
+														console.log("Exporting...");
+														$( "#export_agentdetail_form" ).submit();
+													}
+												}
+											]
+										}
+										//{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } 
+									);
+										//$('#agent_detail_top').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									}
+									if(filter_type == "agent_pdetail"){
+										var title = "<?php $lh->translateText("agent_pdetail"); ?>";
+										$('#agent_pdetail_top').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									}
+									if(filter_type == "dispo"){
+										var title = "<?php $lh->translateText("dispo"); ?>";
+										$('#dispo').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									}
+									if(filter_type == "sales_agent"){
+										var title = "<?php $lh->translateText("sales_agent"); ?>";
+										if ($("#request2").val() == "outbound") {
+											title = title + " - <?php $lh->translateText("outbound"); ?>";
+										}else{
+											title = title + " - <?php $lh->translateText("inbound"); ?>";
+										}
+										$('#outbound').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+										$('#inbound').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									}
+									if(filter_type == "sales_tracker"){
+										var title = "<?php $lh->translateText("sales_tracker"); ?>";
+										if ($("#request2").val() == "outbound") {
+											title = title + " - <?php $lh->translateText("outbound"); ?>";
+										}else{
+											title = title + " - <?php $lh->translateText("inbound"); ?>";
+										}
+										$('#outbound_table').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+										$('#inbound_table').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									}
+									if(filter_type == "inbound_report"){
 										var title = "<?php $lh->translateText("inbound"); ?> Call Report";
-                                        $('#inbound_report').dataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
-                                        $('.request_div').hide();
-										$('.campaign_div').hide();
-										$('.ingroup_div').show();
-                                    }
+										$('#inbound_report').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									}
 
-                                }else{
-                                    $(".report-loader").fadeOut("slow");
-                                    $('#table').html("<?php $lh->translateText("no_data"); ?>");
-                                }
-                            }
-                        });
-                });
-                /*
-                 * <?php $lh->translateText("inbound"); ?> and <?php $lh->translateText("outbound"); ?> Calls Per Hour Data
-                */
-                    (function(window, document, $, undefined){
-                        $(function(){
-                            var datav3 = [
-                                {
-                                "label": "",
-                                "color": "#009688",
-                                "data": [
-                                <?php
-                                
-                                    echo '["12 MN", 0],';
-                                    echo '["12 MN", 0],';
-                                    echo '["1 AM", 0],';
-                                    echo '["1 AM", 0]';
-                                ?>]
-                                }];
-                                
-                            var options = { series: { lines: {show: false}, points: {show: true,radius: 4},
-                                    splines: {show: true,tension: 0.4,lineWidth: 1,fill: 0.5}
-                                },
-                                grid: { borderColor: '#eee', borderWidth: 1, hoverable: true, backgroundColor: '#fcfcfc' },
-                                tooltip: true, 
-                                tooltipOpts: { content: function (label, x, y) {  return y + ' Calls / Day';  } },
-                                xaxis: { tickColor: '#fcfcfc', mode: 'categories' },
-                                yaxis: { min: 0, max: 4, // optional: use it for a clear represetation
-                                    tickColor: '#eee',
-                                    //position: 'right' or 'left',
-                                    tickFormatter: function (v) {
-                                        return v/* + ' visitors'*/;
-                                    }
-                                },
-                                shadowSize: 0
-                              };
-                              var chartv3 = $('.chart-splinev3');
-                              if(chartv3.length)
-                                $.plot(chartv3, datav3, options);
-                        });
-                    })(window, document, window.jQuery);
+								}else{
+									$(".report-loader").fadeOut("slow");
+									$('#table').html("<?php $lh->translateText("no_data"); ?>");
+								}
+							}
+						});
+				}
+			});
 
-                    /* Daterange
-                    $('#date_range').daterangepicker({
-                        "autoApply": true,
-                        "endDate": "08/17/2016"
-                    }, function(start, end, label) {
-                      console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
-                    });
-                    */
+			
+				/* changing reports */
+			$('#filter_type').on('change', function() {
+				var filter_type = $(this).val();
+				var request = "";
+				var campaignID = $("#campaign_id").val();					
+
+				$('#filter_type').val(filter_type);
+				$('#table').empty();
+				$(".report-loader").fadeIn("slow");
+				console.log($('#filter_type').val());
+				
+				if(filter_type == "stats"){
+					request = $("#request1").val();
+					$('.request_div').show();
+					$('.stats_request').show();
+					$('.sales_agent_request').hide();
+					$('.campaign_div').show();
+					$('.ingroup_div').hide();
+				}
+				if(filter_type == "agent_detail"){
+					$('.request_div').hide();
+					$('.campaign_div').show();
+					$('.ingroup_div').hide();
+				}
+				if(filter_type == "agent_pdetail"){
+					$('.request_div').hide();
+					$('.campaign_div').show();
+					$('.ingroup_div').hide();
+				}
+				if(filter_type == "dispo"){
+					$('.request_div').hide();
+					$('.campaign_div').show();
+					$('.ingroup_div').hide();
+				}
+				if(filter_type == "sales_agent"){
+					request = $("#request2").val();
+					$('.request_div').show();
+					$('.sales_agent_request').show();
+					$('.stats_request').hide();
+					$('.campaign_div').show();
+					$('.ingroup_div').hide();
+				}
+				if(filter_type == "sales_tracker"){
+					request = $("#request2").val();
+					$('.request_div').show();
+					$('.sales_agent_request').show();
+					$('.stats_request').hide();
+					$('.campaign_div').show();
+					$('.ingroup_div').hide();
+				}
+				if(filter_type == "inbound_report"){
+					campaignID = $("#ingroup_id").val();
+					$('.request_div').hide();
+					$('.campaign_div').hide();
+					$('.ingroup_div').show();
+				}
+				if(filter_type == "call_export_report"){
+					$('.campaign_div').hide();
+					$('.ingroup_div').hide();                                        
+					$('.request_div').hide();
+				}
+				
+					$.ajax({
+						url: "reports.php",
+						type: 'POST',
+						data: $('#search_form').serialize() + '&pageTitle=' + filter_type,
+						/*data: {
+							pageTitle : filter_type,
+							campaignID : campaignID,
+							request : request,
+							fromDate : $("#start_filterdate").val(),
+							toDate : $("#end_filterdate").val()
+						},*/
+						success: function(data) {
+							//console.log(data);
+							//console.log($('#search_form').serialize() + '&pageTitle=' + filter_type);
+							if(data !== ""){
+								$(".report-loader").fadeOut("slow");
+								$('#table').html(data);
+
+								if(filter_type == "agent_detail"){
+									var title = "<?php $lh->translateText("agent_detail"); ?>";
+									$('#agent_detail_top').DataTable(
+										{
+											dom: 'Bfrtip',
+											buttons: [
+												{
+													text: 'Export Agent Time Detail',
+													action: function ( ) {
+														console.log("Exporting...");
+														$( "#export_agentdetail_form" ).submit();
+													}
+												}
+											]
+										}
+										//{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } 
+									);
+									//$('#agent_detail_top').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									//$('#agent_detail_login').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+								}
+								if(filter_type == "agent_pdetail"){
+									var title = "<?php $lh->translateText("agent_pdetail"); ?>";
+									$('#agent_pdetail_top').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									//$('#agent_pdetail_mid').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									//$('#agent_pdetail_bottom').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									//$('#agent_pdetail_login').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+								}
+								if(filter_type == "dispo"){
+									var title = "<?php $lh->translateText("dispo"); ?>";
+									$('#dispo').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+								}
+								if(filter_type == "sales_agent"){
+									var title = "<?php $lh->translateText("sales_agent"); ?>";
+									if ($("#request2").val() == "outbound") {
+										title = title + " - <?php $lh->translateText("outbound"); ?>";
+									}else{
+										title = title + " - <?php $lh->translateText("inbound"); ?>";
+									}
+									$('#outbound').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('#inbound').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+								}
+								if(filter_type == "sales_tracker"){
+									var title = "<?php $lh->translateText("sales_tracker"); ?>";
+									if ($("#request2").val() == "outbound") {
+										title = title + " - <?php $lh->translateText("outbound"); ?>";
+									}else{
+										title = title + " - <?php $lh->translateText("inbound"); ?>";
+									}
+									$('#outbound_table').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('#inbound_table').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+								}
+								if(filter_type == "inbound_report"){
+									var title = "<?php $lh->translateText("inbound"); ?> Call Report";
+									$('#inbound_report').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									
+								}
+
+							}else{
+								$(".report-loader").fadeOut("slow");
+								$('#table').html("<?php $lh->translateText("no_data"); ?>");
+							}
+						}
+					});
+			});
+			
+				/* changing reports */
+			$('#campaign_id').on('change', function() {
+				var filter_type = $('#filter_type').val();
+				$('#table').empty();
+				$(".report-loader").fadeIn("slow");
+
+				var request = "";
+
+				if(filter_type == "stats"){
+					request = $("#request1").val();
+				}
+				if(filter_type == "sales_agent"){
+					request = $("#request2").val();
+				}
+				if(filter_type == "sales_tracker"){
+					request = $("#request2").val();
+				}
+					$.ajax({
+						url: "reports.php",
+						type: 'POST',
+						data: $('#search_form').serialize() + '&pageTitle=' + filter_type,
+						/*data: {
+							pageTitle : filter_type,
+							campaignID : $("#campaign_id").val(),
+							request : request,
+							userID : $("#userID").val(),
+							userGroup : $("#userGroup").val(),
+							fromDate : $("#start_filterdate").val(),
+							toDate : $("#end_filterdate").val()
+						},*/
+						success: function(data) {
+							//console.log(data);
+							if(data !== ""){
+								$(".report-loader").fadeOut("slow");
+								$('#table').html(data);
+
+								if(filter_type == "stats"){
+									$('.request_div').show();
+									$('.stats_request').show();
+									$('.sales_agent_request').hide();
+									$('.campaign_div').show();
+									$('.ingroup_div').hide();
+								}
+								if(filter_type == "agent_detail"){
+									var title = "<?php $lh->translateText("agent_detail"); ?>";
+									$('#agent_detail_top').DataTable(
+										{
+											dom: 'Bfrtip',
+											buttons: [
+												{
+													text: 'Export Agent Time Detail',
+													action: function ( ) {
+														console.log("Exporting...");
+														$( "#export_agentdetail_form" ).submit();
+													}
+												}
+											]
+										}
+										//{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } 
+									);
+									//$('#agent_detail_login').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									
+									$('.request_div').hide();
+									$('.campaign_div').show();
+									$('.ingroup_div').hide();
+								}
+								if(filter_type == "agent_pdetail"){
+									var title = "<?php $lh->translateText("agent_pdetail"); ?>";
+									$('#agent_pdetail_top').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('#agent_pdetail_mid').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('#agent_pdetail_bottom').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('#agent_pdetail_login').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('.request_div').hide();
+									$('.campaign_div').show();
+									$('.ingroup_div').hide();
+								}
+								if(filter_type == "dispo"){
+									var title = "<?php $lh->translateText("dispo"); ?>";
+									$('#dispo').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('.request_div').hide();
+									$('.campaign_div').show();
+									$('.ingroup_div').hide();
+								}
+								if(filter_type == "sales_agent"){
+									var title = "<?php $lh->translateText("sales_agent"); ?>";
+									if ($("#request2").val() == "outbound") {
+										title = title + " - <?php $lh->translateText("outbound"); ?>";
+									}else{
+										title = title + " - <?php $lh->translateText("inbound"); ?>";
+									}
+									$('#outbound').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('#inbound').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('.request_div').show();
+									$('.sales_agent_request').show();
+									$('.stats_request').hide();
+									$('.campaign_div').show();
+									$('.ingroup_div').hide();
+								}
+								if(filter_type == "sales_tracker"){
+									var title = "<?php $lh->translateText("sales_tracker"); ?>";
+									if ($("#request2").val() == "outbound") {
+										title = title + " - <?php $lh->translateText("outbound"); ?>";
+									}else{
+										title = title + " - <?php $lh->translateText("inbound"); ?>";
+									}
+									$('#outbound_table').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('#inbound_table').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('.request_div').show();
+									$('.sales_agent_request').show();
+									$('.stats_request').hide();
+									$('.campaign_div').show();
+									$('.ingroup_div').hide();
+								}
+								if(filter_type == "inbound_report"){
+									var title = "<?php $lh->translateText("inbound"); ?> Call Report";
+									$('#inbound_report').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('.request_div').hide();
+									$('.campaign_div').hide();
+									$('.ingroup_div').show();
+								}
+								if(filter_type == "call_export_report"){
+									var title = "Export Call Report";
+									$('.campaign_div').hide(); 										$('.ingroup_div').hide();                                        
+									$('.request_div').hide();
+								}
+
+							}else{
+								$(".report-loader").fadeOut("slow");
+								$('#table').html("<?php $lh->translateText("no_data"); ?>");
+							}
+						}
+					});
+			});
+
+			$('#request1').on('change', function() {
+				var filter_type = $('#filter_type').val();
+				$('#table').empty();
+				$(".report-loader").fadeIn("slow");
+				
+				var request = "";
+
+				if(filter_type == "stats"){
+					request = $("#request1").val();
+				}
+				if(filter_type == "sales_agent"){
+					request = $("#request2").val();
+				}
+				if(filter_type == "sales_tracker"){
+					request = $("#request2").val();
+				}
+					$.ajax({
+						url: "reports.php",
+						type: 'POST',
+						data: $('#search_form').serialize() + '&pageTitle=' + filter_type,
+						/*data: {
+							pageTitle : filter_type,
+							campaignID : $("#campaign_id").val(),
+							request : request,
+							userID : $("#userID").val(),
+							userGroup : $("#userGroup").val(),
+							fromDate : $("#start_filterdate").val(),
+							toDate : $("#end_filterdate").val()
+						},*/
+						success: function(data) {
+							//console.log(data);
+							if(data !== ""){
+								$(".report-loader").fadeOut("slow");
+								$('#table').html(data);
+
+								if(filter_type == "stats"){
+									$('.request_div').show();
+									$('.stats_request').show();
+									$('.sales_agent_request').hide();
+									$('.campaign_div').show();
+									$('.ingroup_div').hide();
+								}
+								if(filter_type == "agent_detail"){
+									var title = "<?php $lh->translateText("agent_detail"); ?>";
+									$('#agent_detail_top').DataTable(
+										{
+											dom: 'Bfrtip',
+											buttons: [
+												{
+													text: 'Export Agent Time Detail',
+													action: function ( ) {
+														console.log("Exporting...");
+														$( "#export_agentdetail_form" ).submit();
+													}
+												}
+											]
+										}
+										//{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } 
+									);
+									//$('#agent_detail_top').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									//$('#agent_detail_login').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('.request_div').hide();
+									$('.campaign_div').show();
+									$('.ingroup_div').hide();
+								}
+								if(filter_type == "agent_pdetail"){
+									var title = "<?php $lh->translateText("agent_pdetail"); ?>";
+									$('#agent_pdetail_top').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('#agent_pdetail_mid').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('#agent_pdetail_bottom').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('#agent_pdetail_login').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('.request_div').hide();
+									$('.campaign_div').show();
+									$('.ingroup_div').hide();
+								}
+								if(filter_type == "dispo"){
+									var title = "<?php $lh->translateText("dispo"); ?>";
+									$('#dispo').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('.request_div').hide();
+									$('.campaign_div').show();
+									$('.ingroup_div').hide();
+								}
+								if(filter_type == "sales_agent"){
+									var title = "<?php $lh->translateText("sales_agent"); ?>";
+									if ($("#request2").val() == "outbound") {
+										title = title + " - <?php $lh->translateText("outbound"); ?>";
+									}else{
+										title = title + " - <?php $lh->translateText("inbound"); ?>";
+									}
+									$('#outbound').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('#inbound').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('.request_div').show();
+									$('.sales_agent_request').show();
+									$('.stats_request').hide();
+									$('.campaign_div').show();
+									$('.ingroup_div').hide();
+								}
+								if(filter_type == "sales_tracker"){
+									var title = "<?php $lh->translateText("sales_tracker"); ?>";
+									if ($("#request2").val() == "outbound") {
+										title = title + " - <?php $lh->translateText("outbound"); ?>";
+									}else{
+										title = title + " - <?php $lh->translateText("inbound"); ?>";
+									}
+									$('#outbound_table').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('#inbound_table').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('.request_div').show();
+									$('.sales_agent_request').show();
+									$('.stats_request').hide();
+									$('.campaign_div').show();
+									$('.ingroup_div').hide();
+								}
+								if(filter_type == "inbound_report"){
+									var title = "<?php $lh->translateText("inbound"); ?> Call Report";
+									$('#inbound_report').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('.request_div').hide();
+									$('.campaign_div').hide();
+									$('.ingroup_div').show();
+								}
+								if(filter_type == "call_export_report"){
+									var title = "Export Call Report";
+									$('.campaign_div').hide(); 										$('.ingroup_div').hide();                                        
+									$('.request_div').hide();
+								}
+
+							}else{
+								$(".report-loader").fadeOut("slow");
+								$('#table').html("<?php $lh->translateText("no_data"); ?>");
+							}
+						}
+					});
+			});
+			
+			$('#request2').on('change', function() {
+				var filter_type = $('#filter_type').val();
+				$('#table').empty();
+				$(".report-loader").fadeIn("slow");
+				
+				var request = "";
+
+				if(filter_type == "stats"){
+					request = $("#request1").val();
+				}
+				if(filter_type == "sales_agent"){
+					request = $("#request2").val();
+				}
+				if(filter_type == "sales_tracker"){
+					request = $("#request2").val();
+				}
+				
+					$.ajax({
+						url: "reports.php",
+						type: 'POST',
+						data: $('#search_form').serialize() + '&pageTitle=' + filter_type,
+						/*data: {
+							pageTitle : filter_type,
+							campaignID : $("#campaign_id").val(),
+							request : request,
+							userID : $("#userID").val(),
+							userGroup : $("#userGroup").val(),
+							fromDate : $("#start_filterdate").val(),
+							toDate : $("#end_filterdate").val()
+						},*/
+						success: function(data) {
+							////console.log(data);
+							if(data !== ""){
+								$(".report-loader").fadeOut("slow");
+								$('#table').html(data);
+
+								if(filter_type == "stats"){
+									$('.request_div').show();
+									$('.stats_request').show();
+									$('.sales_agent_request').hide();
+									$('.campaign_div').show();
+									$('.ingroup_div').hide();
+								}
+								if(filter_type == "agent_detail"){
+									var title = "<?php $lh->translateText("agent_detail"); ?>";
+									$('#agent_detail_top').DataTable(
+										{
+											dom: 'Bfrtip',
+											buttons: [
+												{
+													text: 'Export Agent Time Detail',
+													action: function ( ) {
+														console.log("Exporting...");
+														$( "#export_agentdetail_form" ).submit();
+													}
+												}
+											]
+										}
+										//{ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } 
+									);
+									//$('#agent_detail_top').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									//$('#agent_detail_login').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('.request_div').hide();
+									$('.campaign_div').show();
+									$('.ingroup_div').hide();
+								}
+								if(filter_type == "agent_pdetail"){
+									var title = "<?php $lh->translateText("agent_pdetail"); ?>";
+									$('#agent_pdetail_top').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('#agent_pdetail_mid').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('#agent_pdetail_bottom').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('#agent_pdetail_login').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('.request_div').hide();
+									$('.campaign_div').show();
+									$('.ingroup_div').hide();
+								}
+								if(filter_type == "dispo"){
+									var title = "<?php $lh->translateText("dispo"); ?>";
+									$('#dispo').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('.request_div').hide();
+									$('.campaign_div').show();
+									$('.ingroup_div').hide();
+								}
+								if(filter_type == "sales_agent"){
+									var title = "<?php $lh->translateText("sales_agent"); ?>";
+									if ($("#request2").val() == "outbound") {
+										title = title + " - <?php $lh->translateText("outbound"); ?>";
+									}else{
+										title = title + " - <?php $lh->translateText("inbound"); ?>";
+									}
+									$('#outbound').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('#inbound').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('.request_div').show();
+									$('.sales_agent_request').show();
+									$('.stats_request').hide();
+									$('.campaign_div').show();
+									$('.ingroup_div').hide();
+								}
+								if(filter_type == "sales_tracker"){
+									var title = "<?php $lh->translateText("sales_tracker"); ?>";
+									if ($("#request2").val() == "outbound") {
+										title = title + " - <?php $lh->translateText("outbound"); ?>";
+									}else{
+										title = title + " - <?php $lh->translateText("inbound"); ?>";
+									}
+									$('#outbound_table').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('#inbound_table').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('.request_div').show();
+									$('.sales_agent_request').show();
+									$('.stats_request').hide();
+									$('.campaign_div').show();
+									$('.ingroup_div').hide();
+								}
+								if(filter_type == "inbound_report"){
+									var title = "<?php $lh->translateText("inbound"); ?> Call Report";
+									$('#inbound_report').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('.request_div').hide();
+									$('.campaign_div').hide();
+									$('.ingroup_div').show();
+								}
+								if(filter_type == "call_export_report"){
+									var title = "Export Call Report";
+									$('.campaign_div').hide(); 										$('.ingroup_div').hide();                                        
+									$('.request_div').hide();
+								}
+
+							}else{
+								$(".report-loader").fadeOut("slow");
+								$('#table').html("<?php $lh->translateText("no_data"); ?>");
+							}
+						}
+					});
+			});
+			
+			$('#ingroup_id').on('change', function() {
+				var filter_type = $('#filter_type').val();
+				$('#table').empty();
+				$(".report-loader").fadeIn("slow");
+				
+				var request = "";
+				
+					$.ajax({
+						url: "reports.php",
+						type: 'POST',
+						data: $('#search_form').serialize() + '&pageTitle=' + filter_type,
+						/*data: {
+							pageTitle : filter_type,
+							campaignID : $("#ingroup_id").val(),
+							request : request,
+							userID : $("#userID").val(),
+							userGroup : $("#userGroup").val(),
+							fromDate : $("#start_filterdate").val(),
+							toDate : $("#end_filterdate").val(),
+							statuses : $("#statuses").val()
+						},*/
+						success: function(data) {
+							////console.log(data);
+							if(data !== ""){
+								$(".report-loader").fadeOut("slow");
+								$('#table').html(data);
+
+								if(filter_type == "inbound_report"){
+									var title = "<?php $lh->translateText("inbound"); ?> Call Report";
+									$('#inbound_report').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('.request_div').hide();
+									$('.campaign_div').hide();
+									$('.ingroup_div').show();
+								}
+
+							}else{
+								$(".report-loader").fadeOut("slow");
+								$('#table').html("<?php $lh->translateText("no_data"); ?>");
+							}
+						}
+					});
+			});
+			
+			$('#statuses').on('change', function() {
+				var filter_type = $('#filter_type').val();
+				$('#table').empty();
+				$(".report-loader").fadeIn("slow");
+				
+				var request = "";
+				
+					$.ajax({
+						url: "reports.php",
+						type: 'POST',
+						data: $('#search_form').serialize() + '&pageTitle=' + filter_type,
+						/*data: {
+							pageTitle : filter_type,
+							campaignID : $("#ingroup_id").val(),
+							request : request,
+							userID : $("#userID").val(),
+							userGroup : $("#userGroup").val(),
+							fromDate : $("#start_filterdate").val(),
+							toDate : $("#end_filterdate").val(),
+							statuses : $("#statuses").val()
+						},*/
+						success: function(data) {
+							////console.log(data);
+							if(data !== ""){
+								$(".report-loader").fadeOut("slow");
+								$('#table').html(data);
+
+								if(filter_type == "inbound_report"){
+									var title = "<?php $lh->translateText("inbound"); ?> Call Report";
+									$('#inbound_report').DataTable({ dom: 'Bfrtip',  buttons: [ {extend: 'copy', title: title}, {extend: 'csv', title: title}, {extend: 'excel', title: title}, {extend: 'print', title: title} ] } );
+									$('.request_div').hide();
+									$('.campaign_div').hide();
+									$('.ingroup_div').show();
+								}
+
+							}else{
+								$(".report-loader").fadeOut("slow");
+								$('#table').html("<?php $lh->translateText("no_data"); ?>");
+							}
+						}
+					});
+			});
+		/*
+			* <?php $lh->translateText("inbound"); ?> and <?php $lh->translateText("outbound"); ?> Calls Per Hour Data
+		*/
+			(function(window, document, $, undefined){
+				$(function(){
+					var datav3 = [
+						{
+						"label": "",
+						"color": "#009688",
+						"data": [
+						<?php
+						
+							echo '["12 MN", 0],';
+							echo '["12 MN", 0],';
+							echo '["1 AM", 0],';
+							echo '["1 AM", 0]';
+						?>]
+						}];
+						
+					var options = { series: { lines: {show: false}, points: {show: true,radius: 4},
+							splines: {show: true,tension: 0.4,lineWidth: 1,fill: 0.5}
+						},
+						grid: { borderColor: '#eee', borderWidth: 1, hoverable: true, backgroundColor: '#fcfcfc' },
+						tooltip: true, 
+						tooltipOpts: { content: function (label, x, y) {  return y + ' Calls / Day';  } },
+						xaxis: { tickColor: '#fcfcfc', mode: 'categories' },
+						yaxis: { min: 0, max: 4, // optional: use it for a clear represetation
+							tickColor: '#eee',
+							//position: 'right' or 'left',
+							tickFormatter: function (v) {
+								return v/* + ' visitors'*/;
+							}
+						},
+						shadowSize: 0
+						};
+						var chartv3 = $('.chart-splinev3');
+						if(chartv3.length)
+						$.plot(chartv3, datav3, options);
+				});
+			})(window, document, window.jQuery);
+
+			/* Daterange
+			$('#date_range').daterangepicker({
+				"autoApply": true,
+				"endDate": "08/17/2016"
+			}, function(start, end, label) {
+				console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+			});
+			*/
             });
         </script>
 
