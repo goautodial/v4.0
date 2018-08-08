@@ -1504,8 +1504,6 @@
 
 				$(document).on('click','.delete-ivr',function() {
 				 	var id = $(this).attr('data-id');
-					var log_user = '<?=$_SESSION['user']?>';
-					var log_group = '<?=$_SESSION['usergroup']?>';
 	                swal({   
 	                	title: "<?php $lh->translateText("are_you_sure"); ?>",   
 	                	text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",   
@@ -1523,9 +1521,7 @@
 									url: "./php/DeleteInbound.php",
 									type: 'POST',
 									data: { 
-										ivr: id,
-										log_user: log_user,
-										log_group: log_group
+										ivr: id
 									},
 									success: function(data) {
 									console.log(data);
@@ -1631,8 +1627,6 @@
 
 				$(document).on('click','.delete-phonenumber',function() {
 				 	var id = $(this).attr('data-id');
-					var log_user = '<?=$_SESSION['user']?>';
-					var log_group = '<?=$_SESSION['usergroup']?>';
 	                swal({
 	                	title: "<?php $lh->translateText('are_you_sure'); ?>",   
 	                	text: "<?php $lh->translateText('action_cannot_be_undone'); ?>",   
@@ -1650,9 +1644,7 @@
 									url: "./php/DeleteInbound.php",
 									type: 'POST',
 									data: { 
-										modify_did: id,
-										log_user: log_user,
-										log_group: log_group
+										modify_did: id
 									},
 									
 									success: function(data) {

@@ -36,9 +36,9 @@ if (isset($_POST["groupid"])) {
 	$groupid = $_POST["groupid"];
 }
 
-$ivr = NULL;
+$ivr_id = NULL;
 if (isset($_POST["ivr"])) {
-	$ivr = $_POST["ivr"];
+	$ivr_id = $_POST["ivr"];
 }
 
 $did = NULL;
@@ -57,7 +57,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
         <title><?php $lh->translateText("edit"); ?>
         	<?php 
         		if($groupid != NULL){echo "In-Group";}
-        		if($ivr != NULL){echo "Interactive Voice Record";}
+        		if($ivr_id != NULL){echo "Interactive Voice Record";}
         		if($did != NULL){echo "DID/Phone Number";}
         	?>
         </title>
@@ -94,7 +94,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
                         <small><?php $lh->translateText("edit"); ?> 
 							<?php
 								if($groupid != NULL){echo $lh->translateText('in_group');}
-								if($ivr != NULL){echo $lh->translateText('interactive_voice_record');}
+								if($ivr_id != NULL){echo $lh->translateText('interactive_voice_record');}
 								if($did != NULL){echo $lh->translateText('did_phone_number');}
 							?>
 						</small>
@@ -103,7 +103,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
                         <li> <?php $lh->translateText("Telephony"); ?></li>
                         <?php
-							if($groupid != NULL || $ivr != NULL || $did != NULL){
+							if($groupid != NULL || $ivr_id != NULL || $did != NULL){
 						?>	
 							<li><a href="./telephonyinbound.php"><?php $lh->translateText("inbound"); ?></a></li>
                         <?php
@@ -1141,8 +1141,8 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					}
 					
 				// IF IVR
-					if($ivr != NULL) {
-						$output = $api->API_getIVRInfo($ivr);
+					if($ivr_id != NULL) {
+						$output = $api->API_getIVRInfo($ivr_id);
 						
 						if ($output->result=="success") {
 							$user_groups = $api->API_getAllUserGroups();
@@ -1155,7 +1155,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 							$voicefiles = $api->API_getAllVoiceFiles();
 							$calltimes = $api->API_getCalltimes();
 	
-							$ivr_options = $api->API_getIVROptions($ivr);
+							$ivr_options = $api->API_getIVROptions($ivr_id);
 							$ivr = $api->API_getAllIVRs();
 						# Result was OK!
 					?>
