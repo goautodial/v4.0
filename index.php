@@ -1201,8 +1201,10 @@ function goGetInSession(type) {
 			var global_userid = "";
 			
 			// Get user information and post results in view_agent_information modal
-			$(document).on('click','#onclick-userinfo',function(){
+			$(document).on('click','#onclick-userinfo',function(){							
+				var userid = $(this).attr('data-id');
 				var user = $(this).attr('data-user');
+				var b64image = './php/ViewImage.php?user_id="'+ userid +'"';
 				$.ajax({                            
 					type: 'POST',
 					url: "./php/dashboard/API_getAgentInformation.php",
@@ -1213,7 +1215,7 @@ function goGetInSession(type) {
 					cache: false,
 					dataType: 'json',
 					success: function(JSONObject){ 
-						console.log(JSONObject);
+						console.log(userid);
 						$('#modal-userid').html(JSONObject.data[0].vu_user_id);
 						//global_userid = JSONObject.data[0].vu_user_id;                                        
 						$('#modal-username').html(JSONObject.data[0].vla_user);
@@ -1227,8 +1229,8 @@ function goGetInSession(type) {
 						$('#modal-conf-exten').html(JSONObject.data[0].vla_conf_exten);
 						$('#modal-server-ip').html(JSONObject.data[0].vla_server_ip);
 						//$('#modal-campaign_cid').html(JSONObject.data[0].campaign_cid);
-						var avatar = '<avatar username="'+ JSONObject.data[0].vu_full_name +'" src="'+ JSONObject.avatar +'" :size="160"></avatar>';
-						$('#modal-avatar').html(avatar);
+						var avatardata = '<avatar username="'+ JSONObject.data[0].vu_full_name +'" src="'+ b64image +'" :size="160"></avatar>';
+						$('#avatar').html(avatardata);
 						goAvatar._init(goOptions);
 					}
 				});                        
