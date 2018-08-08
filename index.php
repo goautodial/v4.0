@@ -1204,7 +1204,7 @@ function goGetInSession(type) {
 			$(document).on('click','#onclick-userinfo',function(){							
 				var userid = $(this).attr('data-id');
 				var user = $(this).attr('data-user');
-				var b64image = './php/ViewImage.php?user_id="'+ userid +'"';
+				var b64image = "./php/ViewImage.php?user_id=" + userid;
 				$.ajax({                            
 					type: 'POST',
 					url: "./php/dashboard/API_getAgentInformation.php",
