@@ -1230,7 +1230,7 @@ function goGetInSession(type) {
 						$('#modal-server-ip').html(JSONObject.data[0].vla_server_ip);
 						//$('#modal-campaign_cid').html(JSONObject.data[0].campaign_cid);
 						var avatardata = '<avatar username="'+ JSONObject.data[0].vu_full_name +'" src="'+ b64image +'" :size="160"></avatar>';
-						$('#avatar').html(avatardata);
+						$('#modal-avatar').html(avatardata);
 						goAvatar._init(goOptions);
 					}
 				});                        
