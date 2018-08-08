@@ -21,8 +21,10 @@
 */
 
 	require_once('APIHandler.php');
+	require_once('../../php/DbHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();
+	$db 										= new \creamy\DbHandler();
 	$output 									= $api->API_getRealtimeAgentsMonitoring();
 
     $barracks 									= '[';   
@@ -69,7 +71,14 @@
 		
 			$CM 									= "";        
 			$STARTtime 								= date("U");       
-			$sessionAvatar 							= "<div class='media'><avatar username='$agentname' :size='32'></avatar></div>";
+			//$sessionAvatar 						= "<div class='media'><avatar username='$agentname' :size='32'></avatar></div>";
+			$avatar 								= NULL;
+			
+			if ($db->getUserAvatar($userid)) {
+				$avatar 							= "../php/ViewImage.php?user_id=" . $userid;
+			}
+			
+			$sessionAvatar 							= $this->getVueAvatar($full_name, $avatar, 36);	
 			
 			$call_time_S 							= ($STARTtime - $last_state_change);
 			$call_time_M 							= ($call_time_S / 60);

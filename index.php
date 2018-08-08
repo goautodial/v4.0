@@ -1227,7 +1227,7 @@ function goGetInSession(type) {
 						$('#modal-conf-exten').html(JSONObject.data[0].vla_conf_exten);
 						$('#modal-server-ip').html(JSONObject.data[0].vla_server_ip);
 						//$('#modal-campaign_cid').html(JSONObject.data[0].campaign_cid);
-						var avatar = '<avatar username="'+ JSONObject.data[0].vu_full_name +'" :size="160"></avatar>';
+						var avatar = '<avatar username="'+ JSONObject.data[0].vu_full_name +'" src="'+ JSONObject.dataGo[0].avatar +'" :size="160"></avatar>';
 						$('#modal-avatar').html(avatar);
 						goAvatar._init(goOptions);
 					}

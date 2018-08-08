@@ -89,7 +89,7 @@ if (isset($_GET["message"])) {
 	$message = $_GET["message"];
 } else $message = NULL;
 
-$user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
+$user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 ?>
 
 <html>
@@ -109,10 +109,12 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
         <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
         <!-- Customized Style -->
         <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
-        <?php print $ui->creamyThemeCSS(); ?>
         
-   		<!-- Call for standardized css -->
-   		<?php print $ui->standardizedThemeCSS();?>        
+        <?php 
+			print $ui->standardizedThemeCSS(); 
+			print $ui->creamyThemeCSS();
+			print $ui->dataTablesTheme();
+		?>      
 
 		<!-- javascript -->
         <script src="js/jquery.min.js"></script>
@@ -127,13 +129,6 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 		<script src="js/plugins/multiple-emails/multiple-emails.js" type="text/javascript"></script>
 		<!-- Print page -->
 		<script src="js/plugins/printThis/printThis.js" type="text/javascript"></script>
-        <!-- Creamy App -->
-        <!--<script src="js/app.min.js" type="text/javascript"></script>-->
-		
-        <!-- theme_dashboard folder -->
-  		<!-- Select2 style -->
-  		<link rel="stylesheet" href="css/select2/dist/css/select2.css">
-  		<link rel="stylesheet" href="css/select2-bootstrap-theme/dist/select2-bootstrap.css">
 		<!-- FONT AWESOME-->
 		<link rel="stylesheet" src="js/dashboard/fontawesome/css/font-awesome.min.css">
 		<!-- SIMPLE LINE ICONS-->
@@ -152,16 +147,8 @@ $user_info = $ui->goGetUserInfo($_SESSION['userid'], "user_id", "userInfo");
 		<link rel="stylesheet" src="js/dashboard/sweetalert/dist/sweetalert.css">
 		<!-- Datetime picker --> 
         <link rel="stylesheet" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
-		<!-- DATA TABLES -->
-        <link href="css/datatables/dataTables.bootstrap.css" rel="stylesheet" type="text/css" />
 		<!-- iCheck for checkboxes and radio inputs -->
 		<link href="css/iCheck/minimal/blue.css" rel="stylesheet" type="text/css" />
-		
-		<!-- DATA TABES SCRIPT -->
-		<script src="js/plugins/datatables/jquery.dataTables.js" type="text/javascript"></script>
-		<script src="js/plugins/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
-		<!-- Bootstrap WYSIHTML5 -->
-		<!--<script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>-->
 		<!-- iCheck -->
 		<script src="js/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
 		<!-- SLIMSCROLL-->
