@@ -46,7 +46,7 @@ if (isset($_POST["did"])) {
 	$did = $_POST["did"];
 }
 
-if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
+if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])) {
 	header("location: telephonyinbound.php");
 }
 
@@ -56,9 +56,9 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
         <meta charset="UTF-8">
         <title><?php $lh->translateText("edit"); ?>
         	<?php 
-        		if($groupid != NULL){echo "In-Group";}
-        		if($ivr_id != NULL){echo "Interactive Voice Record";}
-        		if($did != NULL){echo "DID/Phone Number";}
+        		if ($groupid != NULL) {echo "In-Group";}
+        		if ($ivr_id != NULL) {echo "Interactive Voice Record";}
+        		if ($did != NULL) {echo "DID/Phone Number";}
         	?>
         </title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
@@ -93,9 +93,9 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
                     	<?php $lh->translateText("inbound"); ?>
                         <small><?php $lh->translateText("edit"); ?> 
 							<?php
-								if($groupid != NULL){echo $lh->translateText('in_group');}
-								if($ivr_id != NULL){echo $lh->translateText('interactive_voice_record');}
-								if($did != NULL){echo $lh->translateText('did_phone_number');}
+								if ($groupid != NULL) {echo $lh->translateText('in_group');}
+								if ($ivr_id != NULL) {echo $lh->translateText('interactive_voice_record');}
+								if ($did != NULL) {echo $lh->translateText('did_phone_number');}
 							?>
 						</small>
                     </h1>
@@ -103,7 +103,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
                         <li><a href="./index.php"><i class="fa fa-edit"></i> <?php $lh->translateText("home"); ?></a></li>
                         <li> <?php $lh->translateText("Telephony"); ?></li>
                         <?php
-							if($groupid != NULL || $ivr_id != NULL || $did != NULL){
+							if ($groupid != NULL || $ivr_id != NULL || $did != NULL) {
 						?>	
 							<li><a href="./telephonyinbound.php"><?php $lh->translateText("inbound"); ?></a></li>
                         <?php
@@ -118,7 +118,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					$errormessage = NULL;
 					
 					// IF INGROUP
-					if($groupid != NULL) {
+					if ($groupid != NULL) {
 
 					/* APIs used for forms */
 						$call_menu = $api->API_getAllIVRs();
@@ -128,6 +128,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$ingroup = $api->API_getAllInGroups();
 						$voicefiles = $api->API_getAllVoiceFiles();
 						$moh = $api->API_getAllMusicOnHold();
+						$phonenumber = $api->API_getAllDIDs();
 
 						$output = $api->API_getInGroupInfo($groupid);
 
@@ -191,15 +192,15 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<select class="form-control" name="status" id="status">
 													<?php
 														$status = NULL;
-														if($output->data->active == "Y"){
+														if ($output->data->active == "Y") {
 															$status .= '<option value="Y" selected> '.$lh->translationFor("active").' </option>';
-														}else{
+														} else {
 															$status .= '<option value="Y" > '.$lh->translationFor("active").' </option>';
 														}
 														
-														if($output->data->active == "N"){
+														if ($output->data->active == "N") {
 															$status .= '<option value="N" selected> '.$lh->translationFor("inactive").' </option>';
-														}else{
+														} else {
 															$status .= '<option value="N" > '.$lh->translationFor("inactive").' </option>';
 														}
 														echo $status;
@@ -219,63 +220,63 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<select class="form-control" id="nextagent" name="nextagent">
 														<?php
 															$next = NULL;
-															if($output->data->next_agent_call == "random"){
+															if ($output->data->next_agent_call == "random") {
 																$next .= '<option value="random" selected> random </option>';
-															}else{
+															} else {
 																$next .= '<option value="random" > random </option>';
 															}
 															
-															if($output->data->next_agent_call == "oldest_call_start"){
+															if ($output->data->next_agent_call == "oldest_call_start") {
 																$next .= '<option value="oldest_call_start" selected> oldest_call_start </option>';
-															}else{
+															} else {
 																$next .= '<option value="oldest_call_start" > oldest_call_start </option>';
 															}
 															
-															if($output->data->next_agent_call == "oldest_call_finish"){
+															if ($output->data->next_agent_call == "oldest_call_finish") {
 																$next .= '<option value="oldest_call_finish" selected> oldest_call_finish </option>';
-															}else{
+															} else {
 																$next .= '<option value="oldest_call_finish" > oldest_call_finish </option>';
 															}
 															
-															if($output->data->next_agent_call == "overall_user_level"){
+															if ($output->data->next_agent_call == "overall_user_level") {
 																$next .= '<option value="overall_user_level" selected> overall_user_level </option>';
-															}else{
+															} else {
 																$next .= '<option value="overall_user_level" > overall_user_level </option>';
 															}
 															
-															if($output->data->next_agent_call == "ingroup_rank"){
+															if ($output->data->next_agent_call == "ingroup_rank") {
 																$next .= '<option value="ingroup_rank" selected> ingroup_rank </option>';
-															}else{
+															} else {
 																$next .= '<option value="ingroup_rank" > ingroup_rank </option>';
 															}
 															/*
-															if($output->data->next_agent_call == "campaign_rank"){
+															if ($output->data->next_agent_call == "campaign_rank") {
 																$next .= '<option value="campaign_rank" selected> campaign_rank </option>';
-															}else{
+															} else {
 																$next .= '<option value="campaign_rank" > campaign_rank </option>';
 															}
 															*/
-															if($output->data->next_agent_call == "fewest_calls"){
+															if ($output->data->next_agent_call == "fewest_calls") {
 																$next .= '<option value="fewest_calls" selected> fewest_calls </option>';
-															}else{
+															} else {
 																$next .= '<option value="fewest_calls" > fewest_calls </option>';
 															}
 															
-															if($output->data->next_agent_call == "fewest_calls_campaign"){
+															if ($output->data->next_agent_call == "fewest_calls_campaign") {
 																$next .= '<option value="fewest_calls_campaign" selected> fewest_calls_campaign </option>';
-															}else{
+															} else {
 																$next .= '<option value="fewest_calls_campaign" > fewest_calls_campaign </option>';
 															}
 															
-															if($output->data->next_agent_call == "longest_wait_time"){
+															if ($output->data->next_agent_call == "longest_wait_time") {
 																$next .= '<option value="longest_wait_time" selected> longest_wait_time </option>';
-															}else{
+															} else {
 																$next .= '<option value="longest_wait_time" > longest_wait_time </option>';
 															}
 															
-															if($output->data->next_agent_call == "ring_all"){
+															if ($output->data->next_agent_call == "ring_all") {
 																$next .= '<option value="ring_all" selected> ring_all </option>';
-															}else{
+															} else {
 																$next .= '<option value="ring_all" > ring_all </option>';
 															}
 															echo $next;
@@ -289,21 +290,21 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<select class="form-control" id="priority" name="priority">
 														<?php
 														$prio = NULL;
-															for($a=99; $a >= -99; $a--){
+															for($a=99; $a >= -99; $a--) {
 							                                    $a_desc = "";
 							                                   
-							                                   if($a < 0){
+							                                   if ($a < 0) {
 							                                       $a_desc = "Lower";
 							                                   }
-							                                   if($a == 0){
+							                                   if ($a == 0) {
 							                                       $a_desc = "Even";
 							                                   }
-							                                   if($a > 0){
+							                                   if ($a > 0) {
 							                                       $a_desc = "Higher";
 							                                   }
-							                                       if($output->data->queue_priority == $a){
+							                                       if ($output->data->queue_priority == $a) {
 							                                           $prio .= '<option value="'.$a.'" selected> '.$a.'  -  '.$a_desc.' </option>';
-							                                       }else{
+							                                       } else {
 							                                           $prio .= '<option value="'.$a.'">'.$a.'  -  '.$a_desc.' </option>';
 																}
 							                                }
@@ -318,15 +319,15 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<select class="form-control" id="display" name="display">
 														<?php
 														$display = NULL;
-															if($output->data->fronter_display == "Y"){
+															if ($output->data->fronter_display == "Y") {
 																$display .= '<option value="Y" selected> '.$lh->translationFor("go_yes").' </option>';
-															}else{
+															} else {
 																$display .= '<option value="Y" > '.$lh->translationFor("go_yes").' </option>';
 															}
 															
-															if($output->data->fronter_display == "N"){
+															if ($output->data->fronter_display == "N") {
 																$display .= '<option value="N" selected> '.$lh->translationFor("go_no").' </option>';
-															}else{
+															} else {
 																$display .= '<option value="N" > '.$lh->translationFor("go_no").' </option>';
 															}
 														echo $display;
@@ -341,16 +342,16 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 														<?php
 														$script = NULL;
 
-															if($output->data->ingroup_script == NULL){
+															if ($output->data->ingroup_script == NULL) {
 																$script .= '<option value="NONE" selected> '.$lh->translationFor("-none-").' </option>';
-															}else{
+															} else {
 																$script .= '<option value="NONE" > '.$lh->translationFor("-none-").' </option>';
 															}
 
-															for($x=0; $x<count($scripts->script_id);$x++){
-																if($output->data->ingroup_script == $scripts->script_id[$x]){
+															for($x=0; $x<count($scripts->script_id);$x++) {
+																if ($output->data->ingroup_script == $scripts->script_id[$x]) {
 																	$script .= '<option value="'.$scripts->script_id[$x].'" selected> '.$scripts->script_id[$x].' - '.$scripts->script_name[$x].' </option>';
-																}else{
+																} else {
 																	$script .= '<option value="'.$scripts->script_id[$x].'"> '.$scripts->script_id[$x].' - '.$scripts->script_name[$x].' </option>';
 																}
 
@@ -372,39 +373,39 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<select class="form-control" id="drop_action" name="drop_action">
 														<?php
 														$drop_action = NULL;
-															if($output->data->drop_action == "HANGUP"){
+															if ($output->data->drop_action == "HANGUP") {
 																$drop_action .= '<option value="HANGUP" selected> HANGUP </option>';
-															}else{
+															} else {
 																$drop_action .= '<option value="HANGUP" > HANGUP </option>';
 															}
 															
-															if($output->data->drop_action == "MESSAGE"){
+															if ($output->data->drop_action == "MESSAGE") {
 																$drop_action .= '<option value="MESSAGE" selected> MESSAGE </option>';
-															}else{
+															} else {
 																$drop_action .= '<option value="MESSAGE" > MESSAGE </option>';
 															}
 
-															if($output->data->drop_action == "VOICEMAIL"){
+															if ($output->data->drop_action == "VOICEMAIL") {
 																$drop_action .= '<option value="VOICEMAIL" selected> VOICEMAIL </option>';
-															}else{
+															} else {
 																$drop_action .= '<option value="VOICEMAIL" > VOICEMAIL </option>';
 															}
 
-															if($output->data->drop_action == "IN_GROUP"){
+															if ($output->data->drop_action == "IN_GROUP") {
 																$drop_action .= '<option value="IN_GROUP" selected> IN_GROUP </option>';
-															}else{
+															} else {
 																$drop_action .= '<option value="IN_GROUP" > IN_GROUP </option>';
 															}
 
-															if($output->data->drop_action == "CALLMENU"){
+															if ($output->data->drop_action == "CALLMENU") {
 																$drop_action .= '<option value="CALLMENU" selected> CALLMENU </option>';
-															}else{
+															} else {
 																$drop_action .= '<option value="CALLMENU" > CALLMENU </option>';
 															}
 															/*
-															if($output->data->drop_action == "VMAIL_NO_INST"){
+															if ($output->data->drop_action == "VMAIL_NO_INST") {
 																$drop_action .= '<option value="VMAIL_NO_INST" selected> VMAIL_NO_INST </option>';
-															}else{
+															} else {
 																$drop_action .= '<option value="VMAIL_NO_INST" > VMAIL_NO_INST </option>';
 															}*/
 														echo $drop_action;
@@ -417,7 +418,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 												<div class="form-group drop_action_exten">
 
 													<!-- IF MESSAGE IS SELECTED -->
-														<div class="drop_exten_message" <?php if($output->data->drop_action != "MESSAGE"){?> style="display:none;"<?php }?> >
+														<div class="drop_exten_message" <?php if ($output->data->drop_action != "MESSAGE") {?> style="display:none;"<?php }?> >
 															<label for="drop_exten" class="col-sm-3 control-label"><?php $lh->translateText("drop_exten"); ?></label>
 															<div class="col-sm-9 mb">
 																<input type="number" class="form-control" name="drop_exten" id="drop_exten" value="<?php echo $output->data->drop_exten;?>" />
@@ -425,16 +426,16 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 														</div><!-- /. message -->
 													
 													<!-- IF VOICEMAIL IS SELECTED -->
-														<div class="drop_exten_voicemail" <?php if($output->data->drop_action != "VOICEMAIL"){?> style="display:none;" <?php }?> >
+														<div class="drop_exten_voicemail" <?php if ($output->data->drop_action != "VOICEMAIL") {?> style="display:none;" <?php }?> >
 															<label for="voicemail_ext" class="col-sm-3 control-label"><?php $lh->translateText("voicemail"); ?></label>
 															<div class="col-sm-9 mb">
 																<select class="form-control select2" id="voicemail_ext" name="voicemail_ext" style="width:100%;">
 																	<?php
 																		$drop_action_voicemail = NULL;
-																			for($x=0; $x < count($voicemail->voicemail_id);$x++){
-																				if($output->data->voicemail_ext == $voicemail->voicemail_id[$x]){
+																			for($x=0; $x < count($voicemail->voicemail_id);$x++) {
+																				if ($output->data->voicemail_ext == $voicemail->voicemail_id[$x]) {
 																					$drop_action_voicemail .= '<option value="'.$voicemail->voicemail_id[$x].'" selected> '.$voicemail->voicemail_id[$x].' - '.$voicemail->fullname[$x].' </option>';
-																				}else{
+																				} else {
 																					$drop_action_voicemail .= '<option value="'.$voicemail->voicemail_id[$x].'"> '.$voicemail->voicemail_id[$x].' - '.$voicemail->fullname[$x].' </option>';
 																				}
 																			}
@@ -445,16 +446,16 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 														</div><!-- /. voicemail -->
 
 													<!-- IF IN_GROUP IS SELECTED -->
-														<div class="drop_exten_ingroup" <?php if($output->data->drop_action != "IN_GROUP"){ ?>style="display:none;"<?php }?>>
+														<div class="drop_exten_ingroup" <?php if ($output->data->drop_action != "IN_GROUP") { ?>style="display:none;"<?php }?>>
 															<label for="drop_inbound_group" class="col-sm-3 control-label"><?php $lh->translateText("drop_transfer_group"); ?> </label>
 															<div class="col-sm-9 mb">
 																<select class="form-control select2" id="drop_inbound_group" name="drop_inbound_group" style="width:100%;">
 																	<?php
 																		$drop_action_ingroup = NULL;
-																			for($x=0; $x<count($ingroup->group_id);$x++){
-																				if($output->data->drop_inbound_group == $ingroup->voicemail_id[$x]){
+																			for($x=0; $x<count($ingroup->group_id);$x++) {
+																				if ($output->data->drop_inbound_group == $ingroup->voicemail_id[$x]) {
 																					$drop_action_ingroup .= '<option value="'.$ingroup->group_id[$x].'" selected> '.$ingroup->group_id[$x].' - '.$ingroup->group_name[$x].' </option>';
-																				}else{
+																				} else {
 																					$drop_action_ingroup .= '<option value="'.$ingroup->group_id[$x].'"> '.$ingroup->group_id[$x].' - '.$ingroup->group_name[$x].' </option>';
 																				}
 																			}
@@ -465,16 +466,16 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 														</div><!-- /. ingroup -->
 
 													<!-- IF CALLMENU IS SELECTED -->
-														<div class="drop_exten_callmenu" <?php if($output->data->drop_action != "CALLMENU"){ ?>style="display:none;"<?php }?>>
+														<div class="drop_exten_callmenu" <?php if ($output->data->drop_action != "CALLMENU") { ?>style="display:none;"<?php }?>>
 															<label for="drop_callmenu" class="col-sm-3 control-label"><?php $lh->translateText("drop_callmenu"); ?> </label>
 															<div class="col-sm-9 mb">
 																<select class="form-control select2" id="drop_callmenu" name="drop_callmenu" style="width:100%;">
 																	<?php
 																		$drop_exten_callmenu = NULL;
-																			for($x=0; $x < count($call_menu->menu_id);$x++){
-																				if($output->data->drop_callmenu == $call_menu->menu_id[$x]){
+																			for($x=0; $x < count($call_menu->menu_id);$x++) {
+																				if ($output->data->drop_callmenu == $call_menu->menu_id[$x]) {
 																					$drop_exten_callmenu .= '<option value="'.$call_menu->menu_id[$x].'" selected> '.$call_menu->menu_id[$x].' - '.$call_menu->menu_name[$x].' </option>';
-																				}else{
+																				} else {
 																					$drop_exten_callmenu .= '<option value="'.$call_menu->menu_id[$x].'"> '.$call_menu->menu_id[$x].' - '.$call_menu->menu_name[$x].' </option>';
 																				}
 																			}
@@ -491,14 +492,14 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<select class="form-control select2" id="call_time_id" name="call_time_id">
 														<?php
 														$call_time_id = NULL;
-															if($call_time->call_time_id[0] == NULL){
+															if ($call_time->call_time_id[0] == NULL) {
 																$call_time_id .= '<option value="NONE" selected> '.$lh->translationFor("-none-").' </option>';
-															}else{
+															} else {
 																$call_time_id .= '<option value="NONE" > '.$lh->translationFor("-none-").' </option>';
-																for($x=0; $x<count($call_time->call_time_id);$x++){
-																	if($output->data->call_time_id == $call_time->call_time_id[$x]){
+																for($x=0; $x<count($call_time->call_time_id);$x++) {
+																	if ($output->data->call_time_id == $call_time->call_time_id[$x]) {
 																		$call_time_id .= '<option value="'.$call_time->call_time_id[$x].'" selected> '.$call_time->call_time_id[$x].' - '.$call_time->call_time_name[$x].' </option>';
-																	}else{
+																	} else {
 																		$call_time_id .= '<option value="'.$call_time->call_time_id[$x].'"> '.$call_time->call_time_id[$x].' - '.$call_time->call_time_name[$x].' </option>';
 																	}
 																}
@@ -514,27 +515,27 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<select class="form-control" id="call_launch" name="call_launch">
 														<?php
 														$call_launch = NULL;
-															if($output->data->get_call_launch == "NONE"){
+															if ($output->data->get_call_launch == "NONE") {
 																$call_launch .= '<option value="NONE" selected> '.$lh->translationFor("-none-").' </option>';
-															}else{
+															} else {
 																$call_launch .= '<option value="NONE" > '.$lh->translationFor("-none-").' </option>';
 															}
 																
-															if($output->data->get_call_launch == "SCRIPT"){
+															if ($output->data->get_call_launch == "SCRIPT") {
 																$call_launch .= '<option value="SCRIPT" selected> SCRIPT </option>';
-															}else{
+															} else {
 																$call_launch .= '<option value="SCRIPT" > SCRIPT </option>';
 															}
 
-															if($output->data->get_call_launch == "WEBFORM"){
+															if ($output->data->get_call_launch == "WEBFORM") {
 																$call_launch .= '<option value="WEBFORM" selected> WEBFORM </option>';
-															}else{
+															} else {
 																$call_launch .= '<option value="WEBFORM" > WEBFORM </option>';
 															}
 
-															if($output->data->get_call_launch == "FORM"){
+															if ($output->data->get_call_launch == "FORM") {
 																$call_launch .= '<option value="FORM" selected> FORM </option>';
-															}else{
+															} else {
 																$call_launch .= '<option value="FORM" > FORM </option>';
 															}
 														echo $call_launch;
@@ -550,10 +551,10 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																<?php
 																/*
 																	$after_hour_ingroup = NULL;
-																		for($x=0; $x<count($ingroup->group_id);$x++){									
-																			if($output->data->afterhours_xfer_group == $ingroup->group_id[$x]){
+																		for($x=0; $x<count($ingroup->group_id);$x++) {									
+																			if ($output->data->afterhours_xfer_group == $ingroup->group_id[$x]) {
 																				$after_hour_ingroup .= '<option value="'.$ingroup->group_id[$x].'" selected> '.$ingroup->group_id[$x].' - '.$ingroup->group_name[$x].' </option>';
-																			}else{
+																			} else {
 																				$after_hour_ingroup .= '<option value="'.$ingroup->group_id[$x].'"> '.$ingroup->group_id[$x].' - '.$ingroup->group_name[$x].' </option>';
 																			}
 																		}
@@ -574,7 +575,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 												<label for="welcome_message_filename" class="col-sm-4 control-label"><?php $lh->translateText("welcome_message_filename"); ?></label>
 												<div class="col-sm-8 mb">
 													<div class="input-group">
-														<input type="text" class="form-control" class="" id="welcome_message_filename" name="welcome_message_filename" value="<?php if($output->data->welcome_message_filename == NULL )echo "sip-silence"; else echo $output->data->welcome_message_filename;?>">
+														<input type="text" class="form-control" class="" id="welcome_message_filename" name="welcome_message_filename" value="<?php if ($output->data->welcome_message_filename == NULL )echo "sip-silence"; else echo $output->data->welcome_message_filename;?>">
 														<span class="input-group-btn">
 															<button class="btn btn-default show_welcome_message_filename" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 														</span>
@@ -584,11 +585,11 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 															<option value="sip-silence"><?php $lh->translateText("default"); ?></option>
 															<?php
 																$welcome_message_filename = NULL;
-																	for($x=0; $x < count($voicefiles->file_name);$x++){
+																	for($x=0; $x < count($voicefiles->file_name);$x++) {
 																		$this_file_name = preg_replace("/\.(wav|mp3)$/", "", $voicefiles->file_name[$x]);
-																		if($output->data->welcome_message_filename == $this_file_name){
+																		if ($output->data->welcome_message_filename == $this_file_name) {
 																			$welcome_message_filename .= '<option value="'.$this_file_name.'" selected> '.$this_file_name.' </option>';
-																		}else{
+																		} else {
 																			$welcome_message_filename .= '<option value="'.$this_file_name.'"> '.$this_file_name.' </option>';
 																		}
 																	}
@@ -604,27 +605,27 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<select class="form-control" id="play_welcome_message" name="play_welcome_message">
 														<?php
 														$play_welcome_message = NULL;
-															if($output->data->play_welcome_message == "ALWAYS"){
+															if ($output->data->play_welcome_message == "ALWAYS") {
 																$play_welcome_message .= '<option value="ALWAYS" selected> ALWAYS </option>';
-															}else{
+															} else {
 																$play_welcome_message .= '<option value="ALWAYS" > ALWAYS </option>';
 															}
 															
-															if($output->data->play_welcome_message == "NEVER"){
+															if ($output->data->play_welcome_message == "NEVER") {
 																$play_welcome_message .= '<option value="NEVER" selected> NEVER </option>';
-															}else{
+															} else {
 																$play_welcome_message .= '<option value="NEVER" > NEVER </option>';
 															}
 	
-															if($output->data->play_welcome_message == "IF_WAIT_ONLY"){
+															if ($output->data->play_welcome_message == "IF_WAIT_ONLY") {
 																$play_welcome_message .= '<option value="IF_WAIT_ONLY" selected> IF_WAIT_ONLY </option>';
-															}else{
+															} else {
 																$play_welcome_message .= '<option value="IF_WAIT_ONLY" > IF_WAIT_ONLY </option>';
 															}
 	
-															if($output->data->play_welcome_message == "YES_UNLESS_NODELAY"){
+															if ($output->data->play_welcome_message == "YES_UNLESS_NODELAY") {
 																$play_welcome_message .= '<option value="YES_UNLESS_NODELAY" selected> YES_UNLESS_NODELAY </option>';
-															}else{
+															} else {
 																$play_welcome_message .= '<option value="YES_UNLESS_NODELAY" > YES_UNLESS_NODELAY </option>';
 															}
 	
@@ -637,7 +638,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 												<label for="moh_context" class="col-sm-4 control-label"><?php $lh->translateText("music_on_hold_context"); ?></label>
 												<div class="col-sm-8 mb">
 													<div class="input-group">
-														<input type="text" class="form-control" id="moh_context" name="moh_context" value="<?php if($output->data->moh_context == NULL)echo "default"; else echo $output->data->moh_context;?>">
+														<input type="text" class="form-control" id="moh_context" name="moh_context" value="<?php if ($output->data->moh_context == NULL)echo "default"; else echo $output->data->moh_context;?>">
 														<span class="input-group-btn">
 															<button class="btn btn-default show_moh_context" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 														</span>
@@ -647,11 +648,11 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 															<option value="default"><?php $lh->translateText('default'); ?></option>
 															<?php
 																$moh_context = NULL;
-																	for($x=0; $x < count($moh->moh_id);$x++){
-																		if($moh->moh_id[$x] != "default"){
-																			if($output->data->moh_context == $moh->moh_id[$x]){
+																	for($x=0; $x < count($moh->moh_id);$x++) {
+																		if ($moh->moh_id[$x] != "default") {
+																			if ($output->data->moh_context == $moh->moh_id[$x]) {
 																				$moh_context .= '<option value="'.$moh->moh_id[$x].'" selected> '.$moh->moh_name[$x].' </option>';
-																			}else{
+																			} else {
 																				$moh_context .= '<option value="'.$moh->moh_id[$x].'"> '.$moh->moh_name[$x].' </option>';
 																			}
 																		}
@@ -666,7 +667,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 												<label for="onhold_prompt_filename" class="col-sm-4 control-label"><?php $lh->translateText("on_hold_prompt_filename"); ?></label>
 												<div class="col-sm-8 mb">
 													<div class="input-group">
-														<input type="text" class="form-control" id="onhold_prompt_filename" name="onhold_prompt_filename" value="<?php if($output->data->onhold_prompt_filename == NULL)echo "generic_hold"; else echo $output->data->onhold_prompt_filename;?>">
+														<input type="text" class="form-control" id="onhold_prompt_filename" name="onhold_prompt_filename" value="<?php if ($output->data->onhold_prompt_filename == NULL)echo "generic_hold"; else echo $output->data->onhold_prompt_filename;?>">
 														<span class="input-group-btn">
 															<button class="btn btn-default show_onhold_prompt_filename" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 														</span>
@@ -676,11 +677,11 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 															<option value="generic_hold"><?php $lh->translateText("default"); ?></option>
 															<?php
 																$onhold_prompt_filename = NULL;
-																	for($x=0; $x < count($voicefiles->file_name);$x++){
+																	for($x=0; $x < count($voicefiles->file_name);$x++) {
 																		$this_file_name = preg_replace("/\.(wav|mp3)$/", "", $voicefiles->file_name[$x]);
-																		if($output->data->onhold_prompt_filename == $this_file_name){
+																		if ($output->data->onhold_prompt_filename == $this_file_name) {
 																			$onhold_prompt_filename .= '<option value="'.$this_file_name.'" selected> '.$this_file_name.' </option>';
-																		}else{
+																		} else {
 																			$onhold_prompt_filename .= '<option value="'.$this_file_name.'"> '.$this_file_name.' </option>';
 																		}
 																	}
@@ -699,38 +700,38 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 														<?php
 														$after_hours_action = NULL;
 															
-															if($output->data->after_hours_action == "MESSAGE"){
+															if ($output->data->after_hours_action == "MESSAGE") {
 																$after_hours_action .= '<option value="MESSAGE" selected> MESSAGE </option>';
-															}else{
+															} else {
 																$after_hours_action .= '<option value="MESSAGE" > MESSAGE </option>';
 															}
 															
-															if($output->data->after_hours_action == "HANGUP"){
+															if ($output->data->after_hours_action == "HANGUP") {
 																$after_hours_action .= '<option value="HANGUP" selected> HANGUP </option>';
-															}else{
+															} else {
 																$after_hours_action .= '<option value="HANGUP" > HANGUP </option>';
 															}
 															
-															if($output->data->after_hours_action == "EXTENSION"){
+															if ($output->data->after_hours_action == "EXTENSION") {
 																$after_hours_action .= '<option value="EXTENSION" selected> EXTENSION </option>';
-															}else{
+															} else {
 																$after_hours_action .= '<option value="EXTENSION" > EXTENSION </option>';
 															}
 															
-															if($output->data->after_hours_action == "VOICEMAIL"){
+															if ($output->data->after_hours_action == "VOICEMAIL") {
 																$after_hours_action .= '<option value="VOICEMAIL" selected> VOICEMAIL </option>';
-															}else{
+															} else {
 																$after_hours_action .= '<option value="VOICEMAIL" > VOICEMAIL </option>';
 															}
 															
-															if($output->data->after_hours_action == "CALLMENU"){
+															if ($output->data->after_hours_action == "CALLMENU") {
 																$after_hours_action .= '<option value="CALLMENU" selected> CALLMENU </option>';
-															}else{
+															} else {
 																$after_hours_action .= '<option value="CALLMENU" > CALLMENU </option>';
 															}
-															/*if($output->data->after_hours_action == "IN_GROUP"){
+															/*if ($output->data->after_hours_action == "IN_GROUP") {
 																$after_hours_action .= '<option value="IN_GROUP" selected> IN_GROUP </option>';
-															}else{
+															} else {
 																$after_hours_action .= '<option value="IN_GROUP" > IN_GROUP </option>';
 															}*/
 													echo $after_hours_action;
@@ -738,11 +739,11 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 												</select>
 											</div>
 										</div>
-										<div class="after_hours after_hours_message_filename form-group" <?php if($output->data->after_hours_action != "MESSAGE"){ ?>style="display:none;"<?php }?>>
+										<div class="after_hours after_hours_message_filename form-group" <?php if ($output->data->after_hours_action != "MESSAGE") { ?> style="display:none;"<?php }?>>
 											<label for="after_hours_message_filename" class="col-sm-4 control-label"><?php $lh->translateText("after_hours_message_filename"); ?></label>
 											<div class="col-sm-8 mb">
 												<div class="input-group">
-													<input type="text" class="form-control" id="after_hours_message_filename" name="after_hours_message_filename" value="<?php if($output->data->after_hours_message_filename == NULL)echo "vm-goodbye"; else echo $output->data->after_hours_message_filename;?>">
+													<input type="text" class="form-control" id="after_hours_message_filename" name="after_hours_message_filename" value="<?php if ($output->data->after_hours_message_filename == NULL)echo "vm-goodbye"; else echo $output->data->after_hours_message_filename;?>">
 													<span class="input-group-btn">
 														<button class="btn btn-default show_after_hours_message_filename" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 													</span>
@@ -752,11 +753,11 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 														<option value="vm-goodbye"><?php $lh->translateText("default"); ?></option>
 														<?php
 															$after_hours_message_filename = NULL;
-																for($x=0; $x < count($voicefiles->file_name);$x++){
+																for($x=0; $x < count($voicefiles->file_name);$x++) {
 																	$this_file_name = preg_replace("/\.(wav|mp3)$/", "", $voicefiles->file_name[$x]);
-																	if($output->data->after_hours_message_filename == $this_file_name){
+																	if ($output->data->after_hours_message_filename == $this_file_name) {
 																		$after_hours_message_filename .= '<option value="'.$this_file_name.'" selected> '.$this_file_name.' </option>';
-																	}else{
+																	} else {
 																		$after_hours_message_filename .= '<option value="'.$this_file_name.'"> '.$this_file_name.' </option>';
 																	}
 																}
@@ -767,18 +768,18 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 												<br/>
 											</div>
 										</div>
-										<div class="after_hours after_hours_exten form-group" <?php if($output->data->after_hours_action != "EXTENSION"){ ?>style="display:none;"<?php }?>>
+										<div class="after_hours after_hours_exten form-group" <?php if ($output->data->after_hours_action != "EXTENSION") { ?> style="display:none;"<?php }?>>
 											<label for="after_hours_exten" class="col-sm-4 control-label"><?php $lh->translateText("after_hours_extension"); ?></label>
 											<div class="col-sm-8 mb">
-												<input type="number" class="form-control" name="after_hours_exten" id="after_hours_exten" value="<?php if($output->data->after_hours_exten != NULL)echo $output->data->after_hours_exten; else echo "8300";?>" />
+												<input type="number" class="form-control" name="after_hours_exten" id="after_hours_exten" value="<?php if ($output->data->after_hours_exten != NULL)echo $output->data->after_hours_exten; else echo "8300";?>" />
 											<br/>
 											</div>
 										</div>
-										<div class="after_hours after_hours_voicemail form-group" <?php if($output->data->after_hours_action != "VOICEMAIL"){ ?>style="display:none;"<?php }?>>
+										<div class="after_hours after_hours_voicemail form-group" <?php if ($output->data->after_hours_action != "VOICEMAIL") { ?> style="display:none;"<?php }?>>
 											<label for="after_hours_voicemail" class="col-sm-4 control-label"><?php $lh->translateText("after_hours_voicemail"); ?></label>
 											<div class="col-sm-8 mb">
 												<div class="input-group">
-													<input type="text" class="form-control" id="after_hours_voicemail" name="after_hours_voicemail" value="<?php if($output->data->after_hours_voicemail == NULL)echo ""; else echo $output->data->after_hours_voicemail;?>">
+													<input type="text" class="form-control" id="after_hours_voicemail" name="after_hours_voicemail" value="<?php if ($output->data->after_hours_voicemail == NULL)echo ""; else echo $output->data->after_hours_voicemail;?>">
 													<span class="input-group-btn">
 														<button class="btn btn-default show_after_hours_voicemail" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 													</span>
@@ -788,10 +789,10 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 														<option value=""> <?php $lh->translateText("-none-"); ?> </option>
 														<?php
 															$after_hour_voicemail = NULL;
-																for($x=0; $x < count($voicemail->voicemail_id);$x++){
-																	if($output->data->after_hours_voicemail == $voicemail->voicemail_id[$x]){
+																for($x=0; $x < count($voicemail->voicemail_id);$x++) {
+																	if ($output->data->after_hours_voicemail == $voicemail->voicemail_id[$x]) {
 																		$after_hour_voicemail .= '<option value="'.$voicemail->voicemail_id[$x].'" selected> '.$voicemail->voicemail_id[$x].' - '.$voicemail->fullname[$x].' </option>';
-																	}else{
+																	} else {
 																		$after_hour_voicemail .= '<option value="'.$voicemail->voicemail_id[$x].'"> '.$voicemail->voicemail_id[$x].' - '.$voicemail->fullname[$x].' </option>';
 																	}
 																}
@@ -802,11 +803,11 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 												<br/>
 											</div>
 										</div>
-										<div class="after_hours after_hours_callmenu form-group" <?php if($output->data->after_hours_action != "CALLMENU"){ ?>style="display:none;"<?php }?>>
+										<div class="after_hours after_hours_callmenu form-group" <?php if ($output->data->after_hours_action != "CALLMENU") { ?> style="display:none;"<?php }?>>
 											<label for="after_hours_callmenu" class="col-sm-4 control-label"><?php $lh->translateText("after_hours_callmenu"); ?> </label>
 											<div class="col-sm-8 mb">
 												<div class="input-group">
-													<input type="text" class="form-control" id="after_hours_callmenu" name="after_hours_callmenu" value="<?php if($output->data->after_hours_callmenu == NULL)echo ""; else echo $output->data->after_hours_callmenu;?>">
+													<input type="text" class="form-control" id="after_hours_callmenu" name="after_hours_callmenu" value="<?php if ($output->data->after_hours_callmenu == NULL)echo ""; else echo $output->data->after_hours_callmenu;?>">
 													<span class="input-group-btn">
 														<button class="btn btn-default show_after_hours_callmenu" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 													</span>
@@ -816,10 +817,10 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 														<option value=""><?php $lh->translateText("-none-"); ?></option>
 														<?php
 															$no_agents_callmenu = NULL;
-																for($x=0; $x < count($call_menu->menu_id);$x++){
-																	if($output->data->after_hours_callmenu == $call_menu->menu_id[$x]){
+																for($x=0; $x < count($call_menu->menu_id);$x++) {
+																	if ($output->data->after_hours_callmenu == $call_menu->menu_id[$x]) {
 																		$no_agents_callmenu .= '<option value="'.$call_menu->menu_id[$x].'" selected> '.$call_menu->menu_id[$x].' - '.$call_menu->menu_name[$x].' </option>';
-																	}else{
+																	} else {
 																		$no_agents_callmenu .= '<option value="'.$call_menu->menu_id[$x].'"> '.$call_menu->menu_id[$x].' - '.$call_menu->menu_name[$x].' </option>';
 																	}
 																}
@@ -837,23 +838,28 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 												<select class="form-control" id="no_agent_no_queue" name="no_agent_no_queue">
 													<?php
 													$no_agent_no_queue = NULL;
-														if($output->no_agent_no_queue[$i] == "N"){
+														if ($output->data->no_agent_no_queue == "N") {
 															$no_agent_no_queue .= '<option value="N" selected> '.$lh->translationFor("go_no").' </option>';
-														}else{
+														} else {
 															$no_agent_no_queue .= '<option value="N" > '.$lh->translationFor("go_no").' </option>';
 														}
 														
-														if($output->no_agent_no_queue[$i] == "Y"){
+														if ($output->data->no_agent_no_queue == "Y") {
 															$no_agent_no_queue .= '<option value="Y" selected> '.$lh->translationFor("go_yes").' </option>';
-														}else{
+														} else {
 															$no_agent_no_queue .= '<option value="Y" > '.$lh->translationFor("go_yes").' </option>';
 														}
 
-														if($output->no_agent_no_queue[$i] == "NO_PAUSED"){
+														if ($output->data->no_agent_no_queue == "NO_PAUSED") {
 															$no_agent_no_queue .= '<option value="NO_PAUSED" selected> NO PAUSED </option>';
-														}else{
+														} else {
 															$no_agent_no_queue .= '<option value="NO_PAUSED" > NO PAUSED </option>';
 														}
+														if ($output->data->no_agent_no_queue == "NO_READY") {
+															$no_agent_no_queue .= '<option value="NO_READY" selected> NO READY </option>';
+														} else {
+															$no_agent_no_queue .= '<option value="NO_READY" > NO READY </option>';
+														}														
 													echo $no_agent_no_queue;
 													?>
 												</select>
@@ -865,50 +871,50 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 												<select class="form-control" id="no_agent_action" name="no_agent_action">
 													<?php
 														$no_agent_action = NULL;
-															if($output->data->no_agent_action == "HANGUP"){
+															/*if ($output->data->no_agent_action == "HANGUP") {
 																$no_agent_action .= '<option value="HANGUP" selected> HANGUP </option>';
-															}else{
+															} else {
 																$no_agent_action .= '<option value="HANGUP" > HANGUP </option>';
-															}
-															if($output->data->no_agent_action == "DID"){
+															}*/
+															if ($output->data->no_agent_action == "DID") {
 																$no_agent_action .= '<option value="DID" selected> DID </option>';
-															}else{
+															} else {
 																$no_agent_action .= '<option value="DID" > DID </option>';
 															}
-															if($output->data->no_agent_action == "MESSAGE"){
+															if ($output->data->no_agent_action == "MESSAGE") {
 																$no_agent_action .= '<option value="MESSAGE" selected> MESSAGE </option>';
-															}else{
+															} else {
 																$no_agent_action .= '<option value="MESSAGE" > MESSAGE </option>';
 															}
-															if($output->data->no_agent_action == "VOICEMAIL"){
+															if ($output->data->no_agent_action == "VOICEMAIL") {
 																$no_agent_action .= '<option value="VOICEMAIL" selected> VOICEMAIL </option>';
-															}else{
+															} else {
 																$no_agent_action .= '<option value="VOICEMAIL" > VOICEMAIL </option>';
 															}
-															if($output->data->no_agent_action == "IN_GROUP"){
-																$no_agent_action .= '<option value="IN_GROUP" selected> IN_GROUP </option>';
-															}else{
-																$no_agent_action .= '<option value="IN_GROUP" > IN_GROUP </option>';
+															if ($output->data->no_agent_action == "INGROUP") {
+																$no_agent_action .= '<option value="INGROUP" selected> IN_GROUP </option>';
+															} else {
+																$no_agent_action .= '<option value="INGROUP" > IN_GROUP </option>';
 															}
-															if($output->data->no_agent_action == "CALLMENU"){
+															if ($output->data->no_agent_action == "CALLMENU") {
 																$no_agent_action .= '<option value="CALLMENU" selected> CALLMENU </option>';
-															}else{
+															} else {
 																$no_agent_action .= '<option value="CALLMENU" > CALLMENU </option>';
 															}
 														echo $no_agent_action;
 													?>
 												</select>
 											</div>
-							       			</div
+							       			</div>
 											
 							       			<!-- NO AGENTS EXTEN -->
 												<div class="form-group no_agents_exten">
 													<!-- IF MESSAGE IS SELECTED -->
-														<div class="no_agents_message" <?php if($output->data->no_agent_action != "MESSAGE"){?> style="display:none;"<?php }?> >
+														<div class="no_agents_message" <?php if ($output->data->no_agent_action != "MESSAGE") {?> style="display:none;"<?php }?> >
 															<label for="no_agents_exten" class="col-sm-4 control-label"><?php $lh->translateText("audiofiles"); ?></label>
 															<div class="col-sm-8 mb">
 																<div class="input-group">
-																	<input type="text" class="form-control" id="no_agents_exten" name="no_agents_exten" value="<?php if($output->data->no_agents_exten == NULL)echo "vm-goodbye"; else echo $output->data->no_agents_exten;?>">
+																	<input type="text" class="form-control" id="no_agents_exten" name="no_agents_exten" value="<?php if ($output->data->no_agent_action_value == NULL)echo "vm-goodbye"; else echo $output->data->no_agent_action_value;?>">
 																	<span class="input-group-btn">
 																		<button class="btn btn-default show_no_agents_exten" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 																	</span>
@@ -918,11 +924,11 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																		<option value="vm-goodbye"><?php $lh->translateText("default"); ?></option>
 																		<?php
 																			$no_agents_exten = NULL;
-																				for($x=0; $x < count($voicefiles->file_name);$x++){
+																				for($x=0; $x < count($voicefiles->file_name);$x++) {
 																					$this_file_name = preg_replace("/\.(wav|mp3)$/", "", $voicefiles->file_name[$x]);
-																					if($output->data->no_agent_action_value == $this_file_name){
+																					if ($output->data->no_agent_action_value == $this_file_name) {
 																						$no_agents_exten .= '<option value="'.$this_file_name.'" selected> '.$this_file_name.' </option>';
-																					}else{
+																					} else {
 																						$no_agents_exten .= '<option value="'.$this_file_name.'"> '.$this_file_name.' </option>';
 																					}
 																				}
@@ -932,13 +938,42 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																</div>
 															</div>
 														</div><!-- /. message -->
-													
+
+													<!-- IF DID IS SELECTED -->
+														<div class="no_agents_did" <?php if ($output->data->no_agent_action != "DID") {?> style="display:none;" <?php }?> >
+															<label for="no_agents_did" class="col-sm-4 control-label"><?php $lh->translateText("did"); ?></label>
+															<div class="col-sm-8 mb">
+																<div class="input-group">
+																	<input type="text" class="form-control" id="no_agents_did" name="no_agents_did" value="<?php if ($output->data->no_agent_action != "DID" || $output->data->no_agent_action_value == NULL)echo ""; else echo $output->data->no_agent_action_value;?>" required>
+																	<span class="input-group-btn">
+																		<button class="btn btn-default show_no_agents_did" type="button"><?php $lh->translateText("DID Chooser"); ?></button>
+																	</span>
+																</div><!-- /input-group -->
+																<div class="row col-sm-12 select_no_agents_did">
+																	<select class="form-control select2-2" id="select_no_agents_did" style="width:100%;">
+																		<option value=""><?php $lh->translateText("-none-"); ?></option>
+																		<?php
+																			$no_agents_did = NULL;
+																				for($x=0; $x < count($phonenumber->did_id);$x++) {
+																					if ($output->data->no_agent_action_value == $phonenumber->did_id[$x]) {
+																						$no_agents_did .= '<option value="'.$phonenumber->did_id[$x].'" selected> '.$phonenumber->did_id[$x].' - '.$phonenumber->did_pattern[$x].' </option>';
+																					} else {
+																						$no_agents_did .= '<option value="'.$phonenumber->did_id[$x].'"> '.$phonenumber->did_id[$x].' - '.$phonenumber->did_pattern[$x].' </option>';
+																					}
+																				}
+																			echo $no_agents_did;
+																		?>																		
+																	</select>
+																</div>
+															</div>
+														</div><!-- /. voicemail -->
+														
 													<!-- IF VOICEMAIL IS SELECTED -->
-														<div class="no_agents_voicemail" <?php if($output->data->no_agent_action != "VOICEMAIL"){?> style="display:none;" <?php }?> >
+														<div class="no_agents_voicemail" <?php if ($output->data->no_agent_action != "VOICEMAIL") {?> style="display:none;" <?php }?> >
 															<label for="no_agents_voicemail" class="col-sm-4 control-label"><?php $lh->translateText("voicemail"); ?></label>
 															<div class="col-sm-8 mb">
 																<div class="input-group">
-																	<input type="text" class="form-control" id="no_agents_voicemail" name="no_agents_voicemail" value="<?php if($output->data->no_agent_action_value == NULL)echo ""; else echo $output->data->no_agent_action_value;?>">
+																	<input type="text" class="form-control" id="no_agents_voicemail" name="no_agents_voicemail" value="<?php if ($output->data->no_agent_action_value == NULL)echo ""; else echo $output->data->no_agent_action_value;?>">
 																	<span class="input-group-btn">
 																		<button class="btn btn-default show_no_agents_voicemail" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 																	</span>
@@ -948,10 +983,10 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																		<option value=""><?php $lh->translateText("-none-"); ?></option>
 																		<?php
 																			$no_agents_voicemail = NULL;
-																				for($x=0; $x < count($voicemail->voicemail_id);$x++){
-																					if($output->data->no_agent_action_value == $voicemail->voicemail_id[$x]){
+																				for($x=0; $x < count($voicemail->voicemail_id);$x++) {
+																					if ($output->data->no_agent_action_value == $voicemail->voicemail_id[$x]) {
 																						$no_agents_voicemail .= '<option value="'.$voicemail->voicemail_id[$x].'" selected> '.$voicemail->voicemail_id[$x].' - '.$voicemail->fullname[$x].' </option>';
-																					}else{
+																					} else {
 																						$no_agents_voicemail .= '<option value="'.$voicemail->voicemail_id[$x].'"> '.$voicemail->voicemail_id[$x].' - '.$voicemail->fullname[$x].' </option>';
 																					}
 																				}
@@ -963,11 +998,11 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 														</div><!-- /. voicemail -->
 
 													<!-- IF IN_GROUP IS SELECTED -->
-														<div class="no_agents_ingroup" <?php if($output->data->no_agent_action != "IN_GROUP"){ ?>style="display:none;"<?php }?>>
+														<div class="no_agents_ingroup" <?php if ($output->data->no_agent_action != "INGROUP") { ?> style="display:none;"<?php }?>>
 															<label for="no_agents_ingroup" class="col-sm-4 control-label"><?php $lh->translateText("ingroup"); ?></label>
 															<div class="col-sm-8 mb">
 																<div class="input-group">
-																	<input type="text" class="form-control" id="no_agents_ingroup" name="no_agents_ingroup" value="<?php if($output->data->no_agents_ingroup == NULL)echo ""; else echo $output->data->no_agents_ingroup;?>">
+																	<input type="text" class="form-control" id="no_agents_ingroup" name="no_agents_ingroup" value="<?php if ($output->data->no_agent_action_value == NULL)echo ""; else echo $output->data->no_agent_action_value;?>">
 																	<span class="input-group-btn">
 																		<button class="btn btn-default show_no_agents_ingroup" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 																	</span>
@@ -977,10 +1012,10 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																		<option value=""><?php $lh->translateText("-none-"); ?></option>
 																		<?php
 																			$no_agents_ingroup = NULL;
-																				for($x=0; $x<count($ingroup->group_id);$x++){
-																					if($output->data->no_agent_action_value == $ingroup->group_id[$x]){
+																				for($x=0; $x<count($ingroup->group_id);$x++) {
+																					if ($output->data->no_agent_action_value == $ingroup->group_id[$x]) {
 																						$no_agents_ingroup .= '<option value="'.$ingroup->group_id[$x].'" selected> '.$ingroup->group_id[$x].' - '.$ingroup->group_name[$x].' </option>';
-																					}else{
+																					} else {
 																						$no_agents_ingroup .= '<option value="'.$ingroup->group_id[$x].'"> '.$ingroup->group_id[$x].' - '.$ingroup->group_name[$x].' </option>';
 																					}
 																				}
@@ -992,11 +1027,11 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 														</div><!-- /. ingroup -->
 
 													<!-- IF CALLMENU IS SELECTED -->
-														<div class="no_agents_callmenu" <?php if($output->data->no_agent_action != "CALLMENU"){ ?>style="display:none;"<?php }?>>
+														<div class="no_agents_callmenu" <?php if ($output->data->no_agent_action != "CALLMENU") { ?> style="display:none;"<?php }?>>
 															<label for="no_agents_callmenu" class="col-sm-4 control-label"><?php $lh->translateText("call_menu"); ?> </label>
 															<div class="col-sm-8 mb">
 																<div class="input-group">
-																	<input type="text" class="form-control" id="no_agents_callmenu" name="no_agents_callmenu" value="<?php if($output->data->no_agent_action_value == NULL)echo ""; else echo $output->data->no_agent_action_value;?>">
+																	<input type="text" class="form-control" id="no_agents_callmenu" name="no_agents_callmenu" value="<?php if ($output->data->no_agent_action_value == NULL)echo ""; else echo $output->data->no_agent_action_value;?>">
 																	<span class="input-group-btn">
 																		<button class="btn btn-default show_no_agents_callmenu" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 																	</span>
@@ -1006,10 +1041,10 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																		<option value=""><?php $lh->translateText("-none-"); ?></option>
 																		<?php
 																			$no_agents_callmenu = NULL;
-																				for($x=0; $x < count($call_menu->menu_id);$x++){
-																					if($output->data->no_agent_action_value == $call_menu->menu_id[$x]){
+																				for($x=0; $x < count($call_menu->menu_id);$x++) {
+																					if ($output->data->no_agent_action_value == $call_menu->menu_id[$x]) {
 																						$no_agents_callmenu .= '<option value="'.$call_menu->menu_id[$x].'" selected> '.$call_menu->menu_id[$x].' - '.$call_menu->menu_name[$x].' </option>';
-																					}else{
+																					} else {
 																						$no_agents_callmenu .= '<option value="'.$call_menu->menu_id[$x].'"> '.$call_menu->menu_id[$x].' - '.$call_menu->menu_name[$x].' </option>';
 																					}
 																				}
@@ -1037,9 +1072,9 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 
 									<form id="agentrankform" class="form-horizontal">
 										<?php
-											$agents_rank = $ui->API_goGetAllAgentRank($user->getUserId(), $groupid);
+											$agents_rank = $api->API_getAllAgentRank($user->getUserId(), $groupid);
 										?>
-										<table class="table table-striped table-bordered table-hover" id="agent_rank_table">
+										<table class="responsive display no-wrap table table-striped table-bordered table-hover" width="100%" id="agent_rank_table">
 										   <thead>
 											  <tr>
 												 <th><?php $lh->translateText("user"); ?></th>
@@ -1056,7 +1091,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 											   		//var_dump($agents_rank->dropdown_rankdefvalues[0]);
 
 
-											   		for($a=0; $a < $count; $a++){
+											   		for($a=0; $a < $count; $a++) {
 											   			
 											   			$checkbox_fields = $agents_rank->checkbox_fields[$a];
 											   			$ischecked = $agents_rank->checkbox_ischecked[$a];
@@ -1083,9 +1118,9 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 															<select class="form-control" name="<?php echo $rank_fields;?>">
 																<?php
 																$b = 9;
-																	while($b >= -9){
+																	while($b >= -9) {
 																?>
-																	<option value="<?php echo $rank_value;?>" <?php if($rank_value == $b){ echo "selected";}?>> <?php echo $b;?></option>
+																	<option value="<?php echo $rank_value;?>" <?php if ($rank_value == $b) { echo "selected";}?>> <?php echo $b;?></option>
 																<?php
 																	$b--;
 																	}
@@ -1096,9 +1131,9 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 															<select class="form-control" name="<?php echo $grade_fields;?>">
 																<?php
 																$c = 10;
-																	while($c >= 0){
+																	while($c >= 0) {
 																?>
-																	<option value="<?php echo $grade_value;?>" <?php if($grade_value == $c){ echo "selected";}?>> <?php echo $c;?></option>
+																	<option value="<?php echo $grade_value;?>" <?php if ($grade_value == $c) { echo "selected";}?>> <?php echo $c;?></option>
 																<?php
 																	$c--;
 																	}
@@ -1141,7 +1176,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					}
 					
 				// IF IVR
-					if($ivr_id != NULL) {
+					if ($ivr_id != NULL) {
 						$output = $api->API_getIVRInfo($ivr_id);
 						
 						if ($output->result=="success") {
@@ -1150,10 +1185,10 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 							$phonenumber = $api->API_getAllDIDs();							
 							$campaign = $api->API_getAllCampaigns();
 							$voicemails = $api->API_getAllVoicemails();
-							$phones = $api->API_getAllDIDs();
+							$phone_extension = $api->API_getAllPhones();
 							$scripts = $api->API_getAllScripts();
 							$voicefiles = $api->API_getAllVoiceFiles();
-							$calltimes = $api->API_getCalltimes();
+							$calltimes = $api->API_getAllCalltimes();
 	
 							$ivr_options = $api->API_getIVROptions($ivr_id);
 							$ivr = $api->API_getAllIVRs();
@@ -1202,10 +1237,10 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 														<select name="menu_prompt" id="menu_prompt" class="form-control select2" style="width:100%;">
 															<option value="goWelcomeIVR"><?php $lh->translateText("default_value"); ?></option>
 															<?php
-																for($i=0;$i<count($voicefiles->file_name);$i++){
+																for($i=0;$i<count($voicefiles->file_name);$i++) {
 																	$file = substr($voicefiles->file_name[$i], 0, -4);
 															?>
-																<option value="<?php echo $file;?>" <?php if($file == $output->data->menu_prompt){echo "selected";}?> ><?php echo $file;?></option>
+																<option value="<?php echo $file;?>" <?php if ($file == $output->data->menu_prompt) {echo "selected";}?> ><?php echo $file;?></option>
 															<?php
 																}
 															?>
@@ -1224,10 +1259,10 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 														<select name="menut_timeout_prompt" id="menu_timeout_prompt" class="form-control select2" style="width:100%;">
 															<option value=""><?php $lh->translateText("default_value"); ?></option>
 															<?php
-																for($i=0;$i<count($voicefiles->file_name);$i++){
+																for($i=0;$i<count($voicefiles->file_name);$i++) {
 																	$file = substr($voicefiles->file_name[$i], 0, -4);
 															?>
-																<option value="<?php echo $file;?>" <?php if($file == $output->data->menu_timeout_prompt){echo "selected";}?> ><?php echo $file;?></option>
+																<option value="<?php echo $file;?>" <?php if ($file == $output->data->menu_timeout_prompt) {echo "selected";}?> ><?php echo $file;?></option>
 															<?php
 																}
 															?>				
@@ -1240,10 +1275,10 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 														<select name="menu_invalid_prompt" id="menu_invalid_prompt" class="form-control select2" style="width:100%;">
 															<option value=""><?php $lh->translateText("default_value"); ?></option>
 															<?php
-																for($i=0;$i<count($voicefiles->file_name);$i++){
+																for($i=0;$i<count($voicefiles->file_name);$i++) {
 																	$file = substr($voicefiles->file_name[$i], 0, -4);
 															?>
-																<option value="<?php echo $file;?>" <?php if($file == $output->data->menu_invalid_prompt){echo "selected";}?> ><?php echo $file;?></option>
+																<option value="<?php echo $file;?>" <?php if ($file == $output->data->menu_invalid_prompt) {echo "selected";}?> ><?php echo $file;?></option>
 															<?php
 																}
 															?>				
@@ -1260,8 +1295,8 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<label class="col-sm-3 control-label" for="menu_time_check"><?php $lh->translateText("menu_time_check"); ?>: </label>
 													<div class="col-sm-9">
 														<select name="menu_time_check" id="menu_time_check" class="form-control">
-															<option value="0" <?php if($output->data->menu_time_check == "0"){echo "selected";}?> >0 - <?php $lh->translateText("no_realtime_tracking"); ?> </option>
-															<option value="1" <?php if($output->data->menu_time_check == "1"){echo "selected";}?> >1 - <?php $lh->translateText("realtime_tracking"); ?> </option>
+															<option value="0" <?php if ($output->data->menu_time_check == "0") {echo "selected";}?> >0 - <?php $lh->translateText("no_realtime_tracking"); ?> </option>
+															<option value="1" <?php if ($output->data->menu_time_check == "1") {echo "selected";}?> >1 - <?php $lh->translateText("realtime_tracking"); ?> </option>
 														</select>
 													</div>
 												</div>
@@ -1270,9 +1305,9 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<div class="col-sm-9">
 														<select name="call_time_id" id="call_time_id" class="form-control select2" style="width:100%;">
 															<?php
-																for($x=0; $x<count($calltimes->call_time_id);$x++){
+																for($x=0; $x<count($calltimes->call_time_id);$x++) {
 															?>
-																<option value="<?php echo $calltimes->call_time_id[$x];?>" <?php if($calltimes->call_time_id[$x] == $output->data->call_time_id){echo "selected";} ?> > <?php echo $calltimes->call_time_id[$x].' - '.$calltimes->call_time_name[$x]; ?> </option>
+																<option value="<?php echo $calltimes->call_time_id[$x];?>" <?php if ($calltimes->call_time_id[$x] == $output->data->call_time_id) {echo "selected";} ?> > <?php echo $calltimes->call_time_id[$x].' - '.$calltimes->call_time_name[$x]; ?> </option>
 															<?php
 																}
 															?>
@@ -1283,8 +1318,8 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<label class="col-sm-3 control-label" for="track_in_vdac"><?php $lh->translateText("track_call_realtime_report"); ?>: </label>
 													<div class="col-sm-9"> 
 														<select name="track_in_vdac" id="track_in_vdac" class="form-control">
-															<option value="0" <?php if($output->data->track_in_vdac == "0"){echo "selected";}?> >0 - <?php $lh->translateText("no_realtime_tracking"); ?></option>
-															<option value="1" <?php if($output->data->track_in_vdac == "1"){echo "selected";}?> >1 - <?php $lh->translateText("realtime_tracking"); ?></option>
+															<option value="0" <?php if ($output->data->track_in_vdac == "0") {echo "selected";}?> >0 - <?php $lh->translateText("no_realtime_tracking"); ?></option>
+															<option value="1" <?php if ($output->data->track_in_vdac == "1") {echo "selected";}?> >1 - <?php $lh->translateText("realtime_tracking"); ?></option>
 														</select>
 													</div>
 												</div>
@@ -1293,9 +1328,9 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<div class="col-sm-9">
 														<select name="tracking_group" id="tracking_group" class="form-control select2" style="width:100%;">
 														<?php
-															for($i=0;$i<count($ingroups->group_id);$i++){
+															for($i=0;$i<count($ingroups->group_id);$i++) {
 														?>
-															<option value="<?php echo $ingroups->group_id[$i];?>" <?php if($ingroups->group_id[$i] == $output->data->tracking_group){echo "selected";}?> >
+															<option value="<?php echo $ingroups->group_id[$i];?>" <?php if ($ingroups->group_id[$i] == $output->data->tracking_group) {echo "selected";}?> >
 																<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
 															</option>									
 														<?php
@@ -1308,11 +1343,11 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<label class="col-sm-3 control-label" for="user_group"><?php $lh->translateText("user_groups"); ?>: </label>
 													<div class="col-sm-9">
 														<select id="user_group" class="form-control select2" name="user_group" style="width:100%;">
-																<option value="---ALL---" <?php if($output->data->user_group == "---ALL---"){echo "selected";}?> > <?php $lh->translateText("all_usergroups"); ?> </option>
+																<option value="---ALL---" <?php if ($output->data->user_group == "---ALL---") {echo "selected";}?> > <?php $lh->translateText("all_usergroups"); ?> </option>
 															<?php
-																for($i=0;$i<count($user_groups->user_group);$i++){
+																for($i=0;$i<count($user_groups->user_group);$i++) {
 															?>
-																<option value="<?php echo $user_groups->user_group[$i];?>" <?php if($output->data->user_group == $user_groups->user_group[$i]){echo "selected";}?> >  <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i];?>  </option>
+																<option value="<?php echo $user_groups->user_group[$i];?>" <?php if ($output->data->user_group == $user_groups->user_group[$i]) {echo "selected";}?> >  <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i];?>  </option>
 															<?php
 																}
 															?>
@@ -1329,7 +1364,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													 //var_dump($ivr_options);
 													 //echo "</pre>";
 													
-													for($i=0;$i < 14; $i++){
+													for($i=0;$i < 14; $i++) {
 												?>
 												<div class="option_div_<?php echo $i;?>">
 													<div class="form-group">
@@ -1338,16 +1373,16 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																<?php $lh->translateText("option"); ?>:
 																<select class="form-control route_option" name="option[]"
 																<?php 
-																	if($ivr_options->option_value[$i] != ""){
-																		if($ivr_options->option_value[$i] == "#")
+																	if ($ivr_options->option_value[$i] != "") {
+																		if ($ivr_options->option_value[$i] == "#")
 																			$ivr_options->option_value[$i] = "A";
-																		if($ivr_options->option_value[$i] == "*")
+																		if ($ivr_options->option_value[$i] == "*")
 																			$ivr_options->option_value[$i] = "B";
-																		if($ivr_options->option_value[$i] == "TIMECHECK")
+																		if ($ivr_options->option_value[$i] == "TIMECHECK")
 																			$ivr_options->option_value[$i] = "C";
-																		if($ivr_options->option_value[$i] == "TIMEOUT")
+																		if ($ivr_options->option_value[$i] == "TIMEOUT")
 																			$ivr_options->option_value[$i] = "D";
-																		if($ivr_options->option_value[$i] == "INVALID")
+																		if ($ivr_options->option_value[$i] == "INVALID")
 																			$ivr_options->option_value[$i] = "E";
 
 																		echo 'id="option_'.$ivr_options->option_value[$i].'" ';
@@ -1356,37 +1391,37 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																	<option selected></option>
 																	<?php
 																	$option = '';
-																		for($x=0; $x <= 9; $x++){
+																		for($x=0; $x <= 9; $x++) {
 																			$option .= '<option value="'.$x.'" ';
-																			if($ivr_options->option_value[$i] == $x && $ivr_options->option_value[$i] != ""){$option .= 'selected ';}
-																			if (in_array($x, $ivr_options->option_value)){$option .= 'disabled style="background-color: rgb(193, 193, 193); color: rgb(255, 255, 255);"';}
+																			if ($ivr_options->option_value[$i] == $x && $ivr_options->option_value[$i] != "") {$option .= 'selected ';}
+																			if (in_array($x, $ivr_options->option_value)) {$option .= 'disabled style="background-color: rgb(193, 193, 193); color: rgb(255, 255, 255);"';}
 																			$option .= '>'.$x.'</option>';
 																		}
 																		echo $option;
 																	?>
-																	<option value="A" <?php if($ivr_options->option_value[$i] == "A"){echo 'selected';}if (in_array("#", $ivr_options->option_value)){ echo ' disabled style="background-color: rgb(193, 193, 193); color: rgb(255, 255, 255);"';} ?> >#</option>
-																	<option value="B" <?php if($ivr_options->option_value[$i] == "B"){echo 'selected';}if (in_array("*", $ivr_options->option_value)){ echo ' disabled style="background-color: rgb(193, 193, 193); color: rgb(255, 255, 255);"';} ?> >*</option>
-																	<option value="C" <?php if($ivr_options->option_value[$i] == "C"){echo 'selected';}if (in_array("TIMECHECK", $ivr_options->option_value)){ echo ' disabled style="background-color: rgb(193, 193, 193); color: rgb(255, 255, 255);"';} ?> >TIMECHECK</option>
-																	<option value="D" <?php if($ivr_options->option_value[$i] == "D"){echo 'selected';}if (in_array("TIMEOUT", $ivr_options->option_value)){ echo ' disabled style="background-color: rgb(193, 193, 193); color: rgb(255, 255, 255);"';} ?> >TIMEOUT</option>
-																	<option value="E" <?php if($ivr_options->option_value[$i] == "E"){echo 'selected';}if (in_array("INVALID", $ivr_options->option_value)){ echo ' disabled style="background-color: rgb(193, 193, 193); color: rgb(255, 255, 255);"';} ?> >INVALID</option>
+																	<option value="A" <?php if ($ivr_options->option_value[$i] == "A") {echo 'selected';}if (in_array("#", $ivr_options->option_value)) { echo ' disabled style="background-color: rgb(193, 193, 193); color: rgb(255, 255, 255);"';} ?> >#</option>
+																	<option value="B" <?php if ($ivr_options->option_value[$i] == "B") {echo 'selected';}if (in_array("*", $ivr_options->option_value)) { echo ' disabled style="background-color: rgb(193, 193, 193); color: rgb(255, 255, 255);"';} ?> >*</option>
+																	<option value="C" <?php if ($ivr_options->option_value[$i] == "C") {echo 'selected';}if (in_array("TIMECHECK", $ivr_options->option_value)) { echo ' disabled style="background-color: rgb(193, 193, 193); color: rgb(255, 255, 255);"';} ?> >TIMECHECK</option>
+																	<option value="D" <?php if ($ivr_options->option_value[$i] == "D") {echo 'selected';}if (in_array("TIMEOUT", $ivr_options->option_value)) { echo ' disabled style="background-color: rgb(193, 193, 193); color: rgb(255, 255, 255);"';} ?> >TIMEOUT</option>
+																	<option value="E" <?php if ($ivr_options->option_value[$i] == "E") {echo 'selected';}if (in_array("INVALID", $ivr_options->option_value)) { echo ' disabled style="background-color: rgb(193, 193, 193); color: rgb(255, 255, 255);"';} ?> >INVALID</option>
 																</select>
 															</div>
 															<div class="col-lg-7">
 																<?php $lh->translateText("description"); ?>: 
-																<input type="text" name="route_desc[]" id="" class="form-control route_desc_<?php echo $i;?>" placeholder="Description" value="<?php echo $ivr_options->option_description[$i]; ?>" />
+																<input type="text" name="route_desc[]" class="form-control route_desc_<?php echo $i;?>" placeholder="Description" value="<?php echo $ivr_options->option_description[$i]; ?>" />
 															</div>
 															<div class="col-lg-3">
 																<?php $lh->translateText("route"); ?>:
 																<select class="form-control route_menu_<?php echo $i;?>" name="route_menu[]">
 																	<option selected value=""></option>
-																	<option value="CALLMENU" <?php if($ivr_options->option_route[$i] == "CALLMENU")echo "selected"; ?> ><?php $lh->translateText("call_menu_ivr"); ?></option>
-																	<option value="INGROUP" <?php if($ivr_options->option_route[$i] == "INGROUP")echo "selected"; ?> ><?php $lh->translateText("in_group"); ?></option>
-																	<option value="DID" <?php if($ivr_options->option_route[$i] == "DID")echo "selected"; ?> ><?php $lh->translateText("did"); ?></option>
-																	<option value="HANGUP" <?php if($ivr_options->option_route[$i] == "HANGUP")echo "selected"; ?> ><?php $lh->translateText("hangup"); ?></option>
-																	<option value="EXTENSION" <?php if($ivr_options->option_route[$i] == "EXTENSION")echo "selected"; ?> ><?php $lh->translateText("custom_extension"); ?></option>
-																	<option value="PHONE" <?php if($ivr_options->option_route[$i] == "PHONE")echo "selected"; ?> ><?php $lh->translateText("phone"); ?></option>
-																	<option value="VOICEMAIL" <?php if($ivr_options->option_route[$i] == "VOICEMAIL")echo "selected"; ?> ><?php $lh->translateText("voicemail"); ?></option>
-																	<option value="AGI" <?php if($ivr_options->option_route[$i] == "AGI")echo "selected"; ?> ><?php $lh->translateText("agi"); ?></option>
+																	<option value="CALLMENU" <?php if ($ivr_options->option_route[$i] == "CALLMENU")echo "selected"; ?> ><?php $lh->translateText("call_menu_ivr"); ?></option>
+																	<option value="INGROUP" <?php if ($ivr_options->option_route[$i] == "INGROUP")echo "selected"; ?> ><?php $lh->translateText("in_group"); ?></option>
+																	<option value="DID" <?php if ($ivr_options->option_route[$i] == "DID")echo "selected"; ?> ><?php $lh->translateText("did"); ?></option>
+																	<option value="HANGUP" <?php if ($ivr_options->option_route[$i] == "HANGUP")echo "selected"; ?> ><?php $lh->translateText("hangup"); ?></option>
+																	<option value="EXTENSION" <?php if ($ivr_options->option_route[$i] == "EXTENSION")echo "selected"; ?> ><?php $lh->translateText("custom_extension"); ?></option>
+																	<option value="PHONE" <?php if ($ivr_options->option_route[$i] == "PHONE")echo "selected"; ?> ><?php $lh->translateText("phone"); ?></option>
+																	<option value="VOICEMAIL" <?php if ($ivr_options->option_route[$i] == "VOICEMAIL")echo "selected"; ?> ><?php $lh->translateText("voicemail"); ?></option>
+																	<option value="AGI" <?php if ($ivr_options->option_route[$i] == "AGI")echo "selected"; ?> ><?php $lh->translateText("agi"); ?></option>
 																</select>
 															</div>
 															<div class="col-lg-1 btn-remove"></div>
@@ -1395,16 +1430,16 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<div class="form-group">
 														<div class="col-lg-12 option_menu_<?php echo $i;?> mb mt">
 															<!-- CALL MENU -->
-																<div class="route_callmenu_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "CALLMENU")echo 'style="display:none;"'; ?> >
+																<div class="route_callmenu_<?php echo $i;?>" <?php if ($ivr_options->option_route[$i] != "CALLMENU")echo 'style="display:none;"'; ?> >
 																	<label class="col-sm-3 control-label"><?php $lh->translateText("call_menu"); ?>: </label>
 																	<div class="col-sm-6">
 																		<select class="select2-2 form-control select2" name="option_callmenu_value[]" style="width:100%;">
 																			<option value="" selected> <?php $lh->translateText("-none-"); ?> </option>
 																		<?php
 																			$callmenu_option = '';
-																			for($x=0;$x < count($ivr->menu_id);$x++){
+																			for($x=0;$x < count($ivr->menu_id);$x++) {
 																				$callmenu_option .= '<option value="'.$ivr->menu_id[$x].'"';
-																					if($ivr_options->option_route_value[$i] == $ivr->menu_id[$x]){$callmenu_option .= ' selected';}
+																					if ($ivr_options->option_route_value[$i] == $ivr->menu_id[$x]) {$callmenu_option .= ' selected';}
 																				$callmenu_option .= '>'.$ivr->menu_id[$x].' - '.$ivr->menu_name[$x].'</option>';
 																			}
 																			echo $callmenu_option;
@@ -1413,7 +1448,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																	</div>
 																</div>
 															<!-- IN GROUP -->
-																<div class="route_ingroup_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "INGROUP")echo 'style="display:none;"'; ?> >
+																<div class="route_ingroup_<?php echo $i;?>" <?php if ($ivr_options->option_route[$i] != "INGROUP")echo 'style="display:none;"'; ?> >
 																	<div class="row mb">
 																		<label class="col-sm-3 control-label"><?php $lh->translateText("ingroups"); ?>: </label>
 																		<div class="col-sm-6">
@@ -1421,9 +1456,9 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																				<option value="" > <?php $lh->translateText("-none-"); ?> </option>
 																			<?php
 																				$ingroup_option = '';
-																				for($x=0;$x < count($ingroups->group_id);$x++){
+																				for($x=0;$x < count($ingroups->group_id);$x++) {
 																					$ingroup_option .= '<option value="'.$ingroups->group_id[$x].'"';
-																						if($ivr_options->option_route[$i] == "INGROUP" && $ivr_options->option_route_value[$i] == $ingroups->group_id[$x]){$ingroup_option .= ' selected';}
+																						if ($ivr_options->option_route[$i] == "INGROUP" && $ivr_options->option_route_value[$i] == $ingroups->group_id[$x]) {$ingroup_option .= ' selected';}
 																					$ingroup_option .= '>'.$ingroups->group_id[$x].' - '.$ingroups->group_name[$x].'</option>';
 																				}
 																				echo $ingroup_option;
@@ -1432,7 +1467,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																		</div>
 																	</div>
 																	<?php 
-																		if($ivr_options->option_route[$i] == "INGROUP" || !isset($ivr_options->option_route[$i]) ){
+																		if ($ivr_options->option_route[$i] == "INGROUP" || !isset($ivr_options->option_route[$i]) ) {
 																			$explode_ingroup_context = explode(",", $ivr_options->option_route_value_context[$i]);
 																	?>
 																	<div class="col-sm-11">
@@ -1440,22 +1475,22 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																			<label class="col-sm-3 control-label"><?php $lh->translateText("handle_method"); ?>:</label>
 																			<div class="col-sm-7">
 																				<select class="form-control" name="handle_method_<?php echo $i;?>" id="edit_handle_method_<?php echo $i;?>">
-																					<option value="CID" <?php if($explode_ingroup_context[0] == "CID")echo "selected"; ?> >CID</option>
-																					<option value="CIDLOOKUP" <?php if($explode_ingroup_context[0] == "CIDLOOKUP")echo "selected"; ?> >CIDLOOKUP</option>
-																					<option value="CIDLOOKUPRL" <?php if($explode_ingroup_context[0] == "CIDLOOKUPRL")echo "selected"; ?> >CIDLOOKUPRL</option>
-																					<option value="CIDLOOKUPRC" <?php if($explode_ingroup_context[0] == "CIDLOOKUPRC")echo "selected"; ?> >CIDLOOKUPRC</option>
-																					<option value="ANI" <?php if($explode_ingroup_context[0] == "ANI")echo "selected"; ?> >ANI</option>
-																					<option value="ANILOOKUP" <?php if($explode_ingroup_context[0] == "ANILOOKUP")echo "selected"; ?> >ANILOOKUP</option>
-																					<option value="ANILOOKUPRL" <?php if($explode_ingroup_context[0] == "ANILOOKUPRL")echo "selected"; ?> >ANILOOKUPRL</option>
-																					<option value="VIDPROMPT" <?php if($explode_ingroup_context[0] == "VIDPROMPT")echo "selected"; ?> >VIDPROMPT</option>
-																					<option value="VIDPROMPTLOOKUP" <?php if($explode_ingroup_context[0] == "VIDPROMPTLOOKUP")echo "selected"; ?> >VIDPROMPTLOOKUP</option>
-																					<option value="VIDPROMPTLOOKUPRL" <?php if($explode_ingroup_context[0] == "VIDPROMPTLOOKUPRL")echo "selected"; ?> >VIDPROMPTLOOKUPRL</option>
-																					<option value="VIDPROMPTLOOKUPRC" <?php if($explode_ingroup_context[0] == "VIDPROMPTLOOKUPRC")echo "selected"; ?> >VIDPROMPTLOOKUPRC</option>
-																					<option value="CLOSER" <?php if($explode_ingroup_context[0] == "CLOSER")echo "selected"; ?> >CLOSER</option>
-																					<option value="3DIGITID" <?php if($explode_ingroup_context[0] == "3DIGITID")echo "selected"; ?> >3DIGITID</option>
-																					<option value="4DIGITID" <?php if($explode_ingroup_context[0] == "4DIGITID")echo "selected"; ?> >4DIGITID</option>
-																					<option value="5DIGITID" <?php if($explode_ingroup_context[0] == "5DIGITID")echo "selected"; ?> >5DIGITID</option>
-																					<option value="10DIGITID" <?php if($explode_ingroup_context[0] == "10DIGITID")echo "selected"; ?> >10DIGITID</option>
+																					<option value="CID" <?php if ($explode_ingroup_context[0] == "CID")echo "selected"; ?> >CID</option>
+																					<option value="CIDLOOKUP" <?php if ($explode_ingroup_context[0] == "CIDLOOKUP")echo "selected"; ?> >CIDLOOKUP</option>
+																					<option value="CIDLOOKUPRL" <?php if ($explode_ingroup_context[0] == "CIDLOOKUPRL")echo "selected"; ?> >CIDLOOKUPRL</option>
+																					<option value="CIDLOOKUPRC" <?php if ($explode_ingroup_context[0] == "CIDLOOKUPRC")echo "selected"; ?> >CIDLOOKUPRC</option>
+																					<option value="ANI" <?php if ($explode_ingroup_context[0] == "ANI")echo "selected"; ?> >ANI</option>
+																					<option value="ANILOOKUP" <?php if ($explode_ingroup_context[0] == "ANILOOKUP")echo "selected"; ?> >ANILOOKUP</option>
+																					<option value="ANILOOKUPRL" <?php if ($explode_ingroup_context[0] == "ANILOOKUPRL")echo "selected"; ?> >ANILOOKUPRL</option>
+																					<option value="VIDPROMPT" <?php if ($explode_ingroup_context[0] == "VIDPROMPT")echo "selected"; ?> >VIDPROMPT</option>
+																					<option value="VIDPROMPTLOOKUP" <?php if ($explode_ingroup_context[0] == "VIDPROMPTLOOKUP")echo "selected"; ?> >VIDPROMPTLOOKUP</option>
+																					<option value="VIDPROMPTLOOKUPRL" <?php if ($explode_ingroup_context[0] == "VIDPROMPTLOOKUPRL")echo "selected"; ?> >VIDPROMPTLOOKUPRL</option>
+																					<option value="VIDPROMPTLOOKUPRC" <?php if ($explode_ingroup_context[0] == "VIDPROMPTLOOKUPRC")echo "selected"; ?> >VIDPROMPTLOOKUPRC</option>
+																					<option value="CLOSER" <?php if ($explode_ingroup_context[0] == "CLOSER")echo "selected"; ?> >CLOSER</option>
+																					<option value="3DIGITID" <?php if ($explode_ingroup_context[0] == "3DIGITID")echo "selected"; ?> >3DIGITID</option>
+																					<option value="4DIGITID" <?php if ($explode_ingroup_context[0] == "4DIGITID")echo "selected"; ?> >4DIGITID</option>
+																					<option value="5DIGITID" <?php if ($explode_ingroup_context[0] == "5DIGITID")echo "selected"; ?> >5DIGITID</option>
+																					<option value="10DIGITID" <?php if ($explode_ingroup_context[0] == "10DIGITID")echo "selected"; ?> >10DIGITID</option>
 																				</select>
 																			</div>
 																		</div>
@@ -1466,9 +1501,9 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																					<select class="form-control select2" name="campaign_id_<?php echo $i;?>" style="width:100%;">
 																					<?php
 																						$campaign_id_ingroup = '<option value="">'.$lh->translationFor("-none-").'</option>';
-																						for($x=0;$x < count($campaign->campaign_id);$x++){
+																						for($x=0;$x < count($campaign->campaign_id);$x++) {
 																							$campaign_id_ingroup .= '<option value="'.$campaign->campaign_id[$x].'"';
-																								if($explode_ingroup_context[3] == $campaign->campaign_id[$x]){$campaign_id_ingroup .= ' selected';}
+																								if ($explode_ingroup_context[3] == $campaign->campaign_id[$x]) {$campaign_id_ingroup .= ' selected';}
 																							$campaign_id_ingroup .= '>'.$campaign->campaign_id[$x].' - '.$campaign->campaign_name[$x].'</option>';
 																						}
 																						echo $campaign_id_ingroup;
@@ -1480,7 +1515,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																				<label class="col-sm-5 control-label"><?php $lh->translateText("phone_code"); ?>: </label>
 																				<div class="col-sm-7">
 																					<input type="text" class="form-control" name="phone_code<?php echo $i;?>" value="<?php 
-																						if(isset($ivr_options->option_route[$i])) 
+																						if (isset($ivr_options->option_route[$i])) 
 																							echo $explode_ingroup_context[4];
 																						else
 																							echo 1;
@@ -1493,9 +1528,9 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																				<label class="col-sm-4 control-label"><?php $lh->translateText("search_method"); ?>:</label>
 																				<div class="col-sm-8">
 																					<select class="form-control" name="search_method_<?php echo $i;?>" id="edit_search_method_<?php echo $i;?>">
-																						<option value="LB" <?php if($explode_ingroup_context[1] == "LB")echo "selected"; ?> ><?php $lh->translateText("lb_load_balance"); ?></option>
-																						<option value="LO" <?php if($explode_ingroup_context[1] == "LO")echo "selected"; ?> ><?php $lh->translateText("lo_load_balance_overflow"); ?></option>
-																						<option value="SO" <?php if($explode_ingroup_context[1] == "SO")echo "selected"; ?> ><?php $lh->translateText("server_only"); ?></option>
+																						<option value="LB" <?php if ($explode_ingroup_context[1] == "LB")echo "selected"; ?> ><?php $lh->translateText("lb_load_balance"); ?></option>
+																						<option value="LO" <?php if ($explode_ingroup_context[1] == "LO")echo "selected"; ?> ><?php $lh->translateText("lo_load_balance_overflow"); ?></option>
+																						<option value="SO" <?php if ($explode_ingroup_context[1] == "SO")echo "selected"; ?> ><?php $lh->translateText("server_only"); ?></option>
 																					</select>
 																				</div>
 																			</div>
@@ -1503,7 +1538,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																				<label class="col-sm-5 control-label" for="search_method_list_id"><?php $lh->translateText("list_id"); ?>: </label>
 																				<div class="col-sm-7">
 																					<input type="text" name="list_id_<?php echo $i;?>" value="<?php 
-																						if(isset($ivr_options->option_route[$i])) 
+																						if (isset($ivr_options->option_route[$i])) 
 																							echo $explode_ingroup_context[2];
 																						else
 																							echo 998;
@@ -1515,7 +1550,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																			<label class="col-sm-3 control-label"><?php $lh->translateText("vid_digits"); ?>: </label>
 																			<div class="col-sm-7">
 																				<input type="text" class="form-control" name="vid_digits_<?php echo $i;?>" value="<?php 
-																					if(isset($ivr_options->option_route[$i]))
+																					if (isset($ivr_options->option_route[$i]))
 																						echo $explode_ingroup_context[8];
 																					else
 																						echo 1;
@@ -1527,7 +1562,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																			<div class="col-sm-8">
 																				<div class="col-sm-6">
 																					<input type="text" name="enter_filename_<?php echo $i;?>" value="<?php 
-																						if(isset($ivr_options->option_route[$i]))
+																						if (isset($ivr_options->option_route[$i]))
 																							echo $explode_ingroup_context[5];
 																						else
 																							echo "sip-silence";
@@ -1535,13 +1570,13 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																				</div>
 																				<div class="col-sm-6">
 																					<select class="col-sm-6 form-control select2" style="width:100%;" id="enter_filename_select_<?php echo $i;?>">
-																						<option value="sip-silence" <?php if($explode_ingroup_context[5] == "sip-silence")echo "selected"; ?> > <?php $lh->translateText("default_value") ?> </option>
+																						<option value="sip-silence" <?php if ($explode_ingroup_context[5] == "sip-silence")echo "selected"; ?> > <?php $lh->translateText("default_value") ?> </option>
 																					<?php
 																						$vid_enter = '';
-																						for($x=0;$x<count($voicefiles->file_name);$x++){
+																						for($x=0;$x<count($voicefiles->file_name);$x++) {
 																							$file = substr($voicefiles->file_name[$x], 0, -4);
 																							$vid_enter .= '<option value="'.$file.'"';
-																								if($file == $explode_ingroup_context[5])echo $vid_enter.= 'selected';
+																								if ($file == $explode_ingroup_context[5])echo $vid_enter.= 'selected';
 																							$vid_enter .= '>'.$file.'</option>';
 																							echo $vid_enter;
 																						}
@@ -1555,7 +1590,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																			<div class="col-sm-8">
 																				<div class="col-sm-6">
 																					<input type="text" name="id_number_filename_<?php echo $i;?>" value="<?php 
-																						if(isset($ivr_options->option_route[$i]))
+																						if (isset($ivr_options->option_route[$i]))
 																							echo $explode_ingroup_context[6];
 																						else
 																							echo "sip-silence";
@@ -1563,13 +1598,13 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																				</div>
 																				<div class="col-sm-6">
 																					<select class="col-sm-6 form-control select2" style="width:100%;" id="edit_id_number_filename_select_<?php echo $i;?>">
-																						<option value="sip-silence" <?php if($explode_ingroup_context[6] == "sip-silence")echo "selected"; ?> > <?php $lh->translateText("default_value"); ?> </option>
+																						<option value="sip-silence" <?php if ($explode_ingroup_context[6] == "sip-silence")echo "selected"; ?> > <?php $lh->translateText("default_value"); ?> </option>
 																					<?php
 																						$vid_id = '';
-																						for($x=0;$x<count($voicefiles->file_name);$x++){
+																						for($x=0;$x<count($voicefiles->file_name);$x++) {
 																							$file = substr($voicefiles->file_name[$x], 0, -4);
 																							$vid_id .= '<option value="'.$file.'"';
-																								if($file == $explode_ingroup_context[6])echo $vid_id.= 'selected';
+																								if ($file == $explode_ingroup_context[6])echo $vid_id.= 'selected';
 																							$vid_id .= '>'.$file.'</option>';
 																							echo $vid_id;
 																						}
@@ -1583,7 +1618,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																			<div class="col-sm-8">
 																				<div class="col-sm-6">
 																					<input type="text" name="confirm_filename_<?php echo $i;?>" value="<?php 
-																						if(isset($ivr_options->option_route[$i]))
+																						if (isset($ivr_options->option_route[$i]))
 																							echo $explode_ingroup_context[7];
 																						else
 																							echo "sip-silence";
@@ -1591,13 +1626,13 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																				</div>
 																				<div class="col-sm-6">
 																					<select class="col-sm-6 form-control select2" style="width:100%;" id="edit_confirm_filename_select_<?php echo $i;?>">
-																						<option value="sip-silence" <?php if($explode_ingroup_context[7] == "sip-silence")echo "selected"; ?> > <?php $lh->translateText("default_value"); ?> </option>
+																						<option value="sip-silence" <?php if ($explode_ingroup_context[7] == "sip-silence")echo "selected"; ?> > <?php $lh->translateText("default_value"); ?> </option>
 																					<?php
 																						$vid_confirm = '';
-																						for($x=0;$x<count($voicefiles->file_name);$x++){
+																						for($x=0;$x<count($voicefiles->file_name);$x++) {
 																							$file = substr($voicefiles->file_name[$x], 0, -4);
 																							$vid_confirm .= '<option value="'.$file.'"';
-																								if($file == $explode_ingroup_context[7])echo $vid_confirm.= 'selected';
+																								if ($file == $explode_ingroup_context[7])echo $vid_confirm.= 'selected';
 																							$vid_confirm .= '>'.$file.'</option>';
 																							echo $vid_confirm;
 																						}
@@ -1612,16 +1647,16 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																	?>
 																</div>
 															<!-- DID -->
-																<div class="route_did_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "DID")echo 'style="display:none;"'; ?> >
+																<div class="route_did_<?php echo $i;?>" <?php if ($ivr_options->option_route[$i] != "DID")echo 'style="display:none;"'; ?> >
 																	<label class="col-sm-3 control-label"><?php $lh->translateText("did"); ?>: </label>
 																	<div class="col-sm-6">
 																		<select class="col-sm-6 select2-2 form-control select2" name="option_did_value[]" style="width:100%;">
 																			<option value="" selected> <?php $lh->translateText("-none-"); ?> </option>
 																		<?php
 																			$did_option = '';
-																			for($x=0;$x < count($phonenumber->did_pattern);$x++){
+																			for($x=0;$x < count($phonenumber->did_pattern);$x++) {
 																				$did_option .= '<option value="'.$phonenumber->did_pattern[$x].'"';
-																					if($ivr_options->option_route_value[$i] == $phonenumber->did_pattern[$x]){ $did_option .= ' selected';}
+																					if ($ivr_options->option_route_value[$i] == $phonenumber->did_pattern[$x]) { $did_option .= ' selected';}
 																				$did_option .= '>'.$phonenumber->did_pattern[$x].' - '.$phonenumber->did_description[$x].'</option>';
 																			}
 																			echo $did_option;
@@ -1630,18 +1665,18 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																	</div>
 																</div>
 															<!-- HANGUP -->
-																<div class="route_hangup_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "HANGUP")echo 'style="display:none;"'; ?> >
+																<div class="route_hangup_<?php echo $i;?>" <?php if ($ivr_options->option_route[$i] != "HANGUP")echo 'style="display:none;"'; ?> >
 																	<label class="col-sm-3 control-label"><?php $lh->translateText("audio_file"); ?>: </label>
 																	<div class="col-sm-6">
 																		<select class="select2-2 form-control select2" name="option_hangup_value[]" style="width:100%;">
 																			<option value="vm-goodbye"> <?php $lh->translateText("vm-goodbye"); ?> </option>
 																		<?php
-																			//if($ivr_options->option_route_value[$i] == "vm-goodbye"){echo '<option value="vm-goodbye" selected> vm-goodbye </option>';}
+																			//if ($ivr_options->option_route_value[$i] == "vm-goodbye") {echo '<option value="vm-goodbye" selected> vm-goodbye </option>';}
 																			$hangup_option = '';
-																			for($x=0;$x<count($voicefiles->file_name);$x++){
+																			for($x=0;$x<count($voicefiles->file_name);$x++) {
 																				$file = substr($voicefiles->file_name[$x], 0, -4);
 																				$hangup_option .= '<option value="'.$file.'"';
-																					if($ivr_options->option_route_value[$i] == $file){$hangup_option .= 'selected';}
+																					if ($ivr_options->option_route_value[$i] == $file) {$hangup_option .= 'selected';}
 																				$hangup_option .= '>'.$file.'</option>';
 																			}
 																			echo $hangup_option;
@@ -1650,32 +1685,32 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																	</div>
 																</div>
 															<!-- EXTENSION -->
-																<div class="route_exten_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "EXTENSION")echo 'style="display:none;"'; ?> >
+																<div class="route_exten_<?php echo $i;?>" <?php if ($ivr_options->option_route[$i] != "EXTENSION")echo 'style="display:none;"'; ?> >
 																	<div class="col-sm-6">
 																		<label class="col-sm-3 control-label"><?php $lh->translateText("custom_extension"); ?>: </label>
 																		<div class="col-sm-9">
-																			<input type="text" class="form-control" name="option_extension_value[]" id="option_route_value_<?php echo $i;?>" value="<?php if($ivr_options->option_route[$i] == "EXTENSION"){echo $ivr_options->option_route_value[$i];} ?>" />
+																			<input type="text" class="form-control" name="option_extension_value[]" id="option_route_value_<?php echo $i;?>" value="<?php if ($ivr_options->option_route[$i] == "EXTENSION") {echo $ivr_options->option_route_value[$i];} ?>" />
 																		</div>
 																	</div>
 																	<div class="col-sm-6">
 																		<label class="col-sm-3 control-label"><?php $lh->translateText("context"); ?>: </label>
 																		<div class="col-sm-9">
-																			<input type="text" class="form-control" name="option_route_value_context[]" id="option_route_value_context_<?php echo $i;?>" value="<?php if($ivr_options->option_route[$i] == "EXTENSION"){echo $ivr_options->option_route_value_context[$i];} ?>" />
+																			<input type="text" class="form-control" name="option_route_value_context[]" id="option_route_value_context_<?php echo $i;?>" value="<?php if ($ivr_options->option_route[$i] == "EXTENSION") {echo $ivr_options->option_route_value_context[$i];} ?>" />
 																		</div>
 																	</div>
 																</div>
 															<!-- PHONE -->
-																<div class="route_phone_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "PHONE")echo 'style="display:none;"'; ?> >
+																<div class="route_phone_<?php echo $i;?>" <?php if ($ivr_options->option_route[$i] != "PHONE")echo 'style="display:none;"'; ?> >
 																	<label class="col-sm-3 control-label"><?php $lh->translateText("phone"); ?>: </label>
 																	<div class="col-sm-6">
 																		<select class="select2-2 form-control select2" name="option_phone_value[]" style="width:100%;">
 																			<option value="" > <?php $lh->translateText("-none-"); ?> </option>
 																		<?php
 																			$phones_option = '';
-																			for($x=0;$x < count($phones->extension);$x++){
-																				$phones_option .= '<option value="'.$phones->extension[$x].'"';
-																					if($ivr_options->option_route_value[$i] == $phones->extension[$x]){ $phones_option .= ' selected';}
-																				$phones_option .= '>'.$phones->extension[$x]." - ".$phones->server_ip[$x]." - ".$phones->dialplan_number[$x]."</option>";
+																			for($x=0;$x < count($phone_extension->extension);$x++) {
+																				$phones_option .= '<option value="'.$phone_extension->extension[$x].'"';
+																					if ($ivr_options->option_route_value[$i] == $phone_extension->extension[$x]) { $phones_option .= ' selected';}
+																				$phones_option .= '>'.$phone_extension->extension[$x]." - ".$phone_extension->server_ip[$x]." - ".$phone_extension->dialplan_number[$x]."</option>";
 																			}
 																			echo $phones_option;
 																		?>
@@ -1683,20 +1718,20 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																	</div>
 																</div>
 															<!-- VOICEMAIL -->
-																<div class="route_voicemail_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "VOICEMAIL")echo 'style="display:none;"'; ?> >
+																<div class="route_voicemail_<?php echo $i;?>" <?php if ($ivr_options->option_route[$i] != "VOICEMAIL")echo 'style="display:none;"'; ?> >
 																	<label class="col-sm-3 control-label"><?php $lh->translateText("voicemail_box"); ?>: </label>
 																	<div class="col-sm-9">
 																		<div class="col-sm-6">
-																			<input type="text" name="option_voicemail_value[]" class="form-control" id="option_voicemail_input_<?php echo $i;?>" value="<?php if($ivr_options->option_route[$i] == "VOICEMAIL"){echo $ivr_options->option_route_value[$i];} ?>" maxlength="255" size="15">
+																			<input type="text" name="option_voicemail_value[]" class="form-control" id="option_voicemail_input_<?php echo $i;?>" value="<?php if ($ivr_options->option_route[$i] == "VOICEMAIL") {echo $ivr_options->option_route_value[$i];} ?>" maxlength="255" size="15">
 																		</div>
 																		<div class="col-sm-6">
 																			<select class="col-sm-6 select2 form-control" style="width:100%;" id="option_voicemail_select_<?php echo $i;?>">
 																				<option value="" > <?php $lh->translateText("-none-"); ?> </option>
 																			<?php
 																				$voicemail_option = '';
-																				for($x=0;$x < count($voicemails->voicemail_id);$x++){
+																				for($x=0;$x < count($voicemails->voicemail_id);$x++) {
 																					$voicemail_option .= '<option value="'.$voicemails->voicemail_id[$x].'"';
-																						if($ivr_options->option_route_value[$i] == $voicemails->voicemail_id[$x]){ $voicemail_option .= ' selected';}
+																						if ($ivr_options->option_route_value[$i] == $voicemails->voicemail_id[$x]) { $voicemail_option .= ' selected';}
 																					$voicemail_option .= '>'.$voicemails->voicemail_id[$x].' - '.$voicemails->fullname[$x].'</option>';
 																				}
 																				echo $voicemail_option;
@@ -1706,10 +1741,10 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 																	</div>
 																</div>
 															<!-- AGI -->
-																<div class="route_agi_<?php echo $i;?>" <?php if($ivr_options->option_route[$i] != "AGI")echo 'style="display:none;"'; ?> >
+																<div class="route_agi_<?php echo $i;?>" <?php if ($ivr_options->option_route[$i] != "AGI")echo 'style="display:none;"'; ?> >
 																	<label class="col-sm-3 control-label"><?php $lh->translateText("agi"); ?>: </label>
 																	<div class="col-sm-6">
-																		<input type="text" class="form-control" name="option_agi_value[]" maxlength="255" size="50" value="<?php if($ivr_options->option_route[$i] == "AGI"){echo $ivr_options->option_route_value[$i];} ?>">
+																		<input type="text" class="form-control" name="option_agi_value[]" maxlength="255" size="50" value="<?php if ($ivr_options->option_route[$i] == "AGI") {echo $ivr_options->option_route_value[$i];} ?>">
 																	</div>
 																</div>
 														</div>
@@ -1750,43 +1785,25 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					}
 
 				// IF PHONE NUMBER / DID
-					if($did != NULL) {
+					if ($did != NULL) {
 
-	/*
-	 * APIs for getting lists for the some of the forms
-	 */
-	$users = $ui->API_goGetAllUserLists();
-	$ingroups = $ui->API_getInGroups($_SESSION['usergroup']);
-	$voicemails = $ui->API_goGetVoiceMails();
-	$phones = $ui->API_getPhonesList();
-	$ivr = $ui->API_getAllIVRs($_SESSION['usergroup']);
-	$scripts = $ui->API_goGetAllScripts($_SESSION['user']);
-	$voicefiles = $ui->API_GetVoiceFilesList();
-	//var_dump($ingroups);
-						$url = gourl."/goInbound/goAPI.php"; #URL to GoAutoDial API. (required)
-						$postfields["goUser"] = goUser; #Username goes here. (required)
-						$postfields["goPass"] = goPass; #Password goes here. (required)
-						$postfields["goAction"] = "goGetDIDInfo"; #action performed by the [[API:Functions]]. (required)
-						$postfields["responsetype"] = responsetype; #json. (required)
-						$postfields["did_id"] = $did; #Desired did. (required)
-            
-						$ch = curl_init();
-						curl_setopt($ch, CURLOPT_URL, $url);
-						curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-						curl_setopt($ch, CURLOPT_POST, 1);
-						curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-						curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-						curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-						$data = curl_exec($ch);
-						curl_close($ch);
-						$output = json_decode($data);
-						//echo "<pre>";
-						//var_dump($output);
-						//echo "</pre>";
-						if ($output->result=="success") {
-						# Result was OK!
-						?>
+				/*
+				* APIs for getting lists for the some of the forms
+				*/
+				$users = $api->API_getAllUsers();
+				$ingroups = $api->API_getAllInGroups();
+				$voicemails = $api->API_getAllVoicemails();
+				$phone_extension = $api->API_getAllPhones();
+				$ivr = $api->API_getAllIVRs();
+				$scripts = $api->API_getAllScripts();
+				$voicefiles = $api->API_getAllVoiceFiles();
+				
+				$output = $api->API_getDIDInfo($did);
+				//var_dump($ingroups);
+	
+				if ($output->result=="success") {
+				# Result was OK!
+				?>
 					
 				<!-- Main content -->
                 <section class="content">
@@ -1831,15 +1848,15 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 												<select class="form-control" name="status" id="status">
 												<?php
 													$status = NULL;
-													if($output->data->did_active == "Y"){
+													if ($output->data->did_active == "Y") {
 														$status .= '<option value="Y" selected> '.$lh->translationFor("active").' </option>';
-													}else{
+													} else {
 														$status .= '<option value="Y" > '.$lh->translationFor("active").' </option>';
 													}
 													
-													if($output->data->did_active == "N" || $output->data->did_active == NULL){
+													if ($output->data->did_active == "N" || $output->data->did_active == NULL) {
 														$status .= '<option value="N" selected> '.$lh->translationFor("inactive").' </option>';
-													}else{
+													} else {
 														$status .= '<option value="N" > '.$lh->translationFor("inactive").' </option>';
 													}
 													echo $status;
@@ -1853,39 +1870,39 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 												<select class="form-control" id="route" name="route">
 													<?php
 														$route = NULL;
-														if($output->data->did_route  == "AGENT"){
+														if ($output->data->did_route  == "AGENT") {
 															$route .= '<option value="AGENT" selected> Agent </option>';
-														}else{
+														} else {
 															$route .= '<option value="AGENT" > Agent </option>';
 														}
 														
-														if($output->data->did_route  == "IN_GROUP"){
+														if ($output->data->did_route  == "IN_GROUP") {
 															$route .= '<option value="IN_GROUP" selected> In-group </option>';
-														}else{
+														} else {
 															$route .= '<option value="IN_GROUP" > In-group </option>';
 														}
 														
-														if($output->data->did_route  == "PHONE"){
+														if ($output->data->did_route  == "PHONE") {
 															$route .= '<option value="PHONE" selected> Phone </option>';
-														}else{
+														} else {
 															$route .= '<option value="PHONE" > Phone </option>';
 														}
 														
-														if($output->data->did_route  == "CALLMENU"){
+														if ($output->data->did_route  == "CALLMENU") {
 															$route .= '<option value="CALLMENU" selected> Call Menu / IVR </option>';
-														}else{
+														} else {
 															$route .= '<option value="CALLMENU" > Call Menu / IVR </option>';
 														}
 														
-														if($output->data->did_route  == "VOICEMAIL"){
+														if ($output->data->did_route  == "VOICEMAIL") {
 															$route .= '<option value="VOICEMAIL" selected> Voicemail </option>';
-														}else{
+														} else {
 															$route .= '<option value="VOICEMAIL" > Voicemail </option>';
 														}
 														
-														if($output->data->did_route  == "EXTEN"){
+														if ($output->data->did_route  == "EXTEN") {
 															$route .= '<option value="EXTEN" selected> Custom Extension </option>';
-														}else{
+														} else {
 															$route .= '<option value="EXTEN" > Custom Extension </option>';
 														}
 														echo $route;
@@ -1896,16 +1913,16 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 									</fieldset>
 									<fieldset>
 										<!-- IF DID ROUTE = AGENT-->
-										<div id="form_route_agent" <?php if($output->data->did_route  != "AGENT"){ ?> style="display: none;" <?php }?> >
+										<div id="form_route_agent" <?php if ($output->data->did_route  != "AGENT") { ?> style="display: none;" <?php }?> >
 											<div class="form-group">
 												<label for="route_agentid" class="col-sm-3 control-label"><?php $lh->translateText("agent_id"); ?>: </label>
 												<div class="col-sm-9 mb">
 													<select name="route_agentid" id="route_agentid" class="form-control select2" style="width:100%;">
 														<option value="" > <?php $lh->translateText("-none-"); ?> </option>
 														<?php
-															for($i=0;$i<count($users->user);$i++){
+															for($i=0;$i<count($users->user);$i++) {
 														?>
-															<option value="<?php echo $users->user[$i];?>" <?php if($output->data->user == $users->user[$i]) echo "selected";?> >
+															<option value="<?php echo $users->user[$i];?>" <?php if ($output->data->user == $users->user[$i]) echo "selected";?> >
 																<?php echo $users->user[$i].' - '.$users->full_name[$i];?>
 															</option>									
 														<?php
@@ -1918,10 +1935,10 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 												<label for="route_unavail" class="col-sm-3 control-label"><?php $lh->translateText("agent_unavailable_action"); ?>: </label>
 												<div class="col-sm-9 mb">
 													<select name="route_unavail" id="route_unavail" class="form-control">
-														<option value="VOICEMAIL"  <?php if($output->data->user_unavailable_action == "VOICEMAIL") echo "selected";?> > Voicemail </option>
-														<option value="PHONE"  <?php if($output->data->user_unavailable_action == "PHONE") echo "selected";?> > Phone </option>
-														<option value="IN_GROUP"  <?php if($output->data->user_unavailable_action == "IN_GROUP") echo "selected";?> > In-group </option>
-														<option value="EXTEN"  <?php if($output->data->user_unavailable_action == "EXTEN") echo "selected";?> > Custom Extension </option>
+														<option value="VOICEMAIL"  <?php if ($output->data->user_unavailable_action == "VOICEMAIL") echo "selected";?> > Voicemail </option>
+														<option value="PHONE"  <?php if ($output->data->user_unavailable_action == "PHONE") echo "selected";?> > Phone </option>
+														<option value="IN_GROUP"  <?php if ($output->data->user_unavailable_action == "IN_GROUP") echo "selected";?> > In-group </option>
+														<option value="EXTEN"  <?php if ($output->data->user_unavailable_action == "EXTEN") echo "selected";?> > Custom Extension </option>
 													</select>
 												</div>
 											</div>
@@ -1939,7 +1956,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 														<div class="col-sm-9 mb">
 															<select name="ru_ingroup" id="ru_ingroup" class="form-control">
 																<?php
-																	for($i=0;$i<count($ingroups->group_id);$i++){
+																	for($i=0;$i<count($ingroups->group_id);$i++) {
 																?>
 																	<option value="<?php echo $ingroups->group_id[$i];?>">
 																		<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
@@ -1956,7 +1973,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 														<div class="col-sm-9 mb">
 															<select name="ru_phone" id="ru_phone" class="form-control">
 																<?php
-																	for($i=0;$i<count($phones->extension);$i++){
+																	for($i=0;$i<count($phones->extension);$i++) {
 																?>
 																	<option value="<?php echo $phones->extension[$i];?>">
 																		<?php echo $phones->extension[$i].' - '.$phones->server_ip[$i].' - '.$phones->dialplan_number[$i];?>
@@ -1980,10 +1997,10 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<select name="user_route_settings_ingroup" id="user_route_settings_ingroup" class="form-control">
 														<option value=""><?php $lh->translateText("-none-"); ?></option>
 													<?php
-														for($i=0;$i<count($ingroups->group_id);$i++){
-															if($ingroups->group_id[$i] != "AGENTDIRECT"){
+														for($i=0;$i<count($ingroups->group_id);$i++) {
+															if ($ingroups->group_id[$i] != "AGENTDIRECT") {
 													?>
-														<option value="<?php echo $ingroups->group_id[$i];?>" <?php if($output->data->user_route_settings_ingroup == $ingroups->group_id[$i]) echo "selected";?> >
+														<option value="<?php echo $ingroups->group_id[$i];?>" <?php if ($output->data->user_route_settings_ingroup == $ingroups->group_id[$i]) echo "selected";?> >
 															<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
 														</option>
 													<?php
@@ -1996,14 +2013,14 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 										</div><!-- end of div agent-->
 										
 									<!-- IF DID ROUTE = IN-GROUP-->
-										<div id="form_route_ingroup" class="form-group" <?php if($output->data->did_route  != "IN_GROUP"){ ?> style="display: none;" <?php }?> >
+										<div id="form_route_ingroup" class="form-group" <?php if ($output->data->did_route  != "IN_GROUP") { ?> style="display: none;" <?php }?> >
 										<label for="route_ingroupid" class="col-sm-3 control-label"><?php $lh->translateText("ingroup_id"); ?>: </label>
 										<div class="col-sm-9 mb">
 											<select name="route_ingroupid" id="route_ingroupid" class="form-control">
 												<?php
-													for($i=0;$i<count($ingroups->group_id);$i++){
+													for($i=0;$i<count($ingroups->group_id);$i++) {
 												?>
-													<option value="<?php echo $ingroups->group_id[$i];?>" <?php if($ingroups->group_id[$i] == $output->data->group_id)echo "selected";?>>
+													<option value="<?php echo $ingroups->group_id[$i];?>" <?php if ($ingroups->group_id[$i] == $output->data->group_id)echo "selected";?>>
 													     <?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
 													</option>				
 												<?php
@@ -2014,16 +2031,16 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 										</div><!-- end of ingroup div -->
 										
 									<!-- IF DID ROUTE = PHONE -->
-										<div id="form_route_phone" <?php if($output->data->did_route  != "PHONE"){ ?> style="display: none;" <?php }?> >
+										<div id="form_route_phone" <?php if ($output->data->did_route  != "PHONE") { ?> style="display: none;" <?php }?> >
 											<div class="form-group">
 												<label  for="route_phone_exten" class="col-sm-3 control-label"><?php $lh->translateText("phone_extension"); ?>: </label>
 												<div class="col-sm-9 mb">
 													<select name="route_phone_exten" id="route_phone_exten" class="form-control">
 														<?php
-															for($i=0;$i<count($phones->extension);$i++){
+															for($i=0;$i<count($phone_extension->extension);$i++) {
 														?>
-															<option value="<?php echo $phones->extension[$i];?>" <?php if($phones->extension[$i] == $output->data->phone)echo "selected";?>>
-																<?php echo $phones->extension[$i].' - '.$phones->server_ip[$i].' - '.$phones->dialplan_number[$i];?>
+															<option value="<?php echo $phone_extension->extension[$i];?>" <?php if ($phone_extension->extension[$i] == $output->data->phone)echo "selected";?>>
+																<?php echo $phone_extension->extension[$i].' - '.$phone_extension->server_ip[$i].' - '.$phone_extension->dialplan_number[$i];?>
 															</option>									
 														<?php
 															}
@@ -2037,10 +2054,10 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 													<select name="route_phone_server" id="route_phone_server" class="form-control">
 														<option value="" > <?php $lh->translateText("-none-"); ?> </option>
 														<?php
-															for($i=0;$i < 1;$i++){
+															for($i=0;$i < 1;$i++) {
 														?>
-															<option value="<?php echo $phones->server_ip[$i];?>" <?php if($phones->server_ip[$i] == $output->data->server_ip)echo "selected";?>>
-																<?php echo 'GOautodial - '.$phones->server_ip[$i];?>
+															<option value="<?php echo $phone_extension->server_ip[$i];?>" <?php if ($phone_extension->server_ip[$i] == $output->data->server_ip)echo "selected";?>>
+																<?php echo 'GOautodial - '.$phone_extension->server_ip[$i];?>
 															</option>									
 														<?php
 															}
@@ -2051,15 +2068,15 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 										</div><!-- end of phone div -->
 										
 									<!-- IF DID ROUTE = IVR -->
-										<div id="form_route_callmenu" <?php if($output->data->did_route  != "CALLMENU"){ ?> style="display: none;" <?php }?> >
+										<div id="form_route_callmenu" <?php if ($output->data->did_route  != "CALLMENU") { ?> style="display: none;" <?php }?> >
 											<div class="form-group">
 												<label for="route_ivr" class="col-sm-3 control-label"><?php $lh->translateText("call_menu"); ?>: </label>
 												<div class="col-sm-9 mb">
 													<select name="route_ivr" id="route_ivr" class="form-control">
 														<?php
-															for($i=0;$i<count($ivr->menu_id);$i++){
+															for($i=0;$i<count($ivr->menu_id);$i++) {
 														?>
-															<option value="<?php echo $ivr->menu_id[$i];?>" <?php if($ivr->menu_id[$i] == $output->data->menu_id)echo "selected";?>>
+															<option value="<?php echo $ivr->menu_id[$i];?>" <?php if ($ivr->menu_id[$i] == $output->data->menu_id)echo "selected";?>>
 																<?php echo $ivr->menu_id[$i].' - '.$ivr->menu_name[$i];?>
 															</option>									
 														<?php
@@ -2071,15 +2088,15 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 										</div><!-- end of ivr div -->
 										
 									<!-- IF DID ROUTE = VoiceMail -->
-										<div id="form_route_voicemail" <?php if($output->data->did_route  != "VOICEMAIL"){ ?> style="display: none;" <?php }?> >
+										<div id="form_route_voicemail" <?php if ($output->data->did_route  != "VOICEMAIL") { ?> style="display: none;" <?php }?> >
 											<div class="form-group">
 												<label for="route_voicemail" class="col-sm-3 control-label"><?php $lh->translateText("voicemail_box"); ?>: </label>
 												<div class="col-sm-9 mb">
 													<select name="route_voicemail" id="route_voicemail" class="form-control">
 														<?php
-															for($i=0;$i<count($voicemails->voicemail_id);$i++){
+															for($i=0;$i<count($voicemails->voicemail_id);$i++) {
 														?>
-															<option value="<?php echo $voicemails->voicemail_id[$i];?>" <?php if($voicemails->voicemail_id[$i] == $output->data->voicemail_ext)echo "selected";?>>
+															<option value="<?php echo $voicemails->voicemail_id[$i];?>" <?php if ($voicemails->voicemail_id[$i] == $output->data->voicemail_ext)echo "selected";?>>
 																<?php echo $voicemails->voicemail_id[$i].' - '.$voicemails->fullname[$i];?>
 															</option>									
 														<?php
@@ -2091,7 +2108,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 										</div><!-- end of voicemail div -->
 										
 										<!-- IF DID ROUTE = Custom Extension -->
-										<div id="form_route_exten" <?php if($output->data->did_route  != "EXTEN"){ ?> style="display: none;" <?php }?> >
+										<div id="form_route_exten" <?php if ($output->data->did_route  != "EXTEN") { ?> style="display: none;" <?php }?> >
 											<div class="form-group">
 												<label for="route_exten" class="col-sm-3 control-label"><?php $lh->translateText("custom_extension"); ?>: </label>
 												<div class="col-sm-9 mb">
@@ -2174,7 +2191,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 				$('#agent_rank_table').dataTable();
 
 			// for cancelling
-				$(document).on('click', '#cancel', function(){
+				$(document).on('click', '#cancel', function() {
 					swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
 				});
 
@@ -2185,25 +2202,25 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 
 				$(document).on("change","#route_unavail",function() {
 					//  alert( this.value ); // or $(this).val()
-					if(this.value == "EXTEN") {
+					if (this.value == "EXTEN") {
 					  $('#ru_exten').show();
 					  
 					  $('#ru_phone').hide();
 					  $('#ru_ingroup').hide();
 					  $('#ru_voicemail').hide();
-					}if(this.value == "IN_GROUP") {
+					}if (this.value == "IN_GROUP") {
 					  $('#ru_ingroup').show();
 					  
 					  $('#ru_exten').hide();
 					  $('#ru_phone').hide();
 					  $('#ru_voicemail').hide();
-					}if(this.value == "PHONE") {
+					}if (this.value == "PHONE") {
 					  $('#ru_phone').show();
 					  
 					  $('#ru_exten').hide();
 					  $('#ru_ingroup').hide();
 					  $('#ru_voicemail').hide();
-					}if(this.value == "VOICEMAIL") {
+					}if (this.value == "VOICEMAIL") {
 					  $('#ru_voicemail').show();
 					  
 					  $('#ru_exten').hide();
@@ -2215,7 +2232,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 				
 				$(document).on("change","#route",function() {
 					//  alert( this.value ); // or $(this).val()
-					if(this.value == "AGENT") {
+					if (this.value == "AGENT") {
 					  $('#form_route_agent').show();
 					  
 					  $('#form_route_ingroup').hide();
@@ -2223,7 +2240,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					  $('#form_route_callmenu').hide();
 					  $('#form_route_voicemail').hide();
 					  $('#form_route_exten').hide();
-					}if(this.value == "IN_GROUP") {
+					}if (this.value == "IN_GROUP") {
 					  $('#form_route_ingroup').show();
 					  
 					  $('#form_route_agent').hide();
@@ -2231,7 +2248,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					  $('#form_route_callmenu').hide();
 					  $('#form_route_voicemail').hide();
 					  $('#form_route_exten').hide();
-					}if(this.value == "PHONE") {
+					}if (this.value == "PHONE") {
 					  $('#form_route_phone').show();
 					  
 					  $('#form_route_agent').hide();
@@ -2239,7 +2256,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					  $('#form_route_callmenu').hide();
 					  $('#form_route_voicemail').hide();
 					  $('#form_route_exten').hide();
-					}if(this.value == "CALLMENU") {
+					}if (this.value == "CALLMENU") {
 					  $('#form_route_callmenu').show();
 					  
 					  $('#form_route_agent').hide();
@@ -2247,7 +2264,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					  $('#form_route_phone').hide();
 					  $('#form_route_voicemail').hide();
 					  $('#form_route_exten').hide();
-					}if(this.value == "VOICEMAIL") {
+					}if (this.value == "VOICEMAIL") {
 					  $('#form_route_voicemail').show();
 					  
 					  $('#form_route_agent').hide();
@@ -2255,7 +2272,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					  $('#form_route_phone').hide();
 					  $('#form_route_callmenu').hide();
 					  $('#form_route_exten').hide();
-					}if(this.value == "EXTEN") {
+					}if (this.value == "EXTEN") {
 					  $('#form_route_exten').show();
 					  
 					  $('#form_route_agent').hide();
@@ -2269,11 +2286,11 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 			
 			// drop action change
 				$(document).on("change","#drop_action",function() {
-					if(this.value == "HANGUP") {
+					if (this.value == "HANGUP") {
 					  $('.drop_action_exten').hide();
 					}
 
-					if(this.value == "MESSAGE") {
+					if (this.value == "MESSAGE") {
 					  $('.drop_action_exten').show();
 					  $('.drop_exten_message').show();
 
@@ -2282,7 +2299,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					  $('.drop_exten_voicemail').hide();
 					}
 
-					if(this.value == "VOICEMAIL") {
+					if (this.value == "VOICEMAIL") {
 					  $('.drop_action_exten').show();
 					  $('.drop_exten_voicemail').show();
 
@@ -2291,7 +2308,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					  $('.drop_exten_message').hide();
 					}
 
-					if(this.value == "IN_GROUP") {
+					if (this.value == "IN_GROUP") {
 					  $('.drop_action_exten').show();
 					  $('.drop_exten_ingroup').show();
 
@@ -2300,7 +2317,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					  $('.drop_exten_message').hide();
 					}
 
-					if(this.value == "CALLMENU") {
+					if (this.value == "CALLMENU") {
 					  $('.drop_action_exten').show();
 					  $('.drop_exten_callmenu').show();
 
@@ -2313,63 +2330,80 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 
 			//no_agent_action
 				$(document).on("change","#no_agent_action",function() {
-					if(this.value == "HANGUP") {
+					if (this.value == "HANGUP") {
 					  $('.no_agents_exten').hide();
 					}
 
-					if(this.value == "MESSAGE") {
+					if (this.value == "DID") {
+					  $('.no_agents_exten').show();
+					  $('.no_agents_did').show();
+
+					  $('.no_agents_message').hide();
+					  $('.no_agents_callmenu').hide();
+					  $('.no_agents_ingroup').hide();
+					  $('.no_agents_voicemail').hide();
+					}
+					
+					if (this.value == "MESSAGE") {
 					  $('.no_agents_exten').show();
 					  $('.no_agents_message').show();
 
 					  $('.no_agents_callmenu').hide();
 					  $('.no_agents_ingroup').hide();
 					  $('.no_agents_voicemail').hide();
+					  $('.no_agents_did').hide();
 					}
 
-					if(this.value == "VOICEMAIL") {
+					if (this.value == "VOICEMAIL") {
 					  $('.no_agents_exten').show();
 					  $('.no_agents_voicemail').show();
 
 					  $('.no_agents_callmenu').hide();
 					  $('.no_agents_ingroup').hide();
 					  $('.no_agents_message').hide();
+					  $('.no_agents_did').hide();
+					  $('.show_no_agents_exten').txt("VM Chooser");
 					}
 
-					if(this.value == "IN_GROUP") {
+					if (this.value == "INGROUP") {
 					  $('.no_agents_exten').show();
 					  $('.no_agents_ingroup').show();
 
 					  $('.no_agents_callmenu').hide();
 					  $('.no_agents_voicemail').hide();
 					  $('.no_agents_message').hide();
+					  $('.no_agents_did').hide();
+					  $('.show_no_agents_exten').txt("Ingroup Chooser");
 					}
 
-					if(this.value == "CALLMENU") {
+					if (this.value == "CALLMENU") {
 					  $('.no_agents_exten').show();
 					  $('.no_agents_callmenu').show();
 
 					  $('.no_agents_ingroup').hide();
 					  $('.no_agents_voicemail').hide();
 					  $('.no_agents_message').hide();
+					  $('.no_agents_did').hide();
+					  $('.show_no_agents_exten').txt("IVR Chooser");
 					}
 					
 				});
 				
 			//no_agent_action
 				$(document).on("change","#after_hours_action",function() {
-					if(this.value == "VOICEMAIL") {
+					if (this.value == "VOICEMAIL") {
 						$('.after_hours').hide();
 						$('.after_hours_voicemail').show();
-					}else if(this.value == "MESSAGE") {
+					}else if (this.value == "MESSAGE") {
 						$('.after_hours').hide();
 						$('.after_hours_message_filename').show();
-					}else if(this.value == "EXTENSION") {
+					}else if (this.value == "EXTENSION") {
 						$('.after_hours').hide();
 						$('.after_hours_exten').show();
-					}else if(this.value == "CALLMENU") {
+					}else if (this.value == "CALLMENU") {
 						$('.after_hours').hide();
 						$('.after_hours_callmenu').show();
-					}else{
+					} else {
 						$('.after_hours').hide();
 					}
 					
@@ -2378,9 +2412,9 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 			// on tab change hide footer
 				$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 				  var target = $(e.target).attr("href"); // activated tab
-				  if(target == "#agents"){
+				  if (target == "#agents") {
 				  	$('#not_agent_rank').hide();
-				  }else{
+				  } else {
 				  	$('#not_agent_rank').show();
 				  }
 				});
@@ -2390,7 +2424,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 		 	******/
 
 				//an ingroup
-				$('#modifyInboundOkButton').click(function(){
+				$('#modifyInboundOkButton').click(function() {
 					$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
 					$('#modifyInboundOkButton').prop("disabled", true);
 
@@ -2400,10 +2434,12 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
                         data: $("#modifyingroup").serialize(),
                         success: function(data) {
                           //if message is sent
+							console.log(data);
+							console.log($("#modifyingroup").serialize());
 							$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
 							$('#modifyInboundOkButton').prop("disabled", false);
-							if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-								swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("inbound_update_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
+							if (data == 1) {
+								swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("inbound_update_success"); ?>",type: "success"},function() {window.location.href = 'telephonyinbound.php';});
 							} else {
 								sweetAlert("<?php $lh->translateText("oups"); ?>","<?php $lh->translateText("something_went_wrong"); ?>" + data, "error");
 							}
@@ -2413,7 +2449,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 				});
 				
 				// agent rank form submit
-				$('#submit_agent_rank').click(function(){
+				$('#submit_agent_rank').click(function() {
 					var groupID = $(this).attr('data-id');
 					var itemdatas = $('#agentrankform').serialize();
 					var log_user = '<?=$_SESSION['user']?>';
@@ -2433,10 +2469,10 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('#submit_agent_rank').html("<i class='fa fa-check'></i> Submit");
 						$('#submit_agent_rank').prop("disabled", false);
 							console.log(data);
-							if(data == "success"){
-								swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("agent_rank_update_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
+							if (data == 1) {
+								swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("agent_rank_update_success"); ?>",type: "success"},function() {window.location.href = 'telephonyinbound.php';});
 
-							}else{
+							} else {
 								sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 							}
 						}
@@ -2452,10 +2488,12 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					submitHandler: function() {
 						$.post("./php/ModifyTelephonyInbound.php",
 						$("#modifyivr").serialize(),
-						function(data){
+						function(data) {
 							//if message is sent
-							if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-								swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("ivr_update_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
+							console.log(data);
+							console.log($("#modifyivr").serialize());							
+							if (data == 1) {
+								swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("ivr_update_success"); ?>",type: "success"},function() {window.location.href = 'telephonyinbound.php';});
 							} else {
 								sweetAlert("<?php $lh->translateText("oups"); ?>","<?php $lh->translateText("something_went_wrong"); ?>" + data, "error");
 								//location.reload();
@@ -2475,10 +2513,11 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						
 						$.post("./php/ModifyTelephonyInbound.php", //post
 						$("#modifydid").serialize(), 
-							function(data){
+							function(data) {
 								//if message is sent
-								if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-									swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("did_update_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
+								console.log(data);
+								if (data == 1) {
+									swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("did_update_success"); ?>",type: "success"},function() {window.location.href = 'telephonyinbound.php';});
 									
 								} else {
 									sweetAlert("<?php $lh->translateText("oups"); ?>","<?php $lh->translateText("something_went_wrong"); ?>" + data, "error");
@@ -2491,7 +2530,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						}					
 					});
 
-				$('.add-option').click(function(){
+				$('.add-option').click(function() {
 					var toClone = $('.to-clone-opt').clone();
 
 					toClone.removeClass('to-clone-opt');
@@ -2501,7 +2540,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					$('.cloning-area').append(toClone);
 				});
 
-				$(document).on('click', '.remove-row', function(){
+				$(document).on('click', '.remove-row', function() {
 					var row = $(this).parent().parent();
 					
 					row.remove();
@@ -2512,7 +2551,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					$('.show_welcome_message_filename').on('click', function(event) {
 						 $('.select_welcome_message_filename').toggle('show');
 					});
-					$(document).on('change', '#select_welcome_message_filename',function(){
+					$(document).on('change', '#select_welcome_message_filename',function() {
 						var val = $(this).val();
 						$('#welcome_message_filename').val(val);
 						$('.select_welcome_message_filename').toggle('hide');
@@ -2521,7 +2560,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					$('.show_moh_context').on('click', function(event) {
 						 $('.select_moh_context').toggle('show');
 					});
-					$(document).on('change', '#select_moh_context',function(){
+					$(document).on('change', '#select_moh_context',function() {
 						var val = $(this).val();
 						$('#moh_context').val(val);
 						$('.select_moh_context').toggle('hide');
@@ -2530,7 +2569,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					$('.show_onhold_prompt_filename').on('click', function(event) {
 						 $('.select_onhold_prompt_filename').toggle('show');
 					});
-					$(document).on('change', '#select_onhold_prompt_filename',function(){
+					$(document).on('change', '#select_onhold_prompt_filename',function() {
 						var val = $(this).val();
 						$('#onhold_prompt_filename').val(val);
 						$('.select_onhold_prompt_filename').toggle('hide');
@@ -2539,7 +2578,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					$('.show_after_hours_message_filename').on('click', function(event) {
 						 $('.select_after_hours_message_filename').toggle('show');
 					});
-					$(document).on('change', '#select_after_hours_message_filename',function(){
+					$(document).on('change', '#select_after_hours_message_filename',function() {
 						var val = $(this).val();
 						$('#after_hours_message_filename').val(val);
 						$('.select_after_hours_message_filename').toggle('hide');
@@ -2548,17 +2587,25 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					$('.show_after_hours_voicemail').on('click', function(event) {
 						 $('.select_after_hours_voicemail').toggle('show');
 					});
-					$(document).on('change', '#select_after_hours_voicemail',function(){
+					$(document).on('change', '#select_after_hours_voicemail',function() {
 						var val = $(this).val();
 						$('#after_hours_voicemail').val(val);
 						$('.select_after_hours_voicemail').toggle('hide');
 					});
-				
+				$('.select_no_agents_did').hide();
+					$('.show_no_agents_did').on('click', function(event) {
+						 $('.select_no_agents_did').toggle('show');
+					});
+					$(document).on('change', '#select_no_agents_did',function() {
+						var val = $(this).val();
+						$('#no_agents_did').val(val);
+						$('.select_no_agents_did').toggle('hide');
+					});				
 				$('.select_no_agents_exten').hide();
 					$('.show_no_agents_exten').on('click', function(event) {
 						 $('.select_no_agents_exten').toggle('show');
 					});
-					$(document).on('change', '#select_no_agents_exten',function(){
+					$(document).on('change', '#select_no_agents_exten',function() {
 						var val = $(this).val();
 						$('#no_agents_exten').val(val);
 						$('.select_no_agents_exten').toggle('hide');
@@ -2567,7 +2614,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					$('.show_no_agents_voicemail').on('click', function(event) {
 						 $('.select_no_agents_voicemail').toggle('show');
 					});
-					$(document).on('change', '#select_no_agents_voicemail',function(){
+					$(document).on('change', '#select_no_agents_voicemail',function() {
 						var val = $(this).val();
 						$('#no_agents_voicemail').val(val);
 						$('.select_no_agents_voicemail').toggle('hide');
@@ -2576,7 +2623,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					$('.show_no_agents_ingroup').on('click', function(event) {
 						 $('.select_no_agents_ingroup').toggle('show');
 					});
-					$(document).on('change', '#select_no_agents_ingroup',function(){
+					$(document).on('change', '#select_no_agents_ingroup',function() {
 						var val = $(this).val();
 						$('#no_agents_ingroup').val(val);
 						$('.select_no_agents_ingroup').toggle('hide');
@@ -2585,7 +2632,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					$('.show_no_agents_callmenu').on('click', function() {
 						 $('.select_no_agents_callmenu').toggle('show');
 					});
-					$(document).on('change', '#select_no_agents_callmenu',function(){
+					$(document).on('change', '#select_no_agents_callmenu',function() {
 						var val = $(this).val();
 						$('#no_agents_callmenu').val(val);
 						$('.select_no_agents_callmenu').toggle('hide');
@@ -2594,22 +2641,22 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					$('.show_after_hours_callmenu').on('click', function() {
 						 $('.select_after_hours_callmenu').toggle('show');
 					});
-					$(document).on('change', '#select_after_hours_callmenu',function(){
+					$(document).on('change', '#select_after_hours_callmenu',function() {
 						var val = $(this).val();
 						$('#after_hours_callmenu').val(val);
 						$('.select_after_hours_callmenu').toggle('hide');
 					});
 			// IVR
-				$(document).on('change', '.route_option',function(){
+				$(document).on('change', '.route_option',function() {
 					//alert(this.value);
 					var id = this.value;
 					var old = $(this).attr('id');
 					var object;
-					if(typeof old != 'undefined'){
+					if (typeof old != 'undefined') {
 						$(this).attr('id', "option_"+id).attr('data-old', "option_"+old);
 						
 						object = "option_"+id;
-					}else{
+					} else {
 						$(this).attr('id', 'option_'+id);
 						old = "option_";
 					}
@@ -2618,7 +2665,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					
 				});
 				
-				function showhide_option(object, id, old){
+				function showhide_option(object, id, old) {
 					//var getId = object.attr('id');
 					var lastChar;
 					var old_lastChar;
@@ -2629,17 +2676,17 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					if (typeof old != 'undefined')
 						old_lastChar = old[old.length -1];
 					
-					if(old_lastChar != "_"){
+					if (old_lastChar != "_") {
 						$(".route_option option[value="+old_lastChar+"]").attr("disabled", false).css({"background-color": "white", "color": "#3a3f51"});
-					}else{
+					} else {
 						$(".route_option option[value="+id+"]").attr("disabled", true).css({"background-color": "#c1c1c1", "color": "white"});
 					}
 					
 				}
 				
-				<?php for($i=0;$i < 14; $i++){ ?>
-				$(document).on('change', '.route_menu_<?php echo $i;?>',function(){
-					if(this.value == "CALLMENU") {
+				<?php for($i=0;$i < 14; $i++) { ?>
+				$(document).on('change', '.route_menu_<?php echo $i;?>',function() {
+					if (this.value == "CALLMENU") {
 						$('.route_callmenu_<?php echo $i;?>').show();
 						$(".route_callmenu_<?php echo $i;?> :input").prop('required',true);
 						
@@ -2658,7 +2705,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_<?php echo $i;?>').hide();
 							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
 					
-					}if(this.value == "INGROUP") {
+					}if (this.value == "INGROUP") {
 						$('.route_ingroup_<?php echo $i;?>').show();
 						$(".route_ingroup_<?php echo $i;?> :input").prop('required',true);
 
@@ -2677,7 +2724,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_<?php echo $i;?>').hide();
 							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
 						
-					}if(this.value == "DID") {
+					}if (this.value == "DID") {
 						$('.route_did_<?php echo $i;?>').show();
 						$(".route_did_<?php echo $i;?> :input").prop('required',true);
 
@@ -2696,7 +2743,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_<?php echo $i;?>').hide();
 							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
 						
-					}if(this.value == "HANGUP") {
+					}if (this.value == "HANGUP") {
 						$('.route_hangup_<?php echo $i;?>').show();
 						$(".route_hangup_<?php echo $i;?> :input").prop('required',true);
 						
@@ -2715,7 +2762,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_<?php echo $i;?>').hide();
 							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
 						
-					}if(this.value == "EXTENSION") {
+					}if (this.value == "EXTENSION") {
 						$('.route_exten_<?php echo $i;?>').show();
 						$(".route_exten_<?php echo $i;?> :input").prop('required',true);
 						
@@ -2734,7 +2781,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_<?php echo $i;?>').hide();
 							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
 						
-					}if(this.value == "PHONE") {
+					}if (this.value == "PHONE") {
 						$('.route_phone_<?php echo $i;?>').show();
 						$(".route_phone_<?php echo $i;?> :input").prop('required',true);
 						
@@ -2753,7 +2800,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_<?php echo $i;?>').hide();
 							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
 						
-					}if(this.value == "VOICEMAIL") {
+					}if (this.value == "VOICEMAIL") {
 						$('.route_voicemail_<?php echo $i;?>').show();
 						$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
 						
@@ -2772,7 +2819,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_<?php echo $i;?>').hide();
 							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
 						
-					}if(this.value == "AGI") {
+					}if (this.value == "AGI") {
 						$('.route_agi_<?php echo $i;?>').show();
 						$(".route_agi_<?php echo $i;?> :input").prop('required',true);
 						
@@ -2791,7 +2838,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_voicemail_<?php echo $i;?>').hide();
 							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
 					}
-					if(this.value == "") {
+					if (this.value == "") {
 						$('.route_callmenu_<?php echo $i;?>').hide();
 							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
 						$('.route_ingroup_<?php echo $i;?>').hide();
@@ -2811,8 +2858,8 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 					}
 				});
 				<?php } ?>
-				$(document).on('change', '.route_menu_A',function(){
-					if(this.value == "CALLMENU") {
+				$(document).on('change', '.route_menu_A',function() {
+					if (this.value == "CALLMENU") {
 						$('.route_callmenu_A').show();
 						$(".route_callmenu_A :input").prop('required',true);
 						
@@ -2831,7 +2878,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_A').hide();
 							$(".route_agi_A :input").prop('required',false);
 					
-					}if(this.value == "INGROUP") {
+					}if (this.value == "INGROUP") {
 						$('.route_ingroup_A').show();
 						$(".route_ingroup_A :input").prop('required',true);
 
@@ -2850,7 +2897,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_A').hide();
 							$(".route_agi_A :input").prop('required',false);
 						
-					}if(this.value == "DID") {
+					}if (this.value == "DID") {
 						$('.route_did_A').show();
 						$(".route_did_A :input").prop('required',true);
 
@@ -2869,7 +2916,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_A').hide();
 							$(".route_agi_A :input").prop('required',false);
 						
-					}if(this.value == "HANGUP") {
+					}if (this.value == "HANGUP") {
 						$('.route_hangup_A').show();
 						$(".route_hangup_A :input").prop('required',true);
 						
@@ -2888,7 +2935,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_A').hide();
 							$(".route_agi_A :input").prop('required',false);
 						
-					}if(this.value == "EXTENSION") {
+					}if (this.value == "EXTENSION") {
 						$('.route_exten_A').show();
 						$(".route_exten_A :input").prop('required',true);
 						
@@ -2907,7 +2954,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_A').hide();
 							$(".route_agi_A :input").prop('required',false);
 						
-					}if(this.value == "PHONE") {
+					}if (this.value == "PHONE") {
 						$('.route_phone_A').show();
 						$(".route_phone_A :input").prop('required',true);
 						
@@ -2926,7 +2973,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_A').hide();
 							$(".route_agi_A :input").prop('required',false);
 						
-					}if(this.value == "VOICEMAIL") {
+					}if (this.value == "VOICEMAIL") {
 						$('.route_voicemail_A').show();
 						$(".route_voicemail_A :input").prop('required',true);
 						
@@ -2945,7 +2992,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_A').hide();
 							$(".route_agi_A :input").prop('required',false);
 						
-					}if(this.value == "AGI") {
+					}if (this.value == "AGI") {
 						$('.route_agi_A').show();
 						$(".route_agi_A :input").prop('required',true);
 						
@@ -2964,7 +3011,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_voicemail_A').hide();
 							$(".route_voicemail_A :input").prop('required',false);
 					}
-					if(this.value == "") {
+					if (this.value == "") {
 						$('.route_callmenu_A').hide();
 							$(".route_callmenu_A :input").prop('required',false);
 						$('.route_ingroup_A').hide();
@@ -2983,8 +3030,8 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 							$(".route_agi_A :input").prop('required',false);
 					}
 				});
-				$(document).on('change', '.route_menu_B',function(){
-					if(this.value == "CALLMENU") {
+				$(document).on('change', '.route_menu_B',function() {
+					if (this.value == "CALLMENU") {
 						$('.route_callmenu_B').show();
 						$(".route_callmenu_B :input").prop('required',true);
 						
@@ -3003,7 +3050,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_B').hide();
 							$(".route_agi_B :input").prop('required',false);
 					
-					}if(this.value == "INGROUP") {
+					}if (this.value == "INGROUP") {
 						$('.route_ingroup_B').show();
 						$(".route_ingroup_B :input").prop('required',true);
 
@@ -3022,7 +3069,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_B').hide();
 							$(".route_agi_B :input").prop('required',false);
 						
-					}if(this.value == "DID") {
+					}if (this.value == "DID") {
 						$('.route_did_B').show();
 						$(".route_did_B :input").prop('required',true);
 
@@ -3041,7 +3088,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_B').hide();
 							$(".route_agi_B :input").prop('required',false);
 						
-					}if(this.value == "HANGUP") {
+					}if (this.value == "HANGUP") {
 						$('.route_hangup_B').show();
 						$(".route_hangup_B :input").prop('required',true);
 						
@@ -3060,7 +3107,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_B').hide();
 							$(".route_agi_B :input").prop('required',false);
 						
-					}if(this.value == "EXTENSION") {
+					}if (this.value == "EXTENSION") {
 						$('.route_exten_B').show();
 						$(".route_exten_B :input").prop('required',true);
 						
@@ -3079,7 +3126,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_B').hide();
 							$(".route_agi_B :input").prop('required',false);
 						
-					}if(this.value == "PHONE") {
+					}if (this.value == "PHONE") {
 						$('.route_phone_B').show();
 						$(".route_phone_B :input").prop('required',true);
 						
@@ -3098,7 +3145,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_B').hide();
 							$(".route_agi_B :input").prop('required',false);
 						
-					}if(this.value == "VOICEMAIL") {
+					}if (this.value == "VOICEMAIL") {
 						$('.route_voicemail_B').show();
 						$(".route_voicemail_B :input").prop('required',true);
 						
@@ -3117,7 +3164,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_B').hide();
 							$(".route_agi_B :input").prop('required',false);
 						
-					}if(this.value == "AGI") {
+					}if (this.value == "AGI") {
 						$('.route_agi_B').show();
 						$(".route_agi_B :input").prop('required',true);
 						
@@ -3136,7 +3183,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_voicemail_B').hide();
 							$(".route_voicemail_B :input").prop('required',false);
 					}
-					if(this.value == "") {
+					if (this.value == "") {
 						$('.route_callmenu_B').hide();
 							$(".route_callmenu_B :input").prop('required',false);
 						$('.route_ingroup_B').hide();
@@ -3155,8 +3202,8 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 							$(".route_agi_B :input").prop('required',false);
 					}
 				});
-				$(document).on('change', '.route_menu_C',function(){
-					if(this.value == "CALLMENU") {
+				$(document).on('change', '.route_menu_C',function() {
+					if (this.value == "CALLMENU") {
 						$('.route_callmenu_C').show();
 						$(".route_callmenu_C :input").prop('required',true);
 						
@@ -3175,7 +3222,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_C').hide();
 							$(".route_agi_C :input").prop('required',false);
 					
-					}if(this.value == "INGROUP") {
+					}if (this.value == "INGROUP") {
 						$('.route_ingroup_C').show();
 						$(".route_ingroup_C :input").prop('required',true);
 
@@ -3194,7 +3241,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_C').hide();
 							$(".route_agi_C :input").prop('required',false);
 						
-					}if(this.value == "DID") {
+					}if (this.value == "DID") {
 						$('.route_did_C').show();
 						$(".route_did_C :input").prop('required',true);
 
@@ -3213,7 +3260,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_C').hide();
 							$(".route_agi_C :input").prop('required',false);
 						
-					}if(this.value == "HANGUP") {
+					}if (this.value == "HANGUP") {
 						$('.route_hangup_C').show();
 						$(".route_hangup_C :input").prop('required',true);
 						
@@ -3232,7 +3279,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_C').hide();
 							$(".route_agi_C :input").prop('required',false);
 						
-					}if(this.value == "EXTENSION") {
+					}if (this.value == "EXTENSION") {
 						$('.route_exten_C').show();
 						$(".route_exten_C :input").prop('required',true);
 						
@@ -3251,7 +3298,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_C').hide();
 							$(".route_agi_C :input").prop('required',false);
 						
-					}if(this.value == "PHONE") {
+					}if (this.value == "PHONE") {
 						$('.route_phone_C').show();
 						$(".route_phone_C :input").prop('required',true);
 						
@@ -3270,7 +3317,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_C').hide();
 							$(".route_agi_C :input").prop('required',false);
 						
-					}if(this.value == "VOICEMAIL") {
+					}if (this.value == "VOICEMAIL") {
 						$('.route_voicemail_C').show();
 						$(".route_voicemail_C :input").prop('required',true);
 						
@@ -3289,7 +3336,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_C').hide();
 							$(".route_agi_C :input").prop('required',false);
 						
-					}if(this.value == "AGI") {
+					}if (this.value == "AGI") {
 						$('.route_agi_C').show();
 						$(".route_agi_C :input").prop('required',true);
 						
@@ -3308,7 +3355,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_voicemail_C').hide();
 							$(".route_voicemail_C :input").prop('required',false);
 					}
-					if(this.value == "") {
+					if (this.value == "") {
 						$('.route_callmenu_C').hide();
 							$(".route_callmenu_C :input").prop('required',false);
 						$('.route_ingroup_C').hide();
@@ -3327,8 +3374,8 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 							$(".route_agi_C :input").prop('required',false);
 					}
 				});
-				$(document).on('change', '.route_menu_D',function(){
-					if(this.value == "CALLMENU") {
+				$(document).on('change', '.route_menu_D',function() {
+					if (this.value == "CALLMENU") {
 						$('.route_callmenu_D').show();
 						$(".route_callmenu_D :input").prop('required',true);
 						
@@ -3347,7 +3394,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_D').hide();
 							$(".route_agi_D :input").prop('required',false);
 					
-					}if(this.value == "INGROUP") {
+					}if (this.value == "INGROUP") {
 						$('.route_ingroup_D').show();
 						$(".route_ingroup_D :input").prop('required',true);
 
@@ -3366,7 +3413,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_D').hide();
 							$(".route_agi_D :input").prop('required',false);
 						
-					}if(this.value == "DID") {
+					}if (this.value == "DID") {
 						$('.route_did_D').show();
 						$(".route_did_D :input").prop('required',true);
 
@@ -3385,7 +3432,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_D').hide();
 							$(".route_agi_D :input").prop('required',false);
 						
-					}if(this.value == "HANGUP") {
+					}if (this.value == "HANGUP") {
 						$('.route_hangup_D').show();
 						$(".route_hangup_D :input").prop('required',true);
 						
@@ -3404,7 +3451,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_D').hide();
 							$(".route_agi_D :input").prop('required',false);
 						
-					}if(this.value == "EXTENSION") {
+					}if (this.value == "EXTENSION") {
 						$('.route_exten_D').show();
 						$(".route_exten_D :input").prop('required',true);
 						
@@ -3423,7 +3470,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_D').hide();
 							$(".route_agi_D :input").prop('required',false);
 						
-					}if(this.value == "PHONE") {
+					}if (this.value == "PHONE") {
 						$('.route_phone_D').show();
 						$(".route_phone_D :input").prop('required',true);
 						
@@ -3442,7 +3489,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_D').hide();
 							$(".route_agi_D :input").prop('required',false);
 						
-					}if(this.value == "VOICEMAIL") {
+					}if (this.value == "VOICEMAIL") {
 						$('.route_voicemail_D').show();
 						$(".route_voicemail_D :input").prop('required',true);
 						
@@ -3461,7 +3508,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_D').hide();
 							$(".route_agi_D :input").prop('required',false);
 						
-					}if(this.value == "AGI") {
+					}if (this.value == "AGI") {
 						$('.route_agi_D').show();
 						$(".route_agi_D :input").prop('required',true);
 						
@@ -3480,7 +3527,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_voicemail_D').hide();
 							$(".route_voicemail_D :input").prop('required',false);
 					}
-					if(this.value == "") {
+					if (this.value == "") {
 						$('.route_callmenu_D').hide();
 							$(".route_callmenu_D :input").prop('required',false);
 						$('.route_ingroup_D').hide();
@@ -3499,8 +3546,8 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 							$(".route_agi_D :input").prop('required',false);
 					}
 				});
-				$(document).on('change', '.route_menu_E',function(){
-					if(this.value == "CALLMENU") {
+				$(document).on('change', '.route_menu_E',function() {
+					if (this.value == "CALLMENU") {
 						$('.route_callmenu_E').show();
 						$(".route_callmenu_E :input").prop('required',true);
 						
@@ -3519,7 +3566,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_E').hide();
 							$(".route_agi_E :input").prop('required',false);
 					
-					}if(this.value == "INGROUP") {
+					}if (this.value == "INGROUP") {
 						$('.route_ingroup_E').show();
 						$(".route_ingroup_E :input").prop('required',true);
 
@@ -3538,7 +3585,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_E').hide();
 							$(".route_agi_E :input").prop('required',false);
 						
-					}if(this.value == "DID") {
+					}if (this.value == "DID") {
 						$('.route_did_E').show();
 						$(".route_did_E :input").prop('required',true);
 
@@ -3557,7 +3604,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_E').hide();
 							$(".route_agi_E :input").prop('required',false);
 						
-					}if(this.value == "HANGUP") {
+					}if (this.value == "HANGUP") {
 						$('.route_hangup_E').show();
 						$(".route_hangup_E :input").prop('required',true);
 						
@@ -3576,7 +3623,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_E').hide();
 							$(".route_agi_E :input").prop('required',false);
 						
-					}if(this.value == "EXTENSION") {
+					}if (this.value == "EXTENSION") {
 						$('.route_exten_E').show();
 						$(".route_exten_E :input").prop('required',true);
 						
@@ -3595,7 +3642,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_E').hide();
 							$(".route_agi_E :input").prop('required',false);
 						
-					}if(this.value == "PHONE") {
+					}if (this.value == "PHONE") {
 						$('.route_phone_E').show();
 						$(".route_phone_E :input").prop('required',true);
 						
@@ -3614,7 +3661,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_E').hide();
 							$(".route_agi_E :input").prop('required',false);
 						
-					}if(this.value == "VOICEMAIL") {
+					}if (this.value == "VOICEMAIL") {
 						$('.route_voicemail_E').show();
 						$(".route_voicemail_E :input").prop('required',true);
 						
@@ -3633,7 +3680,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_agi_E').hide();
 							$(".route_agi_E :input").prop('required',false);
 						
-					}if(this.value == "AGI") {
+					}if (this.value == "AGI") {
 						$('.route_agi_E').show();
 						$(".route_agi_E :input").prop('required',true);
 						
@@ -3652,7 +3699,7 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 						$('.route_voicemail_E').hide();
 							$(".route_voicemail_E :input").prop('required',false);
 					}
-					if(this.value == "") {
+					if (this.value == "") {
 						$('.route_callmenu_E').hide();
 							$(".route_callmenu_E :input").prop('required',false);
 						$('.route_ingroup_E').hide();
@@ -3673,50 +3720,50 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 				});
 				
 				// for voicemail
-					<?php for($i=0;$i < 14; $i++){ ?>
-					$(document).on('change', '#option_voicemail_select_<?php echo $i;?>',function(){
+					<?php for($i=0;$i < 14; $i++) { ?>
+					$(document).on('change', '#option_voicemail_select_<?php echo $i;?>',function() {
 						var val = $(this).val();
 						$('#option_voicemail_input_<?php echo $i;?>').val(val);
 					});
 					<?php } ?>
-					$(document).on('change', '#option_voicemail_select_A',function(){
+					$(document).on('change', '#option_voicemail_select_A',function() {
 						var val = $(this).val();
 						$('#option_voicemail_input_A').val(val);
 					});
-					$(document).on('change', '#option_voicemail_select_B',function(){
+					$(document).on('change', '#option_voicemail_select_B',function() {
 						var val = $(this).val();
 						$('#option_voicemail_input_B').val(val);
 					});
-					$(document).on('change', '#option_voicemail_select_C',function(){
+					$(document).on('change', '#option_voicemail_select_C',function() {
 						var val = $(this).val();
 						$('#option_voicemail_input_C').val(val);
 					});
-					$(document).on('change', '#option_voicemail_select_D',function(){
+					$(document).on('change', '#option_voicemail_select_D',function() {
 						var val = $(this).val();
 						$('#option_voicemail_input_D').val(val);
 					});
-					$(document).on('change', '#option_voicemail_select_E',function(){
+					$(document).on('change', '#option_voicemail_select_E',function() {
 						var val = $(this).val();
 						$('#option_voicemail_input_E').val(val);
 					});
 				
 				//advanced ingroup settings
-					<?php for($i=0;$i < 14; $i++){ ?>
-					$(document).on('change', '#enter_filename_select_<?php echo $i;?>',function(){
+					<?php for($i=0;$i < 14; $i++) { ?>
+					$(document).on('change', '#enter_filename_select_<?php echo $i;?>',function() {
 						var val = $(this).val();
 						$('#edit_enter_filename_<?php echo $i;?>').val(val);
 					});
 					<?php } ?>
 					
-					<?php for($i=0;$i < 14; $i++){ ?>
-					$(document).on('change', '#edit_id_number_filename_select_<?php echo $i;?>',function(){
+					<?php for($i=0;$i < 14; $i++) { ?>
+					$(document).on('change', '#edit_id_number_filename_select_<?php echo $i;?>',function() {
 						var val = $(this).val();
 						$('#edit_id_number_filename_<?php echo $i;?>').val(val);
 					});
 					<?php } ?>
 					
-					<?php for($i=0;$i < 14; $i++){ ?>
-					$(document).on('change', '#edit_confirm_filename_select_<?php echo $i;?>',function(){
+					<?php for($i=0;$i < 14; $i++) { ?>
+					$(document).on('change', '#edit_confirm_filename_select_<?php echo $i;?>',function() {
 						var val = $(this).val();
 						$('#edit_confirm_filename_<?php echo $i;?>').val(val);
 					});
@@ -3751,9 +3798,9 @@ if(!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"])){
 							$('#submit_agent_rank').html("<i class='fa fa-check'></i> Submit");
             				$('#submit_agent_rank').prop("disabled", false)
 							console.log(data);
-							if(data == "success"){
+							if (data == "success") {
 								swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("agent_rank_update_success"); ?>", "success");
-							}else{
+							} else {
 								sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 							}
 						}

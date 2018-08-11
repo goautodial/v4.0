@@ -116,38 +116,39 @@
 
 						<!-- In-group panel tabs-->
 						<?php
-						$toggleInbound = ' class="active"';
+						$toggleInbound = ' class="T_ingroup active"';
 						$toggleIVR = '';
 						$toggleDID = '';
 						$activeInbound = ' active';
 						$activeIVR = '';
 						$activeDID = '';
 						if ($perm->inbound->inbound_read === 'N') {
-							$toggleInbound = ' class="hidden"';
+							$toggleInbound = ' class="T_ingroup hidden"';
 							$activeInbound = '';
 						}
-						if ($perm->ivr->ivr_read === 'N') { $toggleIVR = ' class="hidden"'; }
+						if ($perm->ivr->ivr_read === 'N') { $toggleIVR = ' class="T_ivr hidden"'; }
 						if ($perm->ivr->ivr_read !== 'N' && $perm->inbound->inbound_read === 'N') {
-							$toggleIVR = ' class="active"';
+							
+							$toggleIVR = ' class="T_ivr active"';
 							$activeIVR = ' active';
 						}
-						if ($perm->did->did_read === 'N') { $toggleDID = ' class="hidden"'; }
+						if ($perm->did->did_read === 'N') { $toggleDID = ' class="T_phonenumber hidden"'; }
 						if ($perm->did->did_read !== 'N' && ($perm->inbound->inbound_read === 'N' && $perm->ivr->ivr_read === 'N')) {
-							$toggleDID = ' class="active"';
+							$toggleDID = ' class="T_phonenumber active"';
 							$activeDID = ' active';
 						}
 						?>
-							 <li role="presentation"<?=$toggleInbound?>>
+							 <li role="presentation" class="T_ingroup <?=$activeInbound?>">
 								<a href="#T_ingroup" aria-controls="T_ingroup" role="tab" data-toggle="tab" class="bb0">
 								    <?php $lh->translateText('ingroups'); ?></a>
 							 </li>
 						<!-- IVR panel tab -->
-							 <li role="presentation"<?=$toggleIVR?>>
+							 <li role="presentation" class="T_ivr <?=$activeIVR?>">
 								<a href="#T_ivr" aria-controls="T_ivr" role="tab" data-toggle="tab" class="bb0">
 								    <?php $lh->translateText('interactive_voice_response'); ?> </a>
 							 </li>
 						<!-- DID panel tab -->
-							 <li role="presentation"<?=$toggleDID?>>
+							 <li role="presentation" class="T_phonenumber <?=$activeDID?>">
 								<a href="#T_phonenumber" aria-controls="T_phonenumber" role="tab" data-toggle="tab" class="bb0">
 								    <?php $lh->translateText('phone_numbers_did_tfn'); ?> </a>
 							 </li>
@@ -157,16 +158,16 @@
 						<div class="tab-content bg-white">
 
 							<!--==== In-group ====-->
-							<div id="T_ingroup" role="tabpanel" class="tab-pane<?=$activeInbound?>">
-								<table class="table table-striped table-bordered table-hover" id="table_ingroup">
+							<div id="T_ingroup" role="tabpanel" class="tab-pane T_ingroup <?=$activeInbound?>">
+								<table class="responsive display no-wrap table table-striped table-bordered table-hover" width="100%" id="table_ingroup">
 								   <thead>
 									  <tr>
                                          <th style="color: white;">Pic</th>
 										 <th><?php $lh->translateText('ingroup'); ?></th>
-										 <th class='hide-on-low hide-on-medium'><?php $lh->translateText('description'); ?></th>
-										 <th class='hide-on-low hide-on-medium'><?php $lh->translateText('priority'); ?></th>
-										 <th class='hide-on-low'><?php $lh->translateText('status'); ?></th>
-										 <th class='hide-on-low hide-on-medium'><?php $lh->translateText('time'); ?></th>
+										 <th><?php $lh->translateText('description'); ?></th>
+										 <th><?php $lh->translateText('priority'); ?></th>
+										 <th><?php $lh->translateText('status'); ?></th>
+										 <th><?php $lh->translateText('time'); ?></th>
 										 <th><?php $lh->translateText('action'); ?></th>
 									  </tr>
 								   </thead>
@@ -186,10 +187,10 @@
 											<tr>
                                                 <td><avatar username='<?php echo $ingroup->group_name[$i];?>' :size='36'></avatar></td>
 												<td><strong><?php if ($perm->inbound->inbound_update !== 'N') { echo '<a class="edit-ingroup" data-id="'.$ingroup->group_id[$i].'">'; } ?><?php echo $ingroup->group_id[$i];?><?php if ($perm->inbound->inbound_update !== 'N') { echo '</a>'; } ?></strong></td>
-												<td class='hide-on-low hide-on-medium'><?php echo $ingroup->group_name[$i];?></td>
-												<td class='hide-on-low hide-on-medium'><?php echo $ingroup->queue_priority[$i];?></td>
-												<td class='hide-on-low'><?php echo $ingroup->active[$i];?></td>
-												<td class='hide-on-low hide-on-medium'><?php echo $ingroup->call_time_id[$i];?></td>
+												<td><?php echo $ingroup->group_name[$i];?></td>
+												<td><?php echo $ingroup->queue_priority[$i];?></td>
+												<td><?php echo $ingroup->active[$i];?></td>
+												<td><?php echo $ingroup->call_time_id[$i];?></td>
 												<td><?php echo $action_INGROUP;?></td>
 											</tr>
 										<?php
@@ -200,15 +201,15 @@
 							</div>
 							
 							<!--==== IVR ====-->
-							<div id="T_ivr" role="tabpanel" class="tab-pane<?=$activeIVR?>">
-								<table class="table table-striped table-bordered table-hover" id="table_ivr">
+							<div id="T_ivr" role="tabpanel" class="tab-pane T_ivr <?=$activeIVR?>">
+								<table class="responsive display no-wrap table table-striped table-bordered table-hover" width="100%" id="table_ivr">
 								   <thead>
 									  <tr>
                                          <th style="color: white;">Pic</th>
 										 <th><?php $lh->translateText('menu_id'); ?></th>
-										 <th class='hide-on-medium hide-on-low'><?php $lh->translateText('description'); ?></th>
-										 <th class='hide-on-medium hide-on-low'><?php $lh->translateText('prompt'); ?></th>
-										 <th class='hide-on-medium hide-on-low'><?php $lh->translateText('timeout'); ?></th>
+										 <th><?php $lh->translateText('description'); ?></th>
+										 <th><?php $lh->translateText('prompt'); ?></th>
+										 <th><?php $lh->translateText('timeout'); ?></th>
 										 <th><?php $lh->translateText('action'); ?></th>
 									  </tr>
 								   </thead>
@@ -222,9 +223,9 @@
 											<tr>
                                                 <td><avatar username='<?php echo $ivr->menu_name[$i];?>' :size='36'></avatar></td>
 												<td><strong><?php if ($perm->ivr->ivr_update !== 'N') { echo '<a class="edit-ivr" data-id="'.$ivr->menu_id[$i].'">'; } ?><?php echo $ivr->menu_id[$i];?><?php if ($perm->ivr->ivr_update !== 'N') { echo '</a>'; } ?></strong></td>
-												<td class='hide-on-medium hide-on-low'><?php echo $ivr->menu_name[$i];?></td>
-												<td class='hide-on-medium hide-on-low'><?php echo $ivr->menu_prompt[$i];?></td>
-												<td class='hide-on-medium hide-on-low'><?php echo $ivr->menu_timeout[$i];?></td>
+												<td><?php echo $ivr->menu_name[$i];?></td>
+												<td><?php echo $ivr->menu_prompt[$i];?></td>
+												<td><?php echo $ivr->menu_timeout[$i];?></td>
 												<td><?php echo $action_IVR;?></td>
 											</tr>
 										<?php
@@ -235,15 +236,15 @@
 							</div>
 
 							<!--==== phonenumber / DID ====-->
-							<div id="T_phonenumber" class="tab-pane<?=$activeDID?>">
-								<table class="table table-striped table-bordered table-hover" id="table_did">
+							<div id="T_phonenumber" class="tab-pane T_phonenumber <?=$activeDID?>">
+								<table class="responsive display no-wrap table table-striped table-bordered table-hover" width="100%" id="table_did">
 								   <thead>
 									  <tr>
                                          <th style="color: white;">Pic</th>
 										 <th><?php $lh->translateText('phone_numbers'); ?></th>
-										 <th class='hide-on-medium hide-on-low'><?php $lh->translateText('description'); ?></th>
-										 <th class='hide-on-medium hide-on-low'><?php $lh->translateText('status'); ?></th>
-										 <th class='hide-on-medium hide-on-low'><?php $lh->translateText('route'); ?></th>
+										 <th><?php $lh->translateText('description'); ?></th>
+										 <th><?php $lh->translateText('status'); ?></th>
+										 <th><?php $lh->translateText('route'); ?></th>
 										 <th><?php $lh->translateText('action'); ?></th>
 									  </tr>
 								   </thead>
@@ -270,9 +271,9 @@
 											<tr>
                                                 <td><avatar username='<?php echo $phonenumber->did_description[$i];?>' :size='36'></avatar></td>
 												<td><strong><?php if ($perm->did->did_update !== 'N') { echo '<a class="edit-phonenumber" data-id="'.$phonenumber->did_id[$i].'">'; } ?><?php echo $phonenumber->did_pattern[$i];?><?php if ($perm->inbound->inbound_update !== 'N') { echo '</a>'; } ?></strong></td>
-												<td class='hide-on-medium hide-on-low'><?php echo $phonenumber->did_description[$i];?></td>
-												<td class='hide-on-medium hide-on-low'><?php echo $phonenumber->active[$i];?></td>
-												<td class='hide-on-medium hide-on-low'><?php echo $phonenumber->did_route[$i];?></td>
+												<td><?php echo $phonenumber->did_description[$i];?></td>
+												<td><?php echo $phonenumber->active[$i];?></td>
+												<td><?php echo $phonenumber->did_route[$i];?></td>
 												<td><?php echo $action_DID;?></td>
 											</tr>
 										<?php
@@ -695,13 +696,13 @@
 												<option value="A">#</option>
 												<option value="B">*</option>
 												<option value="C"><?php $lh->translateText("timecheck"); ?></option>
-												<option value="D"><?php $lh->translateText("timeout"); ?></option>
+												<option value="D" readonly style="background-color: rgb(193, 193, 193); color: rgb(255, 255, 255);"><?php $lh->translateText("timeout"); ?></option>
 												<option value="E"><?php $lh->translateText("invalid"); ?></option>
 											</select>
 										</div>
 										<div class="col-lg-7">
 											<?php $lh->translateText("description"); ?>: 
-											<input type="text" name="route_desc[]" id="" class="form-control route_desc_<?php echo $i;?>" placeholder="<?php $lh->translateText("description"); ?>"/>
+											<input type="text" name="route_desc[]" class="form-control route_desc_<?php echo $i;?>" placeholder="<?php $lh->translateText("description"); ?>"/>
 										</div>
 										<div class="col-lg-3">
 											<?php $lh->translateText("route"); ?>:
@@ -1233,7 +1234,23 @@
 
  <script type="text/javascript">
 	$(document).ready(function() {
-
+		if (window.location.href.indexOf("T_ingroup") > -1) {
+			$(".T_ingroup").addClass("active");
+			$(".T_ivr").removeClass("active");
+			$(".T_phonenumber").removeClass("active");					
+		}
+		
+		if (window.location.href.indexOf("T_ivr") > -1) {
+			$(".T_ivr").addClass("active");
+			$(".T_ingroup").removeClass("active");
+			$(".T_phonenumber").removeClass("active");					
+		}		
+		
+		if (window.location.href.indexOf("T_phonenumber") > -1) {
+			$(".T_phonenumber").addClass("active");
+			$(".T_ingroup").removeClass("active");
+			$(".T_ivr").removeClass("active");					
+		}		
 		/*******************
 		** INITIALIZATIONS
 		*******************/
@@ -1243,35 +1260,51 @@
 				});
 
 			//loads datatable functions
-				$('#table_ingroup').dataTable({
-					"aaSorting": [[ 1, "asc" ]],
-					"aoColumnDefs": [{
-						"bSearchable": false,
-						"aTargets": [ 0, 6 ]
-					},{
-						"bSortable": false,
-						"aTargets": [ 0, 6 ]
-					}]
+				$('#table_ingroup').DataTable({
+					destroy:true, 
+					responsive:true,
+					stateSave:true,
+					drawCallback:function(settings) {
+						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+						pagination.toggle(this.api().page.info().pages > 1);
+					},
+					columnDefs:[
+						{ width: "16%", targets: 6 },
+						{ searchable: false, targets: [ 0, 6 ] },
+						{ sortable: false, targets: [ 0, 6 ] },
+						{ targets: -1, className: "dt-body-right" }
+					]
 				});
-				$('#table_ivr').dataTable({
-					"aaSorting": [[ 1, "asc" ]],
-					"aoColumnDefs": [{
-						"bSearchable": false,
-						"aTargets": [ 0, 5 ]
-					},{
-						"bSortable": false,
-						"aTargets": [ 0, 5 ]
-					}]
+				
+				$('#table_ivr').DataTable({
+					destroy:true, 
+					responsive:true,
+					stateSave:true,
+					drawCallback:function(settings) {
+						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+						pagination.toggle(this.api().page.info().pages > 1);
+					},
+					columnDefs:[
+						{ width: "16%", targets: 5 },
+						{ searchable: false, targets: [ 0, 5 ] },
+						{ sortable: false, targets: [ 0, 5 ] },
+						{ targets: -1, className: "dt-body-right" }
+					]
 				});
-				$('#table_did').dataTable({
-					"aaSorting": [[ 1, "asc" ]],
-					"aoColumnDefs": [{
-						"bSearchable": false,
-						"aTargets": [ 0, 5 ]
-					},{
-						"bSortable": false,
-						"aTargets": [ 0, 5 ]
-					}]
+				$('#table_did').DataTable({
+					destroy:true, 
+					responsive:true,
+					stateSave:true,
+					drawCallback:function(settings) {
+						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+						pagination.toggle(this.api().page.info().pages > 1);
+					},
+					columnDefs:[
+						{ width: "16%", targets: 5 },
+						{ searchable: false, targets: [ 0, 5 ] },
+						{ sortable: false, targets: [ 0, 5 ] },
+						{ targets: -1, className: "dt-body-right" }
+					]
 				});
 
 			//reloads page when modal closes
@@ -1347,7 +1380,7 @@
 										console.log(data);
 										if (data == 1) {
 											swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("add_ingroup_success"); ?>", "success");
-											window.setTimeout(function(){location.reload()},1000);
+											window.setTimeout(function(){window.location.href = 'telephonyinbound.php?T_ingroup';},1000);
 
 											$('#finish').text("<?php $lh->translateText("submit"); ?>");
 											$('#finish').attr("disabled", false);
@@ -1400,7 +1433,7 @@
 									success: function(data) {
 									console.log(data);
 								  		if (data == 1){
-											swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("inbound_delete_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
+											swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("inbound_delete_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php?T_ingroup';});
 										} else {
 											sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 										}
@@ -1463,25 +1496,22 @@
 			        	$('#finish').text("<?php $lh->translateText("loading"); ?>");
 			        	$('#finish').attr("disabled", true);
 
-			        	/*********
-						** ADD EVENT 
-						*********/
-				            // Submit form via ajax
-					            $.ajax({
-									url: "./php/AddIVR.php",
-									type: 'POST',
-									data: $("#create_ivr").serialize(),
-									success: function(data) {
-									  console.log(data);
-								  		$('#finish').text("<?php $lh->translateText("submit"); ?>");
-										$('#finish').attr("disabled", false);
-										if (data == 1) {
-											swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_ivr_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
-										} else {
-											  sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
-										}
-									}
-								});
+						// Submit form via ajax
+						$.ajax({
+							url: "./php/AddIVR.php",
+							type: 'POST',
+							data: $("#create_ivr").serialize(),
+							success: function(data) {
+								console.log(data);
+								$('#finish').text("<?php $lh->translateText("submit"); ?>");
+								$('#finish').attr("disabled", false);
+								if (data == 1) {
+									swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_ivr_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php?T_ivr';});
+								} else {
+										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
+								}
+							}
+						});
 							
 			        }
 			    }); // end of wizard
@@ -1526,7 +1556,7 @@
 									success: function(data) {
 									console.log(data);
 								  		if (data == 1) {
-											swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("ivr_delete_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
+											swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("ivr_delete_success"); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php?T_ivr';});
 										} else {
 											sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 										}
@@ -1598,7 +1628,7 @@
 								   $('#submit_did').val("<?php $lh->translateText("submit"); ?>");
 											$('#submit_did').attr("disabled", false);
 									  if(data == 1){
-									  		swal({title: "<?php $lh->translateText('success'); ?>",text: "<?php $lh->translateText('add_phone_number_success'); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
+									  		swal({title: "<?php $lh->translateText('success'); ?>",text: "<?php $lh->translateText('add_phone_number_success'); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php?T_phonenumber';});
 									  }else{
 											sweetAlert("<?php $lh->translateText('oups'); ?>", "<?php $lh->translateText('something_went_wrong'); ?>"+data, "error");
 									  }
@@ -1651,7 +1681,7 @@
 									//console.log(modify_did);
 									console.log(data);
 								  		if (data == 1) {
-											swal({title: "<?php $lh->translateText('success'); ?>",text: "<?php $lh->translateText('phonenumber_delete_success'); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php';});
+											swal({title: "<?php $lh->translateText('success'); ?>",text: "<?php $lh->translateText('phonenumber_delete_success'); ?>",type: "success"},function(){window.location.href = 'telephonyinbound.php?T_phonenumber';});
 										} else {
 											sweetAlert("<?php $lh->translateText('oups'); ?>", "<?php $lh->translateText('something_went_wrong'); ?> "+data, "error");
 										}

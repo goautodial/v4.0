@@ -276,7 +276,23 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goInbound", $postfields);
 	}
 
-	//Telephony > phonenumber(DID)
+	public function API_modifyDID($postfields) {
+		return $this->API_Request("goInbound", $postfields);
+	}
+	
+	public function API_modifyAgentRank($postfields) {
+		return $this->API_Request("goInbound", $postfields);
+	}
+
+	public function API_getAllAgentRank($user_id, $group_id) {
+		$postfields = array(
+			'goAction' => 'goGetAllAgentRank',
+			'user_id' => $user_id,
+			'group_id' => $group_id
+		);				
+		return $this->API_Request("goInbound", $postfields);
+	}
+	
 	public function API_getAllDIDs() {
 		$postfields = array(
 			'goAction' => 'goGetAllDID'
@@ -284,6 +300,14 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goInbound", $postfields);
 	}
 
+	public function API_getDIDInfo($did_id) {
+		$postfields = array(
+			'goAction' => 'goGetDIDInfo',
+			'did_id' =>	$did_id
+		);				
+		return $this->API_Request("goInbound", $postfields);
+	}
+	
 	// Telephony Users -> Phone
 	public function API_getAllPhones(){
 		$postfields = array(

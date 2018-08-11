@@ -88,7 +88,7 @@
 	}
 	
 	$items 											= "";
-	for($i=0;$i < count($route_option);$i++) {
+	for ($i=0;$i < count($route_option);$i++) {
 		if ($route_option[$i] == "A") $route_option[$i] = '#';
 		if ($route_option[$i] == "B") $route_option[$i] = '*';
 		if ($route_option[$i] == "C") $route_option[$i] = 'TIMECHECK';
