@@ -97,16 +97,11 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
         <meta charset="UTF-8">
         <title><?=CRM_GOAGENT_TITLE?> - <?=$lh->translateText('GOautodial')." ".CRM_GO_VERSION?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 		<!-- SnackbarJS -->
         <link href="css/snackbar/snackbar.min.css" rel="stylesheet" type="text/css" />
         <link href="css/snackbar/material.css" rel="stylesheet" type="text/css" />
-		<!-- bootstrap wysihtml5 - text editor -->
-		<link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
 		<!-- multiple emails plugin -->
 		<link href="css/multiple-emails/multiple-emails.css" rel="stylesheet" type="text/css" />
-        <!-- Creamy style -->
-        <link href="css/creamycrm.css" rel="stylesheet" type="text/css" />
         <!-- Customized Style -->
         <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
         
@@ -116,35 +111,19 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 			print $ui->dataTablesTheme();
 		?>      
 
-		<!-- javascript -->
-        <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="js/jquery-ui.min.js" type="text/javascript"></script>
-        <script src="js/jquery.validate.min.js" type="text/javascript"></script>
-		<!-- Bootstrap WYSIHTML5 -->
-		<script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
 		<!-- Multi file upload -->
 		<script src="js/plugins/multifile/jQuery.MultiFile.min.js" type="text/javascript"></script>
 		<!-- Multiple emails -->
 		<script src="js/plugins/multiple-emails/multiple-emails.js" type="text/javascript"></script>
 		<!-- Print page -->
 		<script src="js/plugins/printThis/printThis.js" type="text/javascript"></script>
-		<!-- FONT AWESOME-->
-		<link rel="stylesheet" src="js/dashboard/fontawesome/css/font-awesome.min.css">
 		<!-- SIMPLE LINE ICONS-->
 		<link rel="stylesheet" src="js/dashboard/simple-line-icons/css/simple-line-icons.css">
-		<!-- ANIMATE.CSS-->
-		<link rel="stylesheet" src="js/dashboard/animate.css/animate.min.css">
 		<!-- WHIRL (spinners)-->
 		<link rel="stylesheet" src="js/dashboard/whirl/dist/whirl.css">
 		<!-- =============== PAGE VENDOR STYLES ===============-->
 		<!-- WEATHER ICONS-->
 		<link rel="stylesheet" src="js/dashboard/weather-icons/css/weather-icons.min.css">
-		<!-- =============== BOOTSTRAP STYLES ===============-->
-		<link rel="stylesheet" src="js/dashboard/css/bootstrap.css" id="bscss">
-		<!-- =============== APP STYLES ===============-->
-		<link rel="stylesheet" src="js/dashboard/css/app.css" id="maincss">
-		<link rel="stylesheet" src="js/dashboard/sweetalert/dist/sweetalert.css">
 		<!-- Datetime picker --> 
         <link rel="stylesheet" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
 		<!-- iCheck for checkboxes and radio inputs -->
@@ -153,22 +132,14 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 		<script src="js/plugins/iCheck/icheck.min.js" type="text/javascript"></script>
 		<!-- SLIMSCROLL-->
 		<script src="js/dashboard/slimScroll/jquery.slimscroll.min.js"></script>
-		<!-- SWEETALERT-->
-		<script src="js/dashboard/sweetalert/dist/sweetalert.min.js"></script>
-		<!-- FastClick -->
-		<!--<script src="js/plugins/fastclick/fastclick.min.js" type="text/javascript"></script>-->
 		<!-- MD5 HASH-->
 		<script src="js/jquery.md5.js" type="text/javascript"></script>
         <!-- Date Picker -->
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
-        <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-		
+        <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>		
         <!-- X-Editable -->
         <link rel="stylesheet" src="js/dashboard/x-editable/dist/css/bootstrap-editable.css">
         <script type="text/javascript" src="js/dashboard/x-editable/dist/js/bootstrap-editable.min.js"></script>
-
-  		<!-- Theme style -->
-  		<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
 
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
@@ -1600,21 +1571,19 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 
-		<!-- AdminLTE App -->
-		<script src="adminlte/js/app.min.js"></script>
-		
-		<!-- Select2 -->
-        <script src="js/select2.js" type="text/javascript"></script>
-		
-		<script type="text/javascript">
-			$("#compose-textarea").wysihtml5();
-			
-			var folder = <?php print $folder; ?>;
-			var selectedAll = false;
-			var selectedMessages = [];
-			
+		<?php print $ui->standardizedThemeJS();?>
+		<script type="text/javascript">									
 			$(document).ready(function() {
+				var folder = <?php print $folder; ?>;
+				var selectedAll = false;
+				var selectedMessages = [];
+				
 				$("#contacts-list").DataTable();
+				
+				$("#compose-textarea").wysihtml5();
+				
+				$('.select2').select2({theme: 'bootstrap'});
+				$.fn.select2.defaults.set("theme", "bootstrap");
 				
 			    //iCheck for checkbox and radio inputs
 		        $('input[type="checkbox"].message-selection-checkbox').iCheck({
@@ -2007,9 +1976,6 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 					}
 				}, 5000);
 				
-				$('.select2').select2({ theme: 'bootstrap' });
-				$.fn.select2.defaults.set( "theme", "bootstrap" );
-				
 			});
 			
 			// generates the reply-to or forward message text. This text will be suitable for placing in the reply-to/forward content
@@ -2268,11 +2234,12 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 				if (e.currentTarget.value != 'on') selectedMessages.push(e.currentTarget.value);
 			}
 		</script>
+		
 		<!-- SnackbarJS -->
         <script src="js/snackbar.js" type="text/javascript"></script>
 		<!-- Vue Avatar -->
-        <script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>
-        <script src="js/vue-avatar/vue-avatar.min.js" type="text/javascript"></script>
+        <!-- <script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>
+        <script src="js/vue-avatar/vue-avatar.min.js" type="text/javascript"></script> -->
 		<script type='text/javascript'>
 			var goOptions = {
 				el: 'body',
