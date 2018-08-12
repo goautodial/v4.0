@@ -1031,11 +1031,11 @@ EOF;
 	var uPass = '$user_pass';
 	var configuration;
 	
-	function registerPhone(login, pass) {
+	function registerPhone(phone_login, pass) {
 		var socket = new JsSIP.WebSocketInterface('{$webProtocol}://{$websocketURL}:{$websocketPORT}/');
 		configuration = {
 			sockets : [ socket ],
-			uri: 'sip:'+login+'@{$websocketSIP}{$websocketSIPPort},
+			uri: 'sip:'+phone_login+'@{$websocketSIP}{$websocketSIPPort},
 			$socketParams
 			session_timers: false,
 			registrar_server: '$websocketSIP',
