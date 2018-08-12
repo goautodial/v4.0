@@ -21,75 +21,77 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-require_once('./php/APIHandler.php');
-require_once('./php/CRMDefaults.php');
-require_once('./php/UIHandler.php');
-require_once('./php/LanguageHandler.php');
-require_once('./php/DbHandler.php');
+	require_once('./php/APIHandler.php');
+	require_once('./php/CRMDefaults.php');
+	require_once('./php/UIHandler.php');
+	require_once('./php/LanguageHandler.php');
+	require_once('./php/DbHandler.php');
+	include('./php/Session.php');
 
-define('GO_BASE_DIRECTORY', str_replace($_SERVER['DOCUMENT_ROOT'], "", dirname(__FILE__)));
+	define('GO_BASE_DIRECTORY', str_replace($_SERVER['DOCUMENT_ROOT'], "", dirname(__FILE__)));
 
-// initialize structures
-require_once('./php/Session.php');
-try {
-	$api = \creamy\APIHandler::getInstance();
-	$ui = \creamy\UIHandler::getInstance();
-	$lh = \creamy\LanguageHandler::getInstance();
-	$db = new \creamy\DbHandler();
-	$user = \creamy\CreamyUser::currentUser();
-} catch (\Exception $e) {
-	header("location: ./logout.php");
-	die();
-}
+	// initialize structures
 
-if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_AGENT){
-    header("location: index.php");
-}
-
-$lead_id = $_GET['lead_id'];
-$output = $api->API_getLeadsInfo($lead_id);
-$list_id_ct = count($output->list_id);
-
-if ($list_id_ct > 0) {
-	for($i=0;$i < $list_id_ct;$i++){
-		$first_name 	= $output->first_name[$i];
-		$middle_initial = $output->middle_initial[$i];
-		$last_name 		= $output->last_name[$i];
-		
-		$email 			= $output->email[$i];
-		$phone_number 	= $output->phone_number[$i];
-		$alt_phone 		= $output->alt_phone[$i];
-		$address1 		= $output->address1[$i];
-		$address2 		= $output->address2[$i];
-		$address3 		= $output->address3[$i];
-		$city 			= $output->city[$i];
-		$state 			= $output->state[$i];
-		$country 		= $output->country[$i];
-		$gender 		= $output->gender[$i];
-		$date_of_birth 	= $output->date_of_birth[$i];
-		$comments 		= $output->comments[$i];
-		$title 			= $output->title[$i];
-		$call_count 	= $output->call_count[$i];
-		$last_local_call_time = $output->last_local_call_time[$i];
+	try {
+		$api = \creamy\APIHandler::getInstance();
+		$ui = \creamy\UIHandler::getInstance();
+		$lh = \creamy\LanguageHandler::getInstance();
+		$db = new \creamy\DbHandler();
+		$user = \creamy\CreamyUser::currentUser();
+	} catch (\Exception $e) {
+		header("location: ./logout.php");
+		die();
 	}
-}
-$fullname = $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
-$date_of_birth = date('Y-m-d', strtotime($date_of_birth));
-//var_dump($output);
- $output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, 
- 									  $phone_number, $alt_phone, $address1, $address2, $address3, $city, $province, $state, $postal_code, $country);
+
+	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_AGENT){
+		header("location: index.php");
+	}
+
+	$lead_id = $_GET['lead_id'];
+	$output = $api->API_getLeadsInfo($lead_id);
+	$list_id_ct = count($output->list_id);
+
+	if ($list_id_ct > 0) {
+		for($i=0;$i < $list_id_ct;$i++){
+			$first_name 	= $output->first_name[$i];
+			$middle_initial = $output->middle_initial[$i];
+			$last_name 		= $output->last_name[$i];
+			
+			$email 			= $output->email[$i];
+			$phone_number 	= $output->phone_number[$i];
+			$alt_phone 		= $output->alt_phone[$i];
+			$address1 		= $output->address1[$i];
+			$address2 		= $output->address2[$i];
+			$address3 		= $output->address3[$i];
+			$city 			= $output->city[$i];
+			$state 			= $output->state[$i];
+			$country 		= $output->country[$i];
+			$gender 		= $output->gender[$i];
+			$date_of_birth 	= $output->date_of_birth[$i];
+			$comments 		= $output->comments[$i];
+			$title 			= $output->title[$i];
+			$call_count 	= $output->call_count[$i];
+			$last_local_call_time = $output->last_local_call_time[$i];
+		}
+	}
+	$fullname = $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
+	$date_of_birth = date('Y-m-d', strtotime($date_of_birth));
+	//var_dump($output);
+	$output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, 
+										$phone_number, $alt_phone, $address1, $address2, $address3, $city, $province, $state, $postal_code, $country);
 
 
-if (isset($_GET["folder"])) {
-	$folder = $_GET["folder"];
-} else $folder = MESSAGES_GET_INBOX_MESSAGES;
-if ($folder < 0 || $folder > MESSAGES_MAX_FOLDER) { $folder = MESSAGES_GET_INBOX_MESSAGES; }
+	if (isset($_GET["folder"])) {
+		$folder = $_GET["folder"];
+	} else $folder = MESSAGES_GET_INBOX_MESSAGES;
+	if ($folder < 0 || $folder > MESSAGES_MAX_FOLDER) { $folder = MESSAGES_GET_INBOX_MESSAGES; }
 
-if (isset($_GET["message"])) {
-	$message = $_GET["message"];
-} else $message = NULL;
+	if (isset($_GET["message"])) {
+		$message = $_GET["message"];
+	} else $message = NULL;
 
-$user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
+	$user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
+	
 ?>
 
 <html>
@@ -140,103 +142,10 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
         <!-- X-Editable -->
         <link rel="stylesheet" src="js/dashboard/x-editable/dist/css/bootstrap-editable.css">
         <script type="text/javascript" src="js/dashboard/x-editable/dist/js/bootstrap-editable.min.js"></script>
-
         <!-- preloader -->
-        <link rel="stylesheet" href="css/customizedLoader.css">
-		
+        <link rel="stylesheet" href="css/customizedLoader.css">		
 		<!-- flag sprites -->
 		<link rel="stylesheet" href="css/flags/flags.min.css">
-
-        <script type="text/javascript">
-			history.pushState('', document.title, window.location.pathname);
-			
-			$(window).load(function() {
-				$(".preloader").fadeOut("slow", function() {
-					if (use_webrtc && (!!$.prototype.snackbar) && phone.isConnected()) {
-						$.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; Please wait while we register your phone extension to the dialer...", timeout: 3000, htmlAllowed: true});
-					}
-				});
-				
-				$('#callback-list')
-					.removeClass( 'display' )
-					.addClass('table table-striped table-bordered');
-				
-				if (typeof country_codes !== 'undefined') {
-					$("#country_code").append('<option value="1">United States of America</option>');
-					$("#country_code").append('<option value="1">Canada</option>');
-					$("#country_code").append('<option value="63">Philippines</option>');
-					$("#country_code").append('<option value="61">Australia</option>');
-					$("#country_code").append('<option value="44">United Kingdom of Great Britain and Northern Ireland</option>');
-					$.each(country_codes, function(key, value) {
-						if (! /^(USA_1|CAN_1|PHL_63|AUS_61|GBR_44)$/g.test(key)) {
-							$("#country_code").append('<option value="'+value.code+'">'+value.name+'</option>');
-						}
-					});
-				}
-			});
-			
-			$(function() {
-				$("a[id='first_name'], a[id='middle_initial'], a[id='last_name']").on('hidden', function() {
-					var thisID = $(this).attr('id');
-					$('#'+thisID+'_label').addClass('hidden');
-				});
-				
-				$("a[id='first_name'], a[id='middle_initial'], a[id='last_name']").on('shown', function() {
-					var thisID = $(this).attr('id');
-					var oldValue = $(this).editable('getValue', true);
-					//console.log(oldValue);
-					if ($(this).html() !== '&nbsp;') {
-						//$('div.editable-input input').val($(this).text());
-						//$(this).editable('setValue', oldValue, true);
-					} else {
-						//$('div.editable-input input').val('');
-						//$(this).editable('setValue', '', true);
-					}
-					$('#'+thisID+'_label').removeClass('hidden');
-				});
-				
-				$("a[id='first_name']").editable({
-					type: 'text',
-					title: '<?=$lh->translationFor('enter_first_name')?>',
-					placeholder: '<?=$lh->translationFor('enter_first_name')?>',
-					emptytext: '&nbsp;',
-					unsavedclass: null,
-					inputclass: 'text-color-black',
-					onblur: 'submit'
-				});
-				$("a[id='middle_initial']").editable({
-					type: 'text',
-					title: '<?=$lh->translationFor('enter_middle_initial')?>',
-					placeholder: '<?=$lh->translationFor('enter_middle_initial')?>',
-					emptytext: '&nbsp;',
-					unsavedclass: null,
-					inputclass: 'text-color-black',
-					onblur: 'submit'
-				});
-				$("a[id='last_name']").editable({
-					type: 'text',
-					value: '',
-					title: '<?=$lh->translationFor('enter_last_name')?>',
-					placeholder: '<?=$lh->translationFor('enter_last_name')?>',
-					emptytext: '&nbsp;',
-					unsavedclass: null,
-					inputclass: 'text-color-black',
-					onblur: 'submit'
-				});
-				
-				//$("#callback-list").DataTable({"bDestroy": true, "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 5 ] }, { "bSearchable": false, "aTargets": [ 2, 5 ] }] });
-			});
-			
-			//turn to inline mode
-			$.fn.editable.defaults.mode = 'inline';    //buttons
-			$.fn.editableform.buttons =
-				'<button type="submit" class="btn btn-primary btn-sm editable-submit" style="padding: 8px 10px;">'+
-					'<i class="fa fa-check"></i>'+
-				'</button>'+
-				'<button type="button" class="btn btn-default btn-sm editable-cancel" style="padding: 8px 10px;">'+
-					'<i class="fa fa-remove"></i>'+
-				'</button>';
-		</script>
 		<style>
 			.nav-tabs > li > a{
 				font-weight: normal;
@@ -1574,10 +1483,93 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 		<?php print $ui->standardizedThemeJS();?>
 		<script type="text/javascript">									
 			$(document).ready(function() {
+				history.pushState('', document.title, window.location.pathname);
+				
 				var folder = <?php print $folder; ?>;
 				var selectedAll = false;
 				var selectedMessages = [];
 				
+				$(".preloader").fadeOut("slow", function() {
+					if (use_webrtc && (!!$.prototype.snackbar) && phone.isConnected()) {
+						$.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; Please wait while we register your phone extension to the dialer...", timeout: 3000, htmlAllowed: true});
+					}
+				});
+	
+				$('#callback-list')
+					.removeClass( 'display' )
+					.addClass('table table-striped table-bordered');
+				
+				if (typeof country_codes !== 'undefined') {
+					$("#country_code").append('<option value="1">United States of America</option>');
+					$("#country_code").append('<option value="1">Canada</option>');
+					$("#country_code").append('<option value="63">Philippines</option>');
+					$("#country_code").append('<option value="61">Australia</option>');
+					$("#country_code").append('<option value="44">United Kingdom of Great Britain and Northern Ireland</option>');
+					$.each(country_codes, function(key, value) {
+						if (! /^(USA_1|CAN_1|PHL_63|AUS_61|GBR_44)$/g.test(key)) {
+							$("#country_code").append('<option value="'+value.code+'">'+value.name+'</option>');
+						}
+					});
+				}
+				
+				$("a[id='first_name'], a[id='middle_initial'], a[id='last_name']").on('hidden', function() {
+					var thisID = $(this).attr('id');
+					$('#'+thisID+'_label').addClass('hidden');
+				});
+				
+				$("a[id='first_name'], a[id='middle_initial'], a[id='last_name']").on('shown', function() {
+					var thisID = $(this).attr('id');
+					var oldValue = $(this).editable('getValue', true);
+					//console.log(oldValue);
+					if ($(this).html() !== '&nbsp;') {
+						//$('div.editable-input input').val($(this).text());
+						//$(this).editable('setValue', oldValue, true);
+					} else {
+						//$('div.editable-input input').val('');
+						//$(this).editable('setValue', '', true);
+					}
+					$('#'+thisID+'_label').removeClass('hidden');
+				});
+				
+				$("a[id='first_name']").editable({
+					type: 'text',
+					title: '<?=$lh->translationFor('enter_first_name')?>',
+					placeholder: '<?=$lh->translationFor('enter_first_name')?>',
+					emptytext: '&nbsp;',
+					unsavedclass: null,
+					inputclass: 'text-color-black',
+					onblur: 'submit'
+				});
+				$("a[id='middle_initial']").editable({
+					type: 'text',
+					title: '<?=$lh->translationFor('enter_middle_initial')?>',
+					placeholder: '<?=$lh->translationFor('enter_middle_initial')?>',
+					emptytext: '&nbsp;',
+					unsavedclass: null,
+					inputclass: 'text-color-black',
+					onblur: 'submit'
+				});
+				$("a[id='last_name']").editable({
+					type: 'text',
+					value: '',
+					title: '<?=$lh->translationFor('enter_last_name')?>',
+					placeholder: '<?=$lh->translationFor('enter_last_name')?>',
+					emptytext: '&nbsp;',
+					unsavedclass: null,
+					inputclass: 'text-color-black',
+					onblur: 'submit'
+				});
+				
+				//turn to inline mode
+				$.fn.editable.defaults.mode = 'inline';    //buttons
+				$.fn.editableform.buttons =
+					'<button type="submit" class="btn btn-primary btn-sm editable-submit" style="padding: 8px 10px;">'+
+						'<i class="fa fa-check"></i>'+
+					'</button>'+
+					'<button type="button" class="btn btn-default btn-sm editable-cancel" style="padding: 8px 10px;">'+
+						'<i class="fa fa-remove"></i>'+
+					'</button>';
+					
 				$("#contacts-list").DataTable();
 				
 				$("#compose-textarea").wysihtml5();
@@ -2237,9 +2229,6 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 		
 		<!-- SnackbarJS -->
         <script src="js/snackbar.js" type="text/javascript"></script>
-		<!-- Vue Avatar -->
-        <!-- <script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>
-        <script src="js/vue-avatar/vue-avatar.min.js" type="text/javascript"></script> -->
 		<script type='text/javascript'>
 			var goOptions = {
 				el: 'body',

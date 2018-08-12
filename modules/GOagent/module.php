@@ -401,6 +401,7 @@ EOF;
 	var localStream;
 	var remoteStream;
 	var globalSession;
+	var phone_login = '$phone_login';
 	
 	var socket = new JsSIP.WebSocketInterface('{$webProtocol}://{$websocketURL}:{$websocketPORT}/');
 	var configuration = {
