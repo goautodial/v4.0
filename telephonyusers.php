@@ -34,6 +34,7 @@
 
 	$perm = $api->goGetPermissions('user');
 	$all_users = $api->API_getAllUsers();
+
 ?>
 <html>
     <head>

@@ -1,7 +1,7 @@
 <?php
 /**
- * @file 		editsettingsusergroups.php
- * @brief 		Modify Usergroup settings
+ * @file 		edittelephonycampaign.php
+ * @brief 		Modify Campaign settings
  * @copyright 	Copyright (c) 2018 GOautodial Inc. 
  * @author     	Alexander Jim H. Abenoja
  * @author		Noel Umandap

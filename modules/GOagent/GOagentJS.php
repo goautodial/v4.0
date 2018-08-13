@@ -27,7 +27,7 @@ define('GO_BASE_DIRECTORY', dirname(dirname(dirname(__FILE__))));
 define('GO_LANG_DIRECTORY', dirname(__FILE__) . '/lang/');
 
 $isAgentUI = $_SERVER['PHP_SELF'];
-
+require_once(GO_BASE_DIRECTORY.'/php/APIHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/CRMDefaults.php');
 require_once(GO_BASE_DIRECTORY.'/php/UIHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/LanguageHandler.php');
@@ -36,7 +36,7 @@ include(GO_BASE_DIRECTORY.'/php/Session.php');
 require_once(GO_BASE_DIRECTORY.'/php/goCRMAPISettings.php');
 $goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
 
-
+$api = \creamy\APIHandler::getInstance();
 $ui = \creamy\UIHandler::getInstance();
 $lh = \creamy\LanguageHandler::getInstance();
 $lh->addCustomTranslationsFromFile(GO_LANG_DIRECTORY . $lh->getLanguageHandlerLocale());
@@ -51,7 +51,8 @@ $FILE_TIME = date("Ymd-His");
 //error_reporting(E_ALL);
 
 if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
-    $result = get_user_info($_SESSION['user']);
+    //$result = get_user_info($_SESSION['user']);
+    $result = $api->API_getLoginInfo($_SESSION['user']);
     $default_settings = $result->default_settings;
     $agent = $result->user_info;
     $phone = $result->phone_info;
@@ -9720,10 +9721,13 @@ Number.prototype.between = function (a, b, inclusive) {
     }
 }
 
-function get_user_info($user) {
+/*function get_user_info($user) {
     //set variables
-    $camp = (isset($_SESSION['campaign_id']) && strlen($_SESSION['campaign_id']) > 2) ? $_SESSION['campaign_id'] : '';
-    $url = gourl.'/goAgent/goAPI.php';
+    //$camp = (isset($_SESSION['campaign_id']) && strlen($_SESSION['campaign_id']) > 2) ? $_SESSION['campaign_id'] : '';
+    
+    //$output = $api->API_getLoginInfo($user); 
+    
+    /*$url = gourl.'/goAgent/goAPI.php';
     $fields = array(
         'goAction' => 'goGetLoginInfo',
         'goUser' => goUser,
@@ -9738,7 +9742,7 @@ function get_user_info($user) {
     $fields_string = "";
     foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
     rtrim($fields_string, '&');
-    
+
     //open connection
     $ch = curl_init();
     
@@ -9758,5 +9762,6 @@ function get_user_info($user) {
     curl_close($ch);
     
     return $result->data;
-}
+    return $output;
+}*/
 ?>

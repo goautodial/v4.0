@@ -215,6 +215,48 @@ if(isset($_SESSION["user"])){
 		return $return;
 	}
 	
+	public function API_getLoginInfo($user) {
+		$camp = (isset($_SESSION['campaign_id']) && strlen($_SESSION['campaign_id']) > 2) ? $_SESSION['campaign_id'] : '';
+		$url = gourl.'/goAgent/goAPI.php';
+		$fields = array(
+			'goAction' => 'goGetLoginInfo',
+			'goUser' => session_user,
+			'goPass' => session_password,
+			'responsetype' => 'json',
+			'session_user' => session_user,
+			'log_ip' => $_SERVER['REMOTE_ADDR'],
+			'goUserID' => $user,
+			'goCampaign' => $camp,
+			'isPBP' => 0,
+			'bcrypt' => 0
+		);	
+		
+		//url-ify the data for the POST
+		$fields_string = "";
+		foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
+		rtrim($fields_string, '&');
+
+		//open connection
+		$ch = curl_init();
+		
+		//set the url, number of POST vars, POST data
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, count($fields));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+		
+		//execute post
+		$data = curl_exec($ch);
+		$result = json_decode($data);
+		
+		//close connection
+		curl_close($ch);
+		
+		return $result->data;
+	}
+	
 	public function API_getAllPauseCodes($campaign_id) {
 		$postfields = array(
 			'goAction' => 'goGetAllPauseCodes',
