@@ -612,6 +612,7 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	public function hiddenFormField($id, $value = "", $name = "") {
+		$name = (empty($name)) ? $id : $name;
 		return '<input type="hidden" id="'.$id.'" name="'.$name.'" value="'.$value.'">';
 	}
 
