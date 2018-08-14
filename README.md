@@ -1,5 +1,7 @@
 <h1>GOautodial Open source Multi-channel Contact Center Application</h1>
 
+<h2>https://goautodial.org/projects/goautodialce</h2>
+
 The GOautodial CE Application (also called "GOautodial app") is the next generation open source omni-channel web based contact center application.
 
 Rewritten from ground up using the following standards and technologies:
@@ -65,4 +67,4 @@ nano goCRMAPISettings.php
 
 Replace the default database name, users and passwords according to your preference.
 
-
+Wiki: https://goautodial.org/projects/goautodialce/wiki
