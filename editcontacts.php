@@ -336,12 +336,12 @@
 													</tr>
 												</thead>
 												<tbody>
-													<?php
-														$start_epoch = $output->record->start_epoch[$i];
-														$end_epoch = $output->record->end_epoch[$i];
-														$length_in_sec = $start_epoch - $end_epoch;														
-														
+													<?php																											
 														for($i=0;$i < count($output->record->recording_id);$i++){
+															$start_epoch = $output->record->start_epoch[$i];
+															$end_epoch = $output->record->end_epoch[$i];
+															$length_in_sec = $end_epoch - $start_epoch;	
+															
 															if ($length_in_sec > 0) {
 																$length_in_sec = gmdate("H:i:s", $length_in_sec);
 																echo '
