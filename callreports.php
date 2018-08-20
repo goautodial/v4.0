@@ -225,7 +225,7 @@
                                     <label><?php $lh->translateText("start_date"); ?></label>
                                     <div class="form-group">
                                         <div class='input-group date' id='datetimepicker1'>
-                                            <input type='text' class="form-control" id="start_filterdate" name="start_filterdate" placeholder="<?php echo date("Y-d-m");?> 12:00 AM" value="<?php echo date("Y-d-m");?> 00:00:00" />
+                                            <input type='text' class="form-control" id="start_filterdate" name="start_filterdate" placeholder="<?php echo date("m/d/Y");?> 12:00 AM" value="<?php echo date("m/d/Y");?> 00:00:00" />
                                             <span class="input-group-addon">
                                                 <!-- <span class="glyphicon glyphicon-calendar"></span>-->
                                                 <span class="fa fa-calendar"></span>
@@ -239,7 +239,7 @@
                                     <label><?php $lh->translateText("end_date"); ?></label>
                                     <div class="form-group">
                                         <div class='input-group date' id='datetimepicker2'>
-                                            <input type='text' class="form-control" id="end_filterdate" name="end_filterdate" placeholder="<?php echo date("Y-d-m H:i:s");?>" value="<?php echo date("Y-d-m H:i:s");?>" />
+                                            <input type='text' class="form-control" id="end_filterdate" name="end_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y H:i:s");?>" />
                                             <span class="input-group-addon">
                                                 <!-- <span class="glyphicon glyphicon-calendar"></span>-->
                                                 <span class="fa fa-calendar"></span>
@@ -298,8 +298,7 @@
 					next: 'fa fa-chevron-right',
 					today: 'fa fa-crosshairs',
 					clear: 'fa fa-trash'
-				},
-				
+				}
 				//format: 'MM/DD/YYYY'
 			});
 			
@@ -314,7 +313,6 @@
 					today: 'fa fa-crosshairs',
 					clear: 'fa fa-trash'
 				},
-				
 				//format: 'MM/DD/YYYY',
 				useCurrent: false
 			});
