@@ -1,11 +1,11 @@
 <?php
 /**
- * @file        AddUserGroup.php
+ * @file        AddVoiceFiles.php
  * @brief       
  * @copyright   Copyright (c) 2018 GOautodial Inc.
- * @author     Demian Lizandro A, Biscocho
+ * @author     	Demian Lizandro A, Biscocho
  * @author      Alexander Jim H. Abenoja
- * @author     Jerico James F. Milo
+ * @author     	Jerico James F. Milo
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -23,14 +23,15 @@
 */
 
 	require_once('APIHandler.php');
-	$api = \creamy\APIHandler::getInstance();
+	
+	$api 											= \creamy\APIHandler::getInstance();
 
-	$postfields = array(
-		'goAction' => 'goAddVoiceFiles',
-		'files' => curl_file_create($_FILES['voice_file']['tmp_name'], $_FILES['voice_file']['type'], $_FILES["voice_file"]["name"]),
-		'stage' => "upload"
+	$postfields 									= array(
+		'goAction' 										=> 'goAddVoiceFiles',
+		'files' 										=> curl_file_create($_FILES['voice_file']['tmp_name'], $_FILES['voice_file']['type'], $_FILES["voice_file"]["name"]),
+		'stage' 										=> "upload"
 	);
 
-	$output = $api->API_addVoiceFiles($postfields);
+	$output 										= $api->API_addVoiceFiles($postfields);
 
 	header("location: ../audiofiles.php?upload_result=".$output->result);
