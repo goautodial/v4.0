@@ -869,6 +869,10 @@ if(isset($_SESSION["user"])){
         return $this->API_Request("goReports", $postfields);
 	}
 	
+	public function API_getStatisticalReports($postfields){			
+        return $this->API_Request("goReports", $postfields);
+	}
+	
 	public function API_actionDNC($postfields) {
 		return $this->API_Request("goLists", $postfields);
 	}
