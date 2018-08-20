@@ -194,26 +194,23 @@
 								
 							<!-- Tab panes-->
 							<div class="tab-content bg-white">
-								<?php
-									//var_dump($output);
-								?>
 								<div id="activity" role="tabpanel" class="tab-pane">
 									<div class="box collapsed-box">
 										<div class="box-header with-border btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Show <?php $lh->translateText("lead_calls"); ?>">
 										  <em class="glyphicon glyphicon-earphone pull-left"></em><h3 class="box-title pull-left"> <?php $lh->translateText("lead_calls"); ?></h3>
 										</div>
-										<div class="box-body table-responsive">
-											<table class="table table-hover table-striped" id="lead_calls">
+										<div class="box-body">
+											<table class="responsive display no-wrap table table-hover table-striped" width="100%" id="lead_calls">
 												<thead>
 													<tr>
-														<th textwrap><?php $lh->translateText("call_date"); ?></th>
-														<th textwrap><?php $lh->translateText("length_in_sec"); ?></th>
-														<th textwrap><?php $lh->translateText("status"); ?></th>
-														<th textwrap><?php $lh->translateText("TSR"); ?></th>
-														<th textwrap><?php $lh->translateText("campaign_id"); ?></th>
-														<th textwrap><?php $lh->translateText("list_id"); ?></th>
-														<th textwrap><?php $lh->translateText("term_reason"); ?></th>
-														<th textwrap><?php $lh->translateText("phone_number"); ?></th>
+														<th><?php $lh->translateText("call_date"); ?></th>
+														<th><?php $lh->translateText("length_in_sec"); ?></th>
+														<th><?php $lh->translateText("status"); ?></th>
+														<th><?php $lh->translateText("TSR"); ?></th>
+														<th><?php $lh->translateText("campaign_id"); ?></th>
+														<th><?php $lh->translateText("list_id"); ?></th>
+														<th><?php $lh->translateText("term_reason"); ?></th>
+														<th><?php $lh->translateText("phone_number"); ?></th>
 													</tr>
 												</thead>
 												<tbody>
@@ -221,14 +218,14 @@
 														for($i=0;$i < count($output->calls->call_date);$i++){
 															echo '
 																<tr>
-																	<td textwrap><small>'.$output->calls->call_date[$i].'</small></td>
-																	<td textwrap><small>'.$output->calls->length_in_sec[$i].'</small></td>
-																	<td textwrap><small>'.$output->calls->status[$i].'</small></td>
-																	<td textwrap><small>'.$output->calls->user[$i].'</small></td>
-																	<td textwrap><small>'.$output->calls->campaign_id[$i].'</small></td>
-																	<td textwrap><small>'.$output->calls->list_id[$i].'</small></td>
-																	<td textwrap><small>'.$output->calls->term_reason[$i].'</small></td>
-																	<td textwrap><small>'.$output->calls->phone_number[$i].'</small></td>
+																	<td><small>'.date('M. d, Y h:i A', strtotime($output->calls->call_date[$i])).'</small></td>
+																	<td><small>'.$output->calls->length_in_sec[$i].'</small></td>
+																	<td><small>'.$output->calls->status[$i].'</small></td>
+																	<td><small>'.$output->calls->user[$i].'</small></td>
+																	<td><small>'.$output->calls->campaign_id[$i].'</small></td>
+																	<td><small>'.$output->calls->list_id[$i].'</small></td>
+																	<td><small>'.$output->calls->term_reason[$i].'</small></td>
+																	<td><small>'.$output->calls->phone_number[$i].'</small></td>
 																</tr>
 															';
 														}
@@ -242,18 +239,18 @@
 										<div class="box-header with-border btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Show <?php $lh->translateText("lead_closer_records"); ?>">
 										  <em class="glyphicon glyphicon-list-alt pull-left"></em><h3 class="box-title pull-left"> <?php $lh->translateText("lead_closer_records"); ?></h3>
 										</div>
-										<div class="box-body table-responsive">
-											<table class="table table-hover table-striped" id="lead_closer_records">
+										<div class="box-body">
+											<table class="responsive display no-wrap table table-hover table-striped" width="100%" id="lead_closer_records">
 												<thead>
 													<tr>
-														<th textwrap><?php $lh->translateText("call_date"); ?></th>
-														<th textwrap><?php $lh->translateText("length_in_sec"); ?></th>
-														<th textwrap><?php $lh->translateText("status"); ?></th>
-														<th textwrap><?php $lh->translateText("TSR"); ?></th>
-														<th textwrap><?php $lh->translateText("campaign_id"); ?></th>
-														<th textwrap><?php $lh->translateText("list_id"); ?></th>
-														<th textwrap><?php $lh->translateText("queue_seconds"); ?></th>
-														<th textwrap><?php $lh->translateText("term_reason"); ?></th>
+														<th><?php $lh->translateText("call_date"); ?></th>
+														<th><?php $lh->translateText("length_in_sec"); ?></th>
+														<th><?php $lh->translateText("status"); ?></th>
+														<th><?php $lh->translateText("TSR"); ?></th>
+														<th><?php $lh->translateText("campaign_id"); ?></th>
+														<th><?php $lh->translateText("list_id"); ?></th>
+														<th><?php $lh->translateText("queue_seconds"); ?></th>
+														<th><?php $lh->translateText("term_reason"); ?></th>
 													</tr>
 												</thead>
 												<tbody>
@@ -261,14 +258,14 @@
 														for($i=0;$i < count($output->closerlog->call_date);$i++){
 															echo '
 																<tr>
-																	<td textwrap><small>'.$output->closerlog->call_date[$i].'</small></td>
-																	<td textwrap><small>'.$output->closerlog->length_in_sec[$i].'</small></td>
-																	<td textwrap><small>'.$output->closerlog->status[$i].'</small></td>
-																	<td textwrap><small>'.$output->closerlog->user[$i].'</small></td>
-																	<td textwrap><small>'.$output->closerlog->campaign_id[$i].'</small></td>
-																	<td textwrap><small>'.$output->closerlog->list_id[$i].'</small></td>
-																	<td textwrap><small>'.$output->closerlog->queue_seconds[$i].'</small></td>
-																	<td textwrap><small>'.$output->closerlog->term_reason[$i].'</small></td>
+																	<td><small>'.date('M. d, Y h:i A', strtotime($output->closerlog->call_date[$i])).'</small></td>
+																	<td><small>'.$output->closerlog->length_in_sec[$i].'</small></td>
+																	<td><small>'.$output->closerlog->status[$i].'</small></td>
+																	<td><small>'.$output->closerlog->user[$i].'</small></td>
+																	<td><small>'.$output->closerlog->campaign_id[$i].'</small></td>
+																	<td><small>'.$output->closerlog->list_id[$i].'</small></td>
+																	<td><small>'.$output->closerlog->queue_seconds[$i].'</small></td>
+																	<td><small>'.$output->closerlog->term_reason[$i].'</small></td>
 																</tr>
 															';
 														}
@@ -282,20 +279,20 @@
 										<div class="box-header with-border btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Show <?php $lh->translateText("lead_agent_log"); ?>">
 										  <em class="glyphicon glyphicon-user pull-left"></em><h3 class="box-title pull-left"> <?php $lh->translateText("lead_agent_log"); ?></h3>
 										</div>
-										<div class="box-body table-responsive">
-											<table class="table table-hover table-striped" id="lead_agent_log">
+										<div class="box-body">
+											<table class="responsive display no-wrap table table-hover table-striped" width="100%" id="lead_agent_log">
 												<thead>
 													<tr>
-														<th textwrap><?php $lh->translateText("event_time"); ?></th>
-														<th textwrap><?php $lh->translateText("campaign_id"); ?></th>
-														<th textwrap><?php $lh->translateText("agent_log_id"); ?></th>
-														<th textwrap><?php $lh->translateText("pause_sec"); ?></th>
-														<th textwrap><?php $lh->translateText("wait_sec"); ?></th>
-														<th textwrap><?php $lh->translateText("talk_sec"); ?></th>
-														<th textwrap><?php $lh->translateText("dispo_sec"); ?></th>
-														<th textwrap><?php $lh->translateText("status"); ?></th>
-														<th textwrap><?php $lh->translateText("user_group"); ?></th>
-														<th textwrap><?php $lh->translateText("sub_status"); ?></th>
+														<th><?php $lh->translateText("event_time"); ?></th>
+														<th><?php $lh->translateText("campaign_id"); ?></th>
+														<th><?php $lh->translateText("agent_log_id"); ?></th>
+														<th><?php $lh->translateText("pause_sec"); ?></th>
+														<th><?php $lh->translateText("wait_sec"); ?></th>
+														<th><?php $lh->translateText("talk_sec"); ?></th>
+														<th><?php $lh->translateText("dispo_sec"); ?></th>
+														<th><?php $lh->translateText("status"); ?></th>
+														<th><?php $lh->translateText("user_group"); ?></th>
+														<th><?php $lh->translateText("sub_status"); ?></th>
 													</tr>
 												</thead>
 												<tbody>
@@ -303,16 +300,16 @@
 														for($i=0;$i < count($output->agentlog->campaign_id);$i++){
 															echo '
 																<tr>
-																	<td textwrap><small>'.$output->agentlog->event_time[$i].'</small></td>
-																	<td textwrap><small>'.$output->agentlog->campaign_id[$i].'</small></td>
-																	<td textwrap><small>'.$output->agentlog->agent_log_id[$i].'</small></td>
-																	<td textwrap><small>'.$output->agentlog->pause_sec[$i].'</small></td>
-																	<td textwrap><small>'.$output->agentlog->wait_sec[$i].'</small></td>
-																	<td textwrap><small>'.$output->agentlog->talk_sec[$i].'</small></td>
-																	<td textwrap><small>'.$output->agentlog->dispo_sec[$i].'</small></td>
-																	<td textwrap><small>'.$output->agentlog->status[$i].'</small></td>
-																	<td textwrap><small>'.$output->agentlog->user_group[$i].'</small></td>
-																	<td textwrap><small>'.$output->agentlog->sub_status[$i].'</small></td>
+																	<td><small>'.date('M. d, Y h:i A', strtotime($output->agentlog->event_time[$i])).'</small></td>
+																	<td><small>'.$output->agentlog->campaign_id[$i].'</small></td>
+																	<td><small>'.$output->agentlog->agent_log_id[$i].'</small></td>
+																	<td><small>'.$output->agentlog->pause_sec[$i].'</small></td>
+																	<td><small>'.$output->agentlog->wait_sec[$i].'</small></td>
+																	<td><small>'.$output->agentlog->talk_sec[$i].'</small></td>
+																	<td><small>'.$output->agentlog->dispo_sec[$i].'</small></td>
+																	<td><small>'.$output->agentlog->status[$i].'</small></td>
+																	<td><small>'.$output->agentlog->user_group[$i].'</small></td>
+																	<td><small>'.$output->agentlog->sub_status[$i].'</small></td>
 																</tr>
 															';
 														}
@@ -326,31 +323,38 @@
 										<div class="box-header with-border btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Show <?php $lh->translateText("lead_recordings"); ?>">
 										  <em class="glyphicon glyphicon-play-circle pull-left"></em><h3 class="box-title pull-left"> <?php $lh->translateText("lead_recordings"); ?></h3>
 										</div>
-										<div class="box-body table-responsive">
-											<table class="table table-hover table-striped" id="lead_recordings">
+										<div class="box-body">
+											<table class="responsive display no-wrap table table-hover table-striped" width="100%" id="lead_recordings">
 												<thead>
 													<tr>
-														<th textwrap><?php $lh->translateText("start_time"); ?></th>
-														<th textwrap><?php $lh->translateText("length_in_sec"); ?></th>
-														<th textwrap><?php $lh->translateText("recording_id"); ?></th>
-														<th textwrap><?php $lh->translateText("filename"); ?></th>
-														<th textwrap><?php $lh->translateText("location"); ?></th>
-														<th textwrap><?php $lh->translateText("TSR"); ?></th>
+														<th><?php $lh->translateText("start_time"); ?></th>
+														<th><?php $lh->translateText("length_in_sec"); ?></th>
+														<th><?php $lh->translateText("recording_id"); ?></th>
+														<th><?php $lh->translateText("filename"); ?></th>
+														<th><?php $lh->translateText("location"); ?></th>
+														<th><?php $lh->translateText("TSR"); ?></th>
 													</tr>
 												</thead>
 												<tbody>
 													<?php
+														$start_epoch = $output->record->start_epoch[$i];
+														$end_epoch = $output->record->end_epoch[$i];
+														$length_in_sec = $start_epoch - $end_epoch;														
+														
 														for($i=0;$i < count($output->record->recording_id);$i++){
-															echo '
-																<tr>
-																	<td textwrap><small>'.$output->record->start_time[$i].'</small></td>
-																	<td textwrap><small>'.$output->record->length_in_sec[$i].'</small></td>
-																	<td textwrap><small>'.$output->record->recording_id[$i].'</small></td>
-																	<td textwrap><small>'.$output->record->filename[$i].'</small></td>
-																	<td><a href="'.$output->record->location[$i].'" ><small>'.$output->record->location[$i].'</small></a></td>
-																	<td textwrap><small>'.$output->record->user[$i].'</small></td>
-																</tr>
-															';
+															if ($length_in_sec > 0) {
+																$length_in_sec = gmdate("H:i:s", $length_in_sec);
+																echo '
+																	<tr>
+																		<td><small>'.date('M. d, Y h:i A', strtotime($output->record->start_time[$i])).'</small></td>
+																		<td><small>'.$length_in_sec.'</small></td>
+																		<td><small>'.$output->record->recording_id[$i].'</small></td>
+																		<td><small>'.$output->record->filename[$i].'</small></td>
+																		<td><a href="'.$output->record->location[$i].'" ><small>'.$output->record->location[$i].'</small></a></td>
+																		<td><small>'.$output->record->user[$i].'</small></td>
+																	</tr>
+																';
+															}
 														}
 													?>
 												</tbody>
@@ -649,10 +653,50 @@
 
 		<script type="text/javascript">
 			$(document).ready(function() {
-				$('#lead_calls').dataTable();
-				$('#lead_closer_records').dataTable();
-				$('#lead_agent_log').dataTable();
-				$('#lead_recordings').dataTable();
+				//$('#lead_calls').dataTable();
+				//$('#lead_closer_records').dataTable();
+				//$('#lead_agent_log').dataTable();
+				//$('#lead_recordings').dataTable();
+				
+				$('#lead_calls').DataTable({
+					destroy:true,    
+					responsive:true,
+					stateSave:true,
+					drawCallback:function(settings) {
+						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+						pagination.toggle(this.api().page.info().pages > 1);
+					}
+				});
+				
+				$('#lead_closer_records').DataTable({
+					destroy:true,    
+					responsive:true,
+					stateSave:true,
+					drawCallback:function(settings) {
+						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+						pagination.toggle(this.api().page.info().pages > 1);
+					}
+				});				
+				
+				$('#lead_agent_log').DataTable({
+					destroy:true,    
+					responsive:true,
+					stateSave:true,
+					drawCallback:function(settings) {
+						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+						pagination.toggle(this.api().page.info().pages > 1);
+					}
+				});
+			
+				$('#lead_recordings').DataTable({
+					destroy:true,    
+					responsive:true,
+					stateSave:true,
+					drawCallback:function(settings) {
+						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+						pagination.toggle(this.api().page.info().pages > 1);
+					}
+				});
 				
 				var is_customer = <?php echo $is_customer; ?>;
 				if (is_customer > 0) {
