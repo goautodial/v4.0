@@ -98,11 +98,11 @@
 					<table class="responsive display no-wrap compact table table-striped" width="100%" id="agent_detail_top">
 						<thead>
 							<tr>
-								<th> Full Name </th>
-								<th> User Name </th>
+								<th> Agent Name </th>
+								<!-- <th> User Name </th> -->
 								<th> Calls </th>
 								<th> Agent Time </th>
-								<th> WAIT </th>
+								<th> Wait </th>
 								<th> Talk </th>
 								<th> Dispo </th>
 								<th> Pause </th>
@@ -119,7 +119,7 @@
 					for ($i=0; $i < count($output->TOPsorted_output->name); $i++) {
 						$agent_detail .= '<tr>
 											<td>'.$output->TOPsorted_output->name[$i].'</td>
-											<td>'.$output->TOPsorted_output->user[$i].'</td>
+											<!-- <td>'.$output->TOPsorted_output->user[$i].'</td> -->
 											<td>'.$output->TOPsorted_output->number_of_calls[$i].'</td>
 											<td>'.gmdate('H:i:s', $output->TOPsorted_output->agent_time[$i]).'</td>
 											<td>'.gmdate('H:i:s', $output->TOPsorted_output->wait_time[$i]).'</td>
@@ -137,7 +137,7 @@
 				$agent_detail .= '</tbody>';
 
 				if ($output->TOTcalls != NULL) {
-						$agent_detail .= '<tfoot><tr class="warning"><th> Total </th>';
+						$agent_detail .= '<tfoot><!-- <tr class="warning"><th> Total </th> -->';
 							$agent_detail .= '<th>'.$output->TOT_AGENTS.'</th>';
 							$agent_detail .= '<th>'.$output->TOTcalls.'</th>';
 							$agent_detail .= '<th>'.$output->TOTALtime.'</th>';
@@ -155,27 +155,21 @@
 			// login table
 				if ($output->sub_statusesTOP != NULL) {
 					$agent_detail .= '<div>
-						<table class="display responsive no-wrap compact table table-striped" width="100%" id="agent_detail_login">
+						<table class="responsive display no-wrap compact table table-striped" width="100%" id="agent_detail_login">
 							<thead>
 								<tr>
 									<th> User </th>';
-									//var_dump($output->sub_statusesTOP);
 							for($i=0; $i < count($output->sub_statusesTOP); $i++) {
-								//$Hstatuses = explode(",", $output->sub_statusesTOP);
 								$agent_detail .= '<th>'.$output->sub_statusesTOP[$i].'</th>';
 							}
-								// $agent_detail .= $output->sub_statusesTOP;
 					
 					$agent_detail .= '</tr>
 							</thead>
 							<tbody>
 					';
 
-					if ($output->BOTsorted_output != NULL) {
-					//echo "<pre>";
-					//var_dump($output->BOTsorted_output);					
+					if ($output->BOTsorted_output != NULL) {				
 						for($i=0; $i < count($output->BOTsorted_output->name); $i++) {
-							//$statuses = explode(",", $output->BOTsorted_output->statuses);
 							$statuses = $output->BOTsorted_output->statuses[$i];
 							$agent_names = $output->BOTsorted_output->name[$i];
 							$agent_detail .= '<tr>';
@@ -184,7 +178,7 @@
 							for($a=0; $a < count($output->sub_statusesTOP); $a++) {
 								//if (!empty($output->BOTsorted_output->statuses[$a])) {
 								if ($statuses == $output->BOTsorted_output->statuses[$a]) {
-									$agent_detail .= '<td>'.$output->BOTsorted_output->statuses[$a].'</td>';
+									$agent_detail .= '<td>'.gmdate('H:i:s', $output->BOTsorted_output->statuses[$a]).'</td>';
 								} else {
 									$agent_detail .= '<td>00:00:00</td>';
 								}
@@ -200,9 +194,7 @@
 					
 					$agent_detail .= '</tbody>';
 					
-						if ($output->SUMstatuses != NULL) {
-							//echo "<pre>";
-							//var_dump($output->SUMstatuses);						
+						if ($output->SUMstatuses != NULL) {					
 							$agent_detail .= '<tfoot><tr class="warning"><th> Total </th>';
 							for($i=0; $i < count($output->SUMstatuses); $i++) {
 								$agent_detail .= '<th>'.$output->SUMstatuses.'</th>';
