@@ -140,7 +140,7 @@
 									?>
 										<option value="stats" selected><?php echo $lh->translationFor("stats"); ?></option>
 										<option value="agent_detail"><?php echo $lh->translationFor("agent_detail"); ?></option>
-										<option value="agent_pdetail"><?php echo $lh->translationFor("agent_pdetail"); ?></option>
+										<!-- <option value="agent_pdetail"><?php //echo $lh->translationFor("agent_pdetail"); ?></option> -->
 										<option value="dispo"><?php echo $lh->translationFor("dispo"); ?></option>
 										<option value="sales_agent"><?php echo $lh->translationFor("sales_agent"); ?></option>
 										<option value="sales_tracker"><?php echo $lh->translationFor("sales_tracker"); ?></option>
@@ -728,11 +728,11 @@
 					$('.ingroup_div').hide();
 				}
 				
-				if (filter_type == "agent_pdetail") {
+				/*if (filter_type == "agent_pdetail") {
 					$('.request_div').hide();
 					$('.campaign_div').show();
 					$('.ingroup_div').hide();
-				}
+				}*/
 				
 				if (filter_type == "dispo") {
 					$('.request_div').hide();
