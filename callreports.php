@@ -335,6 +335,10 @@
 						URL = './php/reports/statisticalreports.php';
 					}
 					
+					if (filter_type == "agent_detail") {
+						URL = './php/reports/agenttimedetails.php';
+					}
+					
 					if (filter_type == "sales_agent") {
 						request = $("#request2").val();
 					}
@@ -527,6 +531,10 @@
 						URL = './php/reports/statisticalreports.php';
 					}
 					
+					if (filter_type == "agent_detail") {
+						URL = './php/reports/agenttimedetails.php';
+					}
+					
 					if (filter_type == "sales_agent") {
 						request = $("#request2").val();
 					}
@@ -714,6 +722,7 @@
 				}
 				
 				if (filter_type == "agent_detail") {
+					URL = './php/reports/agenttimedetails.php';
 					$('.request_div').hide();
 					$('.campaign_div').show();
 					$('.ingroup_div').hide();
@@ -925,6 +934,10 @@
 					request = $("#request1").val();
 					URL = './php/reports/statisticalreports.php';
 				}
+
+				if (filter_type == "agent_detail") {
+					URL = './php/reports/agenttimedetails.php';
+				}
 				
 				if (filter_type == "sales_agent") {
 					request = $("#request2").val();
@@ -977,7 +990,23 @@
 											}
 										]
 									});
-									//$('#agent_detail_login').DataTable({ destroy: true, responsive: true, dom: 'Bfrtip',  buttons: [ { extend: 'copy', title: title }, { extend: 'csv', title: title }, { extend: 'excel', title: title }, { extend: 'print', title: title } ] });
+									
+									$('#agent_detail_login').DataTable({ 
+										destroy: true, 
+										responsive: true, 
+										stateSave:true,
+										drawCallback:function(settings) {
+											var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+											pagination.toggle(this.api().page.info().pages > 1);
+										}										
+										/*dom: 'Bfrtip',  
+										buttons: [ 
+											{ extend: 'copy', title: title }, 
+											{ extend: 'csv', title: title }, 
+											{ extend: 'excel', title: title }, 
+											{ extend: 'print', title: title } 
+										] */
+									});
 									
 									$('.request_div').hide();
 									$('.campaign_div').show();
@@ -1185,6 +1214,10 @@
 				if (filter_type == "stats") {
 					request = $("#request1").val();
 					URL = './php/reports/statisticalreports.php';
+				}
+				
+				if (filter_type == "agent_detail") {
+					URL = './php/reports/agenttimedetails.php';
 				}
 				
 				if (filter_type == "sales_agent") {
