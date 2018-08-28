@@ -5852,7 +5852,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$url = gourl."/goCustomFields/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
-		$postfields["goAction"] = "getAllCustomFields"; #action performed by the [[API:Functions]]. (required)
+		$postfields["goAction"] = "goGetAllCustomFields"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
 		$postfields["list_id"] = $list_id;
 
