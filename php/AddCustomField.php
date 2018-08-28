@@ -48,7 +48,7 @@ $api = \creamy\APIHandler::getInstance();
 	$postfields["log_group"]							= $_POST['log_group'];
 */
 	$postfields = array(
-			'goAction' => 'goAddCustomFields'
+			'goAction' => 'goAddCustomFields',
 			'list_id' => $_POST['list_id'],
 			'field_name' => $_POST['field_name'],
 			'field_rank' => $_POST['field_rank'],
@@ -66,10 +66,10 @@ $api = \creamy\APIHandler::getInstance();
 
 	$output = $api->API_addCustomFields($postfields);
 
-	if ($output->result=="success") {
+	if (!preg_match("/^ERROR/i", $output->result)) {
 		$status = "success";
 	} else {
-		$status = "error";
+		$status = "\n\n".$output->result;
 	}
 
 	echo $status;
