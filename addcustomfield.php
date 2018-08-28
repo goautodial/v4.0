@@ -153,7 +153,6 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 												<h4 style="margin-top: 0px; border-bottom: 1px solid #777;">Form Preview</h4>
 												<?php
 
-var_dump($customs);
 													if(count($customs) > 0) {
 														$viewall .= "<form>\n";
 														$viewall .= "<TABLE class=\"table\" style=\"rgb(208,208,208);\">";
