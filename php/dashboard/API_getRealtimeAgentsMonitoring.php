@@ -51,8 +51,8 @@
 			$cust_phone 							= ( !isset ( $value->vl_phone_number ) ) ? "" : $api->escapeJsonString ( $value->vl_phone_number );
 			$pausecode 								= $api->escapeJsonString($value->vla_pausecode);
 			$vla_conference							= $api->escapeJsonString($value->vla_conf_exten);
-			$ol_conference							= $api->escapeJsonString($value->ol_conference);
-			$ol_callerid							= ( !isset ( $value->ol_callerid ) ) ? "" : $api->escapeJsonString ( $value->ol_callerid );
+			//$ol_conference							= $api->escapeJsonString($value->ol_conference);
+			//$ol_callerid							= ( !isset ( $value->ol_callerid ) ) ? "" : $api->escapeJsonString ( $value->ol_callerid );
 			
 			foreach ($output->callerids as $key => $callerids) {
 			
@@ -70,6 +70,13 @@
 				$pc_parked_time 					= $parked->pc_parked_time;
 			}
 		
+			if ( !empty($output->ol_callerids) ) {
+				foreach ($output->ol_callerids as $key => $ol_callerids) {				
+					$ol_callerid 					= $api->escapeJsonString($ol_callerids->name);
+					$ol_conference 					= $api->escapeJsonString($ol_callerids->conference);
+				}			
+			}
+			
 			$CM 									= "";        
 			$STARTtime 								= date("U");       
 			$sessionAvatar 							= "<div class='media'><avatar username='$agentname' :size='32'></avatar></div>";
@@ -90,9 +97,9 @@
 				}            
 				
 				//if (($vla_callerid != $vac_callerid) && ($last_state_change != $last_call_time)) {
-				if (($vla_callerid != $ol_callerid) && ($last_state_change != $last_call_time)) {
-					$status 						= "HUNGUP"; 
-				}
+				//if (($vla_callerid != $ol_callerid) && ($last_state_change != $last_call_time)) {
+				//	$status 						= "HUNGUP"; 
+				//}
 				
 				if ($call_type == "AUTO") {
 					$CM								= " [A]"; 
@@ -103,7 +110,12 @@
 				}            
 				
 				if ($call_type == "MANUAL") {
-					$CM								= " [M]"; }                        
+					$CM								= " [M]"; 
+				} 
+				
+				if (($vla_callerid != $ol_callerid) && ($last_state_change != $last_call_time)) {
+					$status 						= "HUNGUP"; 
+				}				
 			}
 			
 			if (preg_match("/READY|PAUSED|CLOSER/",$status)){
