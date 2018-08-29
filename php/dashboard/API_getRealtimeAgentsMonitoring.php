@@ -107,18 +107,8 @@
 				}
 				
 				//if (($vla_callerid != $vac_callerid) && ($last_state_change != $last_call_time)) {
-				if (($vla_callerid != $ol_callerid) && ($last_state_change != $last_call_time)) {
-					$STARTtime 						= date("U");
-					$last_state_change 				= $last_call_time;
-					$call_time_S 					= ($STARTtime - $last_state_change);
-					$call_time_M 					= ($call_time_S / 60);
-					$call_time_M 					= round($call_time_M, 2);
-					$call_time_M_int 				= intval("$call_time_M");
-					$call_time_SEC 					= ($call_time_M - $call_time_M_int);
-					$call_time_SEC 					= ($call_time_SEC * 60);
-					$call_time_SEC 					= round($call_time_SEC, 0);
-					
-					$status 						= "HUNGUP"; 
+				if (($vla_callerid != $ol_callerid) && ($last_state_change != $last_call_time)) {					
+					$status 						= "DEAD"; 
 				}				
 			}
 			
@@ -218,11 +208,17 @@
 				break;
 			}
 		
+			$statustxt								= $status;
+			
+			if ($status == "DEAD") {
+				$statustxt 							= "HUNGUP";
+			}
+			
 			$barracks 								.= '[';
 			$barracks 								.= '"'.$sessionAvatar.'",';
 			$barracks 								.= '"<a id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#modal_view_agent_information\" data-id=\"'.$userid.'\" data-user=\"'.$agentid.'\" class=\"text-blue\"><strong>'.$agentname.'</strong></a>",'; 
 			$barracks 								.= '"'.$user_group.'",';    
-			$barracks 								.= '"<b class=\"'.$textclass.'\">'.$status.''.$CM.'</b>",';    
+			$barracks 								.= '"<b class=\"'.$textclass.'\">'.$statustxt.''.$CM.'</b>",';    
 			$barracks 								.= '"'.$cust_phone.'",';         
 			$barracks 								.= '"<b class=\"'.$textclass.'\">'.$call_time_MS.'</b>",';
 			$barracks 								.= '"'.$campname.'"';
