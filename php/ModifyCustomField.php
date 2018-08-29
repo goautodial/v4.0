@@ -54,7 +54,7 @@
 		$status = "success";
 	} else {
 		# An error occured
-		$status = "error";
+		$status = "\n\n".$output->result;
 	}
 
 	echo $status;
