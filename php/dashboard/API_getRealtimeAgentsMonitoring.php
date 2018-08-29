@@ -22,10 +22,10 @@
 
 	require_once('APIHandler.php');
 	
-	$api 										= \creamy\APIHandler::getInstance();
-	$output 									= $api->API_getRealtimeAgentsMonitoring();
+	$api 											= \creamy\APIHandler::getInstance();
+	$output 										= $api->API_getRealtimeAgentsMonitoring();
 
-    $barracks 									= '[';   
+    $barracks 										= '[';   
     
     if (!empty($output->data)) {
 		foreach ($output->data as $key => $value) {
@@ -50,7 +50,7 @@
 			$vla_callerid 							= $api->escapeJsonString($value->vla_callerid);    
 			$cust_phone 							= (!isset($value->vl_phone_number)) ? "" : $api->escapeJsonString($value->vl_phone_number);
 			$pausecode 								= $api->escapeJsonString($value->vla_pausecode);
-			//$vla_conference							= $api->escapeJsonString($value->vla_conf_exten);
+			//$vla_conference						= $api->escapeJsonString($value->vla_conf_exten);
 			$ol_conference							= (!isset($value->ol_conference)) ? "" : $api->escapeJsonString($value->ol_conference);
 			$ol_callerid							= (!isset($value->ol_callerid)) ? "" : $api->escapeJsonString($value->ol_callerid);
 			
@@ -91,11 +91,6 @@
 				
 				if ($pc_channel != NULL) {
 					$status 						= "PARK"; 
-				}            
-				
-				//if (($vla_callerid != $vac_callerid) && ($last_state_change != $last_call_time)) {
-				if (($vla_callerid != $ol_callerid) && ($last_state_change != $last_call_time)) {
-					$status 						= "HUNGUP"; 
 				}
 				
 				if ($call_type == "AUTO") {
@@ -108,7 +103,12 @@
 				
 				if ($call_type == "MANUAL") {
 					$CM								= " [M]"; 
-				}                        
+				}
+				
+				//if (($vla_callerid != $vac_callerid) && ($last_state_change != $last_call_time)) {
+				if (($vla_callerid != $ol_callerid) && ($last_state_change != $last_call_time)) {
+					$status 						= "HUNGUP"; 
+				}				
 			}
 			
 			if (preg_match("/READY|PAUSED|CLOSER/",$status)){
@@ -218,9 +218,7 @@
 			$barracks 								.= '],';
 		}    
 		
-		$barracks 									= rtrim($barracks, ",");    
-		//$barracks 									.= ']';		
-		//echo json_encode($barracks);		
+		$barracks 									= rtrim($barracks, ","); 	
     }
     
     $barracks 									.= ']';
