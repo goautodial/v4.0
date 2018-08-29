@@ -44,7 +44,7 @@
 			$last_call_time 						= $api->escapeJsonString($value->last_call_time);
 			$last_call_finish 						= $api->escapeJsonString($value->last_call_finish);
 			$campaign_id 							= $api->escapeJsonString($value->vla_campaign_id);
-			$last_state_change 						= $api->escapeJsonString($value->last_state_change);
+			$last_state_change 						= (!isset($value->last_state_change)) ? 0 : $api->escapeJsonString($value->last_state_change);
 			$lead_id 								= $api->escapeJsonString($value->vla_lead_id);
 			$agent_log_id 							= $api->escapeJsonString($value->vla_agent_log_id);
 			$vla_callerid 							= $api->escapeJsonString($value->vla_callerid);    
