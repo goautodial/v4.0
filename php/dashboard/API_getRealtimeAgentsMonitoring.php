@@ -97,9 +97,9 @@
 				}            
 				
 				//if (($vla_callerid != $vac_callerid) && ($last_state_change != $last_call_time)) {
-				//if (($vla_callerid != $ol_callerid) && ($last_state_change != $last_call_time)) {
-				//	$status 						= "HUNGUP"; 
-				//}
+				if (($vla_callerid != $ol_callerid) && ($last_state_change != $last_call_time)) {
+					$status 						= "HUNGUP"; 
+				}
 				
 				if ($call_type == "AUTO") {
 					$CM								= " [A]"; 
@@ -111,11 +111,7 @@
 				
 				if ($call_type == "MANUAL") {
 					$CM								= " [M]"; 
-				} 
-				
-				if (($vla_callerid != $ol_callerid) && ($last_state_change != $last_call_time)) {
-					$status 						= "HUNGUP"; 
-				}				
+				}                        
 			}
 			
 			if (preg_match("/READY|PAUSED|CLOSER/",$status)){
