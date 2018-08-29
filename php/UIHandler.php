@@ -2009,14 +2009,11 @@ error_reporting(E_ERROR | E_PARSE);
 			}
 			$telephonyArea .= '</ul></li>';
 
-			if ($perms->servers->servers_read == 'R') {
-				$settings = '<li class="treeview"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("settings").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
-				
-				if($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
-					$settings .= $this-> getSidebarItem("./settingscalltimes.php", "list-ol", $this->lh->translationFor("call_times"));
-					$settings .= $this-> getSidebarItem("./settingsvoicemails.php", "envelope", $this->lh->translationFor("voice_mails"));
-					$settings .= $this-> getSidebarItem("./settingsusergroups.php", "users", $this->lh->translationFor("user_groups"));
-				}
+			if ($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
+				$settings = '<li class="treeview"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("settings").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';				
+				$settings .= $this-> getSidebarItem("./settingscalltimes.php", "list-ol", $this->lh->translationFor("call_times"));
+				$settings .= $this-> getSidebarItem("./settingsvoicemails.php", "envelope", $this->lh->translationFor("voice_mails"));
+				$settings .= $this-> getSidebarItem("./settingsusergroups.php", "users", $this->lh->translationFor("user_groups"));
 				
 				if ($perms->carriers->carriers_read == 'R' || $userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
 					$settings .= $this-> getSidebarItem("./settingscarriers.php", "signal", $this->lh->translationFor("carriers"));
