@@ -70,12 +70,12 @@
 				$pc_parked_time 					= $parked->pc_parked_time;
 			}
 		
-			if ( !empty($output->ol_callerids) ) {
+			///if ( !empty($output->ol_callerids) ) {
 				foreach ($output->ol_callerids as $key => $ol_callerids) {				
-					$ol_callerid 					= $api->escapeJsonString($ol_callerids->name);
-					$ol_conference 					= $api->escapeJsonString($ol_callerids->conference);
+					$ol_callerid 					= $ol_callerids->name;
+					$ol_conference 					= $ol_callerids->conference;
 				}			
-			}
+			//}
 			
 			$CM 									= "";        
 			$STARTtime 								= date("U");       
