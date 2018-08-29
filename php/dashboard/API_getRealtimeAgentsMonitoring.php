@@ -27,7 +27,7 @@
 
     $barracks 									= '[';   
     
-    if ( !empty($output->data) ) {
+    if (!empty($output->data)) {
 		foreach ($output->data as $key => $value) {
 	
 			$userid 								= $api->escapeJsonString($value->vu_user_id);
@@ -48,34 +48,31 @@
 			$lead_id 								= $api->escapeJsonString($value->vla_lead_id);
 			$agent_log_id 							= $api->escapeJsonString($value->vla_agent_log_id);
 			$vla_callerid 							= $api->escapeJsonString($value->vla_callerid);    
-			$cust_phone 							= ( !isset ( $value->vl_phone_number ) ) ? "" : $api->escapeJsonString ( $value->vl_phone_number );
+			$cust_phone 							= (!isset($value->vl_phone_number)) ? "" : $api->escapeJsonString($value->vl_phone_number);
 			$pausecode 								= $api->escapeJsonString($value->vla_pausecode);
-			$vla_conference							= $api->escapeJsonString($value->vla_conf_exten);
-			//$ol_conference							= $api->escapeJsonString($value->ol_conference);
-			//$ol_callerid							= ( !isset ( $value->ol_callerid ) ) ? "" : $api->escapeJsonString ( $value->ol_callerid );
+			//$vla_conference							= $api->escapeJsonString($value->vla_conf_exten);
+			$ol_conference							= (!isset($value->ol_conference)) ? "" : $api->escapeJsonString($value->ol_conference);
+			$ol_callerid							= (!isset($value->ol_callerid)) ? "" : $api->escapeJsonString($value->ol_callerid);
 			
-			foreach ($output->callerids as $key => $callerids) {
-			
-				$vac_callerid 						= ( !isset ( $callerids->vac_callerid ) ) ? "" : $api->escapeJsonString ( $callerids->vac_callerid );       
-				$vac_lead_id 						= $api->escapeJsonString($callerids->vac_lead_id);
-				$vac_phone_number 					= $api->escapeJsonString($callerids->vac_phone_number);
-			}
-			
-			foreach ($output->parked as $key => $parked){
-			
-				$pc_channel 						= ( !isset ( $parked->pc_channel ) ) ? "" : $api->escapeJsonString ( $parked->pc_channel );
-				$pc_channel_group 					= $parked->pc_channel_group;
-				$pc_extension 						= $parked->pc_extension;
-				$pc_parked_by 						= $parked->pc_parked_by;
-				$pc_parked_time 					= $parked->pc_parked_time;
-			}
-		
-			///if ( !empty($output->ol_callerids) ) {
-				foreach ($output->ol_callerids as $key => $ol_callerids) {				
-					$ol_callerid 					= $ol_callerids->name;
-					$ol_conference 					= $ol_callerids->conference;
+			if (!empty($output->callerids)) {
+				foreach ($output->callerids as $key => $callerids) {
+				
+					$vac_callerid 					= $api->escapeJsonString($callerids->vac_callerid);
+					$vac_lead_id 					= $api->escapeJsonString($callerids->vac_lead_id);
+					$vac_phone_number 				= $api->escapeJsonString($callerids->vac_phone_number);
 				}			
-			//}
+			}
+			
+			if (!empty($output->parked)) {
+				foreach ($output->parked as $key => $parked){
+				
+					$pc_channel 					= $parked->pc_channel;
+					$pc_channel_group 				= $parked->pc_channel_group;
+					$pc_extension 					= $parked->pc_extension;
+					$pc_parked_by 					= $parked->pc_parked_by;
+					$pc_parked_time 				= $parked->pc_parked_time;
+				}
+			}
 			
 			$CM 									= "";        
 			$STARTtime 								= date("U");       
