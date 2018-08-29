@@ -147,6 +147,7 @@
 			}
 			
 			$call_time_MS 							= "$call_time_M_int:$call_time_SEC";
+			$statustxt								= $status;
 			
 			switch ($status) {
 				case "PAUSED":
@@ -202,18 +203,13 @@
 					
 				break;
 				
-				case "HUNGUP":
+				case "DEAD":
 					$textclass 						= "text-danger";
+					$statustxt 						= "HUNGUP";
 					
 				break;
 			}
-		
-			$statustxt								= $status;
-			
-			if ($status == "DEAD") {
-				$statustxt 							= "HUNGUP";
-			}
-			
+
 			$barracks 								.= '[';
 			$barracks 								.= '"'.$sessionAvatar.'",';
 			$barracks 								.= '"<a id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#modal_view_agent_information\" data-id=\"'.$userid.'\" data-user=\"'.$agentid.'\" class=\"text-blue\"><strong>'.$agentname.'</strong></a>",'; 
@@ -228,7 +224,7 @@
 		$barracks 									= rtrim($barracks, ","); 	
     }
     
-    $barracks 									.= ']';
+    $barracks 										.= ']';
 	echo json_encode($barracks);
     
 ?>
