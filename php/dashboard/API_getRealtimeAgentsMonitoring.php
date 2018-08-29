@@ -42,6 +42,7 @@
 			$server_ip 								= $api->escapeJsonString($value->vla_server_ip);
 			$call_server_ip 						= $api->escapeJsonString($value->vla_call_server_ip);
 			$last_call_time 						= $api->escapeJsonString($value->last_call_time);
+			$last_update_time 						= $api->escapeJsonString($value->last_update_time);
 			$last_call_finish 						= $api->escapeJsonString($value->last_call_finish);
 			$campaign_id 							= $api->escapeJsonString($value->vla_campaign_id);
 			$last_state_change 						= (!isset($value->last_state_change)) ? $last_call_finish : $api->escapeJsonString($value->last_state_change);
@@ -108,7 +109,7 @@
 				//if (($vla_callerid != $vac_callerid) && ($last_state_change != $last_call_time)) {
 				if (($vla_callerid != $ol_callerid) && ($last_state_change != $last_call_time)) {
 					$STARTtime 						= date("U");
-					$last_state_change 				= $last_call_finish;
+					$last_state_change 				= $last_update_time;
 					$call_time_S 					= ($STARTtime - $last_state_change);
 					$call_time_M 					= ($call_time_S / 60);
 					$call_time_M 					= round($call_time_M, 2);
