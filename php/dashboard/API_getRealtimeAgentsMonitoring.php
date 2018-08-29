@@ -107,6 +107,7 @@
 				
 				//if (($vla_callerid != $vac_callerid) && ($last_state_change != $last_call_time)) {
 				if (($vla_callerid != $ol_callerid) && ($last_state_change != $last_call_time)) {
+					$STARTtime 						= date("U");
 					$last_state_change 				= $last_call_finish;
 					$call_time_S 					= ($STARTtime - $last_state_change);
 					$call_time_M 					= ($call_time_S / 60);
