@@ -50,6 +50,9 @@
 			$vla_callerid 							= $api->escapeJsonString($value->vla_callerid);    
 			$cust_phone 							= ( !isset ( $value->vl_phone_number ) ) ? "" : $api->escapeJsonString ( $value->vl_phone_number );
 			$pausecode 								= $api->escapeJsonString($value->vla_pausecode);
+			$vla_conference							= $api->escapeJsonString($value->vla_conf_exten);
+			$ol_conference							= $api->escapeJsonString($value->ol_conference);
+			$ol_callerid							= ( !isset ( $value->ol_callerid ) ) ? "" : $api->escapeJsonString ( $value->ol_callerid );
 			
 			foreach ($output->callerids as $key => $callerids) {
 			
@@ -86,7 +89,8 @@
 					$status 						= "PARK"; 
 				}            
 				
-				if (($vla_callerid != $vac_callerid) && ($last_state_change != $last_call_time)) {
+				//if (($vla_callerid != $vac_callerid) && ($last_state_change != $last_call_time)) {
+				if (($vla_callerid != $ol_callerid) && ($last_state_change != $last_call_time)) {
 					$status 						= "HUNGUP"; 
 				}
 				
@@ -131,8 +135,6 @@
 				$call_time_S 						= ($STARTtime - $last_state_change);
 				$textclass 							= "text-success";
 			}
-		
-
 				
 			if ($call_time_SEC < 10) { 
 				$call_time_SEC 						= "0$call_time_SEC"; 
