@@ -307,8 +307,8 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 																	$field_HTML .= "o_cal.a_tpl.yearscroll = false;\n";
 																	$field_HTML .= "</script>\n";
 																	// $baseurl = base_url();
-																	 $urlcalendar = './css/images/cal.gif';
-																	$field_HTML .= "<img id=\"$A_field_label\" name=\"$A_field_label\" src=\"$urlcalendar\">";
+																	 //$urlcalendar = './css/images/cal.gif';
+																	//$field_HTML .= "<img id=\"$A_field_label\" name=\"$A_field_label\" src=\"$urlcalendar\">";
 															}
 
 															if ($A_field_type=='TIME')
