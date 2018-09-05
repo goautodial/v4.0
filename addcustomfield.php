@@ -249,7 +249,7 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 
 																			$lblname = $A_field_label.'[]';
 
-																			$field_HTML .= "<input type=$A_field_type name=$lblname id=$lblname value=\"$field_options_value_array[0]\" $field_selected> $field_options_value_array[1]\n";
+																			$field_HTML .= "<input type=$A_field_type name=$lblname id=\"{$lblname}_{$field_options_value_array[0]}\" value=\"$field_options_value_array[0]\" $field_selected> $field_options_value_array[1]\n";
 
 
 																			if ($A_multi_position=='VERTICAL')
