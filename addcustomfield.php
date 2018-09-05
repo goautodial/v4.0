@@ -233,7 +233,8 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 																		{
 
 																			if ($A_field_default == "$field_options_value_array[0]") {$field_selected = 'SELECTED';}
-																			$field_HTML .= "<option value=\"$field_options_value_array[0]\" $field_selected>$field_options_value_array[0]</option>\n";
+																			$field_option_text = (!empty($field_options_value_array[1])) ? $field_options_value_array[1] : $field_options_value_array[0];
+																			$field_HTML .= "<option value=\"$field_options_value_array[0]\" $field_selected>" . trim($field_option_text) . "</option>\n";
 																		}
 
 																		if ( ($A_field_type=='RADIO') or ($A_field_type=='CHECKBOX') )
