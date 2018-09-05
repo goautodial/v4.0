@@ -275,7 +275,7 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 															}
 															if ($A_field_type=='AREA')
 															{
-																$field_HTML .= "<textarea name=$A_field_label id=$A_field_label maxlength=$A_field_max rows=$A_field_size style='min-width: 90%></textarea>";
+																$field_HTML .= "<textarea name=$A_field_label id=$A_field_label maxlength=$A_field_max rows=$A_field_size style='min-width: 90%'></textarea>";
 															}
 															if ($A_field_type=='DISPLAY')
 															{
