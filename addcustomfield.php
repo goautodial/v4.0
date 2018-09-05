@@ -300,14 +300,14 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 																	$day_diff = $A_field_default;
 																	$default_date = date("Y-m-d", mktime(date("H"),date("i"),date("s"),date("m"),date("d")+$day_diff,date("Y")));
 																	$field_HTML .= "<input type=text size=11 maxlength=10 name=$A_field_label id=$A_field_label value=\"$default_date\">\n";
-																	/*$field_HTML .= "<script language=\"JavaScript\">\n";
+																	$field_HTML .= "<script language=\"JavaScript\">\n";
 																	$field_HTML .= "var o_cal = new tcal ({\n";
 																	$field_HTML .= "	'formname': 'form_custom_$listid',\n";
 																	$field_HTML .= "	'controlname': '$A_field_label'});\n";
 																	$field_HTML .= "o_cal.a_tpl.yearscroll = false;\n";
-																	$field_HTML .= "</script>\n";*/
+																	$field_HTML .= "</script>\n";
 																	// $baseurl = base_url();
-																	// $urlcalendar = $baseurl.'js/images/cal.gif';
+																	 $urlcalendar = './js/images/cal.gif';
 																	$field_HTML .= "<img id=\"$A_field_label\" name=\"$A_field_label\" src=\"$urlcalendar\">";
 															}
 
