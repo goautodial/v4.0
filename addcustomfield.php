@@ -302,12 +302,12 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 																	$field_HTML .= "<input type=text size=11 maxlength=10 name=$A_field_label id=$A_field_label value=\"$default_date\">\n";
 																	$field_HTML .= "<script language=\"JavaScript\">\n";
 																	$field_HTML .= "var o_cal = new tcal ({\n";
-																	$field_HTML .= "	'formname': 'form_custom_$listid',\n";
+																	$field_HTML .= "	'formname': 'form_custom_{$modifyid}',\n";
 																	$field_HTML .= "	'controlname': '$A_field_label'});\n";
 																	$field_HTML .= "o_cal.a_tpl.yearscroll = false;\n";
 																	$field_HTML .= "</script>\n";
 																	// $baseurl = base_url();
-																	 $urlcalendar = './js/images/cal.gif';
+																	 $urlcalendar = './css/images/cal.gif';
 																	$field_HTML .= "<img id=\"$A_field_label\" name=\"$A_field_label\" src=\"$urlcalendar\">";
 															}
 
