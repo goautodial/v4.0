@@ -218,6 +218,7 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 
 															if ( ($A_field_type=='SELECT') or ($A_field_type=='MULTI') or ($A_field_type=='RADIO') or ($A_field_type=='CHECKBOX') )
 															{
+																$A_field_options = str_replace("\r\n", "\n", $A_field_options);
 																$field_options_array = explode("\n",$A_field_options);
 
 																$field_options_count = count($field_options_array);
@@ -274,7 +275,7 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 															}
 															if ($A_field_type=='AREA')
 															{
-																$field_HTML .= "<textarea name=$A_field_label id=$A_field_label ROWS=$A_field_max COLS=$A_field_size></textarea>";
+																$field_HTML .= "<textarea name=$A_field_label id=$A_field_label maxlength=$A_field_max rows=$A_field_size style='min-width: 90%></textarea>";
 															}
 															if ($A_field_type=='DISPLAY')
 															{
