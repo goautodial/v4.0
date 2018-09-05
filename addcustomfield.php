@@ -601,7 +601,7 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 													<td><?php echo $A_field_name; ?></td>
 													<td><?php echo $A_field_type; ?></td>
 													<td style="width: 20%;">
-														<button type="button" class="btn btn-primary btn-edit-cf" data-list-id="<?php echo $modifyid; ?>" data-info="<?php echo json_encode($fieldsvalues, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); ?>"><span class="fa fa-pencil"></span></button>
+														<button type="button" class="btn btn-primary btn-edit-cf" data-list-id="<?php echo $modifyid; ?>" data-info="<?php echo htmlspecialchars(json_encode($fieldsvalues), ENT_QUOTES, 'UTF-8'); ?>"><span class="fa fa-pencil"></span></button>
 														<button type="button" class="btn btn-danger btn-delete-cf<?=($perm->customfields_delete === 'N' ? ' hidden' : '')?>" data-list-id="<?php echo $modifyid; ?>" data-field-label="<?php echo $A_field_label; ?>" data-field-id="<?php echo $A_field_id; ?>"><span class="fa fa-trash"></span></button>
 														<button type="button" class="btn btn-info btn-view-cf" data-info="<?php echo htmlspecialchars(json_encode($fieldsvalues), ENT_QUOTES, 'UTF-8'); ?>"><span class="fa fa-eye"></span></button>
 													</td>
@@ -873,7 +873,7 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 					$('.field-name').val(data.field_name);
 					$('.field-description').val(data.field_description);
 					$('.field-type').val(data.field_type).change();
-					$('.field-options').val(data.field_options);
+					$('.field-options').val(data.field_options.replace("\\", "\"));
 					$('.field-size').val(data.field_size);
 					$('.field-max').val(data.field_max);
 					$('.field-default').val(data.field_default);
