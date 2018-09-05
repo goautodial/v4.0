@@ -1,7 +1,7 @@
 <?php	
 /**
- * @file 		crm.php
- * @brief 		Manage leads and contacts
+ * @file 		callreports.php
+ * @brief 		Reports and Analytics
  * @copyright 	Copyright (c) 2018 GOautodial Inc. 
  * @author     	Alexander Jim H. Abenoja 
  * @author		Demian Lizandro A. Biscocho
@@ -136,17 +136,26 @@
                                     <label for="filter_type"><?php $lh->translateText("type"); ?></label>
                                     <select class="form-control select2" id="filter_type" style="width:100%;">
 									<?php
-										if ($perm->reportsanalytics_display == 'Y') {
+										if ($perm->reportsanalytics_display == 'Y' && $user->getUserRole() == CRM_DEFAULTS_USER_ROLE_ADMIN) {
 									?>
-										<option value="stats" selected><?php echo $lh->translationFor("stats"); ?></option>
-										<option value="agent_detail"><?php echo $lh->translationFor("agent_detail"); ?></option>
-										<!-- <option value="agent_pdetail"><?php //echo $lh->translationFor("agent_pdetail"); ?></option> -->
-										<option value="dispo"><?php echo $lh->translationFor("dispo"); ?></option>
-										<option value="sales_agent"><?php echo $lh->translationFor("sales_agent"); ?></option>
-										<option value="sales_tracker"><?php echo $lh->translationFor("sales_tracker"); ?></option>
-										<option value="inbound_report"><?php echo $lh->translationFor("inbound_call_report"); ?></option>
-										<option value="call_export_report"><?php echo$lh->translationFor("export_call_report"); ?></option>
+											<option value="stats" selected><?php echo $lh->translationFor("stats"); ?></option>
+											<option value="agent_detail"><?php echo $lh->translationFor("agent_detail"); ?></option>
+											<!-- <option value="agent_pdetail"><?php //echo $lh->translationFor("agent_pdetail"); ?></option> -->
+											<option value="dispo"><?php echo $lh->translationFor("dispo"); ?></option>
+											<option value="sales_agent"><?php echo $lh->translationFor("sales_agent"); ?></option>
+											<option value="sales_tracker"><?php echo $lh->translationFor("sales_tracker"); ?></option>
+											<option value="inbound_report"><?php echo $lh->translationFor("inbound_call_report"); ?></option>
+											<option value="call_export_report"><?php echo$lh->translationFor("export_call_report"); ?></option>
 									<?php
+										} else {
+											if ($perm->reportsanalytics_statistical_display == 'Y') { echo '<option value="stats">'.$lh->translationFor("stats").'</option>'; }
+											if ($perm->reportsanalytics_agent_time_display == 'Y') { echo '<option value="agent_detail">'.$lh->translationFor("agent_detail").'</option>'; }
+											//if ($perm->reportsanalytics_agent_performance_display == 'Y') { echo '<option value="agent_pdetail">'.$lh->translationFor("agent_pdetail").'</option>'; }
+											if ($perm->reportsanalytics_dial_status_display == 'Y') { echo '<option value="dispo">'.$lh->translationFor("dispo").'</option>'; }
+											if ($perm->reportsanalytics_agent_sales_display == 'Y') { echo '<option value="sales_agent">'.$lh->translationFor("sales_agent").'</option>'; }
+											if ($perm->reportsanalytics_sales_tracker_display == 'Y') { echo '<option value="sales_tracker">'.$lh->translationFor("sales_tracker").'</option>'; }
+											if ($perm->reportsanalytics_inbound_call_display == 'Y') { echo '<option value="inbound_report">'.$lh->translationFor("inbound_call_report").'</option>'; }
+											if ($perm->reportsanalytics_export_call_display == 'Y') { echo '<option value="call_export_report">'.$lh->translationFor("export_call_report").'</option>'; }
 										}
 									?>
                                         <!--<option value="dashboard">Dashboard</option>

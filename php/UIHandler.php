@@ -2000,7 +2000,7 @@ error_reporting(E_ERROR | E_PARSE);
 				$telephonyArea .= $this-> getSidebarItem("./telephonylist.php", "list", $this->lh->translationFor("lists"));
 			if ($perms->script->script_read == 'R')
 				$telephonyArea .= $this-> getSidebarItem("./telephonyscripts.php", "comment", $this->lh->translationFor("scripts"));
-			if ( ($perms->inbound->inbound_read == 'R' && $gopackage->packagetype !== "gosmall") || ($_SESSION['user'] === "goautodial" || $_SESSION['user'] === "goAPI") )
+			if ( ($perms->inbound->inbound_read == 'R' && $gopackage->packagetype !== "gosmall") || ($_SESSION['usergroup'] === "ADMIN") )
 				$telephonyArea .= $this-> getSidebarItem("./telephonyinbound.php", "phone", $this->lh->translationFor("inbound"));
 			if ($perms->voicefiles->voicefiles_upload == 'C') {
 				$telephonyArea .= $this-> getSidebarItem("./audiofiles.php", "music", $this->lh->translationFor("audiofiles"));
@@ -2009,30 +2009,31 @@ error_reporting(E_ERROR | E_PARSE);
 			}
 			$telephonyArea .= '</ul></li>';
 
-			//if ($perms->servers->servers_read == 'R') {
-				$settings = '<li class="treeview"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("settings").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
-				//if($_SESSION['show_phones'] === "1")
-				//if($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
-				//$settings .= $this-> getSidebarItem("./settingsphones.php", "phone", $this->lh->translationFor("phones"));
+			if ($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
+				$settings = '<li class="treeview"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("settings").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';				
 				$settings .= $this-> getSidebarItem("./settingscalltimes.php", "list-ol", $this->lh->translationFor("call_times"));
-				//$settings .= $this-> getSidebarItem("./settingssystemsettings.php", "gear", $this->lh->translationFor("system_settings"));
 				$settings .= $this-> getSidebarItem("./settingsvoicemails.php", "envelope", $this->lh->translationFor("voice_mails"));
 				$settings .= $this-> getSidebarItem("./settingsusergroups.php", "users", $this->lh->translationFor("user_groups"));
-				//}
-				//if ($gopackage->show_carrier_settings === "Y" || ($_SESSION['user'] === "goautodial" || $_SESSION['user'] === "goAPI") )
+				
 				if ($perms->carriers->carriers_read == 'R' || $userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
 					$settings .= $this-> getSidebarItem("./settingscarriers.php", "signal", $this->lh->translationFor("carriers"));
+				
 				if ($perms->servers->servers_read == 'R' || $userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
 					$settings .= $this-> getSidebarItem("./settingsservers.php", "server", $this->lh->translationFor("servers"));
 					
-				//if($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
-				$settings .= $this-> getSidebarItem("./settingsadminlogs.php", "book", $this->lh->translationFor("admin_logs"));
+				if($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
+					$settings .= $this-> getSidebarItem("./settingsadminlogs.php", "book", $this->lh->translationFor("admin_logs"));
+				
 				$settings .= '</ul></li>';
-			//}
+			}
 
 			$callreports = '<li class="treeview"><a href="#"><i class="fa fa-bar-chart-o"></i> <span>'.$this->lh->translationFor("call_reports").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
 			$callreports .= $this-> getSidebarItem("./callreports.php", "bar-chart", $this->lh->translationFor("reports_and_go_analytics"));
-			$callreports .= $this-> getSidebarItem("./callrecordings.php", "phone-square", $this->lh->translationFor("call_recordings"));
+			
+			if ($perms->recordings->recordings_display == 'Y') {
+				$callreports .= $this-> getSidebarItem("./callrecordings.php", "phone-square", $this->lh->translationFor("call_recordings"));
+			}
+			
 			$callreports .= '</ul></li>';
 
 			$eventsArea .= $this->getSidebarItem("events.php", "calendar-o", $this->lh->translationFor("events"));

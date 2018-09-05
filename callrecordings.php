@@ -32,7 +32,7 @@
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 	
-	$perm = $ui->goGetPermissions('recordings', $_SESSION['usergroup']);
+	$perm = $api->goGetPermissions('recordings');
 ?>
 <html>
     <head>
