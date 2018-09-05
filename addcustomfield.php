@@ -154,7 +154,7 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 												<?php
 
 													if(count($customs) > 0) {
-														$viewall .= "<form>\n";
+														$viewall .= "<form id=\"form_custom_{$modifyid}\">\n";
 														$viewall .= "<TABLE class=\"table\" style=\"rgb(208,208,208);\">";
 														$last_field_rank=0;
 														$o=0;
