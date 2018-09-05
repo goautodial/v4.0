@@ -5765,6 +5765,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$css .= '<script src="js/jquery.min.js"></script>'."\n"; // required JS
 		$css .= '<script src="js/bootstrap.min.js" type="text/javascript"></script>'."\n"; // required JS
 		$css .= '<script src="js/jquery-ui.min.js" type="text/javascript"></script>'."\n"; // required JS
+		$css .= '<script src="js/calendar_db.js" type="text/javascript" ></script>'."\n";
 
 		return $css;
 	}
@@ -5797,7 +5798,6 @@ error_reporting(E_ERROR | E_PARSE);
 		$js .= '<script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>'."\n";
 		$js .= '<script src="js/vue-avatar/vue-avatar.min.js" type="text/javascript"></script>'."\n";
 		$js .= '<script src="js/select2/select2.full.min.js" type="text/javascript" ></script>'."\n";
-		$js .= '<script src="js/calendar_db.js" type="text/javascript" ></script>'."\n";
 		$js .= "<script type='text/javascript'>
 
 			var goOptions = {
