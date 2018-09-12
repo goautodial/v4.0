@@ -5776,13 +5776,16 @@ error_reporting(E_ERROR | E_PARSE);
         $css .= '<link href="css/datatables/1.10.19/dataTables.jqueryui.min.css" rel="stylesheet" type="text/css" />'."\n";
         $css .= '<link href="css/datatables/1.10.19/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />'."\n";
 		$css .= '<link href="css/datatables/1.10.19/responsive.dataTables.min.css" rel="stylesheet" type="text/css" />'."\n";
-		$css .= '<link href="css/datatables/1.10.19/responsive.jqueryui.min.css" rel="stylesheet" type="text/css" />'."\n";  
+		$css .= '<link href="css/datatables/1.10.19/responsive.jqueryui.min.css" rel="stylesheet" type="text/css" />'."\n";
+		$css .= '<link href="css/datatables/1.10.19/rowGroup.dataTables.min.css" rel="stylesheet" type="text/css" />'."\n";
 		$css .= '<style rel="stylesheet" type="text/css"> .content { padding-bottom: 75px; } </style>'."\n";		
 		$css .= '<script src="js/datatables/1.10.19/jquery.dataTables.min.js" type="text/javascript"></script>'."\n";
 		$css .= '<script src="js/datatables/1.10.19/dataTables.jqueryui.min.js" type="text/javascript"></script>'."\n";
 		$css .= '<script src="js/datatables/1.10.19/dataTables.bootstrap.min.js" type="text/javascript"></script>'."\n";
 		$css .= '<script src="js/datatables/1.10.19/dataTables.responsive.min.js" type="text/javascript"></script>'."\n";       
-		$css .= '<script src="js/datatables/1.10.19/responsive.jqueryui.min.js" type="text/javascript"></script>'."\n";		
+		$css .= '<script src="js/datatables/1.10.19/responsive.jqueryui.min.js" type="text/javascript"></script>'."\n";
+		$css .= '<script src="js/datatables/1.10.19/dataTables.rowGroup.min.js" type="text/javascript"></script>'."\n";
+		$css .= '<script src="js/datatables/1.10.19/sum.js" type="text/javascript"></script>'."\n";
 
 		return $css;
 	}	

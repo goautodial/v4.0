@@ -89,13 +89,13 @@
 
 	// AGENT TIME DETAIL
 		if ($pageTitle == "agent_detail") {
-			$agent_detail = '';
+			$tablehtml = '';
 			//echo "<pre>";
 			//var_dump($output);
 			//die("dd");
 			// top table
-				$agent_detail .= '<div>
-					<table class="responsive display no-wrap compact table table-striped" width="100%" id="agent_detail_top">
+				$tablehtml .= '<div>
+					<table class="responsive display no-wrap compact table table-striped" style="width:100%" id="agent_detail_top">
 						<thead>
 							<tr>
 								<th> Agent Name </th>
@@ -117,97 +117,112 @@
 					//echo "<pre>";
 					//var_dump($output->TOPsorted_output);
 					for ($i=0; $i < count($output->TOPsorted_output->name); $i++) {
-						$agent_detail .= '<tr>
-											<td>'.$output->TOPsorted_output->name[$i].'</td>
-											<!-- <td>'.$output->TOPsorted_output->user[$i].'</td> -->
-											<td>'.$output->TOPsorted_output->number_of_calls[$i].'</td>
-											<td>'.gmdate('H:i:s', $output->TOPsorted_output->agent_time[$i]).'</td>
-											<td>'.gmdate('H:i:s', $output->TOPsorted_output->wait_time[$i]).'</td>
-											<td>'.gmdate('H:i:s', $output->TOPsorted_output->talk_time[$i]).'</td>
-											<td>'.gmdate('H:i:s', $output->TOPsorted_output->dispo_time[$i]).'</td>
-											<td>'.gmdate('H:i:s', $output->TOPsorted_output->pause_time[$i]).'</td>
-											<td>'.gmdate('H:i:s', $output->TOPsorted_output->wrap_up[$i]).'</td>
-											<td>'.gmdate('H:i:s', $output->TOPsorted_output->customer_time[$i]).'</td>
-										</tr>';
+						$tablehtml .= '<tr>
+							<td>'.$output->TOPsorted_output->name[$i].'</td>
+							<!-- <td>'.$output->TOPsorted_output->user[$i].'</td> -->
+							<td>'.$output->TOPsorted_output->number_of_calls[$i].'</td>
+							<td>'.gmdate('H:i:s', $output->agent_time[$i]%86400).'</td>
+							<td>'.gmdate('H:i:s', $output->TOPsorted_output->wait_time[$i]%86400).'</td>
+							<td>'.gmdate('H:i:s', $output->TOPsorted_output->talk_time[$i]%86400).'</td>
+							<td>'.gmdate('H:i:s', $output->TOPsorted_output->dispo_time[$i]%86400).'</td>
+							<td>'.gmdate('H:i:s', $output->TOPsorted_output->pause_time[$i]%86400).'</td>
+							<td>'.gmdate('H:i:s', $output->TOPsorted_output->wrap_up[$i]%86400).'</td>
+							<td>'.gmdate('H:i:s', $output->TOPsorted_output->customer_time[$i]%86400).'</td>
+						</tr>';
 					}
 				} else {
-					$agent_detail .= "";
+					$tablehtml .= "";
 				}
 					
-				$agent_detail .= '</tbody>';
+				$tablehtml .= '</tbody>';
 
 				if ($output->TOTcalls != NULL) {
-						$agent_detail .= '<tfoot><!-- <tr class="warning"><th> Total </th> -->';
-							$agent_detail .= '<th>'.$output->TOT_AGENTS.'</th>';
-							$agent_detail .= '<th>'.$output->TOTcalls.'</th>';
-							$agent_detail .= '<th>'.$output->TOTALtime.'</th>';
-							$agent_detail .= '<th>'.$output->TOTwait.'</th>';
-							$agent_detail .= '<th>'.$output->TOTtalk.'</th>';
-							$agent_detail .= '<th>'.$output->TOTdispo.'</th>';
-							$agent_detail .= '<th>'.$output->TOTpause.'</th>';
-							$agent_detail .= '<th>'.$output->TOTdead.'</th>';
-							$agent_detail .= '<th>'.$output->TOTcustomer.'</th>';
-						$agent_detail .= '</tr></tfoot>';
+						$tablehtml .= '<tfoot><!-- <tr class="warning"><th> Total </th> -->';
+							$tablehtml .= '<th>'.$output->TOT_AGENTS.'</th>';
+							$tablehtml .= '<th>'.$output->TOTcalls.'</th>';
+							$tablehtml .= '<th>'.$output->TOTALtime.'</th>';
+							$tablehtml .= '<th>'.$output->TOTwait.'</th>';
+							$tablehtml .= '<th>'.$output->TOTtalk.'</th>';
+							$tablehtml .= '<th>'.$output->TOTdispo.'</th>';
+							$tablehtml .= '<th>'.$output->TOTpause.'</th>';
+							$tablehtml .= '<th>'.$output->TOTdead.'</th>';
+							$tablehtml .= '<th>'.$output->TOTcustomer.'</th>';
+						$tablehtml .= '</tr></tfoot>';
 					}
 
-				$agent_detail .= '</table></div><br/>'; 
+				$tablehtml .= '</table></div><br/>'; 
 
-			// login table
-				if ($output->sub_statusesTOP != NULL) {
-					$agent_detail .= '<div>
-						<table class="responsive display no-wrap compact table table-striped" width="100%" id="agent_detail_login">
-							<thead>
-								<tr>
-									<th> User </th>';
-							for($i=0; $i < count($output->sub_statusesTOP); $i++) {
-								$agent_detail .= '<th>'.$output->sub_statusesTOP[$i].'</th>';
-							}
-					
-					$agent_detail .= '</tr>
-							</thead>
-							<tbody>
-					';
-
-					if ($output->BOTsorted_output != NULL) {				
-						for($i=0; $i < count($output->BOTsorted_output->name); $i++) {
-							$statuses = $output->BOTsorted_output->statuses[$i];
-							$agent_names = $output->BOTsorted_output->name[$i];
-							$agent_detail .= '<tr>';
-							$agent_detail .= '<td>'.$agent_names.'</td>';
-							
-							for($a=0; $a < count($output->sub_statusesTOP); $a++) {
-								//if (!empty($output->BOTsorted_output->statuses[$a])) {
-								if ($statuses == $output->BOTsorted_output->statuses[$a]) {
-									$agent_detail .= '<td>'.gmdate('H:i:s', $output->BOTsorted_output->statuses[$a]).'</td>';
-								} else {
-									$agent_detail .= '<td>00:00:00</td>';
-								}
-							}
-							
-							$agent_detail .= '</tr>';
-							unset($statuses);
-							//$agent_detail .= $output->BOTsorted_output;
-						}
-					} else {
-						$agent_detail .= "";
-					}
-					
-					$agent_detail .= '</tbody>';
-					
-						if ($output->SUMstatuses != NULL) {					
-							$agent_detail .= '<tfoot><tr class="warning"><th> Total </th>';
-							for($i=0; $i < count($output->SUMstatuses); $i++) {
-								$agent_detail .= '<th>'.$output->SUMstatuses.'</th>';
-							}
-							$agent_detail .= '</tr></tfoot>';
-						}
-
-					$agent_detail .= '</table></div><br/>'; 
+				$sub_statuses = array();
+				$full_names = array();
 				
+				foreach ($output->PC_statuses as $key => $value) {
+					$sub_status = $value->sub_status;
+					$full_name = $value->full_name;
+					$pause_sec = $value->pause_sec;
+					
+					array_push($sub_statuses, $sub_status);
+					array_push($full_names, $full_name);					
+				}											
+				
+				$pause_codes = array_unique($sub_statuses);
+				$agent_names = array_unique($full_names);
+					
+				if (!empty($output->PC_statuses)) {
+					$tablehtml .= '<div>';
+					$tablehtml .= '<table class="responsive display compact table table-inverse table-bordered" style="width:100%" id="agent_detail_login">';
+					$tablehtml .= '<thead><tr>';
+					$tablehtml .= '<th> User </th>';
+					
+					foreach ($pause_codes as $pause_code) {
+						$tablehtml .= '<th>'.$pause_code.'</th>';
+					}
+						
+					$tablehtml .= '</tr>';
+					$tablehtml .= '</thead>';
+					$tablehtml .= '<tbody id="agent_detail_tbody">';
+
+					foreach ($output->PC_statuses as $key => $value) {			
+						$full_name = $value->full_name;
+						$sub_status = $value->sub_status;
+						$pc_duration = $value->pause_sec;						
+						
+						//$pcstatus = "$sub_status-$pc_duration";
+						//$row_array[] = array("agent" => $full_name, "sub_status" => $sub_status, "duration" => $pc_duration);
+						
+						//foreach ($agent_names as $agent_name) {																				
+							//if ($full_name == $agent_name) {
+								$tablehtml .= '<tr><td>'.$full_name.'</td>';
+								
+								foreach ($pause_codes as $pause_code) {
+									if ($sub_status == $pause_code) {
+										//$tablehtml .= '<td>'.gmdate('H:i:s', $pc_duration).'</td>';
+										$tablehtml .= '<td class="duration">'.$pc_duration.'</td>';
+									} else {
+										$tablehtml .= '<td>0</td>';
+									}
+								}
+								
+								$tablehtml .= '</tr>';						
+							//}							
+						//}					
+					}			
+					
+					$tablehtml .= '</tbody>';
+					
+					$tablehtml .= '<tfoot><tr>';
+					$tablehtml .= '<th> TOTAL </th>';	
+					foreach ($pause_codes as $pause_code) {
+						$tablehtml .= '<th>'.$pause_code.'</th>';
+					}					
+					$tablehtml .= '</tr></tfoot>';	
+									
+					$tablehtml .= '</table></div><br/>';			
+				} else {
+					$tablehtml .= '';
 				}
-			
+													
 			//FORM TO BE PASSED WHEN EXPORT IS CALLED
-			$agent_detail .= '<form action="php/ExportAgentDetails.php" id="export_agentdetail_form"  method="POST">
+			$tablehtml .= '<form action="php/ExportAgentDetails.php" id="export_agentdetail_form"  method="POST">
 								<input type="hidden" name="pageTitle" value="'.$pageTitle.'" />
 								<input type="hidden" name="fromDate" value="'.$fromDate.'" />
 								<input type="hidden" name="toDate" value="'.$toDate.'" />
@@ -215,11 +230,9 @@
 								<input type="hidden" name="session_user" value="'.$_SESSION["user"].'" />
 							</form>';
 
-			echo $agent_detail; // return for agent details
+			echo $tablehtml; // return for agent details
 
 		}// end of agent_detail
-
-
 	}
-//print_r($output);
+
 ?>
