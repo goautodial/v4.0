@@ -108,7 +108,7 @@
 
 						?>
 							<div class="panel-body">
-							<legend><?php $lh->translateText("modify_user"); ?> : <u><?php echo $output->data->user; ?></u></legend>
+							<legend><?php $lh->translateText("modify_user"); ?> : <u id="agent_name"><?php echo $output->data->user; ?></u></legend>
 								<form id="modifyuser">
 									<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 									<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
@@ -742,8 +742,9 @@
 	});
 	
 	function validate_user(){
-		var user_form_value = "";
+		var user_form_value = $('#agent_name').text();
 		var phone_logins_value = $('#phone_login').val();
+		console.log(user_form_value);
 		if(phone_logins_value != ""){
 			$.ajax({
 				url: "php/checkUser.php",
@@ -757,7 +758,7 @@
 					if(data == 1){
 						checker = 0;
 						$( "#phone_login" ).removeClass("error");
-						$( "#phone_login-error" ).text( "Phone Login is available." ).removeClass("error").addClass("avail");
+						$( "#phone_login-error" ).text( "Phone extension is valid." ).removeClass("error").addClass("avail");
 						$('#modifyUserOkButton').prop("disabled", false);
 					}else{
 						$( "#phone_login" ).addClass( "error" );
