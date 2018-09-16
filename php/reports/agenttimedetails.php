@@ -121,13 +121,13 @@
 							<td>'.$output->TOPsorted_output->name[$i].'</td>
 							<!-- <td>'.$output->TOPsorted_output->user[$i].'</td> -->
 							<td>'.$output->TOPsorted_output->number_of_calls[$i].'</td>
-							<td>'.gmdate('H:i:s', $output->agent_time[$i]%86400).'</td>
-							<td>'.gmdate('H:i:s', $output->TOPsorted_output->wait_time[$i]%86400).'</td>
-							<td>'.gmdate('H:i:s', $output->TOPsorted_output->talk_time[$i]%86400).'</td>
-							<td>'.gmdate('H:i:s', $output->TOPsorted_output->dispo_time[$i]%86400).'</td>
-							<td>'.gmdate('H:i:s', $output->TOPsorted_output->pause_time[$i]%86400).'</td>
-							<td>'.gmdate('H:i:s', $output->TOPsorted_output->wrap_up[$i]%86400).'</td>
-							<td>'.gmdate('H:i:s', $output->TOPsorted_output->customer_time[$i]%86400).'</td>
+							<td>'.gmdate('H:i:s', $output->agent_time[$i]).'</td>
+							<td>'.gmdate('H:i:s', $output->TOPsorted_output->wait_time[$i]).'</td>
+							<td>'.gmdate('H:i:s', $output->TOPsorted_output->talk_time[$i]).'</td>
+							<td>'.gmdate('H:i:s', $output->TOPsorted_output->dispo_time[$i]).'</td>
+							<td>'.gmdate('H:i:s', $output->TOPsorted_output->pause_time[$i]).'</td>
+							<td>'.gmdate('H:i:s', $output->TOPsorted_output->wrap_up[$i]).'</td>
+							<td>'.gmdate('H:i:s', $output->TOPsorted_output->customer_time[$i]).'</td>
 						</tr>';
 					}
 				} else {
