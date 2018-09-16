@@ -632,27 +632,6 @@
 												statuses.push('<td>'+sformat(status)+'</td>');
 												//console.log(status);
 											}
-											/*console.log(statuses);
-											var login = rows
-												.data()
-												.pluck(1)
-												.reduce( function (a, b) {
-													return a + b*1;
-												}, 0) / 1;												
-							
-											var sbreak = rows
-												.data()
-												.pluck(2)
-												.reduce( function (a, b) {
-													return a + b*1;
-												}, 0) / 1;
-												
-											var replic = rows
-												.data()
-												.pluck(3)
-												.reduce( function (a, b) {
-													return a + b*1;
-												}, 0) / 1;*/
 																						
 											return $('<tr/>').append('<td>'+group+'</td>'+statuses);
 											
