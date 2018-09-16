@@ -754,7 +754,7 @@
 				},
 				success: function(data) {
 					console.log(data);
-					if(data == "success"){
+					if(data == 1){
 						checker = 0;
 						$( "#phone_login" ).removeClass("error");
 						$( "#phone_login-error" ).text( "Phone Login is available." ).removeClass("error").addClass("avail");

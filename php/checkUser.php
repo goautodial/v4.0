@@ -27,7 +27,7 @@
 	$postfields = array(
 		'goAction' => 'goCheckUser',
 		'user' => $_POST['user'],
-		'phone_login' => $_POST["phone_logins"]
+		'phone_login' => $_POST["phone_login"]
 	);
 	
 	$output = $api->API_checkUser($postfields);
