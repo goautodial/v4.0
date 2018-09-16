@@ -751,7 +751,8 @@
 				type: 'POST',
 				data: {
 					user : user_form_value,
-					phone_login : phone_logins_value
+					phone_login : phone_logins_value,
+					type : "edit"
 				},
 				success: function(data) {
 					console.log(data);
