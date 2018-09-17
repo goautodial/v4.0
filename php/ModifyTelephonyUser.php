@@ -60,10 +60,10 @@
 			$status 						= stripslashes($status);
 		}
 		
-		$user_level 							= NULL; 
+		$user_level 						= NULL; 
 		if (isset($_POST["userlevel"])) { 
-			$user_level 						= $_POST["userlevel"]; 
-			$user_level 						= stripslashes($user_level);
+			$user_level 					= $_POST["userlevel"]; 
+			$user_level 					= stripslashes($user_level);
 		}
 		
 		$voicemail 							= NULL; 

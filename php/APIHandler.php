@@ -38,6 +38,7 @@ if(isset($_SESSION["user"])){
 	define("session_user", $_SESSION["user"]);
 	define("session_usergroup", $_SESSION["usergroup"]);
 	define("session_password", $_SESSION["phone_this"]);
+	define("log_pass", $_SESSION["password_hash"]);
 	//define("responsetype", "json");
 }
 /**
@@ -107,6 +108,7 @@ if(isset($_SESSION["user"])){
 			'log_user' => session_user,
 			'log_group' => session_usergroup,
 			'log_ip' => $_SERVER['REMOTE_ADDR'],
+			'log_pass' => log_pass,
 			'hostname' => $_SERVER['REMOTE_ADDR']);
 
 		$postdata = array_merge($default_entries, $postfields);
@@ -806,7 +808,7 @@ if(isset($_SESSION["user"])){
 	}	
 	public function API_getAllUsers(){
 		$postfields = array(
-			'goAction' => 'goGetAllUsers'
+			'goAction' => 'goGetAllUsers'			
 		);
 		return $this->API_Request("goUsers", $postfields);
 	}

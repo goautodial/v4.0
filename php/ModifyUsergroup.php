@@ -214,10 +214,7 @@
 		$group_permission 					.= '}';
 		
 		$postfields 						= array(
-			'goUser' 							=> goUser,
-			'goPass' 							=> goPass,
 			'goAction'							=> 'goEditUserGroup',		
-			'responsetype' 						=> responsetype,
 			'user_group' 						=> $modifyid,
 			'group_name' 						=> $group_name,
 			'group_level' 						=> $group_level,
@@ -225,10 +222,7 @@
 			'shift_enforcement' 				=> $shift_enforcement,
 			'allowed_campaigns' 				=> $allowed_campaigns,
 			'allowed_usergroups' 				=> $allowed_usergroups,
-			'permissions' 						=> $group_permission,
-			'session_user' 						=> $_POST['log_user'],
-			'log_user' 							=> $_POST['log_user'],
-			'log_ip' 							=> $_SERVER['REMOTE_ADDR']
+			'permissions' 						=> $group_permission
 		);				
 
 		$output 							= $api->API_editUserGroup($postfields);

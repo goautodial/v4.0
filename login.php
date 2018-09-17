@@ -88,6 +88,7 @@
                 $_SESSION["realm"] = $result["realm"];
                 $_SESSION["bcrypt"] = $result["bcrypt"];
 				$_SESSION["use_webrtc"] = $result["use_webrtc"];
+				$_SESSION["password_hash"] = $result["password_hash"];
 				
 				if (!empty($result["avatar"])) {
 					$_SESSION['avatar'] = $result["avatar"];

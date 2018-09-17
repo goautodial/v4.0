@@ -343,6 +343,7 @@ class DbHandler {
 					$arr["avatar"] = $userobj->avatar;
 					$arr["user_group"] = $userobj->user_group;
 					$arr["use_webrtc"] = $userobj->use_webrtc;
+					$arr["password_hash"] = $pass_hash;
 	                
 	                return $arr;
 	            } else {
