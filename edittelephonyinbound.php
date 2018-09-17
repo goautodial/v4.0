@@ -2447,8 +2447,8 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
                         data: $("#modifyingroup").serialize(),
                         success: function(data) {
                           //if message is sent
-							console.log(data);
-							console.log($("#modifyingroup").serialize());
+							//console.log(data);
+							//console.log($("#modifyingroup").serialize());
 							$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
 							$('#modifyInboundOkButton').prop("disabled", false);
 							if (data == 1) {
@@ -3810,7 +3810,7 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 						success: function(data) {
 							$('#submit_agent_rank').html("<i class='fa fa-check'></i> Submit");
             				$('#submit_agent_rank').prop("disabled", false)
-							console.log(data);
+							//console.log(data);
 							if (data == "success") {
 								swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("agent_rank_update_success"); ?>", "success");
 							} else {
