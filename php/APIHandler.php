@@ -328,10 +328,10 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goInbound", $postfields);
 	}
 
-	public function API_getAllAgentRank($user_id, $group_id) {
+	public function API_getAllAgentRank($group_id) {
 		$postfields = array(
 			'goAction' => 'goGetAllAgentRank',
-			'user_id' => $user_id,
+			//'user_id' => $user_id,
 			'group_id' => $group_id
 		);				
 		return $this->API_Request("goInbound", $postfields);

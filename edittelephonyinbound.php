@@ -1072,15 +1072,15 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 
 									<form id="agentrankform" class="form-horizontal">
 										<?php
-											$agents_rank = $api->API_getAllAgentRank($user->getUserId(), $groupid);
+											$agents_rank = $api->API_getAllAgentRank($groupid);
 										?>
-										<table class="responsive display no-wrap table table-striped table-bordered table-hover" width="100%" id="agent_rank_table">
+										<table class="responsive display no-wrap table table-striped table-bordered table-hover" style="width:100%;" id="agent_rank_table">
 										   <thead>
 											  <tr>
 												 <th><?php $lh->translateText("user"); ?></th>
 												 <th><?php $lh->translateText("user_group"); ?></th>
 												 <th><?php $lh->translateText("selected"); ?></th>
-												 <th><?php $lh->translateText("rank"); ?></th>
+												 <th><?php $lh->translateText("Rank"); ?></th>
 												 <th><?php $lh->translateText("grade"); ?></th>
 												 <!--<th>Calls Today</th>-->
 											  </tr>
@@ -1090,9 +1090,7 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 											   		$count = count($agents_rank->user);
 											   		//var_dump($agents_rank->dropdown_rankdefvalues[0]);
 
-
-											   		for($a=0; $a < $count; $a++) {
-											   			
+											   		for($a=0; $a < $count; $a++) {											   			
 											   			$checkbox_fields = $agents_rank->checkbox_fields[$a];
 											   			$ischecked = $agents_rank->checkbox_ischecked[$a];
 											   			
@@ -1120,7 +1118,7 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 																$b = 9;
 																	while($b >= -9) {
 																?>
-																	<option value="<?php echo $rank_value;?>" <?php if ($rank_value == $b) { echo "selected";}?>> <?php echo $b;?></option>
+																	<option value="<?php echo $b;?>" <?php if ($rank_value == $b) { echo "selected";}?>> <?php echo $b;?></option>
 																<?php
 																	$b--;
 																	}
@@ -1133,14 +1131,14 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 																$c = 10;
 																	while($c >= 0) {
 																?>
-																	<option value="<?php echo $grade_value;?>" <?php if ($grade_value == $c) { echo "selected";}?>> <?php echo $c;?></option>
+																	<option value="<?php echo $c;?>" <?php if ($grade_value == $c) { echo "selected";}?>> <?php echo $c;?></option>
 																<?php
 																	$c--;
 																	}
 																?>
 															</select>
 														</td>
-														<!--<td><?php echo $agents_rank->call_today[$a];?></td>-->
+														<!--<td><?php //echo $agents_rank->call_today[$a];?></td>-->
 													</tr>
 												<?php
 													}
@@ -2188,8 +2186,23 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
                 $.fn.select2.defaults.set( "theme", "bootstrap" );
                 
 			// init datatables
-				$('#agent_rank_table').dataTable();
 
+				$('#agent_rank_table').DataTable({
+					destroy:true, 
+					responsive:true,
+					stateSave:true,
+					drawCallback:function(settings) {
+						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+						pagination.toggle(this.api().page.info().pages > 1);
+					},
+					columnDefs:[
+						{ width: "15%", targets: [ 3, 4 ] },
+						{ width: "10%", targets: 2 },
+						{ searchable: false, targets: [  2, 3, 4 ] }
+						//{ sortable: false, targets: [  0, 1 ] },
+						//{ targets: -1, className: "dt-body-middle" }
+					]
+				});				
 			// for cancelling
 				$(document).on('click', '#cancel', function() {
 					swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
@@ -2452,8 +2465,6 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 				$('#submit_agent_rank').click(function() {
 					var groupID = $(this).attr('data-id');
 					var itemdatas = $('#agentrankform').serialize();
-					var log_user = '<?=$_SESSION['user']?>';
-					var log_group = '<?=$_SESSION['usergroup']?>';
 					
 	                $('input:checkbox[id^="CHECK"]').each(function() {
                         if (!this.checked) {
@@ -2461,10 +2472,12 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
                         }
 	                });
 					
+					console.log(itemdatas);
+					
 					$.ajax({
 						url: "php/ModifyAgentRank.php",
 						type: 'POST',
-						data: {	itemrank: itemdatas, idgroup: groupID, log_user: log_user, log_group: log_group },
+						data: {	itemrank: itemdatas, idgroup: groupID },
 						success: function(data) {
 						$('#submit_agent_rank').html("<i class='fa fa-check'></i> Submit");
 						$('#submit_agent_rank').prop("disabled", false);
