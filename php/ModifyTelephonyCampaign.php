@@ -510,7 +510,7 @@
 
 		$inbound_man 								= NULL; 
 		if ($dial_method == "INBOUND_MAN") { 
-			$inbound_man 							= $_POST["inbound_man"]; 
+			$inbound_man 							= $_POST["dial_method"]; 
 			$inbound_man 							= stripslashes($inbound_man);
 		}
 		
