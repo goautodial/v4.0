@@ -718,6 +718,14 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goLists", $postfields);
 	}
 	
+	public function API_listExport($list_id){
+		$postfields = array(
+			'goAction' => 'goListExport',
+			'list_id' => $list_id
+		);		
+		return $this->API_Request("goLists", $postfields);
+	}
+	
 	public function API_getLeadsInfo($lead_id){
 		$postfields = array(
 			'goAction' => 'goGetLeadsInfo',

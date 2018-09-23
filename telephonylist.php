@@ -728,7 +728,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 				$(document).on('click','.download-list',function() {
 					var url = 'php/ExportList.php';
 					var id = $(this).attr('data-id');
-					//alert(extenid);
+					console.log(id);
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="listid" value="'+id+'" /></form>');
 					$('body').append(form);  // This line is not necessary
 					$(form).submit();

@@ -4,7 +4,7 @@
  * @brief       Handles Dial Status Request
  * @copyright   Copyright (c) 2018 GOautoial Inc.
  * @author      Alexander Jim Abenoja
- * @author		Demian Lizandro A, Biscocho 
+ * @author		Demian Lizandro A. Biscocho 
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
