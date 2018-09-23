@@ -35,8 +35,7 @@
 		$validated = 0;
 	}
 
-	if ($validated == 1) {
-		
+	if ($validated == 1) {		
 		// collect new user data.	
 		$modifyid = $_POST["modifyid"];
 		
@@ -86,10 +85,7 @@
 		}
 		
 		$postfields = array(
-			'goUser' => goUser,
-			'goPass' => goPass,
 			'goAction' => 'goEditCarrier',		
-			'responsetype' => responsetype,
 			'carrier_id' => $modifyid,
 			'carrier_name' => $carrier_name,
 			'carrier_description' => $carrier_description,
@@ -99,19 +95,18 @@
 			'account_entry' => $account_entry,
 			'globals_string' => $globals_string,
 			'dialplan_entry' => $dialplan_entry,
-			'active' => $active,
-			'session_user' => $_POST['log_user'],
-			'log_user' => $_POST['log_user'],
-			'log_ip' => $_SERVER['REMOTE_ADDR']
+			'active' => $active
 		);				
 
 		$output = $api->API_editCarrier($postfields);
 
-		if ($output->result=="success") { $status = 1; } 
-			else { $status = $output->result; }
+		if ($output->result=="success") { 
+			$status = 1; 
+		} else { 
+			$status = $output->result; 
+		}
 
-		echo json_encode($status);
-		
+		echo json_encode($status);		
 	} else { 
 		//ob_clean(); 
 		print $reason; 

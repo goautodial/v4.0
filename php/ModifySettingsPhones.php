@@ -82,10 +82,7 @@
 		}
 		
 		$postfields = array(
-			'goUser'			=> goUser,
-			'goPass' 			=> goPass,
 			'goAction' 			=> 'goEditPhone',		
-			'responsetype' 		=> responsetype,
 			'extension' 		=> $modifyid,
 			'dialplan_number' 	=> $dialplan,
 			'voicemail_id' 		=> $vmid,			
@@ -94,10 +91,7 @@
 			'status'			=> $status,
 			'fullname' 			=> $fullname,
 			'protocol' 			=> $protocol,
-			'pass' 				=> $password,
-			'session_user' 		=> $_POST['log_user'],
-			'log_user' 			=> $_POST['log_user'],
-			'log_ip' 			=> $_SERVER['REMOTE_ADDR']
+			'pass' 				=> $password
 		);				
 
 		$output = $api->API_editPhone($postfields);

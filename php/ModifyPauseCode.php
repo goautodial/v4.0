@@ -41,18 +41,11 @@
 	}
 
 	$postfields 					= array(
-		'goUser' 						=> goUser,
-		'goPass' 						=> goPass,
 		'goAction' 						=> 'goEditPauseCode',		
-		'responsetype' 					=> responsetype,
 		'pauseCampID' 					=> $campaign_id,
 		'pause_code' 					=> $pause_code,
 		'pause_code_name' 				=> $pause_code_name,
-		'billable' 						=> $billable,
-		'session_user' 					=> $_SESSION['user'],
-		'log_user' 						=> $_SESSION['user'],
-		'log_ip' 						=> $_SERVER['REMOTE_ADDR'],
-		'hostname' 						=> $_SERVER['REMOTE_ADDR']
+		'billable' 						=> $billable
 	);	
 			
 	$output 						= $api->API_modifyPauseCode($postfields);

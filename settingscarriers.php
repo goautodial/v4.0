@@ -738,17 +738,17 @@ host=</textarea>
 							data: $("#create_form").serialize(),
 							success: function(data) {
 								console.log(data);
-								//console.log($("#create_form").serialize());
+								console.log($("#create_form").serialize());
 								$('#finish').text("<?php $lh->translateText("submit"); ?>");
 								$('#finish').attr("disabled", false);
 								
-								if(data == 1){
+								if (data == 1) {
 									swal({	title: "<?php $lh->translateText("success"); ?>",
 											text: "<?php $lh->translateText("add_carriers_success"); ?>",
 											type: "success" },
 										function(){ window.location.href = 'settingscarriers.php'; }
 									);
-								}else{
+								} else {
 									sweetAlert("<?php $lh->translateText("oops"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 								}
 							}

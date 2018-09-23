@@ -228,7 +228,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $table = "<table id=\"$id\" class=\"table $styles\" width=\"100%\"><thead $theadStyle><tr>";
 	    if (is_array($items)) {
 			foreach ($items as $item) {
-		    	if($item == "CONCAT_WS(' ', first_name, middle_initial, last_name)"){
+		    	if ($item == "CONCAT_WS(' ', first_name, middle_initial, last_name)") {
 		    		$item = "Name";
 		    	}
 			    // class modifiers for hiding classes in medium or low resolutions.
@@ -249,7 +249,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $table = "<table id=\"$id\" class=\"display responsive no-wrap\" width=\"100%\"><thead $theadStyle><tr>";
 	    if (is_array($items)) {
 			foreach ($items as $item) {
-		    	if($item == "CONCAT_WS(' ', first_name, middle_initial, last_name)"){
+		    	if ($item == "CONCAT_WS(' ', first_name, middle_initial, last_name)") {
 		    		$item = "Name";
 		    	}
 			    // build header item
@@ -767,7 +767,7 @@ error_reporting(E_ERROR | E_PARSE);
 					} else {
 						'.$failureJS.'
 					}
-				}).fail(function(){
+				}).fail(function() {
 					'.$failureJS.'
   				});
 			}
@@ -810,10 +810,10 @@ error_reporting(E_ERROR | E_PARSE);
 			e.preventDefault();
 			'.$confirmPrefix.'
 				'.$paramCode.'
-				$.post("'.$phpfile.'", { "'.$parameter.'": paramValue '.$additionalString.'} ,function(data){
+				$.post("'.$phpfile.'", { "'.$parameter.'": paramValue '.$additionalString.'} ,function(data) {
 					if (data == "'.$successResult.'") { '.$successJS.' }
 					else { '.$failureJS.' }
-				}).fail(function(){
+				}).fail(function() {
 					'.$failureJS.'
   				});
 			'.$confirmSuffix.'
@@ -1470,15 +1470,15 @@ error_reporting(E_ERROR | E_PARSE);
 
     		<script type="text/javascript">
 
-    			setTimeout( function(){
+    			setTimeout( function() {
 				    $(".close-preloader").fadeIn("slow");
 				}, 10000 );
 
-				setTimeout( function(){
+				setTimeout( function() {
 				    $(".reload-page").fadeIn("slow");
 				}, 30000 );
 
-				setTimeout( function(){
+				setTimeout( function() {
 				    $(".reload-button").fadeIn("slow");
 				}, 32000 );
 
@@ -1486,11 +1486,11 @@ error_reporting(E_ERROR | E_PARSE);
 					$(".preloader").fadeOut("slow");
 				})
 
-				$(document).on("click", ".close-preloader-button", function(){
+				$(document).on("click", ".close-preloader-button", function() {
 					$(".preloader").fadeOut("slow");
 				});
 
-				$(document).on("click", ".reload-button", function(){
+				$(document).on("click", ".reload-button", function() {
 					$(".reload-button").html("<i class=\"fa fa-refresh fa-spin fa-3x fa-fw\"></i><span class=\"sr-only\">Loading...</span>");
 					window.location = window.location.href;
 				});
@@ -1981,7 +1981,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$adminArea = '<li class="treeview"><a href="#"><i class="fa fa-dashboard"></i> <span>'.$this->lh->translationFor("administration").'</span><i class="fa fa-angle-left pull-right"></i></a>
 			<ul class="treeview-menu">';
 			
-			if($_SESSION['user'] === "goautodial" || $_SESSION['user'] === "goAPI")
+			if ($_SESSION['user'] === "goautodial" || $_SESSION['user'] === "goAPI")
 			$adminArea .= $this->getSidebarItem("./adminsettings.php", "gears", $this->lh->translationFor("settings")); // admin settings
 			
 			//$adminArea .= $this->getSidebarItem("./telephonyusers.php", "user", $this->lh->translationFor("users")); // admin settings
@@ -2021,7 +2021,7 @@ error_reporting(E_ERROR | E_PARSE);
 				if ($perms->servers->servers_read == 'R' || $userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
 					$settings .= $this-> getSidebarItem("./settingsservers.php", "server", $this->lh->translationFor("servers"));
 					
-				if($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
+				if ($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
 					$settings .= $this-> getSidebarItem("./settingsadminlogs.php", "book", $this->lh->translationFor("admin_logs"));
 				
 				$settings .= '</ul></li>';
@@ -2042,7 +2042,7 @@ error_reporting(E_ERROR | E_PARSE);
 		}
 
 		$agentmenu = NULL;
-		if($userrole == CRM_DEFAULTS_USER_ROLE_AGENT){
+		if ($userrole == CRM_DEFAULTS_USER_ROLE_AGENT) {
 			//$agentmenu .= $this-> getSidebarItem("", "book", $this->lh->translationFor("scripts"));
 			//$agentmenu .= $this-> getSidebarItem("", "tasks", $this->lh->translationFor("Custom Form"));
 			$agentmenu .= $this->getSidebarItem("customerslist.php", "users", $this->lh->translationFor("contacts"));
@@ -2067,12 +2067,12 @@ error_reporting(E_ERROR | E_PARSE);
 	            </div>
 	            <ul class="sidebar-menu"><li class="header">'.strtoupper($this->lh->translationFor("menu")).'</li>';
 	    // body: home and customer menus
-	    if($userrole != CRM_DEFAULTS_USER_ROLE_AGENT){
+	    if ($userrole != CRM_DEFAULTS_USER_ROLE_AGENT) {
 			if ($perms->dashboard->dashboard_display === 'Y') {
 				$result .= $this->getSidebarItem("./index.php", "dashboard", $this->lh->translationFor("Dashboard"));
 			}
 	    }
-	    if($userrole == CRM_DEFAULTS_USER_ROLE_AGENT){
+	    if ($userrole == CRM_DEFAULTS_USER_ROLE_AGENT) {
 	    	$result .= $this->getSidebarItem("./agent.php", "dashboard", $this->lh->translationFor("Home"));
 	    }
 
@@ -2082,11 +2082,11 @@ error_reporting(E_ERROR | E_PARSE);
 			$telephonyArea = '';
 		}
 		$result .= $telephonyArea;
-		if($userrole != CRM_DEFAULTS_USER_ROLE_AGENT) {
+		if ($userrole != CRM_DEFAULTS_USER_ROLE_AGENT) {
 			$result .= $settings;
 		}
 		$result .= $callreports;
-		if($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
+		if ($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
 			$result .= $adminArea;
 		}
 		$result .= $crm;
@@ -2098,7 +2098,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 		// menu for agents
 		$result .= $agentmenu;
-		if($userrole != CRM_DEFAULTS_USER_ROLE_AGENT){
+		if ($userrole != CRM_DEFAULTS_USER_ROLE_AGENT) {
         $result .= $this->getSidebarItem("messages.php", "envelope", $this->lh->translationFor("messages"), $numMessages);
 		//$result .= $this->getSidebarItem("calls.php", "phone", "Calls");
         $result .= $this->getSidebarItem("notifications.php", "exclamation", $this->lh->translationFor("notifications"), $numNotifications, "orange");
@@ -2555,7 +2555,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$user = \creamy\CreamyUser::currentUser();
 		foreach ($messages as $message) {
 			$from = $this->db->getDataForUser($message['user_from']);
-			if($from['user_id'] == $user->getUserId()){
+			if ($from['user_id'] == $user->getUserId()) {
 			    $from_user = "me";
 			}else{
 			    $from_user = $from['user'];
@@ -3310,7 +3310,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    {
 	         $w[$i] = intval($secondsLeft/$d[$i][0]);
 	         $secondsLeft -= ($w[$i]*$d[$i][0]);
-	         if($w[$i]!=0)
+	         if ($w[$i]!=0)
 	         {
 	            $return.= abs($w[$i]) . " " . $d[$i][1] . (($w[$i]>1)?'s':'') ." ";
 	            $depth += 1;
@@ -3336,7 +3336,7 @@ error_reporting(E_ERROR | E_PARSE);
 	**/
 
 	// get user info
-	public function goGetUserInfo($userid, $type, $filter){
+	public function goGetUserInfo($userid, $type, $filter) {
 		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
@@ -3347,7 +3347,7 @@ error_reporting(E_ERROR | E_PARSE);
 		} else {
 			$postfields["user_id"] = $userid; #Desired User (required)
 		}
-		if($filter == "userInfo"){
+		if ($filter == "userInfo") {
 			$postfields["filter"] = $filter;
 		}
 		
@@ -3371,7 +3371,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 	
-	public function goGetUserInfoNew($userid){
+	public function goGetUserInfoNew($userid) {
 		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
@@ -3403,7 +3403,7 @@ error_reporting(E_ERROR | E_PARSE);
 		//$output = $this->api->API_getAllUsers();		
 		$checkbox_all = $this->getCheckAll("user");
 		
-		if($perm->user_delete !== 'N') {
+		if ($perm->user_delete !== 'N') {
        	    $columns = array("  ", $this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $checkbox_all, $this->lh->translationFor("action"));
 		} else {
 			$columns = array("  ",$this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $this->lh->translationFor("action"));
@@ -3413,7 +3413,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$result = $this->generateTableHeaderWithItems($columns, "T_users", "responsive display no-wrap table-bordered table-striped", true, false);
 	
 		// iterate through all users
-		for($i=0;$i<count($output->user_id);$i++){
+		for($i=0;$i<count($output->user_id);$i++) {
 			$user_id = $output->user_id[$i];
 			$user = $output->user[$i];
 			$full_name = $output->full_name[$i];
@@ -3421,7 +3421,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$user_level = $output->user_level[$i];	
 			$active = $output->active[$i];
 			
-			if($active == "Y"){
+			if ($active == "Y") {
 				$active = $this->lh->translationFor("active");
 			}else{
 				$active = $this->lh->translationFor("inactive");
@@ -3450,7 +3450,7 @@ error_reporting(E_ERROR | E_PARSE);
 							<td>".$full_name."</td>
 							<td>".$user_group."</td>
 							<td>".$active."</td>";
-				if($perm->user_delete !== 'N')							
+				if ($perm->user_delete !== 'N')							
 				$result .= "<td style='width:5%;'>".$checkbox."</td>";
 				$result .= "<td nowrap style='width:16%;'>".$action."</td>
 						</tr>";
@@ -3503,7 +3503,7 @@ error_reporting(E_ERROR | E_PARSE);
         /*
         if ($output->result=="success") {
            # Result was OK!
-                        for($i=0;$i<count($output->user_group);$i++){
+                        for($i=0;$i<count($output->user_group);$i++) {
                                 echo $output->user_group[$i]."</br>";
                                 echo $output->group_name[$i]."</br>";
                                 echo $output->group_type[$i]."</br>";
@@ -3528,9 +3528,9 @@ error_reporting(E_ERROR | E_PARSE);
 		$result = $this->generateTableHeaderWithItems($columns, "usergroups_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
 
-			for($i=0;$i < count($output->user_group);$i++){
+			for($i=0;$i < count($output->user_group);$i++) {
 
-				if($output->forced_timeclock_login[$i] == "Y"){
+				if ($output->forced_timeclock_login[$i] == "Y") {
 					$output->forced_timeclock_login[$i] = $this->lh->translationFor('go_yes');
 				}else{
 					$output->forced_timeclock_login[$i] = $this->lh->translationFor('go_no');
@@ -3656,7 +3656,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 *
 	*/
 	// Settings > Admin Logs
-	public function API_goGetAdminLogsList($group, $limit){
+	public function API_goGetAdminLogsList($group, $limit) {
 		$url = gourl."/goAdminLogs/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
@@ -3711,7 +3711,7 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	// Settings > Phone
-	public function API_getPhonesList(){
+	public function API_getPhonesList() {
 		$url = gourl."/goPhones/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
@@ -3734,33 +3734,29 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	public function getPhonesList() {
-		$output = $this->API_getPhonesList();
+		$output = $this->api->API_getAllPhones();
 		
 		if ($output->result=="success") {
-		# Result was OK!
-		$checkbox_all = $this->getCheckAll("phone");
-		//if($perm->user_delete !== 'N')
+			# Result was OK!
+			$checkbox_all = $this->getCheckAll("phone");
 			$columns = array($this->lh->translationFor("extension"), $this->lh->translationFor("protocol"),$this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("voicemail"), $checkbox_all, $this->lh->translationFor("action"));
-	    //else
-		//	$columns = array($this->lh->translationFor("extension"), $this->lh->translationFor("protocol"), $this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("voicemail"), $this->lh->translationFor("action"));
-	    //$hideOnMedium = array($this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("vmail"));
-	    //$hideOnLow = array($this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("vmail"));
-		$result = $this->generateTableHeaderWithItems($columns, "T_phones", "responsive display no-wrap table-bordered table-striped", true, false);
+			$result = $this->generateTableHeaderWithItems($columns, "T_phones", "responsive display no-wrap table-bordered table-striped", true, false);
 
-			for($i=0;$i < count($output->extension);$i++){
-
-				if($output->active[$i] == "Y"){
+			for ($i=0;$i < count($output->extension);$i++) {
+				if ($output->active[$i] == "Y") {
 					$output->active[$i] = $this->lh->translationFor("active");
-				}else{
+				} else{
 					$output->active[$i] = $this->lh->translationFor("inactive");
 				}
 
-				if($output->messages[$i] == NULL){
+				if ($output->messages[$i] == NULL) {
 					$output->messages[$i] = 0;
 				}
-				if($output->old_messages[$i] == NULL){
+				
+				if ($output->old_messages[$i] == NULL) {
 					$output->old_messages[$i] = 0;
 				}
+				
 				$checkbox = '<label for="'.$output->extension[$i].'"><div class="checkbox c-checkbox"><label><input name="" class="check_phone" id="'.$output->extension[$i].'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';
 				$action = $this->getUserActionMenuForPhones($output->extension[$i]);
                 //$sessionAvatar = "<avatar username='".$output->messages[$i]."' :size='36'></avatar><td>".$sessionAvatar."</a></td>";
@@ -3774,17 +3770,13 @@ error_reporting(E_ERROR | E_PARSE);
 				$result .= "<td style='width:5%;'>".$checkbox."</td>						
 						<td nowrap style='width:16%;'>".$action."</td>
 	                </tr>";
-
 			}
 
 			return $result.'</table>';
-
 		} else {
-		# An error occured
+			# An error occured
 			return $this->calloutErrorMessage($this->lh->translationFor("Unable to get Phone List"));
 		}
-	       // print suffix
-	       //$result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
 	}
 
 	// VoiceMails
@@ -3823,9 +3815,9 @@ error_reporting(E_ERROR | E_PARSE);
 	    $hideOnLow = array($this->lh->translationFor('voicemail_id'), $this->lh->translationFor('status'), $this->lh->translationFor('new_message'), $this->lh->translationFor('old_message'), $this->lh->translationFor('delete'), $this->lh->translationFor('user_group'));
 		$result = $this->generateTableHeaderWithItems($columns, "voicemails_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
-			for($i=0;$i < count($output->voicemail_id);$i++){
+			for($i=0;$i < count($output->voicemail_id);$i++) {
 
-				if($output->active[$i] == "Y"){
+				if ($output->active[$i] == "Y") {
 					$output->active[$i] = $this->lh->translationFor('active');
 				}else{
 					$output->active[$i] = $this->lh->translationFor('inactive');
@@ -3877,9 +3869,9 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param page name of page/current page
 	 * @param icon will determine what icon to be use for the button
 	 */
-	public function getCircleButton($page, $icon){
+	public function getCircleButton($page, $icon) {
 	    $theme = $this->db->getSettingValueForKey(CRM_SETTING_THEME);
-	    if(empty($theme)){
+	    if (empty($theme)) {
 	    	$theme = 'blue';
 	    }
 
@@ -3901,7 +3893,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param responsetype
 	 */
 
-	public function API_getRealtimeAgent($goUser, $goPass, $goAction, $responsetype){
+	public function API_getRealtimeAgent($goUser, $goPass, $goAction, $responsetype) {
 	    $url = gourl."/goBarging/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -3948,7 +3940,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction
 	 * @param responsetype
 	 */
-	public function API_getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter){
+	public function API_getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter) {
 		require_once('Session.php');
 		$url = gourl."/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -3961,7 +3953,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["log_group"] = $_SESSION['usergroup'];
 		$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 		
-	    if(isset($start_filterdate))
+	    if (isset($start_filterdate))
 	    $postfields["start_filterdate"] = $start_filterdate;
 
 	    $postfields["end_filterdate"] = $end_filterdate;
@@ -3981,7 +3973,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    return $output;
 	}
 
-	public function getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter, $session_user){
+	public function getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter, $session_user) {
 	    $output = $this->API_getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter, $_SESSION['user']);
 
 	    if ($output->result=="success") {
@@ -3993,7 +3985,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 			//$result .= "<tr><td colspan='6'>".$output->query."</tr>";
 
-	    for($i=0; $i < count($output->uniqueid); $i++){
+	    for($i=0; $i < count($output->uniqueid); $i++) {
 			
 			$details = "<strong>Phone</strong>: <i>".$output->phone_number[$i]."</i><br/>";
 			$details .= "<strong>Date</strong>: <i>".date("M.d,Y h:i A", strtotime($output->end_last_local_call_time[$i]))."</i><br/>";
@@ -4048,7 +4040,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction
 	 * @param responsetype
 	 */
-	public function API_goGetAllMusicOnHold(){
+	public function API_goGetAllMusicOnHold() {
 		$url = gourl."/goMusicOnHold/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -4075,7 +4067,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 
-	public function getListAllMusicOnHold($user_group){
+	public function getListAllMusicOnHold($user_group) {
 		//require_once('Session.php');
 		$perm = $this->api->goGetPermissions('moh', $user_group);
 	    $output = $this->api->API_getAllMusicOnHold();
@@ -4086,22 +4078,22 @@ error_reporting(E_ERROR | E_PARSE);
 		$hideOnLow = array( "Random Order", "Group", "Status");
 	    $result = $this->generateTableHeaderWithItems($columns, "music-on-hold_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
-	    for($i=0;$i<count($output->moh_id);$i++){
+	    for($i=0;$i<count($output->moh_id);$i++) {
 			$action = $this->getUserActionMenuForMusicOnHold($output->moh_id[$i], $output->moh_name[$i], $perm);
 
-			if($output->active[$i] == "Y"){
+			if ($output->active[$i] == "Y") {
 				$output->active[$i] = "Active";
 			}else{
 				$output->active[$i] = "Inactive";
 			}
 
-			if($output->random[$i] == "Y"){
+			if ($output->random[$i] == "Y") {
 				$output->random[$i] = "YES";
 			}else{
 				$output->random[$i] = "NO";
 			}
 
-			if($output->user_group[$i] == "---ALL---"){
+			if ($output->user_group[$i] == "---ALL---") {
 				$output->user_group[$i] = "ALL USER GROUPS";
 			}
 
@@ -4138,7 +4130,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction
 	 * @param responsetype
 	 */
-	public function API_getAllVoiceFiles(){
+	public function API_getAllVoiceFiles() {
 	    $url = gourl."/goVoiceFiles/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -4160,7 +4152,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    return $output;
 	}
 
-	public function getListAllVoiceFiles($user_group){
+	public function getListAllVoiceFiles($user_group) {
 		//require_once('Session.php');
 		$perm = $this->api->goGetPermissions('voicefiles', $user_group);
 		$output = $this->api->API_getAllVoiceFiles();
@@ -4176,7 +4168,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$web_ip = $log_ip;
 		if (preg_match("/443/",$server_port)) {$HTTPprotocol = 'https://';}
 		else {$HTTPprotocol = 'http://';}
-	    for($i=0;$i<count($output->file_name);$i++){
+	    for($i=0;$i<count($output->file_name);$i++) {
 	    $file_link = $HTTPprotocol.$web_ip."/sounds/".$output->file_name[$i];
 		 if (!$this->check_url($file_link)) {
 			 $web_host = getenv("SERVER_NAME");
@@ -4239,7 +4231,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 	// API Scripts
 
-	public function getListAllScripts($userid, $perm){
+	public function getListAllScripts($userid, $perm) {
 	    $output = $this->api->API_getAllScripts($userid);
 
 	    if ($output->result=="success") {
@@ -4250,10 +4242,10 @@ error_reporting(E_ERROR | E_PARSE);
 
 		$result = $this->generateTableHeaderWithItems($columns, "scripts_table", "display responsive no-wrap table-bordered table-striped", true, false);
 
-	    for($i=0;$i<count($output->script_id);$i++){
+	    for($i=0;$i<count($output->script_id);$i++) {
 		$action = $this->getUserActionMenuForScripts($output->script_id[$i], $output->script_name[$i], $perm);
 
-			if($output->active[$i] == "Y"){
+			if ($output->active[$i] == "Y") {
 			    $active = $this->lh->translationFor("active");
 			}else{
 			    $active = $this->lh->translationFor("inactive");
@@ -4306,7 +4298,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param responsetype
 	 */
 
-	public function getCalltimes(){
+	public function getCalltimes() {
 		$url = gourl."/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -4330,7 +4322,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    return $output;
 	}
 
-	public function getListAllCallTimes(){
+	public function getListAllCallTimes() {
 	    $output = $this->api->API_getAllCalltimes();
 	    if ($output->result=="success") {
 	    # Result was OK!
@@ -4343,10 +4335,10 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		$result = $this->generateTableHeaderWithItems($columns, "calltimes", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 		
-	    for($i=0;$i<count($output->call_time_id);$i++){
+	    for($i=0;$i<count($output->call_time_id);$i++) {
 		    $action = $this->getUserActionMenuForCalltimes($output->call_time_id[$i], $output->call_time_name[$i]);
 			$schedule = "NULL";
-			if($output->ct_default_start[$i] === $output->ct_default_stop[$i]){
+			if ($output->ct_default_start[$i] === $output->ct_default_stop[$i]) {
 				$def = 'data-def="NULL"';
 			}else{
 				$default_start = date('h:i A', strtotime(sprintf("%04d", $output->ct_default_start[$i])));
@@ -4354,70 +4346,70 @@ error_reporting(E_ERROR | E_PARSE);
 				$def = 'data-def="'.$default_start.' - '.$default_stop.'"';
 				$schedule = $default_start.' - '.$default_stop;
 			}
-			if($output->ct_sunday_start[$i] === $output->ct_sunday_stop[$i]){
+			if ($output->ct_sunday_start[$i] === $output->ct_sunday_stop[$i]) {
 				$sun = 'data-sun="NULL"';
 			}else{
 				$sun_start = date('h:i A', strtotime(sprintf("%04d", $output->ct_sunday_start[$i])));
 				$sun_stop = date('h:i A', strtotime(sprintf("%04d", $output->ct_sunday_stop[$i])));
 				$sun = 'data-sun="'.$sun_start.' - '.$sun_stop.'"';
-				if($schedule === "NULL")
+				if ($schedule === "NULL")
 					$schedule = $sun_start.' - '.$sun_stop;
 			}
-			if($output->ct_monday_start[$i] === $output->ct_monday_stop[$i]){
+			if ($output->ct_monday_start[$i] === $output->ct_monday_stop[$i]) {
 				$mon = 'data-mon="NULL"';
 			}else{
 				$mon_start = date('h:i A', strtotime(sprintf("%04d", $output->ct_monday_start[$i])));
 				$mon_stop = date('h:i A', strtotime(sprintf("%04d", $output->ct_monday_stop[$i])));
 				$mon = 'data-mon="'.$mon_start.' - '.$mon_stop.'"';
-				if($schedule === "NULL")
+				if ($schedule === "NULL")
 					$schedule = $mon_start.' - '.$mon_stop;
 			}
-			if($output->ct_tuesday_start[$i] === $output->ct_tuesday_stop[$i]){
+			if ($output->ct_tuesday_start[$i] === $output->ct_tuesday_stop[$i]) {
 				$tue = 'data-tue="NULL"';
 			}else{
 				$tue_start = date('h:i A', strtotime(sprintf("%04d", $output->ct_tuesday_start[$i])));
 				$tue_stop = date('h:i A', strtotime(sprintf("%04d", $output->ct_tuesday_stop[$i])));
 				$tue = 'data-tue="'.$tue_start.' - '.$tue_stop.'"';
-				if($schedule === "NULL")
+				if ($schedule === "NULL")
 					$schedule = $tue_start.' - '.$tue_stop;
 			}
-			if($output->ct_wednesday_start[$i] === $output->ct_wednesday_stop[$i]){
+			if ($output->ct_wednesday_start[$i] === $output->ct_wednesday_stop[$i]) {
 				$wed = 'data-wed="NULL"';
 			}else{
 				$wed_start = date('h:i A', strtotime(sprintf("%04d", $output->ct_wednesday_start[$i])));
 				$wed_stop = date('h:i A', strtotime(sprintf("%04d", $output->ct_wednesday_stop[$i])));
 				$wed = 'data-wed="'.$wed_start.' - '.$wed_start.'"';
-				if($schedule === "NULL")
+				if ($schedule === "NULL")
 					$schedule = $wed_start.' - '.$wed_stop;
 			}
-			if($output->ct_thursday_start[$i] === $output->ct_thursday_stop[$i]){
+			if ($output->ct_thursday_start[$i] === $output->ct_thursday_stop[$i]) {
 				$thu = 'data-thu="NULL"';
 			}else{
 				$thu_start = date('h:i A', strtotime(sprintf("%04d", $output->ct_thursday_start[$i])));
 				$thu_stop = date('h:i A', strtotime(sprintf("%04d", $output->ct_thursday_stop[$i])));
 				$thu = 'data-thu="'.$thu_start.' - '.$thu_stop.'"';
-				if($schedule === "NULL")
+				if ($schedule === "NULL")
 					$schedule = $thu_start.' - '.$thu_stop;
 			}
-			if($output->ct_friday_start[$i] === $output->ct_friday_stop[$i]){
+			if ($output->ct_friday_start[$i] === $output->ct_friday_stop[$i]) {
 				$fri = 'data-fri="NULL"';
 			}else{
 				$fri_start = date('h:i A', strtotime(sprintf("%04d", $output->ct_friday_start[$i])));
 				$fri_stop = date('h:i A', strtotime(sprintf("%04d", $output->ct_friday_stop[$i])));
 				$fri = 'data-fri="'.$fri_start.' - '.$fri_stop.'"';
-				if($schedule === "NULL")
+				if ($schedule === "NULL")
 					$schedule = $fri_start.' - '.$fri_stop;
 			}
-			if($output->ct_saturday_start[$i] === $output->ct_saturday_stop[$i]){
+			if ($output->ct_saturday_start[$i] === $output->ct_saturday_stop[$i]) {
 				$sat = 'data-sat="NULL"';
 			}else{
 				$sat_start = date('h:i A', strtotime(sprintf("%04d", $output->ct_saturday_start[$i])));
 				$sat_stop = date('h:i A', strtotime(sprintf("%04d", $output->ct_saturday_stop[$i])));
 				$sat = 'data-sat="'.$sat_start.' - '.$sat_stop.'"';
-				if($schedule === "NULL")
+				if ($schedule === "NULL")
 					$schedule = $sat_start.' - '.$sat_stop;
 			}
-            if($output->user_group[$i] === "---ALL---"){
+            if ($output->user_group[$i] === "---ALL---") {
             	$output->user_group[$i] = "ALL USER GROUPS";
             }
 			$scheds = $def.' '.$mon.' '.$tue.' '.$wed.' '.$thu.' '.$fri.' '.$sat.' '.$sun;
@@ -4465,7 +4457,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param responsetype
 	 */
 
-	public function getServers(){
+	public function getServers() {
 		$url = gourl."/goServers/goAPI.php"; #URL to GoAutoDial API. (required)
 	    $postfields["goUser"] = goUser; #Username goes here. (required)
 	    $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -4486,7 +4478,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    return $output;
 	}
 	
-	public function getServerList($perm){
+	public function getServerList($perm) {
 		$output = $this->api->API_getAllServers();
 
 	    if ($output->result=="success") {
@@ -4497,14 +4489,14 @@ error_reporting(E_ERROR | E_PARSE);
 
 			$result = $this->generateTableHeaderWithItems($columns, "servers_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
-				for($i=0;$i<count($output->server_id);$i++){
+				for($i=0;$i<count($output->server_id);$i++) {
 
 					$action = '';
 					if ($perm->servers_update != 'N' || $perm->servers_delete != 'N') {
 						$action = $this->ActionMenuForServers($output->server_id[$i], $perm);
 					}
 
-					if($output->active[$i] == "Y"){
+					if ($output->active[$i] == "Y") {
 						$active = $this->lh->translationFor('active');
 					}else{
 						$active = $this->lh->translationFor('inactive');
@@ -4554,7 +4546,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 
 
-	public function getListAllCarriers($perm){
+	public function getListAllCarriers($perm) {
 		$output = $this->api->API_getAllCarriers();
 
 	    if ($output->result=="success") {
@@ -4566,14 +4558,14 @@ error_reporting(E_ERROR | E_PARSE);
 
 		$result = $this->generateTableHeaderWithItems($columns, "carriers", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
-	      for($i=0;$i<count($output->carrier_id);$i++){
+	      for($i=0;$i<count($output->carrier_id);$i++) {
 
 				$action = '';
 				if ($perm->carriers_update != 'N' || $perm->carriers_delete != 'N') {
 					$action = $this->getUserActionMenuForCarriers($output->carrier_id[$i], $perm);
 				}
 
-			    if($output->active[$i] == "Y"){
+			    if ($output->active[$i] == "Y") {
 				    $active = $this->lh->translationFor('active');
 				}else{
 				    $active = $this->lh->translationFor('inactive');
@@ -4615,7 +4607,7 @@ error_reporting(E_ERROR | E_PARSE);
      * Returns a HTML representation of the wizard form of campaign
      *
      */
-	public function wizardFromCampaign(){
+	public function wizardFromCampaign() {
 		return '
 			<div class="form-horizontal">
     			<div class="form-group">
@@ -4888,7 +4880,7 @@ error_reporting(E_ERROR | E_PARSE);
 		 * This application is used to get OUT sales per hour.
 		*/
 
-		public function API_goGetOUTSalesPerHour($session_user){
+		public function API_goGetOUTSalesPerHour($session_user) {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
@@ -5032,7 +5024,7 @@ error_reporting(E_ERROR | E_PARSE);
 		 *This application is used to get total of agents paused
 		*/
 
-		public function API_goGetTotalAgentsPaused(){
+		public function API_goGetTotalAgentsPaused() {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
@@ -5127,7 +5119,7 @@ error_reporting(E_ERROR | E_PARSE);
 		 * This application is used to get total number of dialable leads.
 		*/
 
-		public function API_goGetTotalDialableLeads(){
+		public function API_goGetTotalDialableLeads() {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
@@ -5167,7 +5159,7 @@ error_reporting(E_ERROR | E_PARSE);
 		 * This application is used to get total number of active leads
 		*/
 
-		public function API_goGetTotalActiveLeads(){
+		public function API_goGetTotalActiveLeads() {
 
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
@@ -5209,7 +5201,7 @@ error_reporting(E_ERROR | E_PARSE);
 		 * This application is used to get total number of active leads
 		*/
 
-		public function API_goGetActiveCampaignsToday(){
+		public function API_goGetActiveCampaignsToday() {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
@@ -5358,7 +5350,7 @@ error_reporting(E_ERROR | E_PARSE);
 		 * This application is used to get total calls.
 		*/
 
-		public function API_goGetTotalCalls(){
+		public function API_goGetTotalCalls() {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
@@ -5384,7 +5376,7 @@ error_reporting(E_ERROR | E_PARSE);
 		 * This application is used to get total calls.
 		*/
 
-		public function API_goGetTotalAnsweredCalls(){
+		public function API_goGetTotalAnsweredCalls() {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
@@ -5409,7 +5401,7 @@ error_reporting(E_ERROR | E_PARSE);
 		 * This application is used to get total calls.
 		*/
 
-		public function API_goGetTotalDroppedCalls($session_use){
+		public function API_goGetTotalDroppedCalls($session_use) {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
@@ -5570,7 +5562,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * This application is used to get cluster status
 	*/
 
-	public function API_goGetClusterStatus(){
+	public function API_goGetClusterStatus() {
 		$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass;
@@ -5599,16 +5591,16 @@ error_reporting(E_ERROR | E_PARSE);
 	public function GetContacts($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter, $limit = 500, $search_customers = 0) {
 		//$limit = 10;
 		$output = $this->API_GetLeads($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter, $limit, $search_customers);
-	       if($output->result=="success") {
+	       if ($output->result=="success") {
 
        	   $columns = array($this->lh->translationFor('lead_id'), $this->lh->translationFor('full_name'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('status'), $this->lh->translationFor('action'));
 	       $hideOnMedium = array($this->lh->translationFor('lead_id'), $this->lh->translationFor('status'));
 	       $hideOnLow = array( $this->lh->translationFor('lead_id'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('status'));
 		   $result = $this->generateTableHeaderWithItems($columns, "table_contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 
-			for($i=0;$i<=count($output->list_id);$i++){
-		   	//for($i=0;$i<=500;$i++){
-				if($output->phone_number[$i] != ""){
+			for($i=0;$i<=count($output->list_id);$i++) {
+		   	//for($i=0;$i<=500;$i++) {
+				if ($output->phone_number[$i] != "") {
 
 				$action = $this->ActionMenuForContacts($output->lead_id[$i]);
 				$result .= '<tr>
@@ -5627,7 +5619,7 @@ error_reporting(E_ERROR | E_PARSE);
        }
 	}
 
-	public function getAllowedList($user_id){
+	public function getAllowedList($user_id) {
 		$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass;
@@ -5651,7 +5643,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 	// get script
 	public function getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, $phone_number, $alt_phone,
-		$address1, $address2, $address3, $city, $province, $state, $postal_code, $country_code){
+		$address1, $address2, $address3, $city, $province, $state, $postal_code, $country_code) {
 		$url = gourl."/goViewScripts/goAPI.php"; # URL to GoAutoDial API filem (required)
          $postfields["goUser"] = goUser; #Username goes here. (required)
          $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -5715,7 +5707,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return $sessionAvatar;
 	}
 
-   public function API_goGetReports($pageTitle){
+   public function API_goGetReports($pageTitle) {
 		$url = gourl."/goJamesReports/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
@@ -5910,7 +5902,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return $status;
 	}
 	
-	public function API_goGetGroupPermission($group){
+	public function API_goGetGroupPermission($group) {
 		$url = gourl."/goUserGroups/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
@@ -6042,13 +6034,13 @@ error_reporting(E_ERROR | E_PARSE);
 	public function GetDNC($search) {
 		//$limit = 10;
 		$output = $this->api->API_GetDNC($search);
-	       if($output->result=="success") {
+	       if ($output->result=="success") {
 			$columns = array($this->lh->translationFor("phone_number"), $this->lh->translationFor("campaign"), $this->lh->translationFor("action"));
 			$hideOnMedium = array();
 			$hideOnLow = array( $this->lh->translationFor("campaign") );
 			$result = $this->generateTableHeaderWithItems($columns, "table_dnc", "display responsive no-wrap table-bordered table-striped", true, false);
 
-			for($i=0;$i < count($output->phone_number);$i++){
+			for($i=0;$i < count($output->phone_number);$i++) {
 				$result .= '<tr>
 								<td>' .$output->phone_number[$i]. '</td>
 								<td>' .$output->campaign[$i].'</td>
@@ -6097,7 +6089,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 	
-	public function API_getListAudioFiles(){
+	public function API_getListAudioFiles() {
 		$url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
@@ -6118,7 +6110,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return $output;
 	}
 	
-	public function API_getSMTPActivation(){
+	public function API_getSMTPActivation() {
 		$url = gourl."/goSMTP/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
@@ -6135,7 +6127,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$data = curl_exec($ch);
 		curl_close($ch);
 		$output = json_decode($data);
-		if($output->result == "success")
+		if ($output->result == "success")
 			return $output->data->value;
 		else
 			return '0';
@@ -6148,7 +6140,7 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">';
-			if($status == 1){
+			if ($status == 1) {
 				$return .= '<li><a class="activate-smtp" href="#" data-id="0" >'.$this->lh->translationFor("disable").'</a></li>';
 			}else{
 				$return .= '<li><a class="activate-smtp" href="#" data-id="1" >'.$this->lh->translationFor("enable").'</a></li>';
@@ -6158,7 +6150,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return $return;
 	}
 	
-	public function getCheckAll($action){
+	public function getCheckAll($action) {
 		$return = '<div class="btn-group">
 					<div class="checkbox c-checkbox" style="margin-right: 0; margin-left: 0;">
 							<label><input class="check-all_'.$action.'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label>
@@ -6191,14 +6183,14 @@ error_reporting(E_ERROR | E_PARSE);
 	public function getAgentLog($user, $sdate, $edate) {
 		$output = $this->api->API_getAgentLog($user, $sdate, $edate);
 		//var_dump($output);
-		if($output->result=="success") {
+		if ($output->result=="success") {
 			$columns = array($this->lh->translationFor('event_time'), $this->lh->translationFor('status'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('campaign'), $this->lh->translationFor('group'), $this->lh->translationFor('list_id'), $this->lh->translationFor('lead_id'), $this->lh->translationFor('term_reason'));
 			$hideOnMedium = array();
 			$hideOnLow = array( );
 			$outbound = "";
 			$outbound = $this->generateTableHeaderWithItems($columns, "table_outbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 			
-			for($i=0;$i < count($output->outbound->campaign_id);$i++){
+			for($i=0;$i < count($output->outbound->campaign_id);$i++) {
 				$outbound .= '<tr>
 								<td>' .$output->outbound->event_time[$i]. '</a></td>
 								<td>' .$output->outbound->status[$i].'</td>
@@ -6218,7 +6210,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$inbound = "";
 			$inbound = $this->generateTableHeaderWithItems($columns, "table_inbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 			
-			for($i=0;$i < count($output->inbound->campaign_id);$i++){
+			for($i=0;$i < count($output->inbound->campaign_id);$i++) {
 				$inbound .= '<tr>
 								<td>' .$output->inbound->call_date[$i]. '</a></td>
 								<td>' .$output->inbound->queue_seconds[$i].'</td>
@@ -6238,7 +6230,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$userlog = "";
 			$userlog = $this->generateTableHeaderWithItems($columns, "table_userstat", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
 			
-			for($i=0;$i < count($output->userlog->user_log_id);$i++){
+			for($i=0;$i < count($output->userlog->user_log_id);$i++) {
 				$userlog .= '<tr>
 								<td>' .$output->userlog->event_date[$i]. '</a></td>
 								<td>' .$output->userlog->event[$i].'</td>
@@ -6257,7 +6249,7 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	// Getting all Standard Fields
-	public function API_getAllStandardFields(){
+	public function API_getAllStandardFields() {
         $url = gourl."/goScripts/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass;
@@ -6275,14 +6267,14 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_close($ch);
 		$output = json_decode($data);
 
-		if($output->result == "success"){
+		if ($output->result == "success") {
 			return $output->field_name;
 		}else{
 			return "EMPTY";
 		}
 	}
 
-	public function API_getGOPackage(){
+	public function API_getGOPackage() {
 		$url = gourl."/goPackages/goAPI.php"; //URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; //Username goes here. (required)
 		$postfields["goPass"] = goPass; //Password goes here. (required)

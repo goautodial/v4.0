@@ -61,20 +61,13 @@
 		}  
 		
 		$postfields 					= array(
-			"goUser" 						=> goUser,
-			"goPass" 						=> goPass,
 			"goAction" 						=> "goEditVoicemail",		
-			"responsetype" 					=> responsetype,
 			"voicemail_id" 					=> $modifyid,
 			"pass" 							=> $pass,
 			"fullname" 						=> $fullname,
 			"email" 						=> $email,
 			"active" 						=> $active,
-			"delete_vm_after_email" 		=> $delete_vm_after_email,
-			"session_user" 					=> $_POST["log_user"],
-			"log_user" 						=> $_POST["log_user"],
-			"log_ip" 						=> $_SERVER["REMOTE_ADDR"],
-			"hostname" 						=> $_SERVER["REMOTE_ADDR"]
+			"delete_vm_after_email" 		=> $delete_vm_after_email
 		);				
 
 		$output 						= $api->API_editVoicemail($postfields);

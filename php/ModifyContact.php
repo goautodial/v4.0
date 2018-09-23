@@ -192,11 +192,7 @@
 		"status" 										=> $dispo,		
 		"avatar" 										=> "",
 		"is_customer"									=> $is_customer,
-		"user_id" 										=> $user_id,
-		"session_user" 									=> $_POST["log_user"],
-		"hostname" 										=> $_SERVER["REMOTE_ADDR"], 
-		"log_user" 										=> $_POST["log_user"],
-		"log_group" 									=> $_POST["log_group"]
+		"user_id" 										=> $user_id
     );
 
 	$output 										= $api->API_editLeads($postfields);
