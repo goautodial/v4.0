@@ -193,18 +193,19 @@
 	        <h4 class="modal-title"><b><?php $lh->translateText("moh_details"); ?></b></h4>
 	      </div>
 	      <div class="modal-body">
+	      <form action="" method="POST" id="edit_moh" name="edit_moh" role="form">
 		<div class="form-horizontal">
 			<br />
 			<div class="form-group">
 				<label class="control-label col-lg-4"><?php $lh->translateText("moh_name"); ?></label>
 				<div class="col-lg-7">
-					<input type="text" class="form-control moh_name" <?=($perm->moh->moh_update === 'N' ? 'disabled' : '')?>/>
+					<input type="text" name="moh_name" class="form-control moh_name" <?=($perm->moh->moh_update === 'N' ? 'disabled' : '')?>/>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-lg-4"><?php $lh->translateText("status"); ?>:</label>
 				<div class="col-lg-5">
-					<select class="form-control moh_status" <?=($perm->moh->moh_update === 'N' ? 'disabled' : '')?>/>
+					<select name ="active" class="form-control moh_status" <?=($perm->moh->moh_update === 'N' ? 'disabled' : '')?>/>
 						<option value="Y">Active</option>
 						<option value="N">Inactive</option>
 					</select>
@@ -213,7 +214,8 @@
 			<div class="form-group">
 				<label class="control-label col-lg-4"><?php $lh->translateText("user_group"); ?>:</label>
 				<div class="col-lg-7">
-					<select class="form-control moh_user_group select2-1" style="width:100%;" <?=($perm->moh->moh_update === 'N' ? 'disabled' : '')?>/>
+					<select name="user_group" class="form-control moh_user_group select2-1" style="width:100%;" <?=($perm->moh->moh_update === 'N' ? 'disabled' : '')?>/>
+						<option value="---ALL---">  ALL USER GROUPS  </option>
 						<?php
                             for($i=0;$i<count($user_groups->user_group);$i++){
                         ?>
@@ -227,12 +229,13 @@
 			<div class="form-group">
 				<label class="control-label col-lg-4"><?php $lh->translateText("random_order"); ?>:</label>
 				<div class="col-lg-5">
-					<select class="form-control moh_rand_order" <?=($perm->moh->moh_update === 'N' ? 'disabled' : '')?>/>
+					<select name="random" class="form-control moh_rand_order" <?=($perm->moh->moh_update === 'N' ? 'disabled' : '')?>/>
 						<option value="Y">Yes</option>
 						<option value="N">No</option>
 					</select>
 				</div>
 			</div>
+		</form>
 		</div>
 	      </div>
           <div class="message_box"></div>
@@ -529,13 +532,12 @@
 		                            data: $("#create_moh").serialize(),
 		                            success: function(data) {
 		                              // console.log(data);
-		                                  if(data == 1){
+		                                  if (data == 1) {
 		                                        swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("add_moh_success"); ?>", "success");
 		                                        window.setTimeout(function(){location.reload()},3000)
 		                                        $('#submit_moh').val("Submit");
 		                                        $('#submit_moh').attr("disabled", false);
-		                                  }
-		                                  else{
+		                                  } else {
 		                                      sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 		                                      $('#submit_moh').val("Submit");
 		                                      $('#submit_moh').attr("disabled", false);
@@ -552,16 +554,12 @@
 			*********/
 
 				$(document).on('click','.edit-moh',function() {
-
 					var moh_id = $(this).attr('data-id');
-
 					$.ajax({
 						url: "./php/ViewMOH.php",
 						type: 'POST',
 						data: {
-						      moh_id : moh_id,
-							  log_user: '<?=$_SESSION['user']?>',
-							  log_group: '<?=$_SESSION['usergroup']?>'
+						      moh_id : moh_id
 						},
 						dataType: 'json',
 						success: function(data) {
@@ -583,24 +581,25 @@
 				});
 
 				$('.btn-update-moh-info').click(function(){
+					var moh_id = $(this).attr('data-id');
+					console.log(moh_id);
                     $('#update_button').html("<i class='fa fa-edit'></i> Updating...");
                     $('.btn-update-moh-info').attr("disabled", true);
-
+                    
 					$.ajax({
 						url: "./php/UpdateMOH.php",
 						type: 'POST',
-						data: {
+						data: $("#edit_moh").serialize() + '&moh_id=' + moh_id,
+						/*data: {
 						      moh_id : $(this).attr('data-id'),
 						      moh_name : $('.moh_name').val(),
 						      user_group : $('.mog_user_group').val(),
 						      active : $('.moh_status').val(),
-						      random : $('.moh_rand_order').val(),
-							  log_user: '<?=$_SESSION['user']?>',
-							  log_group: '<?=$_SESSION['usergroup']?>'
-						},
+						      random : $('.moh_rand_order').val()
+						},*/
 						dataType: 'json',
 						success: function(data) {
-						      if (data.result == "success") {
+						      if (data == 1) {
 							    swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("moh_update_success"); ?>", "success");
                                 window.setTimeout(function(){location.reload();},2000);
 
@@ -649,10 +648,10 @@
 	                                    },
 	                                    success: function(data) {
 	                                    console.log(data);
-	                                        if(data == 1){
+	                                        if (data == 1) {
 	                                           swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("moh_delete_success"); ?>", "success");
 	                                           window.setTimeout(function(){location.reload()},1000)
-	                                        }else{
+	                                        } else {
 	                                            sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
 	                                        }
 	                                    }

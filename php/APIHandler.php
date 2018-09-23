@@ -959,6 +959,18 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goMusicOnHold", $postfields);
 	}
 
+	public function API_editMOH($postfields){
+		return $this->API_Request("goMusicOnHold", $postfields);
+	}
+	
+	public function API_getMOHInfo($moh_id){
+		$postfields = array(
+			'goAction' => 'goGetMOHInfo',
+			'moh_id' => $moh_id
+		);	
+		return $this->API_Request("goMusicOnHold", $postfields);
+	}
+	
 	public function API_addPauseCode($postfields){
 		return $this->API_Request("goPauseCodes", $postfields);
 	}

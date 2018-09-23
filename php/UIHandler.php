@@ -4098,7 +4098,7 @@ error_reporting(E_ERROR | E_PARSE);
 			}
 
 			$result .= "<tr>
-				<td><a class='edit-moh' data-id='".$output->moh_id[$i]."'>".$output->moh_name[$i]."</td>
+				<td><a class='edit-moh' data-toggle='modal data-target='#view-moh-modal' data-id='".$output->moh_id[$i]."'>".$output->moh_name[$i]."</td>
 				<td class ='hide-on-medium hide-on-low'>".$output->active[$i]."</td>
 				<td class ='hide-on-medium hide-on-low'>".$output->random[$i]."</td>
 				<td class ='hide-on-medium hide-on-low'>".$output->user_group[$i]."</td>

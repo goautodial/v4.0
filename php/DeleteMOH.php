@@ -20,36 +20,23 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('APIHandler.php');
-require_once('CRMDefaults.php');
-$api = \creamy\APIHandler::getInstance();
-/*
-require_once('goCRMAPISettings.php');
+	require_once('APIHandler.php');
+	require_once('CRMDefaults.php');
+	$api = \creamy\APIHandler::getInstance();
 
-$url = gourl."/goMusicOnHold/goAPI.php"; #URL to GoAutoDial API. (required)
 
-$postfields["goUser"] = goUser; #Username goes here. (required)
-$postfields["goPass"] = goPass; #Password goes here. (required)
-$postfields["goAction"] = "goDeleteMOH"; #action performed by the [[API:Functions]]. (required)
-$postfields["responsetype"] = responsetype; #json. (required)
-$postfields["moh_id"] = $_POST['moh_id']; #Desired uniqueid. (required)
+	$postfields = array(
+		'goAction' => 'goDeleteMOH',
+		'moh_id' => $_POST['moh_id']
+	);
 
-$postfields["log_ip"]			= $_SERVER['REMOTE_ADDR'];
-$postfields["log_user"]			= $_POST['log_user'];
-$postfields["log_group"]		= $_POST['log_group'];
-*/
+	$output = $api->API_Request("goMusicOnHold", $postfields);
 
-$postfields = array(
-    'goAction' => 'goDeleteMOH',
-    'moh_id' => $_POST['moh_id']
-);
-
-$output = $api->API_Request("goMusicOnHold", $postfields);
-
-if ($output->result=="success") {
-    ob_clean();
-	print CRM_DEFAULT_SUCCESS_RESPONSE;
-}else{
-    echo $output->result;
-}
+	if ($output->result=="success") { 
+		$status 								= 1; 
+	} else { 
+		$status 								= $output->result; 
+	}
+	
+	echo json_encode($status);
 ?>

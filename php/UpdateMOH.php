@@ -1,43 +1,53 @@
 <?php
+/**
+ * @file        UpdateMOH.php
+ * @brief       Handles modifying MOH entries
+ * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @author		Demian Lizandro A, Biscocho 
+ * @author      Alexander Jim H. Abenoja
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-	/** Campaigns API - Add a new Campaign */
-	/**
-	 * Generates action circle buttons for different pages/module
-	 * @param goUser 
-	 * @param goPass 
-	 * @param goAction 
-	 * @param responsetype
-	 * @param moh_id
-	 */
-        require_once('goCRMAPISettings.php');
+	require_once("APIHandler.php");
+    
+    $api 										= \creamy\APIHandler::getInstance();
+    
+    $moh_id										= $_POST['moh_id'];
+    $moh_name									= $_POST['moh_name'];
+    $user_group									= $_POST['user_group'];
+    $active										= $_POST['active'];
+    $random										= $_POST['random'];
         
-        $url = gourl."/goMusicOnHold/goAPI.php"; #URL to GoAutoDial API. (required)
-        
-        $postfields["goUser"] = goUser; #Username goes here. (required)
-        $postfields["goPass"] = goPass; #Password goes here. (required)
-        $postfields["goAction"] = "goEditMOH"; #action performed by the [[API:Functions]]. (required)
-        $postfields["responsetype"] = responsetype; #json. (required)
-        $postfields["moh_id"] = $_POST['moh_id']; #Desired uniqueid. (required)
-        $postfields["moh_name"] = $_POST['moh_name'];
-        $postfields["user_group"] = $_POST['user_group'];
-        $postfields["active"] = $_POST['active'];
-        $postfields["random"] = $_POST['random'];
+	$postfields 								= array(
+		'goAction'									=> 'goEditMOH',		
+		'moh_id' 									=> $moh_id,
+		'moh_name' 									=> $moh_name,
+		'user_group' 								=> $user_group,
+		'active' 									=> $active,
+		'random' 									=> $random
+	);				
+
+	$output 									= $api->API_editMOH($postfields);
 	
-	$postfields["log_ip"]			= $_SERVER['REMOTE_ADDR'];
-	$postfields["log_user"]			= $_POST['log_user'];
-	$postfields["log_group"]		= $_POST['log_group'];
-        
-        
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-        $data = curl_exec($ch);
-        curl_close($ch);
-        
-        echo $data;
-        
+	if ($output->result=="success") { 
+		$status 								= 1; 
+	} else { 
+		$status 								= $output->result; 
+	}
+
+	echo json_encode($status);
+
 ?>
