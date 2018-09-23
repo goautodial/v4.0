@@ -665,8 +665,7 @@ if(isset($_SESSION["user"])){
 	
 	public function API_getAllLists(){
 		$postfields = array(
-			'goAction' => 'goGetAllLists',
-			'user_group' => session_usergroup
+			'goAction' => 'goGetAllLists'
 		);		
 		return $this->API_Request("goLists", $postfields);
 	}	

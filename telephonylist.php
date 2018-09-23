@@ -126,7 +126,7 @@
 						/****
 						** API to get data of tables
 						****/
-						$lists = $api->API_getAllLists($_SESSION['usergroup']);
+						$lists = $api->API_getAllLists();
 						//var_dump($lists);
 				?>
                 	<div class="row">
@@ -622,12 +622,15 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					pagination.toggle(this.api().page.info().pages > 1);
 				},
 				columnDefs:[
-					{ width: "16%", targets: 7 },
-					{ width: "5%", targets: 6 },
 					<?php if($perm->list->list_delete !== 'N'){?>
+						{ width: "8%", targets: 7 },
+						{ width: "5%", targets: 6 },
+						{ width: "5%", targets: 0 },						
 						{ searchable: false, targets: [ 6, 7 ] },
 						{ sortable: false, targets: [ 6, 7 ] },
 					<?php }else{ ?>
+						{ width: "10%", targets: 6 },
+						{ width: "5%", targets: 0 },					
 						{ searchable: false, targets: 6 },
 						{ sortable: false, targets: 6 },
 					<?php } ?>

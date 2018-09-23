@@ -422,6 +422,7 @@
 							data: $("#modifylist").serialize(),
 							success: function(data) {
 								console.log(data);
+								console.log($("#modifylist").serialize());
 								$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
 								$('#modifyListOkButton').prop("disabled", false);
 								if(data == 1){
