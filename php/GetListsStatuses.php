@@ -4,7 +4,7 @@
  * @brief       Handles List Statuses Requests
  * @copyright   Copyright (c) 2018 GOautoial Inc.
  * @author      Noel Umandap
- * @author		Demian Lizandro A, Biscocho 
+ * @author		Demian Lizandro A. Biscocho 
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify

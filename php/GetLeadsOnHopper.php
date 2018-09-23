@@ -35,7 +35,7 @@
 		$statuses 								= array();
 		$availableStats 						= array();
 		
-		foreach($dial_status as $status){
+		foreach ($dial_status as $status){
 			if(!empty($status)){
 				array_push($statuses, $status);
 			}
@@ -68,6 +68,7 @@
 		$details['data'] 						= $data;
 		$details['stats'] 						= $statuses;
 		$details['data_stats'] 					= $availableStats;
+		
 		echo json_encode($details, true);
 	} else {
 		echo json_encode("empty", true);

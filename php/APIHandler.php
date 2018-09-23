@@ -686,6 +686,14 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goLists", $postfields);
 	}
 	
+	public function API_getTZonesWithCountCalledNCalled($list_id){
+		$postfields = array(
+			'goAction' => 'goGetTZonesWithCountCalledNCalled',
+			'list_id' => $list_id
+		);		
+		return $this->API_Request("goLists", $postfields);
+	}
+	
 	public function API_getAllLeadsOnHopper($campaign_id){
 		$postfields = array(
 			'goAction' => 'goGetAllLeadsOnHopper',

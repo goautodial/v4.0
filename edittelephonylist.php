@@ -38,8 +38,8 @@
 	}else{
 		header("location: telephonylist.php");
 	}
-	$statuses = $ui->API_ListsStatuses($modifyid);
-	$timezones = $ui->API_ListsTimezone($modifyid);
+	$statuses = $api->API_getStatusesWithCountCalledNCalled($modifyid);
+	$timezones = $api->API_getTZonesWithCountCalledNCalled($modifyid);
 	$scripts = $api->API_getAllScripts($_SESSION['user']);
 	$perm = $api->goGetPermissions('customfields');
 ?>
@@ -220,7 +220,7 @@
 									<div class="form-group clearfix">
 										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("web"); ?>:</label>
 										<div class="col-lg-9">
-											<input type="text" class="form-control" name="web_form" placeholder="https://goautodial.org">
+											<input type="text" class="form-control" name="web_form" placeholder="https://goautodial.org" value="<?php echo $output->web_form_address[0];?>">
 										</div>
 									</div>
 									<div class="form-group clearfix">
@@ -421,11 +421,11 @@
 							type: 'POST',
 							data: $("#modifylist").serialize(),
 							success: function(data) {
-								console.log(data);
-								console.log($("#modifylist").serialize());
+								//console.log(data);
+								//console.log($("#modifylist").serialize());
 								$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
 								$('#modifyListOkButton').prop("disabled", false);
-								if(data == 1){
+								if (data == 1) {
 									swal({title: "<?php $lh->translateText("success"); ?>", text: "<?php $lh->translateText("list_update_success"); ?>", type: "success"}, function(){window.location.href = 'telephonylist.php';});
 									window.setTimeout(function(){location.reload();},2000);
 								} else {

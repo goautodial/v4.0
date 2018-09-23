@@ -3431,7 +3431,7 @@
 				url: "./php/GetLists.php",
 				type: 'POST',
 				data: {
-					campaign_id : campaign_id,
+					campaign_id : campaign_id
 				},
 				dataType: 'json',
 				success: function(response) {
@@ -3469,13 +3469,13 @@
 				url: "./php/GetLeadsOnHopper.php",
 				type: 'POST',
 				data: {
-					campaign_id : campaign_id,
+					campaign_id : campaign_id
 				},
 				dataType: 'json',
 				success: function(response) {
-						//console.log(response);
-						$('.count_leads').text(response.count);
-					}
+					console.log(response);
+					$('.count_leads').text(response.count);
+				}
 			});
 		}
 
@@ -3487,7 +3487,7 @@
 				url: "./php/GetLeadsOnHopper.php",
 				type: 'POST',
 				data: {
-					campaign_id : campaign_id,
+					campaign_id : campaign_id
 				},
 				dataType: 'json',
 				success: function(response) {
