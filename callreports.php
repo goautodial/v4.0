@@ -377,11 +377,11 @@
 							statuses : $("#statuses").val()
 						},
 						success: function(data) {
-							//console.log(data);
+							console.log(data);
 							if (data !== "") {
 								$(".report-loader").fadeOut("slow");
 								$('#table').html(data);
-
+								
 								if (filter_type == "inbound_report") {
 									var title = "<?php $lh->translateText("inbound"); ?> Call Report";
 									
@@ -530,12 +530,26 @@
 					URL = './php/reports/agenttimedetails.php';
 				}
 				
+				if (filter_type == "dispo") {
+		                    URL = './php/reports/dispo.php';
+                		}
+
 				if (filter_type == "sales_agent") {
-					request = $("#request2").val();
+                		    URL = './php/reports/salesagent.php';
+				    request = $("#request2").val();
 				}
 				
 				if (filter_type == "sales_tracker") {
-					request = $("#request2").val();
+		                    URL = './php/reports/salestracker.php';
+				    request = $("#request2").val();
+				}
+
+				if (filter_type == "inbound_report"){
+				    URL = './php/reports/inboundreport.php';
+				}
+
+				if(filter_type === "call_export_report"){
+				     URL = './php/reports/exportcallreport.php';
 				}
 				
 				$.ajax({
