@@ -1069,6 +1069,14 @@ if(isset($_SESSION["user"])){
 	public function API_list($postfields){
 		return $this->API_Request("goLists", $postfields);
 	}
+
+	public function GetSessionUser(){
+		return session_user;
+	}
+
+	public function GetSessionGroup(){
+		return session_usergroup;
+	}	
 	
 	// escape existing special characters already in the database
 	function escapeJsonString($value) { # list from www.json.org: (\b backspace, \f formfeed)
