@@ -906,6 +906,10 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goCalltimes", $postfields);
 	}
 
+	public function API_editCalltime($postfields){
+		return $this->API_Request("goCalltimes", $postfields);
+	}
+	
 	public function API_addCarrier($postfields){
 		return $this->API_Request("goCarriers", $postfields);
 	}
