@@ -1036,7 +1036,7 @@ EOF;
 	var uPass = '$user_pass';
 	var configuration;
 	
-	function registerPhone(phone_login, pass) {
+	function registerPhone(phone_login, phone_pass) {
 		var socket = new JsSIP.WebSocketInterface('{$webProtocol}://{$websocketURL}:{$websocketPORT}/');
 		configuration = {
 			sockets : [ socket ],
