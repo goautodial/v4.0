@@ -1015,7 +1015,7 @@ EOF;
 		
 		if ($useWebRTC) {
 			$display_name = $_SESSION['user'];
-			$socketParams = "password: phone_pass,";
+			$socketParams = "password: pass,";
 			if ($_SESSION['bcrypt'] > 0) {
 				$ha1_pass = $_SESSION['ha1'];
 				$realm = $_SESSION['realm'];
@@ -1036,7 +1036,7 @@ EOF;
 	var uPass = '$user_pass';
 	var configuration;
 	
-	function registerPhone(phone_login, phone_pass) {
+	function registerPhone(phone_login, pass) {
 		var socket = new JsSIP.WebSocketInterface('{$webProtocol}://{$websocketURL}:{$websocketPORT}/');
 		configuration = {
 			sockets : [ socket ],
