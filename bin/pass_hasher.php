@@ -29,7 +29,7 @@ if (!empty($argv) && count($argv) > 1) {
         
         $encrypted = encrypt_passwd($pass, $cost, $salt);
         
-        echo "Pass Hash: " . $encrypted;
+        echo "Pass Hash: " . $encrypted . "\n";
     }
 } else {
     echo "Description: Helps you to encrypt a plain text password to be used on GOautodial system.\n\n";
