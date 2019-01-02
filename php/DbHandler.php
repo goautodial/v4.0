@@ -278,6 +278,8 @@ class DbHandler {
 		$data = curl_exec($ch);
 		$userobj = json_decode($data);
 		curl_close($ch);
+        
+        return $userobj;
 
 		if ($userobj->result === "success") { // first match valid?
 			//$password_hash = $userobj["password_hash"];
@@ -306,8 +308,6 @@ class DbHandler {
                 $pass_hash = password_hash($password, PASSWORD_BCRYPT, $pass_options);
                 $pass_hash = substr($pass_hash, 29, 31);				
 			} else {$pass_hash = $password;}
-            
-            var_dump($userobj);die();
 
 			if ( preg_match("/Y/i", $status) ) {
 				//if (\creamy\PassHash::check_password($password_hash, $password)) {

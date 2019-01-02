@@ -72,6 +72,7 @@
 		    else {
 		        // not an email. User name?
 				$result = $db->checkLoginByName($username, $password, $_SERVER['REMOTE_ADDR']);
+				var_dump($result);
 		    }
 			if ($result == NULL) { // login failed
 				$error = $lh->translationFor("invalid_login_password");
