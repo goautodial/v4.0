@@ -999,7 +999,12 @@ EOF;
 					$websocketSIPPort = "'";
 				}
 			}
+			
+			$this->goDB->where('setting', 'GO_agent_domain');
+			$rslt = $this->goDB->getOne('settings', 'value');
+			$domain = (strlen($rslt['value']) > 0) ? $rslt['value'] : "goautodial.com";
 		}
+		
 		
 		$phone_login = $_SESSION['phone_login'];
 		$phone_pass = $_SESSION['phone_pass'];
@@ -1010,7 +1015,7 @@ EOF;
 		
 		if ($useWebRTC) {
 			$display_name = $_SESSION['user'];
-			$socketParams = "password: pass,";
+			$socketParams = "password: phone_pass,";
 			if ($_SESSION['bcrypt'] > 0) {
 				$ha1_pass = $_SESSION['ha1'];
 				$realm = $_SESSION['realm'];
