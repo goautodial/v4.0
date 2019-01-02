@@ -277,7 +277,6 @@ class DbHandler {
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
 		$userobj = json_decode($data);
-        var_dump($postfields_string);
 		curl_close($ch);
 
 		if ($userobj->result === "success") { // first match valid?
@@ -294,7 +293,8 @@ class DbHandler {
 			$cost = $userobj->cost;
 			$phone_login = $userobj->phone_login;
 			$realm = $userobj->realm;
-			$ha1_pass = md5("{$phone_login}:{$realm}:{$password}");
+			//$ha1_pass = md5("{$phone_login}:{$realm}:{$password}");
+            $ha1_pass = $userobj->ha1;
 			//if ($status == 1) { // user is active
 
 			if ($bcrypt > 0) {
