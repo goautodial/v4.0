@@ -135,7 +135,7 @@
         <?php $lh->translateText("welcome_to"); ?><?php print($ui->creamyHeaderName()); ?>!
       </div><!-- /.login-logo -->
       <div class="login-box-body">
-        <p class="login-box-msg"><?php $lh->translateText("sign_in"); ?> test</p>
+        <p class="login-box-msg"><?php $lh->translateText("sign_in"); ?></p>
         <form action="" method="post">
           <div class="form-group has-feedback">
             <input type="text" class="form-control" name="username" placeholder="<?php $lh->translateText("username_or_email"); ?>"/>
