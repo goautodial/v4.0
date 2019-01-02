@@ -2,7 +2,7 @@
 $pass = '';
 $cost = 0;
 $salt = 0;
-if (!empty($argv) && count($argv) > 1 && $pass !== '') {
+if (!empty($argv) && count($argv) > 1) {
     if (preg_match("/^(-h|--help)$/", $argv[1])) {
         echo "Description: Helps you to encrypt a plain text password to be used on GOautodial system.\n\n";
         echo "Usage: php " . basename(__FILE__) . " --pass=<plain text passwd>\n";
