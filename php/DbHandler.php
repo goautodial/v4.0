@@ -277,7 +277,7 @@ class DbHandler {
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
 		$userobj = json_decode($data);
-        var_dump($data);
+        var_dump($postfields_string);
 		curl_close($ch);
 
 		if ($userobj->result === "success") { // first match valid?
