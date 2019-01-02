@@ -2112,6 +2112,10 @@ error_reporting(E_ERROR | E_PARSE);
 				$result .= $this->getSidebarItem($mh->pageLinkForModule($shortName, null), $module->mainPageViewIcon(), $module->mainPageViewTitle(), $module->sidebarBadgeNumber());
 			}
         }
+ 
+  if($userrole != CRM_DEFAULTS_USER_ROLE_AGENT){
+        $result .= $this->getSidebarItem("credits.php", "list-alt", $this->lh->translationFor("credits"));
+  }
 
 		$result .= '</ul></section></aside>';
 
