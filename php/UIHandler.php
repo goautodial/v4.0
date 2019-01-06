@@ -2114,7 +2114,7 @@ error_reporting(E_ERROR | E_PARSE);
         }
  
   if($userrole != CRM_DEFAULTS_USER_ROLE_AGENT){
-        $result .= $this->getSidebarItem("credits.php", "list-alt", $this->lh->translationFor("credits"));
+        $result .= $this->getSidebarItem("credits.php", "list-alt", $this->lh->translationFor("Credits"));
   }
 
 		$result .= '</ul></section></aside>';

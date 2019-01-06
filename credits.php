@@ -100,22 +100,20 @@
 					<div class="panel panel-default">
 						<div class="panel-body">
 							<div class="corner-all team-thanks" style="width: 90%; margin-left: auto; margin-right: auto;" >
-								<span>The GOautodial open source CE project is hosted and funded by GOautodial Inc. We are not affiliated with any organizations.</span>
+								<!-- <span>The GOautodial open source CE project is hosted and funded by GOautodial Inc. We are not affiliated with any organizations.</span> -->
 								<br />
 								<br />                            
 								<span>The GOautodial open source CE project team and contributors:</span>
 								<br />
+								<br />
+								<b>Architect and Creator:</b> Demian Lizandro A. Biscocho<br />
 								<br />
 								<span><b>Core Team:</b></span>
 								<br/>
 								<div class="contributors">
                                     Demian Lizandro A. Biscocho<br />
                                     Christopher P. Lomuntad<br />
-                                    Alexander Jim Abenoja<br />
-                                    <br />
-                                    <b>Architect and creator:</b> Demian Lizandro A. Biscocho<br />
-                                    <br />
-                                    <b>Graphics designer:</b> Om Narayan A. Velasco
+                                    Alexander Jim Abenoja<br />                                   
                                 </div>
 								<br />
 								<span><b>QA Team:</b></span>
@@ -125,6 +123,12 @@
                                     Jackie J. Alfonso<br />
                                 </div>
 								<br />
+								<b>Applications Security:</b> 
+								<br />Chris McCurley<br />
+								<br />								
+								<b>Graphics Designer:</b> 
+								<br />Om Narayan A. Velasco<br />
+								<br />								
 								<span><b>Contributors:</b></span>
 								<br/>
 								<div class="contributors">
@@ -139,6 +143,7 @@
                                     Jefferson C. Varias<br />
                                     Regie V. Irupang<br />
                                     Erwin C. De Luna<br />
+                                    Jin Kevin Dionisio<br />
                                 </div>
 								<br />
 								<br />
@@ -148,16 +153,16 @@
 									<table width="100%" >
 										<tr>
 											<td align="center"><a href="http://ui.ajax.org/" target="_blank">             <img width="110px" src="./img/ajax-logo.png" title="AJAX - Asynchronous Javascript And XML"/></a></td>
-											<td align="center"><a href="http://apache.org" target="_blank">               <img width="110px" src="./img/apache-logo.png" title="Apache HTTP Server"/></a></td>
+											<td align="center"><a href="http://jssip.net" target="_blank">               <img width="110px" src="./img/jssip-logo.png" title="Apache HTTP Server"/></a></td>
 											<td align="center"><a href="http://asterisk.org" target="_blank">             <img width="110px" src="./img/asterisk-logo.png" title="Asterisk Telephony"/></a></td>
-											<td align="center"><a href="http://centos.org" target="_blank">               <img width="200px" src="./img/centos-logo.png" title="CentOS Linux"/></a></td>
+											<td align="center"><a href="http://webrtc.org" target="_blank">               <img width="180px" src="./img/webrtc-logo.png" title="CentOS Linux"/></a></td>
 											<td align="center"><a href="https://iknowitworks.github.io/Creamy" target="_blank"> <img width="80px" src="./img/creamy-logo.png" title="Creamy CRM"/></a></td>
 											<td align="center"><a href="http://javascript.org" target="_blank">           <img width="80px" src="./img/javascript-logo.png" title="Javascript"/></a></td>
 										</tr>  
 										<tr>   
 											<td align="center"><a href="http://json.org" target="_blank">                 <img width="110px" src="./img/json-logo.png" title="JSON"/></a></td>
 											<td align="center"><a href="https://jquery.org" target="_blank" >             <img width="110px" src="./img/jquery-logo.png" title="jQuery"/></a></td>
-											<td align="center"><a href="http://mysql.org" target="_blank">                <img width="110px" src="./img/mysql-logo.png" title="MySQL"/></a></td>
+											<td align="center"><a href="http://mariadb.org" target="_blank">              <img width="140px" src="./img/mariadb-logo.png" title="MySQL"/></a></td>
 											<td align="center"><a href="http://perl.org" target="_blank">                 <img width="110px" src="./img/perl-logo.png" title="Perl"/></a></td>
 											<td align="center"><a href="http://php.net" target="_blank">                  <img width="100px" src="./img/php-logo.png" title="PHP"/></a></td>
 											<td align="center"><a href="http://vicidial.org" target="_blank">             <img width="100px" src="./img/vicidial-logo.png" title="Vicidial"/></a></td>
@@ -167,15 +172,18 @@
                                 <br />
                                 <br />
                                 <br />                          
-                                <span>For more information visit us @ <u><a href="http://goautodial.org" target="_blank">http://goautodial.org</a></u> or email us @ <a href="mailto:community@goautodial.com"><u>community@goautodial.com</u></a>.</span>
+                                <span><b>Open source community:</b>
+                                <br />URL: <u><a href="https://goautodial.org" target="_blank">https://goautodial.org</a></u>
+                                <br />Email: <a href="mailto:community@goautodial.com"><u>community@goautodial.com</u></a></span>
                                 <br />
                                 <br />
-                                <span>For professional support, email us <a href="mailto:sales@goautodial.com"><u>sales@goautodial.com</u></a>.</span>
+                                <span><b>Commercial support:</b>
+                                <br />URL: <u><a href="https://goautodial.com" target="_blank">https://goautodial.com</a></u>
+                                <br />Email: <a href="mailto:sales@goautodial.com"><u>sales@goautodial.com</u></a></span>
                                 <br />
                                 <br />
                                 <br />
                                 <span><b>Trademark:</b></span>
-                                <br />
                                 <br />
                                 <span>GOautodial &reg;, GOautodial CE &reg;, GOAdmin &reg;,  GOAgent &reg;,  GOReports &reg; are registered <u><a href="http://goautodial.org/projects/goautodialce/wiki/License" target="_blank">trademarks</a></u> of GOautodial Inc. All other trademarks are the property of their respective owners.</span>
                                 <br />  
