@@ -128,15 +128,11 @@
 								<span><b>Contributors:</b></span>
 								<br/>
 								<div class="contributors">
-                                    Carlo Roy V. Taguinod<br />
                                     Rafael R. Pekson II<br />
-                                    Rodolfo Januarius T. Manipol<br />
                                     Willard Ty H. Manansala<br />
                                     Jerico James F. Milo<br />
                                     Tristan Kendrick A. Biscocho<br />
                                     Kristian T. Antiligando<br />
-                                    Wilperson D.S. Necesario<br />
-                                    Franco E. Hora<br />
 									Noel D.L. Umandap<br />
 									Jeremiah Sebastian V. Samatra<br />
 									Warren I. Briones<br />
