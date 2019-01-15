@@ -873,7 +873,9 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 					$('.field-name').val(data.field_name);
 					$('.field-description').val(data.field_description);
 					$('.field-type').val(data.field_type).change();
-					$('.field-options').val(data.field_options.replace('\\r\\n', '\r\n'));
+					if (data.field_options !== null) {
+						$('.field-options').val(data.field_options.replace('\\r\\n', '\r\n'));
+					}
 					$('.field-size').val(data.field_size);
 					$('.field-max').val(data.field_max);
 					$('.field-default').val(data.field_default);
