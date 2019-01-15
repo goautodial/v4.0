@@ -43,12 +43,12 @@ $api = \creamy\APIHandler::getInstance();
         'field_label' => $_POST["field_label"]
     );
 
-    $output = $api->API_Request("goGetLeads", $postfields);
+    $output = $api->API_Request("goCustomFields", $postfields);
 
 	if ($output->result=="success") {
 		$status = "success";
 	} else {
-		$status = "error";
+		$status = $output->result;
 	}
 
 	echo $status;
