@@ -723,7 +723,7 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 							}
 
 							if (data.field_type == "AREA"){
-								viewHTML += '<textarea name="'+ data.field_label +'" id="'+ data.field_label +'" ROWS="'+ data.field_max +'" COLS="'+ data.field_size +'"></textarea>';
+								viewHTML += '<textarea name="'+ data.field_label +'" id="'+ data.field_label +'" ROWS="'+ data.field_size +'" maxlength="'+ data.field_max +'"></textarea>';
 							}
 
 							if (data.field_type == "DISPLAY"){
