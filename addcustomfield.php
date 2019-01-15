@@ -727,14 +727,10 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 							}
 
 							if (data.field_type == "DISPLAY"){
-								viewHTML += '<b>'+ data.field_default +'</b>';
+								viewHTML += data.field_options + "\n";
 							}
 
 							if (data.field_type == "SCRIPT"){
-								if (data.field_default == 'NULL'){
-									var default_value = '';
-								}
-
 								viewHTML += data.field_options + "\n";
 							}
 
