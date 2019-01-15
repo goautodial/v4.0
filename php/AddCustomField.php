@@ -57,6 +57,7 @@ $api = \creamy\APIHandler::getInstance();
 			'field_position' => $_POST['field_position'],
 			'field_description' => $_POST['field_description'],
 			'field_type' => $_POST['field_type'],
+			'field_options' => $_POST['field_options'],
 			'field_option_position' => $_POST['field_option_position'],
 			'field_size' => $_POST['field_size'],
 			'field_max' => $_POST['field_max'],
@@ -66,7 +67,6 @@ $api = \creamy\APIHandler::getInstance();
 
 	$output = $api->API_addCustomFields($postfields);
 
-	var_dump($output);
 	if (!preg_match("/^ERROR/i", $output->result)) {
 		$status = "success";
 	} else {
