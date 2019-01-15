@@ -660,8 +660,14 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 					console.log(data);
 					var viewHTML = '<table class="table"';
 							viewHTML += '<tr>';
-							viewHTML += '<td><B>' + data.field_name + '</B></td>';
-							viewHTML += '<td>';
+							
+							if(data.field_type !== "DISPLAY" && data.field_type == "SCRIPT") {
+								viewHTML += '<td><B>' + data.field_name + '</B></td>';
+							
+								viewHTML += '<td>';
+							} else {
+								viewHTML += '<td colspan="2">';
+							}
 
 							if(data.field_type == "SELECT") {
 								viewHTML += '<select size=1 name="'+ data.field_label +'" id="'+data.field_label+'">';
@@ -714,10 +720,9 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 							}
 
 							if (data.field_type == "TEXT"){
-								if (data.field_default == 'NULL'){
-									var default_value = '';
-								}else{
-									var default_value = data.field_default;
+								var default_value = '';
+								if (data.field_default != 'NULL'){
+									default_value = data.field_default;
 								}
 								viewHTML += '<input type="text" size="'+ data.field_size +'" maxlength="'+ data.field_max +'" name="'+ data.field_label +'" id="'+ data.field_label +'" value="'+ default_value +'">\n';
 							}
