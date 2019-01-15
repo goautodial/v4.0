@@ -25,7 +25,7 @@
 	$postfields["field_order"] 						= $_POST['field_order'];
 	$postfields["field_label"] 						= $_POST['field_label'];
 	$postfields["field_label_old"] 				= $_POST['field_label_old'];
-	$postfields["name_position"] 					= $_POST['field_position'];
+	$postfields["field_position"] 				= $_POST['field_position'];
 	$postfields["field_description"] 			= $_POST['field_description'];
 	$postfields["field_type"] 						= $_POST['field_type'];
 	$postfields["field_options"] 					= $_POST['field_options'];
