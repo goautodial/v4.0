@@ -66,6 +66,7 @@ $api = \creamy\APIHandler::getInstance();
 
 	$output = $api->API_addCustomFields($postfields);
 
+	var_dump($output);
 	if (!preg_match("/^ERROR/i", $output->result)) {
 		$status = "success";
 	} else {
