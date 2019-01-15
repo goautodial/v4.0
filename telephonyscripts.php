@@ -192,9 +192,10 @@
 											<div class="col-sm-12 mb">
 												<div class="input-group">
 													<span class="input-group-btn" title="<?php $lh->translateText("script_text_insert_description"); ?>">
-														<button type="button" class="btn btn-default" onClick="addtext();"><?php $lh->translateText("insert"); ?></button>
+														dwadwad<button type="button" class="btn btn-default" onClick="addtext();"><?php $lh->translateText("insert"); ?></button>
 													</span>
 													<select class="form-control" name="script_text_dropdown" id="script_text_dropdown">
+														<option value="--A--fullname--B--">Agent Name (fullname)</option>
 														<?php foreach($standard_fields->field_name as $sf) { ?>
 															<option value="--A--<?php echo $sf; ?>--B-- "><?php echo $sf; ?></option>
 														<?php } ?>
