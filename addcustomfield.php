@@ -218,9 +218,9 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 
 															if ( ($A_field_type=='SELECT') or ($A_field_type=='MULTI') or ($A_field_type=='RADIO') or ($A_field_type=='CHECKBOX') )
 															{
-																$A_field_options = str_replace('\r\n', '\n', $A_field_options);
-																$field_options_array = explode('\n', $A_field_options);
-																var_dump($field_options_array);
+																$A_field_options = str_replace("\r\n", "\n", $A_field_options);
+																$field_options_array = explode("\n", $A_field_options);
+																print_r($A_field_options);
 
 																$field_options_count = count($field_options_array);
 																$te=0;
