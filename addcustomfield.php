@@ -661,13 +661,13 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 					var viewHTML = '<table class="table"';
 							viewHTML += '<tr>';
 							
-							if(data.field_type != "DISPLAY" && data.field_type != "SCRIPT") {
+							//if(data.field_type != "DISPLAY" && data.field_type != "SCRIPT") {
 								viewHTML += '<td><B>' + data.field_name + '</B></td>';
 							
 								viewHTML += '<td>';
-							} else {
-								viewHTML += '<td colspan="2">';
-							}
+							//} else {
+							//	viewHTML += '<td colspan="2">';
+							//}
 
 							if(data.field_type == "SELECT") {
 								viewHTML += '<select size=1 name="'+ data.field_label +'" id="'+data.field_label+'">';
