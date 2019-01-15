@@ -280,17 +280,17 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 															}
 															if ($A_field_type=='DISPLAY')
 															{
-																if ($A_field_default=='NULL')
+																if ($A_field_options=='NULL')
 																{
-																	$A_field_default='';
+																	$A_field_options='';
 																}
-																$field_HTML .= "$A_field_default\n";
+																$field_HTML .= "$A_field_options\n";
 															}
 															if ($A_field_type=='SCRIPT')
 															{
-																if ($A_field_default=='NULL')
+																if ($A_field_options=='NULL')
 																{
-																	$A_field_default='';
+																	$A_field_options='';
 																}
 																$field_HTML .= "$A_field_options\n";
 															}
