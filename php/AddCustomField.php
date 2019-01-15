@@ -62,7 +62,9 @@ $api = \creamy\APIHandler::getInstance();
 			'field_size' => $_POST['field_size'],
 			'field_max' => $_POST['field_max'],
 			'field_default' => $_POST['field_default'],
-			'field_required' => $_POST['field_required']
+			'field_required' => $_POST['field_required'],
+			'log_user' => $_POST['log_user'],
+			'log_group' => $_POST['log_group']
 		);
 
 	$output = $api->API_addCustomFields($postfields);
