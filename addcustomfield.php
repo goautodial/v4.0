@@ -661,7 +661,7 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 					var viewHTML = '<table class="table"';
 							viewHTML += '<tr>';
 							
-							if(data.field_type !== "DISPLAY" && data.field_type == "SCRIPT") {
+							if(data.field_type != "DISPLAY" && data.field_type != "SCRIPT") {
 								viewHTML += '<td><B>' + data.field_name + '</B></td>';
 							
 								viewHTML += '<td>';
