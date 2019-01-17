@@ -2657,14 +2657,22 @@ function CheckForConfCalls (confnum, force) {
                 }
                 Clear_API_Field('external_transferconf');
             }
-            if (api_parkcustomer == 'PARK_CUSTOMER')
-                {mainxfer_send_redirect('ParK', lastcustchannel, lastcustserverip);}
-            if (api_parkcustomer == 'GRAB_CUSTOMER')
-                {mainxfer_send_redirect('FROMParK', lastcustchannel, lastcustserverip);}
-            if (api_parkcustomer == 'PARK_IVR_CUSTOMER')
-                {mainxfer_send_redirect('ParKivr', lastcustchannel, lastcustserverip);}
-            if (api_parkcustomer == 'GRAB_IVR_CUSTOMER')
-                {mainxfer_send_redirect('FROMParKivr', lastcustchannel, lastcustserverip);}
+            if (api_parkcustomer == 'PARK_CUSTOMER') {
+                toggleButton('ParkCall', 'park');
+                mainxfer_send_redirect('ParK', lastcustchannel, lastcustserverip);
+            }
+            if (api_parkcustomer == 'GRAB_CUSTOMER') {
+                toggleButton('ParkCall', 'grab');
+                mainxfer_send_redirect('FROMParK', lastcustchannel, lastcustserverip);
+            }
+            if (api_parkcustomer == 'PARK_IVR_CUSTOMER') {
+                toggleButton('IVRParkCall', 'parkivr');
+                mainxfer_send_redirect('ParKivr', lastcustchannel, lastcustserverip);
+            }
+            if (api_parkcustomer == 'GRAB_IVR_CUSTOMER') {
+                toggleButton('IVRParkCall', 'grabivr');
+                mainxfer_send_redirect('FROMParKivr', lastcustchannel, lastcustserverip);
+            }
             if (api_dtmf.length > 0) {
                 var REGdtmfPOUND = new RegExp("P","g");
                 var REGdtmfSTAR = new RegExp("S","g");
@@ -4972,6 +4980,7 @@ function Leave3WayCall(tempvarattempt) {
     leaving_threeway = 1;
 
     if (customerparked > 0) {
+        toggleButton('ParkCall', 'grab');
         mainxfer_send_redirect('FROMParK',lastcustchannel,lastcustserverip);
     }
 
