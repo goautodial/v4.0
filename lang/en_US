@@ -1457,3 +1457,10 @@ campaign_google_sheet_ids_successfully_updated = "Campaign Google Sheet IDs Succ
 you_have_not_entered_an_id = "You have not entered an ID"
 you_have_entered_an_invalid_id = "You have entered an invalid ID"
 slave_db_ip = "Slave DB IP"
+
+park_call = "Park Call"
+grab_park_call = "Grab Park Call"
+transfer_call = "Transfer Call"
+ivr_park_call = "IVR Park Call"
+grab_ivr_park_call = "Grab IVR Park Call"
+requeue_call = "Re-Queue Call"

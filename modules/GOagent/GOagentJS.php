@@ -2307,9 +2307,6 @@ function toggleButton (taskname, taskaction, taskenable, taskhide, toupperfirst,
             }
             
             $("#btn"+taskname+" i").attr('class', actClass);
-            if (actTitle !== '') {
-                $("#btn"+taskname).attr('title', actTitle);
-            }
         } else {
             if (!isEnabled) {
                 $("#btn"+taskname).addClass('disabled');
@@ -2320,6 +2317,10 @@ function toggleButton (taskname, taskaction, taskenable, taskhide, toupperfirst,
             if (onClick.length > 0) {
                 $("#btn"+taskname).attr('onclick', onClick);
             }
+        }
+        
+        if (actTitle !== '') {
+            $("#btn"+taskname).attr('title', actTitle);
         }
         
         if (isHidden) {
