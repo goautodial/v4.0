@@ -184,7 +184,8 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 																$viewall .= "<tr style='background-color:#FBFBFB; font-weight:normal; padding:1%;'><td align=";
 
 																if ($A_name_position=='TOP') {
-																	$viewall .= "left colspan=2";
+																	//$viewall .= "left colspan=2";
+																	$viewall .= "left";
 																} else {
 																	$viewall .= "right";
 																}
