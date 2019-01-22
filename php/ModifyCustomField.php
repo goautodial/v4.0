@@ -29,7 +29,7 @@
 	$postfields["field_description"] 			= $_POST['field_description'];
 	$postfields["field_type"] 						= $_POST['field_type'];
 	$postfields["field_options"] 					= $_POST['field_options'];
-	$postfields["multi_position"] 				= $_POST['field_option_position'];
+	$postfields["field_option_position"] 	= $_POST['field_option_position'];
 	$postfields["field_size"] 						= $_POST['field_size'];
 	$postfields["field_max"] 							= $_POST['field_max'];
 	$postfields["field_default"] 					= $_POST['field_default'];
