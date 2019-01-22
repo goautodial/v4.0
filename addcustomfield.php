@@ -221,7 +221,7 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 																var_dump($A_field_options);
 																$A_field_options = str_replace('\r\n', '\n', $A_field_options);
 																var_dump($A_field_options);
-																$field_options_array = explode("\n", $A_field_options);
+																$field_options_array = explode('\n', $A_field_options);
 																var_dump($field_options_array);
 
 																$field_options_count = count($field_options_array);
