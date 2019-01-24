@@ -1138,7 +1138,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 				mimeType:"multipart/form-data"
 			}).done(function(res){
 				
-				var uploadMsgTotal = "<?php $lh->translateText('total_leads_upload'); ?>: "+res;
+				var uploadMsgTotal = "<?php $lh->translateText('total_leads_upload'); ?>: "+total_uploaded;
 				
 				swal({
 						title: "<?php $lh->translateText('data_processing_complete'); ?>",
