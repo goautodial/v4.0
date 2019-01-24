@@ -1074,7 +1074,6 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 			var formData = new FormData($('#upload_form')[0]);
 			var progress_bar_id 		= '#progress-wrp'; //ID of an element for response output
 			var percent = 0;
-			var total_uploaded = 0;
 			
 			var result_output 			= '#output'; //ID of an element for response output
 			var my_form_id 				= '#upload_form'; //ID of an element for response output
@@ -1110,7 +1109,6 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							//$(progress_bar_id + " .status").innerHTML = percent + '%';
 							
 							if(percent === 100) {
-								total_uploaded = total;
 								
 								//$('#dStatus').css("display", "block");
 								//$('#dStatus').css("color", "#4CAF50");
@@ -1138,7 +1136,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 				mimeType:"multipart/form-data"
 			}).done(function(res){
 				
-				var uploadMsgTotal = "<?php $lh->translateText('total_leads_upload'); ?>: "+total_uploaded;
+				var uploadMsgTotal = "<?php $lh->translateText('total_leads_upload'); ?>: "+res;
 				
 				swal({
 						title: "<?php $lh->translateText('data_processing_complete'); ?>",

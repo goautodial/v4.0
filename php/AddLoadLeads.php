@@ -36,7 +36,7 @@
 
 	$output = $api->API_addLoadLeads($postfields);
 
-	if ($output->result=="success") { $status = 1; } 
+	if ($output->result=="success") { $status = $output->message; } 
 		else { $status = $output->result; }
 
 	echo json_encode($status);
