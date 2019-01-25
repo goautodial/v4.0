@@ -926,6 +926,7 @@ csv_file = "Fichier CSV"
 no_duplicate_check = "Pas de vérification des doublons"
 check_phones_in_list_id = "Numéros de téléphones dans liste ID"
 check_phones_in_campaign-lists = "Numéros de téléphones dans les listes du campagne"
+delete_multiple_list = "Supprimer plusieurs listes"
 
 list wizard = "Assistant de liste"
 add_list = "Ajouter nouvelle liste"

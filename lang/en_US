@@ -944,6 +944,7 @@ csv_file = "CSV File"
 no_duplicate_check = "NO DUPLICATE CHECK"
 check_phones_in_list_id = "CHECK PHONES IN LIST ID"
 check_phones_in_campaign-lists = "CHECK PHONES IN CAMPAIGN-LISTS"
+delete_multiple_list = "Delete Multiple List"
 
 list_wizard = "List izard"
 add_list = "Add New List"
