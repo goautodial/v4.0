@@ -180,6 +180,7 @@
   * APIs needed for form
   */
    $user_groups = $api->API_getAllUserGroups();
+   $audio_files = $api->API_getAllVoiceFiles(); 
 ?>
 <!-- MOH MODALS -->
 	<!-- Modal -->
@@ -233,6 +234,21 @@
 						<option value="Y">Yes</option>
 						<option value="N">No</option>
 					</select>
+				</div>
+			</div>
+			<div class="form-group">
+	  			<label class="col-lg-4 control-label" for="filename"><?php $lh->translateText("audiofiles"); ?>: </label>
+				<div class="col-lg-7">
+					<select class="form-control moh_filename  select2-1" name="filename" style="width:100%;">
+                                                <option value="conf">  conf  </option>
+						<?php
+						for($i=0;$i<count($audio_files->file_name);$i++){
+						?>
+							<option value="<?php echo $audio_files->file_name[$i];?>">  <?php echo $audio_files->file_name[$i]; ?>  </option>
+	    		<?php
+           		    }		
+            		?>
+				        </select>
 				</div>
 			</div>
 		</form>
@@ -325,6 +341,23 @@
 	                                </select>
 	                            </div>
 	                        </div>
+<div class="form-group">
+                                <label class="col-sm-4 control-label" for="filename"><?php $lh->translateText("audiofiles"); ?>: </label>
+                                <div class="col-sm-8">
+                                        <select class="form-control select2-1" name="filename" style="width:100%;">
+                                                <option value="conf">  conf  </option>
+                                                <?php
+                                                for($i=0;$i<count($audio_files->file_name);$i++){
+                                                ?>
+                                                        <option value="<?php echo $audio_files->file_name[$i];?>">  <?php echo $audio_files->file_name[$i]; ?>  </option>
+
+                        <?php
+                            }
+                        ?>
+                                        </select>
+                                </div>
+                        </div>
+
                         </fieldset>
                     </div><!-- end of step -->
 
@@ -568,6 +601,8 @@
 						      $('.moh_status option[value="' + data.active + '"]').attr('selected','selected');
 						      $('.moh_user_group option[value="' + data.user_group + '"]').attr('selected','selected');
 						      $('.moh_rand_order option[value="' + data.random + '"]').attr('selected','selected');
+                                                      $('.moh_filename option[value="' + data.filename + '"]').attr('selected','selected');
+
 
                               $('#view-moh-modal').modal('show');
 						}

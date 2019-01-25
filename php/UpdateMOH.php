@@ -23,21 +23,23 @@
 
 	require_once("APIHandler.php");
     
-    $api 										= \creamy\APIHandler::getInstance();
-    
-    $moh_id										= $_POST['moh_id'];
-    $moh_name									= $_POST['moh_name'];
-    $user_group									= $_POST['user_group'];
-    $active										= $_POST['active'];
-    $random										= $_POST['random'];
+    $api = \creamy\APIHandler::getInstance();
+
+    $moh_id = $_POST['moh_id'];
+    $moh_name = $_POST['moh_name'];
+    $user_group = $_POST['user_group'];
+    $active = $_POST['active'];
+    $filename = $_POST['filename'];
+    $random = $_POST['random'];
         
-	$postfields 								= array(
-		'goAction'									=> 'goEditMOH',		
-		'moh_id' 									=> $moh_id,
-		'moh_name' 									=> $moh_name,
-		'user_group' 								=> $user_group,
-		'active' 									=> $active,
-		'random' 									=> $random
+	$postfields = array(
+		'goAction' => 'goEditMOH',		
+		'moh_id' => $moh_id,
+		'moh_name' => $moh_name,
+		'user_group' => $user_group,
+		'filename' => $filename,
+		'active' => $active,
+		'random' => $random
 	);				
 
 	$output 									= $api->API_editMOH($postfields);
