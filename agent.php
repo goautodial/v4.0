@@ -1729,6 +1729,15 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 				    //$('.hide_div').show();
 				    $("input:required, select:required").addClass("required_div");
 				    $('#edit-profile').addClass('hidden');
+								
+								$('#cust_full_name .editable').each(function() {
+									var thisXvalue = $(this).html();
+									if (thisXvalue == '&nbsp;') {
+										$(this).css('text-decoration', 'underline');
+									} else {
+										$(this).css('text-decoration', 'none');
+									}
+								});
 				    
 				    var txtBox=document.getElementById("first_name" );
 								txtBox.focus();
