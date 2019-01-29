@@ -1465,3 +1465,7 @@ transfer_call = "Transfer Call"
 ivr_park_call = "IVR Park Call"
 grab_ivr_park_call = "Grab IVR Park Call"
 requeue_call = "Re-Queue Call"
+
+enter_first_name = "Enter First Name"
+enter_middle_initial = "Enter Middle Initial"
+enter_last_name = "Enter Last Name"

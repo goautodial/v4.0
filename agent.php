@@ -178,23 +178,22 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 			$(function() {
 			//turn to inline mode
 			//$.fn.editable.defaults.mode = 'inline';    //buttons
-			//$.fn.editableform.buttons =
-			//	'<button type="submit" class="btn btn-primary btn-sm editable-submit" style="padding: 8px 10px;">'+
-			//		'<i class="fa fa-check"></i>'+
-			//	'</button>'+
-			//	'<button type="button" class="btn btn-default btn-sm editable-cancel" style="padding: 8px 10px;">'+
-			//		'<i class="fa fa-remove"></i>'+
-			//	'</button>';
+			$.fn.editableform.buttons =
+				'<button type="submit" class="btn btn-primary btn-sm editable-submit" style="padding: 8px 10px;">'+
+					'<i class="fa fa-check"></i>'+
+				'</button>'+
+				'<button type="button" class="btn btn-default btn-sm editable-cancel" style="padding: 8px 10px;">'+
+					'<i class="fa fa-remove"></i>'+
+				'</button>';
 				
 				$("a[id='first_name'], a[id='middle_initial'], a[id='last_name']").on('hidden', function() {
 					var thisID = $(this).attr('id');
-					$('#'+thisID+'_label').addClass('hidden');
+					//$('#'+thisID+'_label').addClass('hidden');
 				});
 				
 				$("a[id='first_name'], a[id='middle_initial'], a[id='last_name']").on('shown', function() {
 					var thisID = $(this).attr('id');
 					var oldValue = $(this).editable('getValue', true);
-					console.log(oldValue);
 					if ($(this).html() !== '&nbsp;') {
 						//$('div.editable-input input').val($(this).text());
 						//$(this).editable('setValue', oldValue, true);
@@ -202,7 +201,7 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 						//$('div.editable-input input').val('');
 						//$(this).editable('setValue', '', true);
 					}
-					$('#'+thisID+'_label').removeClass('hidden');
+					//$('#'+thisID+'_label').removeClass('hidden');
 				});
 				
 				$("a[id='first_name']").editable({
@@ -398,6 +397,9 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 				max-height: 200px;
 				overflow-x: hidden;
 				overflow-y: auto;
+			}
+			.editableform .form-group {
+				padding: 0 !important;
 			}
 		</style>
     </head>
