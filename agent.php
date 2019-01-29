@@ -178,13 +178,13 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 			$(function() {
 			//turn to inline mode
 			$.fn.editable.defaults.mode = 'inline';    //buttons
-			$.fn.editableform.buttons =
-				'<button type="submit" class="btn btn-primary btn-sm editable-submit" style="padding: 8px 10px;">'+
-					'<i class="fa fa-check"></i>'+
-				'</button>'+
-				'<button type="button" class="btn btn-default btn-sm editable-cancel" style="padding: 8px 10px;">'+
-					'<i class="fa fa-remove"></i>'+
-				'</button>';
+			//$.fn.editableform.buttons =
+			//	'<button type="submit" class="btn btn-primary btn-sm editable-submit" style="padding: 8px 10px;">'+
+			//		'<i class="fa fa-check"></i>'+
+			//	'</button>'+
+			//	'<button type="button" class="btn btn-default btn-sm editable-cancel" style="padding: 8px 10px;">'+
+			//		'<i class="fa fa-remove"></i>'+
+			//	'</button>';
 				
 				$("a[id='first_name'], a[id='middle_initial'], a[id='last_name']").on('hidden', function() {
 					var thisID = $(this).attr('id');
