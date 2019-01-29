@@ -1582,7 +1582,6 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 				var folder = <?php print $folder; ?>;
 				var selectedAll = false;
 				var selectedMessages = [];
-				var editProfileEnabled = false;
 				
 				$("#contacts-list").DataTable();
 				

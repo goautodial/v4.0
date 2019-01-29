@@ -117,6 +117,7 @@ var callback_alerts = {};
 var reschedule_cb = false;
 var reschedule_cb_id = 0;
 var just_logged_in = false;
+var editProfileEnabled = false;
 <?php
     foreach ($default_settings as $idx => $val) {
         if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
@@ -429,12 +430,14 @@ $(document).ready(function() {
                 //}
                 
                 if (live_customer_call < 1) {
+                    editProfileEnabled = false;
                     $("#for_dtmf").addClass('hidden');
                     $('#edit-profile').addClass('hidden');
                     $("#reload-script").addClass('hidden');
                     $("#dialer-pad-ast, #dialer-pad-hash").addClass('hidden');
                     $("#dialer-pad-clear, #dialer-pad-undo").removeClass('hidden');
                     $("#btnLogMeOut").removeClass("disabled");
+					$('#cust_full_name .editable').editable('disabled', true);
                     //toggleStatus('NOLIVE');
                     
                     if (dialingINprogress < 1) {
