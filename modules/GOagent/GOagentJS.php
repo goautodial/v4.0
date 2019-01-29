@@ -437,7 +437,6 @@ $(document).ready(function() {
                     $("#dialer-pad-ast, #dialer-pad-hash").addClass('hidden');
                     $("#dialer-pad-clear, #dialer-pad-undo").removeClass('hidden');
                     $("#btnLogMeOut").removeClass("disabled");
-					$('#cust_full_name .editable').editable('disabled', true);
                     //toggleStatus('NOLIVE');
                     
                     if (dialingINprogress < 1) {
@@ -5961,6 +5960,7 @@ function CustomerData_update() {
         $(".formMain #custom_fields [id^='custom_']").val('');
         $(".formMain #custom_fields [id^='custom_']").prop('checked', false);
         $('.input-disabled').prop('disabled', true);
+        $('#cust_full_name .editable').editable('disable');
         $('.hide_div').hide();
         $("input:required, select:required").removeClass("required_div");
     });
@@ -9634,6 +9634,7 @@ function minimizeModal(modal_id) {
     $(document).off('focusin.modal');
     
     $('.input-disabled').prop('disabled', false);
+    $('#cust_full_name .editable').editable('enable');
     $("input:required, select:required").addClass("required_div");
     
     var txtBox=document.getElementById("first_name" );

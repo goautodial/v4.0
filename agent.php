@@ -1725,6 +1725,7 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 				
 				$("#edit-profile").click(function(){
 				    $('.input-disabled').prop('disabled', false);
+								$('#cust_full_name .editable').editable('enable');
 				    //$('.hide_div').show();
 				    $("input:required, select:required").addClass("required_div");
 				    $('#edit-profile').addClass('hidden');
