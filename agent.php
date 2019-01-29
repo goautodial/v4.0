@@ -789,7 +789,7 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 												<label for="touserid">Recipients</label>
 											</div>
 											<div class="form-group hidden">
-												<input id="external_recipients" name="external_recipients" class="form-control" placeholder="<?php $lh->translateText("external_message_recipients"); ?>"/>
+												<input id="external_recipients" name="external_recipients" class="form-control external_mail_recipients" placeholder="<?php $lh->translateText("external_message_recipients"); ?>"/>
 												<label for="external_recipients">External Recipients</label>
 											</div>
 											<div class="form-group">
@@ -1775,7 +1775,7 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 				
 				// Start Mail Composer
 				// external recipients
-				$('#external_recipients').multiple_emails();
+				$('.external_mail_recipients').multiple_emails();
 	
 				// attachments
 				$('.attachment').MultiFile({
