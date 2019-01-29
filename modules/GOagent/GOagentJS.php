@@ -598,7 +598,8 @@ $(document).ready(function() {
                         $(".formMain input[name='seconds']").val(live_call_seconds);
                         $("#SecondsDISP").html(live_call_seconds);
                         $("#for_dtmf").removeClass('hidden');
-                        $('#edit-profile').removeClass('hidden');
+                        if (!editProfileEnabled)
+                            $('#edit-profile').removeClass('hidden');
                         $("#reload-script").removeClass('hidden');
                         $("#dialer-pad-ast, #dialer-pad-hash").removeClass('hidden');
                         $("#dialer-pad-clear, #dialer-pad-undo").addClass('hidden');
@@ -607,7 +608,8 @@ $(document).ready(function() {
                     if (XD_live_customer_call == 1) {
                         XD_live_call_seconds++;
                         $("#xferlength").val(XD_live_call_seconds);
-                        $('#edit-profile').removeClass('hidden');
+                        if (!editProfileEnabled)
+                            $('#edit-profile').removeClass('hidden');
                         $("#reload-script").removeClass('hidden');
                         $("#btnLogMeOut").addClass("disabled");
                     }

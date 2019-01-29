@@ -176,6 +176,16 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 			});
 			
 			$(function() {
+			//turn to inline mode
+			$.fn.editable.defaults.mode = 'inline';    //buttons
+			$.fn.editableform.buttons =
+				'<button type="submit" class="btn btn-primary btn-sm editable-submit" style="padding: 8px 10px;">'+
+					'<i class="fa fa-check"></i>'+
+				'</button>'+
+				'<button type="button" class="btn btn-default btn-sm editable-cancel" style="padding: 8px 10px;">'+
+					'<i class="fa fa-remove"></i>'+
+				'</button>';
+				
 				$("a[id='first_name'], a[id='middle_initial'], a[id='last_name']").on('hidden', function() {
 					var thisID = $(this).attr('id');
 					$('#'+thisID+'_label').addClass('hidden');
@@ -184,7 +194,7 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 				$("a[id='first_name'], a[id='middle_initial'], a[id='last_name']").on('shown', function() {
 					var thisID = $(this).attr('id');
 					var oldValue = $(this).editable('getValue', true);
-					//console.log(oldValue);
+					console.log(oldValue);
 					if ($(this).html() !== '&nbsp;') {
 						//$('div.editable-input input').val($(this).text());
 						//$(this).editable('setValue', oldValue, true);
@@ -202,7 +212,10 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 					emptytext: '&nbsp;',
 					unsavedclass: null,
 					inputclass: 'text-color-black',
-					onblur: 'submit'
+					onblur: 'submit',
+					success: function(response, newValue) {
+						console.log(response, newValue);
+					}
 				});
 				$("a[id='middle_initial']").editable({
 					type: 'text',
@@ -226,16 +239,6 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 				
 				//$("#callback-list").DataTable({"bDestroy": true, "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 5 ] }, { "bSearchable": false, "aTargets": [ 2, 5 ] }] });
 			});
-			
-			//turn to inline mode
-			$.fn.editable.defaults.mode = 'inline';    //buttons
-			$.fn.editableform.buttons =
-				'<button type="submit" class="btn btn-primary btn-sm editable-submit" style="padding: 8px 10px;">'+
-					'<i class="fa fa-check"></i>'+
-				'</button>'+
-				'<button type="button" class="btn btn-default btn-sm editable-cancel" style="padding: 8px 10px;">'+
-					'<i class="fa fa-remove"></i>'+
-				'</button>';
 		</script>
 		<style>
 			.nav-tabs > li > a{
@@ -1577,6 +1580,7 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 				var folder = <?php print $folder; ?>;
 				var selectedAll = false;
 				var selectedMessages = [];
+				var editProfileEnabled = false;
 				
 				$("#contacts-list").DataTable();
 				
@@ -1725,9 +1729,10 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 				    $('#edit-profile').addClass('hidden');
 				    
 				    var txtBox=document.getElementById("first_name" );
-					txtBox.focus();
+								txtBox.focus();
 				    //$("#submit_div").focus(function() { $(this).select(); } );
 				    //$('input[name="first_name"]').focus();
+								editProfileEnabled = true;
 				});
 
 				$("#submit_edit_form").click(function(){
