@@ -454,11 +454,11 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 									<div class="form-group">
 										<label class="control-label col-lg-3">Rank:</label>
 										<div class="col-lg-3">
-											<input type="text" class="form-control field-rank" name="field_rank" value="">
+											<input type="number" class="form-control field-rank" name="field_rank" value="">
 										</div>
 										<label class="control-label col-lg-2">Order:</label>
 										<div class="col-lg-3">
-											<input type="text" class="form-control field-order" name="field_order" value="">
+											<input type="number" class="form-control field-order" name="field_order" value="">
 										</div>
 									</div>
 									<div class="form-group">
@@ -520,13 +520,13 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 									<div class="form-group">
 										<label class="control-label col-lg-3">Field Size:</label>
 										<div class="col-lg-9">
-											<input type="text" class="form-control field-size" name="field_size" value="">
+											<input type="number" class="form-control field-size" name="field_size" value="">
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="control-label col-lg-3">Field Max:</label>
 										<div class="col-lg-9">
-											<input type="text" class="form-control field-max" name="field_max" value="">
+											<input type="number" class="form-control field-max" name="field_max" value="">
 										</div>
 									</div>
 									<div class="form-group">
