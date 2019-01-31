@@ -113,7 +113,6 @@ if(isset($_SESSION["user"])){
 
 		$postdata = array_merge($default_entries, $postfields);
 
-		var_dump($url . '?' . http_build_query($postdata));
 		// Call the API
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
