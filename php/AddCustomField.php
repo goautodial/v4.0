@@ -49,7 +49,7 @@ $api = \creamy\APIHandler::getInstance();
 */
 	$field_options = $_POST['field_options'];
 	if (isset($field_options)) {
-		$field_options = str_replace("\n", "!N!", $field_options);
+		$field_options = str_replace("\r\n", "!N!", $field_options);
 	}
 	var_dump($field_options);die();
 
