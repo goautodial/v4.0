@@ -51,7 +51,6 @@ $api = \creamy\APIHandler::getInstance();
 	if (isset($field_options)) {
 		$field_options = str_replace("\r\n", "!N!", $field_options);
 	}
-	var_dump($field_options);die();
 
 	$postfields = array(
 			'goAction' => 'goAddCustomFields',
@@ -63,7 +62,7 @@ $api = \creamy\APIHandler::getInstance();
 			'field_position' => $_POST['field_position'],
 			'field_description' => $_POST['field_description'],
 			'field_type' => $_POST['field_type'],
-			'field_options' => $_POST['field_options'],
+			'field_options' => $field_options,
 			'field_option_position' => $_POST['field_option_position'],
 			'field_size' => $_POST['field_size'],
 			'field_max' => $_POST['field_max'],
