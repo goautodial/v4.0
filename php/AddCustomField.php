@@ -47,7 +47,11 @@ $api = \creamy\APIHandler::getInstance();
 	$postfields["log_user"]								= $_POST['log_user'];
 	$postfields["log_group"]							= $_POST['log_group'];
 */
-	var_dump($_POST['field_options']);die();
+	$field_options = $_POST['field_options'];
+	if (isset($field_options)) {
+		$field_options = str_replace("\n", "!N!", $field_options);
+	}
+	var_dump($field_options);die();
 
 	$postfields = array(
 			'goAction' => 'goAddCustomFields',
