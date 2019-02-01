@@ -3944,41 +3944,9 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param goAction
 	 * @param responsetype
 	 */
-	public function API_getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter) {
-		require_once('Session.php');
-		$url = gourl."/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
-	    $postfields["goUser"] = goUser; #Username goes here. (required)
-	    $postfields["goPass"] = goPass; #Password goes here. (required)
-	    $postfields["goAction"] = "goGetCallRecordingList"; #action performed by the [[API:Functions]]. (required)
-	    $postfields["responsetype"] = responsetype; #json. (required)
-	    $postfields["requestDataPhone"] = $search_phone;
-		$postfields["log_user"] = $_SESSION['user'];
-		$postfields["session_user"] = $_SESSION['user'];
-		$postfields["log_group"] = $_SESSION['usergroup'];
-		$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
-		
-	    if (isset($start_filterdate))
-	    $postfields["start_filterdate"] = $start_filterdate;
 
-	    $postfields["end_filterdate"] = $end_filterdate;
-	    $postfields["agent_filter"] = $agent_filter;
-
-	    $ch = curl_init();
-	    curl_setopt($ch, CURLOPT_URL, $url);
-	    // curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-	    curl_setopt($ch, CURLOPT_POST, 1);
-	    curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-	    $data = curl_exec($ch);
-	    curl_close($ch);
-	    $output = json_decode($data);
-
-	    return $output;
-	}
-
-	public function getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter, $session_user) {
-	    $output = $this->API_getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter, $_SESSION['user']);
+	public function getListAllRecordings($output){ //($search_phone, $start_filterdate, $end_filterdate, $agent_filter, $session_user) {
+	    // $output = $this->API_getListAllRecordings($search_phone, $start_filterdate, $end_filterdate, $agent_filter, $_SESSION['user']);
 
 	    if ($output->result=="success") {
 

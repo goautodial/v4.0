@@ -219,8 +219,8 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 
 															if ( ($A_field_type=='SELECT') or ($A_field_type=='MULTI') or ($A_field_type=='RADIO') or ($A_field_type=='CHECKBOX') )
 															{
-																$A_field_options = str_replace('\r\n', '\n', $A_field_options);
-																$field_options_array = explode('\n', $A_field_options);
+																$A_field_options = str_replace("\r\n", "\n", $A_field_options);
+																$field_options_array = explode("\n", $A_field_options);
 
 																$field_options_count = count($field_options_array);
 																$te=0;
@@ -454,11 +454,11 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 									<div class="form-group">
 										<label class="control-label col-lg-3">Rank:</label>
 										<div class="col-lg-3">
-											<input type="text" class="form-control field-rank" name="field_rank" value="">
+											<input type="number" class="form-control field-rank" name="field_rank" value="">
 										</div>
 										<label class="control-label col-lg-2">Order:</label>
 										<div class="col-lg-3">
-											<input type="text" class="form-control field-order" name="field_order" value="">
+											<input type="number" class="form-control field-order" name="field_order" value="">
 										</div>
 									</div>
 									<div class="form-group">
@@ -520,13 +520,13 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 									<div class="form-group">
 										<label class="control-label col-lg-3">Field Size:</label>
 										<div class="col-lg-9">
-											<input type="text" class="form-control field-size" name="field_size" value="">
+											<input type="number" class="form-control field-size" name="field_size" value="">
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="control-label col-lg-3">Field Max:</label>
 										<div class="col-lg-9">
-											<input type="text" class="form-control field-max" name="field_max" value="">
+											<input type="number" class="form-control field-max" name="field_max" value="">
 										</div>
 									</div>
 									<div class="form-group">
@@ -873,10 +873,12 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 					$('.field-rank').val(data.field_rank);
 					$('.field-order').val(data.field_order);
 					$('.field-name').val(data.field_name);
-					$('.field-description').val(data.field_description);
+					if (data.field_description !== null) {
+						$('.field-description').val(data.field_description.split('\\r\\n').join('\r\n'));
+					}
 					$('.field-type').val(data.field_type).change();
 					if (data.field_options !== null) {
-						$('.field-options').val(data.field_options.replace('\\r\\n', '\r\n'));
+						$('.field-options').val(data.field_options.split('\\r\\n').join('\r\n'));
 					}
 					$('.field-size').val(data.field_size);
 					$('.field-max').val(data.field_max);
