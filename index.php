@@ -1122,7 +1122,7 @@ function goGetInSession(type) {
 			};
 			
 			checkIfConnected = setInterval(function () {
-				console.log(use_webrtc);
+				console.log('USE WEBRTC: ' + use_webrtc);
 				if ((use_webrtc && phone.isConnected()) || !use_webrtc) {
 					$.ajax({
 						type: 'POST',
