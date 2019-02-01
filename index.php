@@ -1122,7 +1122,6 @@ function goGetInSession(type) {
 			};
 			
 			checkIfConnected = setInterval(function () {
-				console.log('USE WEBRTC: ' + use_webrtc);
 				if ((use_webrtc && phone.isConnected()) || !use_webrtc) {
 					$.ajax({
 						type: 'POST',
@@ -1138,8 +1137,6 @@ function goGetInSession(type) {
 						if (result.result == 'success') {
 							isMonitoring = true;
 							clearInterval(checkIfConnected);
-						} else {
-							console.log(result);
 						}
 					});
 				}
@@ -1181,7 +1178,6 @@ function goGetInSession(type) {
 					if (bSec < 10) {bSec = "0"+bSec;}
 					
 					$("#bTimer").html(bHour+":"+bMin+":"+bSec);
-					console.log(bHour+":"+bMin+":"+bSec);
 				}
 			}, 1000);
 		}
