@@ -1711,7 +1711,7 @@
 				$('.lists-description').val(dataInfo.list_description);
 				$('.lists-campaign').val(dataInfo.campaign_id).trigger('change');
 				$('.lists-reset-time').val(dataInfo.reset_time);
-				$('.lists-lead-called-status').val(dataInfo.reset_called_lead_status).trigger('change');
+				//$('.lists-lead-called-status').val(dataInfo.reset_called_lead_status).trigger('change');
 				$('.lists-active').val(dataInfo.active).trigger('change');
 				$('.lists-agent-script-override').val(dataInfo.agent_script_override).trigger('change');
 				$('.lists-cid-override').val(dataInfo.campaign_cid_override);
