@@ -1145,7 +1145,7 @@ error_reporting(E_ERROR | E_PARSE);
 						<span class="sr-only">Toggle Dropdown</span>
 	                </button>
 	                <ul class="dropdown-menu" role="menu">
-	                    <li'.($perm->user_update === 'N' ? ' class="hidden"' : '').'><a class="edit-T_user" href="#" data-id="'.$userid.'" data-user="'.$current_user.'"  data-role="'.$role.'">'.$this->lh->translationFor("modify").'</a></li>
+	                    <li'.($perm->user_update === 'N' ? ' class="hidden"' : '').'><a class="edit-T_user" href="#" data-id="'.$userid.'" data-user="'.$user.'"  data-role="'.$role.'">'.$this->lh->translationFor("modify").'</a></li>
 	                    <li'.($perm->user_view === 'N' ? ' class="hidden"' : '').'><a class="view-stats" href="#" data-user="'.$user.'" data-name="'.$name.'" data-agentlog="userlog">'.$this->lh->translationFor("agent_log").' - '.$this->lh->translationFor("agent_log").'</a></li>
 						<li'.($perm->user_view === 'N' ? ' class="hidden"' : '').'><a class="view-stats" href="#" data-user="'.$user.'" data-name="'.$name.'" data-agentlog="outbound">'.$this->lh->translationFor("agent_log").' - '.$this->lh->translationFor("outbound").'</a></li>
 						<li'.($perm->user_view === 'N' ? ' class="hidden"' : '').'><a class="view-stats" href="#" data-user="'.$user.'" data-name="'.$name.'" data-agentlog="inbound">'.$this->lh->translationFor("agent_log").' - '.$this->lh->translationFor("inbound").'</a></li>

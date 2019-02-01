@@ -26,7 +26,7 @@ require_once('CRMDefaults.php');
 $api = \creamy\APIHandler::getInstance();
 ini_set('memory_limit', '2048M');
 
-    $postfields["goAction"] = "goGetReports";
+    $postfields["goAction"] = "goExportCallReport";
     $postfields["pageTitle"] = "call_export_report";
 
     if(isset($_POST['campaigns']) && $_POST['campaigns'] != NULL){
@@ -77,7 +77,6 @@ ini_set('memory_limit', '2048M');
     
     if($fromDate != NULL)
     $postfields["fromDate"] = $fromDate;
-    ]
 
     $output = $api->API_Request("goReports", $postfields);
 
@@ -105,4 +104,5 @@ ini_set('memory_limit', '2048M');
         }
         echo $row;
     }
+    var_dump($output);
 ?>

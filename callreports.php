@@ -549,7 +549,7 @@
 				}
 
 				if(filter_type === "call_export_report"){
-				     URL = './php/reports/exportcallreport.php';
+				     URL = './exportcallreport.php';
 				}
 				
 				$.ajax({

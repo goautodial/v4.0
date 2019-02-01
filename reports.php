@@ -1164,7 +1164,7 @@
 			
 			$display = '';
 			$display .= '
-					<form action="./php/ExportCallReport.php" id="export_callreport_form" method="POST">
+					<form action="./exportcallreport.php" id="export_callreport_form" method="POST">
 						<input type="hidden" name="log_user" value="'.$log_user.'" />
 						<input type="hidden" name="log_group" value="'.$log_group.'" />
 						<div class="row">
@@ -1473,6 +1473,6 @@
 	} else {
 		echo $output->result;
 	}
-
+var_dump($output);
 //print_r($output);
 ?>

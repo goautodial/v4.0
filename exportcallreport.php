@@ -20,7 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once('./php/APIHandler.php');
 	
 	$api = \creamy\APIHandler::getInstance();
 	
@@ -41,7 +41,7 @@
 		
 		$display = '';
 		$display .= '
-				<form action="../ExportCallReport.php" id="export_callreport_form" method="POST">
+				<form action="./php/ExportCallReport.php" id="export_callreport_form" method="POST">
 					<input type="hidden" name="log_user" value="'.$session_user.'" />
 					<input type="hidden" name="log_group" value="'.$session_group.'" />
 					<div class="row">
