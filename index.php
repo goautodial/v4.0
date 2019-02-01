@@ -1137,6 +1137,8 @@ function goGetInSession(type) {
 						if (result.result == 'success') {
 							isMonitoring = true;
 							clearInterval(checkIfConnected);
+						} else {
+							console.log(result);
 						}
 					});
 				}
