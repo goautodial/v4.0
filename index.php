@@ -1178,6 +1178,7 @@ function goGetInSession(type) {
 					if (bSec < 10) {bSec = "0"+bSec;}
 					
 					$("#bTimer").html(bHour+":"+bMin+":"+bSec);
+					console.log(bHour+":"+bMin+":"+bSec);
 				}
 			}, 1000);
 		}
