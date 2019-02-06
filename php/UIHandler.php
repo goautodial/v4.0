@@ -3414,7 +3414,7 @@ error_reporting(E_ERROR | E_PARSE);
 		}
 		//$hideOnMedium = array($this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
 		//$hideOnLow = array($this->lh->translationFor("agent_id"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
-		$result = $this->generateTableHeaderWithItems($columns, "T_users", "responsive display no-wrap table-bordered table-striped", true, false);
+		$result = $this->generateTableHeaderWithItems($columns, "T_userslist", "responsive display no-wrap table-bordered table-striped", true, false);
 	
 		// iterate through all users
 		for($i=0;$i<count($output->user_id);$i++) {
