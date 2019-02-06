@@ -1096,7 +1096,8 @@ function goGetInSession(type) {
 				bTitle,
 				bText,
 				isMonitoring = false,
-				checkIfConnected;
+				checkIfConnected,
+				somethingWentWrong = false;
 			
 			if (type == 'BARGE') {
 				bTitle = "Barging...";
@@ -1136,50 +1137,62 @@ function goGetInSession(type) {
 					.done(function (result) {
 						if (result.result == 'success') {
 							isMonitoring = true;
-							clearInterval(checkIfConnected);
+						} else {
+							isMonitoring = false;
+							somethingWentWrong = true;
 						}
+						clearInterval(checkIfConnected);
 					});
 				}
 			}, 1000);
 			
-			swal({
-				title: bTitle,
-				text: bText + "<br><h1 id='bTimer' class='text-center'>00:00:00</h1>",
-				html: true,
-				confirmButtonColor: "#DD6B55",
-				confirmButtonText: "Disconnect",
-				closeOnConfirm: false
-			}, function() {
-				clearInterval(thisTimer);
-				isMonitoring = false;
-				if (use_webrtc) {
-					phone.stop();
-				}
-				swal.close();
-			});
-			
-			thisTimer = setInterval(function() {
-				if (((use_webrtc && phone.isConnected()) || !use_webrtc) && isMonitoring) {
-					var bt = $("#bTimer").html().split(':');
-					var bHour = parseInt(bt[0]);
-					var bMin = parseInt(bt[1]);
-					var bSec = parseInt(bt[2]);
-					bSec++;
-					if (bSec > 59) {
-						bSec = 0;
-						bMin++;
+			if (!somethingWentWrong) {
+				swal({
+					title: bTitle,
+					text: bText + "<br><h1 id='bTimer' class='text-center'>00:00:00</h1>",
+					html: true,
+					confirmButtonColor: "#DD6B55",
+					confirmButtonText: "Disconnect",
+					closeOnConfirm: false
+				}, function() {
+					clearInterval(thisTimer);
+					isMonitoring = false;
+					if (use_webrtc) {
+						phone.stop();
 					}
-					if (bMin > 59) {
-						bMin = 0;
-						bHour++;
+					swal.close();
+				});
+				
+				thisTimer = setInterval(function() {
+					if (((use_webrtc && phone.isConnected()) || !use_webrtc) && isMonitoring) {
+						var bt = $("#bTimer").html().split(':');
+						var bHour = parseInt(bt[0]);
+						var bMin = parseInt(bt[1]);
+						var bSec = parseInt(bt[2]);
+						bSec++;
+						if (bSec > 59) {
+							bSec = 0;
+							bMin++;
+						}
+						if (bMin > 59) {
+							bMin = 0;
+							bHour++;
+						}
+						if (bHour < 10) {bHour = "0"+bHour;}
+						if (bMin < 10) {bMin = "0"+bMin;}
+						if (bSec < 10) {bSec = "0"+bSec;}
+						
+						$("#bTimer").html(bHour+":"+bMin+":"+bSec);
 					}
-					if (bHour < 10) {bHour = "0"+bHour;}
-					if (bMin < 10) {bMin = "0"+bMin;}
-					if (bSec < 10) {bSec = "0"+bSec;}
-					
-					$("#bTimer").html(bHour+":"+bMin+":"+bSec);
-				}
-			}, 1000);
+				}, 1000);
+			} else {
+				somethingWentWrong = false;
+				swal({
+					title: "ERROR",
+					text: "Can't connect to the asterisk server. Please contact your Administrator.",
+					type: "error"
+				});
+			}
 		}
 	} else {
 		swal({
