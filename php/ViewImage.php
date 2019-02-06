@@ -33,6 +33,8 @@
 		header('Content-type: '.$image['type']);
 		echo base64_decode($image['data']);
 	} else {
-		echo "";
+		$img = '../img/avatars/default/defaultAvatar.png';
+		header('Content-Type: image/png');
+		readfile($img);
 	}
 ?>
