@@ -77,32 +77,26 @@ ini_set('memory_limit', '2048M');
     
     if($fromDate != NULL)
     $postfields["fromDate"] = $fromDate;
-
+    
     $output = $api->API_Request("goReports", $postfields);
 
     if($output->result == "success"){
         
-        $header = implode(",",$output->getReports->header);
+        $header = implode(",",$output->header);
         
         $filename = "Export_Call_Report.".date("Y-m-d").".csv";
         
         header('Content-type: application/csv');
         header('Content-Disposition: attachment; filename='.$filename);
         
-		echo $header."\n";
-		
-        $count = 0;
-        for($i=0; $i <= count($output->getReports->rows); $i++){
-            $count_row = $output->getReports->rows[$i];
-            for($x=0; $x <= count($count_row); $x++){
-                if($x == count($count_row)){
-                    echo $count_row[$x]."\n";
-                }else{
-                    echo $count_row[$x].",";
-                }
-            }
-        }
-        echo $row;
+	echo $header."\n";
+	$array_rows = json_decode(json_encode($output->rows), true);
+	foreach($array_rows as $temp){
+	    foreach($temp as $value){
+	        echo $value.",";
+	    }
+	    echo "\n";
+	}  
     }
-    var_dump($output);
+    //var_dump($output);
 ?>
