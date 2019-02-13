@@ -788,7 +788,7 @@ EOF;
 								<div><b style="opacity: .5; text-transform: uppercase;">$consultative</b></div>
 								<input type="checkbox" name="xferoverride" id="xferoverride" value="0" class="hidden">
 							</div>
-							<div class="col-md-2" style="text-align: center; display: none;"><button class="btn btn-default btn-sm" style="margin-bottom: 2px;" onclick="DTMF_Preset_a();">D1</button><br><button class="btn btn-default btn-sm" onclick="DTMF_Preset_b();">D2</button></div>
+							<div class="col-md-2" style="text-align: center;"><button class="btn btn-default btn-sm" style="margin-bottom: 2px;" onclick="DTMF_Preset_a();">D1</button><br><button class="btn btn-default btn-sm" onclick="DTMF_Preset_b();">D2</button></div>
 						</div>
 						<div class="row">
 							<div class="col-md-9">

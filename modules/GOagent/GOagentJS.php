@@ -3773,7 +3773,7 @@ function DTMF_Preset_b_Dial(taskquiet) {
         {session_id_dial = '7' + session_id};
     BasicOriginateCall(Call_XC_b_Number,'NO','YES',session_id_dial,'YES','','1','0');
 }
-function DtMf_PreSet_c_DiaL(taskquiet) {
+function DtMf_Preset_c_Dial(taskquiet) {
     $(".formXFER input[name='xfernumber']").val(Call_XC_c_Number);
     var session_id_dial = session_id;
     if (taskquiet == 'YES')
