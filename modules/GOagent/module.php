@@ -813,6 +813,7 @@ EOF;
 							<div class="col-md-3"><button id="btnHangupXferLine" class="btn btn-default btn-sm disabled" style="text-transform: uppercase;">$hangupXferLine</button></div>
 							<div class="col-md-3"><button id="btnHangupBothLines" onclick="BothCallHangup();" class="btn btn-danger btn-sm disabled" style="text-transform: uppercase;">&nbsp; $hangupBothLine &nbsp;</button></div>
 							<div class="col-md-4" style="padding-left: 30px;"><button id="btnLeave3WayCall" onclick="Leave3WayCall('FIRST');" class="btn btn-primary btn-sm disabled" style="text-transform: uppercase;">&nbsp; &nbsp;$leave3wayCall&nbsp; &nbsp;&nbsp;</button></div>
+							<div class="col-md-2" style="text-align: center;"><button class="btn btn-default btn-sm" style="margin-bottom: 2px;" onclick="DTMF_Preset_a();">D1</button><br><button class="btn btn-default btn-sm" onclick="DTMF_Preset_b();">D2</button></div>
 						</div>
 						<div class="row">
 							<div class="col-md-3"><button id="btnDialBlindTransfer" class="btn btn-primary btn-sm disabled" style="text-transform: uppercase;">&nbsp; $blindTransfer &nbsp;</button></div>
