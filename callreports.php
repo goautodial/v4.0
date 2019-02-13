@@ -359,6 +359,7 @@
 			$('#ingroup_id').on('change', function() {
 				var filter_type = $('#filter_type').val();				
 				var request = "";
+				var URL = "./php/reports/inboundreport.php";
 				
 				$('#table').empty();
 				$(".report-loader").fadeIn("slow");
@@ -413,7 +414,8 @@
 			$('#statuses').on('change', function() {
 				var filter_type = $('#filter_type').val();	
 				var request = "";
-				
+				var URL = "./php/reports/inboundreport.php";
+
 				$('#table').empty();
 				$(".report-loader").fadeIn("slow");
 				
@@ -517,6 +519,7 @@
 				var filter_type = $('#filter_type').val();				
 				var request = "";
 				var URL = 'reports.php';
+				var campaign_ID = $("#campaign_id").val();
 				
 				$('#table').empty();
 				$(".report-loader").fadeIn("slow");				
@@ -546,6 +549,7 @@
 
 				if (filter_type == "inbound_report"){
 				    URL = './php/reports/inboundreport.php';
+				    campaign_ID = $("#ingroup_id").val();
 				}
 
 				if(filter_type === "call_export_report"){
@@ -557,7 +561,7 @@
 					type: 'POST',
 					data: {
 						pageTitle : filter_type,
-						campaignID : $("#campaign_id").val(),
+						campaignID: campaign_ID,
 						request : request,
 						userID : $("#userID").val(),
 						userGroup : $("#userGroup").val(),

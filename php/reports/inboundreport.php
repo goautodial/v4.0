@@ -1,10 +1,10 @@
 <?php
 /**
- * @file        dispo.php
+ * @file        inboundreport.php
  * @brief       Handles report requests
  * @copyright   Copyright (c) 2018 GOautodial Inc.
  * @author      Alexander Jim H. Abenoja
- *
+ *		John Ezra D. Gois
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Affero General Public License as published by
@@ -71,8 +71,8 @@
 	}
 		
 	$postfields = array(
-		'goAction' => 'goGetDispoStats',		
-		'pageTitle' => 'dispo',
+		'goAction' => 'goGetInboundReport',		
+		'pageTitle' => $pageTitle,
 		'fromDate' => $fromDate,
 		'toDate' => $toDate,
 		'campaignID' => $campaign_id,
@@ -81,17 +81,49 @@
 	);
 
 	$output = $api->API_getReports($postfields);
-	//var_dump($output);
+
 	if ($output->result == "success") {
-	
-		echo '<div class="animated slideInLeft">';
+/*		echo '<div class="animated slideInLeft">';
 			echo '<div>'.$output->TOPsorted_output.'</div>';
 		echo '</div>';
 		
 		echo '<div class="animated slideInRight">';
 			echo '<div>'.$output->BOTsorted_output.'</div>';
 		echo '</div>';
-	}
+*/
+
+                $inbound_report .= '
+                        <div>
+                                <legend><small><em class="fa fa-arrow-right"></em><i> INBOUND </i></small></legend>
+                                        <table class="display responsive no-wrap table table-striped table-bordered table-hover"  id="inbound_report">
+                                                <thead>
+                                                        <tr>
+                                                                <th nowrap> Lead ID </th>
+                                                                <th nowrap> Call Date </th>
+                                                                <th nowrap> Agent </th>
+                                                                <th nowrap> Phone Number </th>
+                                                                <th nowrap> Time </th>
+                                                                <th nowrap> Length </th>
+                                                                <th nowrap> Status </th>
+                                                        </tr>
+                                                </thead>
+                                                <tbody>
+                        ';
+                if ($output->TOPsorted_output != NULL) {
+			foreach($output->TOPsorted_output as $row){
+		                $inbound_report .= $row;
+			}
+                }else{
+ 	               $inbound_report .= "";
+                }
+
+     	        $inbound_report .= '</tbody>';
+                $inbound_report .= '</table></div>';
+		
+		echo '<div class="animated slideInLeft">';
+			echo '<div>'.$inbound_report.'</div>';
+		echo '</div>';
+	//	var_dump($output->TOPsorted_output);
+        }
 
 ?>
-
