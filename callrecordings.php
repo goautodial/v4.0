@@ -50,7 +50,7 @@
 		<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
 
         <!-- Datetime picker -->
-		<link rel="stylesheet" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+	<link rel="stylesheet" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
 
         <!-- Date Picker -->	
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
@@ -73,8 +73,7 @@
 			.c-checkbox input[type=checkbox]:checked + span,
 			.c-radio input[type=checkbox]:checked + span,
 			.c-checkbox input[type=radio]:checked + span,
-			.c-radio input[type=radio]:checked + span
-			 {
+			.c-radio input[type=radio]:checked + span {
 				border-color: #3f51b5 !important;
     			background-color: #3f51b5 !important;
 			}
@@ -377,25 +376,25 @@
 				** Call Recording filters
 				****/
 
-					// ---- DATETIME PICKER INITIALIZATION
+				// ---- DATETIME PICKER INITIALIZATION
 
-						$('#datetimepicker3').datetimepicker({
-							icons: {
-								time: "fa fa-clock-o",
-								date: "fa fa-calendar",
-								up: "fa fa-arrow-up",
-								down: "fa fa-arrow-down"
-							}
-						});
+				$('#datetimepicker3').datetimepicker({
+					icons: {
+						time: "fa fa-clock-o",
+						date: "fa fa-calendar",
+						up: "fa fa-arrow-up",
+						down: "fa fa-arrow-down"
+					}
+				});
 
 		                $('#datetimepicker4').datetimepicker({
 		                	useCurrent: false,
-                    		icons: {
-								time: "fa fa-clock-o",
-								date: "fa fa-calendar",
-								up: "fa fa-arrow-up",
-								down: "fa fa-arrow-down"
-							}
+	                   		icons: {
+						time: "fa fa-clock-o",
+						date: "fa fa-calendar",
+						up: "fa fa-arrow-up",
+						down: "fa fa-arrow-down"
+					}
 		                });
 
 	                // ---- DATE FILTERS
