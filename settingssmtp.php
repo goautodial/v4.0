@@ -176,20 +176,28 @@
         </div><!-- ./wrapper -->
 	
     <!-- Forms and actions -->
-        <?php print $ui->standardizedThemeJS(); ?>
-		
-		<script type="text/javascript">
-			$(document).ready(function() {
-				/*********************
-				** INITIALIZATION
-				*********************/
-				
-				$("#modifyform").validate({
-					submitHandler: function() {
+<?php print $ui->standardizedThemeJS(); ?>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		/*********************
+		** INITIALIZATION
+		*********************/
+                <?php
+                      if($output->result == 'success'){
+	                      $url = "./php/ModifySMTPSetting.php";
+                      }else{
+        	              $url = "./php/AddSMTPSetting.php";
+                      }
+                ?>
+                var url = '<?php echo $url; ?>';
+	
+			$("#modifyform").validate({
+				submitHandler: function() {
 						//submit the form
 							$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
 							$('#modifyOkButton').prop("disabled", true);
-							$.post("./php/ModifySMTPSetting.php", //post
+							$.post(url, //post
 							$("#modifyform").serialize(),
 							function(data){
 								//if message is sent
