@@ -68,7 +68,8 @@ require_once('goCRMAPISettings.php');
 	$data = curl_exec($ch);
 	curl_close($ch);
 	$output = json_decode($data);
-	
+//	var_dump($output);
+
 	if ($output->result=="success") {
 	   # Result was OK!
 		echo $output->result;
