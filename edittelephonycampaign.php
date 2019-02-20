@@ -857,6 +857,16 @@
 																</div>
 															</div>
 															<div class="form-group">
+																<label class="col-sm-3 control-label"><?php $lh->translateText("manual_dial_search_filter"); ?>:</label>
+																<div class="col-sm-9 mb">
+																	<select class="form-control" id="manual_dial_search_filter" name="manual_dial_search_filter">
+																		<option value="NONE" <?php if($campaign->data->manual_dial_search_filter == "NONE") echo "selected";?>>NONE</option>
+																		<option value="CAMPLISTS_ONLY" <?php if($campaign->data->manual_dial_search_filter == "CAMPLISTS_ONLY") echo "selected";?>>CAMPLIST ONLY</option>
+																		<option value="CAMPLISTS_ALL" <?php if($campaign->data->manual_dial_search_filter == "CAMPLISTS_ALL") echo "selected";?>>CAMPLIST ALL</option>
+																	</select>
+																</div>
+															</div>															
+															<div class="form-group">
 																<label class="col-sm-3 control-label"><?php $lh->translateText("use_internal_dnc"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<select class="form-control" id="use_internal_dnc" name="use_internal_dnc">
@@ -1114,6 +1124,16 @@
 																	</select>
 																</div>
 															</div>
+															<div class="form-group">
+																<label class="col-sm-3 control-label"><?php $lh->translateText("manual_dial_search_filter"); ?>:</label>
+																<div class="col-sm-9 mb">
+																	<select class="form-control" id="manual_dial_search_filter" name="manual_dial_search_filter">
+																		<option value="NONE" <?php if($campaign->data->manual_dial_search_filter == "NONE") echo "selected";?>>NONE</option>
+																		<option value="CAMPLISTS_ONLY" <?php if($campaign->data->manual_dial_search_filter == "CAMPLISTS_ONLY") echo "selected";?>>CAMPLIST ONLY</option>
+																		<option value="CAMPLISTS_ALL" <?php if($campaign->data->manual_dial_search_filter == "CAMPLISTS_ALL") echo "selected";?>>CAMPLIST ALL</option>
+																	</select>
+																</div>
+															</div>															
 															<div class="form-group">
 																<label class="col-sm-3 control-label"><?php $lh->translateText("manual_dial_list_id"); ?>:</label>
 																<div class="col-sm-9 mb">
@@ -1522,6 +1542,16 @@
 																	</select>
 																</div>
 															</div>
+															<div class="form-group">
+																<label class="col-sm-3 control-label"><?php $lh->translateText("manual_dial_search_filter"); ?>:</label>
+																<div class="col-sm-9 mb">
+																	<select class="form-control" id="manual_dial_search_filter" name="manual_dial_search_filter">
+																		<option value="NONE" <?php if($campaign->data->manual_dial_search_filter == "NONE") echo "selected";?>>NONE</option>
+																		<option value="CAMPLISTS_ONLY" <?php if($campaign->data->manual_dial_search_filter == "CAMPLISTS_ONLY") echo "selected";?>>CAMPLIST ONLY</option>
+																		<option value="CAMPLISTS_ALL" <?php if($campaign->data->manual_dial_search_filter == "CAMPLISTS_ALL") echo "selected";?>>CAMPLIST ALL</option>
+																	</select>
+																</div>
+															</div>															
 															<div class="form-group">
 																<label class="col-sm-3 control-label"><?php $lh->translateText("manual_dial_list_id"); ?>:</label>
 																<div class="col-sm-9 mb">
