@@ -198,6 +198,12 @@
 			$manual_dial_filter 					= stripslashes($manual_dial_filter);
 		}
 		
+		$manual_dial_search_filter 					= NULL; 
+		if (isset($_POST["manual_dial_search_filter"])) { 
+			$manual_dial_search_filter 				= $_POST["manual_dial_search_filter"]; 
+			$manual_dial_search_filter 				= stripslashes($manual_dial_search_filter);
+		}
+		
 		$use_internal_dnc 							= NULL; 
 		if (isset($_POST["use_internal_dnc"])) { 
 			$use_internal_dnc 						= $_POST["use_internal_dnc"]; 
@@ -582,6 +588,7 @@
 			"am_message_chooser" 						=> $am_message_chooser,
 			"agent_pause_codes_active" 					=> $agent_pause_codes_active,
 			"manual_dial_filter" 						=> $manual_dial_filter,
+			"manual_dial_search_filter"					=> $manual_dial_search_filter,
 			"use_internal_dnc"							=> $use_internal_dnc,
 			"use_campaign_dnc"							=> $use_campaign_dnc,
 			"manual_dial_list_id" 						=> $manual_dial_list_id,
