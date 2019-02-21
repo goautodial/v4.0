@@ -3408,10 +3408,13 @@ error_reporting(E_ERROR | E_PARSE);
 		$checkbox_all = $this->getCheckAll("user");
 		
 		if ($perm->user_delete !== 'N') {
-       	    $columns = array("  ", $this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $checkbox_all, $this->lh->translationFor("action"));
+			$checkbox_all = $this->getCheckAll("user");
 		} else {
-			$columns = array("  ",$this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $this->lh->translationFor("action"));
+			$checkbox_all = "";
 		}
+
+		 $columns = array("  ", $this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $checkbox_all, $this->lh->translationFor("action"));
+
 		//$hideOnMedium = array($this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
 		//$hideOnLow = array($this->lh->translationFor("agent_id"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
 		$result = $this->generateTableHeaderWithItems($columns, "T_userslist", "responsive display no-wrap table-bordered table-striped", true, false);
@@ -3454,8 +3457,8 @@ error_reporting(E_ERROR | E_PARSE);
 							<td>".$full_name."</td>
 							<td>".$user_group."</td>
 							<td>".$active."</td>";
-				if ($perm->user_delete !== 'N')							
-				$result .= "<td style='width:5%;'>".$checkbox."</td>";
+				//if ($perm->user_delete !== 'N')							
+				$result .= "<td style='width:5%;'>".(($perm->user_delete !== 'N') ? $checkbox : '')."</td>";
 				$result .= "<td nowrap style='width:16%;'>".$action."</td>
 						</tr>";
 		}
