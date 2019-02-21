@@ -850,12 +850,22 @@
 																	<select class="form-control" id="manual_dial_filter" name="manual_dial_filter">
 																		<option value="NONE" <?php if($campaign->data->manual_dial_filter == "NONE") echo "selected";?>>NONE</option>
 																		<option value="DNC_ONLY" <?php if($campaign->data->manual_dial_filter == "DNC_ONLY") echo "selected";?>>DNC ONLY</option>
-																		<option value="CAMPLIST_ONLY" <?php if($campaign->data->manual_dial_filter == "CAMPLIST_ONLY") echo "selected";?>>CAMPLIST ONLY</option>
-																		<option value="DNC_AND_CAMPLIST" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLIST") echo "selected";?>>DNC & CAMPLIST</option>
-																		<option value="DNC_AND_CAMPLIST_ALL" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLIST_ALL") echo "selected";?>>DNC & CAMPLIST ALL</option>
+																		<option value="CAMPLISTS_ONLY" <?php if($campaign->data->manual_dial_filter == "CAMPLISTS_ONLY") echo "selected";?>>CAMPLIST ONLY</option>
+																		<option value="DNC_AND_CAMPLISTS" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLISTS") echo "selected";?>>DNC & CAMPLIST</option>
+																		<option value="DNC_AND_CAMPLISTS_ALL" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLISTS_ALL") echo "selected";?>>DNC & CAMPLIST ALL</option>
 																	</select>
 																</div>
 															</div>
+															<div class="form-group">
+																<label class="col-sm-3 control-label"><?php $lh->translateText("manual_dial_search_filter"); ?>:</label>
+																<div class="col-sm-9 mb">
+																	<select class="form-control" id="manual_dial_search_filter" name="manual_dial_search_filter">
+																		<option value="NONE" <?php if($campaign->data->manual_dial_search_filter == "NONE") echo "selected";?>>NONE</option>
+																		<option value="CAMPLISTS_ONLY" <?php if($campaign->data->manual_dial_search_filter == "CAMPLISTS_ONLY") echo "selected";?>>CAMPLIST ONLY</option>
+																		<option value="CAMPLISTS_ALL" <?php if($campaign->data->manual_dial_search_filter == "CAMPLISTS_ALL") echo "selected";?>>CAMPLIST ALL</option>
+																	</select>
+																</div>
+															</div>															
 															<div class="form-group">
 																<label class="col-sm-3 control-label"><?php $lh->translateText("use_internal_dnc"); ?>:</label>
 																<div class="col-sm-9 mb">
@@ -1108,12 +1118,22 @@
 																	<select class="form-control" id="manual_dial_filter" name="manual_dial_filter">
 																		<option value="NONE" <?php if($campaign->data->manual_dial_filter == "NONE") echo "selected";?>>NONE</option>
 																		<option value="DNC_ONLY" <?php if($campaign->data->manual_dial_filter == "DNC_ONLY") echo "selected";?>>DNC ONLY</option>
-																		<option value="CAMPLIST_ONLY" <?php if($campaign->data->manual_dial_filter == "CAMPLIST_ONLY") echo "selected";?>>CAMPLIST ONLY</option>
-																		<option value="DNC_AND_CAMPLIST" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLIST") echo "selected";?>>DNC & CAMPLIST</option>
-																		<option value="DNC_AND_CAMPLIST_ALL" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLIST_ALL") echo "selected";?>>DNC & CAMPLIST ALL</option>
+																		<option value="CAMPLISTS_ONLY" <?php if($campaign->data->manual_dial_filter == "CAMPLISTS_ONLY") echo "selected";?>>CAMPLIST ONLY</option>
+																		<option value="DNC_AND_CAMPLISTS" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLISTS") echo "selected";?>>DNC & CAMPLIST</option>
+																		<option value="DNC_AND_CAMPLISTS_ALL" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLISTS_ALL") echo "selected";?>>DNC & CAMPLIST ALL</option>
 																	</select>
 																</div>
 															</div>
+															<div class="form-group">
+																<label class="col-sm-3 control-label"><?php $lh->translateText("manual_dial_search_filter"); ?>:</label>
+																<div class="col-sm-9 mb">
+																	<select class="form-control" id="manual_dial_search_filter" name="manual_dial_search_filter">
+																		<option value="NONE" <?php if($campaign->data->manual_dial_search_filter == "NONE") echo "selected";?>>NONE</option>
+																		<option value="CAMPLISTS_ONLY" <?php if($campaign->data->manual_dial_search_filter == "CAMPLISTS_ONLY") echo "selected";?>>CAMPLIST ONLY</option>
+																		<option value="CAMPLISTS_ALL" <?php if($campaign->data->manual_dial_search_filter == "CAMPLISTS_ALL") echo "selected";?>>CAMPLIST ALL</option>
+																	</select>
+																</div>
+															</div>															
 															<div class="form-group">
 																<label class="col-sm-3 control-label"><?php $lh->translateText("manual_dial_list_id"); ?>:</label>
 																<div class="col-sm-9 mb">
@@ -1516,12 +1536,22 @@
 																	<select class="form-control" id="manual_dial_filter" name="manual_dial_filter">
 																		<option value="NONE" <?php if($campaign->data->manual_dial_filter == "NONE") echo "selected";?>>NONE</option>
 																		<option value="DNC_ONLY" <?php if($campaign->data->manual_dial_filter == "DNC_ONLY") echo "selected";?>>DNC ONLY</option>
-																		<option value="CAMPLIST_ONLY" <?php if($campaign->data->manual_dial_filter == "CAMPLIST_ONLY") echo "selected";?>>CAMPLIST ONLY</option>
-																		<option value="DNC_AND_CAMPLIST" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLIST") echo "selected";?>>DNC & CAMPLIST</option>
-																		<option value="DNC_AND_CAMPLIST_ALL" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLIST_ALL") echo "selected";?>>DNC & CAMPLIST ALL</option>
+																		<option value="CAMPLISTS_ONLY" <?php if($campaign->data->manual_dial_filter == "CAMPLISTS_ONLY") echo "selected";?>>CAMPLIST ONLY</option>
+																		<option value="DNC_AND_CAMPLISTS" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLISTS") echo "selected";?>>DNC & CAMPLIST</option>
+																		<option value="DNC_AND_CAMPLISTS_ALL" <?php if($campaign->data->manual_dial_filter == "DNC_AND_CAMPLISTS_ALL") echo "selected";?>>DNC & CAMPLIST ALL</option>
 																	</select>
 																</div>
 															</div>
+															<div class="form-group">
+																<label class="col-sm-3 control-label"><?php $lh->translateText("manual_dial_search_filter"); ?>:</label>
+																<div class="col-sm-9 mb">
+																	<select class="form-control" id="manual_dial_search_filter" name="manual_dial_search_filter">
+																		<option value="NONE" <?php if($campaign->data->manual_dial_search_filter == "NONE") echo "selected";?>>NONE</option>
+																		<option value="CAMPLISTS_ONLY" <?php if($campaign->data->manual_dial_search_filter == "CAMPLISTS_ONLY") echo "selected";?>>CAMPLIST ONLY</option>
+																		<option value="CAMPLISTS_ALL" <?php if($campaign->data->manual_dial_search_filter == "CAMPLISTS_ALL") echo "selected";?>>CAMPLIST ALL</option>
+																	</select>
+																</div>
+															</div>															
 															<div class="form-group">
 																<label class="col-sm-3 control-label"><?php $lh->translateText("manual_dial_list_id"); ?>:</label>
 																<div class="col-sm-9 mb">
