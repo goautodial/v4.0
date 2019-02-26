@@ -66,8 +66,8 @@
 						curl_close($ch);
 						$output = json_decode($data);
 						
-						//var_dump($password);
-						if($output->result == "success"){
+						//var_dump($output);
+						//if($output->result == "success"){
 						?>
 							<form id="modifyform">
 								<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
@@ -161,7 +161,7 @@
 									</div>
 								</fieldset>
 							</form>
-						<?php } ?>
+						<?php //} ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->
@@ -176,20 +176,28 @@
         </div><!-- ./wrapper -->
 	
     <!-- Forms and actions -->
-        <?php print $ui->standardizedThemeJS(); ?>
-		
-		<script type="text/javascript">
-			$(document).ready(function() {
-				/*********************
-				** INITIALIZATION
-				*********************/
-				
-				$("#modifyform").validate({
-					submitHandler: function() {
+<?php print $ui->standardizedThemeJS(); ?>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		/*********************
+		** INITIALIZATION
+		*********************/
+                <?php
+                      if($output->result == 'success'){
+	                      $url = "./php/ModifySMTPSetting.php";
+                      }else{
+        	              $url = "./php/AddSMTPSetting.php";
+                      }
+                ?>
+                var url = '<?php echo $url; ?>';
+	
+			$("#modifyform").validate({
+				submitHandler: function() {
 						//submit the form
 							$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
 							$('#modifyOkButton').prop("disabled", true);
-							$.post("./php/ModifySMTPSetting.php", //post
+							$.post(url, //post
 							$("#modifyform").serialize(),
 							function(data){
 								//if message is sent
@@ -213,13 +221,20 @@
 		
 				// disable special characters on Usergroup ID   
 					$('#host').bind('keypress', function (event) {
-						var regex = new RegExp("^[A-Za-z0-9]+$");
+						var regex = new RegExp("^[A-Za-z0-9.]+$");
 						var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
 						if (!regex.test(key)) {
 						   event.preventDefault();
 						   return false;
 						}
 					});
+
+				/********************
+				** DROPDOWN VALUES **
+				********************/
+					$('#debug option[value="<?php echo $output->data->debug; ?>"]').attr('selected', 'selected');
+					$('#smtp_security option[value="<?php echo $output->data->smtp_security; ?>"]').attr('selected', 'selected');
+				
 					
 			}); // end of document ready
 		</script>

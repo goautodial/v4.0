@@ -25,10 +25,12 @@ require_once('goCRMAPISettings.php');
 		$smtp_security = stripslashes($smtp_security);
 	}
 	$smtp_auth = NULL;
-	if (isset($_POST["smtp_auth"]))
+	if (isset($_POST["smtp_auth"])){
 		$smtp_auth = 1; 
-	else
+	}
+	else{
 		$smtp_auth = 0;
+	}
 		
 	$username = NULL; if (isset($_POST["username"])) { 
 		$username = $_POST["username"]; 
@@ -42,10 +44,11 @@ require_once('goCRMAPISettings.php');
 	$url = gourl."/goSMTP/goAPI.php"; #URL to GoAutoDial API. (required)
 	$postfields["goUser"]           = goUser; #Username goes here. (required)
 	$postfields["goPass"]           = goPass; #Password goes here. (required)
-	$postfields["goAction"]         = "goEditSMTP"; #action performed by the [[API:Functions]]
+	$postfields["goAction"]         = "goAddSMTPSettings"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"]     = responsetype; #json. (required)
 	$postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 	
+	$postfields["timezone"] = "Etc/UTC";
 	$postfields["debug"]   	= $debug;
 	$postfields["ipv6_support"]  	= $ipv6_support;
 	$postfields["host"]           	= $host;

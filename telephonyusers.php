@@ -537,7 +537,7 @@
 		var checker = 0;
 		
 		// users table
-		$('#T_users').DataTable({
+		$('#T_userslist').DataTable({
 			destroy:true, 
 			responsive:true,
 			stateSave:true,

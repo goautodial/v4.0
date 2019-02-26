@@ -25,7 +25,7 @@
 	$id = $_POST['action_id'];
 	
 	$postfields = array(
-		'goAction' => 'goActionDNC',
+		'goAction' => 'goSMTPActivation',
 		'action_smtp' => $id
 	);	
     
