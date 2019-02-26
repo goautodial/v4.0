@@ -437,6 +437,7 @@ $(document).ready(function() {
                     $("#dialer-pad-ast, #dialer-pad-hash").addClass('hidden');
                     $("#dialer-pad-clear, #dialer-pad-undo").removeClass('hidden');
                     $("#btnLogMeOut").removeClass("disabled");
+                    toggleButton('RecordCall', 'off');
                     //toggleStatus('NOLIVE');
                     
                     if (dialingINprogress < 1) {
@@ -775,7 +776,10 @@ $(document).ready(function() {
                 $("#sessionIDspan").html(session_id);
                 if ( (LIVE_campaign_recording == 'NEVER') || (LIVE_campaign_recording == 'ALLFORCE') ) {
                     //$("#RecordControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
-				}
+                    $("#RecordControl").hide();
+				} else if ( LIVE_campaign_recording == 'ONDEMAND' ) {
+                    $("#RecordControl").show();
+                }
                 
                 if (per_call_notes == 'ENABLED') {
                     $("#call_notes_content").removeClass('hidden');
