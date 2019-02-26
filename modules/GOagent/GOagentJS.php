@@ -774,7 +774,7 @@ $(document).ready(function() {
                 
                 $("#sessionIDspan").html(session_id);
                 if ( (LIVE_campaign_recording == 'NEVER') || (LIVE_campaign_recording == 'ALLFORCE') ) {
-                    $("#RecordControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
+                    //$("#RecordControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
 				}
                 
                 if (per_call_notes == 'ENABLED') {
@@ -1051,6 +1051,9 @@ $(document).ready(function() {
     $("#go_btn_div").append("<button id='btnQuickTransfer' title='<?=$lh->translationFor('quick_transfer')?>' class='btn btn-default btn-lg' style='margin: 0 5px 5px 0; padding: 10px 20px 10px 21px; font-size: 15px;'><i class='fa fa-exchange'></i></button>");
     //$("#go_nav_btn").append("<div id='cust-info' class='center-block' style='text-align: center; line-height: 35px;'><i class='fa fa-user'></i> <span id='cust-name' style='padding-right: 20px;'></span> <i class='fa fa-phone-square'></i> <span id='cust-phone'></span><input type='hidden' id='cust-phone-number' /></div>");
     $("#go_agent_status").append("<li><div id='MainStatusSpan' class='center-block hidden-xs'>&nbsp;</div></li>");
+    if (campaign_recording == 'ONDEMAND') {
+        $("#go_agent_status").append("<li><div id='RecordControl' class='center-block'><button id='btnRecordCall' title='<?=$lh->translationFor('start_recording')?>' class='btn btn-danger btn-lg' style='margin: 0 5px 5px 0; font-size: 16px;'><i class='fa fa-circle'></i></button></div></li>");
+    }
     $("#go_agent_dialpad").append("<li><div id='AgentDialPad' class='center-block' style='text-align: center; min-width: 200px;'></div></li>");
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-1' class='btn btn-default btn-lg btn-raised' style='padding: 10px 25px; margin: 0 5px 5px 0; font-size: 16px; font-family: monospace;'> 1 </button>");
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-2' class='btn btn-default btn-lg btn-raised' style='padding: 10px 25px; margin: 0 5px 5px 0; font-size: 16px; font-family: monospace;'> 2 </button>");
@@ -1100,6 +1103,9 @@ $(document).ready(function() {
                 break;
             case "ReQueueCall":
                 btnReQueueCall();
+                break;
+            case "RecordCall":
+                btnRecordCall();
                 break;
         }
     });
@@ -2133,6 +2139,16 @@ function btnResumePause () {
     }
 }
 
+function btnRecordCall (action) {
+    if (campaign_recording == 'ONDEMAND') {
+        if (action == 'START') {
+            toggleButton('RecordCall', 'start');
+        } else {
+            toggleButton('RecordCall', 'stop');
+        }
+    }
+}
+
 function enableDialOnEnter(e) {
     if (e.keyCode != 13) {
         return;
@@ -2278,6 +2294,14 @@ function toggleButton (taskname, taskaction, taskenable, taskhide, toupperfirst,
             case "xferoff":
                 actClass = "";
                 onClick = "btn"+taskname+"('OFF', 'YES');";
+                break;
+            case "start":
+                actClass = "";
+                onClick = "btn"+taskname+"('START');";
+                break;
+            case "stop":
+                actClass = "";
+                onClick = "btn"+taskname+"('STOP');";
                 break;
             case "on":
                 actClass = "";
