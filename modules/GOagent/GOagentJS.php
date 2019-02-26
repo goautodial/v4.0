@@ -437,7 +437,6 @@ $(document).ready(function() {
                     $("#dialer-pad-ast, #dialer-pad-hash").addClass('hidden');
                     $("#dialer-pad-clear, #dialer-pad-undo").removeClass('hidden');
                     $("#btnLogMeOut").removeClass("disabled");
-                    toggleButton('RecordCall', 'off');
                     //toggleStatus('NOLIVE');
                     
                     if (dialingINprogress < 1) {
@@ -607,9 +606,6 @@ $(document).ready(function() {
                         $("#dialer-pad-ast, #dialer-pad-hash").removeClass('hidden');
                         $("#dialer-pad-clear, #dialer-pad-undo").addClass('hidden');
                         $("#btnLogMeOut").addClass("disabled");
-                        
-                        if (campaign_recording == 'ONDEMAND')
-                            toggleButton('RecordCall', 'on');
                     }
                     if (XD_live_customer_call == 1) {
                         XD_live_call_seconds++;
@@ -618,9 +614,6 @@ $(document).ready(function() {
                             $('#edit-profile').removeClass('hidden');
                         $("#reload-script").removeClass('hidden');
                         $("#btnLogMeOut").addClass("disabled");
-                        
-                        if (campaign_recording == 'ONDEMAND')
-                            toggleButton('RecordCall', 'on');
                     }
                     if (customerparked == 1) {
                         customerparkedcounter++;
