@@ -2145,6 +2145,12 @@ function btnRecordCall (action, norecord) {
             $("#btnRecordCall").removeClass('glowing_button');
             if (norecord < 1) {
                 ConfSendRecording('StopMonitorConf', session_id, recording_filename);
+                
+                swal({
+                    title: "Recording Filename",
+                    text: recording_filename,
+                    type: 'info'
+                });
             }
         } else {
             toggleButton('RecordCall', 'start');
