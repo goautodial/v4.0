@@ -2146,6 +2146,7 @@ function btnRecordCall (action) {
             toggleButton('RecordCall', 'stop');
         } else {
             toggleButton('RecordCall', 'start');
+            $("#RecordCall").html('<?=$lh->translationFor('recording')?>');
         }
     }
 }
@@ -2298,12 +2299,12 @@ function toggleButton (taskname, taskaction, taskenable, taskhide, toupperfirst,
                 break;
             case "start":
                 actClass = "";
-                onClick = "btn"+taskname+"('START');";
+                onClick = "btn"+taskname+"('STOP');";
                 actTitle = "<?=$lh->translationFor('stop_recording')?>";
                 break;
             case "stop":
                 actClass = "";
-                onClick = "btn"+taskname+"('STOP');";
+                onClick = "btn"+taskname+"('START');";
                 actTitle = "<?=$lh->translationFor('start_recording')?>";
                 break;
             case "on":
