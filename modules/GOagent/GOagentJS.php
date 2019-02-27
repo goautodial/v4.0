@@ -1526,6 +1526,8 @@ $(document).ready(function() {
                         
                         if (campaign_recording == 'ONDEMAND') {
                             $("#RecordControl").removeClass('hidden');
+                        } else {
+                            $("#RecordControl").addClass('hidden');
                         }
                         
                         updateHotKeys();
