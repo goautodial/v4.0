@@ -1524,6 +1524,10 @@ $(document).ready(function() {
                         campaign_recording = camp_rec;
                         LIVE_campaign_recording = camp_rec;
                         
+                        if (campaign_recording == 'ONDEMAND') {
+                            $("#RecordControl").removeClass('hidden');
+                        }
+                        
                         updateHotKeys();
                         updateButtons();
                         toggleButtons(dial_method, ivr_park_call, call_requeue_button, quick_transfer_button_enabled);
