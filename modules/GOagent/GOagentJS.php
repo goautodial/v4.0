@@ -2137,16 +2137,22 @@ function btnResumePause () {
     }
 }
 
-function btnRecordCall (action) {
+function btnRecordCall (action, norecord) {
     if (campaign_recording == 'ONDEMAND') {
         if (action == 'STOP') {
             toggleButton('RecordCall', 'stop');
             $("#btnRecordCall").html('<?=$lh->translationFor('start_recording')?>');
             $("#btnRecordCall").removeClass('glowing_button');
+            if (norecord < 1) {
+                ConfSendRecording('StopMonitorConf', session_id, recording_filename);
+            }
         } else {
             toggleButton('RecordCall', 'start');
             $("#btnRecordCall").html('<?=$lh->translationFor('recording')?>');
             $("#btnRecordCall").addClass('glowing_button');
+            if (norecord < 1) {
+                ConfSendRecording('MonitorConf', session_id, '');
+            }
         }
     }
 }
@@ -3937,6 +3943,7 @@ function DialLog(taskMDstage, nodeletevdac) {
                     //$("#RecorDControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
                 } else {
                     //$("#RecorDControl").html(conf_rec_start_html);
+                    btnRecordCall('STOP', 1);
                 }
                 
                 MDlogRecordings = MDlogResponse_array[3];
@@ -4005,6 +4012,7 @@ function ConfSendRecording(taskconfrectype, taskconfrec, taskconffile, taskfroma
             //$("#RecorDControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
         } else {
             //$("#RecorDControl").html(conf_rec_start_html);
+            btnRecordCall('START', 1);
         }
     }
     if (taskconfrectype == 'StopMonitorConf') {
@@ -4016,6 +4024,7 @@ function ConfSendRecording(taskconfrectype, taskconfrec, taskconffile, taskfroma
             //$("#RecorDControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
         } else {
             //$("#RecorDControl").html(conf_rec_start_html);
+            btnRecordCall('STOP', 1);
         }
     }
     
