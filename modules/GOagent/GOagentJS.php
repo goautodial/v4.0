@@ -1105,9 +1105,6 @@ $(document).ready(function() {
             case "ReQueueCall":
                 btnReQueueCall();
                 break;
-            case "RecordCall":
-                btnRecordCall();
-                break;
         }
     });
     
