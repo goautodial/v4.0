@@ -2153,11 +2153,11 @@ function btnRecordCall (action, norecord) {
             $("#btnRecordCall").html('<?=$lh->translationFor('start_recording')?>');
             $("#btnRecordCall").removeClass('glowing_button');
             if (!norecord) {
-                ConfSendRecording('StopMonitorConf', session_id, recording_filename);
+                ConfSendRecording('StopMonitorConf', session_id, filename);
                 
                 swal({
                     title: "Recording Filename",
-                    text: recording_filename,
+                    text: filename,
                     type: 'info'
                 });
             }
