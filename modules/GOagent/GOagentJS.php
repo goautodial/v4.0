@@ -2145,11 +2145,14 @@ function btnResumePause () {
 
 function btnRecordCall (action, norecord) {
     if (campaign_recording == 'ONDEMAND') {
+        if (typeof norecord === 'undefined') {
+            norecord = false;
+        }
         if (action == 'STOP') {
             toggleButton('RecordCall', 'stop');
             $("#btnRecordCall").html('<?=$lh->translationFor('start_recording')?>');
             $("#btnRecordCall").removeClass('glowing_button');
-            if (norecord < 1) {
+            if (!norecord) {
                 ConfSendRecording('StopMonitorConf', session_id, recording_filename);
                 
                 swal({
@@ -2162,7 +2165,7 @@ function btnRecordCall (action, norecord) {
             toggleButton('RecordCall', 'start');
             $("#btnRecordCall").html('<?=$lh->translationFor('recording')?>');
             $("#btnRecordCall").addClass('glowing_button');
-            if (norecord < 1) {
+            if (!norecord) {
                 ConfSendRecording('MonitorConf', session_id, '');
             }
         }
@@ -3955,7 +3958,7 @@ function DialLog(taskMDstage, nodeletevdac) {
                     //$("#RecorDControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
                 } else {
                     //$("#RecorDControl").html(conf_rec_start_html);
-                    btnRecordCall('STOP', 1);
+                    btnRecordCall('STOP', true);
                 }
                 
                 MDlogRecordings = MDlogResponse_array[3];
@@ -4024,7 +4027,7 @@ function ConfSendRecording(taskconfrectype, taskconfrec, taskconffile, taskfroma
             //$("#RecorDControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
         } else {
             //$("#RecorDControl").html(conf_rec_start_html);
-            btnRecordCall('START', 1);
+            btnRecordCall('START', true);
         }
     }
     if (taskconfrectype == 'StopMonitorConf') {
@@ -4036,7 +4039,7 @@ function ConfSendRecording(taskconfrectype, taskconfrec, taskconffile, taskfroma
             //$("#RecorDControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
         } else {
             //$("#RecorDControl").html(conf_rec_start_html);
-            btnRecordCall('STOP', 1);
+            btnRecordCall('STOP', true);
         }
     }
     
