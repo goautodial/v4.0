@@ -2144,10 +2144,10 @@ function btnRecordCall (action) {
     if (campaign_recording == 'ONDEMAND') {
         if (action == 'STOP') {
             toggleButton('RecordCall', 'stop');
-            $("#RecordCall").html('<?=$lh->translationFor('start_recording')?>');
+            $("#btnRecordCall").html('<?=$lh->translationFor('start_recording')?>');
         } else {
             toggleButton('RecordCall', 'start');
-            $("#RecordCall").html('<?=$lh->translationFor('recording')?>');
+            $("#btnRecordCall").html('<?=$lh->translationFor('recording')?>');
         }
     }
 }
