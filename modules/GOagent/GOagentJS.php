@@ -2142,9 +2142,11 @@ function btnRecordCall (action) {
         if (action == 'STOP') {
             toggleButton('RecordCall', 'stop');
             $("#btnRecordCall").html('<?=$lh->translationFor('start_recording')?>');
+            $("#btnRecordCall").removeClass('glowing_button');
         } else {
             toggleButton('RecordCall', 'start');
             $("#btnRecordCall").html('<?=$lh->translationFor('recording')?>');
+            $("#btnRecordCall").addClass('glowing_button');
         }
     }
 }
