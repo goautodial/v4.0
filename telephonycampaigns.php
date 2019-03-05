@@ -1087,8 +1087,10 @@
 		                            <div class="col-sm-9 mb">
 		                                <select id="leadrecycling_campaign" name="leadrecycling_campaign" class="form-control select2" style="width:100%;">
 		                                		<option value="ALL" selected> - - - ALL CAMPAIGNS - - - </option>
+								<option value="" selected hidden disabled>PLEASE SELECT A CAMPAIGN</option>
 		                                   <?php
 		                                   		for($i=0;$i < count($campaign->campaign_id);$i++){
+								
 		                                   			echo "<option value='".$campaign->campaign_id[$i]."'>".$campaign->campaign_id[$i]." - ".$campaign->campaign_name[$i]." </option>";
 		                                   		}
 		                                   ?>
@@ -1101,7 +1103,8 @@
 		                                <select id="leadrecycling_status" name="leadrecycling_status" class="form-control select2" style="width:100%;">
 											<optgroup label="System Statuses">
 												<?php 
-													$dialStatus = $api->API_getAllDialStatuses();
+													$dialStatus = $api->API_getAllDialStatuses($campaign_id);
+													 //foreach($output->status as key => $val){
 													for($i=0;$i<=count($dialStatus->status);$i++) { 
 												?>
 													<?php if( !empty($dialStatus->status[$i]) && !in_array($dialStatus->status[$i], $dial_statuses) ){ ?>
@@ -1112,13 +1115,20 @@
 												<?php } ?>
 											</optgroup>
 											<?php if(count($disposition) > 0){ ?>
-												<optgroup label="Campaign Statuses">
-												<?php for($i=0;$i<count($disposition->status);$i++) { ?>
-														<option value="<?php echo $disposition->status[$i];?>">
-															<?php echo $disposition->status[$i]." - ".$disposition->status_name[$i]?>
-														</option>
-												<?php } ?>
-												</optgroup>
+											<optgroup label="Campaign Statuses">
+											<?php for($i=0;$i<count($disposition->status);$i++){
+											//foreach($disposition->status as $key => $val) {
+											?>
+			<?php //$data .= '<option value="'.$val.'" data-name="'.$output->status_name[$key].'">'.$val.' - '.$output->status_name[$key].'</option>';
+			?>
+											<option value="<?php echo $disposition->status[$i];?>">
+											<!--option value="<?php //echo $disposition->status[$val];?>"-->
+											<?php
+											//echo json_encode($data);
+											echo $disposition->status[$i]." - ".$disposition->status_name[$i]?>
+											</option>
+											<?php } ?>
+											</optgroup>
 											<?php } ?>
 		                                </select>
 		                            </div>
