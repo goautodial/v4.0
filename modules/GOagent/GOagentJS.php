@@ -83,6 +83,7 @@ if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
 var phone;
 var phoneRegistered = false;
 var check_if_logged_out = 1;
+var check_last_call = 0;
 var isMobile = false; //initiate as false
 var is_logged_in = <?=$is_logged_in?>;
 var logging_in = false;
@@ -749,7 +750,7 @@ $(document).ready(function() {
                 }
                 
                 //Check if Agent is still logged in
-                checkIfStillLoggedIn(check_if_logged_out);
+                checkIfStillLoggedIn(check_if_logged_out, check_last_call);
             } else {
                 updateButtons();
                 
@@ -2475,14 +2476,18 @@ function toggleStatus (status) {
     $("#livecall h3").attr({'class': statusClass, 'title': statusLabel}).html(statusLabel);
 }
 
-function checkIfStillLoggedIn(logged_out) {
+function checkIfStillLoggedIn(logged_out, last_call) {
     if (logged_out && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
+        var checkLastCall = (typeof last_call !== 'undefined') ? last_call : 0;
+        check_last_call = 0;
+        
         var postData = {
             goAction: 'goCheckIfLoggedIn',
             goUser: uName,
             goPass: uPass,
             goPhone: phone_login,
             goPhonePass: phone_pass,
+            goCheckLastCall: checkLastCall,
             responsetype: 'json'
         };
     
@@ -6861,6 +6866,12 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                         }
                         reselect_preview_dial = 1;
                     }
+                    
+                    setTimeout(function() {
+                        if (live_customer_call > 0 || XD_live_customer_call > 0) {
+                            check_last_call = 1;
+                        }
+                    }, 15000);
                 }
             }
         });
