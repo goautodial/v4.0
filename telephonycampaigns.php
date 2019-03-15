@@ -1946,7 +1946,8 @@
 					url: "./php/GetDialStatuses.php",
 					type: 'POST',
 					data: {
-						campaign_id : campaign_id
+						campaign_id : campaign_id,
+						add_hotkey : "1"
 					},
 					dataType: 'json',
 					success: function(response) {
@@ -3273,7 +3274,8 @@
 								url: "./php/GetDialStatuses.php",
 								type: 'POST',
 								data: {
-									campaign_id : campaign_id
+									campaign_id : campaign_id,
+									add_hotkey : "0"
 								},
 								dataType: 'json',
 								success: function(data) {
