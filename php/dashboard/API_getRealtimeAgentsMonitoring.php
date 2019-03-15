@@ -24,6 +24,8 @@
 	
 	$api 											= \creamy\APIHandler::getInstance();
 	$output 										= $api->API_getRealtimeAgentsMonitoring();
+	
+	var_dump($output);
 
     $barracks 										= '[';   
     
