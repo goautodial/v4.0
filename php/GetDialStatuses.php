@@ -24,7 +24,8 @@
 	require_once('APIHandler.php');
 	$api 										= \creamy\APIHandler::getInstance();
 	$campaign_id 								= $_POST["campaign_id"];
-	$output 									= $api->API_getAllDialStatuses($campaign_id);
+	$add_hotkey								= $_POST["add_hotkey"];
+	$output 									= $api->API_getAllDialStatuses($campaign_id, $add_hotkey);
 
 	if(!empty($output)){
 		$data 									= '';
