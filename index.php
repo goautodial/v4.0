@@ -79,18 +79,11 @@ error_reporting(E_ALL)
 		$max = 0;
 		//$callsperhour = explode(";",trim($callsperhour, ';'));
 		$callsperhour = json_decode($callsperhour);
-		
-	
-	echo "<!--\n";
-	var_dump($callsperhour);
-	echo "-->\n";
 	
 	foreach ($callsperhour AS $idx => $temp){
 	   //$temp = explode("=",$temp);
 	   if ($idx == 'result') continue;
-	   echo "<!--\n";
-	   var_dump($temp);
-	   echo "-->\n";
+	   
 	   foreach ($temp as $id2 => $item) {
 		$results[$id2] = $item;
 	   }
