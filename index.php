@@ -78,7 +78,7 @@ error_reporting(E_ALL)
 		$callsperhour = $ui->API_goGetCallsPerHour($_SESSION['user'], 'json');
 		$max = 0;
 		//$callsperhour = explode(";",trim($callsperhour, ';'));
-		$callsperhour = json_decode($callsperhour[0]);
+		$callsperhour = json_decode($callsperhour);
 		
 	
 	echo "<!--\n";
