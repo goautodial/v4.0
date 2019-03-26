@@ -84,6 +84,9 @@ error_reporting(E_ALL)
 	foreach ($callsperhour AS $idx => $temp){
 	   //$temp = explode("=",$temp);
 	   if ($idx == 'result') continue;
+	   echo "<!--\n";
+	   var_dump($temp);
+	   echo "-->\n";
 	   foreach ($temp as $id2 => $item) {
 		$results[$id2] = $item;
 	   }
@@ -110,11 +113,6 @@ error_reporting(E_ALL)
 		$dropped_calls_today = 0;
 	
 ?>
-<!--
-<?php
-var_dump($results);
-?>
--->
 <html>
     <head>
         <meta charset="UTF-8">
