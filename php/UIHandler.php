@@ -5427,13 +5427,14 @@ error_reporting(E_ERROR | E_PARSE);
 		 * This application is used to get calls per hour.
 		*/
 
-		public function API_goGetCallsPerHour($session_user) {
+		public function API_goGetCallsPerHour($session_user, $responsetype = '') {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetCallsPerHour"; #action performed by the [[API:Functions]]
 			$postfields["session_user"] = $session_user; #action performed by the [[API:Functions]]
-   $postfields["responsetype"] = 'json';
+   if (!empty($responsetype))
+    $postfields["responsetype"] = $responsetype;
 			
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
