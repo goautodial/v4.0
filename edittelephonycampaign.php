@@ -2070,34 +2070,8 @@
 																<div class="form-group">
 																	<label class="col-sm-3 control-label"><?php $lh->translateText("survey_not_interested_status"); ?>:</label>
 																	<div class="col-sm-9 mb">
-																		<select id="survey_ni_status" name="survey_ni_status" class="form-control select2">
-																			<<!--option value="NI" <?php //if($campaign->data->survey_ni_status == "NI") echo "selected";?>>NI - Not Interested</option>
-																			<option value="DNC" <?php //if($campaign->data->survey_ni_status == "DNC") echo "selected";?>>DNC - Do Not Call</option>-->
-																			<!--<option value="" selected>NONE</option>-->
-																			<optgroup label="System Statuses">
-																				<?php
-																					foreach($sdialStatus->status as $key => $val){
-																						if($val == "NI" && $campaign->data->survey_ni_status == $val){
-																							$selected="selected";
-																						}else{
-																							$selected="";
-																						}
-																						echo '<option '.$selected.' value="'.$val.'" data-name="'.$sdialStatus->status_name[$key].'">'.$val.' - '.$sdialStatus->status_name[$key].'</option>';
-																					}
-																				?>
-																			</optgroup>
-																			<?php if(count($campdialStatus->status) > 0){ ?>
-																				<optgroup label="Campaign Statuses">
-																				<?php for($i=0;$i<=count($campdialStatus->status);$i++) { ?>
-																					<?php if( !empty($campdialStatus->status[$i])){ ?>
-																						<option value="<?php echo $campdialStatus->status[$i]?>">
-																							<?php echo $campdialStatus->status[$i]." - ".$campdialStatus->status_name[$i]?>
-																						</option>
-																					<?php } ?>
-																				<?php } ?>
-																				</optgroup>
-																			<?php } ?>
-																		</select>
+<input type="text" class="form-control" id="survey_ni_status" name="survey_ni_status" value="<?php echo $campaign->data->survey_ni_status; ?>">
+<!--dropdown select-->
 																	</div>
 																</div>
 																<br /><br />
