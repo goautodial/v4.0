@@ -106,6 +106,11 @@ error_reporting(E_ALL)
 		$dropped_calls_today = 0;
 	
 ?>
+<!--
+<?php
+var_dump($callsperhour);
+?>
+-->
 <html>
     <head>
         <meta charset="UTF-8">
