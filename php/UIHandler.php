@@ -5433,6 +5433,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetCallsPerHour"; #action performed by the [[API:Functions]]
 			$postfields["session_user"] = $session_user; #action performed by the [[API:Functions]]
+   $postfields["responsetype"] = 'json';
 			
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
