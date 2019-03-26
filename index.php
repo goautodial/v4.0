@@ -75,7 +75,7 @@ error_reporting(E_ALL)
 	*/
 		$dropped_calls_today = $ui->API_goGetTotalDroppedCalls($_SESSION['user']);
 		$calls_incoming_queue = $ui->API_goGetIncomingQueue($_SESSION['user']);
-		$callsperhour = $ui->API_goGetCallsPerHour($_SESSION['user']);
+		$callsperhour = $ui->API_goGetCallsPerHour($_SESSION['user'], 'json');
 		$max = 0;
 		$callsperhour = explode(";",trim($callsperhour, ';'));
 		
