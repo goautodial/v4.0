@@ -108,7 +108,7 @@ error_reporting(E_ALL)
 ?>
 <!--
 <?php
-var_dump($callsperhour);
+var_dump(simplexml_load_string($callsperhour));
 ?>
 -->
 <html>
