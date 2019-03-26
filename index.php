@@ -109,6 +109,9 @@ error_reporting(E_ALL)
 	if($dropped_calls_today == NULL || $dropped_calls_today == 0)
 		$dropped_calls_today = 0;
 	
+echo "<!--\n";
+var_dump($results);
+echo "-->\n";
 ?>
 <html>
     <head>
