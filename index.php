@@ -81,12 +81,14 @@ error_reporting(E_ALL)
 		$callsperhour = json_decode($callsperhour);
 	
 	foreach ($callsperhour AS $idx => $temp){
-	   //$temp = explode("=",$temp);
-	   if ($idx == 'result') continue;
-	   
-	   foreach ($temp as $id2 => $item) {
-		$results[$id2] = $item;
-	   }
+		//$temp = explode("=",$temp);
+		if ($idx == 'result') {
+			$results[$idx] = $temp;
+		} else {
+			foreach ($temp as $id2 => $item) {
+				$results[$id2] = $item;
+			}
+		}
 	}
 	
 	$outbound_calls = max($results["Hour8o"],$results["Hour9o"], $results["Hour10o"], $results["Hour11o"], $results["Hour12o"], $results["Hour13o"], $results["Hour14o"], $results["Hour15o"], $results["Hour16o"], $results["Hour17o"], $results["Hour18o"], $results["Hour19o"], $results["Hour20o"], $results["Hour21o"]);	
