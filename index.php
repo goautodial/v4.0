@@ -81,6 +81,10 @@ error_reporting(E_ALL)
 		$callsperhour = json_decode($callsperhour[0]);
 		
 	
+	echo "<!--\n";
+	var_dump($callsperhour);
+	echo "-->\n";
+	
 	foreach ($callsperhour AS $idx => $temp){
 	   //$temp = explode("=",$temp);
 	   if ($idx == 'result') continue;
