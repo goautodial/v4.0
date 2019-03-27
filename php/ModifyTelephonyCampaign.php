@@ -293,6 +293,12 @@
 			$custom_fields_launch 					= stripslashes($custom_fields_launch);
 		}
 		
+		$manual_dial_min_digits 					= NULL; 
+		if (isset($_POST["manual_dial_min_digits"])) { 
+			$manual_dial_min_digits 				= $_POST["manual_dial_min_digits"]; 
+			$manual_dial_min_digits 				= stripslashes($manual_dial_min_digits);
+		}
+		
 		$campaign_type 								= NULL; 
 		if (isset($_POST["campaign_type"])) { 
 			$campaign_type 							= $_POST["campaign_type"]; 
@@ -604,6 +610,7 @@
 			"customer_3way_hangup_action" 				=> $customer_3way_hangup_action,
 			"campaign_allow_inbound"					=> $campaign_allow_inbound,
 			"custom_fields_launch"						=> $custom_fields_launch,
+			"manual_dial_min_digits"					=> $manual_dial_min_digits,
 			"campaign_type"								=> $campaign_type,
 			"custom_fields_list_id"						=> $custom_fields_list_id,
 			"per_call_notes"							=> $per_call_notes,
