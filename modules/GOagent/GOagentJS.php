@@ -1471,6 +1471,8 @@ $(document).ready(function() {
                                         $.globalEval(key+" = "+value+";");
                                     } else if (key == 'cb_sendemail') {
                                         $.globalEval(key+" = "+value+";");
+                                    } else if (key == 'manual_dial_min_digits') {
+                                        $.globalEval(key+" = "+value+";");
                                     } else {
                                         $.globalEval(key+" = '"+value+"';");
                                     }
@@ -2181,7 +2183,7 @@ function enableDialOnEnter(e) {
     if (live_customer_call < 1) {
         var phoneNumber = $('#MDPhonENumbeR').val();
     
-        if (phoneNumber.length > 5 && agentcall_manual > 0) {
+        if (phoneNumber.length >= manual_dial_min_digits && agentcall_manual > 0) {
             NewManualDialCall('NOW');
             activateLinks();
         }
@@ -2197,7 +2199,7 @@ function activateLinks() {
     }
     var phoneNumber = $('#MDPhonENumbeR').val();
 
-    if (phoneNumber.length > 5 && agentcall_manual > 0) {
+    if (phoneNumber.length >= manual_dial_min_digits && agentcall_manual > 0) {
         $("a[id^='manual-dial-'], button[id^='manual-dial-']").removeClass('disabled');
     } else {
         $("a[id^='manual-dial-'], button[id^='manual-dial-']").addClass('disabled');
