@@ -791,6 +791,12 @@
 																</div>
 															</div>
 															<div class="form-group">
+																<label class="col-sm-3 control-label"><?php $lh->translateText("manual_dial_min_digits"); ?>:</label>
+																<div class="col-sm-9 mb">
+																	<input type="number" min="3" max="20" class="form-control" id="manual_dial_min_digits" name="manual_dial_min_digits" value="<?php echo $campaign->manual_dial_min_digits; ?>">
+																</div>
+															</div>
+															<div class="form-group">
 																<label class="col-sm-3 control-label"><?php $lh->translateText("get_call_launch"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<select class="form-control" id="get_call_launch" name="get_call_launch">
@@ -1208,6 +1214,12 @@
 																	</div>
 																</div>
 																<div class="form-group">
+																	<label class="col-sm-3 control-label"><?php $lh->translateText("manual_dial_min_digits"); ?>:</label>
+																	<div class="col-sm-9 mb">
+																		<input type="number" min="3" max="20" class="form-control" id="manual_dial_min_digits" name="manual_dial_min_digits" value="<?php echo $campaign->manual_dial_min_digits; ?>">
+																	</div>
+																</div>
+																<div class="form-group">
 																	<label class="col-sm-3 control-label">Caller ID for 3-way Calls:</label>
 																	<div class="col-sm-9 mb">
 																		<select class="form-control" id="three_way_call_cid" name="three_way_call_cid">
@@ -1474,6 +1486,12 @@
 																<label class="col-sm-3 control-label"><?php $lh->translateText("manual_dial_prefix"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<input type="text" class="form-control" id="manual_dial_prefix" name="manual_dial_prefix" value="<?php echo $campaign->data->manual_dial_prefix; ?>">
+																</div>
+															</div>
+															<div class="form-group">
+																<label class="col-sm-3 control-label"><?php $lh->translateText("manual_dial_min_digits"); ?>:</label>
+																<div class="col-sm-9 mb">
+																	<input type="number" min="3" max="20" class="form-control" id="manual_dial_min_digits" name="manual_dial_min_digits" value="<?php echo $campaign->manual_dial_min_digits; ?>">
 																</div>
 															</div>
 															<div class="form-group">
