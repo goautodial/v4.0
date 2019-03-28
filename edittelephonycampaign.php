@@ -2077,11 +2077,18 @@
 																		</div><!-- /input-group -->
 																		<select class="form-control select2 survey_ni_audio_file_dropdown" id="survey_ni_audio_file_dropdown" data-label="survey_ni_audio_file">
 																			<option value="">-- Default Value --</option>
-																			<?php for($i=0;$i<=count($audiofiles->data);$i++) { ?>
-																				<?php if(!empty($audiofiles->data[$i]) && (strpos($audiofiles->data[$i], "go_") !== false)) { ?>
-																					<option value="<?php echo substr($audiofiles->data[$i], 0, -4); ?>"><?php echo substr($audiofiles->data[$i], 0, -4); ?></option>
-																				<?php } ?>
-																			<?php } ?>
+            <?php for($i=0;$i<=count($voicefiles->file_name);$i++) { ?>
+                <?php if(!empty($voicefiles->file_name[$i])) { ?>
+                    <option value="<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>">
+                        <?php echo substr($voicefiles->file_name[$i], 0, -4); ?>
+                    </option>
+<!--old audio chooser-->
+<?php //for($i=0;$i<=count($audiofiles->data);$i++) { ?>
+<?php //if(!empty($audiofiles->data[$i]) && (strpos($audiofiles->data[$i], "go_") !== false)) { ?>
+<!--option value="<?php //echo substr($audiofiles->data[$i], 0, -4); ?>"><?php //echo substr($audiofiles->data[$i], 0, -4); ?></option-->
+
+<?php } ?>
+<?php } ?>
 																		</select>
 																	</div>
 																</div>
@@ -2119,11 +2126,16 @@
 																		</div><!-- /input-group -->
 																		<select class="form-control select2 survey_third_audio_file_dropdown" id="survey_third_audio_file_dropdown" data-label="survey_third_audio_file">
 																			<option value="">-- Default Value --</option>
-																			<?php for($i=0;$i<=count($audiofiles->data);$i++) { ?>
-																				<?php if(!empty($audiofiles->data[$i]) && (strpos($audiofiles->data[$i], "go_") !== false)) { ?>
-																					<option value="<?php echo substr($audiofiles->data[$i], 0, -4); ?>"><?php echo substr($audiofiles->data[$i], 0, -4); ?></option>
-																				<?php } ?>
-																			<?php } ?>
+            <?php for($i=0;$i<=count($voicefiles->file_name);$i++) { ?>
+                <?php if(!empty($voicefiles->file_name[$i])) { ?>
+                    <option value="<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>">
+                        <?php echo substr($voicefiles->file_name[$i], 0, -4); ?>
+                    </option>
+<?php //for($i=0;$i<=count($audiofiles->data);$i++) { ?>
+<?php //if(!empty($audiofiles->data[$i]) && (strpos($audiofiles->data[$i], "go_") !== false)) { ?>
+<!--option value="<?php //echo substr($audiofiles->data[$i], 0, -4); ?>"><?php //echo substr($audiofiles->data[$i], 0, -4); ?></option-->
+<?php } ?>
+<?php } ?>
 																		</select>
 																	</div>
 																</div>
@@ -2166,10 +2178,15 @@
 																		</div><!-- /input-group -->
 																		<select class="form-control select2 survey_fourth_audio_file_dropdown" id="survey_fourth_audio_file_dropdown" data-label="survey_fourth_audio_file">
 																			<option value="">-- Default Value --</option>
-																			<?php for($i=0;$i<=count($audiofiles->data);$i++) { ?>
-																				<?php if(!empty($audiofiles->data[$i]) && (strpos($audiofiles->data[$i], "go_") !== false)) { ?>
-																					<option value="<?php echo substr($audiofiles->data[$i], 0, -4); ?>"><?php echo substr($audiofiles->data[$i], 0, -4); ?></option>
-																				<?php } ?>
+            <?php for($i=0;$i<=count($voicefiles->file_name);$i++) { ?>
+                <?php if(!empty($voicefiles->file_name[$i])) { ?>
+                    <option value="<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>">
+                        <?php echo substr($voicefiles->file_name[$i], 0, -4); ?>
+                    </option>
+<?php //for($i=0;$i<=count($audiofiles->data);$i++) { ?>
+<?php //if(!empty($audiofiles->data[$i]) && (strpos($audiofiles->data[$i], "go_") !== false)) { ?>
+<!--option value="<?php //echo substr($audiofiles->data[$i], 0, -4); ?>"><?php //echo substr($audiofiles->data[$i], 0, -4); ?></option-->
+<?php } ?>
 																			<?php } ?>
 																		</select>
 																	</div>
@@ -2890,9 +2907,10 @@
 						}
 					});
 				});
-				
+				//add am_message_chooser
 				$('.survey_first_audio_file_dropdown').hide();
 				$('.survey_ni_audio_file_dropdown').hide();
+				$('.am_message_chooser').hide();
 				$('.survey_third_audio_file_dropdown').hide();
 				$('.survey_fourth_audio_file_dropdown').hide();
 				$('.show-view-audio-files').on('click', function(event) {
@@ -2900,7 +2918,7 @@
 					$('.' + targetDropdown + '_dropdown').toggle('show');
 				});
 				
-				$(document).on('change', '.survey_first_audio_file_dropdown, .survey_ni_audio_file_dropdown, .survey_third_audio_file_dropdown, .survey_fourth_audio_file_dropdown', function(){
+				$(document).on('change', '.survey_first_audio_file_dropdown, .survey_ni_audio_file_dropdown, .am_message_chooser, .survey_third_audio_file_dropdown, .survey_fourth_audio_file_dropdown', function(){
 					var AudioText = $(this).val();
 					var targetText = $(this).data('label');
 					
