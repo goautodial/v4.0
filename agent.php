@@ -92,12 +92,10 @@ if (isset($_GET["message"])) {
 $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 
 // ECCS Customization
-$client_name = "ECCS";
-
-if($client_name != "ECCS"){
+if(ECCS_BLIND_MODE != "y"){
 	$html_title = CRM_GOAGENT_TITLE." - ".$lh->translateText('GOautodial')." " .CRM_GO_VERSION;
 }else{
-	$html_title = $client_name." | Agent";
+	$html_title = "ECCS | Agent";
 }
 // /.ECCS Customization
 ?>
@@ -416,7 +414,11 @@ if($client_name != "ECCS"){
 				padding: 0 !important;
 			}
 		</style>
-		<!-- ECCS Customiztion -->
+		
+	<!-- ECCS Customiztion -->
+	<?php 
+		if(ECCS_BLIND_MODE === 'y'){
+	?>
 		<!-- Bootstrap Toggle -->
 <!--		<link rel="stylesheet" href="bootstrap-toggle.min.css"> -->
 		<style>
@@ -1306,9 +1308,13 @@ if($client_name != "ECCS"){
 				height: 60px;
 			}
 		</style>
-		<!-- /. ECCS Customization -->
+	<?php }// end if ?>
+	<!-- /. ECCS Customization -->
+    
     </head>
+    
     <?php print $ui->creamyAgentBody(); ?>
+    
     <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyAgentHeader($user); ?>
@@ -1317,16 +1323,36 @@ if($client_name != "ECCS"){
 
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="content-wrapper">
-
+		
                 <!-- Content Header (Page header) -->
-                <section class="content-heading">
+                <!--section id="contact_info_crumbs" class="content-heading">
 					<!-- Page title -->
-		<!--HIDE THIS BAR RIGHT HERE TEMPORARILY-->
-                <!--span><?php //$lh->translateText("contact_information"); ?></span>
-                    <!--ol class="breadcrumb hidden-xs pull-right">
-						<!--li class="active"><i class="fa fa-home"></i> <?php //$lh->translateText('home'); ?></li>
-					</ol-->
+		<!--HIDE THIS BAR RIGHT HERE IF BLIND MODE IS ENABLED-->
+                <!--span id="contact_info_bar"><?php //$lh->translateText("contact_information"); ?><!--/span>
+                    <ol class="breadcrumb hidden-xs pull-right">
+						<li class="active"><i class="fa fa-home"></i> <?php //$lh->translateText('home'); ?></li>
+					</ol>
+                </section-->
+  					<!-- ECCS Customization -->
+
+                		<?php if(ECCS_BLIND_MODE === 'y')
+				{ ?> 
+				
+                <!-- Content Header (Page header) -->
+                <section id="contact_info_crumbs" class="content-heading">
+                                        <!-- Page title -->
+                <!--HIDE THIS BAR RIGHT HERE IF BLIND MODE IS ENABLED-->
+                <span id="contact_info_bar"><?php $lh->translateText("contact_information"); ?></span>
+                    <ol class="breadcrumb hidden-xs pull-right">
+                                                <li class="active"><i class="fa fa-home"></i> <?php $lh->translateText('home'); ?></li>
+                                        </ol>
                 </section>
+
+				<?php
+
+				}//end if ?>
+
+                                        <!-- /.ECCS Customization -->
 
                 <!-- Main content -->
                 <section class="content">
@@ -1342,7 +1368,7 @@ if($client_name != "ECCS"){
 										<div class="col-lg-11 col-md-11 col-sm-10">
 						                <h4 id="cust_full_name" class="hidden">
 									<!-- ECCS Customization -->
-									<span id="cust_call_type" class="hidden"></span>
+									<?php if(ECCS_BLIND_MODE === 'y'){ ?> span id="cust_call_type" class="hidden"></span> <?php }//end if ?>
 									<!-- /.ECCS Customization -->
 											<span id="first_name_label" class="hidden"><?=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name"></a> <span id="middle_initial_label" class="hidden"><?=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial"></a> <span id="last_name_label" class="hidden"><?=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name"></a>
 										</h4>
@@ -2959,8 +2985,17 @@ if($client_name != "ECCS"){
 						$("li.messages-menu ul.menu").slimScroll({
 							height: '200px'
 						});
-						$("div.mailbox-messages").html(result.messages);
-						
+
+						//ECCS Customization
+						<?php if(ECCS_BLIND_MODE === 'y'){ ?>
+							$("li.dropdown.messages-menu a.dropdown-toggle").append("<br><span>#VM</span>");
+							$("li.dropdown.messages-menu a.dropdown-toggle").attr("data-tooltip", "tooltip");
+			                                $("li.dropdown.messages-menu a.dropdown-toggle").attr("title", "<?=$lh->translationFor('messages')?>");
+						<?php } //end if ECCS_BLIND_MODE?>
+						//./
+
+						$("div.mailbox-messages").html(result.messages);						
+
 						$(".mail-preloader").hide();
 						$("#mail-messages div.mailbox-messages").slideDown();
 						
@@ -3200,6 +3235,9 @@ if($client_name != "ECCS"){
 			goAvatar._init();
 		</script>
 		<!-- ECCS Customization -->
+		<?php
+		if(ECCS_BLIND_MODE === 'y'){
+		?>
 <!--		<script type="text/javascript" src="js/bootstrap-toggle.min.js"></script> -->
 		<script type="text/javascript">
 			//tooltips
@@ -3339,5 +3377,6 @@ if($client_name != "ECCS"){
 
 			});
 		</script>
+		<?php } //end if ECCS_BLIND_MODE ?>
     </body>
 </html>
