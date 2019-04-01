@@ -90,12 +90,25 @@ if (isset($_GET["message"])) {
 } else $message = NULL;
 
 $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
+
+// ECCS Customization
+$client_name = "ECCS";
+
+if($client_name != "ECCS"){
+	$html_title = CRM_GOAGENT_TITLE." - ".$lh->translateText('GOautodial')." " .CRM_GO_VERSION;
+}else{
+	$html_title = $client_name." | Agent";
+}
+// /.ECCS Customization
 ?>
 
 <html>
     <head>
         <meta charset="UTF-8">
-        <title><?=CRM_GOAGENT_TITLE?> - <?=$lh->translateText('GOautodial')." ".CRM_GO_VERSION?></title>
+       <!-- <title><?=CRM_GOAGENT_TITLE?> - <?=$lh->translateText('GOautodial')." ".CRM_GO_VERSION?></title> -->
+	<!-- ECCS Customization -->
+	<title><?php echo $html_title; ?></title>
+	<!-- /.ECCS Customization -->
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 		<!-- SnackbarJS -->
         <link href="css/snackbar/snackbar.min.css" rel="stylesheet" type="text/css" />
@@ -403,6 +416,897 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 				padding: 0 !important;
 			}
 		</style>
+		<!-- ECCS Customiztion -->
+		<!-- Bootstrap Toggle -->
+<!--		<link rel="stylesheet" href="bootstrap-toggle.min.css"> -->
+		<style>
+			/* Topbar */
+			.main-header .logo{
+				height: 60px;
+			}
+
+			.main-header>.navbar{
+				min-height: 60px;
+			}
+	
+			/* header */
+			.content-wrapper > .content-heading{
+				margin-top: 10px!important;
+			}
+
+                        li#topbar-callbacks i.fa, li.messages-menu i.fa, li i.fa.fa-cogs{
+                                font-size: 20pt;
+                        }
+
+                        /* Sidebar */
+                        ul.control-sidebar-tabs i.fa{
+                                font-size: 20pt;
+                        }
+
+			aside.control-sidebar.control-sidebar-dark.control-sidebar-open{
+				padding-top: 60px!important;
+			}
+
+			/* Dialer */
+                        div#go_btn_div i.fa, button#manual-dial-now i.fa{
+                                font-size: 20pt;
+                        }
+
+			ul#go_agent_manualdial input, ul#go_agent_manualdial button{
+				height: 40px!important;
+			}
+	
+			ul#go_agent_manualdial input{
+				font-size: 16pt;
+			}
+		
+			/* Dialer */
+			span.hash-call-now{
+				font-size: 8pt;
+				position: absolute;
+				left: 8px;
+				bottom: -4px;
+			}
+
+			/* Tabs */
+                        ul#agent_tablist > li.active > a.bb0{
+				background-color: white!important;
+			}
+			
+			/* common styles */
+                        section.content-heading{
+                                padding: 10px 40px!important;
+                                margin-bottom: 0!important;
+                        }
+
+                        #agent_tablist li:nth-of-type(1)>a.bb0{
+                                background-color: lightgreen;
+
+                        }
+
+                        #agent_tablist li:nth-of-type(2)>a.bb0{
+                                background-color: lightblue;
+
+                        }
+                        #agent_tablist li:nth-of-type(3)>a.bb0{
+                                background-color: lightyellow;
+
+                        }
+			/* Card Content */
+                        #agent_tablist a.bb0{
+                                font-size: 16pt!important;
+                                font-weight: bold;
+                        }
+
+                        /* Sidebar */
+
+                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
+                                position: fixed;
+                                bottom: 20px;
+                                right: 25px;
+                        }
+
+
+		/* mobile-small */
+		@media all and (min-width: 0) and (max-width: 360px) and (orientation: portrait) {
+			.content-wrapper > .content-heading{
+				margin-top: 15px!important;
+			}
+
+			.content{
+                                padding: 5px;
+                        }
+
+			.card-body.custom-tabpanel{
+				margin: 0;
+				padding: 5px;
+			}
+
+                        .main-header>.navbar{
+                                height: 60px;
+                                min-height: 50px;
+                        }
+
+                        #agent_tablist a.bb0{
+                                font-size: 14pt!important;
+			}
+
+                        form#contact_details_form label, form#gender_form label{
+                                font-size: 10pt;
+                                font-family: arial;
+                        }
+
+                        form#contact_details_form input, form#gender_form input{
+                                font-size: 13pt;
+                                font-family: arial;
+                                font-weight: bold;
+                        }
+
+			/* Buttons Topbar */
+			li#topbar-callbacks i.fa, li.messages-menu i.fa, li i.fa.fa-cogs{
+                                font-size: 16pt;
+                        }
+		
+			ul.nav.navbar-nav li:nth-of-type(3)>a.visible-xs{
+				padding-bottom: 2px!important;
+			}
+
+                        /* Sidebar */
+			li#go_nav_btn{
+				margin-top: 10px;
+			}
+
+                        ul.control-sidebar-tabs i.fa{
+                                font-size: 16pt;
+                        }
+
+                        aside.control-sidebar.control-sidebar-dark.control-sidebar-open{
+                                padding-top: 60px!important;
+                        }
+
+                        aside.control-sidebar div.tab-content{
+				padding-bottom: 60px;
+                        }
+
+			ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
+				margin-top: 60px;
+			}
+
+			ul.control-sidebar-menu:nth-of-type(2) div.center-block{
+				position: fixed;
+				bottom: 20px;
+				right: 65px;
+			}
+			
+			ul#go_agent_logout{
+				position: static!important;
+			}
+
+			#popup-hotkeys{
+				position: static;
+				min-width: inherit;
+			}
+
+		}
+			  /* mobile-large */
+		@media all and (min-width: 361px) and (orientation: portrait) { 
+			.content-wrapper > .content-heading{
+                                margin-top: 15px!important;
+                        }
+
+                        .content{
+                                padding: 5px;
+                        }
+
+                        .card-body.custom-tabpanel{
+                                margin: 0;
+                                padding: 5px;
+                        }
+
+                        .main-header>.navbar{
+                                height: 60px;
+                                min-height: 50px;
+                        }
+
+                        form#contact_details_form label, form#gender_form label{
+                                font-size: 10pt;
+                                font-family: arial;
+                        }
+
+                        form#contact_details_form input, form#gender_form input{
+                                font-size: 13pt;
+                                font-family: arial;
+                                font-weight: bold;
+                        }
+
+                        /* Buttons Topbar */
+                        li#topbar-callbacks i.fa, li.messages-menu i.fa, li i.fa.fa-cogs{
+                                font-size: 16pt;
+                        }
+
+                        ul.nav.navbar-nav li:nth-of-type(3)>a.visible-xs{
+                                padding-bottom: 2px!important;
+                        }
+
+                        /* Sidebar */
+                        ul.control-sidebar-tabs i.fa{
+                                font-size: 16pt;
+			}
+
+                        aside.control-sidebar.control-sidebar-dark.control-sidebar-open{
+                                padding-top: 60px!important;
+                        }
+
+                        aside.control-sidebar div.tab-content{
+                                padding-bottom: 60px;
+                        }
+
+                        ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
+                                margin-top: 60px;
+                        }
+
+                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
+                                position: fixed;
+                                bottom: 20px;
+                                right: 95px;
+                        }
+
+                        ul#go_agent_logout{
+                                position: static!important;
+                        }
+
+			#popup-hotkeys{
+                                position: static;
+                                min-width: inherit;
+                        }
+
+		}
+			  /* mobile-small-landscape */
+		@media all and (min-width: 0) and (max-width: 480px) and (orientation: landscape) {
+			.content-wrapper > .content-heading{
+                                margin-top: 15px!important;
+                        }
+
+                        .content{
+                                padding: 5px;
+                        }
+
+                        .card-body.custom-tabpanel{
+                                margin: 0;
+                                padding: 5px;
+                        }
+
+                        .main-header>.navbar{
+                                height: 60px;
+                                min-height: 50px;
+                        }
+
+                        form#contact_details_form label, form#gender_form label{
+                                font-size: 10pt;
+                                font-family: arial;
+                        }
+
+                        form#contact_details_form input, form#gender_form input{
+                                font-size: 13pt;
+                                font-family: arial;
+                                font-weight: bold;
+                        }
+
+                        /* Buttons Topbar */
+                        li#topbar-callbacks i.fa, li.messages-menu i.fa, li i.fa.fa-cogs{
+                                font-size: 16pt;
+                        }
+
+                        ul.nav.navbar-nav li:nth-of-type(3)>a.visible-xs{
+                                padding-bottom: 2px!important;
+                        }
+
+                        /* Sidebar */
+                        ul.control-sidebar-tabs i.fa{
+                                font-size: 16pt;
+                        }
+			
+			aside.control-sidebar.control-sidebar-dark.control-sidebar-open{
+                                padding-top: 60px!important;
+                        }
+
+                        aside.control-sidebar div.tab-content{
+                                padding-bottom: 60px;
+                        }
+
+                        ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
+                                margin-top: 60px;
+                        }
+
+                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
+                                position: fixed;
+                                bottom: 20px;
+                                right: 135px;
+                        }
+
+                        ul#go_agent_logout{
+                                position: static!important;
+                        }
+ 		}
+			  /* mobile-large-landscape */
+		@media all and (min-width: 481px) and (orientation: landscape) {
+			.content-wrapper > .content-heading{
+                                margin-top: 15px!important;
+                        }
+
+                        .content{
+                                padding: 5px;
+                        }
+
+                        .card-body.custom-tabpanel{
+                                margin: 0;
+                                padding: 5px;
+                        }
+
+                        .main-header>.navbar{
+                                height: 60px;
+                                min-height: 50px;
+                        }
+
+                        form#contact_details_form label, form#gender_form label{
+                                font-size: 10pt;
+                                font-family: arial;
+                        }
+
+                        form#contact_details_form input, form#gender_form input{
+                                font-size: 13pt;
+                                font-family: arial;
+                                font-weight: bold;
+                        }
+
+			/* Buttons Topbar */
+                        li#topbar-callbacks i.fa, li.messages-menu i.fa, li i.fa.fa-cogs{
+                                font-size: 16pt;
+                        }
+
+                        ul.nav.navbar-nav li:nth-of-type(3)>a.visible-xs{
+                                padding-bottom: 2px!important;
+                        }
+
+                        /* Sidebar */
+                        li#go_nav_btn{
+                                margin-top: 10px;
+                        }
+
+                        ul.control-sidebar-tabs i.fa{
+                                font-size: 16pt;
+                        }
+
+                        aside.control-sidebar.control-sidebar-dark.control-sidebar-open{
+                                padding-top: 60px!important;
+                        }
+
+                        aside.control-sidebar div.tab-content{
+                                padding-bottom: 60px;
+                        }
+
+                        ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
+                                margin-top: 60px;
+                        }
+
+                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
+                                position: fixed;
+                                bottom: 20px;
+                                right: 175px;
+                        }
+
+                        ul#go_agent_logout{
+                                position: static!important;
+                        }
+		}
+			  /* tablet-small-landscape */
+		@media all and (min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
+			section.content-heading{
+                                padding: 5px 40px!important;
+                                margin-bottom: 0!important;
+                        }
+
+			section.content-heading > span{
+				font-size: 10pt;
+			}
+
+			ol.breadcrumb.hidden-xs.pull-right{
+				padding: 0;
+			}
+
+                        /* card */
+                        div#cust_avatar{
+                                height: 30px!important;
+                        }
+
+                        div#cust_avatar div#avatar{
+                                height: 30px!important;
+                                width: 30px!important;
+                                background: url(./img/avatars/default/defaultAvatar.png) 0% 0% / 30px 30px no-repeat content-box!important;
+                        }
+
+                        #cust_full_name{
+                                margin: 0;
+				font-family: 'Calibri'; 
+				font-size: 20pt;
+                        }
+
+                        div.card-heading.bg-inverse{
+                                height: 50px!important;
+                                padding: 10px!important;
+                        }
+
+                        div.card-body.custom-tabpanel{
+                                padding-top: 5px;
+                        }
+
+                        #agent_tablist a.bb0{
+				padding: 5px 10px;
+                                font-size: 10pt!important;
+                                font-weight: bold;
+                        }
+
+                        /* contact info */
+
+                        div#contact_info h4{
+                                margin: 0;
+                        }
+
+                        form#contact_details_form label, form#gender_form label{
+                                font-size: 8pt;
+                                font-family: arial;
+                        }
+
+                        form#contact_details_form input, form#gender_form input{
+                                font-size: 10pt;
+                                font-family: arial;
+                                font-weight: bold;
+                        }
+
+                        form#contact_details_form .mda-form-group.label-floating, form#gender_form .mda-form-group.label-floating{
+                                padding: 22px 0 5px 0!important;
+                        }
+
+                        form#contact_details_form .mda-form-group.label-floating label, form#gender_form .mda-form-group.label-floating label{
+                                margin-bottom: 2px;
+                        }
+
+
+                        /* Sidebar */
+			ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
+	                        margin-top: 5px;
+                        }
+
+                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
+                                position: fixed;
+                                bottom: 20px;
+                                right: 25px;
+                        }
+		 }
+			  /* tablet-large-landscape */
+		@media all and (min-width: 961px) and (orientation: landscape) { 
+			section.content-heading{
+                                padding: 5px 40px!important;
+                                margin-bottom: 0!important;
+                        }
+
+                        section.content-heading > span{
+                                font-size: 20pt;
+                        }
+
+                        ol.breadcrumb.hidden-xs.pull-right{
+                                padding: 10px 10px 0 0;
+                        }
+
+                        /* card */
+                        div#cust_avatar{
+                                height: 45px!important;
+                        }
+
+                        div#cust_avatar div#avatar{
+                                height: 45px!important;
+                                width: 45px!important;
+                                background: url(./img/avatars/default/defaultAvatar.png) 0% 0% / 45px 45px no-repeat content-box!important;
+                        }
+
+                        h4#cust_full_name{
+                                margin: 0;
+                        }
+
+                        div.card-heading.bg-inverse{
+                                height: 80px!important;
+                                padding: 20px!important;
+                        }
+
+                        div.card-body.custom-tabpanel{
+                                padding-top: 5px;
+                        }
+
+                        div.card-body.custom-tabpanel{
+                                padding-top: 5px;
+                        }
+
+                        #agent_tablist a.bb0{
+                                padding: 5px 10px;
+                                font-size: 14pt!important;
+                                font-weight: bold;
+                        }
+                        #agent_tablist li:nth-of-type(1)>a.bb0{
+                                background-color: lightgreen;
+
+                        }
+
+                        #agent_tablist li:nth-of-type(2)>a.bb0{
+                                background-color: lightblue;
+
+                        }
+
+                        #agent_tablist li:nth-of-type(3)>a.bb0{
+                                background-color: lightyellow;
+
+                        }
+
+                        /* contact info */
+
+                        div#contact_info h4{
+                                margin: 0;
+                        }
+
+                        form#contact_details_form label, form#gender_form label{
+                                font-size: 12pt;
+                                font-family: arial;
+                        }
+
+                        form#contact_details_form input, form#gender_form input{
+                                font-size: 12pt;
+                                font-family: arial;
+                                font-weight: bold;
+                        }
+
+                        form#contact_details_form .mda-form-group.label-floating, form#gender_form .mda-form-group.label-floating{
+                                padding: 22px 0 5px 0!important;
+                        }
+
+                        form#contact_details_form .mda-form-group.label-floating label, form#gender_form .mda-form-group.label-floating label{
+                                margin-bottom: 2px;
+                        }
+
+
+                        /* Sidebar */
+                        ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
+                                margin-top: 5px;
+                        }
+
+                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
+                                position: fixed;
+                                bottom: 20px;
+                                right: 25px;
+                        }
+		}
+			  /* tablet-small */
+		@media all and (min-width: 600px) and (orientation: portrait) {
+                        section.content-heading{
+                                padding: 5px 40px!important;
+                                margin-bottom: 0!important;
+                        }
+
+                        section.content-heading > span{
+                                font-size: 20pt;
+                        }
+
+                        ol.breadcrumb.hidden-xs.pull-right{
+                                padding: 10px 10px 0 0;
+                        }
+
+                        /* card */
+                        div#cust_avatar{
+                                height: 45px!important;
+                        }
+
+                        div#cust_avatar div#avatar{
+                                height: 45px!important;
+                                width: 45px!important;
+                                background: url(./img/avatars/default/defaultAvatar.png) 0% 0% / 45px 45px no-repeat content-box!important;
+                        }
+
+                        h4#cust_full_name{
+                                margin: 0;
+                        }
+
+                        div.card-heading.bg-inverse{
+                                height: 80px!important;
+                                padding: 20px!important;
+                        }
+
+                        div.card-body.custom-tabpanel{
+                                padding-top: 5px;
+                        }
+
+                        #agent_tablist a.bb0{
+                                padding: 5px 10px;
+                                font-size: 10pt!important;
+                                font-weight: bold;
+                        }
+                        #agent_tablist li:nth-of-type(1)>a.bb0{
+                                background-color: lightgreen;
+
+                        }
+
+                        #agent_tablist li:nth-of-type(2)>a.bb0{
+                                background-color: lightblue;
+
+                        }
+
+                        #agent_tablist li:nth-of-type(3)>a.bb0{
+                                background-color: lightyellow;
+
+                        }
+
+                        /* contact info */
+
+                        div#contact_info h4{
+                                margin: 0;
+                        }
+
+                        form#contact_details_form label, form#gender_form label{
+                                font-size: 8pt;
+                                font-family: arial;
+                        }
+
+                        form#contact_details_form input, form#gender_form input{
+                                font-size: 10pt;
+                                font-family: arial;
+                                font-weight: bold;
+                        }
+
+                        form#contact_details_form .mda-form-group.label-floating, form#gender_form .mda-form-group.label-floating{
+                                padding: 22px 0 5px 0!important;
+                        }
+
+                        form#contact_details_form .mda-form-group.label-floating label, form#gender_form .mda-form-group.label-floating label{
+                                margin-bottom: 2px;
+                        }
+
+
+                        /* Sidebar */
+                        ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
+                                margin-top: 5px;
+                        }
+
+                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
+                                position: fixed;
+                                bottom: 20px;
+                                right: 25px;
+                        }
+
+		}
+			  /* tablet-large */
+		@media all and (min-width: 601px) and (max-width: 840px) and (orientation : portrait) {
+                        section.content-heading{
+                                padding: 5px 40px!important;
+                                margin-bottom: 0!important;
+                        }
+
+                        section.content-heading > span{
+                                font-size: 20pt;
+                        }
+
+                        ol.breadcrumb.hidden-xs.pull-right{
+                                padding: 10px 10px 0 0;
+                        }
+
+                        /* card */
+                        div#cust_avatar{
+                                height: 45px!important;
+                        }
+
+                        div#cust_avatar div#avatar{
+                                height: 45px!important;
+                                width: 45px!important;
+                                background: url(./img/avatars/default/defaultAvatar.png) 0% 0% / 45px 45px no-repeat content-box!important;
+                        }
+
+                        h4#cust_full_name{
+                                margin: 0;
+                        }
+
+                        div.card-heading.bg-inverse{
+                                height: 80px!important;
+                                padding: 20px!important;
+                        }
+
+                        div.card-body.custom-tabpanel{
+                                padding-top: 5px;
+                        }
+
+                        div.card-body.custom-tabpanel{
+                                padding-top: 5px;
+                        }
+
+                        #agent_tablist a.bb0{
+                                padding: 5px 10px;
+                                font-size: 14pt!important;
+                                font-weight: bold;
+                        }
+                        #agent_tablist li:nth-of-type(1)>a.bb0{
+                                background-color: lightgreen;
+
+                        }
+
+                        #agent_tablist li:nth-of-type(2)>a.bb0{
+                                background-color: lightblue;
+
+                        }
+
+                        #agent_tablist li:nth-of-type(3)>a.bb0{
+                                background-color: lightyellow;
+
+                        }
+
+                        /* contact info */
+
+                        div#contact_info h4{
+                                margin: 0;
+                        }
+
+                        form#contact_details_form label, form#gender_form label{
+                                font-size: 12pt;
+                                font-family: arial;
+                        }
+
+                        form#contact_details_form input, form#gender_form input{
+                                font-size: 12pt;
+                                font-family: arial;
+                                font-weight: bold;
+                        }
+
+
+                        form#contact_details_form .mda-form-group.label-floating, form#gender_form .mda-form-group.label-floating{
+                                padding: 22px 0 5px 0!important;
+                        }
+
+                        form#contact_details_form .mda-form-group.label-floating label, form#gender_form .mda-form-group.label-floating label{
+                                margin-bottom: 2px;
+                        }
+
+
+                        /* Sidebar */
+                        ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
+                                margin-top: 60px;
+                        }
+
+                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
+                                position: fixed;
+                                bottom: 20px;
+                                right: 25px;
+                        }
+		}
+
+		/* Devices Hotkey Position */
+
+		#popup-hotkeys{
+                        position: static;
+                        min-width: inherit;
+                }
+
+			  /* desktop-x-small-landscape */
+			@media all and (min-width: 0) and (max-width: 480px) and (orientation: landscape) { }
+			  /* desktop-x-small */
+			@media all and (min-width: 0) and (max-width: 480px) and (max-aspect-ratio: 4/3) { }
+			  /* desktop-small-landscape */
+			@media all and (min-width: 481px) and (max-width: 840px) and (orientation: landscape) { }
+			  /* desktop-small */
+			@media all and (min-width: 481px) and (max-width: 840px) and (max-aspect-ratio: 4/3) { }
+			  /* desktop-medium-landscape */
+		@media all and (min-width: 841px) and (max-width: 1280px) and (orientation: landscape) { 
+			/* Hotkey Popup */
+                        #popup-hotkeys{
+                                position: absolute;
+                                min-width: 480px;
+                        }
+	
+		}
+			  /* desktop-medium */
+		@media all and (min-width: 841px) and (max-width: 1280px) and (max-aspect-ratio: 4/3) { }
+			  /* desktop-large */
+  		@media all and (min-width: 1281px) and (max-width: 1600px) { 
+			section.content-heading{
+                                padding: 10px 40px!important;
+                                margin-bottom: 0!important;
+                        }
+                        /* card */
+                        div#cust_avatar{
+                                height: 30px!important;
+                        }
+
+                        div#cust_avatar div#avatar{
+                                height: 30px!important;
+                                width: 30px!important;
+                                background: url(./img/avatars/default/defaultAvatar.png) 0% 0% / 30px 30px no-repeat content-box!important;
+                        }
+
+                        h4#cust_full_name{
+                                margin: 0;
+                        }
+
+                        div.card-heading.bg-inverse{
+                                height: 50px!important;
+                                padding: 10px!important;
+                        }
+
+                        div.card-body.custom-tabpanel{
+                                padding-top: 5px;
+                        }
+
+                        #agent_tablist a.bb0{
+                                font-size: 16pt!important;
+                                font-weight: bold;
+                        }
+
+                        #agent_tablist li:nth-of-type(1)>a.bb0{
+                                background-color: lightgreen;
+
+                        }
+
+                        #agent_tablist li:nth-of-type(2)>a.bb0{
+                                background-color: lightblue;
+
+                        }
+                        #agent_tablist li:nth-of-type(3)>a.bb0{
+                                background-color: lightyellow;
+
+                        }
+
+                        /* contact info */
+
+                        div#contact_info h4{
+                                margin: 0;
+                        }
+
+                        form#contact_details_form label, form#gender_form label{
+                                font-size: 12pt;
+                                font-family: arial;
+                        }
+
+                        form#contact_details_form input, form#gender_form input{
+                                font-size: 14pt;
+                                font-family: arial;
+                                font-weight: bold;
+                        }
+
+                        form#contact_details_form .mda-form-group.label-floating, form#gender_form .mda-form-group.label-floating{
+                                padding: 22px 0 10px 0!important;
+                        }
+
+                        /* Sidebar */
+
+                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
+                                position: fixed;
+                                bottom: 20px;
+                                right: 25px;
+                        }
+
+			/* Hotkey Popup */
+			#popup-hotkeys{
+                	        position: absolute;
+        	                min-width: 480px;
+	                }
+		}
+			  /* desktop-xlarge */
+  		@media all and (min-width: 1601px) and (max-width: 1920px) { 
+			/* Hotkey Popup */
+                        #popup-hotkeys{
+                                position: absolute;
+                                min-width: 480px;
+                        }
+
+		}
+
+			.nav a.dropdown-toggle{
+				height: 60px;
+			}
+		</style>
+		<!-- /. ECCS Customization -->
     </head>
     <?php print $ui->creamyAgentBody(); ?>
     <div class="wrapper">
@@ -417,10 +1321,11 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
                 <!-- Content Header (Page header) -->
                 <section class="content-heading">
 					<!-- Page title -->
-                    <span><?php $lh->translateText("contact_information"); ?></span>
-                    <ol class="breadcrumb hidden-xs pull-right">
-						<li class="active"><i class="fa fa-home"></i> <?php $lh->translateText('home'); ?></li>
-					</ol>
+		<!--HIDE THIS BAR RIGHT HERE TEMPORARILY-->
+                <!--span><?php //$lh->translateText("contact_information"); ?></span>
+                    <!--ol class="breadcrumb hidden-xs pull-right">
+						<!--li class="active"><i class="fa fa-home"></i> <?php //$lh->translateText('home'); ?></li>
+					</ol-->
                 </section>
 
                 <!-- Main content -->
@@ -436,6 +1341,9 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 										</div>
 										<div class="col-lg-11 col-md-11 col-sm-10">
 						                <h4 id="cust_full_name" class="hidden">
+									<!-- ECCS Customization -->
+									<span id="cust_call_type" class="hidden"></span>
+									<!-- /.ECCS Customization -->
 											<span id="first_name_label" class="hidden"><?=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name"></a> <span id="middle_initial_label" class="hidden"><?=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial"></a> <span id="last_name_label" class="hidden"><?=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name"></a>
 										</h4>
 						                <p class="ng-binding animated fadeInUpShort"><span id="cust_number"></span></p>
@@ -451,7 +1359,7 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 									  <!-- Nav task panel tabs-->
 										 <li role="presentation" class="active">
 											<a href="#contact_info" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
-												<span class="fa fa-user hidden"></span>
+												<span style="font-family:Arial; font-style:Bold;" class="fa fa-user hidden"></span>
 												<?=$lh->translationFor('contact_information')?></a>
 										 </li>
 										 <li role="presentation">
@@ -474,7 +1382,7 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 												<h4>
 													<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile"><?=$lh->translationFor('edit_information')?></a>
 												</h4>
-												<br/>
+												<!-- <br/> -->
 												<form role="form" id="name_form" class="formMain form-inline" >
 												
 												<!--LEAD ID-->
@@ -532,8 +1440,7 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 															<div class="mda-form-group label-floating">
 																<span id="phone_numberDISP" class="hidden"></span>
 																<input id="phone_code" name="phone_code" type="hidden" value="<?php echo $phone_code;?>">
-																<input id="phone_number" name="phone_number" type="number" min="0" maxlength="18" width="auto" value="<?php echo $phone_number;?>"
-																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled required>
+																<input id="phone_number" name="phone_number" type="number" min="0" maxlength="18" width="auto" value="<?php echo $phone_number; ?>" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled required>
 																<label for="phone_number"><?=$lh->translationFor('phone_number')?></label>
 																<!--
 																<span class="mda-input-group-addon">
@@ -543,68 +1450,73 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 														</div>
 														<div class="col-sm-6">
 															<div class="mda-form-group label-floating">
-																<input id="alt_phone" name="alt_phone" type="number" min="0" maxlength="12" width="100" value="<?php echo $alt_phone;?>"
-																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+																<input id="alt_phone" name="alt_phone" type="number" min="0" maxlength="12" width="100" value="<?php echo $alt_phone;?>" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
 																<label for="alt_phone"><?=$lh->translationFor('alternative_phone_number')?></label>
 															</div>
 														</div>
 													</div>
 													<!-- /.phonenumber & alt phonenumber -->
-													
-													<div class="mda-form-group label-floating">
-														<input id="address1" name="address1" type="text" maxlength="100" width="auto" value="<?php echo $address1;?>"
-															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-														<label for="address1"><?=$lh->translationFor('address')?></label> 
+													<!-- address1 & address2 -->
+													<div class="row">
+														<div class="col-lg-12 col-sm-6">
+															<div class="mda-form-group label-floating">
+																<input id="address1" name="address1" type="text" maxlength="100" width="auto" value="<?php echo $address1;?>" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+																<label for="address1"><?=$lh->translationFor('address')?></label>
+															</div>
 														<!--<span class="mda-input-group-addon">
 															<em class="fa fa-home fa-lg"></em>
 														</span>-->
+														</div>
+														<div class="col-lg-12 col-sm-6">																				<div class="mda-form-group label-floating">
+																<input id="address2" name="address2" type="text" maxlength="100" value="<?php echo $address2;?>" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+																<label for="address2"><?=$lh->translationFor('address2')?></label>
+															</div>
+														</div>
 													</div>
-													
-													<div class="mda-form-group label-floating">
-														<input id="address2" name="address2" type="text" maxlength="100" value="<?php echo $address2;?>"
-															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-														<label for="address2"><?=$lh->translationFor('address2')?></label>
-													</div>
-													
+													<!-- /.address1 & address2 -->
 													<div class="row">
 														<div class="col-sm-4">
 															<div class="mda-form-group label-floating">
-																<input id="city" name="city" type="text" maxlength="50" value="<?php echo $city;?>"
-																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+																<input id="city" name="city" type="text" maxlength="50" value="<?php echo $city;?>" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
 																<label for="city"><?=$lh->translationFor('city')?></label>
 															</div>
 														</div>
 														<div class="col-sm-4">
 															<div class="mda-form-group label-floating">
-																<input id="state" name="state" type="text" maxlength="2" value="<?php echo $state;?>"
-																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+																<input id="state" name="state" type="text" maxlength="2" value="<?php echo $state;?>" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
 																<label for="state"><?=$lh->translationFor('state')?></label>
 															</div>
 														</div>
 														<div class="col-sm-4">
 															<div class="mda-form-group label-floating">
-																<input id="postal_code" name="postal_code" type="text" maxlength="10" value="<?php echo $postal_code;?>"
-																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+																<input id="postal_code" name="postal_code" type="text" maxlength="10" value="<?php echo $postal_code;?>" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
 																<label for="postal_code"><?=$lh->translationFor('postal_code')?></label>
 															</div>
 														</div>
-													</div><!-- /.city,state,postalcode -->
-												
-													<div class="mda-form-group label-floating">
-														<select id="country_code" name="country_code" type="text" maxlength="3"
-															class="mda-form-control select2 ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" title="<?=$lh->translationFor('select_country_code')?>" disabled>
-															<option value="">- - - <?=$lh->translationFor('select_country_code')?> - - -</option>
-														</select>
-														<label for="country"><?=$lh->translationFor('country_code')?></label>
 													</div>
-													<div class="mda-form-group label-floating"><!-- add "mda-input-group" if with image -->
-														<input id="email" name="email" type="text" width="auto" value="<?php echo $email;?>"
-															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-														<label for="email"><?=$lh->translationFor('email_add')?></label>
+													<!-- /.city,state,postalcode -->
+												
+	 												<!-- country_code & email -->
+                                                                                                        <div class="row">
+                                                                                                                <div class="col-lg-12 col-sm-6">
+															<div class="mda-form-group label-floating">
+																<select id="country_code" name="country_code" type="text" maxlength="3"	class="mda-form-control select2 ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" title="<?=$lh->translationFor('select_country_code')?>" disabled>
+																	<option value="">- - - <?=$lh->translationFor('select_country_code')?> - - -</option>
+																</select>
+																<label for="country_code"><?=$lh->translationFor('country_code')?></label>
+															</div>
+						                						</div>
+                                        	                                                                <div class="col-lg-12 col-sm-6">
+															<div class="mda-form-group label-floating"><!-- add "mda-input-group" if with image -->
+																<input id="email" name="email" type="text" width="auto" value="<?php echo $email;?>" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
+																<label for="email"><?=$lh->translationFor('email_add')?></label>
 														<!--<span class="mda-input-group-addon">
 															<em class="fa fa-at fa-lg"></em>
 														</span>-->
+															</div>
+														</div>
 													</div>
+													<!-- /.country_code & email -->
 												</form> 
 												<form role="form" id="gender_form" class="formMain form-inline" >
 													<div class="row">
@@ -631,13 +1543,15 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 																<label for="date_of_birth"><?=$lh->translationFor('date_of_birth')?></label>
 															</div>
 														</div>
-														<div id="call_notes_content" class="col-sm-12">
-															<div class="form-group" style="float: left; width:100%;">
-																<textarea rows="5" id="call_notes" name="call_notes" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea note-editor note-editor-margin" style="resize:none; width: 100%;"></textarea>
-																<label for="call_notes"><?=$lh->translationFor('call_notes')?></label>
-															</div>
+													</div>
+													<!-- /.gender & title -->
+
+													<div id="call_notes_content" class="col-sm-12">
+														<div class="form-group" style="width:100%;">
+															<textarea rows="3" id="call_notes" name="call_notes" class="form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea note-editor note-editor-margin" style="resize:none; width: 100%;"></textarea>
+															<label for="call_notes"><?=$lh->translationFor('call_notes')?></label>
 														</div>
-													</div><!-- /.gender & title -->                   
+													</div>
 												</form>
 											
 							                <!-- NOTIFICATIONS -->
@@ -2284,6 +3198,146 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 			var goAvatar = new Vue(goOptions);
 			
 			goAvatar._init();
+		</script>
+		<!-- ECCS Customization -->
+<!--		<script type="text/javascript" src="js/bootstrap-toggle.min.js"></script> -->
+		<script type="text/javascript">
+			//tooltips
+			$('[data-tooltip="tooltip"]').tooltip();
+			$(document).ready(function(){
+				$('[data-tooltip="tooltip"]').tooltip();
+
+				$('input#phone_number').attr("data-tooltip", "tooltip");
+                                $('input#phone_number').attr("title", "<?=$lh->translationFor('phone_number')?>");
+
+
+				$('#topbar-callbacks a.dropdown-toggle').attr("data-tooltip", "tooltip");
+				$('#topbar-callbacks a.dropdown-toggle').attr("title", "<?=$lh->translationFor('callbacks')?>");
+
+				$('li.dropdown.messages-menu a.dropdown-toggle').attr("data-tooltip", "tooltip");
+				$('li.dropdown.messages-menu a.dropdown-toggle').attr("title", "<?=$lh->translationFor('messages')?>");
+
+				$('li#dialer-tab').attr("data-tooltip", "tooltip");
+                                $('li#dialer-tab').attr("title", "<?=$lh->translationFor('Dialer')?>");
+
+				$('li#settings-tab').attr("data-tooltip", "tooltip");
+                                $('li#settings-tab').attr("title", "<?=$lh->translationFor('settings')?>");
+
+				$('button#btnLogMeIn').attr("data-tooltip", "tooltip");
+                                $('button#btnLogMeIn').attr("title", "<?=$lh->translationFor('Login To Dialer')?>");
+
+                                $('ul.control-sidebar-menu:nth-of-type(2) a:nth-of-type(1)').attr("data-tooltip", "tooltip");
+                                $('ul.control-sidebar-menu:nth-of-type(2) a:nth-of-type(1)').attr("title", "<?=$lh->translationFor('Profile')?>");
+
+                                $('ul.control-sidebar-menu:nth-of-type(2) a:nth-of-type(2)').attr("data-tooltip", "tooltip");
+                                $('ul.control-sidebar-menu:nth-of-type(2) a:nth-of-type(2)').attr("title", "<?=$lh->translationFor('logout')?>");
+
+				$('ul.control-sidebar-menu#go_agent_profile li:nth-of-type(3)').attr("data-tooltip", "tooltip");
+                                $('ul.control-sidebar-menu#go_agent_profile li:nth-of-type(3)').attr("title", "<?=$lh->translationFor('messages')?>");
+
+                                $('ul.control-sidebar-menu#go_agent_profile li:nth-of-type(4)').attr("data-tooltip", "tooltip");
+                                $('ul.control-sidebar-menu#go_agent_profile li:nth-of-type(4)').attr("title", "<?=$lh->translationFor('callbacks')?>");
+
+                                $('ul.control-sidebar-menu#go_agent_profile li:nth-of-type(5)').attr("data-tooltip", "tooltip");
+                                $('ul.control-sidebar-menu#go_agent_profile li:nth-of-type(5)').attr("title", "<?=$lh->translationFor('contacts')?>");
+
+                                $('ul.control-sidebar-menu#go_agent_profile li:nth-of-type(6)').attr("data-tooltip", "tooltip");
+                                $('ul.control-sidebar-menu#go_agent_profile li:nth-of-type(6)').attr("title", "<?=$lh->translationFor('Enter Pause Codes')?>");
+
+				// Dialer
+
+				 $('button#manual-dial-now').attr("data-tooltip", "tooltip");
+                                 $('button#manual-dial-now').attr("title", "Manual Dial");
+
+                                 $('button#manual-dial-dropdown').attr("data-tooltip", "tooltip");
+                                 $('button#manual-dial-dropdown').attr("title", "Country Codes");
+
+				for(var a=0; a<=9; a++){
+					$('button#dialer-pad-' + a).attr("data-tooltip", "tooltip");
+        	                        $('button#dialer-pad-' + a).attr("title", a);
+				}
+			
+				$('li#toggleWebForm').attr("data-tooltip", "tooltip");
+                                $('li#toggleWebForm').attr("title", "<?=$lh->translationFor('Web Form')?>");
+				
+				$('li#toggleWebFormTwo').attr("data-tooltip", "tooltip");
+                                $('li#toggleWebFormTwo').attr("title", "<?=$lh->translationFor('Web Form')?>");
+
+				$('ul#go_agent_other_buttons li:nth-of-type(4) div.material-switch').attr("data-tooltip", "tooltip");
+                                $('ul#go_agent_other_buttons li:nth-of-type(4) div.material-switch').attr("title", "<?=$lh->translationFor('Lead Preview')?>");
+	
+				$('li#DialALTPhoneMenu div.material-switch').attr("data-tooltip", "tooltip");
+                                $('li#DialALTPhoneMenu div.material-switch').attr("title", "<?=$lh->translationFor('ALT Phone Dial')?>");
+
+                                $('li#toggleHotkeys div.material-switch').attr("data-tooltip", "tooltip");
+                                $('li#toggleHotkeys div.material-switch').attr("title", "<?=$lh->translationFor('Enable Hotkeys')?>");
+
+				$('li#toggleMute div.material-switch').attr("data-tooltip", "tooltip");
+                                $('li#toggleMute div.material-switch').attr("title", "<?=$lh->translationFor('Toggle Mute')?>");
+
+				
+				// Content Tabs
+				$('#agent_tablist li:nth-of-type(1)>a.bb0').attr("data-tooltip", "tooltip");
+				$('#agent_tablist li:nth-of-type(1)>a.bb0').attr("title", "<?=$lh->translationFor('contact_information')?>");
+
+                                $('#agent_tablist li:nth-of-type(2)>a.bb0').attr("data-tooltip", "tooltip");
+                                $('#agent_tablist li:nth-of-type(2)>a.bb0').attr("title", "<?=$lh->translationFor('comments')?>");
+
+                                $('#agent_tablist li:nth-of-type(3)>a.bb0').attr("data-tooltip", "tooltip");
+                                $('#agent_tablist li:nth-of-type(3)>a.bb0').attr("title", "<?=$lh->translationFor('script')?>");
+
+				// Hastag Formats
+				$('#agent_tablist li:nth-of-type(1)>a.bb0').append(" [#CI] ");
+	                        $('#agent_tablist li:nth-of-type(2)>a.bb0').append(" [#CM] ");
+                        	$('#agent_tablist li:nth-of-type(3)>a.bb0').append(" [#SC] ");
+
+				$('form#contact_details_form label[for="phone_number"]').append(" [#PN] ");
+				$('form#contact_details_form label[for="alt_phone"]').append(" [#APN] ");
+				$('form#contact_details_form label[for="address1"]').append(" [#A1] ");
+				$('form#contact_details_form label[for="address2"]').append(" [#A2] ");
+                	        $('form#contact_details_form label[for="city"]').append(" [#CT] ");
+        	                $('form#contact_details_form label[for="state"]').append(" [#ST] ");
+	                        $('form#contact_details_form label[for="postal_code"]').append(" [#PC] ");
+                	        $('form#contact_details_form label[for="country_code"]').append(" [#CC] ");
+        	                $('form#contact_details_form label[for="email"]').append(" [#EM] ");
+	                        $('form#gender_form label[for="title"]').append(" [#TI] ");
+                        	$('form#gender_form label[for="gender"]').append(" [#GE] ");
+                	        $('form#gender_form label[for="date_of_birth"]').append(" [#DB] ");
+        	                $('form#gender_form label[for="call_notes"]').append(" [#CN] ");
+
+                                $('ul.nav.navbar-nav li:nth-of-type(3)>a.visible-xs').append("<br><span>#CONF</span>");
+
+			
+				$('li#topbar-callbacks a.dropdown-toggle').append('<br><span>#CB</span>');
+				$('li.dropdown.messages-menu a.dropdown-toggle').append('<br><span>#VM</span>');
+				/*setInterval(function(){
+					$('li.dropdown.messages-menu a.dropdown-toggle').append('<br><span>#VM</span>');
+				}, 5000);*/
+
+				$('button#btnDialHangup').append('<br><span>#HU</span>');
+                                $('button#btnResumePause').append('<br><span>#PR</span>');
+                                $('button#btnParkCall').append('<br><span>#PC</span>');
+                                $('button#btnTransferCall').append('<br><span>#VM</span>');
+                                $('button#manual-dial-now').append('<br><span class="hash-call-now">#CALL</span>');
+
+				//Remove Class Absolute Logout Button Dialer
+				$('ul#go_agent_logout').css("position", "static");
+				$('li#toggleHotkeys').css("display", "block!important");
+				//Remove hidden-xs on agent other buttons
+				$('ul#go_agent_other_buttons').removeClass('hidden-xs');
+
+				//Enable Hotkeys by default
+				$('#enableHotKeys').attr("checked","");
+				$('div#popup-hotkeys').css("display", "block");
+
+				//Conf on click set dialer tab to active
+				$('ul.nav.navbar-nav li:nth-of-type(3)>a.visible-xs').on('click', function(){
+					$('nav.control-sidebar-tabs > li#settings-tab').removeClass('active');
+					$('nav.control-sidebar-tabs > li#dialer-tab').addClass('active');
+
+				});
+
+			});
 		</script>
     </body>
 </html>
