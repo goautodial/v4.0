@@ -115,13 +115,14 @@ if(ECCS_BLIND_MODE != "y"){
 		<link href="css/multiple-emails/multiple-emails.css" rel="stylesheet" type="text/css" />
         <!-- Customized Style -->
         <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
-        
         <?php 
 			print $ui->standardizedThemeCSS(); 
 			print $ui->creamyThemeCSS();
 			print $ui->dataTablesTheme();
 		?>      
 
+		<!-- ECCS JS -->
+		<!--script src="eccs.js" type="text/javascript"></script-->
 		<!-- Multi file upload -->
 		<script src="js/plugins/multifile/jQuery.MultiFile.min.js" type="text/javascript"></script>
 		<!-- Multiple emails -->
@@ -252,1062 +253,192 @@ if(ECCS_BLIND_MODE != "y"){
 			});
 		</script>
 		<style>
-			.nav-tabs > li > a{
-				font-weight: normal;
-				border:0px;
-				border-radius: 3px 3px 0px 0px;
-			}
-			.custom-tabpanel{
-				padding-top: 20px;
-				margin-right: 10px;
-			}
-			h3{
-				font-weight: normal;
-			}
-			.custom-row{
-				padding: 0px 50px;
-				padding-bottom: 50px;
-			}
-			.panel{
-				margin-bottom:0;
-			}
-			.required_div{
-				background: rgba(158,158,158,0.30);
-			}
-			.textarea{
-				border: none;
-				border-bottom: .5px solid #dde6e9;
-				width: 100%;
-				-webkit-box-sizing: border-box;
-				   -moz-box-sizing: border-box;
-						box-sizing: border-box;
-				padding-left: 0px;
-			}
-			
-			.form-control[disabled], fieldset[disabled] .form-control{
-				cursor: text;
-				background-color: white;
-			}
-			.edit-profile-button{
-				font-size:14px; 
-				font-weight:normal;
-			}
+                        .nav-tabs > li > a{
+                                font-weight: normal;
+                                border:0px;
+                                border-radius: 3px 3px 0px 0px;
+                        }
+                        .custom-tabpanel{
+                                padding-top: 20px;
+                                margin-right: 10px;
+                        }
+                        h3{
+                                font-weight: normal;
+                        }
+                        .custom-row{
+                                padding: 0px 50px;
+                                padding-bottom: 50px;
+                        }
+                        .panel{
+                                margin-bottom:0;
+                        }
+                        .required_div{
+                                background: rgba(158,158,158,0.30);
+                        }
+                        .textarea{
+                                border: none;
+                                border-bottom: .5px solid #dde6e9;
+                                width: 100%;
+                                -webkit-box-sizing: border-box;
+                                   -moz-box-sizing: border-box;
+                                                box-sizing: border-box;
+                                padding-left: 0px;
+                        }
+
+                        .form-control[disabled], fieldset[disabled] .form-control{
+                                cursor: text;
+                                background-color: white;
+                        }
+                        .edit-profile-button{
+                                font-size:14px;
+                                font-weight:normal;
+                        }
 			.hide_div{
-				display: none;
-			}
-			.btn.btn-raised {
-				box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
-			}
-			button[id^='show-callbacks-']:hover, button[id^='show-callbacks-']:active {
-				text-decoration: none;
-			}
-			#popup-hotkeys {
-				position: absolute;
-				top: 160px;
-				left: 40px;
-				display: none;
-				box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
-				min-width: 480px;
-			}
-			#popup-hotkeys .panel-heading {
-				background-color: #2a2a2a;
-				color: #fff;
-			}
-			#popup-hotkeys .panel-body dl {
-				margin-bottom: 0px;
-			}
-			.control-label {
-				padding-top: 0px;
-			}
-			.popover-title {
-				font-size: 16px;
-				font-weight: bold;
-				color: #555;
-				background-color: #f0f0f0;
-			}
-			.dataTables_empty {
-				text-align: center;
-			}
-			.table > thead > tr > th {
-				padding: 8px;
-			}
+                                display: none;
+                        }
+                        .btn.btn-raised {
+                                box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+                        }
+                        button[id^='show-callbacks-']:hover, button[id^='show-callbacks-']:active {
+                                text-decoration: none;
+                        }
+                        #popup-hotkeys {
+                                position: absolute;
+                                top: 160px;
+                                left: 40px;
+                                display: none;
+                                box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+                                min-width: 480px;
+                        }
+                        #popup-hotkeys .panel-heading {
+                                background-color: #2a2a2a;
+                                color: #fff;
+                        }
+                        #popup-hotkeys .panel-body dl {
+                                margin-bottom: 0px;
+                        }
+                        .control-label {
+                                padding-top: 0px;
+                        }
+                        .popover-title {
+                                font-size: 16px;
+                                font-weight: bold;
+                                color: #555;
+                                background-color: #f0f0f0;
+                        }
+                        .dataTables_empty {
+                                text-align: center;
+                        }
+                        .table > thead > tr > th {
+                                padding: 8px;
+                        }
 			.modal-body {
-				min-height: inherit;
-				overflow-x: inherit;
-				overflow-y: inherit;
-				padding-top: 15px;
-			}
-			.form-group {
-			  position: relative;
-			  padding: 18px 0 24px 0;
-			}
-			.form-control {
-			  position: relative;
-			  z-index: 5;
-			  width: 100%;
-			  height: 34px;
-			  padding: 2px;
-			  color: inherit;
-			  border: 0;
-			  border-bottom: 1px solid #dde6e9;
-			  border-radius: 0;
-			  box-shadow: none;
-			}
-			.form-control:focus,
-			.form-control.focus {
-				padding-bottom: 1px;
-				border-color: #3f51b5;
-				border-bottom-width: 2px;
-			}
-			.form-control:focus ~ label,
-			.form-control.focus ~ label {
-				top: 0!important;
-				font-size: .85em!important;
-				color: #3f51b5;
-				opacity: 1;
-			}
+                                min-height: inherit;
+                                overflow-x: inherit;
+                                overflow-y: inherit;
+                                padding-top: 15px;
+                        }
+                        .form-group {
+                          position: relative;
+                          padding: 18px 0 24px 0;
+                        }
+                        .form-control {
+                          position: relative;
+                          z-index: 5;
+                          width: 100%;
+                          height: 34px;
+                          padding: 2px;
+                          color: inherit;
+                          border: 0;
+                          border-bottom: 1px solid #dde6e9;
+                          border-radius: 0;
+                          box-shadow: none;
+                        }
+                        .form-control:focus,
+                        .form-control.focus {
+                                padding-bottom: 1px;
+                                border-color: #3f51b5;
+                                border-bottom-width: 2px;
+                        }
+                        .form-control:focus ~ label,
+                        .form-control.focus ~ label {
+                                top: 0!important;
+                                font-size: .85em!important;
+                                color: #3f51b5;
+                                opacity: 1;
+                        }
 			.form-control ~ label {
-				position: absolute;
-				top: 0;
-				left: 0;
-				z-index: 0;
-				display: inline-block;
-				font-size: .85em;
-				opacity: .5;
-				-webkit-transition: all 0.2s ease;
-				-o-transition: all 0.2s ease;
-				transition: all 0.2s ease;
-			}
-			.customform-label {
-				position: absolute;
-				top: 0;
-				left: 0;
-				z-index: 0;
-				display: inline-block;
-				font-size: .85em;
-				opacity: .5;
-				transition: all 0.2s ease;
-				font-weight: 700;
-			}
-			.text-color-black {
-				color: black;
-			}
-			body::-webkit-scrollbar, .tab-content::-webkit-scrollbar { 
-				display: none;
-			}
-			.mail-preloader span.dots div, .cust-preloader span.dots div {
-				background-color: #2196F3;
-			}
-			
-			#contact_info label, #comments label, #custom_form label {
-				color: #000;
-				opacity: 0.75;
-			}
-			.scrollable-menu {
-				width: 200px;
-				height: auto;
-				max-height: 200px;
-				overflow-x: hidden;
-				overflow-y: auto;
-			}
-			.editableform .form-group {
-				padding: 0 !important;
-			}
-		</style>
-		
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                z-index: 0;
+                                display: inline-block;
+                                font-size: .85em;
+                                opacity: .5;
+                                -webkit-transition: all 0.2s ease;
+                                -o-transition: all 0.2s ease;
+                                transition: all 0.2s ease;
+                        }
+                        .customform-label {
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                z-index: 0;
+                                display: inline-block;
+                                font-size: .85em;
+                                opacity: .5;
+                                transition: all 0.2s ease;
+                                font-weight: 700;
+                        }
+                        .text-color-black {
+                                color: black;
+                        }
+                        body::-webkit-scrollbar, .tab-content::-webkit-scrollbar {
+                                display: none;
+                        }
+                        .mail-preloader span.dots div, .cust-preloader span.dots div {
+                                background-color: #2196F3;
+                        }
+
+                        #contact_info label, #comments label, #custom_form label {
+                                color: #000;
+                                opacity: 0.75;
+                        }
+	 		.scrollable-menu {
+                                width: 200px;
+                                height: auto;
+                                max-height: 200px;
+                                overflow-x: hidden;
+                                overflow-y: auto;
+                        }
+                        .editableform .form-group {
+                                padding: 0 !important;
+                        }	
+	</style>
+
 	<!-- ECCS Customiztion -->
 	<?php 
 		if(ECCS_BLIND_MODE === 'y'){
 	?>
-		<!-- Bootstrap Toggle -->
-<!--		<link rel="stylesheet" href="bootstrap-toggle.min.css"> -->
 		<style>
-			/* Topbar */
-			.main-header .logo{
-				height: 60px;
-			}
-
-			.main-header>.navbar{
-				min-height: 60px;
-			}
-	
-			/* header */
-			.content-wrapper > .content-heading{
-				margin-top: 10px!important;
-			}
-
-                        li#topbar-callbacks i.fa, li.messages-menu i.fa, li i.fa.fa-cogs{
-                                font-size: 20pt;
-                        }
-
-                        /* Sidebar */
-                        ul.control-sidebar-tabs i.fa{
-                                font-size: 20pt;
-                        }
-
-			aside.control-sidebar.control-sidebar-dark.control-sidebar-open{
-				padding-top: 60px!important;
-			}
-
-			/* Dialer */
-                        div#go_btn_div i.fa, button#manual-dial-now i.fa{
-                                font-size: 20pt;
-                        }
-
-			ul#go_agent_manualdial input, ul#go_agent_manualdial button{
-				height: 40px!important;
-			}
-	
-			ul#go_agent_manualdial input{
-				font-size: 16pt;
-			}
-		
-			/* Dialer */
-			span.hash-call-now{
-				font-size: 8pt;
-				position: absolute;
-				left: 8px;
-				bottom: -4px;
-			}
-
-			/* Tabs */
-                        ul#agent_tablist > li.active > a.bb0{
-				background-color: white!important;
-			}
-			
-			/* common styles */
-                        section.content-heading{
-                                padding: 10px 40px!important;
-                                margin-bottom: 0!important;
-                        }
-
-                        #agent_tablist li:nth-of-type(1)>a.bb0{
-                                background-color: lightgreen;
-
-                        }
-
-                        #agent_tablist li:nth-of-type(2)>a.bb0{
-                                background-color: lightblue;
-
-                        }
-                        #agent_tablist li:nth-of-type(3)>a.bb0{
-                                background-color: lightyellow;
-
-                        }
-			/* Card Content */
-                        #agent_tablist a.bb0{
-                                font-size: 16pt!important;
-                                font-weight: bold;
-                        }
-
-                        /* Sidebar */
-
-                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
-                                position: fixed;
-                                bottom: 20px;
-                                right: 25px;
-                        }
-
-
-		/* mobile-small */
-		@media all and (min-width: 0) and (max-width: 360px) and (orientation: portrait) {
-			.content-wrapper > .content-heading{
-				margin-top: 15px!important;
-			}
-
-			.content{
-                                padding: 5px;
-                        }
-
-			.card-body.custom-tabpanel{
-				margin: 0;
-				padding: 5px;
-			}
-
-                        .main-header>.navbar{
-                                height: 60px;
-                                min-height: 50px;
-                        }
-
-                        #agent_tablist a.bb0{
-                                font-size: 14pt!important;
-			}
-
-                        form#contact_details_form label, form#gender_form label{
-                                font-size: 10pt;
-                                font-family: arial;
-                        }
-
-                        form#contact_details_form input, form#gender_form input{
-                                font-size: 13pt;
-                                font-family: arial;
-                                font-weight: bold;
-                        }
-
-			/* Buttons Topbar */
-			li#topbar-callbacks i.fa, li.messages-menu i.fa, li i.fa.fa-cogs{
-                                font-size: 16pt;
-                        }
-		
-			ul.nav.navbar-nav li:nth-of-type(3)>a.visible-xs{
-				padding-bottom: 2px!important;
-			}
-
-                        /* Sidebar */
-			li#go_nav_btn{
-				margin-top: 10px;
-			}
-
-                        ul.control-sidebar-tabs i.fa{
-                                font-size: 16pt;
-                        }
-
-                        aside.control-sidebar.control-sidebar-dark.control-sidebar-open{
-                                padding-top: 60px!important;
-                        }
-
-                        aside.control-sidebar div.tab-content{
-				padding-bottom: 60px;
-                        }
-
-			ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
-				margin-top: 60px;
-			}
-
-			ul.control-sidebar-menu:nth-of-type(2) div.center-block{
-				position: fixed;
-				bottom: 20px;
-				right: 65px;
-			}
-			
-			ul#go_agent_logout{
-				position: static!important;
-			}
-
-			#popup-hotkeys{
-				position: static;
-				min-width: inherit;
-			}
-
-		}
-			  /* mobile-large */
-		@media all and (min-width: 361px) and (orientation: portrait) { 
-			.content-wrapper > .content-heading{
-                                margin-top: 15px!important;
-                        }
-
-                        .content{
-                                padding: 5px;
-                        }
-
-                        .card-body.custom-tabpanel{
-                                margin: 0;
-                                padding: 5px;
-                        }
-
-                        .main-header>.navbar{
-                                height: 60px;
-                                min-height: 50px;
-                        }
-
-                        form#contact_details_form label, form#gender_form label{
-                                font-size: 10pt;
-                                font-family: arial;
-                        }
-
-                        form#contact_details_form input, form#gender_form input{
-                                font-size: 13pt;
-                                font-family: arial;
-                                font-weight: bold;
-                        }
-
-                        /* Buttons Topbar */
-                        li#topbar-callbacks i.fa, li.messages-menu i.fa, li i.fa.fa-cogs{
-                                font-size: 16pt;
-                        }
-
-                        ul.nav.navbar-nav li:nth-of-type(3)>a.visible-xs{
-                                padding-bottom: 2px!important;
-                        }
-
-                        /* Sidebar */
-                        ul.control-sidebar-tabs i.fa{
-                                font-size: 16pt;
-			}
-
-                        aside.control-sidebar.control-sidebar-dark.control-sidebar-open{
-                                padding-top: 60px!important;
-                        }
-
-                        aside.control-sidebar div.tab-content{
-                                padding-bottom: 60px;
-                        }
-
-                        ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
-                                margin-top: 60px;
-                        }
-
-                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
-                                position: fixed;
-                                bottom: 20px;
-                                right: 95px;
-                        }
-
-                        ul#go_agent_logout{
-                                position: static!important;
-                        }
-
-			#popup-hotkeys{
-                                position: static;
-                                min-width: inherit;
-                        }
-
-		}
-			  /* mobile-small-landscape */
-		@media all and (min-width: 0) and (max-width: 480px) and (orientation: landscape) {
-			.content-wrapper > .content-heading{
-                                margin-top: 15px!important;
-                        }
-
-                        .content{
-                                padding: 5px;
-                        }
-
-                        .card-body.custom-tabpanel{
-                                margin: 0;
-                                padding: 5px;
-                        }
-
-                        .main-header>.navbar{
-                                height: 60px;
-                                min-height: 50px;
-                        }
-
-                        form#contact_details_form label, form#gender_form label{
-                                font-size: 10pt;
-                                font-family: arial;
-                        }
-
-                        form#contact_details_form input, form#gender_form input{
-                                font-size: 13pt;
-                                font-family: arial;
-                                font-weight: bold;
-                        }
-
-                        /* Buttons Topbar */
-                        li#topbar-callbacks i.fa, li.messages-menu i.fa, li i.fa.fa-cogs{
-                                font-size: 16pt;
-                        }
-
-                        ul.nav.navbar-nav li:nth-of-type(3)>a.visible-xs{
-                                padding-bottom: 2px!important;
-                        }
-
-                        /* Sidebar */
-                        ul.control-sidebar-tabs i.fa{
-                                font-size: 16pt;
-                        }
-			
-			aside.control-sidebar.control-sidebar-dark.control-sidebar-open{
-                                padding-top: 60px!important;
-                        }
-
-                        aside.control-sidebar div.tab-content{
-                                padding-bottom: 60px;
-                        }
-
-                        ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
-                                margin-top: 60px;
-                        }
-
-                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
-                                position: fixed;
-                                bottom: 20px;
-                                right: 135px;
-                        }
-
-                        ul#go_agent_logout{
-                                position: static!important;
-                        }
- 		}
-			  /* mobile-large-landscape */
-		@media all and (min-width: 481px) and (orientation: landscape) {
-			.content-wrapper > .content-heading{
-                                margin-top: 15px!important;
-                        }
-
-                        .content{
-                                padding: 5px;
-                        }
-
-                        .card-body.custom-tabpanel{
-                                margin: 0;
-                                padding: 5px;
-                        }
-
-                        .main-header>.navbar{
-                                height: 60px;
-                                min-height: 50px;
-                        }
-
-                        form#contact_details_form label, form#gender_form label{
-                                font-size: 10pt;
-                                font-family: arial;
-                        }
-
-                        form#contact_details_form input, form#gender_form input{
-                                font-size: 13pt;
-                                font-family: arial;
-                                font-weight: bold;
-                        }
-
-			/* Buttons Topbar */
-                        li#topbar-callbacks i.fa, li.messages-menu i.fa, li i.fa.fa-cogs{
-                                font-size: 16pt;
-                        }
-
-                        ul.nav.navbar-nav li:nth-of-type(3)>a.visible-xs{
-                                padding-bottom: 2px!important;
-                        }
-
-                        /* Sidebar */
-                        li#go_nav_btn{
-                                margin-top: 10px;
-                        }
-
-                        ul.control-sidebar-tabs i.fa{
-                                font-size: 16pt;
-                        }
-
-                        aside.control-sidebar.control-sidebar-dark.control-sidebar-open{
-                                padding-top: 60px!important;
-                        }
-
-                        aside.control-sidebar div.tab-content{
-                                padding-bottom: 60px;
-                        }
-
-                        ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
-                                margin-top: 60px;
-                        }
-
-                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
-                                position: fixed;
-                                bottom: 20px;
-                                right: 175px;
-                        }
-
-                        ul#go_agent_logout{
-                                position: static!important;
-                        }
-		}
-			  /* tablet-small-landscape */
-		@media all and (min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
-			section.content-heading{
-                                padding: 5px 40px!important;
-                                margin-bottom: 0!important;
-                        }
-
-			section.content-heading > span{
-				font-size: 10pt;
-			}
-
-			ol.breadcrumb.hidden-xs.pull-right{
-				padding: 0;
-			}
-
-                        /* card */
-                        div#cust_avatar{
-                                height: 30px!important;
-                        }
-
-                        div#cust_avatar div#avatar{
-                                height: 30px!important;
-                                width: 30px!important;
-                                background: url(./img/avatars/default/defaultAvatar.png) 0% 0% / 30px 30px no-repeat content-box!important;
-                        }
-
-                        #cust_full_name{
-                                margin: 0;
-				font-family: 'Calibri'; 
-				font-size: 20pt;
-                        }
-
-                        div.card-heading.bg-inverse{
-                                height: 50px!important;
-                                padding: 10px!important;
-                        }
-
-                        div.card-body.custom-tabpanel{
-                                padding-top: 5px;
-                        }
-
-                        #agent_tablist a.bb0{
-				padding: 5px 10px;
-                                font-size: 10pt!important;
-                                font-weight: bold;
-                        }
-
-                        /* contact info */
-
-                        div#contact_info h4{
-                                margin: 0;
-                        }
-
-                        form#contact_details_form label, form#gender_form label{
-                                font-size: 8pt;
-                                font-family: arial;
-                        }
-
-                        form#contact_details_form input, form#gender_form input{
-                                font-size: 10pt;
-                                font-family: arial;
-                                font-weight: bold;
-                        }
-
-                        form#contact_details_form .mda-form-group.label-floating, form#gender_form .mda-form-group.label-floating{
-                                padding: 22px 0 5px 0!important;
-                        }
-
-                        form#contact_details_form .mda-form-group.label-floating label, form#gender_form .mda-form-group.label-floating label{
-                                margin-bottom: 2px;
-                        }
-
-
-                        /* Sidebar */
-			ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
-	                        margin-top: 5px;
-                        }
-
-                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
-                                position: fixed;
-                                bottom: 20px;
-                                right: 25px;
-                        }
-		 }
-			  /* tablet-large-landscape */
-		@media all and (min-width: 961px) and (orientation: landscape) { 
-			section.content-heading{
-                                padding: 5px 40px!important;
-                                margin-bottom: 0!important;
-                        }
-
-                        section.content-heading > span{
-                                font-size: 20pt;
-                        }
-
-                        ol.breadcrumb.hidden-xs.pull-right{
-                                padding: 10px 10px 0 0;
-                        }
-
-                        /* card */
-                        div#cust_avatar{
-                                height: 45px!important;
-                        }
-
-                        div#cust_avatar div#avatar{
-                                height: 45px!important;
-                                width: 45px!important;
-                                background: url(./img/avatars/default/defaultAvatar.png) 0% 0% / 45px 45px no-repeat content-box!important;
-                        }
-
-                        h4#cust_full_name{
-                                margin: 0;
-                        }
-
-                        div.card-heading.bg-inverse{
-                                height: 80px!important;
-                                padding: 20px!important;
-                        }
-
-                        div.card-body.custom-tabpanel{
-                                padding-top: 5px;
-                        }
-
-                        div.card-body.custom-tabpanel{
-                                padding-top: 5px;
-                        }
-
-                        #agent_tablist a.bb0{
-                                padding: 5px 10px;
-                                font-size: 14pt!important;
-                                font-weight: bold;
-                        }
-                        #agent_tablist li:nth-of-type(1)>a.bb0{
-                                background-color: lightgreen;
-
-                        }
-
-                        #agent_tablist li:nth-of-type(2)>a.bb0{
-                                background-color: lightblue;
-
-                        }
-
-                        #agent_tablist li:nth-of-type(3)>a.bb0{
-                                background-color: lightyellow;
-
-                        }
-
-                        /* contact info */
-
-                        div#contact_info h4{
-                                margin: 0;
-                        }
-
-                        form#contact_details_form label, form#gender_form label{
-                                font-size: 12pt;
-                                font-family: arial;
-                        }
-
-                        form#contact_details_form input, form#gender_form input{
-                                font-size: 12pt;
-                                font-family: arial;
-                                font-weight: bold;
-                        }
-
-                        form#contact_details_form .mda-form-group.label-floating, form#gender_form .mda-form-group.label-floating{
-                                padding: 22px 0 5px 0!important;
-                        }
-
-                        form#contact_details_form .mda-form-group.label-floating label, form#gender_form .mda-form-group.label-floating label{
-                                margin-bottom: 2px;
-                        }
-
-
-                        /* Sidebar */
-                        ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
-                                margin-top: 5px;
-                        }
-
-                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
-                                position: fixed;
-                                bottom: 20px;
-                                right: 25px;
-                        }
-		}
-			  /* tablet-small */
-		@media all and (min-width: 600px) and (orientation: portrait) {
-                        section.content-heading{
-                                padding: 5px 40px!important;
-                                margin-bottom: 0!important;
-                        }
-
-                        section.content-heading > span{
-                                font-size: 20pt;
-                        }
-
-                        ol.breadcrumb.hidden-xs.pull-right{
-                                padding: 10px 10px 0 0;
-                        }
-
-                        /* card */
-                        div#cust_avatar{
-                                height: 45px!important;
-                        }
-
-                        div#cust_avatar div#avatar{
-                                height: 45px!important;
-                                width: 45px!important;
-                                background: url(./img/avatars/default/defaultAvatar.png) 0% 0% / 45px 45px no-repeat content-box!important;
-                        }
-
-                        h4#cust_full_name{
-                                margin: 0;
-                        }
-
-                        div.card-heading.bg-inverse{
-                                height: 80px!important;
-                                padding: 20px!important;
-                        }
-
-                        div.card-body.custom-tabpanel{
-                                padding-top: 5px;
-                        }
-
-                        #agent_tablist a.bb0{
-                                padding: 5px 10px;
-                                font-size: 10pt!important;
-                                font-weight: bold;
-                        }
-                        #agent_tablist li:nth-of-type(1)>a.bb0{
-                                background-color: lightgreen;
-
-                        }
-
-                        #agent_tablist li:nth-of-type(2)>a.bb0{
-                                background-color: lightblue;
-
-                        }
-
-                        #agent_tablist li:nth-of-type(3)>a.bb0{
-                                background-color: lightyellow;
-
-                        }
-
-                        /* contact info */
-
-                        div#contact_info h4{
-                                margin: 0;
-                        }
-
-                        form#contact_details_form label, form#gender_form label{
-                                font-size: 8pt;
-                                font-family: arial;
-                        }
-
-                        form#contact_details_form input, form#gender_form input{
-                                font-size: 10pt;
-                                font-family: arial;
-                                font-weight: bold;
-                        }
-
-                        form#contact_details_form .mda-form-group.label-floating, form#gender_form .mda-form-group.label-floating{
-                                padding: 22px 0 5px 0!important;
-                        }
-
-                        form#contact_details_form .mda-form-group.label-floating label, form#gender_form .mda-form-group.label-floating label{
-                                margin-bottom: 2px;
-                        }
-
-
-                        /* Sidebar */
-                        ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
-                                margin-top: 5px;
-                        }
-
-                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
-                                position: fixed;
-                                bottom: 20px;
-                                right: 25px;
-                        }
-
-		}
-			  /* tablet-large */
-		@media all and (min-width: 601px) and (max-width: 840px) and (orientation : portrait) {
-                        section.content-heading{
-                                padding: 5px 40px!important;
-                                margin-bottom: 0!important;
-                        }
-
-                        section.content-heading > span{
-                                font-size: 20pt;
-                        }
-
-                        ol.breadcrumb.hidden-xs.pull-right{
-                                padding: 10px 10px 0 0;
-                        }
-
-                        /* card */
-                        div#cust_avatar{
-                                height: 45px!important;
-                        }
-
-                        div#cust_avatar div#avatar{
-                                height: 45px!important;
-                                width: 45px!important;
-                                background: url(./img/avatars/default/defaultAvatar.png) 0% 0% / 45px 45px no-repeat content-box!important;
-                        }
-
-                        h4#cust_full_name{
-                                margin: 0;
-                        }
-
-                        div.card-heading.bg-inverse{
-                                height: 80px!important;
-                                padding: 20px!important;
-                        }
-
-                        div.card-body.custom-tabpanel{
-                                padding-top: 5px;
-                        }
-
-                        div.card-body.custom-tabpanel{
-                                padding-top: 5px;
-                        }
-
-                        #agent_tablist a.bb0{
-                                padding: 5px 10px;
-                                font-size: 14pt!important;
-                                font-weight: bold;
-                        }
-                        #agent_tablist li:nth-of-type(1)>a.bb0{
-                                background-color: lightgreen;
-
-                        }
-
-                        #agent_tablist li:nth-of-type(2)>a.bb0{
-                                background-color: lightblue;
-
-                        }
-
-                        #agent_tablist li:nth-of-type(3)>a.bb0{
-                                background-color: lightyellow;
-
-                        }
-
-                        /* contact info */
-
-                        div#contact_info h4{
-                                margin: 0;
-                        }
-
-                        form#contact_details_form label, form#gender_form label{
-                                font-size: 12pt;
-                                font-family: arial;
-                        }
-
-                        form#contact_details_form input, form#gender_form input{
-                                font-size: 12pt;
-                                font-family: arial;
-                                font-weight: bold;
-                        }
-
-
-                        form#contact_details_form .mda-form-group.label-floating, form#gender_form .mda-form-group.label-floating{
-                                padding: 22px 0 5px 0!important;
-                        }
-
-                        form#contact_details_form .mda-form-group.label-floating label, form#gender_form .mda-form-group.label-floating label{
-                                margin-bottom: 2px;
-                        }
-
-
-                        /* Sidebar */
-                        ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
-                                margin-top: 60px;
-                        }
-
-                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
-                                position: fixed;
-                                bottom: 20px;
-                                right: 25px;
-                        }
+		.content{
+			padding: 0px;
+			margin-top: 30px;
 		}
 
-		/* Devices Hotkey Position */
-
-		#popup-hotkeys{
-                        position: static;
-                        min-width: inherit;
-                }
-
-			  /* desktop-x-small-landscape */
-			@media all and (min-width: 0) and (max-width: 480px) and (orientation: landscape) { }
-			  /* desktop-x-small */
-			@media all and (min-width: 0) and (max-width: 480px) and (max-aspect-ratio: 4/3) { }
-			  /* desktop-small-landscape */
-			@media all and (min-width: 481px) and (max-width: 840px) and (orientation: landscape) { }
-			  /* desktop-small */
-			@media all and (min-width: 481px) and (max-width: 840px) and (max-aspect-ratio: 4/3) { }
-			  /* desktop-medium-landscape */
-		@media all and (min-width: 841px) and (max-width: 1280px) and (orientation: landscape) { 
-			/* Hotkey Popup */
-                        #popup-hotkeys{
-                                position: absolute;
-                                min-width: 480px;
-                        }
-	
-		}
-			  /* desktop-medium */
-		@media all and (min-width: 841px) and (max-width: 1280px) and (max-aspect-ratio: 4/3) { }
-			  /* desktop-large */
-  		@media all and (min-width: 1281px) and (max-width: 1600px) { 
-			section.content-heading{
-                                padding: 10px 40px!important;
-                                margin-bottom: 0!important;
-                        }
-                        /* card */
-                        div#cust_avatar{
-                                height: 30px!important;
-                        }
-
-                        div#cust_avatar div#avatar{
-                                height: 30px!important;
-                                width: 30px!important;
-                                background: url(./img/avatars/default/defaultAvatar.png) 0% 0% / 30px 30px no-repeat content-box!important;
-                        }
-
-                        h4#cust_full_name{
-                                margin: 0;
-                        }
-
-                        div.card-heading.bg-inverse{
-                                height: 50px!important;
-                                padding: 10px!important;
-                        }
-
-                        div.card-body.custom-tabpanel{
-                                padding-top: 5px;
-                        }
-
-                        #agent_tablist a.bb0{
-                                font-size: 16pt!important;
-                                font-weight: bold;
-                        }
-
-                        #agent_tablist li:nth-of-type(1)>a.bb0{
-                                background-color: lightgreen;
-
-                        }
-
-                        #agent_tablist li:nth-of-type(2)>a.bb0{
-                                background-color: lightblue;
-
-                        }
-                        #agent_tablist li:nth-of-type(3)>a.bb0{
-                                background-color: lightyellow;
-
-                        }
-
-                        /* contact info */
-
-                        div#contact_info h4{
-                                margin: 0;
-                        }
-
-                        form#contact_details_form label, form#gender_form label{
-                                font-size: 12pt;
-                                font-family: arial;
-                        }
-
-                        form#contact_details_form input, form#gender_form input{
-                                font-size: 14pt;
-                                font-family: arial;
-                                font-weight: bold;
-                        }
-
-                        form#contact_details_form .mda-form-group.label-floating, form#gender_form .mda-form-group.label-floating{
-                                padding: 22px 0 10px 0!important;
-                        }
-
-                        /* Sidebar */
-
-                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
-                                position: fixed;
-                                bottom: 20px;
-                                right: 25px;
-                        }
-
-			/* Hotkey Popup */
-			#popup-hotkeys{
-                	        position: absolute;
-        	                min-width: 480px;
-	                }
-		}
-			  /* desktop-xlarge */
-  		@media all and (min-width: 1601px) and (max-width: 1920px) { 
-			/* Hotkey Popup */
-                        #popup-hotkeys{
-                                position: absolute;
-                                min-width: 480px;
-                        }
-
+		.nav a.dropdown-toggle{
+		        height: 65px;
 		}
 
-			.nav a.dropdown-toggle{
-				height: 60px;
-			}
+		.main-header .logo{
+		        height: 60px;
+		}
+
 		</style>
+		<!-- ECCS CSS -->
+		
+		<link href="eccs4.css" rel="stylesheet" type="text/css"/>
+		
 	<?php }// end if ?>
 	<!-- /. ECCS Customization -->
     
@@ -1323,39 +454,43 @@ if(ECCS_BLIND_MODE != "y"){
 
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="content-wrapper">
-		
                 <!-- Content Header (Page header) -->
-                <!--section id="contact_info_crumbs" class="content-heading">
-					<!-- Page title -->
-		<!--HIDE THIS BAR RIGHT HERE IF BLIND MODE IS ENABLED-->
-                <!--span id="contact_info_bar"><?php //$lh->translateText("contact_information"); ?><!--/span>
-                    <ol class="breadcrumb hidden-xs pull-right">
-						<li class="active"><i class="fa fa-home"></i> <?php //$lh->translateText('home'); ?></li>
-					</ol>
-                </section-->
-  					<!-- ECCS Customization -->
-
-                		<?php if(ECCS_BLIND_MODE === 'y')
-				{ ?> 
+  			<!-- ECCS Customization -->
+                	<?php if(ECCS_BLIND_MODE !== 'y')
+			{ ?> 
 				
                 <!-- Content Header (Page header) -->
                 <section id="contact_info_crumbs" class="content-heading">
-                                        <!-- Page title -->
-                <!--HIDE THIS BAR RIGHT HERE IF BLIND MODE IS ENABLED-->
                 <span id="contact_info_bar"><?php $lh->translateText("contact_information"); ?></span>
                     <ol class="breadcrumb hidden-xs pull-right">
-                                                <li class="active"><i class="fa fa-home"></i> <?php $lh->translateText('home'); ?></li>
-                                        </ol>
+                          <li class="active"><i class="fa fa-home"></i> <?php $lh->translateText('home'); ?></li>
+                    </ol>
                 </section>
-
-				<?php
-
-				}//end if ?>
-
-                                        <!-- /.ECCS Customization -->
+			<?php }//end if ?>
+                        <!-- /.ECCS Customization -->
 
                 <!-- Main content -->
                 <section class="content">
+			<?php if(ECCS_BLIND_MODE === 'y'){ ?>
+			<div class="col-lg-2">
+			<?php } ?>
+                          <div id="popup-hotkeys" class="panel clearfix">
+                          <div class="panel-heading"><b><?=$lh->translationFor('available_hotkeys')?></b></div>
+                              <div class="panel-body"><?=$lh->translationFor('no_available_hotkeys')?></div>
+                                  <div class="panel-footer clearfix">
+                                  <div class="text-danger sidecolor" style="padding-right: 5px; background-color: inherit;">
+                                       <small><b><?=$lh->translationFor('note')?>:</b> <?=$lh->translationFor('hotkeys_note')?></small>
+                                  </div>
+                                  </div>
+                              </div>
+			<?php if(ECCS_BLIND_MODE === 'y'){ ?>
+                        <div class="row">
+				<input type="text" id="freeTestField" class="hidden">
+			</div> 
+			</div>
+			
+                         <div class="col-lg-10">
+			<?php } ?>
 					<!-- standard custom edition form -->
 					<div id="cust_info" class="container-custom ng-scope">
 						<div class="card">
@@ -1367,11 +502,11 @@ if(ECCS_BLIND_MODE != "y"){
 										</div>
 										<div class="col-lg-11 col-md-11 col-sm-10">
 						                <h4 id="cust_full_name" class="hidden">
+									<span id="first_name_label" class="hidden"><?=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name"></a> <span id="middle_initial_label" class="hidden"><?=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial"></a> <span id="last_name_label" class="hidden"><?=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name"></a>
 									<!-- ECCS Customization -->
-									<?php if(ECCS_BLIND_MODE === 'y'){ ?> span id="cust_call_type" class="hidden"></span> <?php }//end if ?>
-									<!-- /.ECCS Customization -->
-											<span id="first_name_label" class="hidden"><?=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name"></a> <span id="middle_initial_label" class="hidden"><?=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial"></a> <span id="last_name_label" class="hidden"><?=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name"></a>
-										</h4>
+                                                                        <?php if(ECCS_BLIND_MODE === 'y'){ ?> <span id="cust_call_type"></span> <?php }//end if ?>
+                                                                        <!-- /.ECCS Customization -->
+								</h4>
 						                <p class="ng-binding animated fadeInUpShort"><span id="cust_number"></span></p>
 						            </div>
 									</div>
@@ -1401,12 +536,12 @@ if(ECCS_BLIND_MODE != "y"){
 									  </ul>
 									</div>
 									<!-- Tab panes-->
-									<div id="agent_tabs" class="tab-content bg-white">
+									<div id="agent_tabs" class="tab-content bg-white" style="font-size:; opacity:1;">
 										<div id="contact_info" role="tabpanel" class="tab-pane active">
 
 											<fieldset style="padding-bottom: 0px; margin-bottom: 0px;">
 												<h4>
-													<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile"><?=$lh->translationFor('edit_information')?></a>
+													<a href="#" data-role="button" class="pull-right edit-profile-button hidden" data-tooltip="tooltip" title="Enable Edit Contact Information" id="edit-profile"><?=$lh->translationFor('edit_information')?> [#EI] </a>
 												</h4>
 												<!-- <br/> -->
 												<form role="form" id="name_form" class="formMain form-inline" >
@@ -1677,7 +812,9 @@ if(ECCS_BLIND_MODE != "y"){
 						    </div><!-- /.modal -->
 
 						</div>
+					<?php if(ECCS_BLIND_MODE === 'y'){ ?>
 					</div>
+					<?php } ?>
 					
 					<div id="loaded-contents" class="container-custom ng-scope" style="display: none;">
 						<div id="contents-messages" class="row" style="display: none;">
@@ -2341,8 +1478,8 @@ if(ECCS_BLIND_MODE != "y"){
 						</div><!-- /.row -->
 						<!-- End Contacts -->
 					</div>
-					
-					<div id="popup-hotkeys" class="panel clearfix">
+					<!-- popup-hotkeys -->	
+					<!--div id="popup-hotkeys" class="panel clearfix">
 						<div class="panel-heading"><b><?=$lh->translationFor('available_hotkeys')?></b></div>
 						<div class="panel-body"><?=$lh->translationFor('no_available_hotkeys')?></div>
 						<div class="panel-footer clearfix">
@@ -2350,7 +1487,7 @@ if(ECCS_BLIND_MODE != "y"){
 								<small><b><?=$lh->translationFor('note')?>:</b> <?=$lh->translationFor('hotkeys_note')?></small>
 							</div>
 						</div>
-					</div>
+					</div-->
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
 
@@ -2520,6 +1657,7 @@ if(ECCS_BLIND_MODE != "y"){
 		<?php print $ui->standardizedThemeJS();?>
 		<script type="text/javascript">									
 			$(document).ready(function() {
+				
 				var folder = <?php print $folder; ?>;
 				var selectedAll = false;
 				var selectedMessages = [];
@@ -3199,6 +2337,15 @@ if(ECCS_BLIND_MODE != "y"){
 			function ifChecked(e) {
 				if (e.currentTarget.value != 'on') selectedMessages.push(e.currentTarget.value);
 			}
+			
+			//Clickable Hotkeys
+                        function triggerHotkey(numkey){
+	                var e = $.Event('keypress');
+		                e.which = numkey;
+                                $('#freeTestField').trigger(e);
+                        }
+
+
 		</script>
 		
 		<!-- SnackbarJS -->
@@ -3240,14 +2387,21 @@ if(ECCS_BLIND_MODE != "y"){
 		?>
 <!--		<script type="text/javascript" src="js/bootstrap-toggle.min.js"></script> -->
 		<script type="text/javascript">
+			
 			//tooltips
 			$('[data-tooltip="tooltip"]').tooltip();
 			$(document).ready(function(){
+				
 				$('[data-tooltip="tooltip"]').tooltip();
 
 				$('input#phone_number').attr("data-tooltip", "tooltip");
                                 $('input#phone_number').attr("title", "<?=$lh->translationFor('phone_number')?>");
+				
+				$('button#btnLogMeIn').attr("data-tooltip", "tooltip");
+                                $('button#btnLogMeIn').attr("title", "<?=$lh->translationFor('Login to Dialer')?>");
 
+                                $('button#btnLogMeOut').attr("data-tooltip", "tooltip");
+                                $('button#btnLogMeOut').attr("title", "<?=$lh->translationFor('Logout from Phone')?>");
 
 				$('#topbar-callbacks a.dropdown-toggle').attr("data-tooltip", "tooltip");
 				$('#topbar-callbacks a.dropdown-toggle').attr("title", "<?=$lh->translationFor('callbacks')?>");
@@ -3281,6 +2435,20 @@ if(ECCS_BLIND_MODE != "y"){
 
                                 $('ul.control-sidebar-menu#go_agent_profile li:nth-of-type(6)').attr("data-tooltip", "tooltip");
                                 $('ul.control-sidebar-menu#go_agent_profile li:nth-of-type(6)').attr("title", "<?=$lh->translationFor('Enter Pause Codes')?>");
+
+				// Dispo Tooltips
+				var dispoAdd = ["XFER" , "SALE", "NP", "NI", "N", "DNC", "DEC", "DC", "CALLBK", "B", "A"];
+
+				$('#select-disposition').on('show.bs.modal', function() {
+                                	for(var a = 0; a < dispoAdd.length; a++){
+                                        	$('div#DispoSelectContent span#dispo-add-' + dispoAdd[a] + '>span.hidden-xs').attr("data-tooltip", "tooltip");
+	                                        $('div#DispoSelectContent span#dispo-add-' + dispoAdd[a] + '>span.hidden-xs').attr("title", dispoAdd[a]);
+        	                        }
+
+					$('button#btn-dispo-submit').attr("data-tooltip", "tooltip");
+                                        $('button#btn-dispo-submit').attr("title", "submit");
+
+				});
 
 				// Dialer
 
@@ -3325,6 +2493,9 @@ if(ECCS_BLIND_MODE != "y"){
                                 $('#agent_tablist li:nth-of-type(3)>a.bb0').attr("title", "<?=$lh->translationFor('script')?>");
 
 				// Hastag Formats
+				$('button#btnLogMeIn').append(" [#LI] ");
+				$('button#btnLogMeOut').append(" [#LP] ");
+				
 				$('#agent_tablist li:nth-of-type(1)>a.bb0').append(" [#CI] ");
 	                        $('#agent_tablist li:nth-of-type(2)>a.bb0').append(" [#CM] ");
                         	$('#agent_tablist li:nth-of-type(3)>a.bb0').append(" [#SC] ");
@@ -3345,18 +2516,24 @@ if(ECCS_BLIND_MODE != "y"){
 
                                 $('ul.nav.navbar-nav li:nth-of-type(3)>a.visible-xs').append("<br><span>#CONF</span>");
 
-			
 				$('li#topbar-callbacks a.dropdown-toggle').append('<br><span>#CB</span>');
 				$('li.dropdown.messages-menu a.dropdown-toggle').append('<br><span>#VM</span>');
-				/*setInterval(function(){
-					$('li.dropdown.messages-menu a.dropdown-toggle').append('<br><span>#VM</span>');
-				}, 5000);*/
 
-				$('button#btnDialHangup').append('<br><span>#HU</span>');
+				$('button#btnDialHangup').append('<br><span class="hash-BtnDialhangup">#DNHU</span>');
                                 $('button#btnResumePause').append('<br><span>#PR</span>');
-                                $('button#btnParkCall').append('<br><span>#PC</span>');
+                                $('button#btnParkCall').append('<br><span>#PA</span>');
                                 $('button#btnTransferCall').append('<br><span>#VM</span>');
                                 $('button#manual-dial-now').append('<br><span class="hash-call-now">#CALL</span>');
+				
+				$('button#btnDialHangup').trigger('cssClassChanged');
+
+				/*$('button#btnDialHangup').bind('cssClassChanged', function(){
+					if ($('button#btnDialHangup').hasClass('btn-primary')) {
+						$('span.hash-BtnDialHangup').text('#DN');
+					} else {
+						$('span.hash-BtnDialHangup').text('#HU');
+					}
+				});*/
 
 				//Remove Class Absolute Logout Button Dialer
 				$('ul#go_agent_logout').css("position", "static");
@@ -3372,7 +2549,6 @@ if(ECCS_BLIND_MODE != "y"){
 				$('ul.nav.navbar-nav li:nth-of-type(3)>a.visible-xs').on('click', function(){
 					$('nav.control-sidebar-tabs > li#settings-tab').removeClass('active');
 					$('nav.control-sidebar-tabs > li#dialer-tab').addClass('active');
-
 				});
 
 			});

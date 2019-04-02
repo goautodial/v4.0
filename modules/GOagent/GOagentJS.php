@@ -1666,9 +1666,11 @@ $(document).ready(function() {
             globalSession.mute();
         }
     });
-    
+
+    <?php if(ECCS_BLIND_MODE !== 'y'){?> 
     $("#popup-hotkeys").drags();
-    
+    <?php } ?>
+
     $("[data-toggle='control-sidebar']").on('click', function() {
         checkSidebarIfOpen();
     });
@@ -2199,7 +2201,7 @@ function activateLinks() {
     }
     var phoneNumber = $('#MDPhonENumbeR').val();
 
-    if (phoneNumber.length >= manual_dial_min_digits && agentcall_manual > 0) {
+    if (phoneNumber.length >= 3 && agentcall_manual > 0) {
         $("a[id^='manual-dial-'], button[id^='manual-dial-']").removeClass('disabled');
     } else {
         $("a[id^='manual-dial-'], button[id^='manual-dial-']").addClass('disabled');
@@ -2213,14 +2215,25 @@ function updateHotKeys() {
         $("#toggleHotkeys").hide();
     }
     var hotkeysContent = "<dl class='dl-horizontal'>";
+    var numkey_equivalent = [48, 49, 50, 51, 52, 53, 54, 55, 56, 57]; 
     for (var key in hotkeys) {
         var thisKey = hotkeys[key];
+	var numKey = numkey_equivalent[key];
+	
+	hotkeysContent += "<a data-id='"+numKey+"' class='clickhotkey'>";
         hotkeysContent += "<dt class='text-primary'>"+key+") "+thisKey+"</dt>";
         hotkeysContent += "<dd>"+thisKey+" - "+hotkeys_content[thisKey]+"</dd>";
+	hotkeysContent += "</a>";
     }
     hotkeysContent += "</dl>";
     
     $("#popup-hotkeys .panel-body").html(hotkeysContent);
+
+    $('.clickhotkey').click(function() {
+    //    console.log($(this).attr('data-id'));
+       triggerHotkey($(this).attr('data-id'));
+    });
+
 }
 
 function hotKeysAvailable(e) {
@@ -3232,7 +3245,23 @@ function CheckForIncoming () {
             if (this_VDIC_data.last_name !== '') {
                 $("#cust_full_name a[id='last_name']").editable('setValue', this_VDIC_data.last_name, true);
             }
-            $(".formMain input[name='address1']").val(this_VDIC_data.address1).trigger('change');
+	
+	// ECCS Customization
+                <?php
+                 if(ECCS_BLIND_MODE === 'y'){
+                 ?>
+                     if(inOUT === "OUT"){
+                       $("#cust_call_type").html(" - OUTBOUND CALL");
+                     }
+                     if(inOUT === "IN"){
+                       $("#cust_call_type").html(" - INBOUND CALL");
+                     }
+                     if(this_VDIC_data.CBentry_time > 0){
+                       $("#cust_call_type").html(" - CALLBACK AUTODIAL");
+                     }
+                 <?php } ?>
+
+	    $(".formMain input[name='address1']").val(this_VDIC_data.address1).trigger('change');
             $(".formMain input[name='address2']").val(this_VDIC_data.address2).trigger('change');
             $(".formMain input[name='address3']").val(this_VDIC_data.address3).trigger('change');
             $(".formMain input[name='city']").val(this_VDIC_data.city).trigger('change');
@@ -5623,6 +5652,11 @@ function DispoSelectSubmit() {
             $("#cust_full_name a[id='first_name']").editable('setValue', '', true);
             $("#cust_full_name a[id='middle_initial']").editable('setValue', '', true);
             $("#cust_full_name a[id='last_name']").editable('setValue', '', true);
+	    <?php
+                 if(ECCS_BLIND_MODE === 'y'){
+            ?>
+	    $("#cust_call_type").html('');
+	    <?php } ?>
             $(".formMain input[name='address1']").val('').trigger('change');
             $(".formMain input[name='address2']").val('').trigger('change');
             $(".formMain input[name='address3']").val('').trigger('change');
@@ -6615,6 +6649,21 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     if (cust_last_name !== '') {
                         $("#cust_full_name a[id='last_name']").editable('setValue', cust_last_name, true);
                     }
+		// ECCS Customization
+       		<?php
+	         if(ECCS_BLIND_MODE === 'y'){
+        	 ?>
+	             if(inOUT === "OUT"){
+	               $("#cust_call_type").html(" - OUTBOUND CALL");
+	             }
+		     if(inOUT === "IN"){
+	               $("#cust_call_type").html(" - INBOUND CALL");
+	             }
+		     if(thisVdata.CBentry_time.CBentry_time > 0){
+	               $("#cust_call_type").html(" - CALLBACK AUTODIAL");
+            	     }
+	         <?php } ?>
+
                     $(".formMain input[name='address1']").val(thisVdata.address1).trigger('change');
                     $(".formMain input[name='address2']").val(thisVdata.address2).trigger('change');
                     $(".formMain input[name='address3']").val(thisVdata.address3).trigger('change');

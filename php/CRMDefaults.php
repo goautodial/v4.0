@@ -225,4 +225,8 @@ define ('CRM_GOADMIN_TITLE', "GOautodial Admin");
 define ('CRM_GOAGENT_TITLE', "GOagent Web Client");
 define ('CRM_GO_VERSION', "v4.0");
 
+
+// Customizations
+define ('ECCS_BLIND_MODE', "n"); //Customizations requested by ECCS. Accessibility mode for blind users
+
 ?>
