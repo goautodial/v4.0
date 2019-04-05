@@ -3486,7 +3486,7 @@ function CheckForIncoming () {
             if(ECCS_BLIND_MODE === 'y'){
             ?>
             $("#cust_campaign_name").html("["+ campaign_name + "] - ");
-            $("#cust_call_type").html(" - <span style='background-color: red;'>INBOUND CALL</span>");
+            $("#cust_call_type").html(" - <span style='background-color: blue;'>OUTBOUND CALL</span>");
             <?php } ?>
 
             if (CBentry_time.length > 2) {
