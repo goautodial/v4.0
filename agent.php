@@ -513,7 +513,7 @@ if(ECCS_BLIND_MODE != "y"){
 						                <p class="ng-binding animated fadeInUpShort">
 									 <!-- ECCS Customization -->
                                                                         <?php if(ECCS_BLIND_MODE === 'y'){ ?> 
-										<span id="span-cust-number" class="hidden"><label for="cust_number"> Client Number[#CN]: </label> <input type="text" id="cust_number" style="background-color:; border:; color:black; margin-top: 5px; padding-left: 5px; font-size: 14pt; font-weight: 600;" readonly/>"Ctrl+C" to Copy Number.</span>
+										<span id="span-cust-number" class="hidden"><label for="cust_number"> Client Number[#CN]: </label> <input type="text" id="cust_number" style="background-color:; border:; color:black; margin-top: 5px; padding-left: 5px; font-size: 14pt; font-weight: 600;" onclick="this.setSelectionRange(0, this.value.length)" readonly/>"Ctrl+C" to Copy Number.</span>
 
 									<?php } else { ?>
                                                                         <!-- /.ECCS Customization -->
