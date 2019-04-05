@@ -221,10 +221,11 @@ if(ECCS_BLIND_MODE != "y"){
 					type: 'text',
 					title: '<?=$lh->translationFor('enter_first_name')?>',
 					placeholder: '<?=$lh->translationFor('enter_first_name')?>',
-					emptytext: '&nbsp;',
+					emptytext: '&nbsp;&nbsp;&nbsp;',
 					unsavedclass: null,
 					inputclass: 'text-color-black',
 					onblur: 'submit',
+					placement: 'bottom',
 					success: function(response, newValue) {
 						console.log(response, newValue);
 					}
@@ -233,9 +234,10 @@ if(ECCS_BLIND_MODE != "y"){
 					type: 'text',
 					title: '<?=$lh->translationFor('enter_middle_initial')?>',
 					placeholder: '<?=$lh->translationFor('enter_middle_initial')?>',
-					emptytext: '&nbsp;',
+					emptytext: '&nbsp;&nbsp;&nbsp;',
 					unsavedclass: null,
 					inputclass: 'text-color-black',
+					placement: 'bottom',
 					onblur: 'submit'
 				});
 				$("a[id='last_name']").editable({
@@ -243,9 +245,10 @@ if(ECCS_BLIND_MODE != "y"){
 					value: '',
 					title: '<?=$lh->translationFor('enter_last_name')?>',
 					placeholder: '<?=$lh->translationFor('enter_last_name')?>',
-					emptytext: '&nbsp;',
+					emptytext: '&nbsp;&nbsp;&nbsp;',
 					unsavedclass: null,
 					inputclass: 'text-color-black',
+					placement: 'bottom',
 					onblur: 'submit'
 				});
 				
