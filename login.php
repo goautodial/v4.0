@@ -125,26 +125,11 @@
         <![endif]-->
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js" type="text/javascript"></script>
-    
-	<style>
-	#div1{
-	font-style:bold;
-	color:#000000;
-	}
-	#p1{
-	font-weight:600;
-	color:#000000;
-	}
-	#input1, #input2{
-	font-size:16pt;
-	}
-	#btn1{
-	font-size:13pt;
-	padding:7px;
-	}
-
-
-	</style>
+   	
+	<?php if(ECCS_BLIND_MODE === 'y'){ ?>
+	<link href="./css/customizations/eccs_admin.css" rel="stylesheet" type="text/css" />
+	<?php }?>
+ 
 	</head>
   <body class="login-page" style="overflow: hidden;">
     <div class="login-box" id="login-box">

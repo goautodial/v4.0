@@ -495,9 +495,9 @@ if(ECCS_BLIND_MODE != "y"){
 					<div id="cust_info" class="container-custom ng-scope">
 						<div class="card">
 								<!-- ECCS Customization -->
-								<?php  if(ECCS_BLIND_MODE === 'y'){?>
+								<?php // if(ECCS_BLIND_MODE === 'y'){?>
 								<div style="background-image:;" class="card-heading bg-inverse">
-								<?php }//end if?>
+								<?php //}//end if?>
 									<div class="row">
 										<div id="cust_avatar" class="col-lg-1 col-md-1 col-sm-2 text-center hidden-xs" style="height: 64px;">
 											<avatar username="Dialed Client" src="<?php echo CRM_DEFAULTS_USER_AVATAR;?>" :size="64"></avatar>
