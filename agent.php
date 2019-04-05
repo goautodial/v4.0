@@ -234,7 +234,7 @@ if(ECCS_BLIND_MODE != "y"){
 					type: 'text',
 					title: '<?=$lh->translationFor('enter_middle_initial')?>',
 					placeholder: '<?=$lh->translationFor('enter_middle_initial')?>',
-					emptytext: '&nbsp;&nbsp;&nbsp;',
+					emptytext: '   ',
 					unsavedclass: null,
 					inputclass: 'text-color-black',
 					placement: 'bottom',
@@ -245,7 +245,7 @@ if(ECCS_BLIND_MODE != "y"){
 					value: '',
 					title: '<?=$lh->translationFor('enter_last_name')?>',
 					placeholder: '<?=$lh->translationFor('enter_last_name')?>',
-					emptytext: '&nbsp;&nbsp;&nbsp;',
+					emptytext: '   ',
 					unsavedclass: null,
 					inputclass: 'text-color-black',
 					placement: 'bottom',
@@ -1833,7 +1833,7 @@ if(ECCS_BLIND_MODE != "y"){
 								
 								$('#cust_full_name .editable').each(function() {
 									var thisXvalue = $(this).html();
-									if (thisXvalue == '&nbsp;&nbsp;&nbsp;') {
+									if (thisXvalue == '   ') {
 										$(this).css('text-decoration', 'underline dashed');
 									} else {
 										$(this).css('text-decoration', 'none');
