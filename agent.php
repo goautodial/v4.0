@@ -207,7 +207,7 @@ if(ECCS_BLIND_MODE != "y"){
 				$("a[id='first_name'], a[id='middle_initial'], a[id='last_name']").on('shown', function() {
 					var thisID = $(this).attr('id');
 					var oldValue = $(this).editable('getValue', true);
-					if ($(this).html() !== '&nbsp;&nbsp;&nbsp;') {
+					if ($(this).html() !== '   ') {
 						//$('div.editable-input input').val($(this).text());
 						//$(this).editable('setValue', oldValue, true);
 					} else {
@@ -221,7 +221,7 @@ if(ECCS_BLIND_MODE != "y"){
 					type: 'text',
 					title: '<?=$lh->translationFor('enter_first_name')?>',
 					placeholder: '<?=$lh->translationFor('enter_first_name')?>',
-					emptytext: '&nbsp;&nbsp;&nbsp;',
+					emptytext: '   ',
 					unsavedclass: null,
 					inputclass: 'text-color-black',
 					onblur: 'submit',

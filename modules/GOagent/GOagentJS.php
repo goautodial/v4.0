@@ -5762,9 +5762,9 @@ function DispoSelectSubmit() {
             }
             $(".formMain input[name='phone_number']").val('').trigger('change');
             $(".formMain input[name='title']").val('').trigger('change');
-            $("#cust_full_name a[id='first_name']").editable('setValue', '&nbsp;&nbsp;&nbsp;', true);
-            $("#cust_full_name a[id='middle_initial']").editable('setValue', '&nbsp;&nbsp;&nbsp;', true);
-            $("#cust_full_name a[id='last_name']").editable('setValue', '&nbsp;&nbsp;&nbsp;', true);
+            $("#cust_full_name a[id='first_name']").editable('setValue', '   ', true);
+            $("#cust_full_name a[id='middle_initial']").editable('setValue', '   ', true);
+            $("#cust_full_name a[id='last_name']").editable('setValue', '   ', true);
 	    <?php
                  if(ECCS_BLIND_MODE === 'y'){
             ?>
@@ -5993,9 +5993,9 @@ function ManualDialSkip() {
                     }
                     $(".formMain input[name='phone_number']").val('');
                     $(".formMain input[name='title']").val('');
-                    $("#cust_full_name a[id='first_name']").editable('setValue', '&nbsp;&nbsp;&nbsp;', true);
-                    $("#cust_full_name a[id='middle_initial']").editable('setValue', '&nbsp;&nbsp;&nbsp;', true);
-                    $("#cust_full_name a[id='last_name']").editable('setValue', '&nbsp;&nbsp;&nbsp;', true);
+                    $("#cust_full_name a[id='first_name']").editable('setValue', '   ', true);
+                    $("#cust_full_name a[id='middle_initial']").editable('setValue', '   ', true);
+                    $("#cust_full_name a[id='last_name']").editable('setValue', '   ', true);
                     //$(".formMain input[name='first_name.value		='';
                     //$(".formMain input[name='middle_initial.value	='';
                     //$(".formMain input[name='last_name.value		='';
