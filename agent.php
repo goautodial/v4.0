@@ -504,11 +504,17 @@ if(ECCS_BLIND_MODE != "y"){
 										</div>
 										<div class="col-lg-11 col-md-11 col-sm-10">
 								<!-- ECCS Customization-->
-						                <h4 id="cust_full_name" class="hidden">
+						  <h4 id="cust_full_name" class="hidden">
+									<?php if(ECCS_BLIND_MODE === 'n'){ ?>
 									<span id="first_name_label" class="hidden"><?=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name"></a> <span id="middle_initial_label" class="hidden"><?=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial"></a> <span id="last_name_label" class="hidden"><?=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name"></a>
+									<?php } ?>
 									<!-- ECCS Customization -->
-                                                                        <?php if(ECCS_BLIND_MODE === 'y'){ ?> <span id="cust_call_type"></span> <?php }//end if ?>
-                                                                        <!-- /.ECCS Customization -->
+									<?php if(ECCS_BLIND_MODE === 'y'){ ?>
+									<span id="cust_campaign_name"></span>
+									<span id="first_name_label" class="hidden"><?=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name"></a> <span id="middle_initial_label" class="hidden"><?=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial"></a> <span id="last_name_label" class="hidden"><?=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name"></a>
+									<span id="cust_call_type"></span>
+									<?php }//end if ?>
+         <!-- /.ECCS Customization -->
 								</h4>
 						                <p class="ng-binding animated fadeInUpShort">
 									 <!-- ECCS Customization -->

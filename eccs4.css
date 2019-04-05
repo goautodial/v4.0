@@ -176,7 +176,8 @@
                                 font-weight: bold!important;
                         }
 
-			span#cust_call_type{
+			span#cust_call_type,
+			span#cust_campaign_name{
 				float: inherit;
 				font-size: 16pt;
 				font-weight: bold;
@@ -276,7 +277,8 @@
                                 font-size: 9pt!important;
                         }
 
-                        span#cust_call_type{
+                        span#cust_call_type,
+			span#cust_campaign_name{
                                 float: inherit;
                                 font-size: 12pt;
                         }
@@ -374,7 +376,8 @@
                                 font-size: 9pt!important;
                         }
 
-                        span#cust_call_type{
+                        span#cust_call_type,
+			span#cust_campaign_name{
                                 float:inherit ;
                                 font-size: 13pt;
                         }
@@ -545,7 +548,8 @@
                                 font-size: 9pt!important;
                         }
 
-                        span#cust_call_type{
+                        span#cust_call_type,
+			span#cust_campaign_name{
                                 font-size: 13pt;
                         }
 
@@ -640,6 +644,7 @@
                         }
 
                         span#cust_call_type,
+			span#cust_campaign_name,
 			label[for="cust_number"]{
                                 font-size: 13pt;
                         }
@@ -727,7 +732,8 @@
                                 font-size: 9pt!important;
                         }
 
-                        span#cust_call_type{
+                        span#cust_call_type,
+			span#cust_campaign_name{
                                 font-size: 13pt;
                         }
 
@@ -818,7 +824,8 @@
                                 font-size: 9pt!important;
                         }
 
-                        span#cust_call_type{
+                        span#cust_call_type,
+			span#cust_campaign_name{
                                 font-size: 13pt;
                         }
 

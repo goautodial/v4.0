@@ -3342,12 +3342,14 @@ function CheckForIncoming () {
                 <?php
                  if(ECCS_BLIND_MODE === 'y'){
                  ?>
-                     if(inOUT === "OUT"){
-                       $("#cust_call_type").html("[" + campaign_name + "] - <span style='background-color: blue;'>OUTBOUND CALL</span>");
-                     }
-                     if(inOUT === "IN"){
-                       $("#cust_call_type").html("[" + campaign_name + "] - <span style='background-color: red;'>INBOUND CALL</span>");
-                     }
+                    if(inOUT === "OUT"){
+                        $("#cust_campaign_name").html("["+ campaign_name + "] - ");
+                        $("#cust_call_type").html(" - <span style='background-color: blue;'>OUTBOUND CALL</span>");
+                    }
+                    if(inOUT === "IN"){
+                        $("#cust_campaign_name").html("["+ campaign_name + "] - ");
+                        $("#cust_call_type").html(" - <span style='background-color: red;'>INBOUND CALL</span>");
+                    }
                  <?php } ?>
 
 	    $(".formMain input[name='address1']").val(this_VDIC_data.address1).trigger('change');
@@ -5756,6 +5758,7 @@ function DispoSelectSubmit() {
 	    <?php
                  if(ECCS_BLIND_MODE === 'y'){
             ?>
+        $("#cust_campaign_name").html('');
 	    $("#cust_call_type").html('');
 	    <?php } ?>
             $(".formMain input[name='address1']").val('').trigger('change');
@@ -6760,12 +6763,14 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
        		<?php
 	         if(ECCS_BLIND_MODE === 'y'){
         	 ?>
-	             if(inOUT === "OUT"){
-	               $("#cust_call_type").html("["+ campaign_name + "] - <span style='background-color: blue;'>OUTBOUND CALL</span>");
-	             }
-		     if(inOUT === "IN"){
-	               $("#cust_call_type").html(" - <span style='background-color: red;'>INBOUND CALL</span>");
-	             }
+	            if(inOUT === "OUT"){
+                    $("#cust_campaign_name").html("["+ campaign_name + "] - ");
+                    $("#cust_call_type").html(" - <span style='background-color: blue;'>OUTBOUND CALL</span>");
+	            }
+                if(inOUT === "IN"){
+                    $("#cust_campaign_name").html("");
+                    $("#cust_call_type").html(" - <span style='background-color: red;'>INBOUND CALL</span>");
+	            }
 	         <?php } ?>
 
                     $(".formMain input[name='address1']").val(thisVdata.address1).trigger('change');
@@ -6942,12 +6947,13 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                         //document.getElementById("CBcommentsBoxD").innerHTML = "<b><?=$lang['comments']?>: </b><br />" + CBcomments;
                         //showDiv('CBcommentsBox');
 			// ECCS Customization
-                  <?php
+                <?php
                   	if(ECCS_BLIND_MODE === 'y'){
-                  ?>
-                        $("#cust_call_type").html("[" + campaign_name + "] - <span style='background-color: purple;'>CALLBACK - Last call by " + CBuser + "</span>");
+                ?>
+                        $("#cust_campaign_name").html("["+ campaign_name + "] - ");
+                        $("#cust_call_type").html(" - <span style='background-color: purple;'>CALLBACK - Last call by " + CBuser + "</span>");
                       	
-                  <?php } ?>
+                <?php } ?>
                         
                         swal({
                             title: "<?=$lh->translationFor('previous_callback')?>",
