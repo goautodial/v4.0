@@ -3343,10 +3343,10 @@ function CheckForIncoming () {
                  if(ECCS_BLIND_MODE === 'y'){
                  ?>
                      if(inOUT === "OUT"){
-                       $("#cust_call_type").html("[" + campaign + "] - OUTBOUND CALL");
+                       $("#cust_call_type").html("[" + campaign_name + "] - <span style='background-color: blue;'>OUTBOUND CALL</span>");
                      }
                      if(inOUT === "IN"){
-                       $("#cust_call_type").html(campaign + " - INBOUND CALL");
+                       $("#cust_call_type").html("[" + campaign_name + "] - <span style='background-color: red;'>INBOUND CALL</span>");
                      }
                  <?php } ?>
 
@@ -6761,10 +6761,10 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
 	         if(ECCS_BLIND_MODE === 'y'){
         	 ?>
 	             if(inOUT === "OUT"){
-	               $("#cust_call_type").html("["+ campaign + "] - OUTBOUND CALL");
+	               $("#cust_call_type").html("["+ campaign_name + "] - <span style='background-color: blue;'>OUTBOUND CALL</span>");
 	             }
 		     if(inOUT === "IN"){
-	               $("#cust_call_type").html(" - INBOUND CALL");
+	               $("#cust_call_type").html(" - <span style='background-color: red;'>INBOUND CALL</span>");
 	             }
 	         <?php } ?>
 
@@ -6945,7 +6945,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                   <?php
                   	if(ECCS_BLIND_MODE === 'y'){
                   ?>
-                        $("#cust_call_type").html("[" + campaign + "] - CALLBACK - Last call by " +CBuser);
+                        $("#cust_call_type").html("[" + campaign_name + "] - <span style='background-color: purple;'>CALLBACK - Last call by " + CBuser + "</span>");
                       	
                   <?php } ?>
                         
