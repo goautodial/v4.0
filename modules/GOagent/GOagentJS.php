@@ -1166,7 +1166,15 @@ $(document).ready(function() {
 		// Exit Shortcut Shift + End
 		$(document).keydown(function(e){
 			if(e.shiftKey && e.key == "End"){
-				$('#cream-agent-logout').click();
+                if (live_customer_call > 0 || XD_live_customer_call > 0) {
+                    swal({
+                        title: '<?=$lh->translationFor('error')?>',
+                        text: '<?=$lh->translationFor('currently_in_call')?>',
+                        type: 'error'
+                    });
+                } else {
+                    $('#cream-agent-logout').click();
+                }
 			}
 		});
     <?php
