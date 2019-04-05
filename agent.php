@@ -1834,7 +1834,7 @@ if(ECCS_BLIND_MODE != "y"){
 								$('#cust_full_name .editable').each(function() {
 									var thisXvalue = $(this).html();
 									if (thisXvalue == '&nbsp;&nbsp;&nbsp;') {
-										$(this).css('text-decoration', 'underline');
+										$(this).css('text-decoration', 'underline dashed');
 									} else {
 										$(this).css('text-decoration', 'none');
 									}
