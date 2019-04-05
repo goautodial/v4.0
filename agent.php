@@ -207,7 +207,7 @@ if(ECCS_BLIND_MODE != "y"){
 				$("a[id='first_name'], a[id='middle_initial'], a[id='last_name']").on('shown', function() {
 					var thisID = $(this).attr('id');
 					var oldValue = $(this).editable('getValue', true);
-					if ($(this).html() !== '&nbsp;') {
+					if ($(this).html() !== '&nbsp;&nbsp;&nbsp;') {
 						//$('div.editable-input input').val($(this).text());
 						//$(this).editable('setValue', oldValue, true);
 					} else {
@@ -1833,7 +1833,7 @@ if(ECCS_BLIND_MODE != "y"){
 								
 								$('#cust_full_name .editable').each(function() {
 									var thisXvalue = $(this).html();
-									if (thisXvalue == '&nbsp;') {
+									if (thisXvalue == '&nbsp;&nbsp;&nbsp;') {
 										$(this).css('text-decoration', 'underline');
 									} else {
 										$(this).css('text-decoration', 'none');
