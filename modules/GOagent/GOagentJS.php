@@ -3337,22 +3337,8 @@ function CheckForIncoming () {
             if (this_VDIC_data.last_name !== '') {
                 $("#cust_full_name a[id='last_name']").editable('setValue', this_VDIC_data.last_name, true);
             }
-	
-	// ECCS Customization
-                <?php
-                 if(ECCS_BLIND_MODE === 'y'){
-                 ?>
-                    if(inOUT === "OUT"){
-                        $("#cust_campaign_name").html("["+ campaign_name + "] - ");
-                        $("#cust_call_type").html(" - <span style='background-color: blue;'>OUTBOUND CALL</span>");
-                    }
-                    if(inOUT === "IN"){
-                        $("#cust_campaign_name").html("["+ campaign_name + "] - ");
-                        $("#cust_call_type").html(" - <span style='background-color: red;'>INBOUND CALL</span>");
-                    }
-                 <?php } ?>
 
-	    $(".formMain input[name='address1']").val(this_VDIC_data.address1).trigger('change');
+            $(".formMain input[name='address1']").val(this_VDIC_data.address1).trigger('change');
             $(".formMain input[name='address2']").val(this_VDIC_data.address2).trigger('change');
             $(".formMain input[name='address3']").val(this_VDIC_data.address3).trigger('change');
             $(".formMain input[name='city']").val(this_VDIC_data.city).trigger('change');
@@ -3494,6 +3480,14 @@ function CheckForIncoming () {
             if (status_display_LISTID > 0) {status_display_content = status_display_content + "<br><b><?=$lh->translationFor('list_id')?>:</b> " + $("#formMain input[name='list_id'").val();}
 
             $("#MainStatusSpan").html("<b><?=$lh->translationFor('incoming_call')?>:</b> " + dial_display_number + " " + custom_call_id + " " + status_display_content + "<br>" + VDIC_fronter);
+	
+            // ECCS Customization
+            <?php
+            if(ECCS_BLIND_MODE === 'y'){
+            ?>
+            $("#cust_campaign_name").html("["+ campaign_name + "] - ");
+            $("#cust_call_type").html(" - <span style='background-color: red;'>INBOUND CALL</span>");
+            <?php } ?>
 
             if (CBentry_time.length > 2) {
             //    $("#CustInfoSpan").html(" <b> PREVIOUS CALLBACK </b>");
@@ -3503,6 +3497,14 @@ function CheckForIncoming () {
             //    $("#CBcommentsBoxC").html("<b>Agent: </b>" + CBuser);
             //    $("#CBcommentsBoxD").html("<b>Comments: </b><br />" + CBcomments);
             //    //showDiv('CBcommentsBox');
+                    
+                // ECCS Customization
+                <?php
+                if(ECCS_BLIND_MODE === 'y'){
+                ?>
+                $("#cust_campaign_name").html("["+ campaign_name + "] - ");
+                $("#cust_call_type").html(" - <span style='background-color: purple;'>CALLBACK - Last call by " + CBuser + "</span>");
+                 <?php } ?>
                 
                 swal({
                     title: "<?=$lh->translationFor('previous_callback')?>",
@@ -3550,6 +3552,14 @@ function CheckForIncoming () {
                 if (status_display_LISTID > 0) {status_display_content = status_display_content + "<br><b><?=$lh->translationFor('list_id')?>:</b> " + $("#formMain input[name='list_id']").val();}
 
                 $("#MainStatusSpan").html("<b><?=$lh->translationFor('incoming_call')?>:</b> " + dial_display_number + " " + custom_call_id + " <?=$lh->translationFor('group')?>- " + this_VDIC_data.group_name + " &nbsp; " + VDIC_fronter + " " + status_display_content); 
+	
+                // ECCS Customization
+                <?php
+                if(ECCS_BLIND_MODE === 'y'){
+                ?>
+                $("#cust_campaign_name").html("["+ this_VDIC_data.group_name + "] - ");
+                $("#cust_call_type").html(" - <span style='background-color: red;'>INBOUND CALL</span>");
+                <?php } ?>
             }
 
             toggleButton('DialHangup','hangup');
@@ -6759,19 +6769,14 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     if (cust_last_name !== '') {
                         $("#cust_full_name a[id='last_name']").editable('setValue', cust_last_name, true);
                     }
-		// ECCS Customization
-       		<?php
-	         if(ECCS_BLIND_MODE === 'y'){
-        	 ?>
-	            if(inOUT === "OUT"){
+                    
+                    // ECCS Customization
+                    <?php
+                    if(ECCS_BLIND_MODE === 'y'){
+                    ?>
                     $("#cust_campaign_name").html("["+ campaign_name + "] - ");
                     $("#cust_call_type").html(" - <span style='background-color: blue;'>OUTBOUND CALL</span>");
-	            }
-                if(inOUT === "IN"){
-                    $("#cust_campaign_name").html("");
-                    $("#cust_call_type").html(" - <span style='background-color: red;'>INBOUND CALL</span>");
-	            }
-	         <?php } ?>
+                    <?php } ?>
 
                     $(".formMain input[name='address1']").val(thisVdata.address1).trigger('change');
                     $(".formMain input[name='address2']").val(thisVdata.address2).trigger('change');
@@ -6946,14 +6951,13 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                         //document.getElementById("CBcommentsBoxC").innerHTML = "<b><?=$lang['agent']?>: </b>" + CBuser;
                         //document.getElementById("CBcommentsBoxD").innerHTML = "<b><?=$lang['comments']?>: </b><br />" + CBcomments;
                         //showDiv('CBcommentsBox');
-			// ECCS Customization
-                <?php
-                  	if(ECCS_BLIND_MODE === 'y'){
-                ?>
+                        // ECCS Customization
+                        <?php
+                        if(ECCS_BLIND_MODE === 'y'){
+                        ?>
                         $("#cust_campaign_name").html("["+ campaign_name + "] - ");
                         $("#cust_call_type").html(" - <span style='background-color: purple;'>CALLBACK - Last call by " + CBuser + "</span>");
-                      	
-                <?php } ?>
+                        <?php } ?>
                         
                         swal({
                             title: "<?=$lh->translationFor('previous_callback')?>",
