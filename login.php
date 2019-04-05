@@ -125,24 +125,46 @@
         <![endif]-->
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js" type="text/javascript"></script>
-    </head>
+    
+	<style>
+	#div1{
+	font-style:bold;
+	color:#000000;
+	}
+	#p1{
+	font-weight:600;
+	color:#000000;
+	}
+	#input1, #input2{
+	font-size:16pt;
+	}
+	#btn1{
+	font-size:13pt;
+	padding:7px;
+	}
+
+
+	</style>
+	</head>
   <body class="login-page" style="overflow: hidden;">
     <div class="login-box" id="login-box">
 	  <div class="margin text-center">
 		<img src="<?php echo $ui->creamyHeaderLogo();?>" width="auto" height="64">
 	  </div>
-      <div class="login-logo">
+	<!-- ECCS CUSTOMIZATION -->
+      <center>
+	<div id="div1" class="login-logo" style="">
         <?php $lh->translateText("welcome_to"); ?><?php print($ui->creamyHeaderName()); ?>!
       </div><!-- /.login-logo -->
       <div class="login-box-body">
-        <p class="login-box-msg"><?php $lh->translateText("sign_in"); ?></p>
+        <p id="p1" style="" class="login-box-msg"><?php $lh->translateText("sign_in"); ?></p>
         <form action="" method="post">
           <div class="form-group has-feedback">
-            <input type="text" class="form-control" name="username" placeholder="<?php $lh->translateText("username_or_email"); ?>"/>
+            <input id="input1" type="text" style="" class="form-control" name="username" placeholder="<?php $lh->translateText("username_or_email"); ?>"/>
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <input type="password" name="password" class="form-control" placeholder="<?php $lh->translateText("password"); ?>"/>
+            <input id="input2" type="password" style="" name="password" class="form-control" placeholder="<?php $lh->translateText("password"); ?>"/>
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
           </div>
 	    	<div name="error-message" style="color: red;">
@@ -153,7 +175,7 @@
           <div class="row">
             <div class="col-xs-3"></div>
             <div class="col-xs-6">
-              <button type="submit" name="submit" class="btn btn-primary btn-block btn-flat"><?php $lh->translateText("access"); ?></button>
+              <button id="btn1" type="submit" style="" name="submit" class="btn btn-primary btn-block btn-flat"><?php $lh->translateText("access"); ?></button>
             </div><!-- /.col -->
             <div class="col-xs-3"></div>
           </div>
@@ -161,6 +183,7 @@
 	<!--<p class="text-center"><?php $lh->translateText("forgotten_password"); ?> <a href="lostpassword.php"><?php $lh->translateText("click_here"); ?>.</a></p>-->
       </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->
+	</center>
    <!--<div class="margin text-center">
         <span><?php $lh->translateText("never_heard_of_creamy"); ?></span>
         <br/>

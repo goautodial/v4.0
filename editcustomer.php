@@ -699,7 +699,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 					<input id="LeadPreview" name="LeadPreview" value="0" type="checkbox"/>
 					<label for="LeadPreview" class="label-primary"></label>
 				</div>
-				<div style="font-weight: bold;"><?=$lh->translateText('LEAD PREVIEW')?></div>
+				<div style="font-weight: bold;"><?=$lh->translateText('LEAD ')?></div>
 			</li>
 			<li style="font-size: 5px;">
 				&nbsp;

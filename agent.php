@@ -472,7 +472,7 @@ if(ECCS_BLIND_MODE != "y"){
                 <!-- Main content -->
                 <section class="content">
 			<?php if(ECCS_BLIND_MODE === 'y'){ ?>
-			<div class="col-lg-2">
+			<div class="col-lg-3">
 			<?php } ?>
                           <div id="popup-hotkeys" class="panel clearfix">
                           <div class="panel-heading"><b><?=$lh->translationFor('available_hotkeys')?></b></div>
@@ -489,25 +489,37 @@ if(ECCS_BLIND_MODE != "y"){
 			</div> 
 			</div>
 			
-                         <div class="col-lg-10">
+                         <div class="col-lg-9">
 			<?php } ?>
 					<!-- standard custom edition form -->
 					<div id="cust_info" class="container-custom ng-scope">
 						<div class="card">
-							
-								<div class="card-heading bg-inverse">
+								<!-- ECCS Customization -->
+								<?php  if(ECCS_BLIND_MODE === 'y'){?>
+								<div style="background-image:;" class="card-heading bg-inverse">
+								<?php }//end if?>
 									<div class="row">
 										<div id="cust_avatar" class="col-lg-1 col-md-1 col-sm-2 text-center hidden-xs" style="height: 64px;">
 											<avatar username="Dialed Client" src="<?php echo CRM_DEFAULTS_USER_AVATAR;?>" :size="64"></avatar>
 										</div>
 										<div class="col-lg-11 col-md-11 col-sm-10">
+								<!-- ECCS Customization-->
 						                <h4 id="cust_full_name" class="hidden">
 									<span id="first_name_label" class="hidden"><?=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name"></a> <span id="middle_initial_label" class="hidden"><?=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial"></a> <span id="last_name_label" class="hidden"><?=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name"></a>
 									<!-- ECCS Customization -->
                                                                         <?php if(ECCS_BLIND_MODE === 'y'){ ?> <span id="cust_call_type"></span> <?php }//end if ?>
                                                                         <!-- /.ECCS Customization -->
 								</h4>
-						                <p class="ng-binding animated fadeInUpShort"><span id="cust_number"></span></p>
+						                <p class="ng-binding animated fadeInUpShort">
+									 <!-- ECCS Customization -->
+                                                                        <?php if(ECCS_BLIND_MODE === 'y'){ ?> 
+										<span id="span-cust-number" class="hidden"><label for="cust_number"> Client Number[#CN]: </label> <input type="text" id="cust_number" style="background-color:; border:; color:black; margin-top: 5px; padding-left: 5px; font-size: 14pt; font-weight: 600;" readonly/>"Ctrl+C" to Copy Number.</span>
+
+									<?php } else { ?>
+                                                                        <!-- /.ECCS Customization -->
+									<span id="cust_number"></span>
+									<?php } ?>
+								</p>
 						            </div>
 									</div>
 								</div>
@@ -541,7 +553,7 @@ if(ECCS_BLIND_MODE != "y"){
 
 											<fieldset style="padding-bottom: 0px; margin-bottom: 0px;">
 												<h4>
-													<a href="#" data-role="button" class="pull-right edit-profile-button hidden" data-tooltip="tooltip" title="Enable Edit Contact Information" id="edit-profile"><?=$lh->translationFor('edit_information')?> [#EI] </a>
+													<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile"><?=$lh->translationFor('edit_information')?></a>
 												</h4>
 												<!-- <br/> -->
 												<form role="form" id="name_form" class="formMain form-inline" >
@@ -619,7 +631,7 @@ if(ECCS_BLIND_MODE != "y"){
 													<!-- /.phonenumber & alt phonenumber -->
 													<!-- address1 & address2 -->
 													<div class="row">
-														<div class="col-lg-12 col-sm-6">
+														<div class="col-xl-12 col-lg-6">
 															<div class="mda-form-group label-floating">
 																<input id="address1" name="address1" type="text" maxlength="100" width="auto" value="<?php echo $address1;?>" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
 																<label for="address1"><?=$lh->translationFor('address')?></label>
@@ -628,7 +640,7 @@ if(ECCS_BLIND_MODE != "y"){
 															<em class="fa fa-home fa-lg"></em>
 														</span>-->
 														</div>
-														<div class="col-lg-12 col-sm-6">																				<div class="mda-form-group label-floating">
+														<div class="col-xl-12 col-lg-6">																				<div class="mda-form-group label-floating">
 																<input id="address2" name="address2" type="text" maxlength="100" value="<?php echo $address2;?>" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
 																<label for="address2"><?=$lh->translationFor('address2')?></label>
 															</div>
@@ -659,7 +671,7 @@ if(ECCS_BLIND_MODE != "y"){
 												
 	 												<!-- country_code & email -->
                                                                                                         <div class="row">
-                                                                                                                <div class="col-lg-12 col-sm-6">
+                                                                                                                <div class="col-xl-12 col-lg-6">
 															<div class="mda-form-group label-floating">
 																<select id="country_code" name="country_code" type="text" maxlength="3"	class="mda-form-control select2 ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" title="<?=$lh->translationFor('select_country_code')?>" disabled>
 																	<option value="">- - - <?=$lh->translationFor('select_country_code')?> - - -</option>
@@ -667,7 +679,7 @@ if(ECCS_BLIND_MODE != "y"){
 																<label for="country_code"><?=$lh->translationFor('country_code')?></label>
 															</div>
 						                						</div>
-                                        	                                                                <div class="col-lg-12 col-sm-6">
+                                        	                                                                <div class="col-xl-12 col-lg-6">
 															<div class="mda-form-group label-floating"><!-- add "mda-input-group" if with image -->
 																<input id="email" name="email" type="text" width="auto" value="<?php echo $email;?>" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
 																<label for="email"><?=$lh->translationFor('email_add')?></label>
@@ -813,6 +825,7 @@ if(ECCS_BLIND_MODE != "y"){
 
 						</div>
 					<?php if(ECCS_BLIND_MODE === 'y'){ ?>
+						<span id="shortcut-key-reminder" style="position: absolute; bottom: 12px; right: 5px; font-family: calibri, arial, verdana, roboto; font-size: 14pt; font-weight: 600;" class="hidden-xs">Shortcut keys to exit [Shift + End]</span>
 					</div>
 					<?php } ?>
 					
@@ -1537,28 +1550,28 @@ if(ECCS_BLIND_MODE != "y"){
 					<input id="LeadPreview" name="LeadPreview" value="0" type="checkbox"/>
 					<label for="LeadPreview" class="label-primary"></label>
 				</div>
-				<div style="font-weight: bold; text-transform: uppercase;"><?=$lh->translationFor('lead_preview')?></div>
+				<div  class="sidebar-toggle-labels" style="font-weight: bold; text-transform: uppercase;"><label for="LeadPreview"><?=$lh->translationFor('lead_preview')?></label></div>
 			</li>
 			<li id="DialALTPhoneMenu" style="padding: 0 5px 15px; display: none;">
 				<div class="material-switch pull-right">
 					<input id="DialALTPhone" name="DialALTPhone" value="0" type="checkbox"/>
 					<label for="DialALTPhone" class="label-primary"></label>
 				</div>
-				<div style="font-weight: bold; text-transform: uppercase;"><?=$lh->translationFor('alt_phone_dial')?></div>
+				<div  class="sidebar-toggle-labels" style="font-weight: bold; text-transform: uppercase;"><label for="DialALTPhone"><?=$lh->translationFor('alt_phone_dial')?></label></div>
 			</li>
 			<li id="toggleHotkeys" style="padding: 0 5px 15px;">
 				<div class="material-switch pull-right">
 					<input id="enableHotKeys" name="enableHotKeys" type="checkbox"/>
 					<label for="enableHotKeys" class="label-primary"></label>
 				</div>
-				<div style="font-weight: bold; text-transform: uppercase;"><?=$lh->translationFor('enable_hotkeys')?></div>
+				<div class="sidebar-toggle-labels" style="font-weight: bold; text-transform: uppercase;"><label for="enableHotKeys"><?=$lh->translationFor('enable_hotkeys')?></label></div>
 			</li>
 			<li id="toggleMute" style="padding: 0 5px 15px;">
 				<div class="material-switch pull-right">
 					<input id="muteMicrophone" name="muteMicrophone" type="checkbox" checked/>
 					<label for="muteMicrophone" class="label-primary"></label>
 				</div>
-				<div style="font-weight: bold; text-transform: uppercase;"><?=$lh->translationFor('microphone')?></div>
+				<div  class="sidebar-toggle-labels" style="font-weight: bold; text-transform: uppercase;"><label for="muteMicrophone"><?=$lh->translationFor('microphone')?></label></div>
 			</li>
 			<li style="font-size: 5px;">
 				<div id="GOdebug" class="material-switch pull-right">&nbsp;</div>
@@ -2394,8 +2407,33 @@ if(ECCS_BLIND_MODE != "y"){
 				
 				$('[data-tooltip="tooltip"]').tooltip();
 
-				$('input#phone_number').attr("data-tooltip", "tooltip");
+				$('header.main-header a.logo').attr("title", "<?=$lh->translationFor('home')?>");
+				
+				$('#edit-profile').attr("title", "Enable Edit Contact Information");
+                                $('label[for="phone_number"]').attr("title", "<?=$lh->translationFor('phone_number')?>");
+                                $('label[for="alt_phone"]').attr("title", "<?=$lh->translationFor('alternative_phone_number')?>");
+                                $('label[for="address1"]').attr("title", "<?=$lh->translationFor('address')?>");
+                                $('label[for="address2"]').attr("title", "<?=$lh->translationFor('address2')?>");
+                                $('label[for="city"]').attr("title", "<?=$lh->translationFor('city')?>");
+                                $('label[for="state"]').attr("title", "<?=$lh->translationFor('state')?>");
+                                $('label[for="postal_code"]').attr("title", "<?=$lh->translationFor('postal_code')?>");
+				$('label[for="country_code"]').attr("title", "<?=$lh->translationFor('country_code')?>");
+                                $('label[for="email"]').attr("title", "<?=$lh->translationFor('email')?>");
+                                $('label[for="title"]').attr("title", "<?=$lh->translationFor('title')?>");
+                                $('label[for="gender"]').attr("title", "<?=$lh->translationFor('gender')?>");
+                                $('label[for="date_of_birth"]').attr("title", "<?=$lh->translationFor('date_of_birth')?>");
+
                                 $('input#phone_number').attr("title", "<?=$lh->translationFor('phone_number')?>");
+				$('input#alt_phone').attr("title", "<?=$lh->translationFor('alternative_phone_number')?>");
+                                $('input#address1').attr("title", "<?=$lh->translationFor('address')?>");
+                                $('input#address2').attr("title", "<?=$lh->translationFor('address2')?>");
+                                $('input#city').attr("title", "<?=$lh->translationFor('city')?>");
+                                $('input#state').attr("title", "<?=$lh->translationFor('state')?>");
+                                $('input#postal_code').attr("title", "<?=$lh->translationFor('postal_code')?>");
+                                $('input#email').attr("title", "<?=$lh->translationFor('email')?>");
+                                $('input#title').attr("title", "<?=$lh->translationFor('title')?>");
+                                $('select#gender').attr("title", "<?=$lh->translationFor('gender')?>");
+                                $('input#date_of_birth').attr("title", "<?=$lh->translationFor('date_of_birth')?>");
 				
 				$('button#btnLogMeIn').attr("data-tooltip", "tooltip");
                                 $('button#btnLogMeIn').attr("title", "<?=$lh->translationFor('Login to Dialer')?>");
@@ -2422,7 +2460,7 @@ if(ECCS_BLIND_MODE != "y"){
                                 $('ul.control-sidebar-menu:nth-of-type(2) a:nth-of-type(1)').attr("title", "<?=$lh->translationFor('Profile')?>");
 
                                 $('ul.control-sidebar-menu:nth-of-type(2) a:nth-of-type(2)').attr("data-tooltip", "tooltip");
-                                $('ul.control-sidebar-menu:nth-of-type(2) a:nth-of-type(2)').attr("title", "<?=$lh->translationFor('logout')?>");
+                                $('ul.control-sidebar-menu:nth-of-type(2) a:nth-of-type(2)').attr("title", "<?=$lh->translationFor('exit')?>");
 
 				$('ul.control-sidebar-menu#go_agent_profile li:nth-of-type(3)').attr("data-tooltip", "tooltip");
                                 $('ul.control-sidebar-menu#go_agent_profile li:nth-of-type(3)').attr("title", "<?=$lh->translationFor('messages')?>");
@@ -2435,6 +2473,10 @@ if(ECCS_BLIND_MODE != "y"){
 
                                 $('ul.control-sidebar-menu#go_agent_profile li:nth-of-type(6)').attr("data-tooltip", "tooltip");
                                 $('ul.control-sidebar-menu#go_agent_profile li:nth-of-type(6)').attr("title", "<?=$lh->translationFor('Enter Pause Codes')?>");
+
+				 $('div#MainStatusSpan a:nth-of-type(1)').attr("title", "<?=$lh->translationFor('dial_lead')?>");
+                                 $('div#MainStatusSpan a:nth-of-type(2)').attr("title", "<?=$lh->translationFor('skip_lead')?>");
+
 
 				// Dispo Tooltips
 				var dispoAdd = ["XFER" , "SALE", "NP", "NI", "N", "DNC", "DEC", "DC", "CALLBK", "B", "A"];
@@ -2469,17 +2511,17 @@ if(ECCS_BLIND_MODE != "y"){
 				$('li#toggleWebFormTwo').attr("data-tooltip", "tooltip");
                                 $('li#toggleWebFormTwo').attr("title", "<?=$lh->translationFor('Web Form')?>");
 
-				$('ul#go_agent_other_buttons li:nth-of-type(4) div.material-switch').attr("data-tooltip", "tooltip");
-                                $('ul#go_agent_other_buttons li:nth-of-type(4) div.material-switch').attr("title", "<?=$lh->translationFor('Lead Preview')?>");
+				$('ul#go_agent_other_buttons li:nth-of-type(4)').attr("data-tooltip", "tooltip");
+                                $('ul#go_agent_other_buttons li:nth-of-type(4)').attr("title", "<?=$lh->translationFor('Lead Preview')?>");
 	
-				$('li#DialALTPhoneMenu div.material-switch').attr("data-tooltip", "tooltip");
-                                $('li#DialALTPhoneMenu div.material-switch').attr("title", "<?=$lh->translationFor('ALT Phone Dial')?>");
+				$('li#DialALTPhoneMenu').attr("data-tooltip", "tooltip");
+                                $('li#DialALTPhoneMenu').attr("title", "<?=$lh->translationFor('ALT Phone Dial')?>");
 
-                                $('li#toggleHotkeys div.material-switch').attr("data-tooltip", "tooltip");
-                                $('li#toggleHotkeys div.material-switch').attr("title", "<?=$lh->translationFor('Enable Hotkeys')?>");
+                                $('li#toggleHotkeys').attr("data-tooltip", "tooltip");
+                                $('li#toggleHotkeys').attr("title", "<?=$lh->translationFor('Enable Hotkeys')?>");
 
-				$('li#toggleMute div.material-switch').attr("data-tooltip", "tooltip");
-                                $('li#toggleMute div.material-switch').attr("title", "<?=$lh->translationFor('Toggle Mute')?>");
+				$('li#toggleMute').attr("data-tooltip", "tooltip");
+                                $('li#toggleMute').attr("title", "<?=$lh->translationFor('Toggle Mute')?>");
 
 				
 				// Content Tabs
@@ -2493,13 +2535,15 @@ if(ECCS_BLIND_MODE != "y"){
                                 $('#agent_tablist li:nth-of-type(3)>a.bb0').attr("title", "<?=$lh->translationFor('script')?>");
 
 				// Hastag Formats
+				$('header.main-header a.logo').append("<label for='logo-home' id='hash-home'>#HOME</label>");
 				$('button#btnLogMeIn').append(" [#LI] ");
 				$('button#btnLogMeOut').append(" [#LP] ");
 				
-				$('#agent_tablist li:nth-of-type(1)>a.bb0').append(" [#CI] ");
+				$('#agent_tablist li:nth-of-type(1)>a.bb0').html(" Contact Info [#CI] ");
 	                        $('#agent_tablist li:nth-of-type(2)>a.bb0').append(" [#CM] ");
                         	$('#agent_tablist li:nth-of-type(3)>a.bb0').append(" [#SC] ");
 
+				$('#edit-profile').append(" [#EI] ");
 				$('form#contact_details_form label[for="phone_number"]').append(" [#PN] ");
 				$('form#contact_details_form label[for="alt_phone"]').append(" [#APN] ");
 				$('form#contact_details_form label[for="address1"]').append(" [#A1] ");
@@ -2516,34 +2560,56 @@ if(ECCS_BLIND_MODE != "y"){
 
                                 $('ul.nav.navbar-nav li:nth-of-type(3)>a.visible-xs').append("<br><span>#CONF</span>");
 
-				$('li#topbar-callbacks a.dropdown-toggle').append('<br><span>#CB</span>');
+				$('li#topbar-callbacks a.dropdown-toggle').append('<span>&nbsp; #CB</span>');
 				$('li.dropdown.messages-menu a.dropdown-toggle').append('<br><span>#VM</span>');
 
-				$('button#btnDialHangup').append('<br><span class="hash-BtnDialhangup">#DNHU</span>');
+				$('button#btnDialHangup').append('<br><span id="hash-dial-hangup"></span>');
                                 $('button#btnResumePause').append('<br><span>#PR</span>');
                                 $('button#btnParkCall').append('<br><span>#PA</span>');
-                                $('button#btnTransferCall').append('<br><span>#VM</span>');
+                                $('button#btnTransferCall').append('<br><span>#TC</span>');
                                 $('button#manual-dial-now').append('<br><span class="hash-call-now">#CALL</span>');
-				
-				$('button#btnDialHangup').trigger('cssClassChanged');
 
-				/*$('button#btnDialHangup').bind('cssClassChanged', function(){
-					if ($('button#btnDialHangup').hasClass('btn-primary')) {
-						$('span.hash-BtnDialHangup').text('#DN');
-					} else {
-						$('span.hash-BtnDialHangup').text('#HU');
+				$('li#toggleWebForm button#openWebForm').append(" [#WF] ");
+				$('.sidebar-toggle-labels label[for="LeadPreview"]').append(" [#LE] ");
+                                $('.sidebar-toggle-labels label[for="DialALTPhone"]').append(" [#DALTP] ");
+                                $('.sidebar-toggle-labels label[for="enableHotKeys"]').append(" [#EH] ");
+                                $('.sidebar-toggle-labels label[for="muteMicrophone"]').append(" [#MIC] ");
+
+				$('ul.control-sidebar-menu:nth-of-type(2) a:nth-of-type(1)').append(" [#PR] ");
+                                $('ul.control-sidebar-menu:nth-of-type(2) a:nth-of-type(2)').append(" [#EX] ");
+
+				$('div#MainStatusSpan a:nth-of-type(1)').append(" [#DL] ");
+                                $('div#MainStatusSpan a:nth-of-type(2)').append(" [#SL] ");
+
+				// Focus on Input on enter
+				$('form#contact_details_form label[for="alt_phone"]').keypress(function(event){
+					var keycode = (event.keyCode ? event.keyCode : event.which);
+					if(keycode == 13){
+					$('input#alt_phone').focus();
 					}
-				});*/
-
+					event.stopPropagation();
+				});
+			
 				//Remove Class Absolute Logout Button Dialer
 				$('ul#go_agent_logout').css("position", "static");
 				$('li#toggleHotkeys').css("display", "block!important");
 				//Remove hidden-xs on agent other buttons
 				$('ul#go_agent_other_buttons').removeClass('hidden-xs');
+				//Remove hidden-xs on MainStatusSpan
+				$('div#MainStatusSpan').removeClass('hidden-xs');
 
 				//Enable Hotkeys by default
 				$('#enableHotKeys').attr("checked","");
-				$('div#popup-hotkeys').css("display", "block");
+				if ($('#enableHotKeys').is(':checked')) {
+		                        $(document).on('keydown', 'body', hotKeysAvailable);
+                	                $("#popup-hotkeys").fadeIn("fast");
+                                } else {
+                        	        $(document).off('keydown', 'body', hotKeysAvailable);
+                                	$("#popup-hotkeys").fadeOut("fast");
+                                }
+			
+				// Enable Dial Pad on Mobile
+				$('ul#go_agent_dialpad').removeClass('hidden-xs');
 
 				//Conf on click set dialer tab to active
 				$('ul.nav.navbar-nav li:nth-of-type(3)>a.visible-xs').on('click', function(){

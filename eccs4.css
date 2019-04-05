@@ -5,7 +5,33 @@
 			.main-header>.navbar{
 				min-height: 60px;
 			}
-	
+
+			label#hash-home{
+				position: absolute!important;
+				bottom: 0;
+				font-size: 10pt;
+			}
+			
+			#topbar-callbacks{
+				width: 130px;
+			}
+
+			#topbar-callbacks a.dropdown-toggle{
+				padding-left: 35px!important;
+				font-size	
+			}
+			
+			#topbar-callbacks a.dropdown-toggle i.fa-phone-square:before{
+				font-size: 20pt!important;
+			}
+			
+			#topbar-callbacks a.dropdown-toggle span:nth-of-type(2){
+				font-size: 16pt;
+			}
+
+			#topbar-callbacks a.dropdown-toggle span.label.label-primary{
+				right: 60px!important;
+			}
 			/* header */
 			.content-wrapper > .content-heading{
 				margin-top: 10px!important;
@@ -22,10 +48,19 @@
                                 font-size: 20pt;
                         }
 
+			ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
+                                margin-top: 0px!important;
+                        }
+
 			aside.control-sidebar.control-sidebar-dark.control-sidebar-open{
 				padding-top: 60px!important;
 			}
-
+		
+			div#MainStatusSpan{
+				position: static!important;
+				font-weight: 700;
+			}
+	
 			/* Dialer */
                         div#go_btn_div i.fa, 
 			button#manual-dial-now i.fa{
@@ -47,6 +82,10 @@
 				position: absolute;
 				left: 8px;
 				bottom: -4px;
+			}
+			
+			div#AgentDialPad button{
+				min-width: 30%!important;
 			}
 
 			/* Tabs */
@@ -72,33 +111,51 @@
                         }
                         #agent_tablist li:nth-of-type(3)>a.bb0{
                                 background-color: lightyellow;
-
                         }
 
                         /* Sidebar */
 
+                       		/* profile and exit buttons */
+                        ul.control-sidebar-menu:nth-of-type(2) a{
+                                padding: 6px 6px!important;
+                        }
+
                         ul.control-sidebar-menu:nth-of-type(2) div.center-block{
                                 position: fixed;
                                 bottom: 20px;
-                                right: 25px;
+                                right: 8px;
                         }
 			ul#go_agent_logout{
+				position: absolute!important;
 				padding: 0;
 				margin: 0 auto!important;
-			}
-			button#btnDialHangup {
-				padding-left: 9px;
-				padding-right: 10px;
+				bottom: 5px!important;
+				left: 2px;
 			}
 
 			/* Content */
+                        div#cust_avatar{
+                                height: 45px!important;
+                        }
+
+                        div#cust_avatar div#avatar{
+                                height: 45px!important;
+                                width: 45px!important;
+                                background: url(./img/avatars/default/defaultAvatar.png) 0% 0% / 45px 45px no-repeat content-box!important;
+                        }
+
 			.edit-profile-button{
 				font-size: 13pt;
 				font-weight: bold;
 				color: blue;
 			}			
 
-			h4#cust_full_name,
+			h4#cust_full_name{
+				font-family: calibri, arial, verdana, roboto;
+                                font-size: 20pt!important;
+                                font-weight: bold;
+			}
+
 			#agent_tablist a.bb0,
 			#popup-hotkeys .panel-heading,
 			#select-campaign h4.modal-title{
@@ -133,16 +190,24 @@
                                 font-weight: bold;
 				opacity: 1;
 			}
+			
+                        input#cust_number{
+                                width: auto;
+                        }
 
 			#popup-hotkeys div.panel-body,
                         #popup-hotkeys div.text-danger{
                                 font-family: arial, verdana, roboto;
-                                font-size: 10pt;
+                                font-size: 9pt;
                                 font-weight: bold;
                         }
 
 			.mda-form-control.disabled, .mda-form-control[disabled]{
 				opacity: 1;
+			}
+	
+			select#select_camp{
+				margin-top: 10px;
 			}
 
 			/* hotkey popup */
@@ -164,7 +229,8 @@
                         }
 
 			#popup-hotkeys dt.text-primary{
-				width: 40px!important;
+				width: inherit!important;
+				padding-right: 10px;
 				text-align: left!important;
 			}
 
@@ -197,7 +263,7 @@
                         #agent_tablist a.bb0,
                         .panel-heading,
                         #select-campaign h4.modal-title{
-                                font-size: 20pt!important;
+                                font-size: 12pt!important;
                         }
 			
                         span#cust_number,
@@ -212,7 +278,7 @@
 
                         span#cust_call_type{
                                 float: inherit;
-                                font-size: 15pt;
+                                font-size: 12pt;
                         }
 
                         #contact_details_form label,
@@ -223,6 +289,10 @@
 			
 			a#edit-profile{
 				float: none!important;
+			}
+
+			input#cust_number{
+				width: 100%!important;
 			}
 
 			/* Buttons Topbar */
@@ -252,19 +322,19 @@
                         }
 
 			ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
-				margin-top: 60px;
+				margin-top: 60px!important;
 			}
 
-			ul.control-sidebar-menu:nth-of-type(2) div.center-block{
+			/* Dialer */
+			span#for_dtmf{
+				display: block;
+			}
+			/*ul.control-sidebar-menu:nth-of-type(2) div.center-block{
 				position: fixed;
 				bottom: 20px;
 				right: 65px;
-			}
+			}*/
 			
-			ul#go_agent_logout{
-				position: static!important;
-			}
-
 		}
 			  /* mobile-large */
 		@media all and (min-width: 361px) and (orientation: portrait) { 
@@ -315,6 +385,10 @@
                                 font-size: 11pt;
                         }
 
+                        input#cust_number{
+                                width: 100%!important;
+                        }
+
                         /* Buttons Topbar */
                         li#topbar-callbacks i.fa, li.messages-menu i.fa, li i.fa.fa-cogs{
                                 font-size: 16pt;
@@ -338,12 +412,9 @@
                         }
 
                         ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
-                                margin-top: 60px;
+                                margin-top: 60px!important;
                         }
 
-                        ul#go_agent_logout{
-                                position: static!important;
-                        }
 		}
 			  /* mobile-small-landscape */
 		@media all and (min-width: 0) and (max-width: 480px) and (orientation: landscape) {
@@ -399,106 +470,15 @@
                         }
 
                         ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
-                                margin-top: 60px;
+                                margin-top: 60px!important;
                         }
 
-                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
+                        /*ul.control-sidebar-menu:nth-of-type(2) div.center-block{
                                 position: fixed;
                                 bottom: 20px;
                                 right: 135px;
-                        }
+                        }*/
 
-                        ul#go_agent_logout{
-                                position: static!important;
-                        }
- 		}
-			  /* mobile-large-landscape */
-		@media all and (min-width: 481px) and (orientation: landscape) {
-			.content-wrapper > .content-heading{
-                                margin-top: 15px!important;
-                        }
-
-                        .content{
-                                padding: 5px;
-                        }
-
-                        .card-body.custom-tabpanel{
-                                margin: 0;
-                                padding: 5px;
-                        }
-
-                        .main-header>.navbar{
-                                height: 60px;
-                                min-height: 50px;
-                        }
-
- 			/* Content */
-                        h4#cust_full_name,
-                        #agent_tablist a.bb0,
-                        .panel-heading,
-                        #select-campaign h4.modal-title{
-                                font-size: 13pt!important;
-                        }
-
-                        span#cust_number,
-                        .mda-form-control,
-                        textarea#comments,
-                        div#ScriptContents,
-                        select#country_code,
-                        #select-campaign label,
-                        span.select2{
-                                font-size: 9pt!important;
-                        }
-
-                        span#cust_call_type{
-                                font-size: 13pt;
-                        }
-
-                        #contact_details_form label,
-                        #gender_form label,
-                        #comment_form label{
-                                font-size: 11pt;
-                        }
-
-			/* Buttons Topbar */
-                        li#topbar-callbacks i.fa, li.messages-menu i.fa, li i.fa.fa-cogs{
-                                font-size: 16pt;
-                        }
-
-                        ul.nav.navbar-nav li:nth-of-type(3)>a.visible-xs{
-                                padding-bottom: 2px!important;
-                        }
-
-                        /* Sidebar */
-                        li#go_nav_btn{
-                                margin-top: 10px;
-                        }
-
-                        ul.control-sidebar-tabs i.fa{
-                                font-size: 16pt;
-                        }
-
-                        aside.control-sidebar.control-sidebar-dark.control-sidebar-open{
-                                padding-top: 60px!important;
-                        }
-
-                        aside.control-sidebar div.tab-content{
-                                padding-bottom: 60px;
-                        }
-
-                        ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
-                                margin-top: 60px;
-                        }
-
-                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
-                                position: fixed;
-                                bottom: 20px;
-                                right: 175px;
-                        }
-
-                        ul#go_agent_logout{
-                                position: static!important;
-                        }
 		}
 			  /* tablet-small-landscape */
 		@media all and (min-width: 600px) and (max-width: 960px) and (orientation: landscape) {
@@ -582,18 +562,6 @@
                         form#contact_details_form .mda-form-group.label-floating label, form#gender_form .mda-form-group.label-floating label{
                                 margin-bottom: 2px;
                         }
-
-
-                        /* Sidebar */
-			ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
-	                        margin-top: 5px;
-                        }
-
-                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
-                                position: fixed;
-                                bottom: 20px;
-                                right: 25px;
-                        }
 		 }
 			  /* tablet-large-landscape */
 		@media all and (min-width: 961px) and (orientation: landscape) { 
@@ -616,9 +584,9 @@
                         }
 
                         div#cust_avatar div#avatar{
-                                height: 45px!important;
-                                width: 45px!important;
-                                background: url(./img/avatars/default/defaultAvatar.png) 0% 0% / 45px 45px no-repeat content-box!important;
+                                height: 60px!important;
+                                width: 60px!important;
+                                background: url(./img/avatars/default/defaultAvatar.png) 0% 0% / 60px 60px no-repeat content-box!important;
                         }
 
                         h4#cust_full_name{
@@ -626,7 +594,7 @@
                         }
 
                         div.card-heading.bg-inverse{
-                                height: 80px!important;
+                                height: 100px!important;
                                 padding: 20px!important;
                         }
 
@@ -651,7 +619,10 @@
                         }
 
  			/* Content */
-                        h4#cust_full_name,
+                        h4#cust_full_name{
+				font-size: 20pt!important;
+			}
+
                         #agent_tablist a.bb0,
                         .panel-heading,
                         #select-campaign h4.modal-title{
@@ -665,10 +636,11 @@
                         select#country_code,
                         #select-campaign label,
                         span.select2{
-                                font-size: 9pt!important;
+                                font-size: 11pt!important;
                         }
 
-                        span#cust_call_type{
+                        span#cust_call_type,
+			label[for="cust_number"]{
                                 font-size: 13pt;
                         }
 
@@ -684,18 +656,6 @@
 
                         form#contact_details_form .mda-form-group.label-floating label, form#gender_form .mda-form-group.label-floating label{
                                 margin-bottom: 2px;
-                        }
-
-
-                        /* Sidebar */
-                        ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
-                                margin-top: 5px;
-                        }
-
-                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
-                                position: fixed;
-                                bottom: 20px;
-                                right: 25px;
                         }
 		}
 			  /* tablet-small */
@@ -784,19 +744,6 @@
                         form#contact_details_form .mda-form-group.label-floating label, form#gender_form .mda-form-group.label-floating label{
                                 margin-bottom: 2px;
                         }
-
-
-                        /* Sidebar */
-                        ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
-                                margin-top: 5px;
-                        }
-
-                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
-                                position: fixed;
-                                bottom: 20px;
-                                right: 25px;
-                        }
-
 		}
 			  /* tablet-large */
 		@media all and (min-width: 601px) and (max-width: 840px) and (orientation : portrait) {
@@ -892,22 +839,9 @@
 
                         /* Sidebar */
                         ul.nav.nav-tabs.nav-justified.control-sidebar-tabs{
-                                margin-top: 60px;
-                        }
-
-                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
-                                position: fixed;
-                                bottom: 20px;
-                                right: 25px;
+                                margin-top: 60px!important;
                         }
 		}
-
-		/* Devices Hotkey Position */
-
-		#popup-hotkeys{
-                        position: static;
-                        min-width: inherit;
-                }
 
 			  /* desktop-x-small-landscape */
 			@media all and (min-width: 0) and (max-width: 480px) and (orientation: landscape) { }
@@ -918,11 +852,10 @@
 			  /* desktop-small */
 			@media all and (min-width: 481px) and (max-width: 840px) and (max-aspect-ratio: 4/3) { }
 			  /* desktop-medium-landscape */
-		@media all and (min-width: 841px) and (max-width: 1280px) and (orientation: landscape) { 
-	
-		}
+		@media all and (min-width: 841px) and (max-width: 1280px) and (orientation: landscape) { }
 			  /* desktop-medium */
 		@media all and (min-width: 841px) and (max-width: 1280px) and (max-aspect-ratio: 4/3) { }
+
 			  /* desktop-large */
   		@media all and (min-width: 1281px) and (max-width: 1600px) { 
 			section.content-heading{
@@ -930,15 +863,6 @@
                                 margin-bottom: 0!important;
                         }
                         /* card */
-                        div#cust_avatar{
-                                height: 30px!important;
-                        }
-
-                        div#cust_avatar div#avatar{
-                                height: 30px!important;
-                                width: 30px!important;
-                                background: url(./img/avatars/default/defaultAvatar.png) 0% 0% / 30px 30px no-repeat content-box!important;
-                        }
 
                         h4#cust_full_name{
                                 margin: 0;
@@ -959,12 +883,12 @@
                                 margin: 0;
                         }
 			
- 			/* Content */
+ 			/* Content 
                         h4#cust_full_name,
                         #agent_tablist a.bb0,
                         .panel-heading,
                         #select-campaign h4.modal-title{
-                                font-size: 20pt!important;
+                                font-size: 16pt!important;
                         }
 
                         .mda-form-control,
@@ -989,28 +913,13 @@
                         #comment_form label{
                                 font-size: 13pt;
                         }
-
-
+			*/
                         form#contact_details_form .mda-form-group.label-floating, form#gender_form .mda-form-group.label-floating{
                                 padding: 22px 0 10px 0!important;
                         }
-
-                        /* Sidebar */
-
-                        ul.control-sidebar-menu:nth-of-type(2) div.center-block{
-                                position: fixed;
-                                bottom: 20px;
-                                right: 25px;
-                        }
-
-			/* Hotkey Popup */
-	                
 		}
 			  /* desktop-xlarge */
-  		@media all and (min-width: 1601px) and (max-width: 1920px) { 
-			/* Hotkey Popup */
-
-		}
+  		@media all and (min-width: 1601px) and (max-width: 1920px) { }
 
 			.nav a.dropdown-toggle{
 				height: 60px;

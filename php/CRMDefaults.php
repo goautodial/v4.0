@@ -227,6 +227,6 @@ define ('CRM_GO_VERSION', "v4.0");
 
 
 // Customizations
-define ('ECCS_BLIND_MODE', "n"); //Customizations requested by ECCS. Accessibility mode for blind users
+define ('ECCS_BLIND_MODE', "y"); //Customizations requested by ECCS. Accessibility mode for blind users
 
 ?>

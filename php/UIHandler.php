@@ -1426,7 +1426,7 @@ error_reporting(E_ERROR | E_PARSE);
 		// return header
 		$avatarElement = $this->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 22, true);
 		return '<header class="main-header">
-				<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="45" style="padding-top:10px;"></a>
+				<a href="./index.php" id="logo-home" class="logo"><img src="'.$logo.'" width="auto" height="45" style="padding-top:10px;"></a>
 	            <nav class="navbar navbar-static-top" role="navigation">
 	                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
 	                    <span class="sr-only">Toggle navigation</span>
