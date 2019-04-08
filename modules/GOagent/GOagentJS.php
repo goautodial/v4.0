@@ -47,6 +47,8 @@ $tsNOW_TIME = date("YmdHis");
 $StarTtimE = date("U");
 $FILE_TIME = date("Ymd-His");
 
+$module_dir = (!empty($module_dir)) ? $module_dir : '/modules/GOagent/';
+
 //ini_set('display_errors', 'on');
 //error_reporting(E_ALL);
 
