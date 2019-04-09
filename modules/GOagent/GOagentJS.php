@@ -1772,17 +1772,19 @@ $(document).ready(function() {
                 globalSession.sendDTMF(btnID, options);
             }
         } else {
-            // For Manual Dialing
-            var currentValue = $("#MDPhonENumbeR").val();
-            if (btnID == 'undo') {
-                currentValue = currentValue.slice(0, -1);
-            } else if (btnID == 'clear') {
-                currentValue = '';
-            } else {
-                currentValue += btnID;
+            if (!minimizedDispo) {
+                // For Manual Dialing
+                var currentValue = $("#MDPhonENumbeR").val();
+                if (btnID == 'undo') {
+                    currentValue = currentValue.slice(0, -1);
+                } else if (btnID == 'clear') {
+                    currentValue = '';
+                } else {
+                    currentValue += btnID;
+                }
+                $("#MDPhonENumbeR").val(currentValue);
+                activateLinks();
             }
-            $("#MDPhonENumbeR").val(currentValue);
-            activateLinks();
         }
     });
     
