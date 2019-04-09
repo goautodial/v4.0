@@ -1168,16 +1168,40 @@ $(document).ready(function() {
 		// Exit Shortcut Shift + End
 		$(document).keydown(function(e){
 			if(e.shiftKey && e.key == "End"){
-                if (live_customer_call > 0 || XD_live_customer_call > 0) {
+                if (is_logged_in && (live_customer_call > 0 || XD_live_customer_call > 0)) {
                     swal({
                         title: '<?=$lh->translationFor('error')?>',
                         text: '<?=$lh->translationFor('currently_in_call')?>',
                         type: 'error'
                     });
                 } else {
-                    $('#cream-agent-logout').click();
+                    btnLogMeOut();
                 }
-			}
+			} else if(e.shiftKey && e.key == "Home") {
+                if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
+                    swal({
+                        title: '<?=$lh->translationFor('error')?>',
+                        text: '<?=$lh->translationFor('phone_already_logged_in')?>',
+                        type: 'error'
+                    });
+                } else {
+                    btnLogMeIn();
+                }
+            } else if(e.shiftKey && e.key == "1") {
+                if (live_customer_call > 0) {
+                    btnDialHangup();
+                }
+            } else if(e.shiftKey && e.key == "2") {
+                if (live_customer_call < 1) {
+                    btnResumePause();
+                }
+            } else if(e.shiftKey && e.key == "3") {
+                $("#openWebForm").click();
+            } else if(e.shiftKey && e.key == "4") {
+                $("#LeadPreview").click()
+            } else if(e.shiftKey && e.key == "5") {
+                $("a[href='#callbackslist']").click()
+            }
 		});
     <?php
 	}	
@@ -2249,7 +2273,7 @@ function enableDialOnEnter(e) {
         return;
     }
     
-    if (live_customer_call < 1) {
+    if (live_customer_call < 1 && !minimizedDispo) {
         var phoneNumber = $('#MDPhonENumbeR').val();
     
         if (phoneNumber.length >= manual_dial_min_digits && agentcall_manual > 0) {
@@ -9877,6 +9901,9 @@ function minimizeModal(modal_id) {
         $(".min-modal").addClass('hidden');
     });
     
+    toggleButton('DialHangup', 'off');
+    $('#MDPhonENumbeR').prop('readonly', true);
+    
     $(document).off('focusin.modal');
     
     $('.input-disabled').prop('disabled', false);
@@ -9895,6 +9922,8 @@ function maximizeModal(modal_id) {
         $(".max-modal").addClass('hidden');
         $(".min-modal").removeClass('hidden');
     });
+    
+    $('#MDPhonENumbeR').prop('readonly', false);
 }
 
 String.prototype.toUpperFirst = function() {
