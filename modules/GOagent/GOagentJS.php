@@ -885,6 +885,69 @@ $(document).ready(function() {
             $("#date-selected").html(moment(e.date).format('dddd, MMMM Do YYYY, h:mm a'));
             $("#callback-date").val(selectedDate);
         });
+<?php if(ECCS_BLIND_MODE === 'y') { ?>
+
+     $('#callback-datepicker').on('shown.bs.modal', function(){
+	$('#CallBackOnlyMe').prop('checked', true);
+
+	var eccs_currYear = moment(currDate).format('YYYY');
+        var eccs_currMonth = moment(currDate).format('MMMM');
+        var eccs_currDay = moment(currDate).format('DD');
+
+        $("#eccs_year").val(eccs_currYear);
+        $("#eccs_year").attr("min", eccs_currYear);
+
+        $("#eccs_month").val(eccs_currMonth);
+
+        $("#eccs_day").val(eccs_currDay);
+        $("#eccs_day").attr("min", eccs_currDay);
+
+         $("#eccs_time").datetimepicker({
+            format: "hh:mm a",
+            icons: {
+                time: 'fa fa-clock-o',
+                date: 'fa fa-calendar'
+            },
+            minDate: currDate
+         });
+
+         $("#eccs_time").on("dp.change", function (e) {
+	    selectedTime = moment(e.date).format('HH:mm:00');
+            selectedYear = $("#eccs_year").val();
+            selectedMonth = $("#eccs_month").val();
+            selectedDay = $("#eccs_day").val();
+
+            selectedDate = selectedYear + "-" + selectedMonth + "-" + selectedDay + " " + selectedTime;
+            $("#date-selected").html(selectedYear + "-" + selectedMonth + "-" + selectedDay + " " + moment(e.date).format('h:mm a'));
+            $("#callback-date").val(selectedDate);
+         });
+
+         $("#eccs_year").on("change", function () {
+            eccsChangeSelectedDate();
+	 });
+
+         $("#eccs_month").on("change", function () {
+            eccsChangeSelectedDate();
+         });
+
+         $("#eccs_day").on("change", function () {
+            eccsChangeSelectedDate();
+         });
+      });
+	 
+	function eccsChangeSelectedDate(){
+	    eccstimepicker = $("#eccs_time").datetimepicker('getDate');
+	    selectedTime = moment(eccstimepicker).format('HH:mm:00');
+            selectedYear = $("#eccs_year").val();
+            selectedMonth = $("#eccs_month").val();
+            selectedDay = $("#eccs_day").val();
+
+            selectedDate = selectedYear + "-" + selectedMonth + "-" + selectedDay + " " + selectedTime;
+            $("#date-selected").html(selectedYear + "-" + selectedMonth + "-" + selectedDay + " " + moment(eccstimepicker).format('h:mm a'));
+            $("#callback-date").val(selectedDate);
+	}
+
+<?php } ?>
         
         $("#show-cb-calendar").click(function() {
             $("#cb-container").slideToggle('slow');
@@ -5634,10 +5697,26 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
                     {CBflag = '';}
                 //console.log(statuses[loop_ct], taskDSgrp);
                 if (taskDSgrp == statuses[loop_ct]) {
-                    dispo_HTML = dispo_HTML + "<span id='dispo-sel-"+statuses[loop_ct]+"' style='background-color:#99FF99;cursor:pointer;color:#77a30a;'>&nbsp; <span class='hidden-xs'>" + statuses[loop_ct] + " - " + statuses_names[loop_ct] + "</span><span class='hidden-sm hidden-md hidden-lg'>" + statuses_names[loop_ct] + "</span> " + CBflag + " &nbsp;</span><br /><br />";
+                    dispo_HTML = dispo_HTML + "<span id='dispo-sel-"+statuses[loop_ct]+"'";
+			<?php if(ECCS_BLIND_MODE === 'y'){ ?>
+				dispo_HTML = dispo_HTML + " class='btn' style='background-color:#000;font-size:larger;font-weight:bolder;cursor:pointer;color:white;'";
+			<?php }else{ ?>
+		    		dispo_HTML = dispo_HTML + " style='background-color:#99FF99;cursor:pointer;color:#77a30a;'";
+		    	<?php } ?>
+		    dispo_HTML = dispo_HTML + ">&nbsp; <span class='hidden-xs'>" + statuses[loop_ct] + " - " + statuses_names[loop_ct] + "</span><span class='hidden-sm hidden-md hidden-lg'>" + statuses_names[loop_ct] + "</span> " + CBflag + " &nbsp;</span><br /><br />";
                 } else {
-                    dispo_HTML = dispo_HTML + "<span id='dispo-add-"+statuses[loop_ct]+"' style='cursor:pointer;color:#77a30a;'>&nbsp; <span class='hidden-xs'>" + statuses[loop_ct] + " - " + statuses_names[loop_ct] + "</span><span class='hidden-sm hidden-md hidden-lg'>" + statuses_names[loop_ct] + "</span></span> " + CBflag + " &nbsp;<br /><br />";
-                }
+                    dispo_HTML = dispo_HTML + "<span style='cursor:pointer;color:#77a30a;font-size:large;' ";
+		    //ECCS Customization
+			<?php if(ECCS_BLIND_MODE === 'y'){ ?>
+			     dispo_HTML = dispo_HTML + " class='btn dispo-focus' data-tooltip='tooltip' title='"+statuses_names[loop_ct]+"' tabindex='0'";
+		        <?php } ?>
+//style='cursor:pointer;color:#77a30a;'
+		    dispo_HTML = dispo_HTML + "id='dispo-add-"+statuses[loop_ct]+"' >&nbsp; <span class='hidden-xs'>" + statuses[loop_ct] + " - " + statuses_names[loop_ct] + "</span><span class='hidden-sm hidden-md hidden-lg'>" + statuses_names[loop_ct] + "</span></span> " + CBflag + " &nbsp;<br /><br />";
+			//ECCS Customization
+			<?php if(ECCS_BLIND_MODE === 'y'){ ?>
+			    dispo_HTML = dispo_HTML + "<style> #dispo-add-"+statuses[loop_ct]+":focus{ background:yellow;color:#000!important;font-weight:bold; } </style>";
+        		<?php } ?>
+	        }
                 if (loop_ct == statuses_ct_half && !isMobile) {
                     $("#pause_agent").show();
                     $("#pause_agent_xs").hide();
@@ -5648,6 +5727,10 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
                 }
                 loop_ct++;
             }
+		//ECCS Customization
+		<?php if(ECCS_BLIND_MODE === 'y'){ ?>
+		dispo_HTML = dispo_HTML + "<script> $('.dispo-focus').keypress(function (e) { var key = e.which; var focused_elem = $(':focus'); if(key == 13){ $(focused_elem).click(); $('#btn-dispo-submit').focus(); } }); </script>";
+		<?php } ?>
         } else {
             dispo_HTML = dispo_HTML + "<?=$lh->translationFor('dispo_status_list_hidden')?><br /><br />";
         }

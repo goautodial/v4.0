@@ -1,4 +1,8 @@
 			//if blind mode == y
+			
+			.btn:focus{
+				background: yellow;
+			}
 
 			/* Topbar */
 
@@ -126,10 +130,11 @@
                                 right: 8px;
                         }
 			ul#go_agent_logout{
+				background: #222d32;
 				position: absolute!important;
 				padding: 0;
 				margin: 0 auto!important;
-				bottom: 5px!important;
+				bottom: 10px!important;
 				left: 2px;
 			}
 

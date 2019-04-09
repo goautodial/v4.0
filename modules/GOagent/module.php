@@ -609,7 +609,13 @@ EOF;
 </script>
 EOF;
 		}
-
+		if(ECCS_BLIND_MODE === 'y'){
+                                $eccsTabStopDatePicker = '<div class="col-md-3"><label for="eccs_year" style="font-size:x-large;">Year</label><input type="number" name="eccs_year" id="eccs_year" class="mda-form-control"  data-tooltip="toolip" title="Callback Year" /></div>';
+                                $eccsTabStopDatePicker .= '<div class="col-md-3"><label for="eccs_month" style="font-size:x-large;">Month</label><input type="text" name="eccs_month" id="eccs_month" class="mda-form-control"  data-tooltip="toolip" title="Callback Month" /></div>';
+                                $eccsTabStopDatePicker .= '<div class="col-md-3"><label for="eccs_day" style="font-size:x-large;">Date</label><input type="number" name="eccs_day" id="eccs_day" class="mda-form-control"  data-tooltip="toolip" title="Callback Day"  /></div>';
+                                $eccsTabStopDatePicker .= '<div class="col-md-3"><label for="eccs_time" style="font-size:x-large;">Time</label><input type="text" name="eccs_time" id="eccs_time" class="mda-form-control" data-tooltip="toolip" title="Callback Time" /></div>';
+		}
+	
 		$str .= <<<EOF
 <div id="dialog-custinfo" class="modal fade" tabindex="-1">
 	<div class="modal-dialog">
@@ -853,9 +859,10 @@ EOF;
 					</div>
 				</div>
 				<div class="row">
+					$eccsTabStopDatePicker;
 					<div class="col-md-12">
 						<div class="mda-form-group label-floating">
-							<textarea id="callback-comments" name="callback-comments" rows="5" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea" style="resize:none; width: 100%;"></textarea>
+							<textarea id="callback-comments" name="callback-comments" rows="5" data-tooltip="tooltip" title="Callback Comment" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea" style="resize:none; width: 100%;"></textarea>
 							<label for="callback-comments">$comments</label>
 						</div>
 					</div>
@@ -873,7 +880,7 @@ EOF;
 						</div>
 					</div>
 					<div class="col-md-8">
-						<button id="submitCBDate" type="button" class="btn btn-labeled btn-primary">
+						<button id="submitCBDate" type="button" data-tooltip="tooltip" title="Submit Callback" class="btn btn-labeled btn-primary">
 							<span class="btn-label">
 								<i class="fa fa-check"></i>
 							</span>
