@@ -2155,22 +2155,24 @@ function btnLogMeIn () {
 }
 
 function btnLogMeOut () {
-    refresh_interval = 730000;
-    check_if_logged_out = 0;
-    if (logoutWarn) {
-        swal({
-            title: "<?=$lh->translationFor('sure_to_logout')?>",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "<?=$lh->translationFor('log_me_out')?>",
-            closeOnConfirm: false
-        }, function(isConfirm){
-            swal.close();
-            sendLogout(isConfirm);
-        });
-    } else {
-        sendLogout(true);
+    if (!minimizedDispo) {
+        refresh_interval = 730000;
+        check_if_logged_out = 0;
+        if (logoutWarn) {
+            swal({
+                title: "<?=$lh->translationFor('sure_to_logout')?>",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "<?=$lh->translationFor('log_me_out')?>",
+                closeOnConfirm: false
+            }, function(isConfirm){
+                swal.close();
+                sendLogout(isConfirm);
+            });
+        } else {
+            sendLogout(true);
+        }
     }
 }
     
@@ -9995,7 +9997,6 @@ function minimizeModal(modal_id) {
     
     toggleButton('DialHangup', 'off');
     $('#MDPhonENumbeR').prop('readonly', true);
-    $("#btnLogMeOut").addClass("disabled");
     
     $(document).off('focusin.modal');
     
@@ -10017,7 +10018,6 @@ function maximizeModal(modal_id) {
     });
     
     $('#MDPhonENumbeR').prop('readonly', false);
-    $("#btnLogMeOut").removeClass("disabled");
 }
 
 String.prototype.toUpperFirst = function() {
