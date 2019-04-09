@@ -2488,18 +2488,18 @@ if(ECCS_BLIND_MODE != "y"){
 
 
 				// Dispo Tooltips
-				var dispoAdd = ["XFER" , "SALE", "NP", "NI", "N", "DNC", "DEC", "DC", "CALLBK", "B", "A"];
+				/*var dispoAdd = ["XFER" , "SALE", "NP", "NI", "N", "DNC", "DEC", "DC", "CALLBK", "B", "A"];
 
 				$('#select-disposition').on('show.bs.modal', function() {
                                 	for(var a = 0; a < dispoAdd.length; a++){
-                                        	$('div#DispoSelectContent span#dispo-add-' + dispoAdd[a] + '>span.hidden-xs').attr("data-tooltip", "tooltip");
-	                                        $('div#DispoSelectContent span#dispo-add-' + dispoAdd[a] + '>span.hidden-xs').attr("title", dispoAdd[a]);
+                                        	$('div#DispoSelectContent span#dispo-add-' + dispoAdd[a] + '>span.hidden-xs').attr({"data-tooltip:tooltip", "tabindex:"+a, "title:"+ dispoAdd[a]});
+	                                        $('div#DispoSelectContent span#dispo-add-' + dispoAdd[a] + '>span.hidden-xs').addClass("dispo-focus");
         	                        }
 
 					$('button#btn-dispo-submit').attr("data-tooltip", "tooltip");
                                         $('button#btn-dispo-submit').attr("title", "submit");
 
-				});
+				});8*/
 
 				// Dialer
 
