@@ -1250,19 +1250,20 @@ $(document).ready(function() {
                 } else {
                     btnLogMeIn();
                 }
-            } else if(e.shiftKey && e.key == "1") {
+            } else if(e.shiftKey && e.key == "!") {
                 if (live_customer_call > 0) {
+                    console.log('Shift: ' + e.shiftKey, 'Key: ' + e.key);
                     btnDialHangup();
                 }
-            } else if(e.shiftKey && e.key == "2") {
+            } else if(e.shiftKey && e.key == "@") {
                 if (live_customer_call < 1) {
                     btnResumePause();
                 }
-            } else if(e.shiftKey && e.key == "3") {
+            } else if(e.shiftKey && e.key == "#") {
                 $("#openWebForm").click();
-            } else if(e.shiftKey && e.key == "4") {
+            } else if(e.shiftKey && e.key == "$") {
                 $("#LeadPreview").click()
-            } else if(e.shiftKey && e.key == "5") {
+            } else if(e.shiftKey && e.key == "%") {
                 $("a[href='#callbackslist']").click()
             }
 		});
