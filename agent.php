@@ -93,7 +93,7 @@ $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
 
 // ECCS Customization
 if(ECCS_BLIND_MODE != "y"){
-	$html_title = CRM_GOAGENT_TITLE." - ".$lh->translateText('GOautodial')." " .CRM_GO_VERSION;
+	$html_title = CRM_GOAGENT_TITLE." - ".$lh->translationFor('GOautodial')." " .CRM_GO_VERSION;
 }else{
 	$html_title = "ECCS | Agent";
 }
