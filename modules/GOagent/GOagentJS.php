@@ -1658,23 +1658,25 @@ $(document).ready(function() {
                         updateHotKeys();
 		        // ECCS Customization
 		        <?php if (ECCS_BLIND_MODE === "y"){ ?>
-		            $('.clickhotkey').click(function() {
-	                    console.log($(this).attr('data-id'));
-			    var clicked_hotkey = $(this).attr('data-id');
-
-			    var clicked_numkey_equivalent = [48, 49, 50, 51, 52, 53, 54, 55, 56, 57];
-			    var clicked_numkey = clicked_numkey_equivalent;
-			    var hotkeyId = { key: null };
-
-			    for( var a=1; a < clicked_numkey.length; a++ ){
-			        if( clicked_hotkey == clicked_numkey[a] ){
-				    hotkeyId['key'] = a;				
-			        } 
-			    }
-			    console.log("Hotkey ID: " + hotkeyId);
-            		    //triggerHotkey();
-		   	    hotKeysAvailable(hotkeyId);
-		            });
+		        $('.clickhotkey').click(function() {
+                    if (!minimizedDispo) {
+                        console.log($(this).attr('data-id'));
+                        var clicked_hotkey = $(this).attr('data-id');
+    
+                        var clicked_numkey_equivalent = [48, 49, 50, 51, 52, 53, 54, 55, 56, 57];
+                        var clicked_numkey = clicked_numkey_equivalent;
+                        var hotkeyId = { key: null };
+    
+                        for( var a=1; a < clicked_numkey.length; a++ ){
+                            if( clicked_hotkey == clicked_numkey[a] ){
+                            hotkeyId['key'] = a;				
+                            } 
+                        }
+                        console.log("Hotkey ID: " + hotkeyId);
+                        //triggerHotkey();
+                        hotKeysAvailable(hotkeyId);
+                    }
+		        });
 		        <?php } ?>
 		        // /.ECCS Customization
 
@@ -2399,6 +2401,10 @@ function triggerHotkey(hotKeyId){
 
 function hotKeysAvailable(e) {
     if (hotkeys[e.key] === undefined) {
+        return;
+    }
+    
+    if (minimizedDispo) {
         return;
     }
     
@@ -9989,6 +9995,7 @@ function minimizeModal(modal_id) {
     
     toggleButton('DialHangup', 'off');
     $('#MDPhonENumbeR').prop('readonly', true);
+    $("#btnLogMeOut").addClass("disabled");
     
     $(document).off('focusin.modal');
     
@@ -10010,6 +10017,7 @@ function maximizeModal(modal_id) {
     });
     
     $('#MDPhonENumbeR').prop('readonly', false);
+    $("#btnLogMeOut").removeClass("disabled");
 }
 
 String.prototype.toUpperFirst = function() {
