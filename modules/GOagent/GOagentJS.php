@@ -5227,7 +5227,9 @@ function NewManualDialCall(tempDiaLnow) {
                     $("#DialALTPhoneMenu").show();
                 }
                 $("#LeadPreview").prop('checked', true);
-                $("#DialALTPhone").prop('checked', true);
+                if (DefaultALTDial == 1) {
+                    $("#DialALTPhone").prop('checked', true);
+                }
             } else {
                 agent_dialed_type = 'MANUAL_DIALNOW';
                 $("#LeadPreview").prop('checked', false);
