@@ -478,12 +478,17 @@ if(ECCS_BLIND_MODE != "y"){
 			<div class="col-lg-3">
 			<?php } ?>
                           <div id="popup-hotkeys" class="panel clearfix">
-                          <div class="panel-heading"><b><?=$lh->translationFor('available_hotkeys')?></b></div>
+                          <div class="panel-heading"><b><?=$lh->translationFor('hotkeys')?></b></div>
                               <div class="panel-body"><?=$lh->translationFor('no_available_hotkeys')?></div>
                                   <div class="panel-footer clearfix">
-                                  <div class="text-danger sidecolor" style="padding-right: 5px; background-color: inherit;">
-                                       <small><b><?=$lh->translationFor('note')?>:</b> <?=$lh->translationFor('hotkeys_note')?></small>
-                                  </div>
+                                      <div class="text-danger sidecolor" style="padding-right: 5px; background-color: inherit;">
+                                          <?php if(ECCS_BLIND_MODE === 'n'){ ?>
+                                          <small><b><?=$lh->translationFor('note')?>:</b> <?=$lh->translationFor('hotkeys_note')?></small>
+                                          <?php } else { ?>
+                                          <small id="" style="" class="">Login to Phone Dialer [Shift + Home]</small><br>
+                                          <small id"" style="" class="">Shortcut Keys to Exit [Shift + End]</small>
+                                          <?php } ?>
+                                      </div>
                                   </div>
                               </div>
 			<?php if(ECCS_BLIND_MODE === 'y'){ ?>
@@ -834,7 +839,8 @@ if(ECCS_BLIND_MODE != "y"){
 
 						</div>
 					<?php if(ECCS_BLIND_MODE === 'y'){ ?>
-						<span id="shortcut-key-reminder" style="position: absolute; bottom: 12px; right: 5px; font-family: calibri, arial, verdana, roboto; font-size: 14pt; font-weight: 600;" class="hidden-xs">Shortcut keys to exit [Shift + End]</span>
+						<!--span id="shortcut-key-reminder" style="position:absolute; bottom:12px; left:-315px; font-family:calibri, arial, verdana, roboto; font-size:14pt; font-weight:600;" class="hidden-xs">Login to Phone Dialer [Shift + Home]</span-->
+						<!--span id="shortcut-key-reminder" style="position: absolute; bottom: 12px; right: 5px; font-family: calibri, arial, verdana, roboto; font-size: 14pt; font-weight: 600;" class="hidden-xs">Shortcut keys to exit [Shift + End]</span-->
 					</div>
 					<?php } ?>
 					
@@ -2554,7 +2560,7 @@ if(ECCS_BLIND_MODE != "y"){
 
 				$('#edit-profile').append(" [#EI] ");
 				$('form#contact_details_form label[for="phone_number"]').append(" [#PN] ");
-				$('form#contact_details_form label[for="alt_phone"]').append(" [#APN] ");
+				$('form#contact_details_form label[for="alt_phone"]').html("Alt Phone Number [#APN] ");
 				$('form#contact_details_form label[for="address1"]').append(" [#A1] ");
 				$('form#contact_details_form label[for="address2"]').append(" [#A2] ");
                 	        $('form#contact_details_form label[for="city"]').append(" [#CT] ");
