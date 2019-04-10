@@ -486,7 +486,12 @@ if(ECCS_BLIND_MODE != "y"){
                                           <small><b><?=$lh->translationFor('note')?>:</b> <?=$lh->translationFor('hotkeys_note')?></small>
                                           <?php } else { ?>
                                           <small id="" style="" class="">Login to Phone Dialer [Shift + Home]</small><br>
-                                          <small id"" style="" class="">Shortcut Keys to Exit [Shift + End]</small>
+                                          <small id"" style="" class="">Shortcut Keys to Exit [Shift + End]</small><br>
+                                          <small id"" style="" class="">Shortcut Keys to Dial or Hangup Call [Shift + 1]</small><br>
+                                          <small id"" style="" class="">Shortcut Keys to Pause or Resume [Shift + 2]</small><br>
+                                          <small id"" style="" class="">Shortcut Keys to Open Webform [Shift + 3]</small><br>
+                                          <small id"" style="" class="">Shortcut Keys to toggle Lead Preview [Shift + 4]</small><br>
+                                          <small id"" style="" class="">Shortcut Keys to toggle Callback List [Shift + 5]</small>
                                           <?php } ?>
                                       </div>
                                   </div>
