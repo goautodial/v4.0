@@ -121,6 +121,7 @@ var reschedule_cb = false;
 var reschedule_cb_id = 0;
 var just_logged_in = false;
 var editProfileEnabled = false;
+var ECCS_BLIND_MODE = '<?=ECCS_BLIND_MODE?>';
 <?php
     foreach ($default_settings as $idx => $val) {
         if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
@@ -1249,12 +1250,8 @@ $(document).ready(function() {
 
               // Dial or Hangup
               } else if(e.shiftKey && e.key == "!") {
-                if (live_customer_call > 0) {
-                    console.log('Shift: ' + e.shiftKey, 'Key: ' + e.key);
-                    btnDialHangup();
-                } else if(live_customer_call < 1) {
-		    // btnDialHangup();
-		}
+                console.log('Shift: ' + e.shiftKey, 'Key: ' + e.key);
+                btnDialHangup();
 			      
               // Resume or Pause
               } else if(e.shiftKey && e.key == "@") {
@@ -1272,7 +1269,11 @@ $(document).ready(function() {
 
 	      // Callbacklist
               } else if(e.shiftKey && e.key == "%") {
-                $("a[href='#callbackslist']").click()
+                if ($("#loaded-contents").is(':visible')) {
+                    MainPanelToFront();
+                } else {
+                    $("a[href='#callbackslist']").click();
+                }
               }
 	   });
    
@@ -1851,11 +1852,13 @@ $(document).ready(function() {
     });
     
     $("#openWebForm").click(function() {
-        window.open(TEMP_VDIC_web_form_address, web_form_target, 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=640,height=450');
+        var webFormOptions = (ECCS_BLIND_MODE == 'y') ? 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=640,height=450' : '');
+        window.open(TEMP_VDIC_web_form_address, web_form_target, webFormOptions);
     });
     
     $("#openWebFormTwo").click(function() {
-        window.open(TEMP_VDIC_web_form_address_two, web_form_target, 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=640,height=450');
+        var webFormOptions = (ECCS_BLIND_MODE == 'y') ? 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=640,height=450' : '');
+        window.open(TEMP_VDIC_web_form_address_two, web_form_target, webFormOptions);
     });
     
     $("form.formXFER").submit(function(e){
