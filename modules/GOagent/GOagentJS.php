@@ -1221,16 +1221,10 @@ $(document).ready(function() {
     //ECCS Customization
 	if( ECCS_BLIND_MODE === 'y'){
     ?>
-		/*$('form#contact_details_form label[for="alt_phone"]').keypress(function(event){
-                       var keycode = (event.keyCode ? event.keyCode : event.which);
-                       if(keycode == 13){
-                   	    $('input#alt_phone').focus();
-                       }
-                       event.stopPropagation();
-                 });*/
-		// Exit Shortcut Shift + End
-		$(document).keydown(function(e){
-			if(e.shiftKey && e.key == "End"){
+	    // Keyboard Shortcuts
+	    $(document).keydown(function(e){
+	      // User Exit
+	      if(e.shiftKey && e.key == "End"){
                 if (is_logged_in && (live_customer_call > 0 || XD_live_customer_call > 0)) {
                     swal({
                         title: '<?=$lh->translationFor('error')?>',
@@ -1240,7 +1234,9 @@ $(document).ready(function() {
                 } else {
                     btnLogMeOut();
                 }
-			} else if(e.shiftKey && e.key == "Home") {
+
+	      // Phone Log In
+	      } else if(e.shiftKey && e.key == "Home") {
                 if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
                     swal({
                         title: '<?=$lh->translationFor('error')?>',
@@ -1250,24 +1246,37 @@ $(document).ready(function() {
                 } else {
                     btnLogMeIn();
                 }
-            } else if(e.shiftKey && e.key == "!") {
+
+              // Dial or Hangup
+              } else if(e.shiftKey && e.key == "!") {
                 if (live_customer_call > 0) {
                     console.log('Shift: ' + e.shiftKey, 'Key: ' + e.key);
                     btnDialHangup();
-                }
-            } else if(e.shiftKey && e.key == "@") {
+                } else if(live_customer_call < 1) {
+		    // btnDialHangup();
+		}
+			      
+              // Resume or Pause
+              } else if(e.shiftKey && e.key == "@") {
                 if (live_customer_call < 1) {
                     btnResumePause();
-                }
-            } else if(e.shiftKey && e.key == "#") {
+              }
+
+	      // Open Web form
+              } else if(e.shiftKey && e.key == "#") {
                 $("#openWebForm").click();
-            } else if(e.shiftKey && e.key == "$") {
-                $("#LeadPreview").click()
-            } else if(e.shiftKey && e.key == "%") {
+
+	      // Toggle Lead Preview
+              } else if(e.shiftKey && e.key == "$") {
+                $("#LeadPreview").click();
+
+	      // Callbacklist
+              } else if(e.shiftKey && e.key == "%") {
                 $("a[href='#callbackslist']").click()
-            }
-		});
-    <?php
+              }
+	   });
+   
+     <?php
 	}	
     // /. ECCS Customization
     ?>
@@ -10016,7 +10025,7 @@ function maximizeModal(modal_id) {
         $(".max-modal").addClass('hidden');
         $(".min-modal").removeClass('hidden');
     });
-    
+
     $('#MDPhonENumbeR').prop('readonly', false);
 }
 
