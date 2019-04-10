@@ -2394,8 +2394,8 @@ function updateHotKeys() {
 	var numKey = numkey_equivalent[key];
 	
 	hotkeysContent += "<a data-id='"+numKey+"' class='clickhotkey' <?php if( ECCS_BLIND_MODE === 'y'){ ?> title='"+hotkeys_content[thisKey]+"' <?php } ?> >";
-        hotkeysContent += "<dt class='text-primary'>"+key+") "+thisKey+" -</dt>";
-        hotkeysContent += "<dd>"+hotkeys_content[thisKey]+"</dd>";
+        hotkeysContent += "<dt class='text-primary'>"+key+") "+thisKey+"</dt>";
+        hotkeysContent += "<dd>- "+hotkeys_content[thisKey]+"</dd>";
 	hotkeysContent += "</a>";
     }
     hotkeysContent += "</dl>";
