@@ -1852,12 +1852,12 @@ $(document).ready(function() {
     });
     
     $("#openWebForm").click(function() {
-        var webFormOptions = (ECCS_BLIND_MODE == 'y') ? 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=640,height=450' : '';
+        var webFormOptions = (ECCS_BLIND_MODE == 'n') ? 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=640,height=450' : '';
         window.open(TEMP_VDIC_web_form_address, web_form_target, webFormOptions);
     });
     
     $("#openWebFormTwo").click(function() {
-        var webFormOptions = (ECCS_BLIND_MODE == 'y') ? 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=640,height=450' : '';
+        var webFormOptions = (ECCS_BLIND_MODE == 'n') ? 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=640,height=450' : '';
         window.open(TEMP_VDIC_web_form_address_two, web_form_target, webFormOptions);
     });
     
