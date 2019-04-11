@@ -1984,7 +1984,7 @@ $(document).ready(function() {
     
     // WebSocket Keep-alive
     var checkWebsocketConn = setInterval(function() {
-        if (is_logged_in && (use_webrtc && phoneRegistered) && typeof socket !== 'undefined') {
+        if (is_logged_in && (use_webrtc && phoneRegistered) && typeof socket !== 'undefined' && (live_customer_call < 1 && XD_live_customer_call < 1)) {
             socket.send('PING');
         }
     }, 60000)
