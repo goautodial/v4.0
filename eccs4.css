@@ -36,6 +36,10 @@
 			#topbar-callbacks a.dropdown-toggle span.label.label-primary{
 				right: 60px!important;
 			}
+			
+			ul.nav.navbar-nav li:nth-of-type(3)>a.hidden-xs{
+				padding-bottom: 4px!important;
+			}
 			/* header */
 			.content-wrapper > .content-heading{
 				margin-top: 10px!important;
@@ -705,6 +709,10 @@
 			select#select_camp{
 				margin-top: 15px;
 			}
+                        ul.nav.navbar-nav li:nth-of-type(3)>a.hidden-xs{
+                                padding-bottom: 4px!important;
+                        }
+
 		}
 			  /* tablet-small */
 		@media all and (min-width: 600px) and (orientation: portrait) {

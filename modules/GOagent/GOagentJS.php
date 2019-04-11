@@ -1275,6 +1275,7 @@ $(document).ready(function() {
                     $("a[href='#callbackslist']").click();
                 }
               }
+
 	   });
    
      <?php
@@ -1966,6 +1967,20 @@ $(document).ready(function() {
         $("#missed-callbacks-content").hide();
         $("#missed-callbacks-loading").show();
     });
+
+    <?php if(ECCS_BLIND_MODE ==='y'){ ?>
+/*	var sidebar_counter = 1;
+	$("aside.control-sidebar").addClass('control-sidebar-open');
+	$("ul.nav.navbar-nav li:nth-of-type(3) a.hidden-xs").on('click', function(){
+             //console.log('toggle clicked' + sidebar_counter);
+             if(!(sidebar_counter == 0 || !!(sidebar_counter && !(sidebar_counter%2)))){
+                 sidebar_counter++;
+                 $.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; Sidebar Hidden", timeout: 2000, htmlAllowed: true});
+             } else {
+                 sidebar_counter++;
+             }
+        }); */
+    <?php } ?>
 });
 
 function checkSidebarIfOpen(startUp) {
@@ -1985,6 +2000,12 @@ function checkSidebarIfOpen(startUp) {
             options['margin-left'] = '0';
         }
         rightBar = '-' + sideBar;
+
+	<?php if(ECCS_BLIND_MODE ==='y'){ ?>
+        $.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; Login Tab Hidden", timeout: 2000, htmlAllowed: true});
+	$("[data-toggle='control-sidebar']").attr("title", "Enter to Show Login Tab");
+        <?php } ?>
+
     } else {
         options = {
             'margin-right': '230px'
@@ -1996,6 +2017,9 @@ function checkSidebarIfOpen(startUp) {
         if (startUp) {
             $("aside.control-sidebar").addClass('control-sidebar-open');
         }
+	<?php if(ECCS_BLIND_MODE ==='y'){ ?>
+	    $("[data-toggle='control-sidebar']").attr("title", "Enter to Hide Login Tab");
+        <?php } ?>
     }
     $("aside.content-wrapper").css(options);
     $("aside.control-sidebar").css({

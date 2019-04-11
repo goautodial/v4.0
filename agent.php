@@ -2579,7 +2579,8 @@ if(ECCS_BLIND_MODE != "y"){
                 	        $('form#gender_form label[for="date_of_birth"]').append(" [#DB] ");
         	                $('form#gender_form label[for="call_notes"]').append(" [#CN] ");
 
-                                $('ul.nav.navbar-nav li:nth-of-type(3)>a.visible-xs').append("<br><span>#CONF</span>");
+                                //$('ul.nav.navbar-nav li:nth-of-type(3)>a.visible-xs').append("<br><span>#CONF</span>");
+				$("[data-toggle='control-sidebar']").append("<br><span>#CONF</span>");
 
 				$('li#topbar-callbacks a.dropdown-toggle').append('<span>&nbsp; #CB</span>');
 				$('li.dropdown.messages-menu a.dropdown-toggle').append('<br><span>#VM</span>');
@@ -2637,7 +2638,14 @@ if(ECCS_BLIND_MODE != "y"){
 					$('nav.control-sidebar-tabs > li#settings-tab').removeClass('active');
 					$('nav.control-sidebar-tabs > li#dialer-tab').addClass('active');
 				});
-
+								
+				if($('aside.control-sidebar').hasClass("control-sidebar-open")){
+					$("[data-toggle='control-sidebar']").attr("title", "Enter to Hide Login Tab");
+				} else {
+					$("[data-toggle='control-sidebar']").attr("title", "Enter to Show Login Tab");
+				}
+//				$("[data-toggle='control-sidebar']").attr("title", "Enter to Show Login Tab");
+				
 			});
 		</script>
 		<?php } //end if ECCS_BLIND_MODE ?>
