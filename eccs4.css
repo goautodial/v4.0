@@ -136,6 +136,7 @@
                                 position: fixed;
                                 bottom: 20px;
                                 right: 8px;
+		        left: 8px;
                         }
 			ul#go_agent_logout{
 				background: #222d32;
