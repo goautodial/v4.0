@@ -1981,6 +1981,13 @@ $(document).ready(function() {
              }
         }); */
     <?php } ?>
+    
+    // WebSocket Keep-alive
+    var checkWebsocketConn = setInterval(function() {
+        if (is_logged_in && (use_webrtc && phoneRegistered) && typeof socket !== 'undefined') {
+            socket.send('PING');
+        }
+    }, 60000)
 });
 
 function checkSidebarIfOpen(startUp) {
