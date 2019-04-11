@@ -93,11 +93,15 @@
 			}
 
 			/* Tabs */
+			ul#agent_tablist > li > a.bb0{
+                                color: #000;
+                        }
+
                         ul#agent_tablist > li.active > a.bb0{
-				color: #000;
 				background-color: white!important;
 			}
-			
+		
+				
 			/* common styles */
                         section.content-heading{
                                 padding: 10px 40px!important;
@@ -161,6 +165,13 @@
                                 font-weight: bold;
 			}
 
+			h4#cust_full_name a:link,
+                        h4#cust_full_name a:visited,
+                        h4#cust_full_name a:hover,
+                        h4#cust_full_name a:active{
+				color: white;
+			}
+
 			#agent_tablist a.bb0,
 			#popup-hotkeys .panel-heading,
 			#select-campaign h4.modal-title{
@@ -179,13 +190,18 @@
 				font-family: arial, verdana, roboto;
                                 font-size: 12pt!important;
                                 font-weight: bold!important;
+				color: #000;
                         }
 
 			span#cust_call_type,
 			span#cust_campaign_name{
 				float: inherit;
-				font-size: 16pt;
+				font-size: 20pt!important;
 				font-weight: bold;
+			}
+
+			span#cust_call_type span{
+				padding: 0 15px;
 			}
 
 			#contact_details_form label,
@@ -198,7 +214,7 @@
 			}
 			
                         input#cust_number{
-                                width: auto;
+                                font-size: 16pt!important;
                         }
 
 			#popup-hotkeys div.panel-body,
@@ -242,6 +258,15 @@
 
 			#popup-hotkeys dd{
 				margin-left: 0;
+			}
+
+			#popup-hotkeys .panel-body a:link,
+			#popup-hotkeys .panel-body a:visited,
+			#popup-hotkeys .panel-body a:hover,
+			#popup-hotkeys .panel-body a:active,
+			#popup-hotkeys dt.text-primary,
+			#popup-hotkeys dd{
+				color: #000;
 			}
 	
 		/* mobile-small */
@@ -629,35 +654,41 @@
 
  			/* Content */
                         h4#cust_full_name{
-				font-size: 20pt!important;
+				font-size: 18pt!important;
 			}
+
+                        span#cust_call_type,
+                        span#cust_campaign_name{
+                                font-size: 16pt;
+                        }
 
                         #agent_tablist a.bb0,
                         .panel-heading,
                         #select-campaign h4.modal-title{
-                                font-size: 13pt!important;
+                                font-size: 18pt!important;
                         }
 
-                        span#cust_number,
                         .mda-form-control,
                         textarea#comments,
                         div#ScriptContents,
                         select#country_code,
                         #select-campaign label,
                         span.select2{
-                                font-size: 11pt!important;
+                                font-size: 16pt!important;
                         }
 
                         span#cust_call_type,
 			span#cust_campaign_name,
+                        span#cust_number,
+			input#cust_number,
 			label[for="cust_number"]{
-                                font-size: 13pt;
+                                font-size: 16pt;
                         }
 
                         #contact_details_form label,
                         #gender_form label,
                         #comment_form label{
-                                font-size: 11pt;
+                                font-size: 16pt;
                         }
 
                         form#contact_details_form .mda-form-group.label-floating, form#gender_form .mda-form-group.label-floating{
@@ -667,6 +698,13 @@
                         form#contact_details_form .mda-form-group.label-floating label, form#gender_form .mda-form-group.label-floating label{
                                 margin-bottom: 2px;
                         }
+			
+			span#select2-country_code-container{
+				padding-top: 5px;
+			}
+			select#select_camp{
+				margin-top: 15px;
+			}
 		}
 			  /* tablet-small */
 		@media all and (min-width: 600px) and (orientation: portrait) {
