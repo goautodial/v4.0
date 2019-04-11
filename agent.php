@@ -1665,7 +1665,7 @@ if(ECCS_BLIND_MODE != "y"){
 			</li>
 		</ul>
 		
-        <ul class="control-sidebar-menu" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">
+        <ul class="control-sidebar-menu" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px; max-width: 100%; padding-bottom: 5px; background-color: #222d32;">
 			<li>
 				<div class="center-block" style="text-align: center">
 					<a href="#profile" class="btn btn-warning"><i class='fa fa-user'></i> <?=$lh->translationFor("my_profile")?></a>
