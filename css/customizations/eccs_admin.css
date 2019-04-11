@@ -1,0 +1,16 @@
+        #div1{
+        font-style:bold;
+        color:#000000;
+        }
+        #p1{
+        font-weight:600;
+        color:#000000;
+        }
+        #input1, #input2{
+        font-size:16pt;
+        }
+        #btn1{
+        font-size:13pt;
+        padding:7px;
+        }
+
