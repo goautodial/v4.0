@@ -113,10 +113,3 @@
 audio{
 	width: 100%;
 }
-
-@media (max-width: 640px) {
-	.control-sidebar-menu {
-		max-width: 280px;
-		margin: 0 auto;
-	}
-}
