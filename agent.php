@@ -1607,7 +1607,7 @@ if(ECCS_BLIND_MODE != "y"){
 			
         </ul>
 		
-        <ul class="control-sidebar-menu" id="go_agent_logout" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 5px; text-align: center;">
+        <ul class="control-sidebar-menu" id="go_agent_logout" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 5px; text-align: center; max-width: 100%; padding-bottom: 5px; background-color: #222d32;">
 			<li style="margin-bottom: -5px;">
 				<p><strong><?=$lh->translateText("Call Duration")?>:</strong> <span id="SecondsDISP">0</span> <?=$lh->translationFor('second')?></p>
 				<span id="session_id" class="hidden"></span>
