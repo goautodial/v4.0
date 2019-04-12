@@ -1831,7 +1831,9 @@ $(document).ready(function() {
     <?php } ?>
 
     $("[data-toggle='control-sidebar']").on('click', function() {
-        checkSidebarIfOpen();
+        if (!minimizedDispo) {
+            checkSidebarIfOpen();
+        }
     });
     
     $("#reload-script").click(function() {
@@ -1994,7 +1996,7 @@ $(document).ready(function() {
             e.preventDefault();
             return false;
         }
-    })
+    });
 });
 
 function checkSidebarIfOpen(startUp) {
