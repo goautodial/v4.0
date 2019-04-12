@@ -10096,6 +10096,7 @@ function maximizeModal(modal_id) {
         $(".min-modal").removeClass('hidden');
     });
 
+    toggleButton('DialHangup', 'dial', 'on');
     $('#MDPhonENumbeR').prop('readonly', false);
 }
 
