@@ -1748,6 +1748,7 @@ $(document).ready(function() {
     $("#btn-dispo-submit").click(function() {
         if (minimizedDispo) {
             minimizedDispo = false;
+            $.AdminLTE.options.controlSidebarOptions.minimizedDispo = false;
             $("body").css('overflow-y', 'auto');
             CustomerData_update();
         }
@@ -5752,6 +5753,7 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
             dispo_HTML = dispo_HTML + "    $('[id^=dispo-sel-]').click(function() {";
             dispo_HTML = dispo_HTML + "        if (minimizedDispo) {";
             dispo_HTML = dispo_HTML + "            minimizedDispo = false;";
+            dispo_HTML = dispo_HTML + "            $.AdminLTE.options.controlSidebarOptions.minimizedDispo = false;";
             dispo_HTML = dispo_HTML + "            $('body').css('overflow-y', 'auto');";
             dispo_HTML = dispo_HTML + "            CustomerData_update();";
             dispo_HTML = dispo_HTML + "        }";
@@ -10063,6 +10065,7 @@ function phone_number_format(formatphone) {
 
 function minimizeModal(modal_id) {
     minimizedDispo = true;
+    $.AdminLTE.options.controlSidebarOptions.minimizedDispo = true;
     $("#"+modal_id).css('overflow', 'hidden');
     $("#"+modal_id+" div.modal-dialog").animate({ 'margin-top': '5px' }, 500);
     $("#"+modal_id).animate({ 'top': '94%' }, 500, function() {
