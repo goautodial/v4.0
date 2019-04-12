@@ -1989,7 +1989,7 @@ $(document).ready(function() {
         }
     }, 60000);
     
-    $("ul.nav.navbar-nav li").on('click', function(e) {
+    $("ul.nav.navbar-nav li, ul.nav.nav-tabs li").on('click', function(e) {
         if (minimizedDispo) {
             e.preventDefault();
             return false;

@@ -71,7 +71,9 @@ $.AdminLTE.options = {
     //The sidebar selector
     selector: ".control-sidebar",
     //Enable slide over content
-    slide: true
+    slide: true,
+    //Added for GOautodial Agent UI
+    minimizedDispo: false
   },
   //Box Widget Plugin. Enable this plugin
   //to allow boxes to be collapsed and/or removed
@@ -453,13 +455,16 @@ function _init() {
       //Listen to the click event
       btn.on('click', function (e) {
         e.preventDefault();
-        //If the sidebar is not open
-        if (!sidebar.hasClass('control-sidebar-open')
-            && !$('body').hasClass('control-sidebar-open')) {
-          //Open the sidebar
-          _this.open(sidebar, o.slide);
-        } else {
-          _this.close(sidebar, o.slide);
+        //Check if minimizedDispo is false
+        if (!o.minimizedDispo) {
+          //If the sidebar is not open
+          if (!sidebar.hasClass('control-sidebar-open')
+              && !$('body').hasClass('control-sidebar-open')) {
+            //Open the sidebar
+            _this.open(sidebar, o.slide);
+          } else {
+            _this.close(sidebar, o.slide);
+          }
         }
       });
 
