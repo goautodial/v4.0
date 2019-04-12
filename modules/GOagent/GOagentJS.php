@@ -10075,6 +10075,8 @@ function minimizeModal(modal_id) {
     });
     
     toggleButton('DialHangup', 'off');
+    if (dial_method.toLowerCase() == 'manual')
+        toggleButton('ResumePause', 'off');
     $('#MDPhonENumbeR').prop('readonly', true);
     
     $(document).off('focusin.modal');
@@ -10096,7 +10098,11 @@ function maximizeModal(modal_id) {
         $(".min-modal").removeClass('hidden');
     });
 
-    toggleButton('DialHangup', 'dial', 'on');
+    toggleButton('DialHangup', 'dial');
+    if (dial_method.toLowerCase() == 'manual') {
+        var btnIsPaused = (VDRP_stage == 'PAUSED') ? 'resume' : 'pause';
+        toggleButton('ResumePause', btnIsPaused);
+    }
     $('#MDPhonENumbeR').prop('readonly', false);
 }
 
