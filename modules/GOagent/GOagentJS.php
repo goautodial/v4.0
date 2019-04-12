@@ -1988,6 +1988,12 @@ $(document).ready(function() {
             socket.send('PING');
         }
     }, 60000);
+    
+    $("[data-toggle]").on('click', function(e) {
+        if (minimizedDispo) {
+            e.preventDefault();
+        }
+    })
 });
 
 function checkSidebarIfOpen(startUp) {
@@ -2037,87 +2043,89 @@ function checkSidebarIfOpen(startUp) {
 
 function hijackThisLink(e) {
     e.preventDefault();
-    var thisLink = $(this).attr('href');
-    var hash = '';
-    var origHash = window.location.hash.replace("#","");
-    var breadCrumb = '<li><a href="agent.php"><i class="fa fa-home"></i> <?=$lh->translationFor('home')?></a></li>';
-    if (/customerslist/g.test(thisLink)) {
-        $(".content-heading span").html("<?=$lh->translationFor('contacts')?>");
-        breadCrumb += '<li class="active"><?=$lh->translationFor('contacts')?></li>';
-        hash = 'contacts';
-    } else if (/agent|index/g.test(thisLink)) {
-        $(".content-heading span").html("<?=$lh->translationFor('contact_information')?>");
-        breadCrumb = '<li class="active"><i class="fa fa-home"></i> <?=$lh->translationFor('home')?></li>';
-    } else if (/edituser/g.test(thisLink)) {
-        $(".content-heading span").html("<?=$lh->translationFor('my_profile')?>");
-        breadCrumb += '<li class="active"><?=$lh->translationFor('profile')?></li>';
-        hash = 'profile';
-    } else if (/profile/g.test(thisLink)) {
-        $(".content-heading span").html("<?=$lh->translationFor('my_profile')?>");
-        breadCrumb += '<li class="active"><?=$lh->translationFor('profile')?></li>';
-        hash = 'profile';
-    } else if (/events|callbackslist/g.test(thisLink)) {
-        $(".content-heading span").html("<?=$lh->translationFor('list_of_callbacks')?>");
-        breadCrumb += '<li class="active"><?=$lh->translationFor('callbacks')?></li>';
-        hash = 'callbacks';
-    } else if (/messages|readmail|composemail/g.test(thisLink)) {
-        $(".content-heading span").html("<?=$lh->translationFor('messages')?>");
-        breadCrumb += '<li class="active"><?=$lh->translationFor('messages')?></li>';
-        
-        $.each($("div[id^='mail-']"), function(idx, elem) {
-            var thisID = $(elem).attr('id').replace('mail-', '');
-            var searchID = new RegExp(thisID);
-            if (searchID.test(thisLink)) {
-                $(elem).show();
-            } else {
-                $(elem).hide();
-            }
-        });
-        hash = 'messages';
-    } else if (/notifications/g.test(thisLink)) {
-        $(".content-heading span").html("<?=$lh->translationFor('notifications')?>");
-        breadCrumb += '<li class="active"><?=$lh->translationFor('notifications')?></li>';
-        hash = 'notifications';
-    } else if (/tasks/g.test(thisLink)) {
-        $(".content-heading span").html("<?=$lh->translationFor('tasks')?>");
-        breadCrumb += '<li class="active"><?=$lh->translationFor('tasks')?></li>';
-        hash = 'tasks';
-    }
-    
-    if (origHash !== hash) {
-        $(".preloader").fadeIn('fast');
-        if (hash == 'contacts') {
-            getContactList();
+    if (!minimizedDispo) {
+        var thisLink = $(this).attr('href');
+        var hash = '';
+        var origHash = window.location.hash.replace("#","");
+        var breadCrumb = '<li><a href="agent.php"><i class="fa fa-home"></i> <?=$lh->translationFor('home')?></a></li>';
+        if (/customerslist/g.test(thisLink)) {
+            $(".content-heading span").html("<?=$lh->translationFor('contacts')?>");
+            breadCrumb += '<li class="active"><?=$lh->translationFor('contacts')?></li>';
+            hash = 'contacts';
+        } else if (/agent|index/g.test(thisLink)) {
+            $(".content-heading span").html("<?=$lh->translationFor('contact_information')?>");
+            breadCrumb = '<li class="active"><i class="fa fa-home"></i> <?=$lh->translationFor('home')?></li>';
+        } else if (/edituser/g.test(thisLink)) {
+            $(".content-heading span").html("<?=$lh->translationFor('my_profile')?>");
+            breadCrumb += '<li class="active"><?=$lh->translationFor('profile')?></li>';
+            hash = 'profile';
+        } else if (/profile/g.test(thisLink)) {
+            $(".content-heading span").html("<?=$lh->translationFor('my_profile')?>");
+            breadCrumb += '<li class="active"><?=$lh->translationFor('profile')?></li>';
+            hash = 'profile';
+        } else if (/events|callbackslist/g.test(thisLink)) {
+            $(".content-heading span").html("<?=$lh->translationFor('list_of_callbacks')?>");
+            breadCrumb += '<li class="active"><?=$lh->translationFor('callbacks')?></li>';
+            hash = 'callbacks';
+        } else if (/messages|readmail|composemail/g.test(thisLink)) {
+            $(".content-heading span").html("<?=$lh->translationFor('messages')?>");
+            breadCrumb += '<li class="active"><?=$lh->translationFor('messages')?></li>';
+            
+            $.each($("div[id^='mail-']"), function(idx, elem) {
+                var thisID = $(elem).attr('id').replace('mail-', '');
+                var searchID = new RegExp(thisID);
+                if (searchID.test(thisLink)) {
+                    $(elem).show();
+                } else {
+                    $(elem).hide();
+                }
+            });
+            hash = 'messages';
+        } else if (/notifications/g.test(thisLink)) {
+            $(".content-heading span").html("<?=$lh->translationFor('notifications')?>");
+            breadCrumb += '<li class="active"><?=$lh->translationFor('notifications')?></li>';
+            hash = 'notifications';
+        } else if (/tasks/g.test(thisLink)) {
+            $(".content-heading span").html("<?=$lh->translationFor('tasks')?>");
+            breadCrumb += '<li class="active"><?=$lh->translationFor('tasks')?></li>';
+            hash = 'tasks';
         }
-    }
-    
-    if (hash.length > 0) {
-        window.location.hash = hash;
         
-        var thisContents = $("#loaded-contents div[id^='contents-']");
-        $.each(thisContents, function() {
-            var contentID = $(this).prop('id').replace('contents-', '');
-            if (contentID == hash) {
-                $(this).show();
-            } else {
-                $(this).hide();
+        if (origHash !== hash) {
+            $(".preloader").fadeIn('fast');
+            if (hash == 'contacts') {
+                getContactList();
             }
-        });
+        }
         
-        $("#cust_info").hide();
-        $("#loaded-contents").show();
-    } else {
-        MainPanelToFront();
-    }
-    
-    $(".content-heading ol").empty();
-    $(".content-heading ol").html(breadCrumb);
-    $("a:regex(href, index|agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist|composemail|readmail)").off('click', hijackThisLink).on('click', hijackThisLink);
-    
-    history.pushState('', document.title, window.location.pathname);
-    
-    if (origHash !== hash && hash != 'contacts') {
-        $(".preloader").fadeOut('slow');
+        if (hash.length > 0) {
+            window.location.hash = hash;
+            
+            var thisContents = $("#loaded-contents div[id^='contents-']");
+            $.each(thisContents, function() {
+                var contentID = $(this).prop('id').replace('contents-', '');
+                if (contentID == hash) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+            
+            $("#cust_info").hide();
+            $("#loaded-contents").show();
+        } else {
+            MainPanelToFront();
+        }
+        
+        $(".content-heading ol").empty();
+        $(".content-heading ol").html(breadCrumb);
+        $("a:regex(href, index|agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist|composemail|readmail)").off('click', hijackThisLink).on('click', hijackThisLink);
+        
+        history.pushState('', document.title, window.location.pathname);
+        
+        if (origHash !== hash && hash != 'contacts') {
+            $(".preloader").fadeOut('slow');
+        }
     }
 }
 
