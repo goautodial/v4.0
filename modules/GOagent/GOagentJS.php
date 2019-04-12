@@ -2478,20 +2478,7 @@ function hotKeysAvailable(e) {
                     alt_phone_dialing = starting_alt_phone_dialing;
                     alt_dial_active = 0;
                     alt_dial_status_display = 0;
-            <?php
-                  //ECCS Customization
-                  if( ECCS_BLIND_MODE === 'y'){
-            ?>
-                  if( HKdispo == "CALLBK" ){
-                      DialedCallHangup('NO');
-                  } else {
-		      DialedCallHangup('NO', 'YES', HKdispo);
-		  }
-            <?php
-                  } else {
-             ?>
                     DialedCallHangup('NO', 'YES', HKdispo);
-	    <?php } // /.ECCS Customization ?>
                 
                     if (custom_fields_enabled > 0) {
                         //vcFormIFrame.document.form_custom_fields.submit();
@@ -3659,10 +3646,15 @@ function CheckForIncoming () {
                 
                 swal({
                     title: "<?=$lh->translationFor('previous_callback')?>",
-                    text: "<div style='text-align: left; padding: 0 30px;'><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('last_call')?>:</b> " + CBentry_time + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('callback')?>:</b> " + CBcallback_time + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('agent')?>:</b> " + CBuser + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('comments')?>:</b><br />" + CBcomments + "</div></div>",
+                    text: "<div class='swal-previous-callback' style='text-align: left; padding: 0 30px;'><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('last_call')?>:</b> " + CBentry_time + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('callback')?>:</b> " + CBcallback_time + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('agent')?>:</b> " + CBuser + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('comments')?>:</b><br />" + CBcomments + "</div></div>",
                     type: 'info',
                     html: true
                 });
+
+		<?php if(ECCS_BLIND_MODE === 'y'){ ?>
+                $("div.swal-previous-callback").attr("title", "<?=$lh->translationFor('previous_callback')?>");
+                <?php } ?>
+
             }
             
             //if (dialed_label == 'ALT')
@@ -4562,7 +4554,13 @@ function CallBacksCountCheck() {
                         commentTitle = ' title="'+thisComments+'"';
                         thisComments = thisComments.substring(0, 20) + "...";
                     }
-                    var appendThis = '<tr data-id="'+value.callback_id+'"><td>'+value.cust_name+'</td><td>'+value.phone_number+'</td><td title="'+value.entry_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_entry_time+'</td><td title="'+value.callback_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</td><td>'+value.campaign_name+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-cb-'+value.callback_id+'" data-cbid="'+value.callback_id+'" data-leadid="'+value.lead_id+'" onclick="NewCallbackCall('+value.callback_id+', '+value.lead_id+');" class="btn btn-primary btn-sm dial-callback"><i class="fa fa-phone"></i></button> <button id="remove-cb-'+value.callback_id+'" class="btn btn-danger btn-sm hidden"><i class="fa fa-trash-o"></i></button></td></tr>';
+
+		<?php if( ECCS_BLIND_MODE === 'y'){?>
+                    var appendThis = '<tr data-id="'+value.callback_id+'"><td title="'+value.cust_name+'" style="cursor: pointer;">'+value.cust_name+'</td><td title="'+value.phone_number+'" style="cursor: pointer;">'+value.phone_number+'</td><td title="'+value.entry_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_entry_time+'</td><td title="'+value.callback_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</td><td title="'+value.campaign_name+'" style="cursor: pointer;">'+value.campaign_name+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-cb-'+value.callback_id+'" data-cbid="'+value.callback_id+'" data-leadid="'+value.lead_id+'" onclick="NewCallbackCall('+value.callback_id+', '+value.lead_id+');" class="btn btn-primary btn-sm dial-callback"><i class="fa fa-phone"></i></button> <button id="remove-cb-'+value.callback_id+'" class="btn btn-danger btn-sm hidden"><i class="fa fa-trash-o"></i></button></td></tr>';
+		<?php } else { ?>
+		    var appendThis = '<tr data-id="'+value.callback_id+'"><td>'+value.cust_name+'</td><td>'+value.phone_number+'</td><td title="'+value.entry_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_entry_time+'</td><td title="'+value.callback_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</td><td>'+value.campaign_name+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-cb-'+value.callback_id+'" data-cbid="'+value.callback_id+'" data-leadid="'+value.lead_id+'" onclick="NewCallbackCall('+value.callback_id+', '+value.lead_id+');" class="btn btn-primary btn-sm dial-callback"><i class="fa fa-phone"></i></button> <button id="remove-cb-'+value.callback_id+'" class="btn btn-danger btn-sm hidden"><i class="fa fa-trash-o"></i></button></td></tr>';
+		<?php } ?>
+
                     $("#callback-list tbody").append(appendThis);
                     
                     if (enable_callback_alert) {
@@ -5630,7 +5628,11 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
                             alt_dial_active = 0;
                             alt_dial_status_display = 0;
                             reselect_alt_dial = 0;
-                            manual_auto_hotkey = 2;
+	           <?php if( ECCS_BLIND_MODE === 'y'){ ?>
+        	            manual_auto_hotkey = 0;
+	           <?php } else { ?>
+        	            manual_auto_hotkey = 2;
+	           <?php } ?>
                         }
                     }
                 }
@@ -5638,7 +5640,11 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
                 if (hotkeysused == 'YES') {
                     alt_dial_active = 0;
                     alt_dial_status_display = 0;
+           <?php if( ECCS_BLIND_MODE === 'y'){ ?>
+                    manual_auto_hotkey = 0;
+           <?php } else { ?>
                     manual_auto_hotkey = 2;
+           <?php } ?>
                 } else {
                     toggleButton('DialHangup', 'dial');
                     //document.getElementById("DiaLControl").innerHTML = "<a href=\"#\" onclick=\"ManualDialNext('','','','','','0');\"><img src=\"./images/dialnext.png\" border=\"0\" title=\"<?=$lang['dial_next']?>\" alt=\"<?=$lang['dial_next']?>\" /></a>";
@@ -7134,10 +7140,15 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                         
                         swal({
                             title: "<?=$lh->translationFor('previous_callback')?>",
-                            text: "<div style='text-align: left; padding: 0 30px;'><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('last_call')?>:</b> " + CBentry_time + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('callback')?>:</b> " + CBcallback_time + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('agent')?>:</b> " + CBuser + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('comments')?>:</b><br />" + CBcomments + "</div></div>",
+                            text: "<div class='swal-previous-callback' style='text-align: left; padding: 0 30px;'><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('last_call')?>:</b> " + CBentry_time + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('callback')?>:</b> " + CBcallback_time + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('agent')?>:</b> " + CBuser + "</div><div style='padding-bottom: 10px;'><b><?=$lh->translationFor('comments')?>:</b><br />" + CBcomments + "</div></div>",
                             type: 'info',
                             html: true
                         });
+
+			<?php if(ECCS_BLIND_MODE === 'y'){ ?>
+        	        $("div.swal-previous-callback").attr("title", "<?=$lh->translationFor('previous_callback')?>");
+	                <?php } ?>
+
                     }
 
                     if (post_phone_time_diff_alert_message.length > 10) {
@@ -8326,7 +8337,15 @@ function checkForCallbacks() {
             } else if (!value.seen && minsBetween < 0 && just_logged_in) {
                 callback_alert = true;
                 missedCB = true;
-                
+               <?php if(ECCS_BLIND_MODE === 'y') { ?>
+                swalContent += '<tr>';
+                swalContent += '<td title="'+value.cust_name+'">'+value.cust_name+'</td>';
+                swalContent += '<td title="'+phone_number_format(value.phone_number)+'">'+phone_number_format(value.phone_number)+' <span style="float:right;"><a class="btn btn-sm btn-success" onclick="NewCallbackCall('+key+', '+value.lead_id+');"><i class="fa fa-phone"></i></a> &nbsp; <a class="btn btn-sm btn-primary" onclick=\'ShowCBDatePicker('+key+', "'+value.callback_time+'", "'+value.comments+'");\'><i class="fa fa-calendar"></i></a></span></td>';
+                swalContent += '<td title="'+value.callback_time+'">'+value.callback_time+'</td>';
+                swalContent += '<td title="'+value.entry_time+'">'+value.entry_time+'</td>';
+                swalContent += '<td title="'+value.comments+'">'+value.comments+'</td>';
+                swalContent += '</tr>';
+		<?php } else { ?>
                 swalContent += '<tr>';
                 swalContent += '<td>'+value.cust_name+'</td>';
                 swalContent += '<td>'+phone_number_format(value.phone_number)+' <span style="float:right;"><a class="btn btn-sm btn-success" onclick="NewCallbackCall('+key+', '+value.lead_id+');"><i class="fa fa-phone"></i></a> &nbsp; <a class="btn btn-sm btn-primary" onclick=\'ShowCBDatePicker('+key+', "'+value.callback_time+'", "'+value.comments+'");\'><i class="fa fa-calendar"></i></a></span></td>';
@@ -8334,6 +8353,7 @@ function checkForCallbacks() {
                 swalContent += '<td>'+value.entry_time+'</td>';
                 swalContent += '<td>'+value.comments+'</td>';
                 swalContent += '</tr>';
+		<?php } ?>
             } else if (!value.seen && minsBetween < 0) {
                 var recurringDate = new Date(serverdate.getFullYear(), serverdate.getMonth() + 1, serverdate.getDate(), dateParts[4], dateParts[5], dateParts[6]);
                 var newMinsBetween = minutesBetween(nowDate, recurringDate);

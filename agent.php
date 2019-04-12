@@ -2468,11 +2468,13 @@ if(ECCS_BLIND_MODE != "y"){
 				$('li.dropdown.messages-menu a.dropdown-toggle').attr("data-tooltip", "tooltip");
 				$('li.dropdown.messages-menu a.dropdown-toggle').attr("title", "<?=$lh->translationFor('messages')?>");
 
+				$('li#dialer-tab a').append("<span class='eccs-icon-lock'>Phone Tab</span>");
 				$('li#dialer-tab').attr("data-tooltip", "tooltip");
-                                $('li#dialer-tab').attr("title", "<?=$lh->translationFor('Dialer')?>");
+                                $('li#dialer-tab').attr("title", "<?=$lh->translationFor('Phone Tab')?>");
 
+				$('li#settings-tab a').append("<span class='eccs-icon-lock'>Profile Tab</span>");
 				$('li#settings-tab').attr("data-tooltip", "tooltip");
-                                $('li#settings-tab').attr("title", "<?=$lh->translationFor('settings')?>");
+                                $('li#settings-tab').attr("title", "<?=$lh->translationFor('Profile Tab')?>");
 
 				$('button#btnLogMeIn').attr("data-tooltip", "tooltip");
                                 $('button#btnLogMeIn').attr("title", "<?=$lh->translationFor('Login To Dialer')?>");
@@ -2633,18 +2635,11 @@ if(ECCS_BLIND_MODE != "y"){
 				// Enable Dial Pad on Mobile
 				$('ul#go_agent_dialpad').removeClass('hidden-xs');
 
-				//Conf on click set dialer tab to active
-				$('ul.nav.navbar-nav li:nth-of-type(3)>a.visible-xs').on('click', function(){
-					$('nav.control-sidebar-tabs > li#settings-tab').removeClass('active');
-					$('nav.control-sidebar-tabs > li#dialer-tab').addClass('active');
-				});
-								
 				if($('aside.control-sidebar').hasClass("control-sidebar-open")){
 					$("[data-toggle='control-sidebar']").attr("title", "Enter to Hide Login Tab");
 				} else {
 					$("[data-toggle='control-sidebar']").attr("title", "Enter to Show Login Tab");
 				}
-//				$("[data-toggle='control-sidebar']").attr("title", "Enter to Show Login Tab");
 				
 			});
 		</script>
