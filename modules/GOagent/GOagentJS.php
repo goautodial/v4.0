@@ -966,7 +966,7 @@ $(document).ready(function() {
     $("#cream-agent-logout").click(function(event) {
         var hRef = $(this).attr('href');
         var loggedOut = 0;
-        if (hRef.match(logoutRegX)) {
+        if (hRef.match(logoutRegX) && !minimizedDispo) {
             event.preventDefault();
             refresh_interval = 730000;
             swal({
@@ -1989,9 +1989,10 @@ $(document).ready(function() {
         }
     }, 60000);
     
-    $("[data-toggle]").on('click', function(e) {
+    $("ul.nav.navbar-nav li").on('click', function(e) {
         if (minimizedDispo) {
             e.preventDefault();
+            return false;
         }
     })
 });
