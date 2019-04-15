@@ -30,10 +30,19 @@
 	if(!empty($output)){
 		$data 									= '';
 		// $i=0;
-		foreach($output->status as $key => $val){
+		$data									.= '<optgroup label="System Statuses">';
+		foreach($output->status->system as $key => $val){
 		// for($i=0;$i<=count($output->status);$i++) {
 			$data 								.= '<option value="'.$val.'" data-name="'.$output->status_name[$key].'">'.$val.' - '.$output->status_name[$key].'</option>';
 		}
+		$data									.= '</optgroup>';
+		
+		$data									.= '<optgroup label="Campaign Statuses">';
+		foreach($output->status->campaign as $key => $val){
+		// for($i=0;$i<=count($output->status);$i++) {
+			$data 								.= '<option value="'.$val.'" data-name="'.$output->status_name[$key].'">'.$val.' - '.$output->status_name[$key].'</option>';
+		}
+		$data									.= '</optgroup>';
 	}
 	
 	echo json_encode($data);
