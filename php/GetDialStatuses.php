@@ -24,7 +24,7 @@
 	require_once('APIHandler.php');
 	$api 										= \creamy\APIHandler::getInstance();
 	$campaign_id 								= $_POST["campaign_id"];
-	$add_hotkey								= $_POST["add_hotkey"];
+	$add_hotkey									= $_POST["add_hotkey"];
 	$output 									= $api->API_getAllDialStatuses($campaign_id, $add_hotkey);
 
 	if(!empty($output)){
@@ -33,14 +33,14 @@
 		$data									.= '<optgroup label="System Statuses">';
 		foreach($output->status->system as $key => $val){
 		// for($i=0;$i<=count($output->status);$i++) {
-			$data 								.= '<option value="'.$val.'" data-name="'.$output->status_name[$key].'">'.$val.' - '.$output->status_name[$key].'</option>';
+			$data 								.= '<option value="'.$val.'" data-name="'.$output->status_name->system[$key].'">'.$val.' - '.$output->status_name->system[$key].'</option>';
 		}
 		$data									.= '</optgroup>';
 		
 		$data									.= '<optgroup label="Campaign Statuses">';
 		foreach($output->status->campaign as $key => $val){
 		// for($i=0;$i<=count($output->status);$i++) {
-			$data 								.= '<option value="'.$val.'" data-name="'.$output->status_name[$key].'">'.$val.' - '.$output->status_name[$key].'</option>';
+			$data 								.= '<option value="'.$val.'" data-name="'.$output->status_name->campaign[$key].'">'.$val.' - '.$output->status_name->campaign[$key].'</option>';
 		}
 		$data									.= '</optgroup>';
 	}
