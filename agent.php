@@ -2500,20 +2500,14 @@ if(ECCS_BLIND_MODE != "y"){
 				 $('div#MainStatusSpan a:nth-of-type(1)').attr("title", "<?=$lh->translationFor('dial_lead')?>");
                                  $('div#MainStatusSpan a:nth-of-type(2)').attr("title", "<?=$lh->translationFor('skip_lead')?>");
 
+				$('#callback-list th:nth-of-type(1)').attr("title", "<?=$lh->translationFor('customer_name')?>");
+                                $('#callback-list th:nth-of-type(2)').attr("title", "<?=$lh->translationFor('phone_number')?>");
+                                $('#callback-list th:nth-of-type(3)').attr("title", "<?=$lh->translationFor('last_call_time')?>");
+                                $('#callback-list th:nth-of-type(4)').attr("title", "<?=$lh->translationFor('callback_time')?>");
+                                $('#callback-list th:nth-of-type(5)').attr("title", "<?=$lh->translationFor('campaign')?>");
+                                $('#callback-list th:nth-of-type(6)').attr("title", "<?=$lh->translationFor('comments')?>");
+                                $('#callback-list th:nth-of-type(7)').attr("title", "<?=$lh->translationFor('action')?>");
 
-				// Dispo Tooltips
-				/*var dispoAdd = ["XFER" , "SALE", "NP", "NI", "N", "DNC", "DEC", "DC", "CALLBK", "B", "A"];
-
-				$('#select-disposition').on('show.bs.modal', function() {
-                                	for(var a = 0; a < dispoAdd.length; a++){
-                                        	$('div#DispoSelectContent span#dispo-add-' + dispoAdd[a] + '>span.hidden-xs').attr({"data-tooltip:tooltip", "tabindex:"+a, "title:"+ dispoAdd[a]});
-	                                        $('div#DispoSelectContent span#dispo-add-' + dispoAdd[a] + '>span.hidden-xs').addClass("dispo-focus");
-        	                        }
-
-					$('button#btn-dispo-submit').attr("data-tooltip", "tooltip");
-                                        $('button#btn-dispo-submit').attr("title", "submit");
-
-				});8*/
 
 				// Dialer
 

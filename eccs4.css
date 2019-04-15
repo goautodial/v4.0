@@ -290,6 +290,21 @@
 				font-weight: 700;
 				color: #000;
 			}
+
+			table#callback-list thead tr th,
+			div#callback-list_length label,
+			div#callback-list_filter label,
+			div#callback-list_info,
+			div#callback-list_paginate ul.pagination a{
+				color: #000;
+			}
+
+			div#callback-list_length label,
+			div#callback-list_filter label,
+			div#callback-list_info{
+				font-weight: 600;
+			}
+
 			/* Missed Callbacks */
 			#view-missed-callbacks h4.modal-title{
 				font-size: 16pt;
