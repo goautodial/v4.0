@@ -618,11 +618,11 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goLeadRecycling", $postfields);
 	}
 	
-	public function API_getAllDialStatuses($campaign_id, $add_hotkey){
+	public function API_getAllDialStatuses($campaign_id, $add_hotkey, $selectable = 0){
 		$postfields = array(
 			'goAction' => 'goGetAllDialStatuses',
 			'campaign_id' => $campaign_id,
-			'hotkeys_only' => "1",
+			'is_selectable' => $selectable,
 			'add_hotkey' => $add_hotkey
 		);		
 		return $this->API_Request("goDialStatus", $postfields);
