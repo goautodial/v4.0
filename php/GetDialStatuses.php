@@ -30,12 +30,15 @@
 	if(!empty($output)){
 		$data 									= '';
 		// $i=0;
-		$data									.= '<optgroup label="System Statuses">';
-		foreach($output->status->system as $key => $val){
-		// for($i=0;$i<=count($output->status);$i++) {
-			$data 								.= '<option value="'.$val.'" data-name="'.$output->status_name->system[$key].'">'.$val.' - '.$output->status_name->system[$key].'</option>';
+		
+		if (count($output->status->system) > 0) {
+			$data								.= '<optgroup label="System Statuses">';
+			foreach($output->status->system as $key => $val){
+			// for($i=0;$i<=count($output->status);$i++) {
+				$data 							.= '<option value="'.$val.'" data-name="'.$output->status_name->system[$key].'">'.$val.' - '.$output->status_name->system[$key].'</option>';
+			}
+			$data								.= '</optgroup>';
 		}
-		$data									.= '</optgroup>';
 		
 		if (count($output->status->campaign) > 0) {
 			$data								.= '<optgroup label="Campaign Statuses">';
