@@ -1947,7 +1947,8 @@
 					type: 'POST',
 					data: {
 						campaign_id : campaign_id,
-						add_hotkey : "1"
+						add_hotkey : "1",
+						is_selectable: "1"
 					},
 					dataType: 'json',
 					success: function(response) {
