@@ -25,7 +25,8 @@
 	$api 										= \creamy\APIHandler::getInstance();
 	$campaign_id 								= $_POST["campaign_id"];
 	$add_hotkey									= $_POST["add_hotkey"];
-	$output 									= $api->API_getAllDialStatuses($campaign_id, $add_hotkey);
+	$is_selectable								= $_POST["is_selectable"];
+	$output 									= $api->API_getAllDialStatuses($campaign_id, $add_hotkey, $is_selectable);
 
 	if(!empty($output)){
 		$data 									= '';
