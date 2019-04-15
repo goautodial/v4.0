@@ -2867,7 +2867,8 @@
 						dataType: 'json',
 						success: function(data) {
 							//console.log(data);
-							$('#dial_status').html(data);
+							var optNone = '<option value="" selected>NONE</option>';
+							$('#dial_status').html(optNone + data);
 							$('#dial_status').val("").trigger("change");
 						}
 					});
