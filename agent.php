@@ -2508,7 +2508,12 @@ if(ECCS_BLIND_MODE != "y"){
                                 $('#callback-list th:nth-of-type(6)').attr("title", "<?=$lh->translationFor('comments')?>");
                                 $('#callback-list th:nth-of-type(7)').attr("title", "<?=$lh->translationFor('action')?>");
 
-
+//				$('#callback-list').dataTable({
+//					"drawCallBack": function(){
+//						$('li#callback-list_previous').attr('title', 'Previous');
+//						$('li#callback-list_next').attr('title', 'Next');
+//					}
+//				});
 				// Dialer
 
 				 $('button#manual-dial-now').attr("data-tooltip", "tooltip");
