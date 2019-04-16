@@ -192,14 +192,14 @@
 							<label><?php $lh->translateText("disposition"); ?> </label>
 							<div class="mb">
 								<select name="disposition_filter" id="disposition_filter" class="form-control select2-3" style="width:100%;">
+										<option value="">- - - <?php $lh->translateText("-none-"); ?> - - -</option>
 										<optgroup label="System Statuses">
-											<option value="">- - - <?php $lh->translateText("-none-"); ?> - - -</option>
 										<?php 
-											for($i=0;$i<=count($dialStatus->status);$i++) { 
-												if (!empty($dialStatus->status[$i]) && !in_array($dialStatus->status[$i], $dial_statuses)) { 
+											for($i=0;$i<=count($dialStatus->status->system);$i++) { 
+												if (!empty($dialStatus->status->system[$i]) && !in_array($dialStatus->status->system[$i], $dial_statuses)) { 
 										?>
-												<option value="<?php echo $dialStatus->status[$i]?>" selected>
-													<?php echo $dialStatus->status[$i]." - ".$dialStatus->status_name[$i]?>
+												<option value="<?php echo $dialStatus->status->system[$i]?>" selected>
+													<?php echo $dialStatus->status->system[$i]." - ".$dialStatus->status_name->system[$i]?>
 												</option>
 											<?php 
 												}
@@ -395,7 +395,8 @@
 						dataType: 'json',
 						success: function(data) {
 							//console.log(data);
-							$('#disposition_filter').html(data);
+							var optNone = '<option value="">- - - <?php $lh->translateText("-none-"); ?> - - -</option>';
+							$('#disposition_filter').html(optNone + data);
 							$('#disposition_filter').val(dial_status);
 							console.log($('#disposition_filter').val());
 							//$('#disposition_filter').val("").trigger("change");

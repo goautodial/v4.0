@@ -1105,13 +1105,13 @@
 						style="width:100%; height:100%;">
 											<optgroup label="System Statuses">
 												<?php 
-													$dialStatus = $api->API_getAllDialStatuses($campaign_id);
+													$dialStatus = $api->API_getAllDialStatuses();
 													 //foreach($output->status as key => $val){
-													for($i=0;$i<=count($dialStatus->status);$i++) { 
+													for($i=0;$i<=count($dialStatus->status->system);$i++) { 
 												?>
-													<?php if( !empty($dialStatus->status[$i]) && !in_array($dialStatus->status[$i], $dial_statuses) ){ ?>
-														<option value="<?php echo $dialStatus->status[$i]?>" selected>
-															<?php echo $dialStatus->status[$i]." - ".$dialStatus->status_name[$i]?>
+													<?php if( !empty($dialStatus->status->system[$i]) && !in_array($dialStatus->status->system[$i], $dial_statuses) ){ ?>
+														<option value="<?php echo $dialStatus->status->system[$i]?>" selected>
+															<?php echo $dialStatus->status->system[$i]." - ".$dialStatus->status_name->system[$i]?>
 														</option>
 													<?php } ?>
 												<?php } ?>
@@ -1938,7 +1938,7 @@
 			});
 
 			$(document).on('click', '.btn-new-hotkey', function(){
-				var campaign_id = $(this).data('campaign');
+				var campaign_id = $(this).attr('data-campaign');
 				$('.campaign-id').val(campaign_id);
 
 				// populate status drop down select
@@ -1947,7 +1947,8 @@
 					type: 'POST',
 					data: {
 						campaign_id : campaign_id,
-						add_hotkey : "1"
+						add_hotkey : "1",
+						is_selectable: "1"
 					},
 					dataType: 'json',
 					success: function(response) {
