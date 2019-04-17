@@ -892,16 +892,17 @@ $(document).ready(function() {
 	$('#CallBackOnlyMe').prop('checked', true);
 
 	var eccs_currYear = moment(currDate).format('YYYY');
-        var eccs_currMonth = moment(currDate).format('MMMM');
+        var eccs_currMonth = moment(currDate).format('MM');
         var eccs_currDay = moment(currDate).format('DD');
 
         $("#eccs_year").val(eccs_currYear);
         $("#eccs_year").attr("min", eccs_currYear);
 
-        $("#eccs_month").val(eccs_currMonth);
+        $("#eccs_month option[value='"+eccs_currMonth+"']").attr("selected", "selected");
 
         $("#eccs_day").val(eccs_currDay);
-        $("#eccs_day").attr("min", eccs_currDay);
+        $("#eccs_day").attr("min", "1");
+        $("#eccs_day").attr("max", "31");
 
          $("#eccs_time").datetimepicker({
             format: "hh:mm a",
@@ -909,7 +910,7 @@ $(document).ready(function() {
                 time: 'fa fa-clock-o',
                 date: 'fa fa-calendar'
             },
-            minDate: currDate
+            defaultDate: currDate
          });
 
          $("#eccs_time").on("dp.change", function (e) {
@@ -918,8 +919,10 @@ $(document).ready(function() {
             selectedMonth = $("#eccs_month").val();
             selectedDay = $("#eccs_day").val();
 
+	    var monthContainer = new Array("", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+
             selectedDate = selectedYear + "-" + selectedMonth + "-" + selectedDay + " " + selectedTime;
-            $("#date-selected").html(selectedYear + "-" + selectedMonth + "-" + selectedDay + " " + moment(e.date).format('h:mm a'));
+            $("#date-selected").html(selectedYear + "-" + monthContainer[parseInt(selectedMonth)] + "-" + selectedDay + " " + moment(e.date).format('h:mm a'));
             $("#callback-date").val(selectedDate);
          });
 
@@ -935,16 +938,19 @@ $(document).ready(function() {
             eccsChangeSelectedDate();
          });
       });
-	 
+	
+
 	function eccsChangeSelectedDate(){
-	    eccstimepicker = $("#eccs_time").datetimepicker('getDate');
+	    eccstimepicker = $("#eccs_time").data('DateTimePicker').date();
 	    selectedTime = moment(eccstimepicker).format('HH:mm:00');
             selectedYear = $("#eccs_year").val();
             selectedMonth = $("#eccs_month").val();
             selectedDay = $("#eccs_day").val();
+	
+	    monthContainer = new Array("", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
 
             selectedDate = selectedYear + "-" + selectedMonth + "-" + selectedDay + " " + selectedTime;
-            $("#date-selected").html(selectedYear + "-" + selectedMonth + "-" + selectedDay + " " + moment(eccstimepicker).format('h:mm a'));
+            $("#date-selected").html(selectedYear + "-" + monthContainer[parseInt(selectedMonth)] + "-" + selectedDay + " " + moment(eccstimepicker).format('h:mm a'));
             $("#callback-date").val(selectedDate);
 	}
 
@@ -1845,6 +1851,24 @@ $(document).ready(function() {
     $("a:regex(href, index|agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist|composemail|readmail)").on('click', hijackThisLink);
     
     $("#submitCBDate").click(function() {
+	<?php if( ECCS_BLIND_MODE === 'y') { ?>
+	var currDate = new Date(serverdate.getFullYear(), serverdate.getMonth(), serverdate.getDate(), serverdate.getHours(), serverdate.getMinutes() + 15);
+	var cbDateVal = $('#callback-date').val();
+	var resCbDateVal = cbDateVal.split(" ");
+	var resDateCbDateVal = resCbDateVal[0].split("-");
+	var resTimeCbDateVal = resCbDateVal[1].split(":");
+	var eccs_callback_date = new Date(resDateCbDateVal[0], resDateCbDateVal[1], resDateCbDateVal[2], resTimeCbDateVal[0], resTimeCbDateVal[1]);
+	if( (eccs_callback_date.getTime() < currDate.getTime() ) || eccs_callback_date == 'Invalid Date' ){
+	   swal({
+            title: "<?=$lh->translationFor('Invalid Call Back Schedule')?>",
+	    text: "Enter a Valid Schedule",
+            type: "warning",
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "<?=$lh->translationFor('Confirm')?>"
+           });
+	   return false;
+	}
+	<?php } ?>
         if (!reschedule_cb && reschedule_cb_id < 1) {
             CallBackDateSubmit();
         } else {
