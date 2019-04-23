@@ -595,16 +595,21 @@ EOF;
 		}
 	});
 	
-	navigator.getUserMedia({
+	navigator.mediaDevices.getUserMedia({
 		audio: true,
 		video: false
-	}, function (stream) {
+	}).then(function (stream) {
 		localStream = stream;
 		//console.log('getUserMedia', stream);
 	
 		//phone.start();
-	}, function (err) {
+	}).catch(function (err) {
 		console.error('getUserMedia failed: %s', err.toString());
+		swal({
+			title: "Microphone NOT Detected",
+			text: "$contactAdmin",
+			type: 'error'
+		});
 	});
 </script>
 EOF;
@@ -1211,15 +1216,20 @@ EOF;
 			}
 		});
 		
-		navigator.getUserMedia({
+		navigator.mediaDevices.getUserMedia({
 			audio: true,
 			video: false
-		}, function (stream) {
+		}).then(function (stream) {
 			localStream = stream;
 		
 			//phone.start();
-		}, function (err) {
+		}).catch(function (err) {
 			console.error('getUserMedia failed: %s', err.toString());
+			swal({
+				title: "Microphone NOT Detected",
+				text: "$contactAdmin",
+				type: 'error'
+			});
 		});
 	}
 </script>
