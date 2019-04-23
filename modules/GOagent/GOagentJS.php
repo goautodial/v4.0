@@ -4560,7 +4560,7 @@ function CallBacksCountCheck() {
             $("#callbacks-active").html(CBcount);
             $("#callbacks-today").html(CBcountToday);
             
-            $("a[href='callbackslist.php'] small.badge").html(CBcount);
+            $("a[href='#callbackslist'] small.badge").html(CBcount);
             $("#topbar-callbacks a span.label").html(CBcountToday);
             $("#topbar-callbacks ul li.header").html('<?=$lh->translationFor("you_have")?> '+CBcountToday+' <?=$lh->translationFor("callbacks_for_today")?>');
             
