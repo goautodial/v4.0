@@ -4594,7 +4594,7 @@ function CallBacksCountCheck() {
 		<?php if( ECCS_BLIND_MODE === 'y'){?>
                     var appendThis = '<tr data-id="'+value.callback_id+'"><td title="'+value.cust_name+'" style="cursor: pointer;">'+value.cust_name+'</td><td title="'+value.phone_number+'" style="cursor: pointer;">'+value.phone_number+'</td><td title="'+value.entry_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_entry_time+'</td><td title="'+value.callback_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</td><td title="'+value.campaign_name+'" style="cursor: pointer;">'+value.campaign_name+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-cb-'+value.callback_id+'" title="Dial Callback" data-cbid="'+value.callback_id+'" data-leadid="'+value.lead_id+'" onclick="NewCallbackCall('+value.callback_id+', '+value.lead_id+');" class="btn btn-primary btn-sm dial-callback"><i class="fa fa-phone"></i></button> <button id="remove-cb-'+value.callback_id+'" class="btn btn-danger btn-sm hidden"><i class="fa fa-trash-o"></i></button></td></tr>';
 		<?php } else { ?>
-		    var appendThis = '<tr data-id="'+value.callback_id+'"><td>'+value.cust_name+'</td><td>'+value.phone_number+'</td><td title="'+value.entry_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_entry_time+'</td><td title="'+value.callback_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</td><td>'+value.campaign_name+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-cb-'+value.callback_id+'" data-cbid="'+value.callback_id+'" data-leadid="'+value.lead_id+'" onclick="NewCallbackCall('+value.callback_id+', '+value.lead_id+');" class="btn btn-primary btn-sm dial-callback"><i class="fa fa-phone"></i></button> <button id="remove-cb-'+value.callback_id+'" class="btn btn-danger btn-sm hidden"><i class="fa fa-trash-o"></i></button></td></tr>';
+                    var appendThis = '<tr data-id="'+value.callback_id+'"><td>'+value.cust_name+'</td><td>'+value.phone_number+'</td><td title="'+value.entry_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_entry_time+'</td><td title="'+value.callback_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</td><td>'+value.campaign_name+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-cb-'+value.callback_id+'" data-cbid="'+value.callback_id+'" data-leadid="'+value.lead_id+'" onclick="NewCallbackCall('+value.callback_id+', '+value.lead_id+');" class="btn btn-primary btn-sm dial-callback"><i class="fa fa-phone"></i></button> <button id="remove-cb-'+value.callback_id+'" class="btn btn-danger btn-sm hidden"><i class="fa fa-trash-o"></i></button></td></tr>';
 		<?php } ?>
 
                     $("#callback-list tbody").append(appendThis);
@@ -4613,16 +4613,16 @@ function CallBacksCountCheck() {
                 $("#callback-list").css('width', '100%');
                 $("#callback-list").DataTable({
                 <?php if( ECCS_BLIND_MODE === 'y'){ ?>
-		    "drawCallback": function(){
-			var paginateLength =  $('#callback-list_paginate ul').children().length;
+                    "drawCallback": function(){
+                        var paginateLength =  $('#callback-list_paginate ul').children().length;
                         for(var a = 1; a <= paginateLength; a++){
                                 $('#callback-list_paginate li.fg-button.ui-button a[data-dt-idx="'+ a +'"]').attr("title", a);
                         }
 
                         $('li#callback-list_previous').attr('title', 'Previous');
                         $('li#callback-list_next a').attr('title', 'Next');
-		    },
-		<?php } ?>
+                    },
+                <?php } ?>
                     "bDestroy": true,
                     "aoColumnDefs": [{
                         "bSortable": false,

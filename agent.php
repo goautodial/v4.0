@@ -506,8 +506,8 @@ if(ECCS_BLIND_MODE != "y"){
                          <div class="col-lg-9">
 			<?php } ?>
 					<!-- standard custom edition form -->
-					<div id="cust_info" class="container-custom ng-scope">
-						<div class="card">
+					<div class="container-custom ng-scope">
+						<div id="cust_info" class="card">
 								<!-- ECCS Customization -->
 								<?php // if(ECCS_BLIND_MODE === 'y'){?>
 								<div style="background-image:;" class="card-heading bg-inverse">
