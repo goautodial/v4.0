@@ -292,11 +292,12 @@
 			}
 
 			table#callback-list thead tr th,
+			div.dataTables_scroll th,
 			div#callback-list_length label,
 			div#callback-list_filter label,
 			div#callback-list_info,
 			div#callback-list_paginate ul.pagination a{
-				color: #000;
+				color: #000!important;
 			}
 
 			div#callback-list_length label,

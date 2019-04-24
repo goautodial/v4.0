@@ -4622,6 +4622,7 @@ function CallBacksCountCheck() {
                         $('li#callback-list_previous').attr('title', 'Previous');
                         $('li#callback-list_next a').attr('title', 'Next');
                     },
+		    "scrollX": true,
                 <?php } ?>
                     "bDestroy": true,
                     "aoColumnDefs": [{
@@ -4630,7 +4631,14 @@ function CallBacksCountCheck() {
                     }, {
                         "bSearchable": false,
                         "aTargets": [ 2, 3, 6 ]
-                    }, {
+                    }, 
+		    <?php if ( ECCS_BLIND_MODE === 'y' ) { ?>
+		    {
+                        "sClass": "visible-lg",
+                        "aTargets": [ 0, 2, 4 ]
+                    }
+		    <?php } else { ?>
+		    {
                         "sClass": "hidden-xs",
                         "aTargets": [ 0 ]
                     }, {
@@ -4642,7 +4650,9 @@ function CallBacksCountCheck() {
                     }, {
                         "sClass": "visible-lg",
                         "aTargets": [ 2, 5 ]
-                    }]
+		    }
+                   <?php  } ?>
+		    ]
                 });
                 $("#callback-list_filter").parent('div').attr('class', 'col-sm-6 hidden-xs');
                 $("#callback-list_length").parent('div').attr('class', 'col-xs-12 col-sm-6');
