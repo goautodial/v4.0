@@ -182,7 +182,10 @@
 												}
 												
 												$action_list = $ui->getUserActionMenuForLists($lists->list_id[$i], $lists->list_name[$i], $perm);
-												$checkbox = '<label for="'.$lists->list_id[$i].'"><div class="checkbox c-checkbox"><label><input name="" class="check_list" id="'.$lists->list_id[$i].'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';
+												if($lists->list_id[$i] === 998 || $lists->list_id[$i] === 999)
+													$checkbox = "";
+												else
+													$checkbox = '<label for="'.$lists->list_id[$i].'"><div class="checkbox c-checkbox"><label><input name="" class="check_list" id="'.$lists->list_id[$i].'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';
 												?>
 												<tr>
 												<!--<td><avatar username='<?php echo $lists->list_name[$i];?>' :size='36'></avatar></td>-->
