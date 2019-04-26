@@ -603,6 +603,13 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goDispositions", $postfields);
 	}
 	
+	public function API_getAllCampaignDispositions(){
+                $postfields = array(
+                        'goAction' => 'goGetAllCampaignDispositions'
+                );
+                return $this->API_Request("goDispositions", $postfields);
+        }
+	
 	public function API_getAllLeadRecycling(){
 		$postfields = array(
 			'goAction' => 'goGetAllLeadRecycling'
