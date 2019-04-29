@@ -73,6 +73,9 @@
 	$output = $api->API_getReports($postfields);
 	
 	if ($output->result == "success") {
+		//echo "<pre>";
+		//var_dump($output);
+		
 		// SALES PER AGENT
 		if (strtolower($_POST['request']) === "outbound") {
 			$outbound = '';
@@ -103,7 +106,7 @@
 
 				if ($output->TOPsorted_output != NULL) {
 						$outbound .= '<tfoot><tr class="warning"><th nowrap colspan="2"> Total Agents: ';
-							$outbound .= count($output->TOPsorted_output).'</th>';
+							$outbound .= $output->TOTAgents.'</th>';
 							$outbound .= '<th nowrap>'.$output->TOToutbound.'</th>';
 						$outbound .= '</tr></tfoot>';
 					}
