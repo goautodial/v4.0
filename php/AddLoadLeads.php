@@ -20,12 +20,17 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+//ini_set('display_errors',1);
+//error_reporting(E_ALL);
+
 	require_once('APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 
-	//ini_set('memory_limit','1024M');
-	//ini_set('upload_max_filesize', '6000M');
-	//ini_set('post_max_size', '6000M');
+	ini_set('memory_limit','1024M');
+	ini_set('upload_max_filesize', '600M');
+	ini_set('post_max_size', '600M');
+	ini_set('max_execution_time', 900);
 
 	$postfields = array(
 		'goAction' => 'goUploadMe',
@@ -38,7 +43,7 @@
 
 	if ($output->result=="success") { $status = $output->message; } 
 		else { $status = $output->result; }
-
+	//var_dump($output);
 	echo json_encode($status);
 
 ?>
