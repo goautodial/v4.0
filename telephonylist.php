@@ -284,7 +284,31 @@
 				<input type="file" class="file-box hide" name="file_upload" id="txtFileUpload" accept=".csv">
 			</div>
 			
-			<div id="goMappingContainer"></div>
+			<div id="LeadMappingContainer" class="modal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
+ 				<div class="modal-dialog" role="document">
+    					<div class="modal-content">
+      						<div class="modal-header">
+        						<h4 class="modal-title">
+							<div class="col-sm-12 col-md-8">
+								<b>LEAD MAPPING</b>
+							</div>
+        							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          							<span aria-hidden="true">&times;</span>
+        							</button>
+							</h4>
+      						</div>
+      						<div class="modal-body">
+        						<span id="lead_map_data"></span>
+							<input type="hidden" id="LeadMapSubmit" name="LeadMapSubmit" value="0"/>
+							<span id="lead_map_fields"></span>
+      						</div>
+      						<div class="modal-footer">
+      							<input type="button" id="btnUpload" name="btnUpload" value="<?php $lh->translateText("proceed"); ?>" class="btn btn-primary" onClick="goProgressBar();">
+						</div>
+    					</div>
+  				</div>
+			</div>
+
 			<div id="goValuesContainer"></div>
 			</div>
 			
@@ -1141,19 +1165,62 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 				
 				var uploadMsgTotal = "<?php $lh->translateText('total_leads_upload'); ?>: "+res;
 				
-				swal({
-						title: "<?php $lh->translateText('data_processing_complete'); ?>",
-						text: uploadMsgTotal,
-						type: "success"
-					},
-					function(){
-						location.reload();
-						$(".preloader").fadeIn();
-					}
-				);
-				
+					<?php
+						if(LEADUPLOAD_LEAD_MAPPING === "y"){ // IF LEAD MAPPING IS ENABLED
+					?>
+						if($('#LeadMapSubmit').val() === "0")
+						lead_mapping(res);
+						else
+						upload_success(uploadMsgTotal);						
+					<?php
+						}else{
+					?>
+						upload_success(uploadMsgTotal);
+					<?php
+						}
+					?>	
 			});								
-		}
+		}//function end
+		
+		function upload_success(uploadMsgTotal){
+				swal({
+                      title: "<?php $lh->translateText('data_processing_complete'); ?>",
+                      text: uploadMsgTotal,
+                      type: "success"
+                      },
+                      function(){
+                      location.reload();
+                      $(".preloader").fadeIn();
+                    }
+                 );
+			}
+
+		function lead_mapping(res){
+				var obj = JSON.parse(res);
+				var data = obj.data;
+				var sf = obj.standard_fields;
+				var cf = obj.custom_fields;
+				if(cf && cf.length)
+					var all = sf.concat(cf);
+				else
+					var all = sf;
+				var i;
+				for(i = 0; i < all.length;i++){
+					$('#lead_map_data').append('<div class="form-group"><label>'+all[i]+'</label><span id="span_'+all[i]+'"></span></span></div>');
+					$('<input>').attr({type: 'hidden',name: 'map_fields[]', value: all[i]}).appendTo('#lead_map_fields');
+					var sel = $('<select name="map_data[]" class="form-control select2">').appendTo('#span_'+all[i]);
+						sel.append($("<option>").attr('value',".").text("NONE"));
+						for(x=0; x < data.length;x++){
+							//if(data[i] === data[x])
+							//sel.append($("<option>").attr('value',x).text(data[x]).prop('selected', true));
+							//else
+							sel.append($("<option>").attr('value',x).text(data[x]));
+						}
+				}
+				$('#LeadMapSubmit').val(1);
+				swal.close();
+				$('#LeadMappingContainer').modal('show');
+			}
 			
 	</script>
 	<?php print $ui->creamyFooter();?>

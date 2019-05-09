@@ -32,6 +32,7 @@
  * @link URL http://digitalleaves.com
  */
 
+
 // global constants
 define ('BASE_URL', 'https://vaglxc01.goautodial.com');
 
@@ -225,8 +226,8 @@ define ('CRM_GOADMIN_TITLE', "GOautodial Admin");
 define ('CRM_GOAGENT_TITLE', "GOagent Web Client");
 define ('CRM_GO_VERSION', "v4.0");
 
-
 // Customizations
 define ('ECCS_BLIND_MODE', "n"); //Customizations requested by ECCS. Accessibility mode for blind users
-
+define ('LEADUPLOAD_LEAD_MAPPING', "n"); // Customization requested by Yoothit. Lead Mapping
+define ('LEADUPLOAD_CUSTOM_DELIMITER', ""); //put special characters here, for multiple separate by [space]
 ?>
