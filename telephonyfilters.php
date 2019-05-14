@@ -206,9 +206,9 @@
 				pagination.toggle(this.api().page.info().pages > 1);
 			},
 			columnDefs:[
-				{ width: "12%", targets: 5 },
-				{ searchable: false, targets: 5 },
-				{ sortable: false, targets: 5 },
+				{ width: "12%", targets: 4 },
+				{ searchable: false, targets: 4 },
+				{ sortable: false, targets: 4 },
 				{ targets: -1, className: "dt-body-right" }
 			]
 		});
