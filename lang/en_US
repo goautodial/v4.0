@@ -1278,6 +1278,15 @@ reply = "Reply"
 forward = "Forward"
 print = "Print"
 
+// FILTERS - telephonyfilters.php
+
+filters = "Filters"
+filters_management = "Filters Management"
+filter_wizard = "Filter Wizard"
+filter_wizard_description = "A step by step wizard that allows you to create filters."
+new_filter = "Add New Filter"
+filter_details = "Filter Details"
+
 // SMTP Settings - settingssmtp.php
 
 host = "Host"
