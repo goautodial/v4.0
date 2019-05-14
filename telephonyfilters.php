@@ -79,7 +79,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <legend><?php $lh->translateText("filters"); ?></legend>
-							<?php print $ui->getListAllScripts($_SESSION['user'], $perm); ?>
+							<?php print $ui->getListAllFilters($_SESSION['user'], $perm); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->
