@@ -1351,7 +1351,8 @@ EOF;
 	
 	// settings
 	public function moduleSettings() {
-		$options = array('', 'asterisk', 'kamailio');
+		//$options = array('', 'asterisk', 'kamailio');
+		$options = array('kamailio');
 		$moduleSettings = array(
 			"GO_agent_use_wss_info" => CRM_SETTING_TYPE_LABEL,
 			"GO_agent_use_wss" => CRM_SETTING_TYPE_BOOL,
