@@ -197,7 +197,7 @@
 		** INITIALIZATIONS
 		*******************/
 
-		$('#scripts_table').DataTable({
+		$('#filters_table').DataTable({
 			destroy:true, 
 			responsive:true,
 			stateSave:true,
@@ -259,16 +259,15 @@
 					*********/
 						// Submit form via ajax
 						$.ajax({
-							url: "./php/AddScript.php",
+							url: "./php/AddFilter.php",
 							type: 'POST',
-							data: $("#create_form").serialize() + '&script_text_value=' + encodeURIComponent(CKEDITOR.instances['script_text'].getData()),
+							data: $("#create_form").serialize(),
 							success: function(data) {
 								console.log(data);
-								//console.log($("#create_form").serialize() + '&script_text_value=' + encodeURIComponent(CKEDITOR.instances['script_text'].getData()));
 								$('#finish').text("<?php $lh->translateText("submit"); ?>");
 								$('#finish').attr("disabled", false);
 								if(data == 1){
-									swal({title: "<?php $lh->translateText("add_script_success"); ?>",text: "<?php $lh->translateText("add_script_success_msg"); ?>",type: "success"},function(){window.location.href = 'telephonyscripts.php';});
+									swal({title: "<?php $lh->translateText("add_filter_success"); ?>",text: "<?php $lh->translateText("add_filter_success_msg"); ?>",type: "success"},function(){window.location.href = 'telephonyfilters.php';});
 								}else{
 									sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
 								}
@@ -280,11 +279,11 @@
 		/*******************
 		** EDIT SCRIPT EVENT
 		*******************/
-			$(document).on('click','.edit_script',function() {
-				var url = './edittelephonyscript.php';
+			$(document).on('click','.edit_filter',function() {
+				var url = './edittelephonyfilter.php';
 				var id = $(this).attr('data-id');
 				//alert(extenid);
-				var form = $('<form action="' + url + '" method="post"><input type="hidden" name="script_id" value="'+id+'" /></form>');
+				var form = $('<form action="' + url + '" method="post"><input type="hidden" name="filter_id" value="'+id+'" /></form>');
 				$('body').append(form);  // This line is not necessary
 				$(form).submit();
 			});
@@ -292,7 +291,7 @@
 		/*******************
 		** DELETE SCRIPT EVENT
 		*******************/
-			$(document).on('click','.delete_script',function() {
+			$(document).on('click','.delete_filter',function() {
 				var id = $(this).attr('data-id');
 				swal({
 					title: "<?php $lh->translateText("are_you_sure"); ?>?",
@@ -300,7 +299,7 @@
 					type: "warning",
 					showCancelButton: true,
 					confirmButtonColor: "#DD6B55",
-					confirmButtonText: "<?php $lh->translateText("confirm_delete_script"); ?>!",
+					confirmButtonText: "<?php $lh->translateText("confirm_delete_filter"); ?>!",
 					cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
 					closeOnConfirm: false,
 					closeOnCancel: false
@@ -308,17 +307,17 @@
 					function(isConfirm){
 						if (isConfirm) {
 							$.ajax({
-								url: "./php/DeleteScript.php",
+								url: "./php/DeleteFilter.php",
 								type: 'POST',
 								data: {
-									script_id: id, 
+									filter_id: id, 
 									log_user: '<?=$_SESSION['user']?>', 
 									log_group: '<?=$_SESSION['usergroup']?>' 
 								},
 								success: function(data) {
 								//console.log(data);
 									if(data == 1){
-										swal({title: "<?php $lh->translateText("delete_script_success"); ?>",text: "<?php $lh->translateText("delete_script_success_msg"); ?>",type: "success"},function(){window.location.href = 'telephonyscripts.php';});
+										swal({title: "<?php $lh->translateText("delete_filter_success"); ?>",text: "<?php $lh->translateText("delete_filter_success_msg"); ?>",type: "success"},function(){window.location.href = 'telephonyfilters.php';});
 									}else{
 										sweetAlert("<?php $lh->translateText("oups"); ?>", data, "error");
 									}
@@ -336,7 +335,7 @@
 		*******************/
 
 			// disable special characters on Script ID
-				$('#script_id').bind('keypress', function (event) {
+				$('#filter_id').bind('keypress', function (event) {
 				    var regex = new RegExp("^[a-zA-Z0-9]+$");
 				    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
 				    if (!regex.test(key)) {
@@ -346,7 +345,7 @@
 				});
 
 			// disable special characters on Script Name
-				$('#script_name').bind('keypress', function (event) {
+				$('#filter_name').bind('keypress', function (event) {
 				    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
 				    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
 				    if (!regex.test(key)) {
@@ -356,7 +355,7 @@
 				});
 
 			// disable special characters on Script Comments
-				$('#script_comments').bind('keypress', function (event) {
+				$('#filter_comments').bind('keypress', function (event) {
 				    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
 				    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
 				    if (!regex.test(key)) {
@@ -365,12 +364,6 @@
 				    }
 				});
 	}); // end of document ready
-	
-function addtext() {
-	var txtarea = document.getElementById('script_text');
-	var text = document.getElementById('script_text_dropdown').value;
-	CKEDITOR.instances.script_text.insertText( text );
-}
 </script>
 		
 		<?php print $ui->creamyFooter();?>

@@ -1291,6 +1291,12 @@ filter_name = "Filter Name"
 filter_comments = "Filter Comments"
 filter_sql = "Filter SQL"
 
+add_filter_success = "Filter Successfully Created !"
+add_filter_success_msg = "Filter has been successfully added. Clicking OK will reload the page"
+confirm_delete_filter = "Yes, delete this filter"
+delete_filter_success = "Filter Successfully Deleted"
+delete_filter_success_msg = "Filter has been deleted and can no longer be retrieved. Clicking OK will reload the page"
+
 // SMTP Settings - settingssmtp.php
 
 host = "Host"
