@@ -4288,7 +4288,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    for($i=0;$i<count($output->filter_id);$i++) {
 		$action = $this->getUserActionMenuForFilters($output->filter_id[$i], $output->filter_name[$i], $perm);
 			
-			$preFix = "<a class='edit_script' data-id='".$output->filter_id[$i]."'>";
+			$preFix = "<a class='edit_filter' data-id='".$output->filter_id[$i]."'>";
 			$sufFix = "</a>";
 			if ($perm->filters_update === 'N') {
 				$preFix = '';
