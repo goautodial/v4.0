@@ -410,6 +410,14 @@ if(isset($_SESSION["user"])){
         return $this->API_Request("goScripts", $postfields);
 	}
 	
+	// API Filters
+	public function API_getAllFilters(){
+        $postfields = array(
+			'goAction' => 'goGetAllFilters'
+		);				
+        return $this->API_Request("goFilters", $postfields);
+	}
+	
 	// VoiceMails
 	public function API_getAllVoiceMails() {
 		$postfields = array(

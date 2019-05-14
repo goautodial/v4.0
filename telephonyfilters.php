@@ -52,9 +52,6 @@
     </head>
 
      <?php print $ui->creamyBody(); ?>
-     <?php 
-     	$standard_fields = $api->API_getStandardFields();
-     ?>
         <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyHeader($user); ?>
@@ -105,14 +102,14 @@
 	/*
 	* APIs for add form
 	*/
-	$scripts = $api->API_getAllScripts();
+	$filters = $api->API_getAllFilters();
 
 ?>
 	<div class="modal fade" id="filters-modal" tabindex="-1" aria-labelledby="filters">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title animated bounceInRight" id="scripts">
+					<h4 class="modal-title animated bounceInRight" id="filters">
 						<i class="fa fa-info-circle" title="<?php $lh->translateText("filter_wizard_description"); ?>"></i> 
 						<b><?php $lh->translateText("filter_wizard"); ?> » <?php $lh->translateText("new_filter"); ?></b>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -132,8 +129,8 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="filter_id"><?php $lh->translateText("filter_id"); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="filter_id" id="filter_id" value="<?php echo ($scripts->script_count);?>" maxlength="15" disabled required />
-										<input type="hidden" name="filter_id" value="<?php echo ($scripts->script_count);?>">
+										<input type="text" class="form-control" name="filter_id" id="filter_id" value="<?php echo ($filters->filter_count);?>" maxlength="15" disabled required />
+										<input type="hidden" name="filter_id" value="<?php echo ($filters->filter_count);?>">
 										<input type="hidden" name="filter_user" value="<?php echo $user->getUserName();?>">
 									</div>
 									<div class="col-sm-1">&nbsp;</div>
