@@ -199,7 +199,7 @@
 	// 	$(".textarea").wysihtml5();
 	// }
 	$(document).ready(function(){
-		$('#filter-modal').on('shown.bs.modal', function(){
+		$('#filters-modal').on('shown.bs.modal', function(){
 	        // $('.textarea').wysihtml5();
 	        CKEDITOR.replace('filter_sql', 
 	        	{
