@@ -4265,6 +4265,67 @@ error_reporting(E_ERROR | E_PARSE);
 		</div>';
 	}
 
+
+	/** Filters API - Get all list of filters */
+	/**
+	 * @param goUser
+	 * @param goPass
+	 * @param goAction
+	 * @param responsetype
+	 */
+
+	// API Filters
+
+	public function getListAllFilters($userid, $perm) {
+	    $output = $this->api->API_getAllFilters($userid);
+
+	    if ($output->result=="success") {
+	    # Result was OK!
+	    $columns = array($this->lh->translationFor("filter_id"), $this->lh->translationFor("filter_name"), $this->lh->translationFor("filter_comments"), $this->lh->translationFor("user_group"), $this->lh->translationFor("action"));
+
+		$result = $this->generateTableHeaderWithItems($columns, "filters_table", "display responsive no-wrap table-bordered table-striped", true, false);
+
+	    for($i=0;$i<count($output->filter_id);$i++) {
+		$action = $this->getUserActionMenuForFilters($output->filter_id[$i], $output->filter_name[$i], $perm);
+			
+			$preFix = "<a class='edit_script' data-id='".$output->filter_id[$i]."'>";
+			$sufFix = "</a>";
+			if ($perm->filters_update === 'N') {
+				$preFix = '';
+				$sufFix = '';
+			}
+
+			$result .= "<tr>
+				<td>".$preFix."".$output->filter_id[$i]."".$sufFix."</td>
+				<td>".$output->filter_name[$i]."</td>
+				<td>".$output->filter_comments[$i]."</td>
+				<td>".$output->user_group[$i]."</td>
+				<td>".$action."</td>
+			    </tr>";
+		    }
+			return $result.'</table>';
+
+	    } else {
+		# An error occured
+		return $output->result;
+	    }
+	}
+
+	private function getUserActionMenuForFilters($id, $name, $perm) {
+
+	    return '<div class="btn-group">
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+			<li'.($perm->filters_update === 'N' ? ' class="hidden"' : '').'><a class="edit_filter" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
+			<li'.($perm->filters_delete === 'N' ? ' class="hidden"' : '').'><a class="delete_filter" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
+		    </ul>
+		</div>';
+	}
+
 	/** Call Times API - Get all list of call times */
 	/**
 	 * @param goUser
