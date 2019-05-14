@@ -1286,6 +1286,10 @@ filter_wizard = "Filter Wizard"
 filter_wizard_description = "A step by step wizard that allows you to create filters."
 new_filter = "Add New Filter"
 filter_details = "Filter Details"
+filter_id = "Filter ID"
+filter_name = "Filter Name"
+filter_comments = "Filter Comments"
+filter_sql = "Filter SQL"
 
 // SMTP Settings - settingssmtp.php
 

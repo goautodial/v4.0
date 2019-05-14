@@ -130,42 +130,32 @@
 	                        </h4>
 	                        <fieldset>
 								<div class="form-group">
-									<label class="col-sm-3 control-label" for="script_id"><?php $lh->translateText("script_id"); ?></label>
+									<label class="col-sm-3 control-label" for="filter_id"><?php $lh->translateText("filter_id"); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="script_id" id="script_id" value="<?php echo ($scripts->script_count);?>" maxlength="15" disabled required />
-										<input type="hidden" name="script_id" value="<?php echo ($scripts->script_count);?>">
-										<input type="hidden" name="script_user" value="<?php echo $user->getUserName();?>">
+										<input type="text" class="form-control" name="filter_id" id="filter_id" value="<?php echo ($scripts->script_count);?>" maxlength="15" disabled required />
+										<input type="hidden" name="filter_id" value="<?php echo ($scripts->script_count);?>">
+										<input type="hidden" name="filter_user" value="<?php echo $user->getUserName();?>">
 									</div>
 									<div class="col-sm-1">&nbsp;</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label" for="script_name"><?php $lh->translateText("script_name"); ?></label>
+									<label class="col-sm-3 control-label" for="filter_name"><?php $lh->translateText("filter_name"); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="script_name" id="script_name" placeholder="<?php $lh->translateText("script_name"); ?>" maxlength="50" required />
+										<input type="text" class="form-control" name="filter_name" id="filter_name" placeholder="<?php $lh->translateText("filter_name"); ?>" maxlength="50" required />
 									</div>
 									<div class="col-sm-1">&nbsp;</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-3 control-label" for="script_comments"><?php $lh->translateText("script_comment"); ?></label>
+									<label class="col-sm-3 control-label" for="filter_comments"><?php $lh->translateText("filter_comments"); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="script_comments" id="script_comments" maxlength="255" placeholder="<?php $lh->translateText("script_comment"); ?>" />
-									</div>
-									<div class="col-sm-1">&nbsp;</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-3 control-label" for="active"><?php $lh->translateText("active"); ?>: </label>
-									<div class="col-sm-8 mb">
-										<select name="active" class="form-control">
-											<option value="Y" selected><?php $lh->translateText("go_yes"); ?></option>
-											<option value="N" ><?php $lh->translateText("go_no"); ?></option>
-										</select>
+										<input type="text" class="form-control" name="filter_comments" id="filter_comments" maxlength="255" placeholder="<?php $lh->translateText("filter_comments"); ?>" />
 									</div>
 									<div class="col-sm-1">&nbsp;</div>
 								</div>
 								<div class="form-group<?=($_SESSION['usergroup'] !== 'ADMIN' ? ' hidden' : '')?>">
-									<label class="col-sm-3 control-label" for="script_user_group"><?php $lh->translateText("user_group"); ?>: </label>
+									<label class="col-sm-3 control-label" for="filter_user_group"><?php $lh->translateText("user_group"); ?>: </label>
 									<div class="col-sm-8 mb">
-										<select name="script_user_group" class="form-control">
+										<select name="filter_user_group" class="form-control">
 											<option value="" disabled selected> - - - <?php $lh->translateText('Select User Group'); ?> - - -</option>
 											<option value="---ALL---" selected> - - - ALL - - -</option>
 											<?php
@@ -185,37 +175,9 @@
 									<div class="col-sm-1">&nbsp;</div>
 								</div>
 								<div class="form-group">
-									<label for="script_text" class="col-sm-3 control-label"><?php $lh->translateText("script_text"); ?></label>
+									<label class="col-sm-3 control-label" for="filter_user_group"><?php $lh->translateText("filter_sql"); ?>: </label>
 									<div class="col-sm-8 mb">
-										<div class="row">
-											<div class="col-sm-12 mb">
-												<div class="input-group">
-													<span class="input-group-btn" title="<?php $lh->translateText("script_text_insert_description"); ?>">
-														dwadwad<button type="button" class="btn btn-default" onClick="addtext();"><?php $lh->translateText("insert"); ?></button>
-													</span>
-													<select class="form-control" name="script_text_dropdown" id="script_text_dropdown">
-														<option value="--A--fullname--B--">Agent Name (fullname)</option>
-														<?php foreach($standard_fields->field_name as $sf) { ?>
-															<option value="--A--<?php echo $sf; ?>--B-- "><?php echo $sf; ?></option>
-														<?php } ?>
-													</select>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-1">&nbsp;</div>
-								</div>
-								<div class="form-group">
-									<<!-- div class="col-sm-2">&nbsp;</div> -->
-									<div class="col-sm-12">
-										<div class="panel">
-											<div class="panel-body">
-												<!-- <textarea rows="5" class="form-control textarea" id="script_text" name="script_text" required></textarea> -->
-												<div class="box-body pad">
-									                <textarea rows="5" class="form-control" id="script_text" name="script_text" required></textarea>
-									            </div>
-											</div>
-										</div>
+									    <textarea rows="5" class="form-control" id="filter_sql" name="filter_sql"></textarea>
 									</div>
 									<div class="col-sm-1">&nbsp;</div>
 								</div>
