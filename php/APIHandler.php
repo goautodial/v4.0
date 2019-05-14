@@ -139,7 +139,7 @@ if(isset($_SESSION["user"])){
      * 
      * @return Array $output
     */
-	public function API_Upload($folder, $postfields){
+	public function API_Upload($folder, $postfields, $return_data = NULL){
 		$url = gourl."/".$folder."/goAPI.php";
 		$responsetype = "json";
 		
@@ -162,14 +162,17 @@ if(isset($_SESSION["user"])){
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT , 0); //gg
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT , 10); //gg
 		curl_setopt($ch, CURLOPT_TIMEOUT  , 10000); //gg
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
 		curl_close($ch);
 		$output = json_decode($data);
-	    
-		return $output;
+	    	
+		if(!empty($return_data))
+			return array("output" => $output, "data" => $data, "URL" => $url, "CONNECTION" => $postdata);
+		else
+			return $output;
 	}
 
     public function API_getGOPackage(){
@@ -603,6 +606,13 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goDispositions", $postfields);
 	}
 	
+	public function API_getAllCampaignDispositions(){
+                $postfields = array(
+                        'goAction' => 'goGetAllCampaignDispositions'
+                );
+                return $this->API_Request("goDispositions", $postfields);
+        }
+	
 	public function API_getAllLeadRecycling(){
 		$postfields = array(
 			'goAction' => 'goGetAllLeadRecycling'
@@ -894,6 +904,10 @@ if(isset($_SESSION["user"])){
 	public function API_getAgentTimeDetails($postfields){			
         return $this->API_Request("goReports", $postfields);
 	}	
+
+	public function API_getCustomizations($postfields){
+		return $this->API_Reguest("goSystemSettings", $postfields);
+	}
 	
 	public function API_actionDNC($postfields) {
 		return $this->API_Request("goLists", $postfields);
@@ -971,8 +985,8 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goLeadRecycling", $postfields);
 	}
 	
-	public function API_addLoadLeads($postfields){
-		return $this->API_Upload("goUploadLeads", $postfields);
+	public function API_addLoadLeads($postfields, $data = NULL){
+		return $this->API_Upload("goUploadLeads", $postfields, $data);
 	}
 
 	public function API_addMOH($postfields){

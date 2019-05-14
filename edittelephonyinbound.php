@@ -901,6 +901,12 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 															} else {
 																$no_agent_action .= '<option value="CALLMENU" > CALLMENU </option>';
 															}
+															//added Feature #7292
+															if ($output->data->no_agent_action == "EXTENSION") {
+                                                                                                                                $no_agent_action .= '<option value="EXTENSION" selected> EXTENSION </option>';
+                                                                                                                        } else {
+                                                                                                                                $no_agent_action .= '<option value="EXTENSION" > EXTENSION </option>';
+                                                                                                                        }
 														echo $no_agent_action;
 													?>
 												</select>
@@ -1054,6 +1060,25 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 																</div>
 															</div>
 														</div><!-- /. callmenu -->
+
+													<!-- IF EXTENSION IS SELECTED -->
+														<div class="no_agents_extension form-group" <?php if ($output->data->no_agent_action != "EXTENSION") { ?> style="display:none;"<?php }?>>
+														    <div class="col-sm-6">
+				                                                                                        <label for="no_agents_extension" class="col-sm-4 control-label"><?php $lh->translateText("extension"); ?></label>
+                                				                                                        <div class="col-sm-8 mb">
+                                                                				                                <input type="number" class="form-control" name="no_agents_extension" id="no_agents_extension" maxlength="255" min="0" value="<?php if ($output->data->no_agents_extension != NULL)echo $output->data->no_agents_extension; else echo "8304";?>" />
+                                                                                        					<br/>
+                                                                              					        </div>
+														    </div>
+														    <div class="col-sm-6">
+															<label for="no_agents_extension_context" class="col-sm-4 control-label"><?php $lh->translateText("context"); ?></label>
+                                                                                                                        <div class="col-sm-8 mb">
+                                                                                                                                <input type="text" class="form-control" name="no_agents_extension_context" id="no_agents_extension_context" maxlength="255" value="<?php if ($output->data->no_agents_extension_context != NULL)echo $output->data->no_agents_extension_context; else echo "default";?>" />
+                                                                                                                                <br/>
+                                                                                                                          </div>
+														    </div>
+                                                                                				</div><!-- /. extension -->
+
 												</div>
 											<!-- /.NO AGENTS EXTEN -->
 							       		</fieldset>
@@ -2355,6 +2380,7 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 					  $('.no_agents_callmenu').hide();
 					  $('.no_agents_ingroup').hide();
 					  $('.no_agents_voicemail').hide();
+					  $('.no_agents_extension').hide();
 					}
 					
 					if (this.value == "MESSAGE") {
@@ -2365,6 +2391,7 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 					  $('.no_agents_ingroup').hide();
 					  $('.no_agents_voicemail').hide();
 					  $('.no_agents_did').hide();
+					  $('.no_agents_extension').hide();
 					}
 
 					if (this.value == "VOICEMAIL") {
@@ -2375,6 +2402,7 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 					  $('.no_agents_ingroup').hide();
 					  $('.no_agents_message').hide();
 					  $('.no_agents_did').hide();
+					  $('.no_agents_extension').hide();
 					  $('.show_no_agents_exten').txt("VM Chooser");
 					}
 
@@ -2386,6 +2414,7 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 					  $('.no_agents_voicemail').hide();
 					  $('.no_agents_message').hide();
 					  $('.no_agents_did').hide();
+					  $('.no_agents_extension').hide();
 					  $('.show_no_agents_exten').txt("Ingroup Chooser");
 					}
 
@@ -2397,9 +2426,21 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 					  $('.no_agents_voicemail').hide();
 					  $('.no_agents_message').hide();
 					  $('.no_agents_did').hide();
+					  $('.no_agents_extension').hide();
 					  $('.show_no_agents_exten').txt("IVR Chooser");
 					}
 					
+					if (this.value == "EXTENSION") {
+                                          $('.no_agents_exten').show();
+                                          $('.no_agents_extension').show();
+
+                                          $('.no_agents_ingroup').hide();
+                                          $('.no_agents_voicemail').hide();
+                                          $('.no_agents_message').hide();
+                                          $('.no_agents_did').hide();
+					  $('.no_agents_callmenu').hide();
+                                        }
+		
 				});
 				
 			//no_agent_action

@@ -918,10 +918,10 @@ $(document).ready(function() {
             selectedYear = $("#eccs_year").val();
             selectedMonth = $("#eccs_month").val();
             selectedDay = $("#eccs_day").val();
-
+		
 	    var monthContainer = new Array("", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
 
-            selectedDate = selectedYear + "-" + selectedMonth + "-" + selectedDay + " " + selectedTime;
+            selectedDate = selectedYear + "-" + parseInt(selectedMonth) + "-" + selectedDay + " " + selectedTime;
             $("#date-selected").html(selectedYear + "-" + monthContainer[parseInt(selectedMonth)] + "-" + selectedDay + " " + moment(e.date).format('h:mm a'));
             $("#callback-date").val(selectedDate);
          });
@@ -949,7 +949,7 @@ $(document).ready(function() {
 	
 	    monthContainer = new Array("", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
 
-            selectedDate = selectedYear + "-" + selectedMonth + "-" + selectedDay + " " + selectedTime;
+            selectedDate = selectedYear + "-" + parseInt(selectedMonth) + "-" + selectedDay + " " + selectedTime;
             $("#date-selected").html(selectedYear + "-" + monthContainer[parseInt(selectedMonth)] + "-" + selectedDay + " " + moment(eccstimepicker).format('h:mm a'));
             $("#callback-date").val(selectedDate);
 	}
@@ -1852,12 +1852,13 @@ $(document).ready(function() {
     
     $("#submitCBDate").click(function() {
 	<?php if( ECCS_BLIND_MODE === 'y') { ?>
-	var currDate = new Date(serverdate.getFullYear(), serverdate.getMonth(), serverdate.getDate(), serverdate.getHours(), serverdate.getMinutes() + 15);
+	var currDate = new Date(serverdate.getFullYear(), serverdate.getMonth(), serverdate.getDate(), serverdate.getHours(), serverdate.getMinutes());
 	var cbDateVal = $('#callback-date').val();
 	var resCbDateVal = cbDateVal.split(" ");
 	var resDateCbDateVal = resCbDateVal[0].split("-");
 	var resTimeCbDateVal = resCbDateVal[1].split(":");
-	var eccs_callback_date = new Date(resDateCbDateVal[0], resDateCbDateVal[1], resDateCbDateVal[2], resTimeCbDateVal[0], resTimeCbDateVal[1]);
+	var eccs_callback_date = new Date(resDateCbDateVal[0], parseInt(resDateCbDateVal[1])-1, resDateCbDateVal[2], resTimeCbDateVal[0], resTimeCbDateVal[1]);
+
 	if( (eccs_callback_date.getTime() < currDate.getTime() ) || eccs_callback_date == 'Invalid Date' ){
 	   swal({
             title: "<?=$lh->translationFor('Invalid Call Back Schedule')?>",
@@ -2654,9 +2655,9 @@ function toggleButton (taskname, taskaction, taskenable, taskhide, toupperfirst,
 	?>
 	if(taskname === "DialHangup" ){
 		if(taskaction.toLowerCase() ==  "dial"){
-                	$("#hash-dial-hangup").html('#DN');
+                	$("#hash-dial-hangup").html('<span class="sr-only">Dial Next</span>#DN');
 		}else{
-        	        $("#hash-dial-hangup").html('#HU');
+        	        $("#hash-dial-hangup").html('<span class="sr-only">Hang Up</span>#HU');
 	        }
 	}
 	<?php
@@ -4592,7 +4593,7 @@ function CallBacksCountCheck() {
                     }
 
 		<?php if( ECCS_BLIND_MODE === 'y'){?>
-                    var appendThis = '<tr data-id="'+value.callback_id+'"><td title="'+value.cust_name+'" style="cursor: pointer;">'+value.cust_name+'</td><td title="'+value.phone_number+'" style="cursor: pointer;">'+value.phone_number+'</td><td title="'+value.entry_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_entry_time+'</td><td title="'+value.callback_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</td><td title="'+value.campaign_name+'" style="cursor: pointer;">'+value.campaign_name+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-cb-'+value.callback_id+'" title="Dial Callback" data-cbid="'+value.callback_id+'" data-leadid="'+value.lead_id+'" onclick="NewCallbackCall('+value.callback_id+', '+value.lead_id+');" class="btn btn-primary btn-sm dial-callback"><i class="fa fa-phone"></i></button> <button id="remove-cb-'+value.callback_id+'" class="btn btn-danger btn-sm hidden"><i class="fa fa-trash-o"></i></button></td></tr>';
+                    var appendThis = '<tr data-id="'+value.callback_id+'"><td title="'+value.cust_name+'" style="cursor: pointer;">'+value.cust_name+'</td><td title="'+value.phone_number.split('').join(' ')+'" style="cursor: pointer;">'+value.phone_number+'</td><td title="'+value.entry_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_entry_time+'</td><td title="'+value.callback_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</td><td title="'+value.campaign_name+'" style="cursor: pointer;">'+value.campaign_name+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-cb-'+value.callback_id+'" title="Dial Callback" data-cbid="'+value.callback_id+'" data-leadid="'+value.lead_id+'" onclick="NewCallbackCall('+value.callback_id+', '+value.lead_id+');" class="btn btn-primary btn-sm dial-callback"><i class="fa fa-phone"></i></button> <button id="remove-cb-'+value.callback_id+'" class="btn btn-danger btn-sm hidden"><i class="fa fa-trash-o"></i></button></td></tr>';
 		<?php } else { ?>
                     var appendThis = '<tr data-id="'+value.callback_id+'"><td>'+value.cust_name+'</td><td>'+value.phone_number+'</td><td title="'+value.entry_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_entry_time+'</td><td title="'+value.callback_time+'" style="cursor: pointer;"><i class="fa fa-clock-o"></i> '+value.short_callback_time+'</td><td>'+value.campaign_name+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="dial-cb-'+value.callback_id+'" data-cbid="'+value.callback_id+'" data-leadid="'+value.lead_id+'" onclick="NewCallbackCall('+value.callback_id+', '+value.lead_id+');" class="btn btn-primary btn-sm dial-callback"><i class="fa fa-phone"></i></button> <button id="remove-cb-'+value.callback_id+'" class="btn btn-danger btn-sm hidden"><i class="fa fa-trash-o"></i></button></td></tr>';
 		<?php } ?>
@@ -4622,6 +4623,7 @@ function CallBacksCountCheck() {
                         $('li#callback-list_previous').attr('title', 'Previous');
                         $('li#callback-list_next a').attr('title', 'Next');
                     },
+		    "scrollX": true,
                 <?php } ?>
                     "bDestroy": true,
                     "aoColumnDefs": [{
@@ -4630,7 +4632,14 @@ function CallBacksCountCheck() {
                     }, {
                         "bSearchable": false,
                         "aTargets": [ 2, 3, 6 ]
-                    }, {
+                    }, 
+		    <?php if ( ECCS_BLIND_MODE === 'y' ) { ?>
+		    {
+                        "sClass": "visible-lg",
+                        "aTargets": [ 0, 2, 4 ]
+                    }
+		    <?php } else { ?>
+		    {
                         "sClass": "hidden-xs",
                         "aTargets": [ 0 ]
                     }, {
@@ -4642,7 +4651,9 @@ function CallBacksCountCheck() {
                     }, {
                         "sClass": "visible-lg",
                         "aTargets": [ 2, 5 ]
-                    }]
+		    }
+                   <?php  } ?>
+		    ]
                 });
                 $("#callback-list_filter").parent('div').attr('class', 'col-sm-6 hidden-xs');
                 $("#callback-list_length").parent('div').attr('class', 'col-xs-12 col-sm-6');
