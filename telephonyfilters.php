@@ -199,9 +199,9 @@
 	// 	$(".textarea").wysihtml5();
 	// }
 	$(document).ready(function(){
-		$('#scripts-modal').on('shown.bs.modal', function(){
+		$('#filter-modal').on('shown.bs.modal', function(){
 	        // $('.textarea').wysihtml5();
-	        CKEDITOR.replace('script_text', 
+	        CKEDITOR.replace('filter_sql', 
 	        	{
 	                toolbar: [
 	                    // { name: 'document', items: [ 'Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates' ] },
