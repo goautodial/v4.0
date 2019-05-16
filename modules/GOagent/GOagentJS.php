@@ -7291,11 +7291,13 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                         reselect_preview_dial = 1;
                     }
                     
-                    setTimeout(function() {
-                        if (live_customer_call > 0 || XD_live_customer_call > 0) {
-                            check_last_call = 1;
-                        }
-                    }, 15000);
+                    if (ECCS_BLIND_MODE === 'n') {
+                        setTimeout(function() {
+                            if (live_customer_call > 0 || XD_live_customer_call > 0) {
+                                check_last_call = 1;
+                            }
+                        }, 15000);
+                    }
                 }
             }
         });
