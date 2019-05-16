@@ -1832,6 +1832,14 @@ $(document).ready(function() {
             globalSession.mute();
         }
     });
+    
+    $("input").on('focus', function() {
+        $(document).off('keydown', 'body', hotKeysAvailable);
+    });
+    
+    $("input").on('focusout', function() {
+        $(document).on('keydown', 'body', hotKeysAvailable);
+    });
 
     <?php if(ECCS_BLIND_MODE !== 'y'){?> 
     $("#popup-hotkeys").drags();
