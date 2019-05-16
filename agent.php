@@ -2273,7 +2273,7 @@ input:checked + .slider:before {
 
 						//ECCS Customization
 						<?php if(ECCS_BLIND_MODE === 'y'){ ?>
-							$("li.dropdown.messages-menu a.dropdown-toggle").append("<br><span class="sr-only">Messages</span><span>#VM</span>");
+							$("li.dropdown.messages-menu a.dropdown-toggle").append('<br><span class="sr-only">Messages</span><span>#VM</span>');
 							$("li.dropdown.messages-menu a.dropdown-toggle").attr("data-tooltip", "tooltip");
 			                                $("li.dropdown.messages-menu a.dropdown-toggle").attr("title", "<?=$lh->translationFor('messages')?>");
 						<?php } //end if ECCS_BLIND_MODE?>
