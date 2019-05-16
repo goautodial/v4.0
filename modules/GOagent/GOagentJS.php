@@ -1230,59 +1230,60 @@ $(document).ready(function() {
     ?>
 	    // Keyboard Shortcuts
 	    $(document).keydown(function(e){
-	      // User Exit
-	      if(e.shiftKey && e.key == "End"){
-                if (is_logged_in && (live_customer_call > 0 || XD_live_customer_call > 0)) {
-                    swal({
-                        title: '<?=$lh->translationFor('error')?>',
-                        text: '<?=$lh->translationFor('currently_in_call')?>',
-                        type: 'error'
-                    });
-                } else {
-                    btnLogMeOut();
-                }
-
-	      // Phone Log In
-	      } else if(e.shiftKey && e.key == "Home") {
-                if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
-                    swal({
-                        title: '<?=$lh->translationFor('error')?>',
-                        text: '<?=$lh->translationFor('phone_already_logged_in')?>',
-                        type: 'error'
-                    });
-                } else {
-                    btnLogMeIn();
-                }
-
-              // Dial or Hangup
-              } else if(e.shiftKey && e.key == "!") {
-                console.log('Shift: ' + e.shiftKey, 'Key: ' + e.key);
-                btnDialHangup();
-			      
-              // Resume or Pause
-              } else if(e.shiftKey && e.key == "@") {
-                if (live_customer_call < 1) {
-                    btnResumePause();
-              }
-
-	      // Open Web form
-              } else if(e.shiftKey && e.key == "#") {
-                $("#openWebForm").click();
-
-	      // Toggle Lead Preview
-              } else if(e.shiftKey && e.key == "$") {
-                $("#LeadPreview").click();
-
-	      // Callbacklist
-              } else if(e.shiftKey && e.key == "%") {
-                if ($("#loaded-contents").is(':visible')) {
-                    MainPanelToFront();
-                } else {
-                    $("a[href='#callbackslist']").click();
-                }
-              }
-
-	   });
+            if (AgentDispoing < 1) {
+                // User Exit
+                if(e.shiftKey && e.key == "End"){
+                      if (is_logged_in && (live_customer_call > 0 || XD_live_customer_call > 0)) {
+                          swal({
+                              title: '<?=$lh->translationFor('error')?>',
+                              text: '<?=$lh->translationFor('currently_in_call')?>',
+                              type: 'error'
+                          });
+                      } else {
+                          btnLogMeOut();
+                      }
+      
+                // Phone Log In
+                } else if(e.shiftKey && e.key == "Home") {
+                      if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
+                          swal({
+                              title: '<?=$lh->translationFor('error')?>',
+                              text: '<?=$lh->translationFor('phone_already_logged_in')?>',
+                              type: 'error'
+                          });
+                      } else {
+                          btnLogMeIn();
+                      }
+      
+                    // Dial or Hangup
+                    } else if(e.shiftKey && e.key == "!") {
+                      console.log('Shift: ' + e.shiftKey, 'Key: ' + e.key);
+                      btnDialHangup();
+                        
+                    // Resume or Pause
+                    } else if(e.shiftKey && e.key == "@") {
+                      if (live_customer_call < 1) {
+                          btnResumePause();
+                    }
+      
+                // Open Web form
+                    } else if(e.shiftKey && e.key == "#") {
+                      $("#openWebForm").click();
+      
+                // Toggle Lead Preview
+                    } else if(e.shiftKey && e.key == "$") {
+                      $("#LeadPreview").click();
+      
+                // Callbacklist
+                    } else if(e.shiftKey && e.key == "%") {
+                      if ($("#loaded-contents").is(':visible')) {
+                          MainPanelToFront();
+                      } else {
+                          $("a[href='#callbackslist']").click();
+                      }
+                    }
+            }
+        });
    
      <?php
 	}	
