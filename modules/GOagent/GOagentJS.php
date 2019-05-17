@@ -122,153 +122,158 @@ var reschedule_cb_id = 0;
 var just_logged_in = false;
 var editProfileEnabled = false;
 var ECCS_BLIND_MODE = '<?=ECCS_BLIND_MODE?>';
-<?php
-    foreach ($default_settings as $idx => $val) {
-        if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
-            if ($idx == 'xfer_group_count') {
-                echo "var XFgroupCOUNT = {$val};\n";
-            } else if ($idx == 'inbound_group_count') {
-                echo "var INgroupCOUNT = {$val};\n";
-            } else if ($idx == 'email_group_count') {
-                echo "var EMAILgroupCOUNT = {$val};\n";
-            } else if ($idx == 'phone_group_count') {
-                echo "var PHONEgroupCOUNT = {$val};\n";
-            } else if ($idx == 'alt_phone_dialing') {
-                echo "var starting_alt_phone_dialing = {$val};\n";
-            }
-            echo "var {$idx} = {$val};\n";
-        } else if (is_array($val)) {
-            if (preg_match("/^(xfer_groups|inbound_groups|xfer_group_names|inbound_group_handlers)$/", $idx)) {
-                $valName = $idx;
-                if ($idx == 'xfer_groups') {
-                    $valName = 'VARxferGroups';
-                } else if ($idx == 'xfer_group_names') {
-                    $valName = 'VARxferGroupsNames';
-                } else if ($idx == 'inbound_groups') {
-                    $valName = 'VARingroups';
-                } else if ($idx == 'inbound_group_handlers') {
-                    $valName = 'VARingroup_handlers';
-                } else if ($idx == 'email_groups') {
-                    $valName = 'VARemailgroups';
-                } else if ($idx == 'phone_groups') {
-                    $valName = 'VARphonegroups';
-                }
-                echo "var {$valName} = new Array();\n";
-            } else {
-                echo "    {$idx} = new Array('','','','','','');\n";
-            }
-        } else if (is_object($val)) {
-            $valList  = "";
-            $valList2 = "";
-            $valName  = $idx;
-            foreach ($val as $idz => $valz) {
-                $valList  .= "'{$idz}',";
-                $valList2 .= "'{$valz}',";
-            }
-            $valList  = preg_replace("/,$/", "", $valList);
-            $valList2 = preg_replace("/,$/", "", $valList2);
-            
-            if ($idx == 'xfer_groups') {
-                $valName = 'VARxferGroups';
-            } else if ($idx == 'xfer_group_names') {
-                $valName = 'VARxferGroupsNames';
-            } else if ($idx == 'inbound_groups') {
-                $valName = 'VARingroups';
-            } else if ($idx == 'inbound_group_handlers') {
-                $valName = 'VARingroup_handlers';
-            } else if ($idx == 'email_groups') {
-                $valName = 'VARemailgroups';
-            } else if ($idx == 'phone_groups') {
-                $valName = 'VARphonegroups';
-            }
-            
-            echo "var {$valName} = new Array({$valList});\n";
-            if ($idx == 'statuses') {
-                echo "var statuses_names = new Array({$valList2});\n";
-            } else if ($idx == 'pause_codes') {
-                echo "var pause_codes_names = new Array({$valList2});\n";
-            }
-        } else if (preg_match("/^(timezone)$/", $idx)) {
-            ${$idx} = $val;
-            echo "var {$idx} = '{$val}';\n";
-        } else {
-            echo "var {$idx} = '{$val}';\n";
-            if ($idx == 'callback_statuses_list') {
-                echo "var VARCBstatusesLIST = '{$val}';\n";
-            }
-        }
-    }
-    echo "\n";
-    
-    echo "// User Settings\n";    
-    foreach ($agent as $idx => $val) {
-        if (preg_match("/^(vicidial_recording|vicidial_recording_override)$/", $idx)) {
-            ${$idx} = $val;
-            echo "var {$idx} = '{$val}';\n";
-        } else {
-            if ($idx == 'user') {
-                echo "var {$idx} = '{$val}';\n";
-                echo "var uName = '{$val}';\n";
-            } else if ($idx == 'pass') {
-                echo "var {$idx} = '{$val}';\n";
-                echo "var uPass = '{$val}';\n";
-            } else if ($idx == 'phone_login') {
-                ${$idx} = $val;
-                echo "var {$idx} = '{$val}';\n";
-                echo "var pExten = '{$val}';\n";
-                echo "var original_{$idx} = '{$val}';\n";
-            } else if ($idx == 'phone_pass') {
-                ${$idx} = $val;
-                echo "var {$idx} = '{$val}';\n";
-                echo "var pPass = '{$val}';\n";
-            } else if ($idx == 'full_name') {
-                echo "var {$idx} = '{$val}';\n";
-                echo "var fName = '{$val}';\n";
-                echo "var LOGfullname = '{$val}';\n";
-            } else if (preg_match("/^(custom_)/", $idx)) {
-                echo "var user_{$idx} = '{$val}';\n";
-            } else {
-                echo "var {$idx} = '{$val}';\n";
-            }
-        }
-    }
-    //echo "// ".$result['user_group']."\n";
-    
-    $phone_login = (isset($_SESSION['phone_login'])) ? $_SESSION['phone_login'] : $phone_login;
-    $phone_pass = (isset($_SESSION['phone_pass'])) ? $_SESSION['phone_pass'] : $phone_pass;
-    echo "\n// Phone Settings\n";
 
-    foreach ($phone as $idx => $val) {
-        echo "var {$idx} = '{$val}';\n";
+<?php if( ECCS_BLIND_MODE === 'y' ) { ?>
+var enable_eccs_shortcuts = 1;
+<?php } ?>
+
+<?php
+foreach ($default_settings as $idx => $val) {
+if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", $idx)) {
+    if ($idx == 'xfer_group_count') {
+	echo "var XFgroupCOUNT = {$val};\n";
+    } else if ($idx == 'inbound_group_count') {
+	echo "var INgroupCOUNT = {$val};\n";
+    } else if ($idx == 'email_group_count') {
+	echo "var EMAILgroupCOUNT = {$val};\n";
+    } else if ($idx == 'phone_group_count') {
+	echo "var PHONEgroupCOUNT = {$val};\n";
+    } else if ($idx == 'alt_phone_dialing') {
+	echo "var starting_alt_phone_dialing = {$val};\n";
+    }
+    echo "var {$idx} = {$val};\n";
+} else if (is_array($val)) {
+    if (preg_match("/^(xfer_groups|inbound_groups|xfer_group_names|inbound_group_handlers)$/", $idx)) {
+	$valName = $idx;
+	if ($idx == 'xfer_groups') {
+	    $valName = 'VARxferGroups';
+	} else if ($idx == 'xfer_group_names') {
+	    $valName = 'VARxferGroupsNames';
+	} else if ($idx == 'inbound_groups') {
+	    $valName = 'VARingroups';
+	} else if ($idx == 'inbound_group_handlers') {
+	    $valName = 'VARingroup_handlers';
+	} else if ($idx == 'email_groups') {
+	    $valName = 'VARemailgroups';
+	} else if ($idx == 'phone_groups') {
+	    $valName = 'VARphonegroups';
+	}
+	echo "var {$valName} = new Array();\n";
+    } else {
+	echo "    {$idx} = new Array('','','','','','');\n";
+    }
+} else if (is_object($val)) {
+    $valList  = "";
+    $valList2 = "";
+    $valName  = $idx;
+    foreach ($val as $idz => $valz) {
+	$valList  .= "'{$idz}',";
+	$valList2 .= "'{$valz}',";
+    }
+    $valList  = preg_replace("/,$/", "", $valList);
+    $valList2 = preg_replace("/,$/", "", $valList2);
+    
+    if ($idx == 'xfer_groups') {
+	$valName = 'VARxferGroups';
+    } else if ($idx == 'xfer_group_names') {
+	$valName = 'VARxferGroupsNames';
+    } else if ($idx == 'inbound_groups') {
+	$valName = 'VARingroups';
+    } else if ($idx == 'inbound_group_handlers') {
+	$valName = 'VARingroup_handlers';
+    } else if ($idx == 'email_groups') {
+	$valName = 'VARemailgroups';
+    } else if ($idx == 'phone_groups') {
+	$valName = 'VARphonegroups';
     }
     
-    echo "\n// System Settings\n";
-    
-    foreach ($system as $idx => $val) {
-        if (preg_match("/^(vdc_)/", $idx)) {
-            $idx_ = str_replace('vdc_', '', $idx);
-            echo "var {$idx_} = '{$val}';\n";
-        } else {
-            if ($idx == 'allow_emails') {
-                echo "var email_enabled = '{$val}';\n";
-            } else if ($idx == 'qc_features_active') {
-                echo "var qc_enabled = '{$val}';\n";
-            } else if ($idx == 'default_local_gmt') {
-                echo "var {$idx} = '{$val}';\n";
-                ${$idx} = $val;
-            } else {
-                echo "var {$idx} = '{$val}';\n";
-            }
-        }
+    echo "var {$valName} = new Array({$valList});\n";
+    if ($idx == 'statuses') {
+	echo "var statuses_names = new Array({$valList2});\n";
+    } else if ($idx == 'pause_codes') {
+	echo "var pause_codes_names = new Array({$valList2});\n";
     }
-    
-    //$tz = ini_get('date.timezone');
-    $tz = $timezone;
-    if (strlen($tz) < 1) {
-        $tz = timezone_name_from_abbr(null, $default_local_gmt * 3600, -1);
-        if($tz === false) $tz = timezone_name_from_abbr(null, $default_local_gmt * 3600, 1);
+} else if (preg_match("/^(timezone)$/", $idx)) {
+    ${$idx} = $val;
+    echo "var {$idx} = '{$val}';\n";
+} else {
+    echo "var {$idx} = '{$val}';\n";
+    if ($idx == 'callback_statuses_list') {
+	echo "var VARCBstatusesLIST = '{$val}';\n";
     }
-    date_default_timezone_set($tz);
+}
+}
+echo "\n";
+
+echo "// User Settings\n";    
+foreach ($agent as $idx => $val) {
+if (preg_match("/^(vicidial_recording|vicidial_recording_override)$/", $idx)) {
+    ${$idx} = $val;
+    echo "var {$idx} = '{$val}';\n";
+} else {
+    if ($idx == 'user') {
+	echo "var {$idx} = '{$val}';\n";
+	echo "var uName = '{$val}';\n";
+    } else if ($idx == 'pass') {
+	echo "var {$idx} = '{$val}';\n";
+	echo "var uPass = '{$val}';\n";
+    } else if ($idx == 'phone_login') {
+	${$idx} = $val;
+	echo "var {$idx} = '{$val}';\n";
+	echo "var pExten = '{$val}';\n";
+	echo "var original_{$idx} = '{$val}';\n";
+    } else if ($idx == 'phone_pass') {
+	${$idx} = $val;
+	echo "var {$idx} = '{$val}';\n";
+	echo "var pPass = '{$val}';\n";
+    } else if ($idx == 'full_name') {
+	echo "var {$idx} = '{$val}';\n";
+	echo "var fName = '{$val}';\n";
+	echo "var LOGfullname = '{$val}';\n";
+    } else if (preg_match("/^(custom_)/", $idx)) {
+	echo "var user_{$idx} = '{$val}';\n";
+    } else {
+	echo "var {$idx} = '{$val}';\n";
+    }
+}
+}
+//echo "// ".$result['user_group']."\n";
+
+$phone_login = (isset($_SESSION['phone_login'])) ? $_SESSION['phone_login'] : $phone_login;
+$phone_pass = (isset($_SESSION['phone_pass'])) ? $_SESSION['phone_pass'] : $phone_pass;
+echo "\n// Phone Settings\n";
+
+foreach ($phone as $idx => $val) {
+echo "var {$idx} = '{$val}';\n";
+}
+
+echo "\n// System Settings\n";
+
+foreach ($system as $idx => $val) {
+if (preg_match("/^(vdc_)/", $idx)) {
+    $idx_ = str_replace('vdc_', '', $idx);
+    echo "var {$idx_} = '{$val}';\n";
+} else {
+    if ($idx == 'allow_emails') {
+	echo "var email_enabled = '{$val}';\n";
+    } else if ($idx == 'qc_features_active') {
+	echo "var qc_enabled = '{$val}';\n";
+    } else if ($idx == 'default_local_gmt') {
+	echo "var {$idx} = '{$val}';\n";
+	${$idx} = $val;
+    } else {
+	echo "var {$idx} = '{$val}';\n";
+    }
+}
+}
+
+//$tz = ini_get('date.timezone');
+$tz = $timezone;
+if (strlen($tz) < 1) {
+$tz = timezone_name_from_abbr(null, $default_local_gmt * 3600, -1);
+if($tz === false) $tz = timezone_name_from_abbr(null, $default_local_gmt * 3600, 1);
+}
+date_default_timezone_set($tz);
 ?>
 
 var currentTZ = '<?=$tz?>';
@@ -278,617 +283,619 @@ var montharray=new Array("<?=$lh->translationFor('january')?>","<?=$lh->translat
 var serverdate=new Date(currenttime);
 
 <?php  
-    if (isset($camp_info->campaign_id)) {
-        echo "\n// Campaign Settings\n";
-        $dial_prefix = '';
+if (isset($camp_info->campaign_id)) {
+echo "\n// Campaign Settings\n";
+$dial_prefix = '';
 ?>
 var campaign = '<?=$camp_info->campaign_id?>';      // put here the selected campaign upon login
 var group = '<?=$camp_info->campaign_id?>';         // same value as campaign variable
 <?php
-        foreach ($camp_info as $idx => $val) {
-            if (preg_match("/^(timer_action)/", $idx)) {
-                echo "var campaign_{$idx} = '{$val}';\n";
-            } else {
-                if ($idx == 'dial_prefix')
-                    {$dial_prefix = $val;}
-                if ($idx == 'manual_dial_prefix')
-                    {$val = (strlen($val) < 1) ? $dial_prefix : $val;}
-                if ($idx == 'pause_after_each_call') {
-                    $idx = 'dispo_check_all_pause';
-                    $val = ($val == 'Y') ? 1 : 0;
-                }
-                if (preg_match("/^(campaign_rec_filename|default_group_alias|default_xfer_group)$/", $idx)) {
-                    echo "var LIVE_{$idx} = '{$val}';\n";
-                }
-        
-                if (!preg_match("/^(disable_dispo_screen|disable_dispo_status|campaign_recording)$/", $idx)) {
-                    if (preg_match("/^(web_form_address)/", $idx)) {
-                        echo "var {$idx} = '{$val}';\n";
-                        echo "var VDIC_{$idx} = '{$val}';\n";
-                        echo "var TEMP_VDIC_{$idx} = '{$val}';\n";
-                    } else {
-                        if (is_object($val)) {
-                            if (preg_match("/^hotkeys/", $idx)) {
-                                $hkList = "";
-                                foreach ($val as $k => $v) {
-                                    $hkList .= "'{$k}': '{$v}', ";
-                                }
-                                $hkList  = preg_replace("/, $/", "", $hkList);
-                                echo "var {$idx} = {".$hkList."};\n";
-                            }
-                        } else if (is_numeric($val) && $idx == 'call_requeue_button') {
-                            echo "var {$idx} = $val;\n";
-                        } else if (is_numeric($val) && preg_match("/^(enable_callback_alert|cb_noexpire|cb_sendemail)$/", $idx)) {
-                            echo "var {$idx} = $val;\n";
-                        } else {
-                            echo "var {$idx} = '{$val}';\n";
-                            if ($idx == 'auto_dial_level') {
-                                echo "var starting_dial_level = '{$val}';\n";
-                            }
-                            if ($idx == 'api_manual_dial') {
-                                $AllowManualQueueCalls = 1;
-                                $AllowManualQueueCallsChoice = 0;
-                                if ($val == 'QUEUE') {
-                                    $AllowManualQueueCalls = 0;
-                                    $AllowManualQueueCallsChoice = 1;
-                                }
-                                echo "var AllowManualQueueCalls = '{$AllowManualQueueCalls}';\n";
-                                echo "var AllowManualQueueCallsChoice = '{$AllowManualQueueCallsChoice}';\n";
-                            }
-                            if ($idx == 'manual_preview_dial') {
-                                $manual_dial_preview = 1;
-                                if ($val == 'DISABLED')
-                                    {$manual_dial_preview = 0;}
-                                echo "var manual_dial_preview = '{$manual_dial_preview}';\n";
-                            }
-                            if ($idx == 'manual_dial_override') {
-                                if ($val == 'ALLOW_ALL')
-                                    {echo "    agentcall_manual = '1';\n";}
-                                if ($val == 'DISABLE_ALL')
-                                    {echo "    agentcall_manual = '0';\n";}
-                            }
-                            if ($idx == 'agent_clipboard_copy') {
-                                echo "var Copy_to_Clipboard = '{$val}';\n";
-                            }
-                            if (preg_match("/^(xferconf_)/", $idx)) {
-                                echo "var ".preg_replace(array('/xferconf/', '/number/', '/dtmf/'), array('Call_XC', 'Number', 'DTMF'), $idx)." = '{$val}';\n";
-                            }
-                            if ($idx == 'view_calls_in_queue_launch') {
-                                echo "var view_calls_in_queue_active = '{$val}';\n";
-                            }
-                        }
-                    }
-                } else {
-                    ${$idx} = $val;
-                }
-            }
-        }
-        
-        if (($disable_dispo_screen == 'DISPO_ENABLED') || ($disable_dispo_screen == 'DISPO_SELECT_DISABLED') || (strlen($disable_dispo_status) < 1)) {
-            if ($disable_dispo_screen == 'DISPO_SELECT_DISABLED') {
-                echo "var hide_dispo_list = '1';\n";
-            } else {
-                echo "var hide_dispo_list = '0';\n";
-            }
-            echo "var disable_dispo_screen = '0';\n";
-            echo "var disable_dispo_status = '';\n";
-        }
-        if (($disable_dispo_screen == 'DISPO_DISABLED') && (strlen($disable_dispo_status) > 0)) {
-            echo "var hide_dispo_list = '0';\n";
-            echo "var disable_dispo_screen = '1';\n";
-            echo "var disable_dispo_status = '{$disable_dispo_status}';\n";
-        }
-        
-        if ((!preg_match('/DISABLED/', $vicidial_recording_override)) && ($vicidial_recording > 0))
-            {$campaign_recording = $vicidial_recording_override;}
-        if ($vicidial_recording == '0')
-            {$campaign_recording = 'NEVER';}
-        echo "var campaign_recording = '{$campaign_recording}';\n";
-        echo "var LIVE_campaign_recording = '{$campaign_recording}';\n";
+foreach ($camp_info as $idx => $val) {
+    if (preg_match("/^(timer_action)/", $idx)) {
+	echo "var campaign_{$idx} = '{$val}';\n";
+    } else {
+	if ($idx == 'dial_prefix')
+	    {$dial_prefix = $val;}
+	if ($idx == 'manual_dial_prefix')
+	    {$val = (strlen($val) < 1) ? $dial_prefix : $val;}
+	if ($idx == 'pause_after_each_call') {
+	    $idx = 'dispo_check_all_pause';
+	    $val = ($val == 'Y') ? 1 : 0;
+	}
+	if (preg_match("/^(campaign_rec_filename|default_group_alias|default_xfer_group)$/", $idx)) {
+	    echo "var LIVE_{$idx} = '{$val}';\n";
+	}
+
+	if (!preg_match("/^(disable_dispo_screen|disable_dispo_status|campaign_recording)$/", $idx)) {
+	    if (preg_match("/^(web_form_address)/", $idx)) {
+		echo "var {$idx} = '{$val}';\n";
+		echo "var VDIC_{$idx} = '{$val}';\n";
+		echo "var TEMP_VDIC_{$idx} = '{$val}';\n";
+	    } else {
+		if (is_object($val)) {
+		    if (preg_match("/^hotkeys/", $idx)) {
+			$hkList = "";
+			foreach ($val as $k => $v) {
+			    $hkList .= "'{$k}': '{$v}', ";
+			}
+			$hkList  = preg_replace("/, $/", "", $hkList);
+			echo "var {$idx} = {".$hkList."};\n";
+		    }
+		} else if (is_numeric($val) && $idx == 'call_requeue_button') {
+		    echo "var {$idx} = $val;\n";
+		} else if (is_numeric($val) && preg_match("/^(enable_callback_alert|cb_noexpire|cb_sendemail)$/", $idx)) {
+		    echo "var {$idx} = $val;\n";
+		} else {
+		    echo "var {$idx} = '{$val}';\n";
+		    if ($idx == 'auto_dial_level') {
+			echo "var starting_dial_level = '{$val}';\n";
+		    }
+		    if ($idx == 'api_manual_dial') {
+			$AllowManualQueueCalls = 1;
+			$AllowManualQueueCallsChoice = 0;
+			if ($val == 'QUEUE') {
+			    $AllowManualQueueCalls = 0;
+			    $AllowManualQueueCallsChoice = 1;
+			}
+			echo "var AllowManualQueueCalls = '{$AllowManualQueueCalls}';\n";
+			echo "var AllowManualQueueCallsChoice = '{$AllowManualQueueCallsChoice}';\n";
+		    }
+		    if ($idx == 'manual_preview_dial') {
+			$manual_dial_preview = 1;
+			if ($val == 'DISABLED')
+			    {$manual_dial_preview = 0;}
+			echo "var manual_dial_preview = '{$manual_dial_preview}';\n";
+		    }
+		    if ($idx == 'manual_dial_override') {
+			if ($val == 'ALLOW_ALL')
+			    {echo "    agentcall_manual = '1';\n";}
+			if ($val == 'DISABLE_ALL')
+			    {echo "    agentcall_manual = '0';\n";}
+		    }
+		    if ($idx == 'agent_clipboard_copy') {
+			echo "var Copy_to_Clipboard = '{$val}';\n";
+		    }
+		    if (preg_match("/^(xferconf_)/", $idx)) {
+			echo "var ".preg_replace(array('/xferconf/', '/number/', '/dtmf/'), array('Call_XC', 'Number', 'DTMF'), $idx)." = '{$val}';\n";
+		    }
+		    if ($idx == 'view_calls_in_queue_launch') {
+			echo "var view_calls_in_queue_active = '{$val}';\n";
+		    }
+		}
+	    }
+	} else {
+	    ${$idx} = $val;
+	}
     }
-    
-    $country_code_list = '{}';
-    if (isset($country_codes)) {
-        $country_code_list = stripslashes(json_encode($country_codes));
+}
+
+if (($disable_dispo_screen == 'DISPO_ENABLED') || ($disable_dispo_screen == 'DISPO_SELECT_DISABLED') || (strlen($disable_dispo_status) < 1)) {
+    if ($disable_dispo_screen == 'DISPO_SELECT_DISABLED') {
+	echo "var hide_dispo_list = '1';\n";
+    } else {
+	echo "var hide_dispo_list = '0';\n";
     }
-    echo "var country_codes = $country_code_list;\n";
+    echo "var disable_dispo_screen = '0';\n";
+    echo "var disable_dispo_status = '';\n";
+}
+if (($disable_dispo_screen == 'DISPO_DISABLED') && (strlen($disable_dispo_status) > 0)) {
+    echo "var hide_dispo_list = '0';\n";
+    echo "var disable_dispo_screen = '1';\n";
+    echo "var disable_dispo_status = '{$disable_dispo_status}';\n";
+}
+
+if ((!preg_match('/DISABLED/', $vicidial_recording_override)) && ($vicidial_recording > 0))
+    {$campaign_recording = $vicidial_recording_override;}
+if ($vicidial_recording == '0')
+    {$campaign_recording = 'NEVER';}
+echo "var campaign_recording = '{$campaign_recording}';\n";
+echo "var LIVE_campaign_recording = '{$campaign_recording}';\n";
+}
+
+$country_code_list = '{}';
+if (isset($country_codes)) {
+$country_code_list = stripslashes(json_encode($country_codes));
+}
+echo "var country_codes = $country_code_list;\n";
 ?>
 var defaultFields = "vendor_lead_code,source_id,list_id,gmt_offset_now,called_since_last_reset,phone_code,phone_number,title,first_name,middle_initial,last_name,address1,address2,address3,city,state,province,postal_code,country_code,gender,date_of_birth,alt_phone,email,security_phrase,comments,called_count,last_local_call_time,rank,owner";
 
 $(document).ready(function() {
-    // Load current server time
-    setInterval("displaytime()", 1000);
-    checkLogin = 0;
-    
-    $(window).focus(function() {
-        window_focus = true;
-    }).blur(function() {
-        window_focus = false;
-    }).trigger('focus');
-    
-    $(window).load(function() {
-        var refreshId = setInterval(function() {
-            if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
-                //Start of checking for live calls
-                //if (live_customer_call == 1) {
-                //    live_call_seconds++;
-                //    //$("input[name='SecondS']").val(live_call_seconds);
-                //    //$("div:contains('CALL LENGTH:') > span").html(live_call_seconds);
-                //    //$("div:contains('SESSION ID:') > span").html(session_id);
-                //    toggleButton('DialHangup', 'hangup');
-                //    toggleButton('ResumePause', 'off');
-                //    
-                //    if (CheckDEADcall > 0) {
-                //        if (CheckDEADcallON < 1) {
-                //            toggleStatus('DEAD');
-                //            toggleButton('ParkCall', 'off');
-                //            toggleButton('TransferCall', 'off');
-                //            CheckDEADcallON = 1;
-                //            
-                //            if (xfer_in_call > 0 && customer_3way_hangup_logging == 'ENABLED') {
-                //                customer_3way_hangup_counter_trigger = 1;
-                //                customer_3way_hangup_counter = 1;
-                //            }
-                //        }
-                //    }
-                //}
-                
-                if (live_customer_call < 1) {
-                    editProfileEnabled = false;
-                    $("#for_dtmf").addClass('hidden');
-                    $('#edit-profile').addClass('hidden');
-                    $("#reload-script").addClass('hidden');
-                    $("#dialer-pad-ast, #dialer-pad-hash").addClass('hidden');
-                    $("#dialer-pad-clear, #dialer-pad-undo").removeClass('hidden');
-                    $("#btnLogMeOut").removeClass("disabled");
-                    //toggleStatus('NOLIVE');
-                    
-                    if (dialingINprogress < 1) {
-                        //toggleButton('DialHangup', 'dial');
-                        //toggleButton('ResumePause', 'on');
-                    }
-                    
-                    if (per_call_notes == 'ENABLED') {
-                        $("#call_notes_content").removeClass('hidden');
-                    } else {
-                        $("#call_notes_content").addClass('hidden');
-                    }
-                }
-                //End of checking for live calls
-    
-                $("#LeadLookUP").prop('checked', true);
-                    
-                if (check_r < 1) {
-                    toggleButtons(dial_method, ivr_park_call, call_requeue_button);
-                    if (agent_status_view > 0) {
-                        $("#agents-tab").removeClass('hidden');
-                    } else {
-                        $("#agents-tab").addClass('hidden');
-                    }
-                }
-    
-                epoch_sec++;
-                check_r++;
-                even++;
-                if (even > 1) {
-                    even = 0;
-                }
-                
-                WaitingForNextStep = 0;
-                if ( (CloserSelecting == 1) || (TerritorySelecting == 1) )	{WaitingForNextStep = 1;}
-                
-                if (open_dispo_screen == 1) {
-                    wrapup_counter = 0;
-                    if (wrapup_seconds > 0) {
-                        //showDiv('WrapupBox');
-                        //$("#WrapupTimer").html(wrapup_seconds);
-                        wrapup_waiting = 1;
-                    }
-    
-                    CustomerData_update();
-                    //if (hide_gender < 1)
-                    //{
-                    //    $("#GENDERhideFORie").html('');
-                    //    $("#GENDERhideFORieALT").html('<select size="1" name="gender_list" class="cust_form" id="gender_list"><option value="U">U - <?=$lh->translationFor('undefined')?></option><option value="M">M - <?=$lh->translationFor('male')?></option><option value="F">F - <?=$lh->translationFor('female')?></option></select>');
-                    //}
-    
-                    DispoSelectBox();
-                    //DispoSelectContent_create('','ReSET');
-                    WaitingForNextStep = 1;
-                    open_dispo_screen = 0;
-                    LIVE_default_xfer_group = default_xfer_group;
-                    LIVE_campaign_recording = campaign_recording;
-                    LIVE_campaign_rec_filename = campaign_rec_filename;
-                    if (disable_alter_custphone != 'HIDE')
-                        {$("#DispoSelectPhone").html(dialed_number);}
-                    else
-                        {$("#DispoSelectPhone").html('');}
-                    if (auto_dial_level == 0) {
-                        if ($("#DialALTPhone").is(':checked') == true) {
-                            reselect_alt_dial = 1;
-                            toggleButton('DialHangup', 'dial');
-    
-                            $("#MainStatusSpan").html("<b><?=$lh->translationFor('dial_next_call')?></b>");
-                        } else {
-                            reselect_alt_dial = 0;
-                        }
-                    }
-    
-                    // Submit custom form if it is custom_fields_enabled
-                    if (custom_fields_enabled > 0) {
-                        //alert("IFRAME submitting!");
-                        //vcFormIFrame.document.form_custom_fields.submit();
-                    }
-                }
-                
-                if (AgentDispoing > 0) {
-                    WaitingForNextStep = 1;
-                    CheckForConfCalls(session_id, '0');
-                    AgentDispoing++;
-                }
-                
-                if (agent_choose_ingroups_skip_count > 0) {
-                    agent_choose_ingroups_skip_count--;
-                    if (agent_choose_ingroups_skip_count == 0)
-                        {CloserSelectSubmit();}
-                }
-                if (agent_select_territories_skip_count > 0) {
-                    agent_select_territories_skip_count--;
-                    if (agent_select_territories_skip_count == 0)
-                        {TerritorySelectSubmit();}
-                }
-                if (logout_stop_timeouts == 1)	{WaitingForNextStep = 1;}
-                if ( (custchannellive < -30) && (lastcustchannel.length > 3) && (no_empty_session_warnings < 1) ) {CustomerChannelGone();}
-                if ( (custchannellive < -10) && (lastcustchannel.length > 3) ) {ReCheckCustomerChan();}
-                if ( (nochannelinsession > 16) && (check_r > 15) && (no_empty_session_warnings < 1) ) {NoneInSession();}
-                if (external_transferconf_count > 0) {external_transferconf_count = (external_transferconf_count - 1);}
-                if (manual_auto_hotkey == 1) {
-                    manual_auto_hotkey = 0;
-                    ManualDialNext('','','','','','0');
-                }
-                if (manual_auto_hotkey > 1) {manual_auto_hotkey = (manual_auto_hotkey - 1);}
-                
-                if (agent_lead_search_override == 'NOT_ACTIVE') {
-                    if (agent_lead_search == 'ENABLED') {
-                        $("#agent-lead-search").removeClass('hidden');
-                    } else {
-                        $("#agent-lead-search").addClass('hidden');
-                    }
-                }
+// Load current server time
+setInterval("displaytime()", 1000);
+checkLogin = 0;
 
-                if (WaitingForNextStep == 0) {
-                    if (trigger_ready > 0) {
-                        trigger_ready = 0;
-                        if (auto_resume_precall == 'Y')
-                            {AutoDial_Resume_Pause("VDADready");}
-                    }
-                    
-                    // check for live channels in conference room and get current datetime
-                    CheckForConfCalls(session_id, '0');
-                    
-                    // refresh agent status view
-                    if ($("#agents-tab").hasClass('active')) {
-                        agent_status_view_active = 1;
-                    } else {
-                        agent_status_view_active = 0;
-                    }
-                    if (agent_status_view_active > 0) {
-                        RefreshAgentsView('AgentViewStatus', agent_status_view);
-                    }
-                    if (view_calls_in_queue_active > 0) {
-                        RefreshCallsInQueue(view_calls_in_queue);
-                    }
-                    if (xfer_select_agents_active > 0) {
-                        RefreshAgentsView('AgentXferViewSelect', agent_status_view);
-                    }
-                    if (agentonly_callbacks == '1')
-                        {CB_count_check++;}
+$(window).focus(function() {
+window_focus = true;
+}).blur(function() {
+window_focus = false;
+}).trigger('focus');
 
-                    if (AutoDialWaiting == 1) {
-                        CheckForIncoming();
-                    }
+$(window).load(function() {
+var refreshId = setInterval(function() {
+    if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
+	//Start of checking for live calls
+	//if (live_customer_call == 1) {
+	//    live_call_seconds++;
+	//    //$("input[name='SecondS']").val(live_call_seconds);
+	//    //$("div:contains('CALL LENGTH:') > span").html(live_call_seconds);
+	//    //$("div:contains('SESSION ID:') > span").html(session_id);
+	//    toggleButton('DialHangup', 'hangup');
+	//    toggleButton('ResumePause', 'off');
+	//    
+	//    if (CheckDEADcall > 0) {
+	//        if (CheckDEADcallON < 1) {
+	//            toggleStatus('DEAD');
+	//            toggleButton('ParkCall', 'off');
+	//            toggleButton('TransferCall', 'off');
+	//            CheckDEADcallON = 1;
+	//            
+	//            if (xfer_in_call > 0 && customer_3way_hangup_logging == 'ENABLED') {
+	//                customer_3way_hangup_counter_trigger = 1;
+	//                customer_3way_hangup_counter = 1;
+	//            }
+	//        }
+	//    }
+	//}
+	
+	if (live_customer_call < 1) {
+	    editProfileEnabled = false;
+	    $("#for_dtmf").addClass('hidden');
+	    $('#edit-profile').addClass('hidden');
+	    $("#reload-script").addClass('hidden');
+	    $("#dialer-pad-ast, #dialer-pad-hash").addClass('hidden');
+	    $("#dialer-pad-clear, #dialer-pad-undo").removeClass('hidden');
+	    $("#btnLogMeOut").removeClass("disabled");
+	    //toggleStatus('NOLIVE');
+	    
+	    if (dialingINprogress < 1) {
+		//toggleButton('DialHangup', 'dial');
+		//toggleButton('ResumePause', 'on');
+	    }
+	    
+	    if (per_call_notes == 'ENABLED') {
+		$("#call_notes_content").removeClass('hidden');
+	    } else {
+		$("#call_notes_content").addClass('hidden');
+	    }
+	}
+	//End of checking for live calls
 
-                    if (MD_channel_look == 1) {
-                        ManualDialCheckChannel(XDcheck);
-                    }
-                    
-                    if ( (CB_count_check > 19) && (agentonly_callbacks == '1') ) {
-                        CallBacksCountCheck();
-                        CB_count_check = 0;
-                    }
-                    if ( (even > 0) && (agent_display_dialable_leads > 0) ) {
-                        //DiaLableLeaDsCounT();
-                    }
-                    if (live_customer_call == 1) {
-                        live_call_seconds++;
-                        $(".formMain input[name='seconds']").val(live_call_seconds);
-                        $("#SecondsDISP").html(live_call_seconds);
-                        $("#for_dtmf").removeClass('hidden');
-                        if (!editProfileEnabled)
-                            $('#edit-profile').removeClass('hidden');
-                        $("#reload-script").removeClass('hidden');
-                        $("#dialer-pad-ast, #dialer-pad-hash").removeClass('hidden');
-                        $("#dialer-pad-clear, #dialer-pad-undo").addClass('hidden');
-                        $("#btnLogMeOut").addClass("disabled");
-                    }
-                    if (XD_live_customer_call == 1) {
-                        XD_live_call_seconds++;
-                        $("#xferlength").val(XD_live_call_seconds);
-                        if (!editProfileEnabled)
-                            $('#edit-profile').removeClass('hidden');
-                        $("#reload-script").removeClass('hidden');
-                        $("#btnLogMeOut").addClass("disabled");
-                    }
-                    if (customerparked == 1) {
-                        customerparkedcounter++;
-                        var parked_mm = Math.floor(customerparkedcounter/60);  // The minutes
-                        var parked_ss = customerparkedcounter % 60;            // The balance of seconds
-                        if (parked_ss < 10)
-                            {parked_ss = "0" + parked_ss;}
-                        var parked_mmss = parked_mm + ":" + parked_ss;
-                        $("#ParkCounterSpan").html("<?=$lh->translationFor('time_on_park')?>: " + parked_mmss);
-					}
-                    if (customer_3way_hangup_counter_trigger > 0) {
-                        if (customer_3way_hangup_counter > customer_3way_hangup_seconds) {
-                            var customer_3way_timer_seconds = (XD_live_call_seconds - customer_3way_hangup_counter);
-                            //customer_3way_hangup_process('DURING_CALL',customer_3way_timer_seconds);
-    
-                            customer_3way_hangup_counter = 0;
-                            customer_3way_hangup_counter_trigger = 0;
-    
-                            if (customer_3way_hangup_action == 'DISPO') {
-                                customer_3way_hangup_dispo_message = '<?=$lh->translationFor('customer_hangup_3way')?>';
-                                BothCallHangup();
-                            }
-						} else {
-                            customer_3way_hangup_counter++;
-                            //document.getElementById("debugbottomspan").innerHTML = "<?=$lang['customer_3way_hangup']?> " + customer_3way_hangup_counter;
-						}
-					}
-                    if ( (update_fields > 0) && (update_fields_data.length > 2) ) {
-                        UpdateFieldsData();
-					}
-                    if ( (timer_action != 'NONE') && (timer_action.length > 3) && (timer_action_seconds <= live_call_seconds) && (timer_action_seconds >= 0) ) {
-                        TimerActionRun('', '');
-                    }
-                    if (HKdispo_display > 0) {
-                        if ( (HKdispo_display == 3) && (HKfinish == 1) ) {
-                            HKfinish = 0;
-                            DispoSelectSubmit();
-                            //AutoDialWaiting = 1;
-                            //AutoDial_Resume_Pause("VDADready");
-                        }
-                        if (HKdispo_display == 1) {
-                            //if (hot_keys_active == 1)
-                            //	{showDiv('HotKeyEntriesBox');}
-                            //hideDiv('HotKeyActionBox');
-                        }
-                        HKdispo_display--;
-                    }
-                    if (all_record == 'YES') {
-                        if (all_record_count < allcalls_delay)
-                            {all_record_count++;}
-                        else {
-                            ConfSendRecording('MonitorConf', session_id , '');
-                            all_record = 'NO';
-                            all_record_count = 0;
-                        }
-                    }
-    
-    
-                    if (active_display == 1) {
-                        check_s = check_r.toString();
-                        if ( (check_s.match(/00$/)) || (check_r < 2) )  {
-                            CheckForConfCalls(session_id, '0');
-                        }
-                    }
-                    if (check_r < 2) {
-                        // nothing to see here... move along...
-                    } else {
-                        //check_for_live_calls();
-                        check_s = check_r.toString();
-                    }
-                    if ( (blind_monitoring_now > 0) && ( (blind_monitor_warning == 'ALERT') || (blind_monitor_warning == 'NOTICE') ||  (blind_monitor_warning == 'AUDIO') || (blind_monitor_warning == 'ALERT_NOTICE') || (blind_monitor_warning == 'ALERT_AUDIO') || (blind_monitor_warning == 'NOTICE_AUDIO') || (blind_monitor_warning == 'ALL') ) ) {
-                        if ( (blind_monitor_warning == 'NOTICE') || (blind_monitor_warning == 'ALERT_NOTICE') || (blind_monitor_warning == 'NOTICE_AUDIO') || (blind_monitor_warning == 'ALL') ) {
-                            //document.getElementById("blind_monitor_notice_span_contents").innerHTML = blind_monitor_message + "<br />";
-                            //showDiv('blind_monitor_notice_span');
-                        }
-                        if (blind_monitoring_now_trigger > 0) {
-                            if ( (blind_monitor_warning == 'ALERT') || (blind_monitor_warning == 'ALERT_NOTICE') || (blind_monitor_warning == 'ALERT_AUDIO') || (blind_monitor_warning == 'ALL') ) {
-                                //document.getElementById("blind_monitor_alert_span_contents").innerHTML = blind_monitor_message;
-                                //showDiv('blind_monitor_alert_span');
-                            }
-                            if ( (blind_monitor_filename.length > 0) && ( (blind_monitor_warning == 'AUDIO') || (blind_monitor_warning == 'ALERT_AUDIO')|| (blind_monitor_warning == 'NOTICE_AUDIO') || (blind_monitor_warning == 'ALL') ) ) {
-                                BasicOriginateCall(blind_monitor_filename, 'NO', 'YES', session_id, 'YES', '', '1', '0', '1');
-                            }
-                            blind_monitoring_now_trigger = 0;
-                        }
-                    } else {
-                        //hideDiv('blind_monitor_notice_span');
-                        //document.getElementById("blind_monitor_notice_span_contents").innerHTML = '';
-                        //hideDiv('blind_monitor_alert_span');
-                    }
-                    if (wrapup_seconds > 0) {
-                        //document.getElementById("WrapupTimer").innerHTML = (wrapup_seconds - wrapup_counter);
-                        wrapup_counter++;
-                        if ( (wrapup_counter > wrapup_seconds) && ($("#WrapupBox").is(':visible')) ) {
-                            wrapup_waiting = 0;
-                            //hideDiv('WrapupBox');
-                            if ($("#DispoSelectStop").is(':checked')) {
-                                if (auto_dial_level != '0') {
-                                    AutoDialWaiting = 0;
-                                    //alert('wrapup pause');
-                                    AutoDial_Resume_Pause("VDADpause");
-                                    //document.getElementById("DiaLControl").innerHTML = DiaLControl_auto_HTML;
-                                }
-                                pause_calling = 1;
-                                if (dispo_check_all_pause != '1') {
-                                    DispoSelectStop = false;
-                                    $("#DispoSelectStop").prop('checked', false);
-                                    //alert("unchecking PAUSE");
-                                }
-                            } else {
-                                if (auto_dial_level != '0') {
-                                    AutoDialWaiting = 1;
-                                    //alert('wrapup ready');
-                                    AutoDial_Resume_Pause("VDADready", "NEW_ID", "WRAPUP");
-                                    //document.getElementById("DiaLControl").innerHTML = DiaLControl_auto_HTML_ready;
-                                }
-                            }
-                        }
-                    }
-                    if (consult_custom_wait > 0) {
-                        //if (consult_custom_wait == '1')
-                        //    {vcFormIFrame.document.form_custom_fields.submit();}
-                        if (consult_custom_wait >= consult_custom_delay)
-                            {SendManualDial('YES');}
-                        else
-                            {consult_custom_wait++;}
-                    }
-                }
-                
-                //Check for Callbacks
-                if (enable_callback_alert) {
-                    checkForCallbacks();
-                }
-                
-                //Check if Agent is still logged in
-                checkIfStillLoggedIn(check_if_logged_out, check_last_call);
-            } else {
-                updateButtons();
-                
-                if (DefaultALTDial == 1) {
-                    $("#DialALTPhone").prop('checked', true);
-                }
-                
-                $("#LeadLookUP").prop('checked', true);
-                
-                if ( (agent_pause_codes_active == 'Y') || (agent_pause_codes_active == 'FORCE') ) {
-                    $("#pause_code_link").removeClass('hidden');
-                }
-                if (allow_closers != 'Y') {
-                    toggleButton('LocalCloser', 'hide');
+	$("#LeadLookUP").prop('checked', true);
+	    
+	if (check_r < 1) {
+	    toggleButtons(dial_method, ivr_park_call, call_requeue_button);
+	    if (agent_status_view > 0) {
+		$("#agents-tab").removeClass('hidden');
+	    } else {
+		$("#agents-tab").addClass('hidden');
+	    }
+	}
+
+	epoch_sec++;
+	check_r++;
+	even++;
+	if (even > 1) {
+	    even = 0;
+	}
+	
+	WaitingForNextStep = 0;
+	if ( (CloserSelecting == 1) || (TerritorySelecting == 1) )	{WaitingForNextStep = 1;}
+	
+	if (open_dispo_screen == 1) {
+	    wrapup_counter = 0;
+	    if (wrapup_seconds > 0) {
+		//showDiv('WrapupBox');
+		//$("#WrapupTimer").html(wrapup_seconds);
+		wrapup_waiting = 1;
+	    }
+
+	    CustomerData_update();
+	    //if (hide_gender < 1)
+	    //{
+	    //    $("#GENDERhideFORie").html('');
+	    //    $("#GENDERhideFORieALT").html('<select size="1" name="gender_list" class="cust_form" id="gender_list"><option value="U">U - <?=$lh->translationFor('undefined')?></option><option value="M">M - <?=$lh->translationFor('male')?></option><option value="F">F - <?=$lh->translationFor('female')?></option></select>');
+	    //}
+
+	    DispoSelectBox();
+	    //DispoSelectContent_create('','ReSET');
+	    WaitingForNextStep = 1;
+	    open_dispo_screen = 0;
+	    LIVE_default_xfer_group = default_xfer_group;
+	    LIVE_campaign_recording = campaign_recording;
+	    LIVE_campaign_rec_filename = campaign_rec_filename;
+	    if (disable_alter_custphone != 'HIDE')
+		{$("#DispoSelectPhone").html(dialed_number);}
+	    else
+		{$("#DispoSelectPhone").html('');}
+	    if (auto_dial_level == 0) {
+		if ($("#DialALTPhone").is(':checked') == true) {
+		    reselect_alt_dial = 1;
+		    toggleButton('DialHangup', 'dial');
+
+		    $("#MainStatusSpan").html("<b><?=$lh->translationFor('dial_next_call')?></b>");
+		} else {
+		    reselect_alt_dial = 0;
+		}
+	    }
+
+	    // Submit custom form if it is custom_fields_enabled
+	    if (custom_fields_enabled > 0) {
+		//alert("IFRAME submitting!");
+		//vcFormIFrame.document.form_custom_fields.submit();
+	    }
+	}
+	
+	if (AgentDispoing > 0) {
+	    WaitingForNextStep = 1;
+	    CheckForConfCalls(session_id, '0');
+	    AgentDispoing++;
+	}
+	
+	if (agent_choose_ingroups_skip_count > 0) {
+	    agent_choose_ingroups_skip_count--;
+	    if (agent_choose_ingroups_skip_count == 0)
+		{CloserSelectSubmit();}
+	}
+	if (agent_select_territories_skip_count > 0) {
+	    agent_select_territories_skip_count--;
+	    if (agent_select_territories_skip_count == 0)
+		{TerritorySelectSubmit();}
+	}
+	if (logout_stop_timeouts == 1)	{WaitingForNextStep = 1;}
+	if ( (custchannellive < -30) && (lastcustchannel.length > 3) && (no_empty_session_warnings < 1) ) {CustomerChannelGone();}
+	if ( (custchannellive < -10) && (lastcustchannel.length > 3) ) {ReCheckCustomerChan();}
+	if ( (nochannelinsession > 16) && (check_r > 15) && (no_empty_session_warnings < 1) ) {NoneInSession();}
+	if (external_transferconf_count > 0) {external_transferconf_count = (external_transferconf_count - 1);}
+	if (manual_auto_hotkey == 1) {
+	    manual_auto_hotkey = 0;
+	    ManualDialNext('','','','','','0');
+	}
+	if (manual_auto_hotkey > 1) {manual_auto_hotkey = (manual_auto_hotkey - 1);}
+	
+	if (agent_lead_search_override == 'NOT_ACTIVE') {
+	    if (agent_lead_search == 'ENABLED') {
+		$("#agent-lead-search").removeClass('hidden');
+	    } else {
+		$("#agent-lead-search").addClass('hidden');
+	    }
+	}
+
+	if (WaitingForNextStep == 0) {
+	    if (trigger_ready > 0) {
+		trigger_ready = 0;
+		if (auto_resume_precall == 'Y')
+		    {AutoDial_Resume_Pause("VDADready");}
+	    }
+	    
+	    // check for live channels in conference room and get current datetime
+	    CheckForConfCalls(session_id, '0');
+	    
+	    // refresh agent status view
+	    if ($("#agents-tab").hasClass('active')) {
+		agent_status_view_active = 1;
+	    } else {
+		agent_status_view_active = 0;
+	    }
+	    if (agent_status_view_active > 0) {
+		RefreshAgentsView('AgentViewStatus', agent_status_view);
+	    }
+	    if (view_calls_in_queue_active > 0) {
+		RefreshCallsInQueue(view_calls_in_queue);
+	    }
+	    if (xfer_select_agents_active > 0) {
+		RefreshAgentsView('AgentXferViewSelect', agent_status_view);
+	    }
+	    if (agentonly_callbacks == '1')
+		{CB_count_check++;}
+
+	    if (AutoDialWaiting == 1) {
+		CheckForIncoming();
+	    }
+
+	    if (MD_channel_look == 1) {
+		ManualDialCheckChannel(XDcheck);
+	    }
+	    
+	    if ( (CB_count_check > 19) && (agentonly_callbacks == '1') ) {
+		CallBacksCountCheck();
+		CB_count_check = 0;
+	    }
+	    if ( (even > 0) && (agent_display_dialable_leads > 0) ) {
+		//DiaLableLeaDsCounT();
+	    }
+	    if (live_customer_call == 1) {
+		live_call_seconds++;
+		$(".formMain input[name='seconds']").val(live_call_seconds);
+		$("#SecondsDISP").html(live_call_seconds);
+		$("#for_dtmf").removeClass('hidden');
+		if (!editProfileEnabled)
+		    $('#edit-profile').removeClass('hidden');
+		$("#reload-script").removeClass('hidden');
+		$("#dialer-pad-ast, #dialer-pad-hash").removeClass('hidden');
+		$("#dialer-pad-clear, #dialer-pad-undo").addClass('hidden');
+		$("#btnLogMeOut").addClass("disabled");
+	    }
+	    if (XD_live_customer_call == 1) {
+		XD_live_call_seconds++;
+		$("#xferlength").val(XD_live_call_seconds);
+		if (!editProfileEnabled)
+		    $('#edit-profile').removeClass('hidden');
+		$("#reload-script").removeClass('hidden');
+		$("#btnLogMeOut").addClass("disabled");
+	    }
+	    if (customerparked == 1) {
+		customerparkedcounter++;
+		var parked_mm = Math.floor(customerparkedcounter/60);  // The minutes
+		var parked_ss = customerparkedcounter % 60;            // The balance of seconds
+		if (parked_ss < 10)
+		    {parked_ss = "0" + parked_ss;}
+		var parked_mmss = parked_mm + ":" + parked_ss;
+		$("#ParkCounterSpan").html("<?=$lh->translationFor('time_on_park')?>: " + parked_mmss);
 				}
-                
-                if (agent_lead_search_override !== 'DISABLED') {
-                    $("#agent-lead-search").removeClass('hidden');
-                } else {
-                    $("#agent-lead-search").addClass('hidden');
-                }
-                
-                $("#sessionIDspan").html(session_id);
-                if ( (LIVE_campaign_recording == 'NEVER') || (LIVE_campaign_recording == 'ALLFORCE') ) {
-                    //$("#RecordControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
-                    $("#RecordControl").addClass('hidden');
-				} else if ( LIVE_campaign_recording == 'ONDEMAND' ) {
-                    $("#RecordControl").removeClass('hidden');
-                }
-                
-                if (per_call_notes == 'ENABLED') {
-                    $("#call_notes_content").removeClass('hidden');
-                } else {
-                    $("#call_notes_content").addClass('hidden');
-                }
-                
-                if (INgroupCOUNT > 0) {
-                    //if (closer_default_blended == 1)
-                    //    {$("#closerSelectBlended").prop('checked', true);}
-                    //CloserSelectContent_create();
-                    //showDiv('CloserSelectBox');
-                    //CloserSelecting = 1;
-                    //CloserSelectContent_create();
-                    if (agent_choose_ingroups_DV == "MGRLOCK")
-                        {agent_choose_ingroups_skip_count = 4;}
-                } else {
-                    //hideDiv('CloserSelectBox');
-                    //MainPanelToFront();
-                    //CloserSelecting = 0;
-                    if (dial_method == "INBOUND_MAN") {
-                        dial_method = "MANUAL";
-                        auto_dial_level = 0;
-                        starting_dial_level = 0;
-                        toggleButton('DialHangup', 'dial');
-                    }
-                }
-                
-                if (agentonly_callbacks == '1')
-                    {CB_count_check++;}
-                
-                if ( (CB_count_check > 19) && (agentonly_callbacks == '1') ) {
-                    CallBacksCountCheck();
-                    CB_count_check = 0;
-                }
-                
-                //Check if Agent is still logged in
-                checkLogin++;
-                if (checkLogin > 2) {
-                    checkLogin = 0;
-                    checkIfStillLoggedIn(false);
-                }
-            }
-            
-            //console.log(window_focus);
-        }, refresh_interval);
-        
-        if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
-            $("aside.control-sidebar").addClass('control-sidebar-open');
-        }
+	    if (customer_3way_hangup_counter_trigger > 0) {
+		if (customer_3way_hangup_counter > customer_3way_hangup_seconds) {
+		    var customer_3way_timer_seconds = (XD_live_call_seconds - customer_3way_hangup_counter);
+		    //customer_3way_hangup_process('DURING_CALL',customer_3way_timer_seconds);
+
+		    customer_3way_hangup_counter = 0;
+		    customer_3way_hangup_counter_trigger = 0;
+
+		    if (customer_3way_hangup_action == 'DISPO') {
+			customer_3way_hangup_dispo_message = '<?=$lh->translationFor('customer_hangup_3way')?>';
+			BothCallHangup();
+		    }
+					} else {
+		    customer_3way_hangup_counter++;
+		    //document.getElementById("debugbottomspan").innerHTML = "<?=$lang['customer_3way_hangup']?> " + customer_3way_hangup_counter;
+					}
+				}
+	    if ( (update_fields > 0) && (update_fields_data.length > 2) ) {
+		UpdateFieldsData();
+				}
+	    if ( (timer_action != 'NONE') && (timer_action.length > 3) && (timer_action_seconds <= live_call_seconds) && (timer_action_seconds >= 0) ) {
+		TimerActionRun('', '');
+	    }
+	    if (HKdispo_display > 0) {
+		if ( (HKdispo_display == 3) && (HKfinish == 1) ) {
+		    HKfinish = 0;
+		    DispoSelectSubmit();
+		    //AutoDialWaiting = 1;
+		    //AutoDial_Resume_Pause("VDADready");
+		}
+		if (HKdispo_display == 1) {
+		    //if (hot_keys_active == 1)
+		    //	{showDiv('HotKeyEntriesBox');}
+		    //hideDiv('HotKeyActionBox');
+		}
+		HKdispo_display--;
+	    }
+	    if (all_record == 'YES') {
+		if (all_record_count < allcalls_delay)
+		    {all_record_count++;}
+		else {
+		    ConfSendRecording('MonitorConf', session_id , '');
+		    all_record = 'NO';
+		    all_record_count = 0;
+		}
+	    }
+
+
+	    if (active_display == 1) {
+		check_s = check_r.toString();
+		if ( (check_s.match(/00$/)) || (check_r < 2) )  {
+		    CheckForConfCalls(session_id, '0');
+		}
+	    }
+	    if (check_r < 2) {
+		// nothing to see here... move along...
+	    } else {
+		//check_for_live_calls();
+		check_s = check_r.toString();
+	    }
+	    if ( (blind_monitoring_now > 0) && ( (blind_monitor_warning == 'ALERT') || (blind_monitor_warning == 'NOTICE') ||  (blind_monitor_warning == 'AUDIO') || (blind_monitor_warning == 'ALERT_NOTICE') || (blind_monitor_warning == 'ALERT_AUDIO') || (blind_monitor_warning == 'NOTICE_AUDIO') || (blind_monitor_warning == 'ALL') ) ) {
+		if ( (blind_monitor_warning == 'NOTICE') || (blind_monitor_warning == 'ALERT_NOTICE') || (blind_monitor_warning == 'NOTICE_AUDIO') || (blind_monitor_warning == 'ALL') ) {
+		    //document.getElementById("blind_monitor_notice_span_contents").innerHTML = blind_monitor_message + "<br />";
+		    //showDiv('blind_monitor_notice_span');
+		}
+		if (blind_monitoring_now_trigger > 0) {
+		    if ( (blind_monitor_warning == 'ALERT') || (blind_monitor_warning == 'ALERT_NOTICE') || (blind_monitor_warning == 'ALERT_AUDIO') || (blind_monitor_warning == 'ALL') ) {
+			//document.getElementById("blind_monitor_alert_span_contents").innerHTML = blind_monitor_message;
+			//showDiv('blind_monitor_alert_span');
+		    }
+		    if ( (blind_monitor_filename.length > 0) && ( (blind_monitor_warning == 'AUDIO') || (blind_monitor_warning == 'ALERT_AUDIO')|| (blind_monitor_warning == 'NOTICE_AUDIO') || (blind_monitor_warning == 'ALL') ) ) {
+			BasicOriginateCall(blind_monitor_filename, 'NO', 'YES', session_id, 'YES', '', '1', '0', '1');
+		    }
+		    blind_monitoring_now_trigger = 0;
+		}
+	    } else {
+		//hideDiv('blind_monitor_notice_span');
+		//document.getElementById("blind_monitor_notice_span_contents").innerHTML = '';
+		//hideDiv('blind_monitor_alert_span');
+	    }
+	    if (wrapup_seconds > 0) {
+		//document.getElementById("WrapupTimer").innerHTML = (wrapup_seconds - wrapup_counter);
+		wrapup_counter++;
+		if ( (wrapup_counter > wrapup_seconds) && ($("#WrapupBox").is(':visible')) ) {
+		    wrapup_waiting = 0;
+		    //hideDiv('WrapupBox');
+		    if ($("#DispoSelectStop").is(':checked')) {
+			if (auto_dial_level != '0') {
+			    AutoDialWaiting = 0;
+			    //alert('wrapup pause');
+			    AutoDial_Resume_Pause("VDADpause");
+			    //document.getElementById("DiaLControl").innerHTML = DiaLControl_auto_HTML;
+			}
+			pause_calling = 1;
+			if (dispo_check_all_pause != '1') {
+			    DispoSelectStop = false;
+			    $("#DispoSelectStop").prop('checked', false);
+			    //alert("unchecking PAUSE");
+			}
+		    } else {
+			if (auto_dial_level != '0') {
+			    AutoDialWaiting = 1;
+			    //alert('wrapup ready');
+			    AutoDial_Resume_Pause("VDADready", "NEW_ID", "WRAPUP");
+			    //document.getElementById("DiaLControl").innerHTML = DiaLControl_auto_HTML_ready;
+			}
+		    }
+		}
+	    }
+	    if (consult_custom_wait > 0) {
+		//if (consult_custom_wait == '1')
+		//    {vcFormIFrame.document.form_custom_fields.submit();}
+		if (consult_custom_wait >= consult_custom_delay)
+		    {SendManualDial('YES');}
+		else
+		    {consult_custom_wait++;}
+	    }
+	}
+	
+	//Check for Callbacks
+	if (enable_callback_alert) {
+	    checkForCallbacks();
+	}
+	
+	//Check if Agent is still logged in
+	checkIfStillLoggedIn(check_if_logged_out, check_last_call);
+    } else {
+	updateButtons();
+	
+	if (DefaultALTDial == 1) {
+	    $("#DialALTPhone").prop('checked', true);
+	}
+	
+	$("#LeadLookUP").prop('checked', true);
+	
+	if ( (agent_pause_codes_active == 'Y') || (agent_pause_codes_active == 'FORCE') ) {
+	    $("#pause_code_link").removeClass('hidden');
+	}
+	if (allow_closers != 'Y') {
+	    toggleButton('LocalCloser', 'hide');
+			}
+	
+	if (agent_lead_search_override !== 'DISABLED') {
+	    $("#agent-lead-search").removeClass('hidden');
+	} else {
+	    $("#agent-lead-search").addClass('hidden');
+	}
+	
+	$("#sessionIDspan").html(session_id);
+	if ( (LIVE_campaign_recording == 'NEVER') || (LIVE_campaign_recording == 'ALLFORCE') ) {
+	    //$("#RecordControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
+	    $("#RecordControl").addClass('hidden');
+			} else if ( LIVE_campaign_recording == 'ONDEMAND' ) {
+	    $("#RecordControl").removeClass('hidden');
+	}
+	
+	if (per_call_notes == 'ENABLED') {
+	    $("#call_notes_content").removeClass('hidden');
+	} else {
+	    $("#call_notes_content").addClass('hidden');
+	}
+	
+	if (INgroupCOUNT > 0) {
+	    //if (closer_default_blended == 1)
+	    //    {$("#closerSelectBlended").prop('checked', true);}
+	    //CloserSelectContent_create();
+	    //showDiv('CloserSelectBox');
+	    //CloserSelecting = 1;
+	    //CloserSelectContent_create();
+	    if (agent_choose_ingroups_DV == "MGRLOCK")
+		{agent_choose_ingroups_skip_count = 4;}
+	} else {
+	    //hideDiv('CloserSelectBox');
+	    //MainPanelToFront();
+	    //CloserSelecting = 0;
+	    if (dial_method == "INBOUND_MAN") {
+		dial_method = "MANUAL";
+		auto_dial_level = 0;
+		starting_dial_level = 0;
+		toggleButton('DialHangup', 'dial');
+	    }
+	}
+	
+	if (agentonly_callbacks == '1')
+	    {CB_count_check++;}
+	
+	if ( (CB_count_check > 19) && (agentonly_callbacks == '1') ) {
+	    CallBacksCountCheck();
+	    CB_count_check = 0;
+	}
+	
+	//Check if Agent is still logged in
+	checkLogin++;
+	if (checkLogin > 2) {
+	    checkLogin = 0;
+	    checkIfStillLoggedIn(false);
+	}
+    }
     
-        $("aside.control-sidebar").css({
-            'overflow': 'hidden',
-            'min-height': $("body").innerHeight()
-        });
-        
-        var origHeight = $("body").innerHeight();
-        $(window).resize(function() {
-            $("aside.control-sidebar").css('height', '100%');
-            
-            if (parseInt($("body").innerWidth()) < 768) {
-                isMobile = true;
-                paddingHB = 50;
-            } else {
-                isMobile = false;
-                paddingHB = 100;
-            }
-            
-            var navConBar = $("header.main-header").innerHeight();
-            var minusThis = (parseInt(navConBar) + parseInt(paddingHB));
-            var newHeight = parseInt($("body").innerHeight()) - minusThis;
-            $("aside.control-sidebar div.tab-content").css({
-                'height': newHeight
-            });
-            
-            var newPos = 0;
-            if (origHeight > $("body").innerHeight()) {
-                newPos = origHeight - parseInt($("body").innerHeight());
-            }
-            $("#go_agent_logout").css('bottom', newPos);
-        });
-        
-        var d = new Date();
-        //var currDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes() + 15);
-        var currDate = new Date(serverdate.getFullYear(), serverdate.getMonth(), serverdate.getDate(), serverdate.getHours(), serverdate.getMinutes() + 15);
-        $("#cb-datepicker").datetimepicker({
-            inline: true,
-            sideBySide: true,
-            icons: {
-                time: 'fa fa-clock-o',
-                date: 'fa fa-calendar'
-            },
-            minDate: currDate
-        });
-        
-        var selectedDate = moment(currDate).format('YYYY-MM-DD HH:mm:00');
-        $("#date-selected").html(moment(currDate).format('dddd, MMMM Do YYYY, h:mm a'));
-        $("#callback-date").val(selectedDate);
-        $("#cb-datepicker").on("dp.change", function (e) {
-            selectedDate = moment(e.date).format('YYYY-MM-DD HH:mm:00');
-            $("#date-selected").html(moment(e.date).format('dddd, MMMM Do YYYY, h:mm a'));
-            $("#callback-date").val(selectedDate);
-        });
+    //console.log(window_focus);
+}, refresh_interval);
+
+if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
+    $("aside.control-sidebar").addClass('control-sidebar-open');
+}
+
+$("aside.control-sidebar").css({
+    'overflow': 'hidden',
+    'min-height': $("body").innerHeight()
+});
+
+var origHeight = $("body").innerHeight();
+$(window).resize(function() {
+    $("aside.control-sidebar").css('height', '100%');
+    
+    if (parseInt($("body").innerWidth()) < 768) {
+	isMobile = true;
+	paddingHB = 50;
+    } else {
+	isMobile = false;
+	paddingHB = 100;
+    }
+    
+    var navConBar = $("header.main-header").innerHeight();
+    var minusThis = (parseInt(navConBar) + parseInt(paddingHB));
+    var newHeight = parseInt($("body").innerHeight()) - minusThis;
+    $("aside.control-sidebar div.tab-content").css({
+	'height': newHeight
+    });
+    
+    var newPos = 0;
+    if (origHeight > $("body").innerHeight()) {
+	newPos = origHeight - parseInt($("body").innerHeight());
+    }
+    $("#go_agent_logout").css('bottom', newPos);
+});
+
+var d = new Date();
+//var currDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes() + 15);
+var currDate = new Date(serverdate.getFullYear(), serverdate.getMonth(), serverdate.getDate(), serverdate.getHours(), serverdate.getMinutes() + 15);
+$("#cb-datepicker").datetimepicker({
+    inline: true,
+    sideBySide: true,
+    icons: {
+	time: 'fa fa-clock-o',
+	date: 'fa fa-calendar'
+    },
+    minDate: currDate
+});
+
+var selectedDate = moment(currDate).format('YYYY-MM-DD HH:mm:00');
+$("#date-selected").html(moment(currDate).format('dddd, MMMM Do YYYY, h:mm a'));
+$("#callback-date").val(selectedDate);
+$("#cb-datepicker").on("dp.change", function (e) {
+    selectedDate = moment(e.date).format('YYYY-MM-DD HH:mm:00');
+    $("#date-selected").html(moment(e.date).format('dddd, MMMM Do YYYY, h:mm a'));
+    $("#callback-date").val(selectedDate);
+});
 <?php if(ECCS_BLIND_MODE === 'y') { ?>
 
-     $('#callback-datepicker').on('shown.bs.modal', function(){
+$('#callback-datepicker').on('shown.bs.modal', function(){
+
+	enable_eccs_shortcuts = 0;
 	$('#CallBackOnlyMe').prop('checked', true);
 
 	var eccs_currYear = moment(currDate).format('YYYY');
@@ -1230,6 +1237,9 @@ $(document).ready(function() {
     ?>
 	    // Keyboard Shortcuts
 	    $(document).keydown(function(e){
+		if( enable_eccs_shortcuts == 0 ){
+			return;
+		}
             if (AgentDispoing < 1) {
                 // User Exit
                 if(e.shiftKey && e.key == "End"){
@@ -2499,7 +2509,7 @@ function hotKeysAvailable(e) {
         return;
     }
     
-    console.log('keydown: '+ hotkeys[e.key], event);
+    //console.log('keydown: '+ hotkeys[e.key], event);
     if (live_customer_call || MD_ring_seconds > 4) {
         var HKdispo = hotkeys[e.key];
         var HKstatus = hotkeys_content[HKdispo];
@@ -6023,7 +6033,7 @@ function DispoSelectSubmit() {
 	    <?php
                  if(ECCS_BLIND_MODE === 'y'){
             ?>
-        $("#cust_campaign_name").html('');
+            $("#cust_campaign_name").html('');
 	    $("#cust_call_type").html('');
 	    <?php } ?>
             $(".formMain input[name='address1']").val('').trigger('change');
@@ -9046,6 +9056,9 @@ function CallBackDateSubmit() {
     $("#DispoSelection").val('CBHOLD');
     $("#callback-datepicker").modal('hide');
     DispoSelectSubmit();
+    <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
+	enable_eccs_shortcuts = 1;
+    <?php } ?>
 }
 
 
