@@ -127,7 +127,10 @@
 						** API to get data of tables
 						****/
 						$lists = $api->API_getAllLists();
-						//var_dump($lists);
+						
+						echo "<!--\n";
+						var_dump($lists->test_SQL);
+						echo "\n-->\n";
 				?>
                 	<div class="row">
                         <div class="col-lg-9">
