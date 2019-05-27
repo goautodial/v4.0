@@ -28,10 +28,10 @@
 	require_once('CRMDefaults.php');
 	$api = \creamy\APIHandler::getInstance();
 
-	ini_set('memory_limit','1024M');
+	ini_set('memory_limit','2048M');
 	ini_set('upload_max_filesize', '600M');
 	ini_set('post_max_size', '600M');
-	ini_set('max_execution_time', 900);
+	ini_set('max_execution_time', 0);
 	
 	$postfields = array(
 		'goFileMe' => curl_file_create($_FILES['file_upload']['tmp_name'], $_FILES['file_upload']['type'], $_FILES["file_upload"]["name"]),
@@ -43,16 +43,21 @@
 	//customizations
 	$postfields["custom_delimiter"] = LEADUPLOAD_CUSTOM_DELIMITER;
 	
-	if(LEADUPLOAD_LEAD_MAPPING === "y"){
-                if(isset($_POST["LeadMapSubmit"]) && $_POST["LeadMapSubmit"] === "1")
+	//if(LEADUPLOAD_LEAD_MAPPING === "y"){
+                if(!isset($_POST["LeadMapSubmit"]))
                         $postfields["goAction"]       = "goUploadMe";
-                else
+                elseif(isset($_POST["LeadMapSubmit"]) && $_POST["LeadMapSubmit"] === "1")
+                        $postfields["goAction"]       = "goUploadMe"; 
+		elseif(isset($_POST["LeadMapSubmit"]) && $_POST["LeadMapSubmit"] === "0")
                         $postfields["goAction"]       = "goReadUpload";
-        }else{
+		else
+			die("Couldn't catch Action");
+        /*}else{
                 $postfields["goAction"]       = "goUploadMe";
-        }
+        }*/
 	
-	if(LEADUPLOAD_LEAD_MAPPING === "y" && isset($_POST["LeadMapSubmit"]) && $_POST["LeadMapSubmit"] === "1"){
+	//if(LEADUPLOAD_LEAD_MAPPING === "y" && isset($_POST["LeadMapSubmit"]) && $_POST["LeadMapSubmit"] === "1"){
+	if(isset($_POST["LeadMapSubmit"]) && $_POST["LeadMapSubmit"] === "1"){
                 $map_data = $_POST["map_data"];
 		$map_data = implode(",",$map_data);
 		$postfields["lead_mapping_data"] = $map_data;
@@ -60,27 +65,24 @@
 		$map_fields = $_POST["map_fields"];
 		$map_fields = implode(",", $map_fields);
 		$postfields["lead_mapping_fields"] = $map_fields;
-
-		$postfields["lead_mapping"] = LEADUPLOAD_LEAD_MAPPING;
+		
+		$postfields["lead_mapping"] = "y";
+		//$postfields["lead_mapping"] = LEADUPLOAD_LEAD_MAPPING;
 	}
 	
-	$return = $api->API_addLoadLeads($postfields, "data");
+	$return = $api->API_Upload("goUploadLeads", $postfields, "data");
 	$output = $return["output"];
 	$data = $return["data"];
 	
-	if(LEADUPLOAD_LEAD_MAPPING === "y" && $_POST["LeadMapSubmit"] === "0"){
+	//if(LEADUPLOAD_LEAD_MAPPING === "y" && $_POST["LeadMapSubmit"] === "0"){
+	if(isset($_POST["LeadMapSubmit"]) && $_POST["LeadMapSubmit"] === "0"){
 		print_r($data);
 	}else{
 		
-		if ($output->result == "success") {
-			//header("Location: ".$home."?message=success&RetMesg=".$output->message);
-			$status = $output->message;
-		} else {
-			#header("Location: ".$home."?message=error&RetMesg=".$output->message);
-			$status = $output->message;
-		}
-		echo $status;
+		$res["result"] = $output->result;
+		$res["msg"] = $output->message;	
 		
+		print_r(json_encode($res));
 		//var_dump($output);
 	}
 ?>

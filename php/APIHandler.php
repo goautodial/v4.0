@@ -162,8 +162,8 @@ if(isset($_SESSION["user"])){
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT , 10); //gg
-		curl_setopt($ch, CURLOPT_TIMEOUT  , 10000); //gg
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT , 0); //gg
+		curl_setopt($ch, CURLOPT_TIMEOUT  , 0); //gg
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
 		curl_close($ch);
