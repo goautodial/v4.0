@@ -131,7 +131,10 @@
 						** API to get data of tables
 						****/
 						$lists = $api->API_getAllLists();
+						
+						//echo "<!--\n";
 						//var_dump($lists);
+						//echo "\n-->\n";
 				?>
                 	<div class="row">
                         <div class="col-lg-9">
