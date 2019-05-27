@@ -249,11 +249,10 @@
 								<div class="form-group mt">
 									<label class="col-sm-4 control-label" for="user_group"> <?php $lh->translateText("user_group"); ?> </label>
 									<div class="col-sm-8 mb">
-										<?=var_dump($_SESSION)?>
 										<select id="user_group" class="form-control select2-1" name="user_group" style="width:100%;">
 											<?php
 												for($i=0;$i<count($user_groups->user_group);$i++){
-													if (strtoupper($_SESSION['user_group']) !== 'ADMIN' && strtoupper($_SESSION['user_group']) !== strtoupper($user_groups->user_group[$i])) {
+													if (strtoupper($_SESSION['usergroup']) !== 'ADMIN' && strtoupper($_SESSION['usergroup']) !== strtoupper($user_groups->user_group[$i])) {
 														continue;
 													}
 											?>
