@@ -383,9 +383,16 @@
 									<label class="col-sm-4 control-label" for="start_ext"><?php $lh->translateText("user_group"); ?></label>
 									<div class="col-sm-8 mb">
 										<select name="user_group" class="form-control select2-1" style="width:100%;" required>
+											<?php
+											if (strtoupper($_SESSION['usergroup']) === 'ADMIN') {
+											?>
 											<option value="ALL">ALL USER GROUPS</option>
 											<?php
+											}
 												for($i=0; $i < count($user_groups->user_group); $i++){
+													if (strtoupper($_SESSION['usergroup']) !== 'ADMIN' && strtoupper($_SESSION['usergroup']) !== strtoupper($user_groups->user_group[$i])) {
+														continue;
+													}
 											?>
 												<option value="<?php echo $user_groups->user_group[$i];?>"> <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i]; ?></option>
 											<?php
