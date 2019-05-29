@@ -305,7 +305,7 @@
 															//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){															
 															for($a=0; $a<count($disposition->status); $a++){
 																$dispoStatus[] = $disposition->status[$a];
-																var_dump($disposition->campaign_id[$a]);
+																var_dump($disposition->campaign_id[$a] == $campaign->campaign_id[$i]);
 																if($disposition->campaign_id[$a] == $campaign->campaign_id[$i]){
 																	$dispoStatuses = $dispoStatus[$a];																	
 																	echo "<i>".$dispoStatuses."</i>";
