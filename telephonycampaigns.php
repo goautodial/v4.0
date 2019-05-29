@@ -304,10 +304,9 @@
 															$dispoStatuses = '';
 															//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){															
 															foreach ($disposition->custom_dispo as $cCamp => $cDispo){
-																var_dump($cCamp);
 																//$dispoStatus[] = $disposition->status[$a];
 																if($cCamp == $campaign->campaign_id[$i]){
-																	$dispoStatuses[] = $cDispo;
+																	$dispoStatuses = $cDispo;
 																	//$dispoStatuses = $dispoStatus[$a];
 																	//echo "<i>".$dispoStatuses."</i>";
 																	
