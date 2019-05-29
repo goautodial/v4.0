@@ -301,19 +301,22 @@
 														<td><?php echo $campaign->campaign_name[$i];?></td>
 														<td>
 												<?php
-															$dispoStatuses = "";
+															$dispoStatuses = array();
 															//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){															
-															for($a=0; $a<count($disposition->status); $a++){
-																$dispoStatus[] = $disposition->status[$a];
-																if($disposition->campaign_id[$a] == $campaign->campaign_id[$i]){
-																	$dispoStatuses = $dispoStatus[$a];																	
-																	echo "<i>".$dispoStatuses."</i>";
+															foreach ($disposition->custom_dispo as $cCamp => $cDispo){
+																//$dispoStatus[] = $disposition->status[$a];
+																if($cCamp == $campaign->campaign_id[$i]){
+																	$dispoStatuses[] = $cDispo;
+																	//$dispoStatuses = $dispoStatus[$a];
+																	//echo "<i>".$dispoStatuses."</i>";
 																	
-																	if($disposition->campaign_id[$a+1] == $campaign->campaign_id[$i]){																		
-																		echo ", ";
-																	}
+																	//if($disposition->campaign_id[$a+1] == $campaign->campaign_id[$i]){																		
+																	//	echo ", ";
+																	//}
 																}
 															}
+															echo implode(", ", $dispoStatuses);
+															
 															$action_DISPOSITION = $ui->ActionMenuForDisposition($campaign->campaign_id[$i], $campaign->campaign_name[$i], $perm);
 												?>
 														</td>
