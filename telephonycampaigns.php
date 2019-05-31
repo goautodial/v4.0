@@ -1131,7 +1131,7 @@
 											?>
 											<option value="<?php echo $idx;?>">
 											<?php
-											echo $idx." - ".$val?>
+											echo $cCamp." - ".$idx." - ".$val?>
 											</option>
 											<?php
 												}
