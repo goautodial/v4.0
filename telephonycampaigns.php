@@ -306,7 +306,7 @@
 															foreach ($disposition->custom_dispo as $cCamp => $cDispo){
 																//$dispoStatus[] = $disposition->status[$a];
 																if($cCamp == $campaign->campaign_id[$i]){
-																	$dispoStatuses = $cDispo;
+																	$dispoStatuses = key($cDispo);
 																	//$dispoStatuses = $dispoStatus[$a];
 																	//echo "<i>".$dispoStatuses."</i>";
 																	
@@ -1094,14 +1094,19 @@
 		                            <label class="col-sm-3 control-label" for="leadrecycling_campaign"><?php $lh->translateText("campaign"); ?>: </label>
 		                            <div class="col-sm-9 mb">
 		                                <select id="leadrecycling_campaign" name="leadrecycling_campaign" class="form-control select2" style="width:100%;">
-		                                		<option value="ALL" selected> - - - ALL CAMPAIGNS - - - </option>
-								<option value="" selected hidden disabled>PLEASE SELECT A CAMPAIGN</option>
-		                                   <?php
+											<?php
+											if (strtoupper($_SESSION['usergroup']) === 'ADMIN') {
+											?>
+		                                	<option value="ALL" selected> - - - ALL CAMPAIGNS - - - </option>
+											<?php
+											}
+											?>
+											<option value="" selected hidden disabled>PLEASE SELECT A CAMPAIGN</option>
+											<?php
 		                                   		for($i=0;$i < count($campaign->campaign_id);$i++){
-								
 		                                   			echo "<option value='".$campaign->campaign_id[$i]."'>".$campaign->campaign_id[$i]." - ".$campaign->campaign_name[$i]." </option>";
 		                                   		}
-		                                   ?>
+											?>
 		                                </select>
 		                            </div>
 		                        </div>
@@ -1126,20 +1131,22 @@
 											</optgroup>
 											<?php if(count($disposition) > 0){ ?>
 											<optgroup label="Campaign Statuses">
-											<?php for($i=0;$i<count($disposition->status);$i++){
-											//foreach($disposition->status as $key => $val) {
-											?>
-			<?php //$data .= '<option value="'.$val.'" data-name="'.$output->status_name[$key].'">'.$val.' - '.$output->status_name[$key].'</option>';
-			?>
-											<option value="<?php echo $disposition->status[$i];?>">
-											<!--option value="<?php //echo $disposition->status[$val];?>"-->
 											<?php
-											//echo json_encode($data);
-											echo $disposition->status[$i]." - ".$disposition->status_name[$i]?>
+											foreach ($disposition->custom_dispo as $cCamp => $cDispo){
+												if($cCamp == $campaign->campaign_id[$i]){
+											?>
+											<option value="<?php echo key($cDispo);?>">
+											<?php
+											echo key($cDispo)." - ".current($cDispo)?>
 											</option>
-											<?php } ?>
+											<?php
+												}
+											}
+											?>
 											</optgroup>
-											<?php } ?>
+											<?php
+											}
+											?>
 		                                </select>
 		                            </div>
 		                        </div>
