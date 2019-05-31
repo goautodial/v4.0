@@ -1128,12 +1128,14 @@
 											<?php
 											foreach ($disposition->custom_dispo as $cCamp => $cDispo){
 												if($cCamp == $campaign->campaign_id[$i]){
+													foreach ($cDispo as $idx => $val) {
 											?>
-											<option value="<?php echo key($cDispo);?>">
+											<option value="<?php echo $idx;?>">
 											<?php
-											echo key($cDispo)." - ".current($cDispo)?>
+											echo $idx." - ".$val?>
 											</option>
 											<?php
+													}
 												}
 											}
 											?>
