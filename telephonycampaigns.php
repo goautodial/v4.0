@@ -1127,15 +1127,13 @@
 											<optgroup label="Campaign Statuses">
 											<?php
 											foreach ($disposition->custom_dispo as $cCamp => $cDispo){
-												if($cCamp == $campaign->campaign_id[$i]){
-													foreach ($cDispo as $idx => $val) {
+												foreach ($cDispo as $idx => $val) {
 											?>
 											<option value="<?php echo $idx;?>">
 											<?php
 											echo $idx." - ".$val?>
 											</option>
 											<?php
-													}
 												}
 											}
 											?>
