@@ -962,13 +962,18 @@
 		                            <label class="col-sm-3 control-label" for="disposition_campaign"><?php $lh->translateText("campaign"); ?>: </label>
 		                            <div class="col-sm-9 mb">
 		                                <select id="disposition_campaign" name="disposition_campaign" class="form-control select2" style="width:100%;">
-		                                		<option value="ALL"> - - - ALL CAMPAIGNS - - - </option>
-		                                   <?php
-		                                   		for($i=0;$i < count($campaign->campaign_id);$i++){
-											?>
-		                                   			<option value='<?php echo $campaign->campaign_id[$i];?>'> <?php echo $campaign->campaign_id[$i] . " - " .$campaign->campaign_name[$i];?></option>
 											<?php
-		                                   		}
+											if (strtoupper($_SESSION['usergroup']) === 'ADMIN') {
+											?>
+		                                		<option value="ALL"> - - - ALL CAMPAIGNS - - - </option>
+											<?php
+											}
+											
+		                                   	for($i=0;$i < count($campaign->campaign_id);$i++){
+											?>
+		                                   		<option value='<?php echo $campaign->campaign_id[$i];?>'> <?php echo $campaign->campaign_id[$i] . " - " .$campaign->campaign_name[$i];?></option>
+											<?php
+		                                   	}
 		                                   ?>
 		                                </select>
 		                            </div>
