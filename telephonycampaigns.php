@@ -301,19 +301,12 @@
 														<td><?php echo $campaign->campaign_name[$i];?></td>
 														<td>
 												<?php
-															$dispoStatuses = '';
-															//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){															
+															$dispoStatuses = array();
 															foreach ($disposition->custom_dispo as $cCamp => $cDispo){
-																//$dispoStatus[] = $disposition->status[$a];
 																if($cCamp == $campaign->campaign_id[$i]){
-																	var_dump(key($cDispo));
-																	$dispoStatuses = key($cDispo);
-																	//$dispoStatuses = $dispoStatus[$a];
-																	//echo "<i>".$dispoStatuses."</i>";
-																	
-																	//if($disposition->campaign_id[$a+1] == $campaign->campaign_id[$i]){																		
-																	//	echo ", ";
-																	//}
+																	foreach ($cDispo as $idx => $val) {
+																		$dispoStatuses[] = $idx;
+																	}
 																}
 															}
 															echo implode(", ", $dispoStatuses);
