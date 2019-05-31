@@ -1424,7 +1424,7 @@
 			// view campaign dispositions + datatable
 			$modalTitle = $lh->translationFor("custom_disposition");
 			$modalSubtitle = "";
-			$columns = array($lh->translationFor("status"), $lh->translationFor("status_name"), $lh->translationFor("SEL"), $lh->translationFor("HA"), $lh->translationFor("SALE"), "DNC", $lh->translationFor("CC"), $lh->translationFor("NI"), $lh->translationFor("UW"), $lh->translationFor("SCB"), $lh->translationFor("action"));
+			$columns = array($lh->translationFor("status"), $lh->translationFor("status_name"), $lh->translationFor("SEL"), $lh->translationFor("HA"), $lh->translationFor("sale"), "dnc", $lh->translationFor("CC"), $lh->translationFor("ni"), $lh->translationFor("UW"), $lh->translationFor("SCB"), $lh->translationFor("action"));
 			$result = $ui->generateTableHeaderWithItems($columns, "table_campaign_disposition", "display responsive compact table-bordered table-striped", true, false);
 			$hiddenidinput = $ui->hiddenFormField("edit_campaign", "", "edit_campaign");
 			$bodyInputs = $hiddenidinput.$result.'</tbody></table>';
