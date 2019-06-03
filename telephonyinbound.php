@@ -654,17 +654,21 @@
 							<label class="col-sm-3 control-label" for="user_groups"><?php $lh->translateText("user_groups"); ?></label>
 							<div class="col-sm-8 mb">
 								<select name="user_groups" id="user_groups" class="form-control select2-1" style="width:100%;">
-										<option value="---ALL---"><?php $lh->translateText("all_usergroups"); ?></option>
-									<?php
-										for($i=0;$i<count($user_groups->user_group);$i++){
-											if (strtoupper($_SESSION['usergroup']) !== 'ADMIN' && strtoupper($user_groups->user_group[$i]) !== strtoupper($_SESSION['usergroup'])) {
-												continue;
-											}
-									?>
-										<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->group_name[$i];?>  </option>
-									<?php
-										}
-									?>		
+								<?php
+								if (strtoupper($_SESSION['usergroup']) !== 'ADMIN') {
+								?>
+									<option value="---ALL---"><?php $lh->translateText("all_usergroups"); ?></option>
+								<?php
+								}
+								for($i=0;$i<count($user_groups->user_group);$i++){
+									if (strtoupper($_SESSION['usergroup']) !== 'ADMIN' && strtoupper($user_groups->user_group[$i]) !== strtoupper($_SESSION['usergroup'])) {
+										continue;
+									}
+								?>
+									<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->group_name[$i];?>  </option>
+								<?php
+								}
+								?>		
 								</select>
 							</div>
 						</div>
