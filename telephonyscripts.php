@@ -207,7 +207,7 @@
 									<div class="col-sm-1">&nbsp;</div>
 								</div>
 								<div class="form-group">
-									<<!-- div class="col-sm-2">&nbsp;</div> -->
+									<!-- <div class="col-sm-2">&nbsp;</div> -->
 									<div class="col-sm-12">
 										<div class="panel">
 											<div class="panel-body">
