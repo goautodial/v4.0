@@ -168,13 +168,21 @@
 									<div class="col-sm-8 mb">
 										<select name="script_user_group" class="form-control">
 											<option value="" disabled selected> - - - <?php $lh->translateText('Select User Group'); ?> - - -</option>
+											<?php
+											if (strtoupper($_SESSION['usergroup']) === 'ADMIN') {
+											?>
 											<option value="---ALL---" selected> - - - ALL - - -</option>
 											<?php
+											}
+											
 											if ($user_groups->result == 'success') {
 												foreach ($user_groups->user_group as $i => $group) {
 													$isSelected = '';
 													if ($group == $_SESSION['usergroup']) {
 														$isSelected = ' selected';
+													}
+													if (strtoupper($_SESSION['usergroup']) !== 'ADMIN' && strtoupper($group) !== strtoupper($_SESSION['usergroup'])) {
+														continue;
 													}
 													$group_name = (strlen($user_groups->group_name[$i]) > 0) ? $user_groups->group_name[$i] : $group;
 													echo '<option value="'.$group.'"'.$isSelected.'>'.$group_name.'</option>';
