@@ -655,7 +655,7 @@
 							<div class="col-sm-8 mb">
 								<select name="user_groups" id="user_groups" class="form-control select2-1" style="width:100%;">
 								<?php
-								if (strtoupper($_SESSION['usergroup']) !== 'ADMIN') {
+								if (strtoupper($_SESSION['usergroup']) === 'ADMIN') {
 								?>
 									<option value="---ALL---"><?php $lh->translateText("all_usergroups"); ?></option>
 								<?php
