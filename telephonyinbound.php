@@ -657,6 +657,9 @@
 										<option value="---ALL---"><?php $lh->translateText("all_usergroups"); ?></option>
 									<?php
 										for($i=0;$i<count($user_groups->user_group);$i++){
+											if (strtoupper($_SESSION['usergroup']) !== 'ADMIN' && strtoupper($user_groups->user_group[$i]) !== strtoupper($_SESSION['usergroup'])) {
+												continue;
+											}
 									?>
 										<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->group_name[$i];?>  </option>
 									<?php
@@ -1047,6 +1050,9 @@
 									<select name="user_groups" id="user_groups" class="form-control select2-1" style="width:100%;">
 										<?php
 											for($i=0;$i<count($user_groups->user_group);$i++){
+												if (strtoupper($_SESSION['usergroup']) !== 'ADMIN' && strtoupper($user_groups->user_group[$i]) !== strtoupper($_SESSION['usergroup'])) {
+													continue;
+												}
 										?>
 											<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i];?>  </option>
 										<?php
