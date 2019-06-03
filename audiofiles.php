@@ -94,8 +94,8 @@
 							$toggleVoicefiles = ' class="hidden"';
 							$activeVoicefiles = '';
 						}
-						if ($perm->moh->moh_read === 'N') { $toggleMOH = ' class="hidden"'; }
-						if ($perm->moh->moh_read !== 'N' && $perm->voicefiles->voicefiles_upload === 'N') {
+						if ($perm->moh->moh_create === 'N') { $toggleMOH = ' class="hidden"'; }
+						if ($perm->moh->moh_create !== 'N' && $perm->voicefiles->voicefiles_upload === 'N') {
 							$toggleMOH = ' class="active"';
 							$activeMOH = ' active';
 						}
