@@ -399,6 +399,9 @@
 									<select id="user_group" class="form-control select2-1" name="user_group" style="width:100%;">
 										<?php
 											for($i=0;$i<count($user_groups->user_group);$i++){
+												if (strtoupper($_SESSION['usergroup']) !== 'ADMIN' && strtoupper($user_groups->user_group[$i]) !== strtoupper($_SESSION['usergroup'])) {
+													continue;
+												}
 										?>
 											<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i];?>  </option>
 										<?php
@@ -1268,7 +1271,6 @@
 						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 						pagination.toggle(this.api().page.info().pages > 1);
 					},
-					order: [[ 1, "desc" ]],
 					columnDefs:[
 						{ width: "16%", targets: 6 },
 						{ searchable: false, targets: [ 0, 6 ] },
@@ -1285,7 +1287,6 @@
 						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 						pagination.toggle(this.api().page.info().pages > 1);
 					},
-					order: [[ 1, "desc" ]],
 					columnDefs:[
 						{ width: "16%", targets: 5 },
 						{ searchable: false, targets: [ 0, 5 ] },
@@ -1301,7 +1302,6 @@
 						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 						pagination.toggle(this.api().page.info().pages > 1);
 					},
-					order: [[ 1, "desc" ]],
 					columnDefs:[
 						{ width: "16%", targets: 5 },
 						{ searchable: false, targets: [ 0, 5 ] },
