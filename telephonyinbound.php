@@ -909,7 +909,7 @@
 												<label class="col-sm-3 control-label"><?php $lh->translateText("audio_file"); ?>: </label>
 												<div class="col-sm-6">
 													<select class="select2-2 form-control" name="option_hangup_value[]" style="width:100%;">
-														<option value="" selected><?php $lh->translateText("-none-"); ?></option>
+														<option value="vm-goodbye" selected><?php $lh->translateText("default_value"); ?></option>
 													<?php
 														for($x=0;$x<count($voicefiles->file_name);$x++){
 															$file = substr($voicefiles->file_name[$x], 0, -4);
