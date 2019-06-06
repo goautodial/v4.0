@@ -1248,11 +1248,13 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 			var sf = obj.standard_fields;
 			var cf = obj.custom_fields;
 			//console.log( obj );
-			if(cf && cf.length)
+			if(cf[0] !== "")
 				var all = sf.concat(cf);
 			else
 				var all = sf;
 			var i;
+			console.log(cf[0]);	
+			console.log(all.length);	
 			for(i = 0; i < all.length;i++){
 				$('#lead_map_data').append('<div class="form-group"><label>'+all[i]+'</label><span id="span_'+all[i]+'"></span></span></div>');
 				$('<input>').attr({type: 'hidden',name: 'map_fields[]', value: all[i]}).appendTo('#lead_map_fields');
