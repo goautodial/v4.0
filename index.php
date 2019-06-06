@@ -857,6 +857,9 @@ error_reporting(E_ALL)
 			});
 		});
 </script>
+
+
+		<?php print $ui->liveHelperChat(); ?>
 	
 <!--========== REFRESH DIVS ==============-->
 	<!-- <script src="js/load_statusboxes.js"></script> -->
@@ -1475,8 +1478,6 @@ function goGetInSession(type) {
     <!--<script src="js/dashboard/js/app.js"></script>-->
 	<script src="adminlte/js/app.min.js" type="text/javascript"></script>
     <script src="js/dashboard/js/jquery-knob/dist/jquery.knob.min.js"></script>
-				
-		<?php print $ui->liveHelperChat(); ?>
 			
 	<!-- Vue Avatar -->
 	<script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>
