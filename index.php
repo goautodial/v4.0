@@ -1504,9 +1504,8 @@ function goGetInSession(type) {
 			}
 		};
 		var goAvatar = new Vue(goOptions);
-		
-		goAvatar._init();
 	</script>
 		<?php print $ui->creamyFooter(); ?>
     </body>
+		<?php print $ui->liveHelperChat(); ?>
 </html>
