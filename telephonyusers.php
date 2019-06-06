@@ -1257,5 +1257,6 @@
 </script>
 		
 		<?php print $ui->creamyFooter();?>
+		<?php print $ui->liveHelperChat(); ?>
     </body>
 </html>
