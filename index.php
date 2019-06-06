@@ -1507,5 +1507,4 @@ function goGetInSession(type) {
 	</script>
 		<?php print $ui->creamyFooter(); ?>
     </body>
-		<?php print $ui->liveHelperChat(); ?>
 </html>
