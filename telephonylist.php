@@ -1218,7 +1218,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 		
 		function upload_alert(res, msg){
 		 if(res === "success")
-			var uploadMsgTotal = "<?php $lh->translateText('total_leads_upload'); ?>: "+msg;
+			var uploadMsgTotal = msg;
 		 else
 			var uploadMsgTotal = msg;
 		 swal({
