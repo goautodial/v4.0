@@ -857,9 +857,6 @@ error_reporting(E_ALL)
 			});
 		});
 </script>
-
-
-		<?php print $ui->liveHelperChat(); ?>
 	
 <!--========== REFRESH DIVS ==============-->
 	<!-- <script src="js/load_statusboxes.js"></script> -->
