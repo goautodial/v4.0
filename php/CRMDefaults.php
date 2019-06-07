@@ -232,5 +232,5 @@ define ('LEADUPLOAD_LEAD_MAPPING', "n"); // Customization requested by Yoothit. 
 define ('LEADUPLOAD_CUSTOM_DELIMITER', ""); //put special characters here, for multiple separate by [space]
 
 // Live Helper Chat
-define ('ENABLE_LHC', false);
+define ('ENABLE_LHC', FALSE);
 ?>
