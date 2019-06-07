@@ -230,4 +230,7 @@ define ('CRM_GO_VERSION', "v4.0");
 define ('ECCS_BLIND_MODE', "n"); //Customizations requested by ECCS. Accessibility mode for blind users
 define ('LEADUPLOAD_LEAD_MAPPING', "n"); // Customization requested by Yoothit. Lead Mapping
 define ('LEADUPLOAD_CUSTOM_DELIMITER', ""); //put special characters here, for multiple separate by [space]
+
+// Live Helper Chat
+define ('ENABLE_LHC', false);
 ?>
