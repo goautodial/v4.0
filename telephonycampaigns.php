@@ -2685,7 +2685,10 @@
 						url: "./php/ViewDisposition.php",
 						type: 'POST',
 						data: {
-							campaign_id : campaign_id
+							campaign_id : campaign_id,
+							dispo_create : '<?=$perm->disposition->disposition_create?>',
+							dispo_update : '<?=$perm->disposition->disposition_update?>',
+							dispo_delete : '<?=$perm->disposition->disposition_delete?>'
 						},
 						dataType: 'json',
 						success: function(data) {
