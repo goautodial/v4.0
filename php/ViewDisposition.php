@@ -25,7 +25,6 @@
 	$api 							= \creamy\APIHandler::getInstance();
 	
 	$campaign_id 					= $_POST["campaign_id"];
-	$dispo_create                   = $_POST["dispo_create"];
 	$dispo_update                   = $_POST["dispo_update"];
 	$dispo_delete                   = $_POST["dispo_delete"];
 
