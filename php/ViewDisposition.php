@@ -25,6 +25,7 @@
 	$api 							= \creamy\APIHandler::getInstance();
 	
 	$campaign_id 					= $_POST["campaign_id"];
+	$view_type                      = $_POST["view_type"];
 	$dispo_update                   = $_POST["dispo_update"];
 	$dispo_delete                   = $_POST["dispo_delete"];
 
@@ -46,7 +47,7 @@
 			$data 					.= '"'.checkboxInputWithLabel("not_interested", "edit_not_interested-".$output->status[$i], "not_interested", $output->not_interested[$i]).'",';
 			$data 					.= '"'.checkboxInputWithLabel("unworkable", "edit_unworkable-".$output->status[$i], "unworkable", $output->unworkable[$i]).'",';
 			$data 					.= '"'.checkboxInputWithLabel("scheduled_callback", "edit_scheduled_callback-".$output->status[$i], "scheduled_callback", $output->scheduled_callback[$i]).'",';
-			if ($dispo_update !== 'N') {
+			if ($dispo_update !== 'N' && $view_type == 'update') {
 				$data				.= '"<a id=\"btn-edit-disposition-'.$output->status[$i].'\" class=\"btn btn-primary btn-edit-disposition\" href=\"#\" data-id=\"'.$output->campaign_id[$i].'\" data-status=\"'.$output->status[$i].'\"><i class=\"fa fa-pencil\"></i></a>';
 				$data               .= '<a id=\"btn-cancel-disposition-'.$output->status[$i].'\" class=\"btn btn-warning btn-cancel-disposition\" href=\"#\" data-id=\"'.$output->campaign_id[$i].'\" data-status=\"'.$output->status[$i].'\" disabled><i class=\"fa fa-recycle\"></i></a>';
 			} else {

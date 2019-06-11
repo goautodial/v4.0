@@ -2678,7 +2678,7 @@
 				//edit disposition
 				$(document).on('click','.view_disposition,.delete_disposition',function() {
 					var campaign_id = $(this).attr('data-id');
-					var dispo_perm = $(this).attr('data-type');
+					var view_type = $(this).attr('data-type');
 					$('#edit_campaign').val(campaign_id);
 					console.log(campaign_id);
 					//$('#modal_view_dispositions').modal('toggle');
@@ -2687,7 +2687,9 @@
 						type: 'POST',
 						data: {
 							campaign_id : campaign_id,
-							dispo_perm : dispo_perm
+							dispo_update : '<?=$perm->disposition->disposition_update?>',
+							dispo_delete : '<?=$perm->disposition->disposition_delete?>',
+							view_type : view_type
 						},
 						dataType: 'json',
 						success: function(data) {
