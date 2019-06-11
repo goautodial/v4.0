@@ -2680,6 +2680,7 @@
 					var campaign_id = $(this).attr('data-id');
 					var view_type = $(this).attr('data-type');
 					$('#edit_campaign').val(campaign_id);
+					$('#table_campaign_disposition').empty();
 					console.log(campaign_id);
 					//$('#modal_view_dispositions').modal('toggle');
 					$.ajax({
@@ -2695,9 +2696,7 @@
 						success: function(data) {
 							var JSONString = data;
 							var JSONObject = JSON.parse(JSONString);
-							var tableCP = $('#table_campaign_disposition');
-							tableCP.empty();
-							tableCP.DataTable({
+							var tableCP = $('#table_campaign_disposition').DataTable({
 								data:JSONObject,
 								destroy:true,   
 								responsive:true,
