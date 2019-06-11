@@ -2701,6 +2701,10 @@
 								responsive:true,
 								stateSave:true,
 								processing:true,
+								'language': {
+									'loadingRecords': '&nbsp;',
+									'processing': 'Loading...'
+								},
 								drawCallback:function(settings) {
 									var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 									pagination.toggle(this.api().page.info().pages > 1);
