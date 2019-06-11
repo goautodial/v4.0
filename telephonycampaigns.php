@@ -2766,6 +2766,10 @@
 					});
 				});
 				
+				$("#modal_view_dispositions").on("hidden.bs.modal", function() {
+					$('#table_campaign_disposition').empty();
+				});
+				
 				//$(document).on('click','.delete_disposition', function() {
 				//	var campaign_id = $(this).attr('data-id');
 				//	var status_id = $(this).attr('data-status');
