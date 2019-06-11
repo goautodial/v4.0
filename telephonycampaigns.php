@@ -2695,7 +2695,9 @@
 						success: function(data) {
 							var JSONString = data;
 							var JSONObject = JSON.parse(JSONString);
-							var tableCP = $('#table_campaign_disposition').DataTable({
+							var tableCP = $('#table_campaign_disposition');
+							tableCP.empty();
+							tableCP.DataTable({
 								data:JSONObject,
 								destroy:true,   
 								responsive:true,
