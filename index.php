@@ -264,7 +264,7 @@ error_reporting(E_ALL)
 									<a href="#" data-toggle="modal" data-target="#realtime_calls_monitoring">
 										<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center bg-info info_sun_boxes">
 											<em class="fa fa-sun-o fa-3x"></em><div class="h2 m0"><span class="text-lg"></span></div>
-											<div class="text-white"><?=$lh->translateText("realtime_calls_monitor")?>0</div>                                 
+											<div class="text-white"><?=$lh->translateText("realtime_calls_monitor")?></div>                                 
 										</div>
 									</a>
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
