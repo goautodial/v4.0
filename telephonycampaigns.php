@@ -2680,7 +2680,6 @@
 					var campaign_id = $(this).attr('data-id');
 					var view_type = $(this).attr('data-type');
 					$('#edit_campaign').val(campaign_id);
-					$('#table_campaign_disposition').empty();
 					console.log(campaign_id);
 					//$('#modal_view_dispositions').modal('toggle');
 					$.ajax({
@@ -2701,6 +2700,7 @@
 								destroy:true,   
 								responsive:true,
 								stateSave:true,
+								processing:true,
 								drawCallback:function(settings) {
 									var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 									pagination.toggle(this.api().page.info().pages > 1);
