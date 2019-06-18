@@ -1623,7 +1623,7 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                                         $.globalEval(key+" = "+value+";");
                                     } else if (key == 'manual_dial_min_digits') {
                                         var defaultValue = (typeof value !== 'undefined' && value > 0) ? value : 6;
-                                        $.globalEval(key+" = "+value+";");
+                                        $.globalEval(key+" = "+defaultValue+";");
                                     } else {
                                         $.globalEval(key+" = '"+value+"';");
                                     }
