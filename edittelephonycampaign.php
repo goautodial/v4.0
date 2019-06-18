@@ -71,6 +71,11 @@
 	$lists = $api->API_getAllLists();
 	$audiofiles = $api->API_getAllVoiceFiles();
 
+	// for autodial level options
+	$server_list = $api->API_getAllServers();
+	$server_id = $server_list->server_id[0];
+	$server = $api->API_getServerInfo($server_id);
+
 ?>
 <html>
     <head>
@@ -267,6 +272,7 @@
 															</div>
 															<div class="col-lg-4">
 																<select id="auto_dial_level_adv" class="form-control <?php if($autodial_level == "0" || $autodial_level == "1" || $autodial_level == "2" || $autodial_level == "4" || $autodial_level == "6" || $autodial_level == "10") echo "hide";?> " name="auto_dial_level_adv">
+<?php if($server->data->max_vicidial_trunks == NULL){ ?>
 																	<option value="1">1.0</option>
 																	<option value="1.5" <?php if($autodial_level == "1.5") echo "selected"; ?> >1.5</option>
 																	<option value="2">2.0</option>
@@ -306,6 +312,18 @@
 																	<option value="19.0" <?php if($autodial_level == "19.0") echo "selected"; ?> >19.0</option>
 																	<option value="19.5" <?php if($autodial_level == "19.5") echo "selected"; ?> >19.5</option>
 																	<option value="20.0" <?php if($autodial_level == "20.0") echo "selected"; ?> >20.0</option>
+
+<?php
+        } else {
+                for($a=1; $a <= $server->data->max_vicidial_trunks; $a = $a+0.5){
+                        $b = number_format((float)$a, 1, '.', '');
+?>
+                         <option value="<?php echo $b; ?>" <?php if($autodial_level == "$b") echo "selected"; ?> ><?php echo $b; ?></option>
+<?php
+                }
+        }
+?>
+
 																</select>
 															</div>
 														</div>
@@ -374,6 +392,18 @@
 														<input type="text" class="form-control" id="campaign_cid" name="campaign_cid" value="<?php echo $campaign->data->campaign_cid; ?>">
 													</div>
 												</div>
+												<?php if($campaign->campaign_type == "SURVEY") { ?>
+                                                                                                <div class="form-group survey_method_agent_xfer_view">
+                                                                                                        <label class="col-sm-3 control-label"><?php $lh->translateText("campaign_recordings"); ?>:</label>
+                                                                                                        <div class="col-sm-9 mb">
+                                                                                                                <select id="campaign_recording" class="form-control" name="campaign_recording">
+                                                                                                                        <option value="NEVER" <?php if($campaign->data->campaign_recording == "NEVER") echo "selected";?>>OFF</option>
+                                                                                                                        <option value="ALLFORCE" <?php if($campaign->data->campaign_recording == "ALLFORCE") echo "selected";?>>ON</option>
+                                                                                                                        <option value="ONDEMAND" <?php if($campaign->data->campaign_recording == "ONDEMAND") echo "selected";?>>ONDEMAND</option>
+                                                                                                                </select>
+                                                                                                        </div>
+                                                                                                </div>
+												<?php } ?>
 												<?php if($campaign->campaign_type != "SURVEY") { ?>
 												<div class="form-group">
 													<label class="col-sm-3 control-label"><?php $lh->translateText("campaign_recordings"); ?>:</label>
@@ -1982,6 +2012,8 @@
 																			</div>
 																			<div class="col-lg-4">
 																				<select id="survey_auto_dial_level_adv" class="form-control <?php if($autodial_level == "0" || $autodial_level == "1" || $autodial_level == "2" || $autodial_level == "4" || $autodial_level == "6" || $autodial_level == "10") echo "hide";?> " name="auto_dial_level_adv">
+
+<?php if($server->data->max_vicidial_trunks == NULL){ ?>
 																					<option value="1">1.0</option>
 																					<option value="1.5" <?php if($autodial_level == "1.5") echo "selected"; ?> >1.5</option>
 																					<option value="2">2.0</option>
@@ -2021,6 +2053,19 @@
 																					<option value="19.0" <?php if($autodial_level == "19.0") echo "selected"; ?> >19.0</option>
 																					<option value="19.5" <?php if($autodial_level == "19.5") echo "selected"; ?> >19.5</option>
 																					<option value="20.0" <?php if($autodial_level == "20.0") echo "selected"; ?> >20.0</option>
+
+
+<?php
+        } else {
+                for($a=1; $a <= $server->data->max_vicidial_trunks; $a = $a+0.5){
+			$b = number_format((float)$a, 1, '.', '');
+?>			
+                         <option value="<?php echo $b; ?>" <?php if($autodial_level == "$b") echo "selected"; ?> ><?php echo $b; ?></option>
+<?php
+                }
+        }
+?>
+
 																				</select>
 																			</div>
 																		</div>
@@ -2043,6 +2088,14 @@
 																		<input type="number" class="form-control" id="survey_xfer_exten" name="survey_xfer_exten" min="0" value="<?php echo $campaign->data->survey_xfer_exten; ?>">
 																	</div>
 																</div>
+																<?php //if($campaign->campaign_type == "SURVEY" && $campaign->data->survey_method == "AGENT_XFER"){ ?>
+																<div class="form-group survey_method_agent_xfer_view">
+                        	                                                                                                        <label class="col-sm-3 control-label"><?php $lh->translateText("campaign_recording_filename"); ?>:</label>
+                	                                                                                                                <div class="col-sm-9 mb">
+        	                                                                                                                                <input type="text" class="form-control" id="campaign_rec_filename" name="campaign_rec_filename" value="<?php echo $campaign->data->campaign_rec_filename; ?>">
+	                                                                                                                                </div>
+																</div>
+																<?php //} ?>
 																<br /><br />
 																<div class="form-group">
 																	<label class="col-sm-3 control-label"><?php $lh->translateText("survey_dtmf_digits"); ?>:</label>
@@ -2838,6 +2891,7 @@
 					$("#survey_dial_method").prop("disabled", false);
 					$("#survey_auto_dial_level").prop("disabled", false);
 					$("#no-channels").prop("disabled", true);
+					$(".survey_method_agent_xfer_view").removeClass('hide');
 				}else{
 					$("#survey_dial_method").val("RATIO").trigger('change');
 					$("#survey_auto_dial_level").val("SLOW").trigger('change');
@@ -2845,6 +2899,7 @@
 					$("#survey_auto_dial_level").prop("disabled", true);
 					$("#survey_auto_dial_level_adv").addClass('hide');
 					$("#no-channels").prop("disabled", false);
+					$(".survey_method_agent_xfer_view").addClass('hide');
 				}
 				
             }
