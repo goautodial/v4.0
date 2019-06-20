@@ -52,8 +52,8 @@
 			$cust_phone 							= (!isset($value->vl_phone_number)) ? "" : $api->escapeJsonString($value->vl_phone_number);
 			$pausecode 								= $api->escapeJsonString($value->vla_pausecode);
 			//$vla_conference						= $api->escapeJsonString($value->vla_conf_exten);
-			$ol_conference							= (!isset($value->ol_conference)) ? "" : $api->escapeJsonString($value->ol_conference);
-			$ol_callerid							= (!isset($value->ol_callerid)) ? "" : $api->escapeJsonString($value->ol_callerid);
+			//$ol_conference							= (!isset($value->ol_conference)) ? "" : $api->escapeJsonString($value->ol_conference);
+			//$ol_callerid							= (!isset($value->ol_callerid)) ? "" : $api->escapeJsonString($value->ol_callerid);
 			
 			if (!empty($output->callerids)) {
 				foreach ($output->callerids as $key => $callerids) {
