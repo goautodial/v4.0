@@ -3276,6 +3276,12 @@
 								$('.carrier-to-use').removeClass('hide');
 							}
 						});
+					$('#no-channels').focusout(function(){
+						var noChannels = $(this).val();
+						if(noChannels == ""){	
+							$(this).val("1");
+						}
+					});
 				/*** end of campaigns ***/
 
 				/*** DISPOSITION ***/

@@ -3308,6 +3308,14 @@
 							setElements(selectedTypeVal);
 						});
 
+					    $('#no-channels').focusout(function(){
+                                                var noChannels = $(this).val();
+                                                if(noChannels == ""){
+                                                        $(this).val("1");
+                                                }
+                                            });
+
+
 				/*************
 				** Disposition Events
 				*************/
