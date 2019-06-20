@@ -271,10 +271,16 @@
 					</div>
 				<div class="form-group">
 					<label><?php $lh->translateText("duplicate_check"); ?> :</label>
-					<SELECT size="1" NAME="goDupcheck" ID="goDupcheck" TITLE="Duplicate Check - Will check phone numbers on the lead file and cross reference it with all phone numbers on a specific campaign or in all List ID." class="form-control select2">
+					<SELECT size="1" NAME="goDupcheck" ID="goDupcheck" TITLE="Duplicate Check - Will check phone numbers on the lead file and cross reference it with all phone numbers on a specific campaign or in all List ID or in the entire system." class="form-control select2">
 					<OPTION value="NONE"><?php $lh->translateText("no_duplicate_check"); ?></OPTION>
 					<OPTION value="DUPLIST"><?php $lh->translateText("check_phones_in_list_id"); ?></OPTION>
 					<OPTION value="DUPCAMP"><?php $lh->translateText("check_phones_in_campaign-lists"); ?></OPTION>
+					<?php
+					// Customization
+					if(LEADUPLOAD_CHECK_PHONES_IN_SYSTEM === 'y'){
+					?>
+					<OPTION value="DUPSYS"><?php $lh->translateText("check_phones_in_system"); ?></OPTION>
+					<?php }//end customization ?>
 					</SELECT>
 				</div>
 			</div>
