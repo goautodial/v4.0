@@ -1846,11 +1846,15 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
     });
     
     $("input").on('focus', function() {
-        $(document).off('keydown', 'body', hotKeysAvailable);
+	if ($("#enableHotKeys").is(':checked')) {
+	    $(document).off('keydown', 'body', hotKeysAvailable);
+	}
     });
     
     $("input").on('focusout', function() {
-        $(document).on('keydown', 'body', hotKeysAvailable);
+	if ($("#enableHotKeys").is(':checked')) {
+            $(document).on('keydown', 'body', hotKeysAvailable);
+	}
     });
 
     <?php if(ECCS_BLIND_MODE !== 'y'){?> 
