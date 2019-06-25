@@ -220,7 +220,56 @@
 				} else {
 					$tablehtml .= '';
 				}
-													
+	/*
+			 // start of middle table
+                                if ($output->MIDsorted_output != NULL) {
+                                        $agent_pdetail .= '<br/><div>
+                                                <table class="display responsive no-wrap table table-striped table-bordered table-hover" width="100%" id="agent_pdetail_mid">
+                                                        <thead>
+                                                                <tr>
+                                                                        <th nowrap> Full Name </th>';
+
+                                                                        if ($output->SstatusesTOP != NULL) {
+                                                                                $agent_pdetail .= $output->SstatusesTOP;
+                                                                        }
+
+                                                $agent_pdetail .=  '</tr></thead><tbody>';
+
+                                                                for($i=0; $i <= count($output->MIDsorted_output); $i++) {
+                                                                        $agent_pdetail .= $output->MIDsorted_output[$i];
+                                                                }
+
+                                                $agent_pdetail .= '</tbody>';
+
+                                                if ($output->MIDsorted_output != NULL) {
+                                                        $agent_pdetail .= '<tfoot><tr class="warning"><th nowrap> Total </th>';
+
+                                                                if ($output->SstatusesSUM != NULL) {
+                                                                        $agent_pdetail .= $output->SstatusesSUM;
+                                                                }
+
+                                                        $agent_pdetail .= '</tr></tfoot>';
+                                                }
+
+                                                $agent_pdetail .= '</table></div><br/>';
+					$tablehtml .= $agent_pdetail;
+                                }else{
+					$tablehtml .= '';
+				}
+                        //end of middle table
+
+                        // start of legend
+                                 if ($output->MIDsorted_output != NULL) {
+                                        $agent_pdetail .= '<table class="table table-hover">
+                                                                <tr class="info"><th colspan="2"><small>LEGEND: </th></tr>';
+                                                        for ($i=0; $i < count($output->legend); $i+=2) {
+                                                                $agent_pdetail .= "<tr><td><small>".$output->legend[$i]."</small></td><td><small>".$output->legend[$i+1]."</small></td></tr>";
+                                                        }
+                                        $agent_pdetail .= '</table><br/>';
+					$tablehtml .= $agent_pdetail;
+                                 }
+                        // end of legend
+	*/													
 			//FORM TO BE PASSED WHEN EXPORT IS CALLED
 			$tablehtml .= '<form action="php/ExportAgentDetails.php" id="export_agentdetail_form"  method="POST">
 								<input type="hidden" name="pageTitle" value="'.$pageTitle.'" />
