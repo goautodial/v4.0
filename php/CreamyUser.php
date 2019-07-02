@@ -72,6 +72,7 @@ class CreamyUser {
 	}
 	
 	public function userHasManagerPermission() {
+		var_dump($this->userrole,CRM_DEFAULTS_USER_ROLE_MANAGER);
 		if (($this->userrole === CRM_DEFAULTS_USER_ROLE_ADMIN) || ($this->userrole === CRM_DEFAULTS_USER_ROLE_MANAGER)) return true;
 		return false;
 	}
