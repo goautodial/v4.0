@@ -70,7 +70,7 @@
 
                 <!-- Main content -->
                 <section class="content">
-                <?php if ($user->userHasAdminPermission()) { ?>
+                <?php if ($user->userHasManagerPermission()) { ?>
 					<!-- Filas con acciones, formularios y demás -->
 					
                     <div class="row">
