@@ -2087,7 +2087,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$result .= $settings;
 		}
 		$result .= $callreports;
-		if ($userrole == CRM_DEFAULTS_USER_ROLE_SUPERVISOR) {
+		if ($userrole >= CRM_DEFAULTS_USER_ROLE_SUPERVISOR) {
 			$result .= $adminArea;
 		}
 		$result .= $crm;
