@@ -34,7 +34,7 @@
 	$user = \creamy\CreamyUser::currentUser();
 
 	//var_dump($user->getUserRole());
-	if(!preg_match("/^(ADMIN)$/", $_SESSION['usergroup']) && $_SESSION['userrole'] < CRM_DEFAULTS_USER_ROLE_SUPERVISOR) {
+	if(!preg_match("/^(ADMIN)$/", $_SESSION['usergroup']) && $_SESSION['userrole'] > CRM_DEFAULTS_USER_ROLE_SUPERVISOR) {
 		header("location: index.php");
 	}
 ?>
