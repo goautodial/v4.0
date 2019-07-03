@@ -50,7 +50,7 @@
 		<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
 
         <!-- Datetime picker -->
-	<link rel="stylesheet" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+	<link rel="stylesheet" href="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
 
         <!-- Date Picker -->	
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>

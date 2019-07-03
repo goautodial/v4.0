@@ -63,7 +63,7 @@
 		<script src="js/plugins/datatables/jszip.min.js" type="text/javascript"></script>
 
         <!-- Datetime picker --> 
-        <link rel="stylesheet" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
         <!-- Date Picker -->
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
@@ -569,6 +569,7 @@
 						toDate : $("#end_filterdate").val()
 					},
 					success: function(data) {
+						console.log(data);
 						if (data !== "") {
 							$(".report-loader").fadeOut("slow");
 							$('#table').html(data);
