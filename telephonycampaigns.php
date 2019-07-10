@@ -1509,7 +1509,7 @@
 						$('.no_status_row').find($('li')).addClass('disabled');
 						$('.no_status_row').find($('.edit_disposition')).removeClass('edit_disposition').addClass('disabled_edit_disposition');
 						$('.no_status_row').find($('.view_disposition')).removeClass('view_disposition').addClass('disabled_view_disposition');
-						$('.no_status_row').find($('.delete_disposition')).removeClass('delete_disposition').addClass('disabled_delete_disposition');
+						$('.no_status_row').find($('.delete_disposition_modal')).removeClass('delete_disposition_modal').addClass('disabled_delete_disposition');
 					}
 				},	
 				columnDefs:[
@@ -2676,7 +2676,7 @@
 			    });
 
 				//edit disposition
-				$(document).on('click','.view_disposition,.delete_disposition',function() {
+				$(document).on('click','.view_disposition,.delete_disposition_modal',function() {
 					var campaign_id = $(this).attr('data-id');
 					var view_type = $(this).attr('data-type');
 					$('#edit_campaign').val(campaign_id);
@@ -2774,54 +2774,54 @@
 					$('#table_campaign_disposition').empty();
 				});
 				
-				//$(document).on('click','.delete_disposition', function() {
-				//	var campaign_id = $(this).attr('data-id');
-				//	var status_id = $(this).attr('data-status');
-				//	swal({
-				//		title: "<?php $lh->translateText("are_you_sure"); ?>",
-				//		text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
-				//		type: "warning",
-				//		showCancelButton: true,
-				//		confirmButtonColor: "#DD6B55",
-				//		confirmButtonText: "<?php $lh->translateText("Yes"); ?>!",
-				//		cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
-				//		closeOnConfirm: false,
-				//		closeOnCancel: false
-				//		},
-				//		function(isConfirm){
-				//			if (isConfirm) {
-				//				$.ajax({
-				//					url: "./php/DeleteDisposition.php",
-				//					type: 'POST',
-				//					data: {
-				//						disposition_id: campaign_id,
-				//						status: status_id
-				//					},
-				//					success: function(data) {
-				//					console.log(data);
-				//						if(data == 1){
-				//							swal({
-				//									title: "<?php $lh->translateText("success"); ?>",
-				//									text: "<?php $lh->translateText("Delete Success"); ?>!",
-				//									type: "success"
-				//								},
-				//								function(){
-				//									window.location.href = 'telephonycampaigns.php?T_disposition';
-				//									$(".preloader").fadeIn();
-				//								}
-				//							);
-				//						}else{
-				//							sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
-				//							window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
-				//						}
-				//					}
-				//				});
-				//							} else {
-				//					swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
-				//			}
-				//		}
-				//	);
-				//});
+				$(document).on('click','.delete_disposition', function() {
+					var campaign_id = $(this).attr('data-id');
+					var status_id = $(this).attr('data-status');
+					swal({
+						title: "<?php $lh->translateText("are_you_sure"); ?>",
+						text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "<?php $lh->translateText("Yes"); ?>!",
+						cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
+						closeOnConfirm: false,
+						closeOnCancel: false
+						},
+						function(isConfirm){
+							if (isConfirm) {
+								$.ajax({
+									url: "./php/DeleteDisposition.php",
+									type: 'POST',
+									data: {
+										disposition_id: campaign_id,
+										status: status_id
+									},
+									success: function(data) {
+									console.log(data);
+										if(data == 1){
+											swal({
+													title: "<?php $lh->translateText("success"); ?>",
+													text: "<?php $lh->translateText("Delete Success"); ?>!",
+													type: "success"
+												},
+												function(){
+													window.location.href = 'telephonycampaigns.php?T_disposition';
+													$(".preloader").fadeIn();
+												}
+											);
+										}else{
+											sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+											window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+										}
+									}
+								});
+											} else {
+									swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+							}
+						}
+					);
+				});
 						
 				// view leads_recycling
 				$(document).on('click','.view_leadrecycling',function() {
