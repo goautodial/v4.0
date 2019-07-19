@@ -671,6 +671,8 @@ delete_voicemail_after_email = "Supprimer la messagerie vocale après l'email"
 old_message = "Anciens messages"
 voicemail_modify_success = "Messagerie vocale mise à jour avec succès!"
 audio_chooser = "Sélecteur audio"
+ingroup_chooser = "Sélecteur Groupe entrant"
+callmenu_chooser = "Sélecteur Menu d'appel"
 -none- = "- - - AUCUN - - -"
 
 call_time_wizard = "Assistant d'appel"

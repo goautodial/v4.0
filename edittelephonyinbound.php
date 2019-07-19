@@ -920,7 +920,7 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 															<label for="no_agents_exten" class="col-sm-4 control-label"><?php $lh->translateText("audiofiles"); ?></label>
 															<div class="col-sm-8 mb">
 																<div class="input-group">
-																	<input type="text" class="form-control" id="no_agents_exten" name="no_agents_exten" value="<?php if ($output->data->no_agent_action_value == NULL)echo "vm-goodbye"; else echo $output->data->no_agent_action_value;?>">
+																	<input type="text" class="form-control" id="no_agents_exten" name="no_agents_exten" value="<?php if ($output->data->no_agent_action_value == NULL || !in_array($output->data->no_agent_action_value, $voicefiles->file_name))echo "vm-goodbye"; else echo $output->data->no_agent_action_value;?>">
 																	<span class="input-group-btn">
 																		<button class="btn btn-default show_no_agents_exten" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
 																	</span>
@@ -1008,9 +1008,9 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 															<label for="no_agents_ingroup" class="col-sm-4 control-label"><?php $lh->translateText("ingroup"); ?></label>
 															<div class="col-sm-8 mb">
 																<div class="input-group">
-																	<input type="text" class="form-control" id="no_agents_ingroup" name="no_agents_ingroup" value="<?php if ($output->data->no_agent_action_value == NULL)echo ""; else echo $output->data->no_agent_action_value;?>">
+																	<input type="text" class="form-control" id="no_agents_ingroup" name="no_agents_ingroup" value="<?php if ($output->data->no_agent_action_value == NULL || !in_array($output->data->no_agent_action_value, $ingroup->group_id))echo ""; else echo $output->data->no_agent_action_value;?>">
 																	<span class="input-group-btn">
-																		<button class="btn btn-default show_no_agents_ingroup" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
+																		<button class="btn btn-default show_no_agents_ingroup" type="button"><?php $lh->translateText("ingroup_chooser"); ?></button>
 																	</span>
 																</div><!-- /input-group -->
 																<div class="row col-sm-12 select_no_agents_ingroup">
@@ -1037,9 +1037,9 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 															<label for="no_agents_callmenu" class="col-sm-4 control-label"><?php $lh->translateText("call_menu"); ?> </label>
 															<div class="col-sm-8 mb">
 																<div class="input-group">
-																	<input type="text" class="form-control" id="no_agents_callmenu" name="no_agents_callmenu" value="<?php if ($output->data->no_agent_action_value == NULL)echo ""; else echo $output->data->no_agent_action_value;?>">
+																	<input type="text" class="form-control" id="no_agents_callmenu" name="no_agents_callmenu" value="<?php if ($output->data->no_agent_action_value == NULL || !in_array($output->data->no_agent_action_value, $call_menu->menu_id))echo ""; else echo $output->data->no_agent_action_value;?>">
 																	<span class="input-group-btn">
-																		<button class="btn btn-default show_no_agents_callmenu" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
+																		<button class="btn btn-default show_no_agents_callmenu" type="button"><?php $lh->translateText("callmenu_chooser"); ?></button>
 																	</span>
 																</div><!-- /input-group -->
 																<div class="row col-sm-12 select_no_agents_callmenu">
