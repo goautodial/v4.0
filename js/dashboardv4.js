@@ -31,7 +31,7 @@
 				},                               
 			});
 			//table.fnProcessingIndicator();
-			goAvatar._init(goOptions);
+			if(goAvatar) goAvatar._init(goOptions);
         } 
     });
     }    
