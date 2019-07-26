@@ -38,7 +38,7 @@
 			
 	// GET STATUSES
 		$disposition = $api->API_getAllDispositions();
-		
+
 		$display = '';
 		$display .= '
 				<form action="./php/ExportCallReport.php" id="export_callreport_form" method="POST">
@@ -51,6 +51,9 @@
 								<div class="mb">
 									<div class="">
 										<select multiple="multiple" class="select2-3 form-control" id="selected_campaigns" name="campaigns[]" style="width:100%;">';
+											if(EXPORTCALLREPORT_ALLCAMPAIGNS === "y"){
+												$display .= '<option value="ALL">--- ALL CAMPAIGNS ---</option>';
+											}
 											for($i=0; $i < count($campaigns->campaign_id);$i++) {
 												$display .= '<option value="'.$campaigns->campaign_id[$i].'">'.$campaigns->campaign_id[$i].' - '.$campaigns->campaign_name[$i].'</option>';
 											}
@@ -98,7 +101,13 @@
 										<select multiple="multiple" class="select2-3 form-control" id="selected_statuses" name="statuses[]" style="width:100%;">';
 										$display .= '<option value="ALL" selected>--- ALL ---</option>';
 											for($i=0; $i < count($disposition->status);$i++) {
-												$display .= '<option value="'.$disposition->status[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
+												if($disposition->campaign_id[$i] != NULL){
+													if(in_array($disposition->status[$i], $campaigns->campaign_id)){
+														$display .= '<option value="'.$disposition->status[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
+													}
+												} else {
+													$display .= '<option value="'.$disposition->status[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
+												}
 											}
 			$display .= '				 </select>
 									</div>

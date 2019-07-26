@@ -45,7 +45,7 @@
 		?>
 		
         <!-- Datetime picker -->
-		<link rel="stylesheet" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+		<link rel="stylesheet" href="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
 
         <!-- Date Picker -->	
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
@@ -321,6 +321,8 @@
 				destroy:true,    
 				responsive:true,
 				stateSave:true,
+				lengthMenu: [[10, 25, 50, 500], [10, 25, 50, 500]],
+				iDisplayLength: 10,
 				drawCallback:function(settings) {
 					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 					pagination.toggle(this.api().page.info().pages > 1);
@@ -532,6 +534,8 @@
 								data: JSONObject,
 								responsive: true,
 								stateSave: true,
+								lengthMenu: [[10, 25, 50, 500], [10, 25, 50, 500]],
+				                                iDisplayLength: 10,
 								drawCallback: function(settings) {
 									var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 									pagination.toggle(this.api().page.info().pages > 1);

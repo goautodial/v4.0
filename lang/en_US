@@ -684,6 +684,8 @@ delete_voicemail_after_email = "Delete Voicemail After Email"
 old_message = "Old Messages"
 voicemail_modify_success = "Voicemail Successfully Updated!"
 audio_chooser = "Audio Chooser"
+ingroup_chooser = "In-group Chooser"
+callmenu_chooser = "Call Menu Chooser"
 -none- = "- - - NONE - - -"
 
 call_time_wizard = "Call Time Wizard "
