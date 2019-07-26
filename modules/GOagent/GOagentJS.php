@@ -8808,6 +8808,7 @@ function ShowURLTabs() {
     if (url_tab_first_url.length < 6 && url_tab_second_url.length < 6) return;
     
     if (url_tab_first_url.length > 5) {
+        var first_tab_url = URLDecode(url_tab_first_url, 'YES', 'CUSTOM');
         var first_title = (url_tab_first_title.length > 0) ? url_tab_first_title : '<?=$lh->translationFor('url_tab_one')?>';
         var first_tab = '<li id="url_tab_one" role="presentation">\
             <a href="#url_content_one" aria-controls="home" role="tab" data-toggle="tab" class="bb0">\
@@ -8822,7 +8823,7 @@ function ShowURLTabs() {
                         <h4>\
                             <button type="button" class="btn btn-default btn-sm pull-right" onclick="reloadTab(\'ONE\');" style="margin-bottom: 2px;"><i class="fa fa-refresh"></i> <?=$lh->translationFor('refresh')?></button>\
                         </h4>\
-                        <iframe id="url_tab_iframe_one" src="'+url_tab_first_url+'" style="width: 100%; height: 650px; border: dashed 1px #c0c0c0;">\
+                        <iframe id="url_tab_iframe_one" src="'+first_tab_url+'" style="width: 100%; height: 650px; border: dashed 1px #c0c0c0;">\
                             <?=$lh->translationFor('broser_not_support_iframes')?>\
                         </iframe>\
                     </fieldset>\
@@ -8835,6 +8836,7 @@ function ShowURLTabs() {
     }
     
     if (url_tab_second_url.length > 5) {
+        var second_tab_url = URLDecode(url_tab_first_url, 'YES', 'CUSTOM');
         var second_title = (url_tab_second_title.length > 0) ? url_tab_second_title : '<?=$lh->translationFor('url_tab_two')?>';
         var second_tab = '<li id="url_tab_two" role="presentation">\
             <a href="#url_content_two" aria-controls="home" role="tab" data-toggle="tab" class="bb0">\
@@ -8849,7 +8851,7 @@ function ShowURLTabs() {
                         <h4>\
                             <button type="button" class="btn btn-default btn-sm pull-right" onclick="reloadTab(\'TWO\');" style="margin-bottom: 2px;"><i class="fa fa-refresh"></i> <?=$lh->translationFor('refresh')?></button>\
                         </h4>\
-                        <iframe id="url_tab_iframe_two" src="'+url_tab_second_url+'" style="width: 100%; height: 650px; border: dashed 1px #c0c0c0;">\
+                        <iframe id="url_tab_iframe_two" src="'+second_tab_url+'" style="width: 100%; height: 650px; border: dashed 1px #c0c0c0;">\
                             <?=$lh->translationFor('broser_not_support_iframes')?>\
                         </iframe>\
                     </fieldset>\
@@ -8864,9 +8866,11 @@ function ShowURLTabs() {
 
 function reloadTab(what) {
     if (what == 'TWO') {
-        $('#url_tab_iframe_two').attr( 'src', url_tab_second_url);
+        var second_tab_url = URLDecode(url_tab_first_url, 'YES', 'CUSTOM');
+        $('#url_tab_iframe_two').attr( 'src', second_tab_url);
     } else {
-        $('#url_tab_iframe_one').attr( 'src', url_tab_first_url);
+        var first_tab_url = URLDecode(url_tab_first_url, 'YES', 'CUSTOM');
+        $('#url_tab_iframe_one').attr( 'src', first_tab_url);
     }
 }
 
