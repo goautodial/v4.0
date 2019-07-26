@@ -104,7 +104,6 @@
 												if($disposition->campaign_id[$i] != NULL){
 													if(in_array($disposition->status[$i], $campaigns->campaign_id)){
 														$display .= '<option value="'.$disposition->status[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
-												//$display .= '<option value="'.$disposition->status[$i].'">'.$disposition->status[$i].' - '.$campaign->campaign_id.'</option>';	
 													}
 												} else {
 													$display .= '<option value="'.$disposition->status[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
