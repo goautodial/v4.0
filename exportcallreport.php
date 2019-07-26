@@ -38,7 +38,7 @@
 			
 	// GET STATUSES
 		$disposition = $api->API_getAllDispositions();
-		
+
 		$display = '';
 		$display .= '
 				<form action="./php/ExportCallReport.php" id="export_callreport_form" method="POST">
@@ -101,7 +101,14 @@
 										<select multiple="multiple" class="select2-3 form-control" id="selected_statuses" name="statuses[]" style="width:100%;">';
 										$display .= '<option value="ALL" selected>--- ALL ---</option>';
 											for($i=0; $i < count($disposition->status);$i++) {
-												$display .= '<option value="'.$disposition->status[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
+												if($disposition->campaign_id[$i] != NULL){
+													if(in_array($disposition->status[$i], $campaigns->campaign_id)){
+														$display .= '<option value="'.$disposition->status[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
+												//$display .= '<option value="'.$disposition->status[$i].'">'.$disposition->status[$i].' - '.$campaign->campaign_id.'</option>';	
+													}
+												} else {
+													$display .= '<option value="'.$disposition->status[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
+												}
 											}
 			$display .= '				 </select>
 									</div>
