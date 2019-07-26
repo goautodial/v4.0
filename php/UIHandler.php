@@ -3427,6 +3427,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$user_group = $output->user_group[$i];
 			$user_level = $output->user_level[$i];	
 			$active = $output->active[$i];
+   if ($user_level == 4) continue;
 			
 			if ($active == "Y") {
 				$active = $this->lh->translationFor("active");
