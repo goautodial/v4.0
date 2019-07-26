@@ -1,0 +1,39 @@
+ul.treeview, ul.treeview ul{ /*CSS for Simple Tree Menu*/
+list-style-type: none;
+/* background: url(images/vline.png) repeat-y; */
+font-weight: bold;
+margin: 0;
+padding: 0;
+}
+
+ul.treeview li{ /*Style for LI elements in general (excludes an LI that contains sub lists)*/
+background: white url(../images/messenger-blue-icon.png) no-repeat;
+list-style-type: none;
+padding-left: 15px;
+margin-bottom: 2px;
+cursor: hand !important;
+}
+
+.treeview li.submenu{ /* Style for LI that contains sub lists (other ULs). */
+background: white url(../images/messenger-blue-icon.png) no-repeat;
+color: #369;
+font-weight: bold;
+cursor: hand !important;
+margin-bottom: 2px;
+padding: 0 15px;
+line-height: 15px;
+}
+
+
+/* .treeview li.submenu ul{ /*Style for ULs that are children of LIs (submenu) */
+/*display: none; /*Hide them by default. Don't delete. */
+/* } */
+
+.treeview .submenu ul li{ /*Style for LIs of ULs that are children of LIs (submenu) */
+cursor: hand;
+}
+
+ul.treeview li:last-child {
+/* background: #fff url(images/lastnode.png) no-repeat; */
+margin-bottom: 20px;
+}

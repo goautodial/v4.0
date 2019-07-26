@@ -1,0 +1,6 @@
+<?php
+define ('gourl', 'https://172.31.49.105/goAPIv2');
+define ('goUser', 'goAPI');
+define ('responsetype', 'json');
+
+?>

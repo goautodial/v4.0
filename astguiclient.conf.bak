@@ -1,0 +1,89 @@
+# astguiclient.conf - configuration elements for the astguiclient package
+# this is the astguiclient configuration file 
+# all comments will be lost if you run install.pl again
+
+# Paths used by astGUIclient
+PATHhome => /usr/share/astguiclient
+PATHlogs => /var/log/astguiclient
+PATHagi => /var/lib/asterisk/agi-bin
+PATHweb => /var/www/html
+PATHsounds => /var/lib/asterisk/sounds
+PATHmonitor => /var/spool/asterisk/monitor
+PATHDONEmonitor => /var/spool/asterisk/monitorDONE
+
+# The IP address of this machine
+VARserver_ip => 127.0.0.1
+
+# Database connection information
+VARDB_server => localhost
+VARDB_database => asterisk
+VARDB_user => asterisku
+VARDB_pass => asterisku1234
+VARDB_custom_user => asterisku
+VARDB_custom_pass => asterisku1234
+VARDB_port => 3306
+
+#connection to goautodial db
+VARDBgo_server => localhost
+VARDBgo_database => goautodial
+VARDBgo_user => goautodialu
+VARDBgo_pass => goautodialu1234
+VARDBgo_port => 3306
+
+#connection to kamailio db
+VARDBgokam_server => localhost
+VARDBgokam_database => kamailio
+VARDBgokam_user => kamailiou
+VARDBgokam_pass => kamailiou1234
+VARDBgokam_port => 3306
+
+#connection to osticket db
+VARDBost_server => localhost
+VARDBost_database => osticketdb
+VARDBost_user => osticketu
+VARDBost_pass => osticket1234
+VARDBost_port => 3306
+
+# Alpha-Numeric list of the astGUIclient processes to be kept running
+# (value should be listing of characters with no spaces: 123456)
+#  X - NO KEEPALIVE PROCESSES (use only if you want none to be keepalive)
+#  1 - AST_update
+#  2 - AST_send_listen
+#  3 - AST_VDauto_dial
+#  4 - AST_VDremote_agents
+#  5 - AST_VDadapt (If multi-server system, this must only be on one server)
+#  6 - FastAGI_log
+#  7 - AST_VDauto_dial_FILL (only for multi-server, this must only be on one server)
+#  8 - ip_relay (used for blind agent monitoring)
+#  9 - Timeclock auto logout
+VARactive_keepalives => 1234568
+
+# Asterisk version VICIDIAL is installed for
+VARasterisk_version => 13.X
+
+# FTP recording archive connection information
+VARFTP_host => 127.0.0.1
+VARFTP_user => asterisku
+VARFTP_pass => ftp1234
+VARFTP_port => 21
+VARFTP_dir => RECORDINGS
+VARHTTP_path => http://127.0.0.1
+
+# REPORT server connection information
+VARREPORT_host => 127.0.0.1
+VARREPORT_user => asterisku
+VARREPORT_pass => ftp1234
+VARREPORT_port => 21
+VARREPORT_dir => http://127.0.0.1
+
+# Settings for FastAGI logging server
+VARfastagi_log_min_servers => 3
+VARfastagi_log_max_servers => 16
+VARfastagi_log_min_spare_servers => 2
+VARfastagi_log_max_spare_servers => 8
+VARfastagi_log_max_requests => 1000
+VARfastagi_log_checkfordead => 30
+VARfastagi_log_checkforwait => 60
+
+# Expected DB Schema version for this install
+ExpectedDBSchema => 

@@ -1,0 +1,101 @@
+
+.chat_title {  font-family: Arial, Helvetica, sans-serif; font-size: 14pt}
+.chat_message {  font-family: Arial, Helvetica, sans-serif; font-size: 10pt}
+.chat_timestamp {  font-family: Arial, Helvetica, sans-serif; font-size: 8pt}
+.bold {font-weight: bold;}
+.italics {font-style: italic;}
+.alert {
+	font-weight: bold; 
+	color:#FFFFFF;
+	background-color:#FF0000;
+}
+
+input.red_btn{
+   font-family: Arial, Sans-Serif;
+   font-size: 10px;
+   color:#FFFFFF;
+   font-weight:bold;
+   background-color:#990000;
+   border:2px solid;
+   border-top-color:#FFCCCC;
+   border-left-color:#FFCCCC;
+   border-right-color:#330000;
+   border-bottom-color:#330000;
+}
+input.green_btn{
+   font-family: Arial, Sans-Serif;
+   font-size: 10px;
+   color:#FFFFFF;
+   font-weight:bold;
+   background-color:#009900;
+   border:2px solid;
+   border-top-color:#CCFFCC;
+   border-left-color:#CCFFCC;
+   border-right-color:#003300;
+   border-bottom-color:#003300;
+}
+input.blue_btn{
+   font-family: Arial, Sans-Serif;
+   font-size: 10px;
+   color:#FFFFFF;
+   font-weight:bold;
+   background-color:#000099;
+   border:2px solid;
+   border-top-color:#CCCCFF;
+   border-left-color:#CCCCFF;
+   border-right-color:#000033;
+   border-bottom-color:#000033;
+}
+textarea.chat_window {
+    font-family: Arial, Sans-Serif;
+    font-size: 11px;
+    margin-bottom: 3px;
+    padding: 2px;
+    border: solid 1px #000066;
+}
+td.chat_window {
+    border:2px solid #000000;
+	padding: 5px;
+	vertical-align: top;
+/*
+	background-image: url("../images/VICIchat_powered_logo.png");
+	background-repeat: no-repeat;
+	background-position: bottom 5px right 25px;
+*/
+	background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(222,222,222,0) 50%, rgba(222,222,222,0) 50%, rgba(222,222,222,1) 100%); 
+}
+input.form_field {
+    font-family: Arial, Sans-Serif;
+    font-size: 10px;
+    margin-bottom: 3px;
+    padding: 2px;
+    border: solid 1px #000066;
+}
+textarea.form_field {
+    font-family: Arial, Sans-Serif;
+    font-size: 10px;
+    margin-bottom: 3px;
+    padding: 2px;
+    border: solid 1px #000066;
+}
+select.form_field {
+    font-family: Arial, Sans-Serif;
+    font-size: 10px;
+    margin-bottom: 3px;
+    padding: 2px;
+    border: solid 1px #000066;
+} 
+div.logo_container {
+	width: 123px;
+	height: 30px;
+	position: absolute bottom left;
+	/* text-align: center;             
+	background: rgb(0, 150, 0); /* Fall-back for browsers that don't support rgba 
+	background: rgba(0, 150, 0, .5); */
+}
+img.small_logo {
+    max-width:123px;
+    max-height:30px;
+    width:auto;
+    height:auto;
+}

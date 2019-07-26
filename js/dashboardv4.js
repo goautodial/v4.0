@@ -7,7 +7,7 @@
         cache: false,
         success: function(data){
             $("#refresh_campaigns_resources").html(data);
-            goAvatar._init(goOptions);
+           if(goAvatar) goAvatar._init(goOptions);
         }
     });
     }
@@ -31,7 +31,7 @@
 				},                               
 			});
 			//table.fnProcessingIndicator();
-			goAvatar._init(goOptions);
+			if(goAvatar) goAvatar._init(goOptions);
         } 
     });
     }    
@@ -43,7 +43,7 @@
 			success: function(data){
 				//console.log(data);
 				$("#refresh_agents_monitoring_summary").html(data);
-				goAvatar._init(goOptions);
+				if(goAvatar) goAvatar._init(goOptions);
 			} 
 		});
     }
@@ -100,7 +100,7 @@
 						{ className: "hidden-xs", targets: [ 1, 2, 3, 5 ] }
 					]                                                                
 				});
-				goAvatar._init(goOptions);
+			if(goAvatar)	goAvatar._init(goOptions);
 			} 
 		});
     }  
@@ -123,7 +123,7 @@
 						pagination.toggle(this.api().page.info().pages > 1);
 					}
 				});
-				goAvatar._init(goOptions);
+				if(goAvatar) goAvatar._init(goOptions);
 			} 
 		});
     }
@@ -146,7 +146,7 @@
 						pagination.toggle(this.api().page.info().pages > 1);
 					}
 				});
-				goAvatar._init(goOptions);
+			if(goAvatar)	goAvatar._init(goOptions);
 			} 
 		});
     } 
@@ -186,7 +186,7 @@
 						}
 					]
 			});
-			goAvatar._init(goOptions);
+			if(goAvatar) goAvatar._init(goOptions);
         } 
     });
     }     
