@@ -63,6 +63,7 @@ class SippySoftswitch extends Module {
 	
 	// Private functions for this module.
 	
+	// https://support.sippysoft.com/support/solutions/articles/107525-simple-api
 	private function sectionWithRandomQuotes($number) {
 		$content = "";
 		
