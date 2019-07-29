@@ -189,5 +189,24 @@
 				$('#submit_export').html('<li class="fa fa-download"> Submit & Download');
 				$('#submit_export').attr("disabled", false);
 			});
+
+			$(document).on('change', '#selected_campaigns', function() {
+				var selectedCampaigns = $('#selected_campaigns').val();
+				var dispo = <?php echo json_encode($disposition); ?>;
+				var statOptions = "<option value='ALL' selected>--- ALL ---</option>";
+
+				for(i=0; i < dispo.status.length; i++){
+					if( selectedCampaigns.includes(dispo.status[i]) ){
+							console.log("yes");
+							statOptions += "<option value='" + dispo.status[i] + "'>" + dispo.status[i] + " - " + dispo.status_name[i] + "</option>";
+					} else {
+						if( !(dispo.status[i] in dispo.custom_dispo) ){
+							statOptions += "<option value='" + dispo.status[i] + "'>" + dispo.status[i] + " - " + dispo.status_name[i] + "</option>";					
+						}
+					}
+				}
+				
+				$('#selected_statuses').html(statOptions);
+			});
 		</script>
 
