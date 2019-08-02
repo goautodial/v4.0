@@ -753,7 +753,7 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goGetLeads", $postfields);
 	}
 	
-	public function API_getLeads($search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter, $limit = 0, $search_customers = 0) {
+	public function API_getLeads($search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter, $limit = 0, $search_customers = 0, $start_date = null, $end_date = null) {
 		if ($limit == 0) {
 			$limit = 50;
 		}
@@ -767,7 +767,9 @@ if(isset($_SESSION["user"])){
 			"city_filter" => $city_filter,
 			"state_filter" => $state_filter,
 			"search_customers" => $search_customers,
-			"goVarLimit" => $limit
+			"goVarLimit" => $limit,
+			"start_date" => $start_date,
+			"end_date" => $end_date
 		);		
 		return $this->API_Request("goGetLeads", $postfields);
 	}

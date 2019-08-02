@@ -192,13 +192,13 @@
 							<label><?php $lh->translateText("disposition"); ?> </label>
 							<div class="mb">
 								<select name="disposition_filter" id="disposition_filter" class="form-control select2-3" style="width:100%;">
-										<option value="">- - - <?php $lh->translateText("-none-"); ?> - - -</option>
+										<option value="" selected>- - - <?php $lh->translateText("-none-"); ?> - - -</option>
 										<optgroup label="System Statuses">
 										<?php 
 											for($i=0;$i<=count($dialStatus->status->system);$i++) { 
 												if (!empty($dialStatus->status->system[$i]) && !in_array($dialStatus->status->system[$i], $dial_statuses)) { 
 										?>
-												<option value="<?php echo $dialStatus->status->system[$i]?>" selected>
+												<option value="<?php echo $dialStatus->status->system[$i]?>">
 													<?php echo $dialStatus->status->system[$i]." - ".$dialStatus->status_name->system[$i]?>
 												</option>
 											<?php 
@@ -273,7 +273,7 @@
 					<label><?php $lh->translateText("start_date"); ?>:</label>
 					<div class="form-group">
 						<div class='input-group date' id='datetimepicker1'>
-							<input type='text' class="form-control" id="start_contact_filterdate" placeholder="<?php echo date("m/d/Y H:i:s ");?>"/>
+							<input type='text' class="form-control" id="start_contact_filterdate" name="start_contact_filterdate"  placeholder="<?php echo date("m/d/Y H:i:s ");?>"/>
 							<span class="input-group-addon">
 								<!-- <span class="glyphicon glyphicon-calendar"></span>-->
 								<span class="fa fa-calendar"></span>
@@ -285,7 +285,7 @@
 					<label><?php $lh->translateText("end_date"); ?>:</label>
 					<div class="form-group">
 						<div class='input-group date' id='datetimepicker2'>
-							<input type='text' class="form-control" id="end_contact_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y H:i:s");?>"/>
+							<input type='text' class="form-control" id="end_contact_filterdate" name="end_contact_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y H:i:s");?>"/>
 							<span class="input-group-addon">
 								<!-- <span class="glyphicon glyphicon-calendar"></span>-->
 								<span class="fa fa-calendar"></span>
@@ -529,6 +529,7 @@
 						if (data !== "") {
 							var JSONString = data;
 							var JSONObject = JSON.parse(JSONString);
+							console.log(JSONObject);
 							var tableContacts = $('#table_contacts').DataTable({
 								destroy: true,
 								data: JSONObject,
