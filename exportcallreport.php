@@ -192,16 +192,64 @@
 
 			$(document).on('change', '#selected_campaigns', function() {
 				var selectedCampaigns = $('#selected_campaigns').val();
+				var campaigns = <?php echo json_encode($campaigns); ?>;
 				var dispo = <?php echo json_encode($disposition); ?>;
 				var statOptions = "<option value='ALL' selected>--- ALL ---</option>";
-
-				for(i=0; i < dispo.status.length; i++){
-					if( selectedCampaigns.includes(dispo.status[i]) ){
-							console.log("yes");
-							statOptions += "<option value='" + dispo.status[i] + "'>" + dispo.status[i] + " - " + dispo.status_name[i] + "</option>";
+				console.log(selectedCampaigns);
+				var statusName = "";
+				var customDispo = {};
+				var statusesContainer = [];
+				var statuses = [];
+				var custom_statuses = [];
+				<?php
+					foreach ($disposition->custom_dispo as $cCamp => $cDispo){
+						$dispoStatuses = array();
+	        	                		foreach ($cDispo as $idx => $val) {
+        	                                        	$dispoStatuses[] = $idx . " - " . $val;
+                                                        }
+				?>
+						customDispo["<?php echo $cCamp;?>"] = "<?php echo implode(", ", $dispoStatuses); ?>";
+				<?php
+					}
+				?>
+				console.log(campaigns.campaign_id);
+				console.log(customDispo);
+				if(selectedCampaigns != null){
+					if( selectedCampaigns.includes("ALL") ) {
+						for(i=0; i < campaigns.campaign_id.length; i++){
+							statuses = customDispo[campaigns.campaign_id[i]].split(", ");
+							for( a=0; a < statuses.length; a++ ){ // custom dispositions
+                                                                for( b=0; b < statuses.length; b++ ){
+                                                                        if( !(statusesContainer.includes(statuses[b])) ){
+                                                                	        statusesContainer.push(statuses[b]);
+                                                                                custom_statuses = statuses[b].split(" - ");
+                                                                 	        statOptions += "<option value='" + custom_statuses[0] + "'>" + custom_statuses[0] + " - " + custom_statuses[1] + "</option>";
+                                                                        }
+                                                                }
+                                                        }
+						}
+						for(i=0; i < dispo.status.length; i++){
+							if( !(dispo.status[i] in dispo.custom_dispo) ){ // default dispositions
+                                                        	statOptions += "<option value='" + dispo.status[i] + "'>" + dispo.status[i] + " - " + dispo.status_name[i] + "</option>";
+                                                       	}
+						}
 					} else {
-						if( !(dispo.status[i] in dispo.custom_dispo) ){
-							statOptions += "<option value='" + dispo.status[i] + "'>" + dispo.status[i] + " - " + dispo.status_name[i] + "</option>";					
+						for(i=0; i < dispo.status.length; i++){
+							for( a=0; a < selectedCampaigns.length; a++ ){ // custom dispositions
+								if(selectedCampaigns[i] in customDispo){
+									statuses = customDispo[selectedCampaigns[i]].split(", ");
+									for( b=0; b < statuses.length; b++ ){
+										if( !(statusesContainer.includes(statuses[b])) ){
+											statusesContainer.push(statuses[b]);
+											custom_statuses = statuses[b].split(" - ");
+											statOptions += "<option value='" + custom_statuses[0] + "'>" + custom_statuses[0] + " - " + custom_statuses[1] + "</option>";
+										}	
+									}
+								}
+							}
+							if( !(dispo.status[i] in dispo.custom_dispo) ){ // default dispositions
+								statOptions += "<option value='" + dispo.status[i] + "'>" + dispo.status[i] + " - " + dispo.status_name[i] + "</option>";					
+							}
 						}
 					}
 				}
