@@ -217,7 +217,9 @@
 				if(selectedCampaigns != null){
 					if( selectedCampaigns.includes("ALL") ) {
 						for(i=0; i < campaigns.campaign_id.length; i++){
-							statuses = customDispo[campaigns.campaign_id[i]].split(", ");
+							if( customDispo[campaigns.campaign_id[i]] != null ) {
+								statuses = customDispo[campaigns.campaign_id[i]].split(", ");
+							}
 							for( a=0; a < statuses.length; a++ ){ // custom dispositions
                                                                 for( b=0; b < statuses.length; b++ ){
                                                                         if( !(statusesContainer.includes(statuses[b])) ){
@@ -237,7 +239,9 @@
 						for(i=0; i < dispo.status.length; i++){
 							for( a=0; a < selectedCampaigns.length; a++ ){ // custom dispositions
 								if(selectedCampaigns[i] in customDispo){
-									statuses = customDispo[selectedCampaigns[i]].split(", ");
+									if( customDispo[campaigns.campaign_id[i]] != null ) {
+										statuses = customDispo[selectedCampaigns[i]].split(", ");
+									}
 									for( b=0; b < statuses.length; b++ ){
 										if( !(statusesContainer.includes(statuses[b])) ){
 											statusesContainer.push(statuses[b]);
