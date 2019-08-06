@@ -513,6 +513,13 @@ if(isset($_SESSION["user"])){
 		);		
 		return $this->API_Request("goDashboard", $postfields);
 	}
+
+        public function API_getDroppedPercentage(){
+                $postfields = array(
+                        'goAction' => 'goGetDroppedPercentage'
+                );
+                return $this->API_Request("goDashboard", $postfields);
+        }
 	
 	public function API_getCampaignsResources(){
 		$postfields = array(

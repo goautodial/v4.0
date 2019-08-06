@@ -401,6 +401,15 @@
         } 
     });
     }
+    function load_DroppedCallsPercentage(){
+    $.ajax({
+        url: "./php/dashboard/API_getDroppedPercentage.php",
+        cache: false,
+        success: function(data){
+            $("#refresh_DroppedCallsPercentage").val(data);
+        }
+    });
+    }
     function load_LiveOutbound(){
     $.ajax({
         url: "./php/dashboard/API_getLiveOutbound.php",
