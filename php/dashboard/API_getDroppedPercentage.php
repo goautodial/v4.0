@@ -23,13 +23,20 @@
 	require_once('APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();
-	$output 									= $api->API_getDroppedPercentage();
+	//$output 									= $api->API_getDroppedPercentage();
+	$dropped 									= $api->API_getTotalDroppedCalls();
+    	$answered 									= $api->API_getTotalAnsweredCalls();
+
+	//$output 										= $output->data;
     
-    $output 										= $output->data;
-    
-    if($output == NULL || $output == 0){
-        $output 									= 0;
-    }
-        
-    echo json_encode($output);  
+	$dropped = $dropped->data;
+	$answered = $answered->data;
+
+	$output = ($dropped/$answered)*100;
+
+	if($output == NULL || $output == 0){
+        	$output                                                                         = 0;
+	}
+
+    echo number_format($output);
 ?>
