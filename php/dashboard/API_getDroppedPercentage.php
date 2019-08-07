@@ -25,16 +25,17 @@
 	$api 										= \creamy\APIHandler::getInstance();
 	//$output 									= $api->API_getDroppedPercentage();
 	$dropped 									= $api->API_getTotalDroppedCalls();
-    	$answered 									= $api->API_getTotalAnsweredCalls();
+    	$totalOut 									= $api->API_getTotalCalls("outbound");
+	$totalIn									= $api->API_getTotalCalls("inbound");
 
 	//$output 										= $output->data;
     
 	$dropped = $dropped->data;
-	$answered = $answered->data;
+	$totalCalls = $totalOut->data + $totalIn->data;
 	$output = 0;
 
-	if( $answered > 0 ) {
-		$output = ( $dropped/$answered )*100;
+	if( $totalCalls > 0 ) {
+		$output = ( $dropped/$totalCalls )*100;
 	}
 	if($output == NULL || $output == 0){
         	$output                                                                         = 0;
