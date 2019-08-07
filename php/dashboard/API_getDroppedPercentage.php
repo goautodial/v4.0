@@ -31,9 +31,11 @@
     
 	$dropped = $dropped->data;
 	$answered = $answered->data;
+	$output = 0;
 
-	$output = ($dropped/$answered)*100;
-
+	if( $answered > 0 ) {
+		$output = ( $dropped/$answered )*100;
+	}
 	if($output == NULL || $output == 0){
         	$output                                                                         = 0;
 	}
