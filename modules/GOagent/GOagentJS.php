@@ -2403,6 +2403,7 @@ function btnDialHangup () {
                     }
                 }, ECCS_DIAL_TIMEOUT * 1000);
             } else {
+                toggleButton('DialHangup', 'hangup', false);
                 toggleButton('ResumePause', 'off');
                 ManualDialNext('','','','','','0');
             }
