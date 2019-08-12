@@ -123,6 +123,7 @@ var just_logged_in = false;
 var editProfileEnabled = false;
 var ECCS_BLIND_MODE = '<?=ECCS_BLIND_MODE?>';
 var ECCS_DIAL_TIMEOUT = 3;
+var has_live_conf_calls = 0;
 
 <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
 var enable_eccs_shortcuts = 1;
@@ -2395,7 +2396,7 @@ function btnDialHangup () {
         toggleButton('DialHangup', 'hangup', false);
         if (ECCS_BLIND_MODE == 'y') {
             setTimeout(function() {
-                if (live_customer_call < 1) {
+                if (has_live_conf_calls < 1) {
                     toggleButton('ResumePause', 'off');
                     ManualDialNext('','','','','','0');
                 } else {
@@ -3211,6 +3212,7 @@ function CheckForConfCalls (confnum, force) {
             }
             
             var live_conf_calls = result.data.channels_list;
+                has_live_conf_calls = live_conf_calls;
             var conf_chan_array = result.data.count_echo.split(" ~");
             if ( (conf_channels_xtra_display == 1) || (conf_channels_xtra_display == 0) ) {
                 if (live_conf_calls > 0) {
