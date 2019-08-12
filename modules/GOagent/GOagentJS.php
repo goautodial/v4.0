@@ -2402,7 +2402,13 @@ function btnDialHangup () {
         if (ECCS_BLIND_MODE == 'y') {
             if (AutoDialReady > 0) {
                 checkConfCalls = setInterval(function() {
-                    if (has_live_conf_calls < 1) {
+                    var nextDial = true;
+                    if (live_customer_call > 0) {
+                        clearInterval(checkConfCalls);
+                        nextDial = false;
+                    }
+                    
+                    if (nextDial && has_live_conf_calls < 1) {
                         toggleButton('ResumePause', 'off');
                         ManualDialNext('','','','','','0');
                         
