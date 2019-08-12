@@ -122,6 +122,7 @@ var reschedule_cb_id = 0;
 var just_logged_in = false;
 var editProfileEnabled = false;
 var ECCS_BLIND_MODE = '<?=ECCS_BLIND_MODE?>';
+var ECCS_DIAL_TIMEOUT = 3;
 
 <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
 var enable_eccs_shortcuts = 1;
@@ -2400,7 +2401,7 @@ function btnDialHangup () {
                 } else {
                     toggleButton('DialHangup', 'hangup');
                 }
-            }, 3000);
+            }, ECCS_DIAL_TIMEOUT * 1000);
         } else {
             toggleButton('ResumePause', 'off');
             //live_customer_call = 1;
