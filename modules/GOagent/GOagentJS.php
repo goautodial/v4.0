@@ -2392,11 +2392,22 @@ function btnDialHangup () {
         }
     } else {
         toggleButton('DialHangup', 'hangup', false);
-        toggleButton('ResumePause', 'off');
-        //live_customer_call = 1;
-        //toggleStatus('LIVE');
-        
-        ManualDialNext('','','','','','0');
+        if (ECCS_BLIND_MODE == 'y') {
+            setTimeout(function() {
+                if (live_customer_call < 1) {
+                    toggleButton('ResumePause', 'off');
+                    ManualDialNext('','','','','','0');
+                } else {
+                    toggleButton('DialHangup', 'hangup');
+                }
+            }, 3000);
+        } else {
+            toggleButton('ResumePause', 'off');
+            //live_customer_call = 1;
+            //toggleStatus('LIVE');
+            
+            ManualDialNext('','','','','','0');
+        }
     }
 }
 
