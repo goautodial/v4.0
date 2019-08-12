@@ -2395,14 +2395,19 @@ function btnDialHangup () {
     } else {
         toggleButton('DialHangup', 'hangup', false);
         if (ECCS_BLIND_MODE == 'y') {
-            setTimeout(function() {
-                if (has_live_conf_calls < 1) {
-                    toggleButton('ResumePause', 'off');
-                    ManualDialNext('','','','','','0');
-                } else {
-                    toggleButton('DialHangup', 'hangup');
-                }
-            }, ECCS_DIAL_TIMEOUT * 1000);
+            if (AutoDialReady > 0) {
+                setTimeout(function() {
+                    if (has_live_conf_calls < 1) {
+                        toggleButton('ResumePause', 'off');
+                        ManualDialNext('','','','','','0');
+                    } else {
+                        toggleButton('DialHangup', 'hangup');
+                    }
+                }, ECCS_DIAL_TIMEOUT * 1000);
+            } else {
+                toggleButton('ResumePause', 'off');
+                ManualDialNext('','','','','','0');
+            }
         } else {
             toggleButton('ResumePause', 'off');
             //live_customer_call = 1;
