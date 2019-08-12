@@ -2398,6 +2398,7 @@ function btnDialHangup () {
             }
         }
     } else {
+        toggleButton('DialHangup', 'hangup', false);
         if (ECCS_BLIND_MODE == 'y') {
             if (AutoDialReady > 0) {
                 checkConfCalls = setInterval(function() {
@@ -2415,12 +2416,10 @@ function btnDialHangup () {
                     }
                 }, ECCS_DIAL_TIMEOUT * 1000);
             } else {
-                toggleButton('DialHangup', 'hangup', false);
                 toggleButton('ResumePause', 'off');
                 ManualDialNext('','','','','','0');
             }
         } else {
-            toggleButton('DialHangup', 'hangup', false);
             toggleButton('ResumePause', 'off');
             //live_customer_call = 1;
             //toggleStatus('LIVE');
