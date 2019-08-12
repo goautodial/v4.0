@@ -124,6 +124,7 @@ var editProfileEnabled = false;
 var ECCS_BLIND_MODE = '<?=ECCS_BLIND_MODE?>';
 var ECCS_DIAL_TIMEOUT = 3;
 var has_live_conf_calls = 0;
+var checkConfCalls;
 
 <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
 var enable_eccs_shortcuts = 1;
@@ -2391,12 +2392,16 @@ function btnDialHangup () {
             dialingINprogress = 0;
             toggleButton('DialHangup', 'hangup', false);
             DialedCallHangup();
+            
+            if (typeof checkConfCalls !== 'undefined') {
+                clearInterval(checkConfCalls);
+            }
         }
     } else {
         toggleButton('DialHangup', 'hangup', false);
         if (ECCS_BLIND_MODE == 'y') {
             if (AutoDialReady > 0) {
-                var checkConfCalls = setInterval(function() {
+                checkConfCalls = setInterval(function() {
                     if (has_live_conf_calls < 1) {
                         toggleButton('ResumePause', 'off');
                         ManualDialNext('','','','','','0');
