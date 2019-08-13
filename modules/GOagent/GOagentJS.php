@@ -2408,7 +2408,7 @@ function btnDialHangup () {
                         nextDial = false;
                     }
                     
-                    if (nextDial && lastcustchannel.length < 1) {
+                    if (nextDial) {
                         toggleButton('ResumePause', 'off');
                         ManualDialNext('','','','','','0');
                         
