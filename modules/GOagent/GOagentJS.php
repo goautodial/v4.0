@@ -2403,7 +2403,7 @@ function btnDialHangup () {
             if (AutoDialReady > 0) {
                 checkConfCalls = setInterval(function() {
                     var nextDial = true;
-                    if (live_customer_call > 0) {
+                    if (live_customer_call > 0 || lastcustchannel.length > 0) {
                         clearInterval(checkConfCalls);
                         nextDial = false;
                     }
