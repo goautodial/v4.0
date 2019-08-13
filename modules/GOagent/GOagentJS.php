@@ -2439,6 +2439,10 @@ function btnResumePause () {
             //toggleButton('ResumePause', 'pause');
             AutoDial_Resume_Pause("VDADready");
         }
+        
+        if (typeof checkConfCalls !== 'undefined') {
+            clearInterval(checkConfCalls);
+        }
     }
 }
 
