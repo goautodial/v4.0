@@ -407,6 +407,7 @@
         cache: false,
         success: function(data){
             $("#refresh_DroppedCallsPercentage").val(data);
+	    $("#refresh_DroppedCallsPercentage").trigger("change");
         }
     });
     }
