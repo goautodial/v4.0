@@ -31,9 +31,11 @@
 	$address 									= $_POST['address_filter'];
 	$city 										= $_POST['city_filter'];
 	$state 										= $_POST['state_filter'];
+	$start_date									= $_POST['start_contact_filterdate'];
+        $end_date                                                                       = $_POST['end_contact_filterdate'];
 	$limit										= 300;
 	$search_customers							= $_POST['search_customers'];
-	$output 									= $api->API_getLeads($search, $disposition, $list, $address, $city, $state, $limit, $search_customers);	
+	$output 									= $api->API_getLeads($search, $disposition, $list, $address, $city, $state, $limit, $search_customers, $start_date, $end_date);	
 	$table 										= '[';
 	
 	foreach ($output->data as $key => $value) {

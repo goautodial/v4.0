@@ -38,7 +38,7 @@
 			
 	// GET STATUSES
 		$disposition = $api->API_getAllDispositions();
-		
+
 		$display = '';
 		$display .= '
 				<form action="./php/ExportCallReport.php" id="export_callreport_form" method="POST">
@@ -51,6 +51,9 @@
 								<div class="mb">
 									<div class="">
 										<select multiple="multiple" class="select2-3 form-control" id="selected_campaigns" name="campaigns[]" style="width:100%;">';
+											if(EXPORTCALLREPORT_ALLCAMPAIGNS === "y"){
+												$display .= '<option value="ALL">--- ALL CAMPAIGNS ---</option>';
+											}
 											for($i=0; $i < count($campaigns->campaign_id);$i++) {
 												$display .= '<option value="'.$campaigns->campaign_id[$i].'">'.$campaigns->campaign_id[$i].' - '.$campaigns->campaign_name[$i].'</option>';
 											}
@@ -98,7 +101,13 @@
 										<select multiple="multiple" class="select2-3 form-control" id="selected_statuses" name="statuses[]" style="width:100%;">';
 										$display .= '<option value="ALL" selected>--- ALL ---</option>';
 											for($i=0; $i < count($disposition->status);$i++) {
-												$display .= '<option value="'.$disposition->status[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
+												if($disposition->campaign_id[$i] != NULL){
+													if(in_array($disposition->status[$i], $campaigns->campaign_id)){
+														$display .= '<option value="'.$disposition->status[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
+													}
+												} else {
+													$display .= '<option value="'.$disposition->status[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
+												}
 											}
 			$display .= '				 </select>
 									</div>
@@ -179,6 +188,77 @@
 				
 				$('#submit_export').html('<li class="fa fa-download"> Submit & Download');
 				$('#submit_export').attr("disabled", false);
+			});
+
+			$(document).on('change', '#selected_campaigns', function() {
+				var selectedCampaigns = $('#selected_campaigns').val();
+				var campaigns = <?php echo json_encode($campaigns); ?>;
+				var dispo = <?php echo json_encode($disposition); ?>;
+				var statOptions = "<option value='ALL' selected>--- ALL ---</option>";
+				console.log(selectedCampaigns);
+				var statusName = "";
+				var customDispo = {};
+				var statusesContainer = [];
+				var statuses = [];
+				var custom_statuses = [];
+				<?php
+					foreach ($disposition->custom_dispo as $cCamp => $cDispo){
+						$dispoStatuses = array();
+	        	                		foreach ($cDispo as $idx => $val) {
+        	                                        	$dispoStatuses[] = $idx . " - " . $val;
+                                                        }
+				?>
+						customDispo["<?php echo $cCamp;?>"] = "<?php echo implode(", ", $dispoStatuses); ?>";
+				<?php
+					}
+				?>
+				console.log(campaigns.campaign_id);
+				console.log(customDispo);
+				if(selectedCampaigns != null){
+					if( selectedCampaigns.includes("ALL") ) {
+						for(i=0; i < campaigns.campaign_id.length; i++){
+							if( customDispo[campaigns.campaign_id[i]] != null ) {
+								statuses = customDispo[campaigns.campaign_id[i]].split(", ");
+							}
+							for( a=0; a < statuses.length; a++ ){ // custom dispositions
+                                                                for( b=0; b < statuses.length; b++ ){
+                                                                        if( !(statusesContainer.includes(statuses[b])) ){
+                                                                	        statusesContainer.push(statuses[b]);
+                                                                                custom_statuses = statuses[b].split(" - ");
+                                                                 	        statOptions += "<option value='" + custom_statuses[0] + "'>" + custom_statuses[0] + " - " + custom_statuses[1] + "</option>";
+                                                                        }
+                                                                }
+                                                        }
+						}
+						for(i=0; i < dispo.status.length; i++){
+							if( !(dispo.status[i] in dispo.custom_dispo) ){ // default dispositions
+                                                        	statOptions += "<option value='" + dispo.status[i] + "'>" + dispo.status[i] + " - " + dispo.status_name[i] + "</option>";
+                                                       	}
+						}
+					} else {
+						for(i=0; i < dispo.status.length; i++){
+							for( a=0; a < selectedCampaigns.length; a++ ){ // custom dispositions
+								if(selectedCampaigns[i] in customDispo){
+									if( customDispo[campaigns.campaign_id[i]] != null ) {
+										statuses = customDispo[selectedCampaigns[i]].split(", ");
+									}
+									for( b=0; b < statuses.length; b++ ){
+										if( !(statusesContainer.includes(statuses[b])) ){
+											statusesContainer.push(statuses[b]);
+											custom_statuses = statuses[b].split(" - ");
+											statOptions += "<option value='" + custom_statuses[0] + "'>" + custom_statuses[0] + " - " + custom_statuses[1] + "</option>";
+										}	
+									}
+								}
+							}
+							if( !(dispo.status[i] in dispo.custom_dispo) ){ // default dispositions
+								statOptions += "<option value='" + dispo.status[i] + "'>" + dispo.status[i] + " - " + dispo.status_name[i] + "</option>";					
+							}
+						}
+					}
+				}
+				
+				$('#selected_statuses').html(statOptions);
 			});
 		</script>
 

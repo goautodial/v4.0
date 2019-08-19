@@ -387,7 +387,7 @@ error_reporting(E_ALL)
 									<center>
 										<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
 											<input type="text"
-											class="knob" value="<?php echo $dropped_percentage; ?>" data-width="150" data-height="150" data-padding="21px"
+											class="knob" value="<?php echo $dropped_percentage; ?>" id="refresh_DroppedCallsPercentage" data-width="150" data-height="150" data-padding="21px"
 											data-fgcolor="<?php echo $color; ?>" data-readonly="true" readonly="readonly"
 											style="	width: 49px;
 												height: 100px;
@@ -1350,6 +1350,7 @@ function goGetInSession(type) {
 					load_IncomingQueue();
 					load_AnsweredCalls();
 					load_DroppedCalls();
+					load_DroppedCallsPercentage();
 					//load_TotalCalls();
 					load_TotalInboundCalls();
 					load_TotalOutboundCalls();
@@ -1383,6 +1384,7 @@ function goGetInSession(type) {
 				var int_5 = setInterval(load_IncomingQueue,15000);
 				var int_6 = setInterval(load_AnsweredCalls,15000);
 				var int_7 = setInterval(load_DroppedCalls,15000);
+				var int_24 = setInterval(load_DroppedCallsPercentage,15000);
 				//setInterval(load_TotalCalls,5000);
 				var int_8 = setInterval(load_TotalInboundCalls,30000);
 				var int_9 = setInterval(load_TotalOutboundCalls,30000);
@@ -1440,6 +1442,7 @@ function goGetInSession(type) {
 			int_5 = setInterval(load_IncomingQueue,15000);
 			int_6 = setInterval(load_AnsweredCalls,15000);
 			int_7 = setInterval(load_DroppedCalls,15000);
+			int_24 = setInterval(load_DroppedCallsPercentage,15000);
 			int_8 = setInterval(load_TotalInboundCalls,30000);
 			int_9 = setInterval(load_TotalOutboundCalls,30000);
 			int_10 = setInterval(load_LiveOutbound,30000);
