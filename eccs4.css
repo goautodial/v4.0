@@ -731,6 +731,7 @@
                         #select-campaign label,
                         span.select2{
                                 font-size: 16pt!important;
+		        padding-top: 6px!important;
                         }
 
                         span#cust_call_type,
