@@ -2399,33 +2399,33 @@ function btnDialHangup () {
         }
     } else {
         toggleButton('DialHangup', 'hangup', false);
-        //if (ECCS_BLIND_MODE == 'y') {
-        //    if (AutoDialReady > 0) {
-        //        checkConfCalls = setInterval(function() {
-        //            var nextDial = true;
-        //            if (live_customer_call > 0 || lastcustchannel.length > 0) {
-        //                clearInterval(checkConfCalls);
-        //                nextDial = false;
-        //            }
-        //            
-        //            if (nextDial) {
-        //                toggleButton('ResumePause', 'off');
-        //                ManualDialNext('','','','','','0');
-        //                
-        //                clearInterval(checkConfCalls);
-        //            }
-        //        }, ECCS_DIAL_TIMEOUT * 1000);
-        //    } else {
-        //        toggleButton('ResumePause', 'off');
-        //        ManualDialNext('','','','','','0');
-        //    }
-        //} else {
+        if (ECCS_BLIND_MODE == 'y') {
+            if (AutoDialReady > 0) {
+                checkConfCalls = setInterval(function() {
+                    var nextDial = true;
+                    if (live_customer_call > 0 || lastcustchannel.length > 0) {
+                        clearInterval(checkConfCalls);
+                        nextDial = false;
+                    }
+                    
+                    if (nextDial) {
+                        toggleButton('ResumePause', 'off');
+                        ManualDialNext('','','','','','0');
+                        
+                        clearInterval(checkConfCalls);
+                    }
+                }, ECCS_DIAL_TIMEOUT * 1000);
+            } else {
+                toggleButton('ResumePause', 'off');
+                ManualDialNext('','','','','','0');
+            }
+        } else {
             toggleButton('ResumePause', 'off');
             //live_customer_call = 1;
             //toggleStatus('LIVE');
             
             ManualDialNext('','','','','','0');
-        //}
+        }
     }
 }
 
