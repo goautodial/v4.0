@@ -2404,11 +2404,13 @@ function btnDialHangup () {
                 checkConfCalls = setInterval(function() {
                     var nextDial = true;
                     if (live_customer_call > 0 || lastcustchannel.length > 0) {
+                        console.log('Already had a call...');
                         clearInterval(checkConfCalls);
                         nextDial = false;
                     }
                     
                     if (nextDial) {
+                        console.log('Manual Dialing...');
                         toggleButton('ResumePause', 'off');
                         ManualDialNext('','','','','','0');
                         
