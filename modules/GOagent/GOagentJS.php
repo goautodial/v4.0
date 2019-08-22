@@ -2400,7 +2400,7 @@ function btnDialHangup () {
                 setTimeout(function() {
                     if (has_inbound_call > 0) {
                         console.log('Already had a call...');
-                        toggleButton('DialHangup', 'dial');
+                        //toggleButton('DialHangup', 'dial');
                     } else {
                         console.log('Manual Dialing...');
                         toggleButton('ResumePause', 'off');
@@ -2409,10 +2409,12 @@ function btnDialHangup () {
                         AutoDialWaiting = 0;
                         
                         setTimeout(function() {
-                            if (has_inbound_call < 1) {
+                            console.log('Has Inbound Call', has_inbound_call);
+                            console.log('Live Customer Call', live_customer_call);
+                            if (has_inbound_call < 1 && live_customer_call < 1) {
                                 ManualDialNext('','','','','','0');
                             }
-                        }, 1500);
+                        }, 1000);
                     }
                 }, ECCS_DIAL_TIMEOUT * 1000);
             } else {
