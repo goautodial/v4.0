@@ -2409,15 +2409,13 @@ function btnDialHangup () {
                         nextDial = false;
                     }
                     
-                    if (nextDial) {
+                    if (nextDial && has_inbound_call < 1) {
                         console.log('Manual Dialing...');
                         toggleButton('ResumePause', 'off');
                         AutoDial_Resume_Pause("VDADpause");
                         console.log('AutoDialWaiting', AutoDialWaiting);
                         
-                        setTimeout(function() {
-                            ManualDialNext('','','','','','0');
-                        }, 1000);
+                        ManualDialNext('','','','','','0');
                         
                         clearInterval(checkConfCalls);
                     }
