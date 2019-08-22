@@ -2411,8 +2411,13 @@ function btnDialHangup () {
                         toggleButton('ResumePause', 'off');
                         AutoDial_Resume_Pause("VDADpause");
                         console.log('AutoDialWaiting', AutoDialWaiting);
+                        AutoDialWaiting = 0;
                         
-                        ManualDialNext('','','','','','0');
+                        setTimeout(function() {
+                            if (has_inbound_call < 1) {
+                                ManualDialNext('','','','','','0');
+                            }
+                        }, 1500);
                         
                         //clearInterval(checkConfCalls);
                     }
