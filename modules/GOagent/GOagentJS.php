@@ -124,7 +124,6 @@ var editProfileEnabled = false;
 var ECCS_BLIND_MODE = '<?=ECCS_BLIND_MODE?>';
 var ECCS_DIAL_TIMEOUT = 3;
 var has_inbound_call = 0;
-var checkConfCalls;
 
 <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
 var enable_eccs_shortcuts = 1;
@@ -2390,22 +2389,18 @@ function btnDialHangup () {
     if (live_customer_call == 1 || dialingINprogress == 1) {
         if (toggleButton('DialHangup')) {
             dialingINprogress = 0;
+            has_inbound_call = 0;
             toggleButton('DialHangup', 'hangup', false);
             DialedCallHangup();
-            
-            if (typeof checkConfCalls !== 'undefined') {
-                clearInterval(checkConfCalls);
-            }
         }
     } else {
         toggleButton('DialHangup', 'hangup', false);
         if (ECCS_BLIND_MODE == 'y') {
             if (AutoDialReady > 0) {
-                checkConfCalls = setTimeout(function() {
+                setTimeout(function() {
                     if (has_inbound_call > 0) {
                         console.log('Already had a call...');
                         toggleButton('DialHangup', 'dial');
-                        //clearInterval(checkConfCalls);
                     } else {
                         console.log('Manual Dialing...');
                         toggleButton('ResumePause', 'off');
@@ -2418,8 +2413,6 @@ function btnDialHangup () {
                                 ManualDialNext('','','','','','0');
                             }
                         }, 1500);
-                        
-                        //clearInterval(checkConfCalls);
                     }
                 }, ECCS_DIAL_TIMEOUT * 1000);
             } else {
@@ -2442,13 +2435,10 @@ function btnResumePause () {
         if (/pause$/.test(btnClass)) {
             //toggleButton('ResumePause', 'resume');
             AutoDial_Resume_Pause("VDADpause");
+            has_inbound_call = 0;
         } else {
             //toggleButton('ResumePause', 'pause');
             AutoDial_Resume_Pause("VDADready");
-        }
-        
-        if (typeof checkConfCalls !== 'undefined') {
-            clearInterval(checkConfCalls);
         }
     }
 }
