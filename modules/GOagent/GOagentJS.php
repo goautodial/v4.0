@@ -2401,15 +2401,12 @@ function btnDialHangup () {
         toggleButton('DialHangup', 'hangup', false);
         if (ECCS_BLIND_MODE == 'y') {
             if (AutoDialReady > 0) {
-                checkConfCalls = setInterval(function() {
-                    var nextDial = true;
+                checkConfCalls = setTimeout(function() {
                     if (has_inbound_call > 0) {
                         console.log('Already had a call...');
-                        clearInterval(checkConfCalls);
-                        nextDial = false;
-                    }
-                    
-                    if (nextDial && has_inbound_call < 1) {
+                        toggleButton('DialHangup', 'dial');
+                        //clearInterval(checkConfCalls);
+                    } else {
                         console.log('Manual Dialing...');
                         toggleButton('ResumePause', 'off');
                         AutoDial_Resume_Pause("VDADpause");
@@ -2417,7 +2414,7 @@ function btnDialHangup () {
                         
                         ManualDialNext('','','','','','0');
                         
-                        clearInterval(checkConfCalls);
+                        //clearInterval(checkConfCalls);
                     }
                 }, ECCS_DIAL_TIMEOUT * 1000);
             } else {
