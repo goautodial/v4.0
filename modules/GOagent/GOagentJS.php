@@ -2412,6 +2412,8 @@ function btnDialHangup () {
                     if (nextDial) {
                         console.log('Manual Dialing...');
                         toggleButton('ResumePause', 'off');
+                        AutoDial_Resume_Pause("VDADpause");
+                        
                         ManualDialNext('','','','','','0');
                         
                         clearInterval(checkConfCalls);
