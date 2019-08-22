@@ -123,7 +123,7 @@ var just_logged_in = false;
 var editProfileEnabled = false;
 var ECCS_BLIND_MODE = '<?=ECCS_BLIND_MODE?>';
 var ECCS_DIAL_TIMEOUT = 3;
-var has_live_conf_calls = 0;
+var has_inbound_call = 0;
 var checkConfCalls;
 
 <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
@@ -2403,7 +2403,7 @@ function btnDialHangup () {
             if (AutoDialReady > 0) {
                 checkConfCalls = setInterval(function() {
                     var nextDial = true;
-                    if (live_customer_call > 0 || lastcustchannel.length > 0) {
+                    if (has_inbound_call > 0) {
                         console.log('Already had a call...');
                         clearInterval(checkConfCalls);
                         nextDial = false;
@@ -2413,8 +2413,11 @@ function btnDialHangup () {
                         console.log('Manual Dialing...');
                         toggleButton('ResumePause', 'off');
                         AutoDial_Resume_Pause("VDADpause");
+                        console.log('AutoDialWaiting', AutoDialWaiting);
                         
-                        ManualDialNext('','','','','','0');
+                        setTimeout(function() {
+                            ManualDialNext('','','','','','0');
+                        }, 1000);
                         
                         clearInterval(checkConfCalls);
                     }
@@ -3236,7 +3239,6 @@ function CheckForConfCalls (confnum, force) {
             }
             
             var live_conf_calls = result.data.channels_list;
-                has_live_conf_calls = live_conf_calls;
             var conf_chan_array = result.data.count_echo.split(" ~");
             if ( (conf_channels_xtra_display == 1) || (conf_channels_xtra_display == 0) ) {
                 if (live_conf_calls > 0) {
@@ -3434,6 +3436,7 @@ function CheckForIncoming () {
         var this_VDIC_data = result.data;
         
         if (this_VDIC_data.has_call == '1') {
+            has_inbound_call = this_VDIC_data.has_call;
             AutoDialWaiting = 0;
             QUEUEpadding = 0;
             
