@@ -3718,7 +3718,7 @@ function CheckForIncoming () {
             if(ECCS_BLIND_MODE === 'y'){
             ?>
             $("#cust_campaign_name").html("["+ campaign_name + "] - ");
-            $("#cust_call_type").html(" - <span style='background-color: blue;'>OUTBOUND CALL</span>");
+            $("#cust_call_type").html(" - <span style='background-color: blue;'>OUTBOUNDzz CALL</span>");
             <?php } ?>
 
             if (CBentry_time.length > 2) {
@@ -3773,6 +3773,7 @@ function CheckForIncoming () {
             //    //showDiv('EAcommentsBox');
             //}
 
+            console.log('Group Name', this_VDIC_data.group_name);
             if (this_VDIC_data.group_name.length > 0) {
                 inOUT = 'IN';
                 if (this_VDIC_data.group_color.length > 2) {
