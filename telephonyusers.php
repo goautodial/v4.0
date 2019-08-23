@@ -1154,6 +1154,12 @@
 		       return false;
 		    }
 		});
+		
+		// disable paste in User ID
+		$('#user_form').on("paste",function(event) {
+			event.preventDefault();
+			return false;
+		});
 
 		// disable special characters on Fullname for Users
 		$('#fullname').bind('keypress', function (event) {
