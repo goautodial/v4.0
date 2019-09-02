@@ -122,7 +122,7 @@ var reschedule_cb_id = 0;
 var just_logged_in = false;
 var editProfileEnabled = false;
 var ECCS_BLIND_MODE = '<?=ECCS_BLIND_MODE?>';
-var ECCS_DIAL_TIMEOUT = 3;
+var ECCS_DIAL_TIMEOUT = 2;
 var has_inbound_call = 0;
 
 <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
@@ -2398,25 +2398,25 @@ function btnDialHangup () {
         if (ECCS_BLIND_MODE == 'y') {
             if (AutoDialReady > 0) {
                 setTimeout(function() {
+                    console.log('Has Inbound Call', has_inbound_call);
                     if (has_inbound_call > 0) {
                         console.log('Already had a call...');
                         //toggleButton('DialHangup', 'dial');
                     } else {
                         console.log('Manual Dialing...');
                         toggleButton('ResumePause', 'off');
-                        AutoDial_Resume_Pause("VDADpause");
-                        console.log('AutoDialWaiting', AutoDialWaiting);
+                        AutoDialReady = 0;
                         AutoDialWaiting = 0;
+                        AutoDial_Resume_Pause("VDADpause");
                         
                         setTimeout(function() {
-                            console.log('Has Inbound Call', has_inbound_call);
                             console.log('Live Customer Call', live_customer_call);
                             if (has_inbound_call < 1 && live_customer_call < 1) {
                                 ManualDialNext('','','','','','0');
                             }
                         }, 1000);
                     }
-                }, ECCS_DIAL_TIMEOUT * 1000);
+                }, (ECCS_DIAL_TIMEOUT * 700));
             } else {
                 toggleButton('ResumePause', 'off');
                 ManualDialNext('','','','','','0');
