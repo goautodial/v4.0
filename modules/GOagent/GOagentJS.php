@@ -124,6 +124,8 @@ var editProfileEnabled = false;
 var ECCS_BLIND_MODE = '<?=ECCS_BLIND_MODE?>';
 var ECCS_DIAL_TIMEOUT = 2;
 var has_inbound_call = 0;
+var check_inbound_call = true;
+var dialInterval;
 
 <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
 var enable_eccs_shortcuts = 1;
@@ -2390,6 +2392,7 @@ function btnDialHangup () {
         if (toggleButton('DialHangup')) {
             dialingINprogress = 0;
             has_inbound_call = 0;
+            check_inbound_call = true;
             toggleButton('DialHangup', 'hangup', false);
             DialedCallHangup();
         }
@@ -2397,26 +2400,36 @@ function btnDialHangup () {
         toggleButton('DialHangup', 'hangup', false);
         if (ECCS_BLIND_MODE == 'y') {
             if (AutoDialReady > 0) {
-                setTimeout(function() {
-                    console.log('Has Inbound Call', has_inbound_call);
-                    if (has_inbound_call > 0) {
-                        console.log('Already had a call...');
-                        //toggleButton('DialHangup', 'dial');
-                    } else {
-                        console.log('Manual Dialing...');
-                        toggleButton('ResumePause', 'off');
-                        AutoDialReady = 0;
-                        AutoDialWaiting = 0;
-                        AutoDial_Resume_Pause("VDADpause");
-                        
-                        setTimeout(function() {
+                var dialCount = 0;
+                dialInterval = setInterval(function() {
+                    if (!check_inbound_call) {
+                        console.log('Has Inbound Call', has_inbound_call);
+                        if (has_inbound_call > 0) {
+                            console.log('Already had a call...');
+                            //toggleButton('DialHangup', 'dial');
+                        } else {
+                            console.log('Manual Dialing...');
+                            toggleButton('ResumePause', 'off');
+                            AutoDialReady = 0;
+                            AutoDialWaiting = 0;
+                            AutoDial_Resume_Pause("VDADpause");
+                            
                             console.log('Live Customer Call', live_customer_call);
                             if (has_inbound_call < 1 && live_customer_call < 1) {
                                 ManualDialNext('','','','','','0');
                             }
-                        }, 1000);
+                        }
+                        
+                        clearInterval(dialInterval);
+                        dialInterval = undefined;
                     }
-                }, (ECCS_DIAL_TIMEOUT * 700));
+                    
+                    if (dialCount >= ECCS_DIAL_TIMEOUT) {
+                        check_inbound_call = false;
+                    }
+                    
+                    dialCount++;
+                }, 1000);
             } else {
                 toggleButton('ResumePause', 'off');
                 ManualDialNext('','','','','','0');
@@ -3426,9 +3439,8 @@ function CheckForIncoming () {
         }
 
         var this_VDIC_data = result.data;
-        
+        has_inbound_call = this_VDIC_data.has_call;
         if (this_VDIC_data.has_call == '1') {
-            has_inbound_call = this_VDIC_data.has_call;
             AutoDialWaiting = 0;
             QUEUEpadding = 0;
             
