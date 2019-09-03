@@ -122,9 +122,10 @@ var reschedule_cb_id = 0;
 var just_logged_in = false;
 var editProfileEnabled = false;
 var ECCS_BLIND_MODE = '<?=ECCS_BLIND_MODE?>';
-var ECCS_DIAL_TIMEOUT = 3;
-var has_live_conf_calls = 0;
-var checkConfCalls;
+var ECCS_DIAL_TIMEOUT = 2;
+var has_inbound_call = 0;
+var check_inbound_call = true;
+var dialInterval;
 
 <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
 var enable_eccs_shortcuts = 1;
@@ -2390,42 +2391,56 @@ function btnDialHangup () {
     if (live_customer_call == 1 || dialingINprogress == 1) {
         if (toggleButton('DialHangup')) {
             dialingINprogress = 0;
+            has_inbound_call = 0;
+            check_inbound_call = true;
             toggleButton('DialHangup', 'hangup', false);
             DialedCallHangup();
-            
-            if (typeof checkConfCalls !== 'undefined') {
-                clearInterval(checkConfCalls);
-            }
         }
     } else {
         toggleButton('DialHangup', 'hangup', false);
-        //if (ECCS_BLIND_MODE == 'y') {
-        //    if (AutoDialReady > 0) {
-        //        checkConfCalls = setInterval(function() {
-        //            var nextDial = true;
-        //            if (live_customer_call > 0 || lastcustchannel.length > 0) {
-        //                clearInterval(checkConfCalls);
-        //                nextDial = false;
-        //            }
-        //            
-        //            if (nextDial) {
-        //                toggleButton('ResumePause', 'off');
-        //                ManualDialNext('','','','','','0');
-        //                
-        //                clearInterval(checkConfCalls);
-        //            }
-        //        }, ECCS_DIAL_TIMEOUT * 1000);
-        //    } else {
-        //        toggleButton('ResumePause', 'off');
-        //        ManualDialNext('','','','','','0');
-        //    }
-        //} else {
+        if (ECCS_BLIND_MODE == 'y') {
+            if (AutoDialReady > 0) {
+                var dialCount = 0;
+                dialInterval = setInterval(function() {
+                    if (!check_inbound_call) {
+                        console.log('Has Inbound Call', has_inbound_call);
+                        if (has_inbound_call > 0) {
+                            console.log('Already had a call...');
+                            //toggleButton('DialHangup', 'dial');
+                        } else {
+                            console.log('Manual Dialing...');
+                            toggleButton('ResumePause', 'off');
+                            AutoDialReady = 0;
+                            AutoDialWaiting = 0;
+                            AutoDial_Resume_Pause("VDADpause");
+                            
+                            console.log('Live Customer Call', live_customer_call);
+                            if (has_inbound_call < 1 && live_customer_call < 1) {
+                                ManualDialNext('','','','','','0');
+                            }
+                        }
+                        
+                        clearInterval(dialInterval);
+                        dialInterval = undefined;
+                    }
+                    
+                    if (dialCount >= ECCS_DIAL_TIMEOUT) {
+                        check_inbound_call = false;
+                    }
+                    
+                    dialCount++;
+                }, 1000);
+            } else {
+                toggleButton('ResumePause', 'off');
+                ManualDialNext('','','','','','0');
+            }
+        } else {
             toggleButton('ResumePause', 'off');
             //live_customer_call = 1;
             //toggleStatus('LIVE');
             
             ManualDialNext('','','','','','0');
-        //}
+        }
     }
 }
 
@@ -2435,13 +2450,10 @@ function btnResumePause () {
         if (/pause$/.test(btnClass)) {
             //toggleButton('ResumePause', 'resume');
             AutoDial_Resume_Pause("VDADpause");
+            has_inbound_call = 0;
         } else {
             //toggleButton('ResumePause', 'pause');
             AutoDial_Resume_Pause("VDADready");
-        }
-        
-        if (typeof checkConfCalls !== 'undefined') {
-            clearInterval(checkConfCalls);
         }
     }
 }
@@ -3232,7 +3244,6 @@ function CheckForConfCalls (confnum, force) {
             }
             
             var live_conf_calls = result.data.channels_list;
-                has_live_conf_calls = live_conf_calls;
             var conf_chan_array = result.data.count_echo.split(" ~");
             if ( (conf_channels_xtra_display == 1) || (conf_channels_xtra_display == 0) ) {
                 if (live_conf_calls > 0) {
@@ -3428,7 +3439,7 @@ function CheckForIncoming () {
         }
 
         var this_VDIC_data = result.data;
-        
+        has_inbound_call = this_VDIC_data.has_call;
         if (this_VDIC_data.has_call == '1') {
             AutoDialWaiting = 0;
             QUEUEpadding = 0;
@@ -3719,7 +3730,7 @@ function CheckForIncoming () {
             if(ECCS_BLIND_MODE === 'y'){
             ?>
             $("#cust_campaign_name").html("["+ campaign_name + "] - ");
-            $("#cust_call_type").html(" - <span style='background-color: blue;'>OUTBOUND CALL</span>");
+            $("#cust_call_type").html(" - <span style='background-color: blue;'>OUTBOUNDzz CALL</span>");
             <?php } ?>
 
             if (CBentry_time.length > 2) {
@@ -3774,6 +3785,7 @@ function CheckForIncoming () {
             //    //showDiv('EAcommentsBox');
             //}
 
+            console.log('Group Name', this_VDIC_data.group_name);
             if (this_VDIC_data.group_name.length > 0) {
                 inOUT = 'IN';
                 if (this_VDIC_data.group_color.length > 2) {
