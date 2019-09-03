@@ -2397,8 +2397,6 @@ function btnDialHangup () {
         toggleButton('DialHangup', 'hangup', false);
         if (ECCS_BLIND_MODE == 'y') {
             if (AutoDialReady > 0) {
-                AutoDialReady = 0;
-                AutoDialWaiting = 0;
                 setTimeout(function() {
                     console.log('Has Inbound Call', has_inbound_call);
                     if (has_inbound_call > 0) {
@@ -2407,6 +2405,8 @@ function btnDialHangup () {
                     } else {
                         console.log('Manual Dialing...');
                         toggleButton('ResumePause', 'off');
+                        AutoDialReady = 0;
+                        AutoDialWaiting = 0;
                         AutoDial_Resume_Pause("VDADpause");
                         
                         setTimeout(function() {
