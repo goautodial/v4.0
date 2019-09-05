@@ -151,6 +151,9 @@
 										} else {
 											if ($perm->reportsanalytics_statistical_display == 'Y') { echo '<option value="stats">'.$lh->translationFor("stats").'</option>'; }
 											if ($perm->reportsanalytics_agent_time_display == 'Y') { echo '<option value="agent_detail">'.$lh->translationFor("agent_detail").'</option>'; }
+
+										        if ($perm->reportsanalytics_agent_time_display == 'Y') { echo '<option value="agent_pdetail">'.$lh->translationFor("agent_pdetail").'</option>'; }
+											if ($perm->reportsanalytics_agent_time_display == 'Y' && REPORTS_SM_AGENT_PERFORMANCE_DETAIL === 'y') { echo '<option value="agent_pdetailSM">'.$lh->translationFor("agent_pdetail").' SM</option>'; }
 											if ($perm->reportsanalytics_dial_status_display == 'Y') { echo '<option value="dispo">'.$lh->translationFor("dispo").'</option>'; }
 											if ($perm->reportsanalytics_agent_sales_display == 'Y') { echo '<option value="sales_agent">'.$lh->translationFor("sales_agent").'</option>'; }
 											if ($perm->reportsanalytics_sales_tracker_display == 'Y') { echo '<option value="sales_tracker">'.$lh->translationFor("sales_tracker").'</option>'; }
@@ -165,6 +168,8 @@
                                 <div class="form-group campaign_div">
                                     <label for="campaign_id"><?php $lh->translateText("campaign"); ?></label>
                                     <select class="form-control select2" name="campaign_id" id="campaign_id" style="width:100%;">
+					<option selected disabled></option>
+					<option value="ALL"><?php $lh->translateText("all_campaigns"); ?></option>
                                         <?php
                                             for($i=0; $i < count($campaigns->campaign_id);$i++) {
                                         ?>
@@ -186,17 +191,29 @@
                                         ?>
                                     </select>
                                 </div>
-								<div class="form-group ingroup_div" style="display:none;">
+				<div class="form-group ingroup_div" style="display:none;">
                                     <label for="statuses"><?php $lh->translateText("statuses"); ?></label>
                                     <select class="form-control select2" name="statuses" id="statuses" style="width:100%;">
-										<option value="">- - - ALL - - -</option>
-											<?php
-												for($a=0; $a<count($disposition->status); $a++) {
-											?>
-													<option value="<?php echo $disposition->status[$a];?>"><?php echo $disposition->status[$a].' - '.$disposition->status_name[$a];?></option>
-											<?php
-												}
-											?>
+					<option value="">- - - ALL - - -</option>
+                                        <?php
+                                                for($a=0; $a<count($disposition->status); $a++) {
+                                                        if($disposition->campaign_id[$a] != NULL){
+                                                                if(in_array($disposition->status[$a], $campaigns->campaign_id)){
+									echo '<option value="'.$disposition->status_name[$a].'">'.$disposition->status[$a].' - '.$disposition->status_name[$a].'</option>';
+                                                                }
+                                                        } else {
+                                                        	echo '<option value="'.$disposition->status[$a].'">'.$disposition->status[$a].' - '.$disposition->status_name[$a].'</option>';
+                                                        }
+                                                }
+                                        ?>
+
+					<?php
+						/*for($a=0; $a<count($disposition->status); $a++) {
+					?>
+						<option value="<?php echo $disposition->status[$a];?>"><?php echo $disposition->status[$a].' - '.$disposition->status_name[$a];?></option>
+					<?php
+						}*/
+					?>
                                     </select>
                                 </div>
                                 <div class="form-group request_div" style="display:none;">
@@ -532,7 +549,15 @@
 				if (filter_type == "agent_detail") {
 					URL = './php/reports/agenttimedetails.php';
 				}
-				
+
+                                if (filter_type == "agent_pdetail") {
+                                        URL = './php/reports/agentperformancedetails.php';
+                                }
+			<?php if(REPORTS_SM_AGENT_PERFORMANCE_DETAIL === 'y'){ ?>	
+				if (filter_type == "agent_pdetailSM") {
+                                        URL = './php/reports/SM_agentperformancedetails.php';
+                                }
+			<?php } ?>
 				if (filter_type == "dispo") {
 		                    URL = './php/reports/dispo.php';
                 		}
@@ -733,6 +758,31 @@
 								$('.campaign_div').show();
 								$('.ingroup_div').hide();
 							}
+
+							// SERVICE MONKEY AGENT PERFORMANCE DETAIL
+						<?php if(REPORTS_SM_AGENT_PERFORMANCE_DETAIL === 'y'){ ?>
+							if (filter_type == "agent_detailSM") {
+                                                                var title = "<?php $lh->translateText("agent_detail"); ?> SM";
+                                                                $('#agent_detail_top').DataTable({
+                                                                        destroy: true,
+                                                                        responsive: true,
+                                                                        stateSave:true,
+                                                                        dom: 'Bfrtip',
+                                                                        buttons: [
+                                                                                {
+                                                                                        text: 'Export Agent Performance Detail',
+                                                                                        action: function ( ) {
+                                                                                                console.log("Exporting...");
+                                                                                                $( "#export_agentdetail_form" ).submit();
+                                                                                        }
+                                                                                }
+                                                                        ]
+                                                                });
+                                                                $('.request_div').hide();
+                                                                $('.campaign_div').show();
+                                                                $('.ingroup_div').hide();
+                                                        }
+						<?php } ?>
 							if (filter_type == "dispo") {
 								var title = "<?php $lh->translateText("dispo"); ?>";
 								
