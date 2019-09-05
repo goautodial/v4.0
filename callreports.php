@@ -141,7 +141,7 @@
 									?>
 											<option value="stats" selected><?php echo $lh->translationFor("stats"); ?></option>
 											<option value="agent_detail"><?php echo $lh->translationFor("agent_detail"); ?></option>
-											<!-- <option value="agent_pdetail"><?php //echo $lh->translationFor("agent_pdetail"); ?></option> -->
+											<option value="agent_pdetail"><?php echo $lh->translationFor("agent_pdetail"); ?></option> 
 											<option value="dispo"><?php echo $lh->translationFor("dispo"); ?></option>
 											<option value="sales_agent"><?php echo $lh->translationFor("sales_agent"); ?></option>
 											<option value="sales_tracker"><?php echo $lh->translationFor("sales_tracker"); ?></option>
