@@ -47,22 +47,24 @@ $campaignID = $_POST['campaignID'];
 */
    
     $postfields = array(
-        'goAction' => 'goGetReports',
+        //'goAction' => 'goGetReports',
+	'goAction' => 'goExportAgentDetails',
         'pageTitle' => $pageTitle,
         'fromDate' => $fromDate,
         'toDate' => $toDate,
         'campaignID' => $campaignID
     );
 
-    $output = $api->API_Request("goReports", $postfields);
-
+    $output = $api->API_Request('goReports', $postfields);
+	
+    //var_dump($output);
     if($output->result == "success"){
         if($pageTitle === "agent_detail"){
             $filename = "Agent_Time_Detail.".date("Y-m-d").".csv";
             $header = "Agent Time Detail     ".date("Y-m-d H:i:s")."\n";
             $header .= "Time Range: ".$fromDate." to ".$toDate."\n\n";
             $header .= "Full Name, User Name, Calls, Agent Time, WAIT, Talk, Dispo, Pause, Wrap-Up, Customer";
-            if(!empty($output->getReports->sub_statusesTOP)){
+            /*if(!empty($output->getReports->sub_statusesTOP)){
                 //$header .= ",";
                 for($i=0; $i < count($output->getReports->sub_statusesTOP); $i++){
                     if(!empty($output->getReports->sub_statusesTOP[$i])){
@@ -71,7 +73,7 @@ $campaignID = $_POST['campaignID'];
                         $header .= ",";
                     }
                 }
-            }
+            }*/
         }
         
         header('Content-type: application/csv');
@@ -95,14 +97,14 @@ $campaignID = $_POST['campaignID'];
                 
                 $row .= $name.",".$user.",".$number_of_calls.",".$agent_time.",".$wait_time.",".$talk_time.",".$dispo_time.",".$pause_time.",".$wrap_up.",".$customer_time;
 
-                if(!empty($output->getReports->sub_statusesTOP)){
+                /*if(!empty($output->getReports->sub_statusesTOP)){
                     for($a=0; $a < count($output->getReports->sub_statusesTOP); $a++){
                         if(!empty($statuses[$a]))
                             $row .= ','.$statuses[$a];
                         else
                             $row .= ',00:00:00';
                     }
-                }
+                }*/
                 $row .= "\n";
             }
         echo $row;
