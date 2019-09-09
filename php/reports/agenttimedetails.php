@@ -82,7 +82,8 @@
 		'statuses' 									=> $statuses
 	);				
 
-	$output 									= $api->API_getAgentTimeDetails($postfields);
+	$output = $api->API_getAgentTimeDetails($postfields);
+//var_dump($output);
 
 	if ($output->result == "success") {
 		echo '<div class="animated bounceInUp">';
@@ -121,13 +122,13 @@
 							<td>'.$output->TOPsorted_output->name[$i].'</td>
 							<!-- <td>'.$output->TOPsorted_output->user[$i].'</td> -->
 							<td>'.$output->TOPsorted_output->number_of_calls[$i].'</td>
-							<td>'.gmdate('H:i:s', $output->TOPsorted_output->agent_time[$i]%86400).'</td>
-							<td>'.gmdate('H:i:s', $output->TOPsorted_output->wait_time[$i]%86400).'</td>
-							<td>'.gmdate('H:i:s', $output->TOPsorted_output->talk_time[$i]%86400).'</td>
-							<td>'.gmdate('H:i:s', $output->TOPsorted_output->dispo_time[$i]%86400).'</td>
-							<td>'.gmdate('H:i:s', $output->TOPsorted_output->pause_time[$i]%86400).'</td>
-							<td>'.gmdate('H:i:s', $output->TOPsorted_output->wrap_up[$i]%86400).'</td>
-							<td>'.gmdate('H:i:s', $output->TOPsorted_output->customer_time[$i]%86400).'</td>
+							<td>'.$output->TOPsorted_output->agent_time[$i].'</td>
+							<td>'.$output->TOPsorted_output->wait_time[$i].'</td>
+							<td>'.$output->TOPsorted_output->talk_time[$i].'</td>
+							<td>'.$output->TOPsorted_output->dispo_time[$i].'</td>
+							<td>'.$output->TOPsorted_output->pause_time[$i].'</td>
+							<td>'.$output->TOPsorted_output->wrap_up[$i].'</td>
+							<td>'.$output->TOPsorted_output->customer_time[$i].'</td>
 						</tr>';
 					}
 				} else {
@@ -220,7 +221,7 @@
 				} else {
 					$tablehtml .= '';
 				}
-	/*
+	
 			 // start of middle table
                                 if ($output->MIDsorted_output != NULL) {
                                         $agent_pdetail .= '<br/><div>
@@ -269,7 +270,7 @@
 					$tablehtml .= $agent_pdetail;
                                  }
                         // end of legend
-	*/													
+														
 			//FORM TO BE PASSED WHEN EXPORT IS CALLED
 			$tablehtml .= '<form action="php/ExportAgentDetails.php" id="export_agentdetail_form"  method="POST">
 								<input type="hidden" name="pageTitle" value="'.$pageTitle.'" />

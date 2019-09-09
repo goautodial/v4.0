@@ -21,17 +21,18 @@
 */
 
 	require_once('APIHandler.php');
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);	
-	$api 										= \creamy\APIHandler::getInstance();
-	$fromDate 									= date('Y-m-d 00:00:01');
-	$toDate 									= date('Y-m-d 23:59:59');
-	$campaign_id 								= NULL;
-	$request									= NULL;
-	$userID										= NULL;
-	$userGroup									= NULL;
-	$statuses									= NULL;
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);	
+
+	$api						= \creamy\APIHandler::getInstance();
+	$fromDate 					= date('Y-m-d 00:00:01');
+	$toDate 					= date('Y-m-d 23:59:59');
+	$campaign_id 					= NULL;
+	$request					= NULL;
+	$userID						= NULL;
+	$userGroup					= NULL;
+	$statuses					= NULL;
 			
 	if (isset($_POST["fromDate"])) {
 		$fromDate = date('Y-m-d H:i:s', strtotime($_POST['fromDate']));
