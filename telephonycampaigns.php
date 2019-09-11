@@ -2729,9 +2729,15 @@
 							
 							$(document).on('click','.btn-edit-disposition',function() {
 								var status	= $(this).attr('data-status');
-								$('#status_row-'+status).find($('input')).attr('disabled', false);
+								if(status.indexOf(' ') >= 0){
+									statusId = status.split(' ').join('-');
+								} else {
+									statusId = status;
+								}
+
+								$('#status_row-'+statusId).find($('input')).attr('disabled', false);
 								$('.btn-edit-disposition').attr('disabled', true);
-								$('#btn-cancel-disposition-'+status).attr('disabled', false);
+								$('#btn-cancel-disposition-'+statusId).attr('disabled', false);
 								$('#update_disposition_button').attr('disabled', false);
 								$('.btn-delete-disposition').attr('disabled', true);
 									
