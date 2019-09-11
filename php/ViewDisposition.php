@@ -36,6 +36,11 @@
 	
 	for($i=0;$i<=count($output->campaign_id);$i++) {
 		if(!empty($output->status[$i])){
+			if (preg_match("/\\s/", $output->status[$i])) {
+				$status_id[$i] = str_replace("-", " ", $output->status[$i]);
+			} else {
+				$status_id[$i] = $output->status[$i];
+			}
 			$data 					.= '[';
 			$data 					.= '"'.$output->status[$i].'",';
 			$data 					.= '"'.$output->status_name[$i].'",';
