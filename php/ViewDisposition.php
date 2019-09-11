@@ -37,24 +37,24 @@
 	for($i=0;$i<=count($output->campaign_id);$i++) {
 		if(!empty($output->status[$i])){
 			if (preg_match("/\\s/", $output->status[$i])) {
-				$status_id[$i] = str_replace("-", " ", $output->status[$i]);
+				$status_id = str_replace("-", " ", $output->status[$i]);
 			} else {
-				$status_id[$i] = $output->status[$i];
+				$status_id = $output->status[$i];
 			}
 			$data 					.= '[';
 			$data 					.= '"'.$output->status[$i].'",';
 			$data 					.= '"'.$output->status_name[$i].'",';
-			$data 					.= '"'.checkboxInputWithLabel("selectable", "edit_selectable-".$status_id[$i], "selectable", $output->selectable[$i]).'",';
-			$data 					.= '"'.checkboxInputWithLabel("human_answered", "edit_human_answered-".$status_id[$i], "human_answered", $output->human_answered[$i]).'",';
-			$data 					.= '"'.checkboxInputWithLabel("sale", "edit_sale-".$status_id[$i], "sale", $output->sale[$i]).'",';
-			$data 					.= '"'.checkboxInputWithLabel("dnc", "edit_dnc-".$status_id[$i], "dnc", $output->dnc[$i]).'",';
-			$data					.= '"'.checkboxInputWithLabel("customer_contact", "edit_customer_contact-".$status_id[$i], "customer_contact", $output->customer_contact[$i]).'",';
-			$data 					.= '"'.checkboxInputWithLabel("not_interested", "edit_not_interested-".$status_id[$i], "not_interested", $output->not_interested[$i]).'",';
-			$data 					.= '"'.checkboxInputWithLabel("unworkable", "edit_unworkable-".$status_id[$i], "unworkable", $output->unworkable[$i]).'",';
-			$data 					.= '"'.checkboxInputWithLabel("scheduled_callback", "edit_scheduled_callback-".$status_id[$i], "scheduled_callback", $output->scheduled_callback[$i]).'",';
+			$data 					.= '"'.checkboxInputWithLabel("selectable", "edit_selectable-".$status_id, "selectable", $output->selectable[$i]).'",';
+			$data 					.= '"'.checkboxInputWithLabel("human_answered", "edit_human_answered-".$status_id, "human_answered", $output->human_answered[$i]).'",';
+			$data 					.= '"'.checkboxInputWithLabel("sale", "edit_sale-".$status_id, "sale", $output->sale[$i]).'",';
+			$data 					.= '"'.checkboxInputWithLabel("dnc", "edit_dnc-".$status_id, "dnc", $output->dnc[$i]).'",';
+			$data					.= '"'.checkboxInputWithLabel("customer_contact", "edit_customer_contact-".$status_id, "customer_contact", $output->customer_contact[$i]).'",';
+			$data 					.= '"'.checkboxInputWithLabel("not_interested", "edit_not_interested-".$status_id, "not_interested", $output->not_interested[$i]).'",';
+			$data 					.= '"'.checkboxInputWithLabel("unworkable", "edit_unworkable-".$status_id, "unworkable", $output->unworkable[$i]).'",';
+			$data 					.= '"'.checkboxInputWithLabel("scheduled_callback", "edit_scheduled_callback-".$status_id, "scheduled_callback", $output->scheduled_callback[$i]).'",';
 			if ($dispo_update !== 'N' && $view_type == 'update') {
-				$data				.= '"<a id=\"btn-edit-disposition-'.$status_id[$i].'\" class=\"btn btn-primary btn-edit-disposition\" href=\"#\" data-id=\"'.$output->campaign_id[$i].'\" data-status=\"'.$output->status[$i].'\"><i class=\"fa fa-pencil\"></i></a>';
-				$data               .= '<a id=\"btn-cancel-disposition-'.$status_id[$i].'\" class=\"btn btn-warning btn-cancel-disposition\" href=\"#\" data-id=\"'.$output->campaign_id[$i].'\" data-status=\"'.$output->status[$i].'\" disabled><i class=\"fa fa-recycle\"></i></a>';
+				$data				.= '"<a id=\"btn-edit-disposition-'.$status_id.'\" class=\"btn btn-primary btn-edit-disposition\" href=\"#\" data-id=\"'.$output->campaign_id[$i].'\" data-status=\"'.$output->status[$i].'\"><i class=\"fa fa-pencil\"></i></a>';
+				$data               .= '<a id=\"btn-cancel-disposition-'.$status_id.'\" class=\"btn btn-warning btn-cancel-disposition\" href=\"#\" data-id=\"'.$output->campaign_id[$i].'\" data-status=\"'.$output->status[$i].'\" disabled><i class=\"fa fa-recycle\"></i></a>';
 			} else {
 				$data               .= '"';
 			}
