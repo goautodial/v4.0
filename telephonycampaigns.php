@@ -2729,6 +2729,7 @@
 							
 							$(document).on('click','.btn-edit-disposition',function() {
 								var status	= $(this).attr('data-status');
+								var statusId	= "";
 								if(status.indexOf(' ') >= 0){
 									statusId = status.split(' ').join('-');
 								} else {

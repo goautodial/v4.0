@@ -42,7 +42,7 @@
 				$status_id = $output->status[$i];
 			}
 			$data 					.= '[';
-			$data 					.= '"'.$output->status[$i].'",';
+			$data 					.= '"'.$status_id.'",';
 			$data 					.= '"'.$output->status_name[$i].'",';
 			$data 					.= '"'.checkboxInputWithLabel("selectable", "edit_selectable-".$status_id, "selectable", $output->selectable[$i]).'",';
 			$data 					.= '"'.checkboxInputWithLabel("human_answered", "edit_human_answered-".$status_id, "human_answered", $output->human_answered[$i]).'",';
