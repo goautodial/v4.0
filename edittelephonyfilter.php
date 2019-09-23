@@ -204,7 +204,7 @@
 					$.ajax({
                         url: "./php/ModifyFilter.php",
                         type: 'POST',
-                        data: $("#modifyform").serialize() + '&filter_sql_value=' + encodeURIComponent($('#filter_sql').text()),
+                        data: $("#modifyform").serialize(),
                         success: function(data) {
                         	console.log(data);
                         	//console.log($("#modifyform").serialize() + '&script_text_value=' + encodeURIComponent(CKEDITOR.instances['script_text'].getData()));
