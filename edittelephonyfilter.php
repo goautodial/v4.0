@@ -50,8 +50,6 @@
         <?php print $ui->standardizedThemeCSS();?>
 
         <?php print $ui->creamyThemeCSS(); ?>
-        <script src="js/plugins/ckeditor/ckeditor.js" type="text/javascript"></script>
-        <script src="js/plugins/ckeditor/styles.js" type="text/javascript"></script>
 		
     </head>
     <style>
@@ -119,41 +117,19 @@
 				<div class="form-group mt">
 					<label for="script_name" class="col-sm-2 control-label"><?php $lh->translateText("script_name"); ?></label>
 					<div class="col-sm-10 mb">
-						<input type="text" class="form-control" name="script_name" id="script_name" placeholder="<?php $lh->translateText("script_name"); ?> (<?php $lh->translateText("mandatory"); ?>)" value="<?php echo $output->script_name;?>">
+						<input type="text" class="form-control" name="filter_name" id="filter_name" placeholder="<?php $lh->translateText("filter_name"); ?> (<?php $lh->translateText("mandatory"); ?>)" value="<?php echo $output->filter_name;?>">
 					</div>
 				</div>
 				<div class="form-group mt">
-					<label for="script_comments" class="col-sm-2 control-label"><?php $lh->translateText("script_comment"); ?></label>
+					<label for="filter_comments" class="col-sm-2 control-label"><?php $lh->translateText("filter_comments"); ?></label>
 					<div class="col-sm-10 mb">
-						<input type="text" class="form-control" name="script_comments" id="script_comments" placeholder="<?php $lh->translateText("script_comments"); ?>" value="<?php echo $output->script_comments;?>">
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="status" class="col-sm-2 control-label"><?php $lh->translateText("active"); ?></label>
-					<div class="col-sm-10 mb">
-						<select class="form-control" name="active" id="active">
-						<?php
-							$active = NULL;
-							if($output->active == "Y"){
-								$active .= '<option value="Y" selected> '.$lh->translationFor("go_yes").' </option>';
-							}else{
-								$active .= '<option value="Y" > '.$lh->translationFor("go_yes").' </option>';
-							}
-							
-							if($output->active == "N" || $output->active == NULL){
-								$active .= '<option value="N" selected> '.$lh->translationFor("go_no").' </option>';
-							}else{
-								$active .= '<option value="N" > '.$lh->translationFor("go_no").' </option>';
-							}
-							echo $active;
-						?>
-						</select>
+						<input type="text" class="form-control" name="filter_comments" id="filter_comments" placeholder="<?php $lh->translateText("filter_comments"); ?>" value="<?php echo $output->filter_comments;?>">
 					</div>
 				</div>
 				<div class="form-group<?=($_SESSION['usergroup'] !== 'ADMIN' ? ' hidden' : '')?>">
-					<label for="script_user_group" class="col-sm-2 control-label"><?php $lh->translateText("user_group"); ?>: </label>
+					<label for="filter_user_group" class="col-sm-2 control-label"><?php $lh->translateText("user_group"); ?>: </label>
 					<div class="col-sm-10 mb">
-						<select class="form-control" name="script_user_group" id="script_user_group">
+						<select class="form-control" name="filter_user_group" id="filter_user_group">
 							<option value="" disabled selected> - - - <?php $lh->translateText('Select User Group'); ?> - - -</option>
 							<?php
 							if ($user_groups->result == 'success') {
@@ -172,31 +148,11 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="script_text" class="col-sm-2 control-label"><?php $lh->translateText("script_text"); ?></label>
-					<div class="col-sm-10 mb">
-						<div class="row">
-							<div class="col-sm-12 mb">
-								<div class="input-group">
-									<span class="input-group-btn">
-										<button type="button" class="btn btn-default" onClick="addtext();"><?php $lh->translateText("insert"); ?></button>
-									</span>
-									<select class="form-control" name="script_text_dropdown" id="script_text_dropdown">
-										<option value="--A--fullname--B--">Agent Name (fullname)</option>
-										<?php foreach($standard_fields->field_name as $sf) { ?>
-											<option value="--A--<?php echo $sf; ?>--B--"><?php echo $sf; ?></option>
-										<?php } ?>
-									</select>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-sm-1">&nbsp;</div>
-					<div class="col-sm-11">
+					<label for="filter_sql" class="col-sm-2 control-label"><?php $lh->translateText("filter_sql"); ?></label>
+					<div class="col-sm-10">
 						<div class="panel">
 							<div class="panel-body">
-								<textarea rows="14" class="form-control note-editor" id="script_text" name="script_text"><?php echo str_replace('Â', '', htmlspecialchars_decode($output->script_text, ENT_QUOTES));?></textarea>
+								<textarea rows="14" class="form-control note-editor" id="filter_sql" name="filter_sql"><?php echo str_replace('Â', '', htmlspecialchars_decode($output->filter_sql, ENT_QUOTES));?></textarea>
 							</div>
 						</div>
 					</div>
@@ -208,7 +164,7 @@
 			<fieldset class="footer-buttons">
 				<div class="box-footer">
 				   <div class="col-sm-3 pull-right">
-						<a href="telephonyscripts.php" id="cancel" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
+						<a href="telephonyfilters.php" id="cancel" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
 						<button type="submit" class="btn btn-primary" id="modifyOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> <?php $lh->translateText("update"); ?></span></button>						
 				   </div>
 				</div>
