@@ -132,7 +132,7 @@
 							if ($user_groups->result == 'success') {
 								$myGroup = $output->user_group;
 								$isSelected = '';
-								if ($myGroup !== '---ALL---') {
+								if ($myGroup === '---ALL---') {
 									$isSelected = ' selected';
 								}
 								echo '<option value="---ALL---"'.$isSelected.'>ALL USERGROUP</option>';
