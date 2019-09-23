@@ -1058,6 +1058,10 @@ if(isset($_SESSION["user"])){
 	public function API_editScript($postfields){
 		return $this->API_Request("goScripts", $postfields);
 	}	
+
+	public function API_addFilter($postfields){
+		return $this->API_Request("goFilters", $postfields);
+	}
 	
 	public function API_editFilter($postfields){
 		return $this->API_Request("goFilters", $postfields);
