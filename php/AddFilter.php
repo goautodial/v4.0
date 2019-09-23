@@ -33,12 +33,12 @@
 		"user_group"								=> $_POST["filter_user_group"]
 	);
 	
-	$output 									= $api->API_addScript($postfields);
+	$output 									= $api->API_addFilter($postfields);
 
 	if ($output->result == "success") { 
 		$status 								= 1; 
 	} else { 
-		$status 								= $output; 
+		$status 								= $output->result; 
 	}
 	
 	echo json_encode($status);
