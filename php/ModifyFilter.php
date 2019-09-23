@@ -40,9 +40,9 @@
 		$filter_comments 						= stripslashes($filter_comments);
 	}
 
-	$filter_text 								= NULL; 
+	$filter_sql 								= NULL; 
 	
-	if ( isset($_POST["filter_text"]) ) { 
+	if ( isset($_POST["filter_sql_value"]) ) { 
 		$filter_sql 							= $_POST["filter_sql_value"]; 
 		$filter_sql 							= urldecode($filter_sql);
 	}
