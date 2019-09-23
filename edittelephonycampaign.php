@@ -393,7 +393,7 @@
 															<option value="" <?php if(empty($campaign->data->lead_filter_id)) echo "selected"; ?>>--- NONE ---</option>
 															<?php for($i=0;$i<count($filters->filter_id);$i++) { ?>
 																<?php if(!empty($filters->filter_id[$i])) { ?>
-																	<option value="<?php echo $filters->filter_id[$i]; ?>" <?php if($campaign->data->lead_filter_id == $filters->filter_id[$i]) echo "selected";?>><?php echo $scripts->filter_name[$i]; ?></option>
+																	<option value="<?php echo $filters->filter_id[$i]; ?>" <?php if($campaign->data->lead_filter_id == $filters->filter_id[$i]) echo "selected";?>><?php echo $filters->filter_name[$i]; ?></option>
 																<?php } ?>
 															<?php } ?>
 														</select>
