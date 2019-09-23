@@ -44,7 +44,7 @@
 	
 	if ( isset($_POST["filter_sql_value"]) ) { 
 		$filter_sql 							= $_POST["filter_sql_value"]; 
-		$filter_sql 							= urldecode($filter_sql);
+		//$filter_sql 							= urldecode($filter_sql);
 	}
 
 	$filter_user_group 							= NULL; 
@@ -68,7 +68,7 @@
 	if ($output->result == "success") { 
 		$status 								= 1; 
 	} else { 
-		$status 								= $output; 
+		$status 								= $output->result; 
 	}
 	
 	echo json_encode($status);
