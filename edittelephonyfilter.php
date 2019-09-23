@@ -90,7 +90,6 @@
 					<?php
 						$errormessage = NULL;
 						$output = $api->API_getFilterInfo($filter_id);
-						var_dump($output);
 					?>
             <!-- Main content -->
             <section class="content">
@@ -132,6 +131,12 @@
 							<?php
 							if ($user_groups->result == 'success') {
 								$myGroup = $output->user_group;
+								$isSelected = '';
+								if ($myGroup !== '---ALL---') {
+									$isSelected = ' selected';
+								}
+								echo '<option value="---ALL---"'.$isSelected.'>ALL USERGROUP</option>';
+								
 								foreach ($user_groups->user_group as $x => $group) {
 									$isSelected = '';
 									if ($group == $myGroup) {
