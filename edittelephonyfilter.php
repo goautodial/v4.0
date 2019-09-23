@@ -155,7 +155,7 @@
 					<div class="col-sm-10">
 						<div class="panel">
 							<div class="panel-body">
-								<textarea rows="14" class="form-control note-editor" id="filter_sql" name="filter_sql"><?php echo str_replace('Â', '', htmlspecialchars_decode($output->filter_sql, ENT_QUOTES));?></textarea>
+								<textarea rows="14" class="form-control note-editor" id="filter_sql"><?php echo str_replace('Â', '', htmlspecialchars_decode($output->filter_sql, ENT_QUOTES));?></textarea>
 							</div>
 						</div>
 					</div>
@@ -204,7 +204,7 @@
 					$.ajax({
                         url: "./php/ModifyFilter.php",
                         type: 'POST',
-                        data: $("#modifyform").serialize(),
+                        data: $("#modifyform").serialize() + '&filter_sql_value=' + encodeURIComponent($('#filter_sql').text()),
                         success: function(data) {
                         	console.log(data);
                         	//console.log($("#modifyform").serialize() + '&script_text_value=' + encodeURIComponent(CKEDITOR.instances['script_text'].getData()));

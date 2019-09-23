@@ -43,7 +43,7 @@
 	$filter_text 								= NULL; 
 	
 	if ( isset($_POST["filter_text"]) ) { 
-		$filter_sql 							= $_POST["filter_sql"]; 
+		$filter_sql 							= $_POST["filter_sql_value"]; 
 		$filter_sql 							= urldecode($filter_sql);
 	}
 
