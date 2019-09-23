@@ -92,7 +92,7 @@
 						<!-- standard custom edition form -->
 					<?php
 						$errormessage = NULL;
-						$output = $api->API_getScriptInfo($filter_id);
+						$output = $api->API_getFilterInfo($filter_id);
 					?>
             <!-- Main content -->
             <section class="content">
@@ -115,7 +115,7 @@
 		<div id="tab_1" class="tab-pane fade in active">
 			<fieldset>
 				<div class="form-group mt">
-					<label for="script_name" class="col-sm-2 control-label"><?php $lh->translateText("script_name"); ?></label>
+					<label for="script_name" class="col-sm-2 control-label"><?php $lh->translateText("filter_name"); ?></label>
 					<div class="col-sm-10 mb">
 						<input type="text" class="form-control" name="filter_name" id="filter_name" placeholder="<?php $lh->translateText("filter_name"); ?> (<?php $lh->translateText("mandatory"); ?>)" value="<?php echo $output->filter_name;?>">
 					</div>
@@ -127,7 +127,7 @@
 					</div>
 				</div>
 				<div class="form-group<?=($_SESSION['usergroup'] !== 'ADMIN' ? ' hidden' : '')?>">
-					<label for="filter_user_group" class="col-sm-2 control-label"><?php $lh->translateText("user_group"); ?>: </label>
+					<label for="filter_user_group" class="col-sm-2 control-label"><?php $lh->translateText("user_group"); ?> </label>
 					<div class="col-sm-10 mb">
 						<select class="form-control" name="filter_user_group" id="filter_user_group">
 							<option value="" disabled selected> - - - <?php $lh->translateText('Select User Group'); ?> - - -</option>
