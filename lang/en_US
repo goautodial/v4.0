@@ -1286,6 +1286,8 @@ print = "Print"
 // FILTERS - telephonyfilters.php
 
 filters = "Filters"
+edit_filter = "Edit Filter"
+modify_filter = "Modify Filter"
 filters_management = "Filters Management"
 filter_wizard = "Filter Wizard"
 filter_wizard_description = "A step by step wizard that allows you to create filters."
