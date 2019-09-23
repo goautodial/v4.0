@@ -5438,7 +5438,7 @@ error_reporting(E_ERROR | E_PARSE);
 		 * This application is used to get total calls.
 		*/
 
-		public function API_goGetTotalDroppedCalls($session_use) {
+		public function API_goGetTotalDroppedCalls($session_user) {
 			$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 			$postfields["goUser"] = goUser; #Username goes here. (required)
 			$postfields["goPass"] = goPass;
