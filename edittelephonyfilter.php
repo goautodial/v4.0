@@ -186,51 +186,10 @@
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 		
-		<script>
-	  	$(function () {
-		    // Replace the <textarea id="editor1"> with a CKEditor
-		    // instance, using default configuration.
-		    // CKEDITOR.replace('script_text');
-		    //bootstrap WYSIHTML5 - text editor
-		    // $(".textarea").wysihtml5();
-		  });
-		</script>
 		<script language="javascript" type="text/javascript">
 			$(document).ready(function() {
-				CKEDITOR.replace("script_text",
-					{
-		                toolbar: [
-		                    // { name: 'document', items: [ 'Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates' ] },
-							{ name: 'clipboard', items: [ 'Source', 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-							{ name: 'editing', items: [ 'Find', 'Replace', '-', 'SelectAll', '-', 'Scayt' ] },
-							{ name: 'forms', items: [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
-							'/',
-							{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] },
-							{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language' ] },
-							{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
-							{ name: 'insert', items: [ 'Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ] },
-							'/',
-							{ name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
-							{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-							{ name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },
-							{ name: 'about', items: [ 'About' ] }
-		                ],
-		                allowedContent: {
-			                script: true,
-			                div: true,
-			                span: true,
-			                $1: {
-			                    // This will set the default set of elements
-			                    elements: CKEDITOR.dtd,
-			                    attributes: true,
-			                    styles: true,
-			                    classes: true
-			                }
-			            }
-	            	}
-				);
 				$(document).on('click', '#cancel', function(){
-					sweetAlert({title: "<?php $lh->translateText("cancelled"); ?>",text: "<?php $lh->translateText("cancel_msg"); ?>", type: "error"}, function(){window.location.href = 'telephonyscripts.php';});
+					sweetAlert({title: "<?php $lh->translateText("cancelled"); ?>",text: "<?php $lh->translateText("cancel_msg"); ?>", type: "error"}, function(){window.location.href = 'telephonyfilters.php';});
 				});
 
 				/** 
