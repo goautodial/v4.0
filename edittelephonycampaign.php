@@ -70,7 +70,6 @@
 	$ivr = $api->API_getAllIVRs();
 	$lists = $api->API_getAllLists();
 	$audiofiles = $api->API_getAllVoiceFiles();
-	$filters = $api->API_getAllFilters();
 
 	// for autodial level options
 	$server_list = $api->API_getAllServers();
@@ -381,19 +380,6 @@
 															<?php for($i=0;$i<count($scripts->script_id);$i++) { ?>
 																<?php if(!empty($scripts->script_id[$i])) { ?>
 																	<option value="<?php echo $scripts->script_id[$i]; ?>" <?php if($campaign->data->campaign_script == $scripts->script_id[$i]) echo "selected";?>><?php echo $scripts->script_name[$i]; ?></option>
-																<?php } ?>
-															<?php } ?>
-														</select>
-													</div>
-												</div>
-												<div class="form-group">
-													<label class="col-sm-3 control-label"><?php $lh->translateText("filters"); ?>:</label>
-													<div class="col-sm-9 mb">
-														<select class="form-control" id="lead_filter_id" name="lead_filter_id">
-															<option value="" <?php if(empty($campaign->data->lead_filter_id)) echo "selected"; ?>>--- NONE ---</option>
-															<?php for($i=0;$i<count($filters->filter_id);$i++) { ?>
-																<?php if(!empty($filters->filter_id[$i])) { ?>
-																	<option value="<?php echo $filters->filter_id[$i]; ?>" <?php if($campaign->data->lead_filter_id == $filters->filter_id[$i]) echo "selected";?>><?php echo $filters->filter_name[$i]; ?></option>
 																<?php } ?>
 															<?php } ?>
 														</select>
