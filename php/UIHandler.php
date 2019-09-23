@@ -1002,6 +1002,11 @@ error_reporting(E_ERROR | E_PARSE);
 	    $slaveDB = $this->db->getSettingValueForKey(CRM_SETTING_SLAVE_DB_IP);
 	    if (isset($cl)) { $cl = $this->imageWithData($cl, "", null); }
 	    $tOpts = array("black" => "black", "blue" => "blue", "green" => "green", "minimalist" => "minimalist", "purple" => "purple", "red" => "red", "yellow" => "yellow");
+	    // Voicemail Greeting
+	    $vg_result = $this->api->API_getSystemSettingInfo();
+	    $vg = $vg_result->data->allow_voicemail_greeting;
+	    $vg_text = $this->lh->translationFor("voicemail_greeting");
+	    $vgOpts = array("0" => "Disabled", "1" => "Enabled");
 
 	    // translation.
 	    $em_text = $this->lh->translationFor("require_confirmation_email");
@@ -1027,6 +1032,7 @@ error_reporting(E_ERROR | E_PARSE);
 			  '.$this->singleFormGroupWithSelect($es_text, "theme", "theme", $tOpts, $ct, false).'
 			  '.$this->singleFormGroupWithSelect($tz_text, "timezone", "timezone", \creamy\CRMUtils::getTimezonesAsArray(), $tz).'
 			  '.$this->singleFormGroupWithSelect($lo_text, "locale", "locale", \creamy\LanguageHandler::getAvailableLanguages(), $lo).'
+			  '.$this->singleFormGroupWithSelect($vg_text, "voicemail_greeting", "voicemail_greeting", $vgOpts, $vg).'
 			  '.$this->singleFormGroupWithInputGroup($this->singleFormInputElement("google_api_key", "google_api_key", "text", $go_text, $go, "google"), $go_text).'
 			  '.$this->singleFormGroupWithInputGroup($this->singleFormInputElement("slave_db_ip", "slave_db_ip", "text", $db_text, $slaveDB, "database"), $db_text).'
 			  <div class="box-footer">
