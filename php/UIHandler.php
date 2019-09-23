@@ -2002,8 +2002,10 @@ error_reporting(E_ERROR | E_PARSE);
 				$telephonyArea .= $this-> getSidebarItem("./telephonyusers.php", "users", $this->lh->translationFor("users"));
 			if ($perms->campaign->campaign_read == 'R')
 				$telephonyArea .= $this-> getSidebarItem("./telephonycampaigns.php", "fa fa-dashboard", $this->lh->translationFor("campaigns"));
-			if ($perms->list->list_read == 'R')
+			if ($perms->list->list_read == 'R') {
 				$telephonyArea .= $this-> getSidebarItem("./telephonylist.php", "list", $this->lh->translationFor("lists"));
+				$telephonyArea .= $this-> getSidebarItem("./telephonyfilters.php", "filter", $this->lh->translationFor("filters"));
+			}
 			if ($perms->script->script_read == 'R')
 				$telephonyArea .= $this-> getSidebarItem("./telephonyscripts.php", "comment", $this->lh->translationFor("scripts"));
 			if ( ($perms->inbound->inbound_read == 'R' && $gopackage->packagetype !== "gosmall") || ($_SESSION['usergroup'] === "ADMIN") )
