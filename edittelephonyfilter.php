@@ -58,9 +58,6 @@
     	}
     </style>
     <?php print $ui->creamyBody(); ?>
-    <?php 
-	 	$standard_fields = $api->API_getStandardFields();
-	?>
         <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyHeader($user); ?>
@@ -93,6 +90,7 @@
 					<?php
 						$errormessage = NULL;
 						$output = $api->API_getFilterInfo($filter_id);
+						var_dump($output);
 					?>
             <!-- Main content -->
             <section class="content">
@@ -115,7 +113,7 @@
 		<div id="tab_1" class="tab-pane fade in active">
 			<fieldset>
 				<div class="form-group mt">
-					<label for="script_name" class="col-sm-2 control-label"><?php $lh->translateText("filter_name"); ?></label>
+					<label for="filter_name" class="col-sm-2 control-label"><?php $lh->translateText("filter_name"); ?></label>
 					<div class="col-sm-10 mb">
 						<input type="text" class="form-control" name="filter_name" id="filter_name" placeholder="<?php $lh->translateText("filter_name"); ?> (<?php $lh->translateText("mandatory"); ?>)" value="<?php echo $output->filter_name;?>">
 					</div>
