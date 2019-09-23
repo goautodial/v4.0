@@ -26,10 +26,12 @@ require_once('CRMDefaults.php');
 require_once('LanguageHandler.php');
 require_once('DbHandler.php');
 require_once('ImageHandler.php');
+require_once('APIHandler.php');
 require('Session.php');
 
 $lh = \creamy\LanguageHandler::getInstance();
 $user = \creamy\CreamyUser::currentUser();
+$api = \creamy\APIHandler::getInstance();
 
 // check required fields
 $validated = 1;
@@ -86,6 +88,7 @@ if ($validated == 1) {
 	$customCompanyName = isset($_POST["company_name"]) ? $_POST["company_name"] : null;
 	$googleAPIKey = $_POST["google_api_key"];
 	$slave_db_ip = $_POST["slave_db_ip"];
+	$voicemail_greeting = $_POST["voicemail_greeting"];
 	// generate settings array
 	$data = array(
 		CRM_SETTING_CONFIRMATION_EMAIL => $confirmationEmail, 
@@ -109,11 +112,16 @@ if ($validated == 1) {
 	
 	// set settings
 	$result = $db->setSettings($data);
-	
+
+	// allow voicemail greeting
+	$result2 = $api->API_editSystemSetting($voicemail_greeting);	
+
 	// return results.
-	if ($result === true) {
+	if ($result === true && $result2->result === 'success') {
 		ob_clean();
 		print CRM_DEFAULT_SUCCESS_RESPONSE;
-	} else { ob_clean(); $lh->translateText("error_accessing_database"); };	
+	} else {
+		ob_clean(); $lh->translateText("error_accessing_database"); 
+	}	
 } else { ob_clean(); $lh->translateText("some_fields_missing"); }
 ?>

@@ -58,16 +58,22 @@
 		$delete_vm_after_email = NULL; if (isset($_POST["delete_vm_after_email"])) { 
 			$delete_vm_after_email	 	= $_POST["delete_vm_after_email"]; 
 			$delete_vm_after_email		= stripslashes($delete_vm_after_email);
-		}  
+		} 
+
+		$voicemail_greeting = NULL; if (isset($_POST["voicemail_greeting"])) {
+                        $voicemail_greeting                                         = $_POST["voicemail_greeting"];
+                        $voicemail_greeting                                         = stripslashes($voicemail_greeting);
+                }
 		
 		$postfields 					= array(
-			"goAction" 						=> "goEditVoicemail",		
+			"goAction" 					=> "goEditVoicemail",		
 			"voicemail_id" 					=> $modifyid,
-			"pass" 							=> $pass,
-			"fullname" 						=> $fullname,
-			"email" 						=> $email,
-			"active" 						=> $active,
-			"delete_vm_after_email" 		=> $delete_vm_after_email
+			"pass" 						=> $pass,
+			"fullname" 					=> $fullname,
+			"email" 					=> $email,
+			"active" 					=> $active,
+			"delete_vm_after_email" 			=> $delete_vm_after_email,
+			"voicemail_greeting"				=> $voicemail_greeting
 		);				
 
 		$output 						= $api->API_editVoicemail($postfields);

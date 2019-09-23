@@ -96,6 +96,7 @@ if (isset($_POST["vmid"])) {
 					<?php
 						$errormessage = NULL;						
 						$output = $api->API_getVoicemailInfo($vmid);
+						$voicefiles = $api->API_getAllVoiceFiles();
 						if ($output->result=="success") {
 					?>
                 <!-- Main content -->
@@ -185,6 +186,44 @@ if (isset($_POST["vmid"])) {
 												</select>
 											</div>
 										</div>
+										<?php 	
+											// Check if Voicemail Greeting is Enabled
+											$vg_result = $api->API_getSystemSettingInfo();
+											$vg_system_value = $vg_result->data->allow_voicemail_greeting;
+											if($vg_system_value){
+										?>
+										<div class="form-group">
+											<label for="voicemail_greeting" class="col-sm-3 control-label"><?php $lh->translateText("voicemail_greeting"); ?></label>
+											<div class="col-sm-9 mb">
+												<div class="input-group">
+													<input type="text" class="form-control" class="" id="voicemail_greeting" name="voicemail_greeting" value="<?php if ($output->data->voicemail_greeting == NULL )echo "sip-silence"; else echo $output->data->voicemail_greeting;?>">
+													<span class="input-group-btn">
+														<button class="btn btn-default show_voicemail_greeting" type="button"><?php $lh->translateText("audio_chooser"); ?></button>
+													</span>
+												</div><!-- /input-group -->
+												<div class="row col-sm-12 select_voicemail_greeting">
+													<select class="form-control select2" id="select_voicemail_greeting" style="width:100%;">
+														<option value="sip-silence"><?php $lh->translateText("default"); ?></option>
+														<?php
+															$voicemail_greeting = NULL;
+																for($x=0; $x < count($voicefiles->file_name);$x++) {
+																	$this_file_name = preg_replace("/\.(wav|mp3)$/", "", $voicefiles->file_name[$x]);
+																	if ($output->data->voicemail_greeting == $this_file_name) {
+																		$voicemail_greeting .= '<option value="'.$this_file_name.'" selected> '.$this_file_name.' </option>';
+																	} else {
+																		$voicemail_greeting .= '<option value="'.$this_file_name.'"> '.$this_file_name.' </option>';
+																	}
+																}
+															echo $voicemail_greeting;
+														?>
+													</select>
+												</div>
+											</div>
+										</div>
+										<?php 
+											}
+											// End of Voicemail Greeting 
+										?>
 										<div class="form-group">
 											<label class="col-sm-3 control-label"><?php $lh->translateText("new_message"); ?></label>
 												<span style="padding-left:20px; font-size: 20;"><?php echo $output->data->messages;?></span>
@@ -236,6 +275,17 @@ if (isset($_POST["vmid"])) {
 				$('.select').select2({ theme: 'bootstrap' });
 				$.fn.select2.defaults.set( "theme", "bootstrap" );
 				
+				// Voicemail greeting
+				$('.select_voicemail_greeting').hide();
+				$('.show_voicemail_greeting').on('click', function(event) {
+					 $('.select_voicemail_greeting').toggle('show');
+				});
+				$(document).on('change', '#select_voicemail_greeting',function() {
+					var val = $(this).val();
+					$('#voicemail_greeting').val(val);
+					$('.select_voicemail_greeting').toggle('hide');
+				});
+
 				// for cancelling
 				$(document).on('click', '#cancel', function(){
 					swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
@@ -245,7 +295,7 @@ if (isset($_POST["vmid"])) {
 				 * Modifies a telephony list
 			 	 */
 				$("#modifyform").validate({
-                	submitHandler: function() {
+                			submitHandler: function() {
 						//submit the form
 						
 							$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
