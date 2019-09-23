@@ -135,7 +135,7 @@
 								if ($myGroup === '---ALL---') {
 									$isSelected = ' selected';
 								}
-								echo '<option value="---ALL---"'.$isSelected.'>ALL USERGROUP</option>';
+								echo '<option value="---ALL---"'.$isSelected.'> - - - ALL - - -</option>';
 								
 								foreach ($user_groups->user_group as $x => $group) {
 									$isSelected = '';
@@ -202,9 +202,9 @@
 			 		$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
 					$('#modifyOkButton').prop("disabled", true);
 					$.ajax({
-                        url: "./php/ModifyScript.php",
+                        url: "./php/ModifyFilter.php",
                         type: 'POST',
-                        data: $("#modifyform").serialize() + '&script_text_value=' + encodeURIComponent(CKEDITOR.instances['script_text'].getData()),
+                        data: $("#modifyform").serialize() + '&filter_sql_value=' + encodeURIComponent($('#filter_sql').text()),
                         success: function(data) {
                         	console.log(data);
                         	//console.log($("#modifyform").serialize() + '&script_text_value=' + encodeURIComponent(CKEDITOR.instances['script_text'].getData()));
@@ -212,7 +212,7 @@
 	                        $('#modifyOkButton').prop("disabled", false);
 							
 	                        if (data == 1) {
-								swal({title: "<?php $lh->translateText("edit_script_success"); ?>",text: "<?php $lh->translateText("edit_script_success_msg"); ?>",type: "success"},function(){window.location.href = 'telephonyscripts.php';});
+								swal({title: "<?php $lh->translateText("edit_filter_success"); ?>",text: "<?php $lh->translateText("edit_filter_success_msg"); ?>",type: "success"},function(){window.location.href = 'telephonyfilters.php';});
 							} else {
 								sweetAlert("<?php $lh->translateText("oups"); ?>", data, "error");
 							}
