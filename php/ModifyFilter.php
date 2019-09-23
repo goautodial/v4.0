@@ -68,7 +68,7 @@
 	if ($output->result == "success") { 
 		$status 								= 1; 
 	} else { 
-		$status 								= $output->result; 
+		$status 								= $output; 
 	}
 	
 	echo json_encode($status);
