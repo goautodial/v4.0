@@ -4330,7 +4330,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
 			<li'.($perm->filters_update === 'N' ? ' class="hidden"' : '').'><a class="edit_filter" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
-			<li'.($perm->filters_delete === 'N' ? ' class="hidden"' : '').'><a class="delete_filter" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
+			<li'.(($perm->filters_delete === 'N' || $id === 'FILTEMP') ? ' class="hidden"' : '').'><a class="delete_filter" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 	}
