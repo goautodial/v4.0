@@ -186,6 +186,12 @@ if (isset($_POST["vmid"])) {
 												</select>
 											</div>
 										</div>
+										<?php 	
+											// Check if Voicemail Greeting is Enabled
+											$vg_result = $api->API_getSystemSettingInfo();
+											$vg_system_value = $vg_result->data->allow_voicemail_greeting;
+											if($vg_system_value){
+										?>
 										<div class="form-group">
 											<label for="voicemail_greeting" class="col-sm-3 control-label"><?php $lh->translateText("voicemail_greeting"); ?></label>
 											<div class="col-sm-9 mb">
@@ -214,6 +220,10 @@ if (isset($_POST["vmid"])) {
 												</div>
 											</div>
 										</div>
+										<?php 
+											}
+											// End of Voicemail Greeting 
+										?>
 										<div class="form-group">
 											<label class="col-sm-3 control-label"><?php $lh->translateText("new_message"); ?></label>
 												<span style="padding-left:20px; font-size: 20;"><?php echo $output->data->messages;?></span>

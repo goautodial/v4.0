@@ -925,7 +925,22 @@ if(isset($_SESSION["user"])){
 	public function API_getCustomizations($postfields){
 		return $this->API_Reguest("goSystemSettings", $postfields);
 	}
+
+	public function API_getSystemSettingInfo(){
+		$postfields = array(
+			'goAction' => 'goGetSystemSettingInfo'
+		);
+		return $this->API_Request("goSystemSettings", $postfields);
+	}
 	
+	public function API_editSystemSetting($allow_voicemail_greeting){
+		$postfields = array(
+			'goAction' => 'goEditSystemSetting',
+			'allow_voicemail_greeting' => $allow_voicemail_greeting
+		);
+		return $this->API_Request("goSystemSettings", $postfields);
+	}	
+
 	public function API_actionDNC($postfields) {
 		return $this->API_Request("goLists", $postfields);
 	}
