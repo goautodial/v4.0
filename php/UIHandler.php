@@ -2002,8 +2002,10 @@ error_reporting(E_ERROR | E_PARSE);
 				$telephonyArea .= $this-> getSidebarItem("./telephonyusers.php", "users", $this->lh->translationFor("users"));
 			if ($perms->campaign->campaign_read == 'R')
 				$telephonyArea .= $this-> getSidebarItem("./telephonycampaigns.php", "fa fa-dashboard", $this->lh->translationFor("campaigns"));
-			if ($perms->list->list_read == 'R')
+			if ($perms->list->list_read == 'R') {
 				$telephonyArea .= $this-> getSidebarItem("./telephonylist.php", "list", $this->lh->translationFor("lists"));
+				$telephonyArea .= $this-> getSidebarItem("./telephonyfilters.php", "filter", $this->lh->translationFor("filters"));
+			}
 			if ($perms->script->script_read == 'R')
 				$telephonyArea .= $this-> getSidebarItem("./telephonyscripts.php", "comment", $this->lh->translationFor("scripts"));
 			if ( ($perms->inbound->inbound_read == 'R' && $gopackage->packagetype !== "gosmall") || ($_SESSION['usergroup'] === "ADMIN") )
@@ -4328,7 +4330,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
 			<li'.($perm->filters_update === 'N' ? ' class="hidden"' : '').'><a class="edit_filter" href="#" data-id="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
-			<li'.($perm->filters_delete === 'N' ? ' class="hidden"' : '').'><a class="delete_filter" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
+			<li'.(($perm->filters_delete === 'N' || $id === 'FILTEMP') ? ' class="hidden"' : '').'><a class="delete_filter" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 	}
