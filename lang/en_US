@@ -1286,6 +1286,10 @@ print = "Print"
 // FILTERS - telephonyfilters.php
 
 filters = "Filters"
+edit_filter = "Edit Filter"
+modify_filter = "MODIFY FILTER ID"
+edit_filter_success = "Filter Successfully Updated!"
+edit_filter_success_msg = "Filter is now updated. Clicking OK will redirect you to the filter page"
 filters_management = "Filters Management"
 filter_wizard = "Filter Wizard"
 filter_wizard_description = "A step by step wizard that allows you to create filters."

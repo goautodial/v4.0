@@ -418,6 +418,14 @@ if(isset($_SESSION["user"])){
         return $this->API_Request("goFilters", $postfields);
 	}
 	
+	public function API_getFilterInfo($filterid){
+        $postfields = array(
+			'goAction' => 'goGetFilterInfo',
+			'filter_id' => $filterid
+		);				
+        return $this->API_Request("goFilters", $postfields);
+	}
+	
 	// VoiceMails
 	public function API_getAllVoiceMails() {
 		$postfields = array(
@@ -1049,6 +1057,14 @@ if(isset($_SESSION["user"])){
 	
 	public function API_editScript($postfields){
 		return $this->API_Request("goScripts", $postfields);
+	}	
+
+	public function API_addFilter($postfields){
+		return $this->API_Request("goFilters", $postfields);
+	}
+	
+	public function API_editFilter($postfields){
+		return $this->API_Request("goFilters", $postfields);
 	}	
 
 	public function API_addServer($postfields){
