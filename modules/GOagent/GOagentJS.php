@@ -508,10 +508,15 @@ var refreshId = setInterval(function() {
 	    LIVE_default_xfer_group = default_xfer_group;
 	    LIVE_campaign_recording = campaign_recording;
 	    LIVE_campaign_rec_filename = campaign_rec_filename;
-	    if (disable_alter_custphone != 'HIDE')
-		{$("#DispoSelectPhone").html(dialed_number);}
-	    else
-		{$("#DispoSelectPhone").html('');}
+	    if (disable_alter_custphone != 'HIDE') {
+            $("#DispoSelectPhone").html(dialed_number);
+            $("#phone_number").removeClass('hidden');
+            $("#phone_number_disabled").addClass('hidden');
+        } else {
+            $("#DispoSelectPhone").html('');
+            $("#phone_number").addClass('hidden');
+            $("#phone_number_disabled").removeClass('hidden');
+        }
 	    if (auto_dial_level == 0) {
 		if ($("#DialALTPhone").is(':checked') == true) {
 		    reselect_alt_dial = 1;
