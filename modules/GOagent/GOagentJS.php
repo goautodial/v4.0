@@ -485,6 +485,14 @@ var refreshId = setInterval(function() {
 	
 	WaitingForNextStep = 0;
 	if ( (CloserSelecting == 1) || (TerritorySelecting == 1) )	{WaitingForNextStep = 1;}
+    
+    if (disable_alter_custphone != 'HIDE') {
+        $("#phone_number").removeClass('hidden');
+        $("#phone_number_DISP").addClass('hidden');
+    } else {
+        $("#phone_number").addClass('hidden');
+        $("#phone_number_DISP").removeClass('hidden');
+    }
 	
 	if (open_dispo_screen == 1) {
 	    wrapup_counter = 0;
@@ -508,10 +516,11 @@ var refreshId = setInterval(function() {
 	    LIVE_default_xfer_group = default_xfer_group;
 	    LIVE_campaign_recording = campaign_recording;
 	    LIVE_campaign_rec_filename = campaign_rec_filename;
-	    if (disable_alter_custphone != 'HIDE')
-		{$("#DispoSelectPhone").html(dialed_number);}
-	    else
-		{$("#DispoSelectPhone").html('');}
+	    if (disable_alter_custphone != 'HIDE') {
+            $("#DispoSelectPhone").html(dialed_number);
+        } else {
+            $("#DispoSelectPhone").html('');
+        }
 	    if (auto_dial_level == 0) {
 		if ($("#DialALTPhone").is(':checked') == true) {
 		    reselect_alt_dial = 1;
@@ -4884,6 +4893,7 @@ function UpdateFieldsData() {
                     var tmp_pn = $("#phone_numberDISP");
                     if (disable_alter_custphone == 'Y') {
                         tmp_pn.html(UDfieldsData.phone_number);
+                        $("#phone_number_DISP").val(UDfieldsData.phone_number);
                     }
                 }
                 $(".formMain input[name='phone_number']").val(UDfieldsData.phone_number);
@@ -6075,6 +6085,7 @@ function DispoSelectSubmit() {
             if ( (disable_alter_custphone == 'Y') || (disable_alter_custphone == 'HIDE') ) {
                 var tmp_pn = $("#phone_numberDISP");
                 tmp_pn.html(' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ');
+                $("#phone_number_DISP").val('');
             }
             $(".formMain input[name='phone_number']").val('').trigger('change');
             $(".formMain input[name='title']").val('').trigger('change');
@@ -6306,6 +6317,7 @@ function ManualDialSkip() {
                     if ( (disable_alter_custphone == 'Y') || (disable_alter_custphone == 'HIDE') ) {
                         var tmp_pn = $("#phone_numberDISP");
                         tmp_pn.html(' &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ');
+                        $("#phone_number_DISP").val('');
                     }
                     $(".formMain input[name='phone_number']").val('');
                     $(".formMain input[name='title']").val('');
@@ -6485,6 +6497,7 @@ function CustomerData_update() {
         $(".formMain #custom_fields [id^='custom_']").val('');
         $(".formMain #custom_fields [id^='custom_']").prop('checked', false);
         $('.input-disabled').prop('disabled', true);
+        $('.input-phone-disabled').prop('disabled', true);
         $('#cust_full_name .editable').editable('disable');
         $('.hide_div').hide();
         $("input:required, select:required").removeClass("required_div");
@@ -10217,6 +10230,9 @@ function minimizeModal(modal_id) {
     $(document).off('focusin.modal');
     
     $('.input-disabled').prop('disabled', false);
+    if (disable_alter_custphone == 'N') {
+        $('.input-phone-disabled').prop('disabled', false);
+    }
     $('#cust_full_name .editable').editable('enable');
     $("input:required, select:required").addClass("required_div");
     

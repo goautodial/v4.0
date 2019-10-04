@@ -740,7 +740,8 @@ input:checked + .slider:before {
 															<div class="mda-form-group label-floating">
 																<span id="phone_numberDISP" class="hidden"></span>
 																<input id="phone_code" name="phone_code" type="hidden" value="<?php echo $phone_code;?>">
-																<input id="phone_number" name="phone_number" type="number" min="0" maxlength="18" width="auto" value="<?php echo $phone_number; ?>" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled required>
+																<input id="phone_number" name="phone_number" type="number" min="0" maxlength="18" width="auto" value="<?php echo $phone_number; ?>" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-phone-disabled" disabled required>
+																<input id="phone_number_DISP" type="number" min="0" maxlength="18" width="auto" value="" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched hidden" disabled>
 																<label for="phone_number"><?=$lh->translationFor('phone_number')?></label>
 																<!--
 																<span class="mda-input-group-addon">
@@ -1951,6 +1952,13 @@ input:checked + .slider:before {
 				
 				$("#edit-profile").click(function(){
 				    $('.input-disabled').prop('disabled', false);
+								if (typeof disable_alter_custphone !== 'undefined') {
+										if (disable_alter_custphone == 'N') {
+												$('.input-phone-disabled').prop('disabled', false);
+										}
+								} else {
+										$('.input-phone-disabled').prop('disabled', false);
+								}
 								$('#cust_full_name .editable').editable('enable');
 				    //$('.hide_div').show();
 				    $("input:required, select:required").addClass("required_div");
