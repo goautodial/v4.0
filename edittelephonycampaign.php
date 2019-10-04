@@ -999,6 +999,7 @@
 																	<select class="form-control" id="disable_alter_custphone" name="disable_alter_custphone">
 																		<option value="N" <?php if($campaign->data->disable_alter_custphone == 'N') echo "selected";?>>NO</option>
 																		<option value="Y" <?php if($campaign->data->disable_alter_custphone == 'Y') echo "selected";?>>YES</option>
+																		<option value="HIDE" <?php if($campaign->data->disable_alter_custphone == 'HIDE') echo "selected";?>>HIDE</option>
 																	</select>
 																</div>
 															</div>
