@@ -20,32 +20,32 @@ VARDB_database => asterisk
 VARDB_user => asterisku
 VARDB_pass => asteriskuP1234
 VARDB_custom_user => asterisku
-VARDB_custom_pass => asteriskuP1234
+VARDB_custom_pass => asterisku1234
 VARDB_port => 3306
 
 #connection to goautodial db
 VARDBgo_server => localhost
 VARDBgo_database => goautodial
 VARDBgo_user => goautodialu
-VARDBgo_pass => goautodialuP1234
+VARDBgo_pass => goautodialu1234
 VARDBgo_custom_user => goautodialu
-VARDBgo_custom_pass => goautodialuP1234
+VARDBgo_custom_pass => goautodialu1234
 VARDBgo_port => 3306
 
 #connection to kamailio db
 VARDBgokam_server => localhost
 VARDBgokam_database => kamailio
 VARDBgokam_user => kamailiou
-VARDBgokam_pass => kamailiouP1234
+VARDBgokam_pass => kamailiou1234
 VARDBgokam_custom_user => kamailiou
-VARDBgokam_custom_pass => kamailiouP1234
+VARDBgokam_custom_pass => kamailiou1234
 VARDBgokam_port => 3306
 
 #connection to osticket db
 VARDBost_server => localhost
 VARDBost_database => osticketdb
 VARDBost_user => osticketu
-VARDBost_pass => osticketuP1234
+VARDBost_pass => osticketu1234
 VARDBost_port => 3306
 
 # Alpha-Numeric list of the astGUIclient processes to be kept running
