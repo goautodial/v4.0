@@ -68,7 +68,7 @@ VARasterisk_version => 13.X
 # FTP recording archive connection information
 VARFTP_host => 127.0.0.1
 VARFTP_user => FTPuser
-VARFTP_pass => FTPuserP1234
+VARFTP_pass => FTPuser1234
 VARFTP_port => 21
 VARFTP_dir => /var/www/html/RECORDINGS
 VARHTTP_path => http://HOSTNAME/RECORDINGS
@@ -76,7 +76,7 @@ VARHTTP_path => http://HOSTNAME/RECORDINGS
 # REPORT server connection information
 VARREPORT_host => 127.0.0.1
 VARREPORT_user => FTPuser
-VARREPORT_pass => FTPuserP1234
+VARREPORT_pass => FTPuser1234
 VARREPORT_port => 21
 VARREPORT_dir => REPORTS
 
