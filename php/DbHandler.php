@@ -1380,7 +1380,7 @@ class DbHandler {
 		$data = array(
 			"user_from" => $fromuserid,
 			"user_to" => $touserid,
-			"external_recepient" => $external_recepients,
+			"external_recepient" => $external_recipients,
 			"subject" => $subject,
 			"message" => $message,
 			"date" => $this->dbConnector->now(),

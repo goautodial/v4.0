@@ -312,7 +312,8 @@
 			});
 
 			$('#agent_detail_login').DataTable();
-			
+			$('#table_agent_pdetailSM').DataTable();
+	
 			$('.select2-3').select2({ theme: 'bootstrap' });
 			$.fn.select2.defaults.set( "theme", "bootstrap" );
 
@@ -733,56 +734,57 @@
 								$('#agent_pdetail_bottom').DataTable({
 									destroy: true,
 									responsive: true,
-									dom: 'Bfrtip',  
-									buttons: [ 
-										{ extend: 'copy', title: title }, 
-										{ extend: 'csv', title: title }, 
-										{ extend: 'excel', title: title }, 
-										{ extend: 'print', title: title } 
-									] 
+									dom: 'Bfrtip'  
+									//buttons: [ 
+									//	{ extend: 'copy', title: title }, 
+									//	{ extend: 'csv', title: title }, 
+									//	{ extend: 'excel', title: title }, 
+									//	{ extend: 'print', title: title } 
+									//]
 								});
 								
 								$('#agent_pdetail_login').DataTable({
 									destroy: true,
 									responsive: true,
-									dom: 'Bfrtip',  
-									buttons: [ 
-										{ extend: 'copy', title: title }, 
-										{ extend: 'csv', title: title }, 
-										{ extend: 'excel', title: title }, 
-										{ extend: 'print', title: title } 
-									] 
+									dom: 'Bfrtip'  
+									//buttons: [ 
+									//	{ extend: 'copy', title: title }, 
+									//	{ extend: 'csv', title: title }, 
+									//	{ extend: 'excel', title: title }, 
+									//	{ extend: 'print', title: title } 
+									//] 
 								});
 								
 								$('.request_div').hide();
 								$('.campaign_div').show();
 								$('.ingroup_div').hide();
 							}
-
+							
 							// SERVICE MONKEY AGENT PERFORMANCE DETAIL
-						<?php if(REPORTS_SM_AGENT_PERFORMANCE_DETAIL === 'y'){ ?>
+						<?php //if(REPORTS_SM_AGENT_PERFORMANCE_DETAIL === 'y'){ ?>
 							if (filter_type == "agent_detailSM") {
                                                                 var title = "<?php $lh->translateText("agent_detail"); ?> SM";
-                                                                $('#agent_detail_top').DataTable({
+                                                                $('#table_agent_pdetailSM').DataTable({
                                                                         destroy: true,
                                                                         responsive: true,
                                                                         stateSave:true,
-                                                                        dom: 'Bfrtip',
-                                                                        buttons: [
-                                                                                {
-                                                                                        text: 'Export Agent Performance Detail',
-                                                                                        action: function ( ) {
-                                                                                                console.log("Exporting...");
-                                                                                                $( "#export_agentdetail_form" ).submit();
-                                                                                        }
-                                                                                }
-                                                                        ]
+                                                                        dom: 'Bfrtip'
+                                                                        //buttons: [
+									//	{ extend: 'csv', title: title },
+                                                                        //        {
+                                                                        //                text: 'Export Agent Performance Detail',
+                                                                        //                action: function ( ) {
+                                                                        //                        console.log("Exporting...");
+                                                                        //                        $( "#export_agentPdetailSM_form" ).submit();
+                                                                        //                }
+                                                                        //        }
+                                                                        //]
                                                                 });
                                                                 $('.request_div').hide();
                                                                 $('.campaign_div').show();
                                                                 $('.ingroup_div').hide();
                                                         }
-						<?php } ?>
+						<?php //} ?>
 							if (filter_type == "dispo") {
 								var title = "<?php $lh->translateText("dispo"); ?>";
 								

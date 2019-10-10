@@ -184,7 +184,10 @@
 		// end of legend
 
 		// start of bottom table
-			$tablehtml .= '<div class="table-responsive">
+			$tablehtml .= '
+				<div class="row">
+				<div class="col-sm-8 col-md-8">
+				<div class="table-responsive">
 				<table class="table table-striped table-bordered table-hover" id="agent_pdetail_bottom">
 			    	<thead>
 						<tr>
@@ -214,13 +217,17 @@
 					$tablehtml .= '</tr></tfoot>';
 				}
 
-				$tablehtml .= '</table></div><br/>'; 
+				$tablehtml .= '</table>
+				</div></div>';
+				//</div><br/>'; 
 		// end of bottom table
 
 
 		// start of login table
 			if($output->SstatusesBOT != NULL){
-				$tablehtml .= '<div class="table-responsive">
+				$tablehtml .= '
+				<div class="col-sm-4 col-md-4">
+					<div class="table-responsive">
 					<table class="table table-striped table-bordered table-hover" id="agent_pdetail_login">
 				    	<thead>
 							<tr>';
@@ -246,7 +253,8 @@
 						$tablehtml .= '</tr></tfoot>';
 					}
 			}
-				$tablehtml .= '</table></div><br/>';
+				$tablehtml .= '</table></div>
+				</div></div>';
 		// -- end of login table
 		
 		echo $tablehtml; // return for agent performance detail

@@ -76,14 +76,13 @@
 	);				
 
 	$output = $api->API_Request("goReports",$postfields);
-//var_dump($output);
 
 	if ($output->result == "success") {
 		echo '<div class="animated bounceInUp">';
 	// AGENT PERFORMANCE DETAIL
 		$tablehtml = '';
-			$tablehtml .= '<div>
-				<table class="responsive display no-wrap compact table table-striped" style="width:100%" id="agent_detail_top">
+			$tablehtml .= '<div class="table-responsive">
+				<table class="table table-striped table-bordered table-hover" id="table_agent_pdetailSM">
 					<thead>
 						<tr>
 							<th> Agent Name </th>
@@ -98,7 +97,7 @@
 							<th> CB </th>
 						</tr>
 					</thead>
-					<tbody id="agent_pdetail_tbody">
+					<tbody>
 			';
 
 			if(count($output->agent_name) > 0){
@@ -139,13 +138,13 @@
 				$tablehtml .= '</table></div><br/>'; 
 			
 			//FORM TO BE PASSED WHEN EXPORT IS CALLED
-			$tablehtml .= '<form action="php/ExportAgentDetails.php" id="export_agentdetail_form"  method="POST">
+			$tablehtml .= '<form action="php/ExportPerformanceDetailsSM.php" id="export_agentPdetailSM_form"  method="POST">
 								<input type="hidden" name="pageTitle" value="'.$pageTitle.'" />
 								<input type="hidden" name="fromDate" value="'.$fromDate.'" />
 								<input type="hidden" name="toDate" value="'.$toDate.'" />
 								<input type="hidden" name="campaignID" value="'.$_POST["campaignID"].'" />
 								<input type="hidden" name="session_user" value="'.$_SESSION["user"].'" />
-							</form>';
+					</form>';
 
 			echo $tablehtml; // return for agent details
 
