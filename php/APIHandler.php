@@ -1147,6 +1147,12 @@ if(isset($_SESSION["user"])){
 		return session_usergroup;
 	}	
 	
+	public function CheckWebrtc($postfields = array("goAction" => "goCheckWebrtc")){
+                $result = $this->API_Request("goSettings", $postfields);
+		return $result->result;
+        }
+
+
 	// escape existing special characters already in the database
 	function escapeJsonString($value) { # list from www.json.org: (\b backspace, \f formfeed)
 		$escapers = array("\\", "/", "\"", "\n", "\r", "\t", "\x08", "\x0c", "	");
