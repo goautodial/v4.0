@@ -49,7 +49,7 @@
 	$voicemails = $api->API_getAllVoiceMails();
 	$user_groups = $api->API_getAllUserGroups();
 	$perm = $api->goGetPermissions('user');
-	
+	$use_webrtc = $api->CheckWebrtc();	
 ?>
 <html>
     <head>
@@ -242,9 +242,10 @@
 											</fieldset>
 											<fieldset>
 												<div class="form-group">
-													<label for="phone_login" class="col-sm-2 control-label"><?php if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 1){ echo "<i class='fa fa-info-circle' title='You cannot edit this field since WebRTC is enabled.'></i> ";} ?> Phone Login</label>
+			<?php //var_dump($use_webrtc);?>
+													<label for="phone_login" class="col-sm-2 control-label"><?php if($use_webrtc == "1"){ echo "<i class='fa fa-info-circle' title='You cannot edit this field since WebRTC is enabled.'></i> ";} ?> Phone Login</label>
 													<div class="col-sm-10 mb">
-														<input type="text" class="form-control" name="phone_login" id="phone_login"  <?php if(isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 1){ echo "disabled";} ?>
+														<input type="text" class="form-control" name="phone_login" id="phone_login"  <?php if($use_webrtc == "1"){ echo "disabled";} ?>
 															value="<?php echo $output->data->phone_login;?>" maxlength="20" placeholder="<?php $lh->translateText("phone_login"); ?>" />
 														<label id="phone_login-error"></label>
 													</div>

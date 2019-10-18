@@ -24,7 +24,6 @@
 	
 	$api 										= \creamy\APIHandler::getInstance();
 	$type										= "all-daily";
-	
 	if ( isset($_POST['type']) ) {
 		$type									= $_POST['type'];
 	}	

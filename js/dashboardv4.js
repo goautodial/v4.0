@@ -280,11 +280,12 @@
 
     function load_OUTSalesPerHour(){
 		$.ajax({
+			type: "POST",
 			url: "./php/dashboard/API_getTotalSales.php",
 			data: { type: "out-hourly" },			
 			cache: false,
 			success: function(data){
-				console.log(data);
+				//console.log(data);
 				$("#refresh_GetOutSalesHour").html(data);
 			} 
 		});
