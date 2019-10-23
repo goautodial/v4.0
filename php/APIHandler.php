@@ -995,6 +995,29 @@ if(isset($_SESSION["user"])){
 		return $this->API_Request("goCampaigns", $postfields);
 	}
 
+	public function API_getAllAreacodes(){
+		$postfields = array(
+			'goAction' => 'goGetAllAreacodes'
+		);
+		return $this->API_Request("goAreacodes", $postfields);
+	}
+
+	public function API_getAreacodeInfo($postfields){
+		return $this->API_Request("goAreacodes", $postfields);
+	}
+
+	public function API_addAreacode($postfields){
+                return $this->API_Request("goAreacodes", $postfields);
+        }
+
+        public function API_modifyAreacode($postfields){
+                return $this->API_Request("goAreacodes", $postfields);
+        }
+
+	public function API_deleteAreacode($postfields){
+                return $this->API_Request("goAreacodes", $postfields);
+        }
+
 	public function API_addDisposition($postfields){
 		return $this->API_Request("goDispositions", $postfields);
 	}
