@@ -392,6 +392,19 @@
 														<input type="text" class="form-control" id="campaign_cid" name="campaign_cid" value="<?php echo $campaign->data->campaign_cid; ?>">
 													</div>
 												</div>
+
+												<div class="form-group">
+                                                                                                   <label class="col-sm-3 control-label"><?php $lh->translateText("custom_caller_id"); ?>:</label>
+                                                                                                      <div class="col-sm-9 mb">
+                                                                                                          <select id="use_custom_cid" class="form-control" name="use_custom_cid">
+                                                                                                              <option value="N" <?php if($campaign->data->use_custom_cid == "N") echo "selected";?>>NO</option>
+                                                                                                              <option value="Y" <?php if($campaign->data->use_custom_cid == "Y") echo "selected";?>>YES</option>
+													      <option value="AREACODE" <?php if($campaign->data->use_custom_cid == "AREACODE") echo "selected";?>>AREACODE</option>
+
+                                                                                                          </select>
+                                                                                                      </div>
+                                                                                                </div>
+
 												<?php if($campaign->campaign_type == "SURVEY") { ?>
                                                                                                 <div class="form-group survey_method_agent_xfer_view">
                                                                                                         <label class="col-sm-3 control-label"><?php $lh->translateText("campaign_recordings"); ?>:</label>

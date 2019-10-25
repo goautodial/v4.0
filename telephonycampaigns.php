@@ -172,14 +172,16 @@
 								$users = $api->API_getAllUsers();
 								$carriers = $api->API_getAllCarriers();
 								$checkbox_all = $ui->getCheckAll("campaign");
+								$areacode = $api->API_getAllAreacodes();
+
 								//echo "<pre>";
-								//var_dump($leadrecycling);
+								//var_dump($areacodes);
 							?>
 							 <div role="tabpanel">
 								<ul role="tablist" class="nav nav-tabs nav-justified">
 
 								 <!-- Campaign panel tabs-->
-									 <li role="presentation" <?php if(!isset($_GET['T_disposition']) && !isset($_GET['T_recycling']) ) echo 'class="active"'; ?> >
+									 <li role="presentation" <?php if(!isset($_GET['T_disposition']) && !isset($_GET['T_recycling']) && !isset($_GET['T_areacode']) ) echo 'class="active"'; ?> >
 										<a href="#T_campaign" aria-controls="T_campaign" role="tab" data-toggle="tab" class="bb0">
 										   <?php $lh->translateText("campaigns"); ?> </a>
 									 </li>
@@ -199,13 +201,18 @@
 										   Lead Filters </a>
 									 </li>
 								-->
+								<!-- AC-CID panel tab -->
+									<li role="presentation" <?php if(isset($_GET['T_areacode']))echo 'class="active"'; ?>  >
+										<a href="#T_areacode" aria-controls="T_areacode" role="tab" data-toggle="tab" class="bb0">
+										   <?php $lh->translateText("Areacode CID"); ?> </a>
+									</li>
 								  </ul>
 
 								<!-- Tab panes-->
 								<div class="tab-content bg-white">
 									
 								<!--==== Campaigns ====-->							
-								  <div id="T_campaign" role="tabpanel" class="tab-pane <?php if(!isset($_GET['T_disposition']) && !isset($_GET['T_recycling']) ) echo 'active'; ?> ">
+								  <div id="T_campaign" role="tabpanel" class="tab-pane <?php if(!isset($_GET['T_disposition']) && !isset($_GET['T_recycling']) && !isset($_GET['T_areacode'])) echo 'active'; ?> ">
 										<table class="display responsive no-wrap table-bordered table-striped" width="100%" id="table_campaign">
 										   <thead>
 											  <tr>
@@ -405,6 +412,48 @@
 										</table>
 								 </div>
 
+								<!--==== AC-CID ====-->							
+								 <div id="T_areacode" role="tabpanel" class="tab-pane <?php if(isset($_GET['T_areacode'])) echo 'active'; ?> ">
+										<table class="display responsive no-wrap table-bordered table-striped" width="100%" id="table_areacode">
+										   <thead>
+											  <tr>
+												 <th></th>
+												 <th><?php $lh->translateText("campaign_id"); ?></th>
+												 <th><?php $lh->translateText("campaign_name"); ?></th>
+												 <th><?php $lh->translateText("areacode"); ?></th>
+												 <th><?php $lh->translateText("caller_id"); ?></th>
+												 <th><?php $lh->translateText("status"); ?></th>
+												 <th class='action_areacode'><?php $lh->translateText("action"); ?></th>											 
+											  </tr>
+										   </thead>
+										   <tbody>
+											   	<?php
+											   		for($i=0;$i < count($areacode->campaign_id);$i++){
+
+														if($areacode->active[$i] == "Y"){
+															$areacode->active[$i] = $lh->translationFor("active");
+														}else{
+															$areacode->active[$i] = $lh->translationFor("inactive");
+														}
+
+													$action_CAMPAIGN = $ui->ActionMenuForAreacodes($areacode->areacode[$i], $areacode->campaign_id[$i], $perm);
+											   	?>
+													<tr>
+														<td><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="view_areacode" data-toggle="modal" data-target="#modal_edit_areacode" data-camp="'.$areacode->campaign_id[$i].'" data-ac="'.$areacode->areacode[$i].'">'; } ?><avatar username='<?php echo $areacode->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></td>
+														<td><strong><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="view_areacode" data-toggle="modal" data-target="#modal_edit_areacode"  data-camp="'.$areacode->campaign_id[$i].'" data-ac="'.$areacode->areacode[$i].'">'; } ?><?php echo $areacode->campaign_id[$i];?><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></strong></td>
+														<td><?php echo $areacode->campaign_name[$i];?></td>
+														<td><?php echo $areacode->areacode[$i];?></td>
+														<td><?php echo $areacode->outbound_cid[$i];?></td>
+														<td><?php echo $areacode->active[$i];?></td>
+														<td><?php echo $action_CAMPAIGN;?></td>													
+													</tr>
+												<?php
+													}
+												?>
+										   </tbody>
+										</table>
+								 </div>
+
 								</div><!-- END tab content-->
 							</div>
 							<?php
@@ -418,8 +467,8 @@
 								</div>
 								<div class="fab-div-area" id="fab-div-area">
 									<?php
-									$menu = 3;
-									$menuHeight = '250px';
+									$menu = 4;
+									$menuHeight = '310px';
 									$hideInbound = '';
 									$hideIVR = '';
 									$hideDID = '';
@@ -435,14 +484,20 @@
 										$menu--;
 										$hideLeadRecycling = ' hidden';
 									}
-									if ($menu < 3) { $menuHeight = '170px'; }
-									if ($menu < 2) { $menuHeight = '110px'; }
+									if ($perm->disposition->disposition_create === 'N') {
+										$menu--;
+										$hideAreacode = ' hidden';
+									}
+									if ($menu < 4) { $menuHeight = '240px'; }
+									if ($menu < 3) { $menuHeight = '180px'; }
+									if ($menu < 2) { $menuHeight = '120px'; }
 									?>
 									<ul class="fab-ul" style="height: <?=$menuHeight?>;">
 										<li class="li-style<?=$hideCampaign?>"><a class="fa fa-dashboard fab-div-item" data-toggle="modal" data-target="#add_campaign" title="Add Campaign"></a></li><br/>
 										<li class="li-style<?=$hideDisposition?>"><a class="fa fa-tty fab-div-item" data-toggle="modal" data-target="#modal_add_disposition" title="Add Disposition"></a></li><br/>
 										<li class="li-style<?=$hideLeadRecycling?>"><a class="fa fa-recycle fab-div-item" data-toggle="modal" data-target="#add_leadrecycling" title="Add Lead Recycling"></a></li><br/>
 										<!--<li class="li-style"><a class="fa fa-phone-square fab-div-item" data-toggle="modal" data-target="#add_leadfilter" title="Add Phone Numbers"> </a></li>-->
+										<li class="li-style<?=$hideAreacode?>"><a class="fa fa-paper-plane fab-div-item" data-toggle="modal" data-target="#add_areacode" title="Add Areacode"></a></li>
 									</ul>
 								</div>
 							</div>
@@ -1171,6 +1226,153 @@
 	        </div>
 	    </div>
     <!-- end of modal -->
+
+	<!-- AC-CID Modal -->
+	<div id="add_areacode" class="modal fade" role="dialog">
+		  <div class="modal-dialog">
+		    <!-- Modal content-->
+		    <div class="modal-content">
+
+	            <!-- Header -->
+	                <div class="modal-header">
+	                    <h4 class="modal-title animated bounceInRight" id="ingroup_modal">
+	                    	<b><?php $lh->translateText("areacode_wizard"); ?> » <?php $lh->translateText("create_new_areacode"); ?></b>
+	                    	<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
+	                    </h4>
+	                </div>
+	                <div class="modal-body">
+			
+	                <form action="#" method="POST" id="create_areacode" role="form">
+	                	<input type="hidden" name="userid" id="userid" value="<?php echo $user->getUserId();?>"/>
+	                    <div class="row">
+	                    	<h4><?php $lh->translateText("create_areacode"); ?>
+	                           <br>
+	                           <small><?php $lh->translateText("assign_an_areacode_in_a_campaign"); ?></small>
+	                        </h4>
+	                        <fieldset>
+		                    	<div class="form-group mt">
+		                            <label class="col-sm-3 control-label" for="areacode_campaign"><?php $lh->translateText("campaign"); ?>: </label>
+		                            <div class="col-sm-9 mb">
+		                                <select id="areacode_campaign" name="areacode_campaign" class="form-control select2" style="width:100%;" required>
+							<option value="" selected disabled> -- Choose Campaign -- </option>
+						<?php
+		                                   	for($i=0;$i < count($campaign->campaign_id);$i++){
+								if($campaign->use_custom_cid[$i] === 'AREACODE'){
+						?>
+		                                   		<option value='<?php echo $campaign->campaign_id[$i];?>'> <?php echo $campaign->campaign_id[$i] . " - " .$campaign->campaign_name[$i];?></option>
+						<?php
+								}
+		                                   	}
+		                                ?>
+		                                </select>
+		                            </div>
+		                        </div>
+		                        <div class="form-group">
+		                            <label class="col-sm-3 control-label" for="areacode"><?php $lh->translateText("areacode"); ?></label>
+		                            <div class="col-sm-9 mb">
+		                                <input type="text" name="areacode" id="areacode" class="form-control" placeholder="<?php $lh->translateText("areacode"); ?>" minlength="1" maxlength="5" required>
+		                            	<label id="areacode-duplicate-error"></label>
+		                            </div>
+		                        </div>
+		                        <div class="form-group">
+		                            <label class="col-sm-3 control-label" for="areacode_outbound_cid"><?php $lh->translateText("outbound_cid"); ?></label>
+		                            <div class="col-sm-9 mb">
+		                                <input type="text" name="areacode_outbound_cid" id="areacode_outbound_cid" class="form-control" placeholder="<?php $lh->translateText("outbound_cid"); ?>" maxlength="20" required>
+		                            </div>
+		                        </div>
+		                        <div class="form-group">
+		                            <label class="col-sm-3 control-label" for="areacode_description"><?php $lh->translateText("description"); ?></label>
+		                            <div class="col-sm-9 mb">
+						<input type="text" name="areacode_description" id="areacode_description" class="form-control" placeholder="<?php $lh->translateText("description"); ?>" maxlength="50">
+		                            </div>
+		                        </div>
+	                        </fieldset>
+	                    </div><!-- end of step -->
+	                	<input type="hidden" id="areacode_checker" value="0">
+	                </form>
+
+	                </div> <!-- end of modal body -->
+	            </div>
+		  </div>
+		</div>
+	<!-- End of modal -->
+	
+	<!-- Edit AC-CID Modal -->
+	<div id="modal_edit_areacode" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal content-->
+			<div class="modal-content">
+
+			<!-- Header -->
+				<div class="modal-header">
+					<h4 class="modal-title animated bounceInRight" id="ingroup_modal">
+						<b><?php $lh->translateText("areacode_wizard"); ?> » <?php $lh->translateText("modify_areacode"); ?></b>
+						<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
+					</h4>
+				</div>
+				<div class="modal-body">
+					<form action="#" method="POST" id="modify_areacode" role="form">
+						<input type="hidden" name="userid" id="userid" value="<?php echo $user->getUserId();?>"/>
+						<div class="row">
+							<h4><?php $lh->translateText("modify_areacode"); ?>
+								<br>
+								<small><?php $lh->translateText("modifying_an_areacode"); ?></small>
+							</h4>
+							<fieldset>
+								<div class="form-group mt">
+									<label class="col-sm-3 control-label" for="areacode_campaign"><?php $lh->translateText("campaign"); ?>: </label>
+									<div class="col-sm-9 mb">
+										<input type="hidden" id="edit_areacode_campaign" name="areacode_campaign" required readonly>
+										<select id="edit_areacode_campaign_select" name="areacode_campaign_select" class="form-control select2" style="width:100%;" disabled>
+										<?php
+											for($i=0;$i < count($campaign->campaign_id);$i++){
+												if($campaign->use_custom_cid[$i] === 'AREACODE'){
+										?>
+													<option value='<?php echo $campaign->campaign_id[$i];?>'> <?php echo $campaign->campaign_id[$i] . " - " .$campaign->campaign_name[$i];?></option>
+										<?php
+												}
+											}
+										?>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label" for="areacode"><?php $lh->translateText("areacode"); ?></label>
+									<div class="col-sm-9 mb">
+										<input type="text" name="areacode" id="edit_areacode" class="form-control" placeholder="<?php $lh->translateText("areacode"); ?>" minlength="1" maxlength="5" readonly required>
+										<label id="areacode-duplicate-error"></label>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label" for="edit_areacode_outbound_cid"><?php $lh->translateText("outbound_cid"); ?></label>
+									<div class="col-sm-9 mb">
+										<input type="text" name="areacode_outbound_cid" id="edit_areacode_outbound_cid" class="form-control" placeholder="<?php $lh->translateText("outbound_cid"); ?>" maxlength="20" required>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label" for="areacode_description"><?php $lh->translateText("description"); ?></label>
+									<div class="col-sm-9 mb">
+										<input type="text" name="areacode_description" id="edit_areacode_description" class="form-control" placeholder="<?php $lh->translateText("description"); ?>" maxlength="50">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label" for="areacode_status"><?php $lh->translateText("Status"); ?></label>
+									<div class="col-sm-9 mb">
+										<select id="edit_areacode_status" name="areacode_status" class="form-control" style="width:100%;">
+											<option value="Y">Active</option>
+											<option value="N">Inactive</option>
+										</select>
+									</div>
+								</div>
+							</fieldset>
+						</div><!-- end of step -->
+						<input type="hidden" id="edit_areacode_checker" value="0">
+					</form>
+				</div> <!-- end of modal body -->
+			</div>
+		</div>
+	</div>
+	<!-- End of modal -->
 	
 	<?php
 		// pause codes modal + datatable
@@ -1549,6 +1751,8 @@
 					{ targets: -1, className: "dt-body-right" }
 				]
 			});
+
+			$('#table_areacode').dataTable();
 			
 			$('#table_leadfilter').dataTable();
 			
@@ -3133,6 +3337,270 @@
 			        });
 			//------------------ end of leadfilter
 
+			/*************
+			** AC-CID Events
+			*************/
+
+				// initialization and add of areacode
+				$('#modal_add_areacode').on('shown.bs.modal', function () {
+						$("#status-color").colorpicker();
+					});
+					
+					var areacode_form = $("#create_areacode"); // init form wizard
+
+				    areacode_form.validate({
+				        errorPlacement: function errorPlacement(error, element) { element.after(error); }
+				    });
+
+				    areacode_form.children("div").steps({
+				        headerTag: "h4",
+				        bodyTag: "fieldset",
+				        transitionEffect: "slideLeft",
+			        onStepChanging: function (event, currentIndex, newIndex)
+			        {
+			        	// Allways allow step back to the previous step even if the current step is not valid!
+				        if (currentIndex > newIndex) {
+				            return true;
+				        }
+
+						// Clean up if user went backward before
+					    if (currentIndex < newIndex)
+					    {
+					        // To remove error styles
+					        $(".body:eq(" + newIndex + ") label.error", areacode_form).remove();
+					        $(".body:eq(" + newIndex + ") .error", areacode_form).removeClass("error");
+					    }
+
+			            areacode_form.validate().settings.ignore = ":disabled,:hidden";
+			            return areacode_form.valid();
+			        },
+			        onFinishing: function (event, currentIndex)
+			        {
+			            areacode_form.validate().settings.ignore = ":disabled";
+
+			            var num_errors = $("#areacode_checker").val();
+
+			            console.log(num_errors);
+				        // Disable submit if there are duplicates
+				        if(num_errors > 0){
+					        $(".body:eq(" + currentIndex + ") .error", areacode_form).addClass("error");
+				        	return false;
+				        }
+
+			            return areacode_form.valid();
+			        },
+			        onFinished: function (event, currentIndex)
+			        {
+
+			        	$('#finish').text("Loading...");
+			        	$('#finish').attr("disabled", true);
+
+			        	var campaign_id = $('#areacode_campaign option:selected').val();
+						var status_id = $('#areacode_status').val();
+						//var resultCheck = checkStatus(campaign_id, status_id);
+						//console.log(resultCheck);
+						//if (resultCheck == "1") {
+							$.ajax({
+								url: "./php/AddAreacode.php",
+								type: 'POST',
+								data: $("#create_areacode").serialize(),
+								success: function(data) {
+									console.log(data);
+									console.log($("#create_areacode").serialize());
+									if (data == 1) {
+										swal({
+											title: "<?php $lh->translateText("success"); ?>",
+											text: "<?php $lh->translateText("success_areacode"); ?>!",
+											type: "success"
+											},
+											function(){
+												window.location.href = 'telephonycampaigns.php?T_areacode';
+												$(".preloader").fadeIn();
+											});
+									} else {
+										sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+										$('#finish').val("Submit");
+										$('#finish').prop("disabled", false);
+										areacode_form.children("div").steps("previous");
+										$('#modal_add_areacode').modal('hide');									
+									}
+								}
+							});
+						//} else {
+						//	areacode_form.children("div").steps("previous");
+						//}
+
+
+			        }
+			    });
+
+				//Edit Areacode
+				$('.view_areacode').on('click', function() {
+					var campaign_id = $(this).attr("data-camp");
+					var areacode = $(this).attr("data-ac");
+					$.ajax({
+                                                url: "./php/ViewAreacode.php",
+                                                type: 'POST',
+                                                data:
+                                                {
+                                                        campaign_id : campaign_id,
+                                                        areacode : areacode
+                                                },
+                                                dataType: 'json',
+                                                success: function(data) {
+                                                        if (data.result == 'success') {
+                                                                console.log(data);
+								$('#edit_areacode_campaign_select option[value="'+data.campaign_id+'"').attr('selected', 'selected');
+								$('#edit_areacode_campaign').val(data.campaign_id);
+                                                                $('#edit_areacode').val(data.areacode);
+                                                                $('#edit_areacode_outbound_cid').val(data.outbound_cid);
+                                                                $('#edit_areacode_description').val(data.cid_description);
+                                                                $('#edit_areacode_status option[value="'+data.active+'"').attr('selected', 'selected');
+							}
+                                                }
+                                        });
+				});
+
+				$('#modal_edit_areacode').on('shown.bs.modal', function () {
+					$("#status-color").colorpicker();
+                        	});
+
+	                        var edit_areacode_form = $("#modify_areacode"); // init form wizard
+
+	                        edit_areacode_form.validate({
+					errorPlacement: function errorPlacement(error, element) { element.after(error); }
+				});
+
+                	    	edit_areacode_form.children("div").steps({
+                        	    headerTag: "h4",
+	                            bodyTag: "fieldset",
+        	                    transitionEffect: "slideLeft",
+                	            onStepChanging: function (event, currentIndex, newIndex)
+                        	    {
+					// Allways allow step back to the previous step even if the current step is not valid!
+					if (currentIndex > newIndex) {
+						return true;
+					}
+					// Clean up if user went backward before
+					if (currentIndex < newIndex) {
+						// To remove error styles
+						$(".body:eq(" + newIndex + ") label.error", edit_areacode_form).remove();
+						$(".body:eq(" + newIndex + ") .error", edit_areacode_form).removeClass("error");
+					}
+	
+					edit_areacode_form.validate().settings.ignore = ":disabled,:hidden";
+					return edit_areacode_form.valid();
+        	                    },
+                	            onFinishing: function (event, currentIndex)
+                        	    {
+					edit_areacode_form.validate().settings.ignore = ":disabled";
+					var num_errors = $("#edit_areacode_checker").val();
+
+					console.log(num_errors);
+					// Disable submit if there are duplicates
+					if(num_errors > 0){
+						$(".body:eq(" + currentIndex + ") .error", edit_areacode_form).addClass("error");
+						return false;
+					}
+
+					return edit_areacode_form.valid();
+				    },
+	  			    onFinished: function (event, currentIndex)
+				    {
+					$('#finish').text("Loading...");
+					$('#finish').attr("disabled", true);
+
+					var edit_campaign_id = $('#edit_areacode_campaign option:selected').val();
+					var edit_status_id = $('#edit_areacode_status').val();
+					//var resultCheck = checkStatus(edit_campaign_id, edit_status_id);
+					//console.log(resultCheck);
+					//if (resultCheck == "1") {
+					$.ajax({
+						url: "./php/ModifyAreacode.php",
+						type: 'POST',
+						data: $("#modify_areacode").serialize(),
+						success: function(data) {
+								console.log(data);
+								console.log($("#modify_areacode").serialize());
+								if (data == 1) {
+									swal({
+										title: "<?php $lh->translateText("success"); ?>",
+										text: "<?php $lh->translateText("success_modified_areacode"); ?>!",
+										type: "success"
+									},
+									function(){
+										window.location.href = 'telephonycampaigns.php?T_areacode';
+										$(".preloader").fadeIn();
+									});
+								} else {
+									sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+									$('#finish').val("Submit");
+									$('#finish').prop("disabled", false);
+									edit_areacode_form.children("div").steps("previous");
+									$('#modal_edit_areacode').modal('hide');
+								}
+							}
+					});
+						//} else {
+						//      edit_areacode_form.children("div").steps("previous");
+						//}
+					}
+				});
+
+				//delete areacode
+                                $(document).on('click','.delete-areacode',function() {
+                                        var campId = $(this).attr('data-camp');
+					var areacode = $(this).attr('data-ac');
+                                        console.log(campId + " " + areacode);
+                                        swal({
+                                                title: "<?php $lh->translateText("are_you_sure"); ?>",
+                                                text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
+                                                type: "warning",
+                                                showCancelButton: true,
+                                                confirmButtonColor: "#DD6B55",
+                                                confirmButtonText: "<?php $lh->translateText("delete_areacode"); ?>!",
+                                                cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>!",
+                                                closeOnConfirm: false,
+                                                closeOnCancel: false
+                                        },
+                                                function(isConfirm){
+                                                        if (isConfirm) {
+                                                                $.ajax({
+                                                                        url: "./php/DeleteAreacode.php",
+                                                                        type: 'POST',
+                                                                        data: {
+                                                                                campaign_id: campId,
+										areacode: areacode,
+                                                                                action: "delete_selected"
+                                                                        },
+                                                                        success: function(data) {
+                                                                        console.log(data);
+                                                                                if (data == 1) {
+                                                                                        swal(
+                                                                                                {
+                                                                                                        title: "<?php $lh->translateText("success"); ?>",
+                                                                                                        text: "<?php $lh->translateText("areacode_deleted"); ?>!",
+                                                                                                        type: "success"
+                                                                                                },
+                                                                                                function(){
+                                                                                                        window.location.href = 'telephonycampaigns.php?T_areacode';
+                                                                                                }
+                                                                                        );
+                                                                                } else {
+                                                                                    sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+                                                                                    window.setTimeout(function(){$('#delete_notification_modal').modal('hide');}, 3000);
+                                                                                }
+                                                                        }
+                                                                });
+                                                        } else {
+                                                                swal("Cancelled", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+                                                        }
+                                                }
+                                        );
+                                });
+
+			//-------- End of AC-CID 
+			
 			/********
 			** Other Events
 			********/
@@ -3389,6 +3857,63 @@
 						      e.preventDefault();
 						});
 				/*** end of disposition filters ***/
+
+				/*** AREACODE ***/
+                                        // disable special characters on adding areacode
+                                                $('#areacode').bind('keypress', function (event) {
+                                                    var regex = new RegExp("^[0-9]+$");
+                                                    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                                                    if (!regex.test(key)) {
+                                                       event.preventDefault();
+                                                       return false;
+                                                    }
+                                                });
+                                        // disables pasting
+                                                $('#areacode').bind("paste",function(e) {
+                                                      e.preventDefault();
+                                                });
+                                        // disables special characters on adding outbound cid
+                                                $('#areacode_outbound_cid').bind('keypress', function (event) {
+                                                    var regex = new RegExp("^[0-9 ]+$");
+                                                    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                                                    if (!regex.test(key)) {
+                                                       event.preventDefault();
+                                                       return false;
+                                                    }
+                                                });
+                                        // disables pasting
+                                                $('#areacode_outbound_cid').bind("paste",function(e) {
+                                                      e.preventDefault();
+                                                });
+
+					// disable special characters on edit areacode
+                                                $('#edit_areacode').bind('keypress', function (event) {
+                                                    var regex = new RegExp("^[0-9]+$");
+                                                    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                                                    if (!regex.test(key)) {
+                                                       event.preventDefault();
+                                                       return false;
+                                                    }
+                                                });
+                                        // disables pasting
+                                                $('#edit_areacode').bind("paste",function(e) {
+                                                      e.preventDefault();
+                                                });
+                                        // disables special characters on edit outbound cid
+                                                $('#edit_areacode_outbound_cid').bind('keypress', function (event) {
+                                                    var regex = new RegExp("^[0-9 ]+$");
+                                                    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+                                                    if (!regex.test(key)) {
+                                                       event.preventDefault();
+                                                       return false;
+                                                    }
+                                                });
+                                        // disables pasting
+                                                $('#edit_areacode_outbound_cid').bind("paste",function(e) {
+                                                      e.preventDefault();
+                                                });
+                                /*** end of areacode filters ***/
+
 
 				$('#auto-dial-level').change(function(){
 					var val = $(this).val();

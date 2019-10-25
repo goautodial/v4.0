@@ -102,6 +102,12 @@
 			$campaign_cid 							= stripslashes($campaign_cid);
 		}
 
+		$use_custom_cid								= 'N';
+		if (isset($_POST["use_custom_cid"]))  {
+			$use_custom_cid 						= $_POST["use_custom_cid"];
+			$use_custom_cid 						= stripslashes($use_custom_cid);
+		}
+
 		$campaign_recording 						= NULL; 
 		if (isset($_POST["campaign_recording"])) { 
 			$campaign_recording 					= $_POST["campaign_recording"]; 
@@ -650,7 +656,8 @@
 			"disable_alter_custphone" 					=> $disable_alter_custphone,
 			"inbound_man"								=> $inbound_man,
 			"closer_campaigns"							=> $closerCampaigns,
-			"xfer_groups" 								=> $xfergroups		
+			"xfer_groups" 								=> $xfergroups,
+			"use_custom_cid"							=> $use_custom_cid
 		);
 		
 		$output 									= $api->API_Request("goCampaigns", $postfields);
