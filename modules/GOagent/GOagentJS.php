@@ -10280,6 +10280,13 @@ Number.prototype.between = function (a, b, inclusive) {
 } else {
     if ($_REQUEST['module_name'] == 'GOagent') {
         switch ($_REQUEST['action']) {
+            case "CheckWebRTC":
+                $user_id = $_REQUEST['user_id'];
+                $result = array(
+                    'webrtc' => $api->CheckWebrtc($user_id)
+                );
+                $result = json_encode($result, JSON_UNESCAPED_SLASHES);
+                break;
             case "SessioN":
                 $campaign = $_REQUEST['campaign_id'];
                 $is_logged_in = $_REQUEST['is_logged_in'];
