@@ -243,8 +243,11 @@
 												if($use_webrtc == "1") {
 												?>
 												<div class="form-group">
-													<label for="userlevel" class="col-sm-2 control-label"><?php $lh->translateText("enable_webrtc"); ?></label>
+													<label for="userlevel" class="col-sm-2 control-label"><?php if($use_webrtc == "1"){ echo "<i class='fa fa-info-circle' title='You can see this field because WebRTC is enabled.'></i> ";} ?><?php $lh->translateText("enable_webrtc"); ?></label>
 													<div class="col-sm-10 mb">
+														<?php
+														var_dump($output->data);
+														?>
 														<select class="form-control" name="enable_webrtc" id="enable_webrtc">
 															<option value="-1" > <?php $lh->translateText("system_default"); ?> </option>
 															<option value="0" > DISABLED </option>
