@@ -681,9 +681,7 @@
 				validate_email = 0;
 			}
 			
-			if (enable_webrtc !== 0) {
-				validate_webrtc = 0;
-			} else {
+			if (enable_webrtc == "0" && change_pass == "N") {
 				validate_webrtc = 1;
 			}
 
@@ -711,7 +709,7 @@
 
 			// validations
 			if (validate_email == 0 && validate_password == 0 && validate_webrtc == 0 && <?=($perm->user_update === 'U')?>) {
-				$("#phone_login").prop("disabled", false);				
+				$("#phone_login").prop("disabled", false);
 				$.ajax({
 					url: "./php/ModifyTelephonyUser.php",
 					type: 'POST',
