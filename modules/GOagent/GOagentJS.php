@@ -10285,6 +10285,7 @@ Number.prototype.between = function (a, b, inclusive) {
                 $result = array(
                     'webrtc' => $api->CheckWebrtc($user_id)
                 );
+                var_dump($user_id,$result);
                 $result = json_encode($result, JSON_UNESCAPED_SLASHES);
                 break;
             case "SessioN":
