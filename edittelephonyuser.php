@@ -312,6 +312,7 @@
 															<option value="N" selected> No </option>
 															<option value="Y" > Yes </option>
 														</select>
+														<small><span id="change_pass_check"></span></small>
 													</div>
 												</div>
 												<div class="form-group form_password" style="display:none;">
@@ -656,6 +657,10 @@
             var atpos = x.indexOf("@");
             var dotpos = x.lastIndexOf(".");
 			
+			// variables for checking webrtc
+			var validate_webrtc = 0;
+			var enable_webrtc = document.getElementById('enable_webrtc').value;
+			
 			// conditional statements
 			if (change_pass == "Y") {
 				if (password != conf_password) {
@@ -675,6 +680,12 @@
 			if (email == "") {
 				validate_email = 0;
 			}
+			
+			if (enable_webrtc !== 0) {
+				validate_webrtc = 0;
+			} else {
+				validate_webrtc = 1;
+			}
 
 			// validate results
 			if (validate_email == 1) {
@@ -692,9 +703,14 @@
 				$('#update_button').html("<i class='fa fa-check'></i> Update");
 				$('#modifyUserOkButton').prop("disabled", false);
 			}
+			if (validate_webrtc == 1) {
+				$('#update_button').html("<i class='fa fa-check'></i> Update");
+				$("#change_pass_check").html("<font color='red'>WebRTC for this user was disabled. Please enter new or the same password to update the user's assigned phone.</font>");
+				$('#change_pass_check').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+			}
 
 			// validations
-			if (validate_email == 0 && validate_password == 0 && <?=($perm->user_update === 'U')?>) {
+			if (validate_email == 0 && validate_password == 0 && validate_webrtc == 0 && <?=($perm->user_update === 'U')?>) {
 				$("#phone_login").prop("disabled", false);				
 				$.ajax({
 					url: "./php/ModifyTelephonyUser.php",
