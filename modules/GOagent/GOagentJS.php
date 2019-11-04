@@ -2252,6 +2252,10 @@ function btnLogMeIn () {
                     logging_in = false;
                     //console.log('hide', logging_in);
                 });
+                
+                $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'CheckWebRTC', 'user_id': update_login}, function(result) {
+                    is_logged_in = parseInt(result);
+                });
             } else {
                 swal({
                     title: '<?=$lh->translationFor('error')?>',
@@ -10281,9 +10285,10 @@ Number.prototype.between = function (a, b, inclusive) {
     if ($_REQUEST['module_name'] == 'GOagent') {
         switch ($_REQUEST['action']) {
             case "CheckWebRTC":
-                $user_id = $_REQUEST['user_id'];
+                $user = \creamy\CreamyUser::currentUser();
                 $result = array(
-                    'webrtc' => (int)$api->CheckWebrtc($user_id)
+                    'user_id' => $user->getUserId(),
+                    'webrtc' => (int)$api->CheckWebrtc($user->getUserId())
                 );
                 $result = json_encode($result, JSON_UNESCAPED_SLASHES);
                 break;
