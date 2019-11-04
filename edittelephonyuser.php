@@ -704,7 +704,7 @@
 				$('#update_button').html("<i class='fa fa-check'></i> Update");
 				$('#modifyUserOkButton').prop("disabled", false);
 				$("#change_pass_check").html("<font color='red'>WebRTC for this user was disabled. Please enter new or the same password to update the user's assigned phone.</font>");
-				$('#change_pass_check').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
+				$('#change_pass_check').show().focus().delay(10000).fadeOut().queue(function(n){$(this).hide(); n();});
 			}
 
 			// validations
