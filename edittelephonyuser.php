@@ -246,9 +246,9 @@
 													<label for="userlevel" class="col-sm-2 control-label"><?php $lh->translateText("enable_webrtc"); ?></label>
 													<div class="col-sm-10 mb">
 														<select class="form-control" name="enable_webrtc" id="enable_webrtc">
-															<option value="-1" <?php if ($output->data->enable_webrtc == -1) ? "selected" : ""); ?>> <?php $lh->translateText("system_default"); ?> </option>
-															<option value="0" <?php if ($output->data->enable_webrtc == 0) ? "selected" : ""); ?>> DISABLED </option>
-															<option value="1" <?php if ($output->data->enable_webrtc == 1) ? "selected" : ""); ?>> ENABLED </option>
+															<option value="-1" > <?php $lh->translateText("system_default"); ?> </option>
+															<option value="0" > DISABLED </option>
+															<option value="1" > ENABLED </option>
 														</select>
 													</div>
 												</div>
