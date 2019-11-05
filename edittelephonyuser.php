@@ -132,14 +132,14 @@
 												<div class="form-group mt">
 													<label for="fullname" class="col-sm-2 control-label"><?php $lh->translateText("full_name"); ?></label>
 													<div class="col-sm-10 mb">
-														<input type="text" class="form-control" name="fullname" id="fullname" autocomplete="no" 
+														<input type="text" class="form-control" name="fullname" id="fullname" autocomplete="new-password" 
 															value="<?php echo $output->data->full_name;?>" maxlength="50" placeholder="<?php $lh->translateText("full_name"); ?>" />
 													</div>
 												</div>
 												<div class="form-group">
 													<label for="email" class="col-sm-2 control-label"><?php $lh->translateText("email"); ?></label>
 													<div class="col-sm-10 mb">
-														<input type="text" class="form-control" name="email" id="email" autocomplete="no" 
+														<input type="text" class="form-control" name="email" id="email" autocomplete="new-password" 
 															value="<?php echo $output->data->email;?>" maxlength="100" placeholder="<?php $lh->translateText("email"); ?>" />
 														<small><span id="email_check"></span></small>
 													</div>
@@ -317,14 +317,14 @@
 												<div class="form-group form_password" style="display:none;">
 													<label for="password" class="col-sm-2 control-label"><?php $lh->translateText("password"); ?></label>
 													<div class="col-sm-10 mb">
-														<input type="password" class="form-control" name="password" id="password" autocomplete="no" <?php if($output->data->user_level >= 8){echo 'maxlength="20"';}else{echo 'maxlength="10"';} ?> placeholder="<?php $lh->translateText("password"); ?>" />
+														<input type="password" class="form-control" name="password" id="password" autocomplete="new-password" <?php if($output->data->user_level >= 8){echo 'maxlength="20"';}else{echo 'maxlength="10"';} ?> placeholder="<?php $lh->translateText("password"); ?>" />
 														<small><i><span id="pass_result"></span></i></small>
 													</div>
 												</div>
 												<div class="form-group form_password" style="display:none;">
 													<label for="conf_password" class="col-sm-2 control-label"><?php $lh->translateText("confirm_password"); ?></label>
 													<div class="col-sm-10 mb">
-														<input type="password" class="form-control" id="conf_password" autocomplete="no" placeholder="<?php $lh->translateText("confirm_password"); ?>" required />
+														<input type="password" class="form-control" id="conf_password" autocomplete="new-password" placeholder="<?php $lh->translateText("confirm_password"); ?>" required />
 														<span id="pass_result"></span></i></small>
 													</div> 
 												</div>
