@@ -154,6 +154,11 @@
 			$avatar 						= $_POST["avatar"]; 
 			//$avatar 						= stripslashes($avatar);
 		}	
+		
+		$enable_webrtc 						= NULL; 
+		if (isset($_POST["enable_webrtc"])) { 
+			$enable_webrtc 					= $_POST["enable_webrtc"];
+		}
 
 		$postfields = array(
 			"goAction" 						=> "goEditUser", #action performed by the [[API:Functions]]
@@ -178,7 +183,8 @@
 			"closer_default_blended"		=> $closer_default_blended,
 			"agentcall_manual"				=> $agentcall_manual,
 			"scheduled_callbacks"			=> $scheduled_callbacks,
-			"agentonly_callbacks"			=> $agentonly_callbacks			
+			"agentonly_callbacks"			=> $agentonly_callbacks,
+			"enable_webrtc"					=> $enable_webrtc
 		);
 
 		$output = $api->API_Request("goUsers", $postfields);

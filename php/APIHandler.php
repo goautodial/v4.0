@@ -1170,10 +1170,14 @@ if(isset($_SESSION["user"])){
 		return session_usergroup;
 	}	
 	
-	public function CheckWebrtc($postfields = array("goAction" => "goCheckWebrtc")){
-                $result = $this->API_Request("goSettings", $postfields);
+	public function CheckWebrtc($user_id = null){
+		$postfields = array(
+			"goAction" => "goCheckWebrtc",
+			"user_id" => $user_id
+		);
+  $result = $this->API_Request("goSettings", $postfields);
 		return $result->result;
-        }
+ }
 
 
 	// escape existing special characters already in the database
