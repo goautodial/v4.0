@@ -3459,7 +3459,11 @@ error_reporting(E_ERROR | E_PARSE);
 				$sufFix = '';
 			}
 			
-			$checkbox = '<label for="'.$user_id.'"'.(($perm->user_delete === 'N' || $user === $_SESSION['user']) ? ' class="hidden"' : '').'><div class="checkbox c-checkbox"><label><input name="" class="check_user" id="'.$user_id.'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';				
+			if($user === $_SESSION['user'] || $perm->user_delete === 'N'){
+				$checkbox = "";
+			}else{
+			$checkbox = '<label for="'.$user_id.'"><div class="checkbox c-checkbox"><label><input name="" class="check_user" id="'.$user_id.'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';
+			}
 			$result .= "<tr>
 							<td style='width:5%;'>".$sessionAvatar."</a></td>";
 				$result .= "<td>".$preFix."<strong>".$user."</strong>".$sufFix."</td>
