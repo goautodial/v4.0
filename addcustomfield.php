@@ -286,6 +286,7 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 																	$A_field_default='';
 																}
 																$field_HTML .= "$A_field_default\n";
+																
 															}
 															if ($A_field_type=='SCRIPT')
 															{
