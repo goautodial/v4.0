@@ -556,7 +556,7 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 					</div><!-- /.modal-dialog -->
 				</div><!-- /.modal -->
 
-				<div id="modal_custom_field_list" class="modal fade" tabindex="-1" role="dialog">
+				<div id="modal_custom_field_list" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
 					<div class="modal-dialog" role="document" style="width: 70%;">
 						<div class="modal-content">
 							<div class="modal-header">
