@@ -281,11 +281,11 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 															}
 															if ($A_field_type=='DISPLAY')
 															{
-																if ($A_field_options=='NULL')
+																if ($A_field_default=='NULL')
 																{
-																	$A_field_options='';
+																	$A_field_default='';
 																}
-																$field_HTML .= "$A_field_options\n";
+																$field_HTML .= "$A_field_default\n";
 															}
 															if ($A_field_type=='SCRIPT')
 															{
