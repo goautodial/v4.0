@@ -831,6 +831,8 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 						$('.field-option-position').val("").change();
 						$('.field-requireds').val("").change();
 						$('body').removeClass('modal-open');
+						
+						location.reload();
 					}
 				});
 
