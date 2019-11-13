@@ -1124,7 +1124,7 @@
 																	<div class="input-group">
 																		<input type="text" class="form-control" id="am_message_exten" name="am_message_exten" value="<?php echo $campaign->data->am_message_exten;?>">
 																		<span class="input-group-btn">
-																			<button class="btn btn-default" type="button">[Audio Chooser...]</button>
+																			<button class="btn btn-default show_am_message_chooser" type="button">[Audio Chooser...]</button>
 																		</span>
 																	</div><!-- /input-group -->
 																	<select class="form-control am_message_chooser" id="am_message_chooser" name="am_message_chooser">
@@ -1230,7 +1230,7 @@
 																		<option value="OLDEST_CALL_FINISH" <?php if(strtoupper($campaign->data->next_agent_call) == "OLDEST_CALL_FINISH") echo "selected";?>>OLDEST CALL FINISH</option>
 																		<option value="OVERALL_USER_LEVEL" <?php if(strtoupper($campaign->data->next_agent_call) == "OVERALL_USER_LEVEL") echo "selected";?>>OVERALL USER LEVEL</option>
 																		<option value="FEWEST_CALLS" <?php if(strtoupper($campaign->data->next_agent_call) == "FEWEST_CALLS") echo "selected";?>>FEWEST CALLS</option>
-																		<option value="LONGEST_WAITING_TIME" <?php if(strtoupper($campaign->data->next_agent_call) == "LONGEST_WAITING_TIME") echo "selected";?>>LONGEST WAITING TIME</option>
+																		<option value="LONGEST_WAIT_TIME" <?php if(strtoupper($campaign->data->next_agent_call) == "LONGEST_WAIT_TIME") echo "selected";?>>LONGEST WAIT TIME</option>
 																	</select>
 																</div>
 															</div>
@@ -1660,7 +1660,7 @@
 																		<option value="OLDEST_CALL_FINISH" <?php if(strtoupper($campaign->data->next_agent_call) == "OLDEST_CALL_FINISH") echo "selected";?>>OLDEST CALL FINISH</option>
 																		<option value="OVERALL_USER_LEVEL" <?php if(strtoupper($campaign->data->next_agent_call) == "OVERALL_USER_LEVEL") echo "selected";?>>OVERALL USER LEVEL</option>
 																		<option value="FEWEST_CALLS" <?php if(strtoupper($campaign->data->next_agent_call) == "FEWEST_CALLS") echo "selected";?>>FEWEST CALLS</option>
-																		<option value="LONGEST_WAITING_TIME" <?php if(strtoupper($campaign->data->next_agent_call) == "LONGEST_WAITING_TIME") echo "selected";?>>LONGEST WAITING TIME</option>
+																		<option value="LONGEST_WAIT_TIME" <?php if(strtoupper($campaign->data->next_agent_call) == "LONGEST_WAIT_TIME") echo "selected";?>>LONGEST WAIT TIME</option>
 																	</select>
 																</div>
 															</div>
@@ -1910,7 +1910,7 @@
 																		<option value="OLDEST_CALL_FINISH" <?php if(strtoupper($campaign->data->next_agent_call) == "OLDEST_CALL_FINISH") echo "selected";?>>OLDEST CALL FINISH</option>
 																		<option value="OVERALL_USER_LEVEL" <?php if(strtoupper($campaign->data->next_agent_call) == "OVERALL_USER_LEVEL") echo "selected";?>>OVERALL USER LEVEL</option>
 																		<option value="FEWEST_CALLS" <?php if(strtoupper($campaign->data->next_agent_call) == "FEWEST_CALLS") echo "selected";?>>FEWEST CALLS</option>
-																		<option value="LONGEST_WAITING_TIME" <?php if(strtoupper($campaign->data->next_agent_call) == "LONGEST_WAITING_TIME") echo "selected";?>>LONGEST WAITING TIME</option>
+																		<option value="LONGEST_WAIT_TIME" <?php if(strtoupper($campaign->data->next_agent_call) == "LONGEST_WAIT_TIME") echo "selected";?>>LONGEST WAIT TIME</option>
 																	</select>
 																</div>
 															</div>
