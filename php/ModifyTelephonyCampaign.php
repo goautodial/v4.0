@@ -181,9 +181,13 @@
 		}
 
 		$am_message_exten 							= NULL; 
-		if (isset($_POST["am_message_exten"])) { 
-			$am_message_exten 						= $_POST["am_message_exten"]; 
-			$am_message_exten 						= stripslashes($am_message_exten);
+		if (isset($_POST["am_message_exten"])) {
+			if(!empty($_POST["am_message_exten"])){ 
+				$am_message_exten 						= $_POST["am_message_exten"]; 
+				$am_message_exten 						= stripslashes($am_message_exten);
+			} else {
+				$am_message_exten						= 'vm-goodbye';
+			}
 		}
 
 		$am_message_chooser 						= NULL;

@@ -71,6 +71,7 @@ Update GOautodial database:
 
 <pre>
 MariaDB [goautodialdb]> ALTER TABLE go_campaigns ADD COLUMN manual_dial_min_digits INT(11) DEFAULT '6';
+MariaDB [goautodialdb]> ALTER TABLE users ADD COLUMN enable_webrtc tinyint(1)  DEFAULT '1';
 </pre>
 
 Wiki: https://goautodial.org/projects/goautodialce/wiki
