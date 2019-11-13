@@ -8262,7 +8262,7 @@ function GetCustomFields(listid, show, getData, viewFields) {
         var postData = {
             module_name: 'GOagent',
             action: 'CustoMFielD',
-            list_id: listid
+            list_id: parseInt(listid)
         };
         $.ajax({
             type: 'POST',
