@@ -3658,7 +3658,7 @@ function CheckForIncoming () {
             //    document.getElementById("gender_list").selectedIndex = gIndex;
             //}
             
-            if (custom_field_names.length > 1) {
+            if (custom_field_names.length > 1 || (custom_field_names.length < 2 && custom_fields_launch == 'ONCALL')) {
                 if (custom_fields_launch == 'ONCALL') {
                     GetCustomFields(this_VDIC_data.list_id, false, true);
                 }
@@ -7176,7 +7176,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     
                     $("#MainStatusSpan").html("<b><?=$lh->translationFor('calling')?>:</b> " + status_display_number + " " + status_display_content + "<br>" + man_status);
                     
-                    if (custom_field_names.length > 1) {
+                    if (custom_field_names.length > 1 || (custom_field_names.length < 2 && custom_fields_launch == 'ONCALL')) {
                         if (custom_fields_launch == 'ONCALL') {
                             GetCustomFields(list_id, false, true);
                         }
@@ -8262,7 +8262,7 @@ function GetCustomFields(listid, show, getData, viewFields) {
         var postData = {
             module_name: 'GOagent',
             action: 'CustoMFielD',
-            list_id: listid
+            list_id: parseInt(listid)
         };
         $.ajax({
             type: 'POST',
@@ -8401,8 +8401,8 @@ function GetCustomFields(listid, show, getData, viewFields) {
                                             display_content = "&nbsp;";
                                         }
                                         
-                                        customHTML += '<div class="mda-form-group">';
-                                        customHTML += '<span id="' + field_prefix + thisField.field_label + '" data-type="' + field_type.toLowerCase() + '" class="' + field_prefix + field_type.toLowerCase() + '" style="padding-left: 5px;">' + display_content + '</span>';
+                                        customHTML += '<div class="mda-form-group" style="padding-left: 5px;">';
+                                        customHTML += '<span id="' + field_prefix + thisField.field_label + '" data-type="' + field_type.toLowerCase() + '" class="' + field_prefix + field_type.toLowerCase() + '">' + display_content.replace(/(?:\r\n|\r|\n)/g, '<br>') + '</span>';
                                         if (field_type != 'SCRIPT') {
                                             customHTML += '<div class="customform-label">' + thisField.field_name + '</div>';
                                         }

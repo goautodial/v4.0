@@ -281,11 +281,11 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 															}
 															if ($A_field_type=='DISPLAY')
 															{
-																if ($A_field_options=='NULL')
+																if ($A_field_default=='NULL')
 																{
-																	$A_field_options='';
+																	$A_field_default='';
 																}
-																$field_HTML .= "$A_field_options\n";
+																$field_HTML .= nl2br($A_field_default) . "\n";
 															}
 															if ($A_field_type=='SCRIPT')
 															{
@@ -293,7 +293,7 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 																{
 																	$A_field_options='';
 																}
-																$field_HTML .= "$A_field_options\n";
+																$field_HTML .= nl2br($A_field_options) . "\n";
 															}
 															if ($A_field_type=='DATE')
 															{
@@ -556,7 +556,7 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 					</div><!-- /.modal-dialog -->
 				</div><!-- /.modal -->
 
-				<div id="modal_custom_field_list" class="modal fade" tabindex="-1" role="dialog">
+				<div id="modal_custom_field_list" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static">
 					<div class="modal-dialog" role="document" style="width: 70%;">
 						<div class="modal-content">
 							<div class="modal-header">
@@ -831,6 +831,8 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 						$('.field-option-position').val("").change();
 						$('.field-requireds').val("").change();
 						$('body').removeClass('modal-open');
+						
+						location.reload();
 					}
 				});
 
