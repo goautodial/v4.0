@@ -3658,7 +3658,7 @@ function CheckForIncoming () {
             //    document.getElementById("gender_list").selectedIndex = gIndex;
             //}
             
-            if (custom_field_names.length > 1) {
+            if (custom_field_names.length > 1 || (custom_field_names.length < 2 && custom_fields_launch == 'ONCALL')) {
                 if (custom_fields_launch == 'ONCALL') {
                     GetCustomFields(this_VDIC_data.list_id, false, true);
                 }
@@ -7176,7 +7176,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     
                     $("#MainStatusSpan").html("<b><?=$lh->translationFor('calling')?>:</b> " + status_display_number + " " + status_display_content + "<br>" + man_status);
                     
-                    if (custom_field_names.length > 1) {
+                    if (custom_field_names.length > 1 || (custom_field_names.length < 2 && custom_fields_launch == 'ONCALL')) {
                         if (custom_fields_launch == 'ONCALL') {
                             GetCustomFields(list_id, false, true);
                         }
