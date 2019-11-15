@@ -232,21 +232,21 @@
 											<input type="text" class="form-control" name="xferconf_b_number" placeholder="<?php $lh->translateText("xferconf_b_number"); ?>">
 										</div>
 									</div>
-									<div class="form-group clearfix">
+									<!-- <div class="form-group clearfix">
 										<label class="control-label col-lg-3" style="text-align: left;"></label>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" name="xferconf_c_number" placeholder="<?php $lh->translateText("xferconf_c_number"); ?>">
+											<input type="text" class="form-control" name="xferconf_c_number" placeholder="<?php //$lh->translateText("xferconf_c_number"); ?>">
 										</div>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" name="xferconf_d_number" placeholder="<?php $lh->translateText("xferconf_d_number"); ?>">
+											<input type="text" class="form-control" name="xferconf_d_number" placeholder="<?php //$lh->translateText("xferconf_d_number"); ?>">
 										</div>
 									</div>
 									<div class="form-group clearfix">
 										<label class="control-label col-lg-3" style="text-align: left;"></label>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" name="xferconf_e_number" placeholder="<?php $lh->translateText("xferconf_e_number"); ?>">
+											<input type="text" class="form-control" name="xferconf_e_number" placeholder="<?php //$lh->translateText("xferconf_e_number"); ?>">
 										</div>
-									</div>
+									</div> -->
 								
 								</div><!-- tab 1 -->
 								<div id="tab_2" class="tab-pane">
