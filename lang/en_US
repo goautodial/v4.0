@@ -953,7 +953,7 @@ check_phones_in_list_id = "CHECK PHONES IN LIST ID"
 check_phones_in_campaign-lists = "CHECK PHONES IN CAMPAIGN-LISTS"
 delete_multiple_list = "Delete Multiple List"
 
-list_wizard = "List izard"
+list_wizard = "List Wizard"
 add_list = "Add New List"
 list_info = "List Information"
 list_details = "List Details"
