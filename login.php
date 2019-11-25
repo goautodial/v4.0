@@ -179,6 +179,9 @@
       </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->
 	</center>
+	<footer>
+		<div>Copyright &copy; <?=date("Y")?> <a href="https://goautodial.com" target="_blank">GOautodial Inc.</a> All rights reserved.</div>
+	</footer>
    <!--<div class="margin text-center">
         <span><?php $lh->translateText("never_heard_of_creamy"); ?></span>
         <br/>
