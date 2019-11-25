@@ -231,6 +231,7 @@
 										   </thead>
 										   <tbody>
 											   	<?php
+												if($campaign->result == 'success') {
 											   		for($i=0;$i < count($campaign->campaign_id);$i++){
 
 														if($campaign->active[$i] == "Y"){
@@ -275,6 +276,7 @@
 													</tr>
 												<?php
 													}
+												}
 												?>
 										   </tbody>
 										</table>
