@@ -427,7 +427,8 @@
 											  </tr>
 										   </thead>
 										   <tbody>
-											   	<?php
+											   <?php
+												if($areacode->result == "success"){
 											   		for($i=0;$i < count($areacode->campaign_id);$i++){
 
 														if($areacode->active[$i] == "Y"){
@@ -437,7 +438,7 @@
 														}
 
 													$action_CAMPAIGN = $ui->ActionMenuForAreacodes($areacode->areacode[$i], $areacode->campaign_id[$i], $perm);
-											   	?>
+											   ?>
 													<tr>
 														<td><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="view_areacode" data-toggle="modal" data-target="#modal_edit_areacode" data-camp="'.$areacode->campaign_id[$i].'" data-ac="'.$areacode->areacode[$i].'">'; } ?><avatar username='<?php echo $areacode->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></td>
 														<td><strong><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="view_areacode" data-toggle="modal" data-target="#modal_edit_areacode"  data-camp="'.$areacode->campaign_id[$i].'" data-ac="'.$areacode->areacode[$i].'">'; } ?><?php echo $areacode->campaign_id[$i];?><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></strong></td>
@@ -447,9 +448,10 @@
 														<td><?php echo $areacode->active[$i];?></td>
 														<td><?php echo $action_CAMPAIGN;?></td>													
 													</tr>
-												<?php
+											   <?php
 													}
-												?>
+												} 
+											   ?>
 										   </tbody>
 										</table>
 								 </div>
@@ -1257,11 +1259,11 @@
 							<option value="" selected disabled> -- Choose Campaign -- </option>
 						<?php
 		                                   	for($i=0;$i < count($campaign->campaign_id);$i++){
-								if($campaign->use_custom_cid[$i] === 'AREACODE'){
+								//if($campaign->use_custom_cid[$i] === 'AREACODE'){
 						?>
 		                                   		<option value='<?php echo $campaign->campaign_id[$i];?>'> <?php echo $campaign->campaign_id[$i] . " - " .$campaign->campaign_name[$i];?></option>
 						<?php
-								}
+								//}
 		                                   	}
 		                                ?>
 		                                </select>
@@ -1326,11 +1328,9 @@
 										<select id="edit_areacode_campaign_select" name="areacode_campaign_select" class="form-control select2" style="width:100%;" disabled>
 										<?php
 											for($i=0;$i < count($campaign->campaign_id);$i++){
-												if($campaign->use_custom_cid[$i] === 'AREACODE'){
 										?>
-													<option value='<?php echo $campaign->campaign_id[$i];?>'> <?php echo $campaign->campaign_id[$i] . " - " .$campaign->campaign_name[$i];?></option>
+												<option value='<?php echo $campaign->campaign_id[$i];?>'> <?php echo $campaign->campaign_id[$i] . " - " .$campaign->campaign_name[$i];?></option>
 										<?php
-												}
 											}
 										?>
 										</select>
@@ -3436,6 +3436,7 @@
 
 				//Edit Areacode
 				$('.view_areacode').on('click', function() {
+					$(".preloader").fadeIn();
 					var campaign_id = $(this).attr("data-camp");
 					var areacode = $(this).attr("data-ac");
 					$.ajax({
@@ -3456,6 +3457,7 @@
                                                                 $('#edit_areacode_outbound_cid').val(data.outbound_cid);
                                                                 $('#edit_areacode_description').val(data.cid_description);
                                                                 $('#edit_areacode_status option[value="'+data.active+'"').attr('selected', 'selected');
+								$(".preloader").fadeOut();
 							}
                                                 }
                                         });
