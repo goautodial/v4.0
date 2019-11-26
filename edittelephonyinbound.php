@@ -1350,6 +1350,9 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 													<label class="col-sm-3 control-label" for="tracking_group"><?php $lh->translateText("tracking_group"); ?>: </label>
 													<div class="col-sm-9">
 														<select name="tracking_group" id="tracking_group" class="form-control select2" style="width:100%;">
+															<option value="CALLMENU" <?php if ($output->data->tracking_group == 'CALLMENU') {echo "selected";}?> >
+																CALLMENU - Default
+															</option>
 														<?php
 															for($i=0;$i<count($ingroups->group_id);$i++) {
 														?>
