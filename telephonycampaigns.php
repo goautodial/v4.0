@@ -161,7 +161,7 @@
 								*/
 								$campaign = $api->API_getAllCampaigns();
 								if($campaign->result !== "success"){
-									die("API ERROR: ".$campaign->result);
+									// die("API ERROR: ".$campaign->result);
 								}
 								$disposition = $api->API_getAllDispositions();
 								$leadrecycling = $api->API_getAllLeadRecycling();
