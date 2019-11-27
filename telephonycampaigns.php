@@ -299,7 +299,15 @@
 											   	<?php			
 													if (count($disposition->campaign_id) > 0){
 														for($i=0;$i < count($campaign->campaign_id);$i++){
-															
+															$dispoStatuses = array();
+															foreach ($disposition->custom_dispo as $cCamp => $cDispo){
+																if($cCamp == $campaign->campaign_id[$i]){
+																	foreach ($cDispo as $idx => $val) {
+																		$dispoStatuses[] = $idx;
+																	}
+																}
+															}
+															if(!empty($dispoStatuses)){
 											   	?>
 													<tr>
 														<td><?php 																
@@ -310,14 +318,6 @@
 														<td><?php echo $campaign->campaign_name[$i];?></td>
 														<td>
 												<?php
-															$dispoStatuses = array();
-															foreach ($disposition->custom_dispo as $cCamp => $cDispo){
-																if($cCamp == $campaign->campaign_id[$i]){
-																	foreach ($cDispo as $idx => $val) {
-																		$dispoStatuses[] = $idx;
-																	}
-																}
-															}
 															echo implode(", ", $dispoStatuses);
 															
 															$action_DISPOSITION = $ui->ActionMenuForDisposition($campaign->campaign_id[$i], $campaign->campaign_name[$i], $perm);
@@ -325,7 +325,8 @@
 														</td>
 														<td><?php echo $action_DISPOSITION;?></td>
 													</tr>
-												<?php
+												<?php	
+															}
 														}
 													}
 												?>
