@@ -151,6 +151,7 @@ if(isset($_SESSION["user"])){
 			'session_user' => session_user,
 			'log_user' => session_user,
 			'log_group' => session_usergroup,
+			'log_pass' => log_pass,
 			'log_ip' => $_SERVER['REMOTE_ADDR'],
 			'hostname' => $_SERVER['REMOTE_ADDR']);
 
@@ -988,7 +989,7 @@ if(isset($_SESSION["user"])){
 	}
 
 	public function API_addCampaign($postfields){
-		return $this->API_Request("goCampaigns", $postfields);
+		return $this->API_Upload("goCampaigns", $postfields);
 	}
 	
 	public function API_addDialStatus($postfields){
