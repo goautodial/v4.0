@@ -663,6 +663,9 @@ error_reporting(E_ALL)
 							<a href="#" onClick="goGetInSession('MONITOR');">
 								<button class="btn btn-primary btn-sm"><?=$lh->translateText("listen")?> &nbsp;<i class="fa fa-microphone-slash"></i></button>
 							</a>
+							<a href="#" onClick="goGetInSession('WHISPER');">
+								<button class="btn btn-warning btn-sm"><?=$lh->translateText("whisper")?> &nbsp;<i class="fa fa-user-secret"></i></button>
+							</a>
 						</div>
 					</div> 
 				</div>
@@ -1118,6 +1121,9 @@ function goGetInSession(type) {
 			if (type == 'BARGE') {
 				bTitle = "Barging...";
 				bText = "You're currently barging "+who+"...";
+			} else if (type == 'WHISPER') {
+				bTitle = "Whispering...";
+				bText = "You're currently whispering to "+who+"...";
 			} else {
 				bTitle = "Listening...";
 				bText = "You're currently listening to "+who+"...";
