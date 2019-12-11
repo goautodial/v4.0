@@ -46,8 +46,8 @@ require_once('goCRMAPISettings.php');
  * @link URL http://digitalleaves.com
  */
 class DbHandler {
-    /** Database connector */
-    private $dbConnector;
+    	/** Database connector */
+   	private $dbConnector;
 	private $dbConnectorAsterisk;
 	/** Language handler */
 	private $lh;
@@ -724,12 +724,48 @@ class DbHandler {
 					$this->dbConnector->rollback();
 					return false;
 				}
-				
 			}
+			$log_user = session_user ;
+			$log_ip = $_SERVER['REMOTE_ADDR'];
+			$log_group = session_usergroup;
+
+			$log_id = $this->log_action( $this->dbConnector, 'MODIFY', $log_user, $log_ip, "Updated System Settings", $log_group, $this->dbConnector->getLastQuery() );
 		}
 		$this->dbConnector->commit();
 		return true;
 	}
+
+	public function log_action($link, $action, $user, $ip, $details, $user_group, $db_query = '') {
+		$action = $link->escape(strtoupper($action));
+		$event_date = date("Y-m-d H:i:s");
+		$user = $link->escape($user);
+		$ip = $link->escape($ip);
+		$user_group = $link->escape($user_group);
+		$details = $link->escape($details);
+		$db_query = $link->escape($db_query);
+		
+		if ((!is_null($user) && strlen($user) > 0) && (!is_null($ip) && strlen($ip) > 0) && $link) {
+			//$logSQL = "INSERT INTO go_action_logs (user, ip_address, event_date, action, details, db_query, user_group) VALUES ('$user', '$ip', '$event_date', '$action', '$details', '$db_query', '$user_group');";
+			$insertData = array(
+				'user' => $user,
+				'ip_address' => $ip,
+				'event_date' => $event_date,
+				'action' => $action,
+				'details' => $details,
+				'db_query' => $db_query,
+				'user_group' => $user_group
+			);
+			$result = $link->insert('go_action_logs', $insertData);
+		}
+		
+		if ($result) {
+			$log_id = $link->getInsertId();
+			return $log_id;
+		} else {
+			return false;
+		}
+	}
+	##### END ACTION LOGS #####
 	
 	public function getMainAdminUserData() {
 		$adminUserId = $this->getSettingValueForKey(CRM_SETTING_ADMIN_USER);
@@ -2127,19 +2163,26 @@ class DbHandler {
 	 * @return Bool true if active modules changed, false otherwise.
 	 */
 	public function changeModuleStatus($moduleName, $status) {
+		$log_user = session_user ;
+                $log_ip = $_SERVER['REMOTE_ADDR'];
+                $log_group = session_usergroup;
+
 		$modules = $this->getActiveModules();
 		$modulesChanged = false;
 		// check status
 		if ($status == "1" || $status == true) {
-			if (!in_array($moduleName, $modules, true)) { $modules[] = $moduleName; $modulesChanged = true; }
+			if (!in_array($moduleName, $modules, true)) { $modules[] = $moduleName; $modulesChanged = true; $log_message="Enabled Module: "; }
 		} else if ($status == "0" || $status == false) {
-			if ( ($key = array_search($moduleName, $modules)) !== false) { unset($modules[$key]); $modulesChanged = true; } 
+			if ( ($key = array_search($moduleName, $modules)) !== false) { unset($modules[$key]); $modulesChanged = true; $log_message="Disabled Module: ";} 
 		}
 		
 		// change status and return success.
 		if ($modulesChanged) {
+			$log_id = $this->log_action( $this->dbConnector, 'MODIFY', $log_user, $log_ip, $log_message.$moduleName, $log_group );
 			return $this->setActiveModules($modules);
 		}
+
+		$log_id = $this->log_action( $this->dbConnector, 'MODIFY', $log_user, $log_ip, "Failed to Modify: ".$moduleName, $log_group, $this->dbConnector->getLastQuery() );
 		return false;
 	}
 	

@@ -29,6 +29,7 @@ require_once('CRMDefaults.php');
 require_once('DbHandler.php');
 require_once('CRMUtils.php');
 require_once('Module.php');
+require_once('DatabaseConnectorFactory.php');
 
 // paths constants
 define ('CRM_MODULES_MAIN_FILENAME', 'module.php');
@@ -210,7 +211,8 @@ class ModuleHandler {
 	
 	/** Database handler */
 	protected $db;
-	
+	protected $dbConnector;
+
 	/** An array containing the short names of all the modules. */
 	protected $allModules = array();
 	
@@ -248,6 +250,7 @@ class ModuleHandler {
 		if ($this->enabled) {
 		    // initialize database connector.
 		    $this->db = new \creamy\DbHandler();
+			$this->dbConnector = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType($dbConnectorType);
 		    
 			// initialize modules
 			$this->loadModules();
@@ -423,7 +426,11 @@ class ModuleHandler {
 	 * Deletes a module. 
      */
     public function deleteModule($shortName) {
-		if (!$this->enabled) { return false; }	    
+	$log_user = session_user ;
+        $log_ip = $_SERVER['REMOTE_ADDR'];
+        $log_group = session_usergroup;
+
+	if (!$this->enabled) { return false; }	    
 
 		// avoid nasty things here...
 	    $sanitized = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $shortName);
@@ -441,7 +448,8 @@ class ModuleHandler {
 	    // delete files and directory structure.
 	    $path = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.CRM_MODULES_BASEDIR.DIRECTORY_SEPARATOR.$sanitized;
 		\creamy\CRMUtils::deleteDirectoryRecursively($path);
-	    	    
+
+	    $log_id = $this->db->log_action($this->dbConnector, 'DELETE', $log_user, $log_ip, "Uninstalled Module: ".$shortName, $log_group);	    	    
 	    return true;
     }
     
@@ -450,8 +458,12 @@ class ModuleHandler {
 	 * Returns true if settings were updated successfully, false otherwise.
 	 */
     public function configureModule($moduleName, $settings) {
-		if (!$this->enabled) { return null; }	    
+	$log_user = session_user ;
+	$log_ip = $_SERVER['REMOTE_ADDR'];
+	$log_group = session_usergroup;
 
+	if (!$this->enabled) { return null; }	    
+	
 	    if ($this->moduleIsEnabled($moduleName)) {
 		    $instance = $this->getInstanceOfModuleNamed($moduleName);
 		    if (isset($instance)) {
@@ -488,9 +500,12 @@ class ModuleHandler {
 					    if (!$instance->setSettingValue($setting, "0")) { return false; }
 				    }
 			    }
+			    
+			    $log_id = $this->db->log_action($this->dbConnector, 'MODIFY', $log_user, $log_ip, "Updated Module: ".$moduleName, $log_group);
 			    return true;
 		    }
 	    }
+	    $log_id = $this->db->log_action($this->dbConnector, 'MODIFY', $log_user, $log_ip, "Module not Modified: ".$moduleName, $log_group);
 	    return false;
     }
     
