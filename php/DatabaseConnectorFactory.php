@@ -152,6 +152,42 @@ class DatabaseConnectorFactory {
 	    }
     }
     
+    /** Returns the given database connector for a given database connector type */
+    public function getDatabaseConnectorOfTypeKamailio($type, $dbhost = null, $dbname = null, $dbuser = null, $dbpass = null, $dbport = null) {
+	    
+	    if (empty($dbhost) && defined('DB_HOST_KAMAILIO')) { $dbhost = DB_HOST_KAMAILIO; }	    
+	    if (empty($dbname) && defined('DB_NAME_KAMAILIO')) { $dbname = DB_NAME_KAMAILIO; }	    
+	    if (empty($dbuser) && defined('DB_USERNAME_KAMAILIO')) { $dbuser = DB_USERNAME_KAMAILIO; }	    
+	    if (empty($dbpass) && defined('DB_PASSWORD_KAMAILIO')) { $dbpass = DB_PASSWORD_KAMAILIO; }	    
+	    if (empty($dbport) && defined('DB_PORT_KAMAILIO')) { $dbport = DB_PORT_KAMAILIO; }	    
+
+	    if ($type == CRM_DB_CONNECTOR_TYPE_MYSQL) { // MySQL Database connector
+		    require_once("db_connectors/MysqliDb.php");
+		    try {
+			    @$mysqldb = new \MysqliDb($dbhost, $dbuser, $dbpass, $dbname, $dbport);
+			    if (empty($mysqldb)) { throw new \Exception("Database access failed. Incorrect credentials or missing parameters."); return null; }
+			    // try to set the timezone (for dates).
+				$mysqldb->where("setting", CRM_SETTING_TIMEZONE);
+				$mysqldb->where("context", CRM_SETTING_CONTEXT_CREAMY);
+				if ($result = $mysqldb->getOne(CRM_SETTINGS_TABLE_NAME)) {
+					$timezone = $result["value"];
+					if (isset($timezone)) { date_default_timezone_set($timezone); } 
+				} else { // fallback.
+					if (defined('CRM_TIMEZONE')) { $timezone = CRM_TIMEZONE; }
+					if (defined('CRM_LOCALE')) { date_default_timezone_set($timezone); }			
+				}
+			    // return MySQL database connector
+			    return $mysqldb;
+		    } catch (\Exception $e) {
+		    	throw new \Exception("Incorrect credentials. Access denied or incorrect parameters.");
+		    	return null;
+		    }
+		    
+	    } else {
+		    throw new \Exception("Database connector $type not supported yet!");
+	    }
+    }
+    
 	/**
 	 * This function checks if we can stablish a connection to the database using a connector of type $type.
 	 * If true, we can safely assume that we can instantiate and use a DbConnector of this type by using getDatabaseConnectorOfType.

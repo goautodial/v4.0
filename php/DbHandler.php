@@ -49,6 +49,7 @@ class DbHandler {
     /** Database connector */
     private $dbConnector;
 	private $dbConnectorAsterisk;
+    private $dbConnectorKamailio;
 	/** Language handler */
 	private $lh;
 	private $api;
@@ -59,6 +60,7 @@ class DbHandler {
 		// Database connector
 		$this->dbConnector = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType($dbConnectorType);
 		$this->dbConnectorAsterisk = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfTypeAsterisk($dbConnectorType);
+		$this->dbConnectorKamailio = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfTypeKamailio($dbConnectorType);
 
 		// language handler
 		$locale = $this->getLocaleSetting();
@@ -477,7 +479,7 @@ class DbHandler {
 	 * @param String $password2 new password (must be = to $password1).
 	 * @return boolean true if password was successfully changed, false otherwise.
 	 */
-	public function changePassword($userid, $oldpassword, $password1, $password2, $kamDB = null) {
+	public function changePassword($userid, $oldpassword, $password1, $password2) {
 		// safety check
 		if ($password1 !== $password2) return false;
         
@@ -522,7 +524,7 @@ class DbHandler {
 					// $data = Array("password_hash" => $newPasswordHash);
 					$chUserPass = $this->dbConnectorAsterisk->update(CRM_USERS_TABLE_NAME_ASTERISK, $data);
                     
-                    if ($chUserPass && !is_null($kamDB)) {
+                    if ($chUserPass) {
                         $this->dbConnector->where("setting", "GO_agent_wss_sip");
                         $querygo 	            = $this->dbConnector->getOne("settings", "value");
                         $realm 		            = $querygo['value'];
@@ -543,9 +545,9 @@ class DbHandler {
                             "ha1" 					=> $ha1,
                             "ha1b" 					=> $ha1b
                         );
-                        $kamDB->where('username', $phone_login);
-                        $kamDB->where('domain', $domain);
-                        $kamDB->update('subscriber', $datakam);
+                        $this->dbConnectorKamailio->where('username', $phone_login);
+                        $this->dbConnectorKamailio->where('domain', $domain);
+                        $this->dbConnectorKamailio->update('subscriber', $datakam);
                     }
                     
                     return $chUserPass;
