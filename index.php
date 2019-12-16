@@ -1419,7 +1419,7 @@ function goGetInSession(type) {
 				var int_22 = setInterval(load_INSalesHour,60000);
 				var int_23 = setInterval(load_OUTSalesPerHour,60000);			
 		
-		$('#modal_view_agent_information').on('show.bs.modal', function () {
+		$('#modal_view_agent_information,#change-password-dialog-modal').on('show.bs.modal', function () {
 			clearInterval(int_1);
 			clearInterval(int_2);
 			clearInterval(int_3);
@@ -1440,7 +1440,7 @@ function goGetInSession(type) {
 			clearInterval(int_18);
 		});
 		
-		$('#modal_view_agent_information').on('hidden.bs.modal', function () {
+		$('#modal_view_agent_information,#change-password-dialog-modal').on('hidden.bs.modal', function () {
 			int_1 = setInterval(load_totalagentscall,5000);
 			int_2 = setInterval(load_totalagentspaused,5000);
 			int_3 = setInterval(load_totalagentswaitingcall,5000);
