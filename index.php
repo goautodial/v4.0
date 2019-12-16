@@ -1540,6 +1540,9 @@ function goGetInSession(type) {
 							clearInterval(int_16);
 							//clearInterval(int_17);
 							clearInterval(int_18);
+							
+							$(this).find(".modal-body").css('margin-left', '15px');
+							$(this).find(".modal-body").css('margin-right', '15px');
 						});
 						
 						$('#change-password-dialog-modal').on('hidden.bs.modal', function () {
