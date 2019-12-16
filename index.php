@@ -729,7 +729,7 @@ error_reporting(E_ALL)
         /*
         * Modal Dialogs
         */
-        include_once ("./php/ModalPasswordDialogs.php");
+        //include_once ("./php/ModalPasswordDialogs.php");
 ?>
 <script src="js/dashboard/sweetalert/dist/sweetalert.min.js"></script>
 <script>

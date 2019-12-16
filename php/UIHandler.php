@@ -1623,12 +1623,17 @@ error_reporting(E_ERROR | E_PARSE);
 		$company_name = $this->creamyHeaderName();
 		if (empty($version)) { $version = "unknown"; }
 		$version = "4.0";
+  
+  ob_start();
+  include_once ("ModalPasswordDialogs.php");
+  $modalPasswds = ob_get_contents();
 
 		$footer = '<footer class="main-footer">
 			<div class="pull-right hidden-xs">
 				<b>Version</b> '.$version.'</div><strong>'.$this->lh->translationFor("copyright").' &copy; '.date("Y").' <a href="'.$this->lh->translationFor("company_url").'">'.$company_name.'</a> '.$this->lh->translationFor("all_rights_reserved").'.
 			</div>
 			</footer>';
+  $footer .= $modalPasswds;
 		$footer .= '			<!-- Modal -->
 			<!-- View Campaign -->
 			<div id="view-campaign-modal" class="modal fade" role="dialog">
