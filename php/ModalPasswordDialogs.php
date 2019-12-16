@@ -106,7 +106,6 @@ print $form;
 ?>
 <script>
 $(function() {
-	$(this).find(".modal-body").css('margin-left', '15px');
-	$(this).find(".modal-body").css('margin-right', '15px');
+	$(this).find(".modal-body").css('margin', '15px');
 });
 </script>
