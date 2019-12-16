@@ -104,3 +104,9 @@ $buttons = $okButton.$koButton;
 $form = $ui->modalFormStructure("change-password-dialog-modal", "passwordform", $lh->translationFor("change_password"), null, $fields, $buttons, "lock", "changepasswordresult");
 print $form;
 ?>
+<script>
+$(function() {
+	$(this).find(".modal-body").css('margin-left', '15px');
+	$(this).find(".modal-body").css('margin-right', '15px');
+});
+</script>
