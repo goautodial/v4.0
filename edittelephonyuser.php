@@ -602,7 +602,7 @@
 
         <?php print $ui->standardizedThemeJS(); ?>
 		<!-- Modal Dialogs -->
-		<?php include_once "./php/ModalPasswordDialogs.php" ?>
+		<?php //include_once "./php/ModalPasswordDialogs.php" ?>
 
 <script type="text/javascript">
 	$(document).ready(function() {

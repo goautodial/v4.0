@@ -528,10 +528,6 @@
 <!-- end of modals -->
 
 		<?php print $ui->standardizedThemeJS();?>
-		
-		<!-- Modal Dialogs -->
-		<?php include_once "./php/ModalPasswordDialogs.php" ?>
-		
 		<!-- JQUERY STEPS-->
   		<script src="js/dashboard/js/jquery.steps/build/jquery.steps.js"></script>
 	
