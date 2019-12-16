@@ -1419,7 +1419,7 @@ function goGetInSession(type) {
 				var int_22 = setInterval(load_INSalesHour,60000);
 				var int_23 = setInterval(load_OUTSalesPerHour,60000);			
 		
-		$('#modal_view_agent_information,#change-password-dialog-modal').on('show.bs.modal', function () {
+		$('#modal_view_agent_information').on('show.bs.modal', function () {
 			clearInterval(int_1);
 			clearInterval(int_2);
 			clearInterval(int_3);
@@ -1440,7 +1440,7 @@ function goGetInSession(type) {
 			clearInterval(int_18);
 		});
 		
-		$('#modal_view_agent_information,#change-password-dialog-modal').on('hidden.bs.modal', function () {
+		$('#modal_view_agent_information').on('hidden.bs.modal', function () {
 			int_1 = setInterval(load_totalagentscall,5000);
 			int_2 = setInterval(load_totalagentspaused,5000);
 			int_3 = setInterval(load_totalagentswaitingcall,5000);
@@ -1518,5 +1518,53 @@ function goGetInSession(type) {
 		var goAvatar = new Vue(goOptions);
 	</script>
 		<?php print $ui->creamyFooter(); ?>
+	<script>
+		$(function(){
+				if ($("#change-password-dialog-modal").length > 0) {
+						$('#change-password-dialog-modal').on('show.bs.modal', function () {
+							clearInterval(int_1);
+							clearInterval(int_2);
+							clearInterval(int_3);
+							clearInterval(int_4);
+							clearInterval(int_5);
+							clearInterval(int_6);
+							clearInterval(int_7);
+							clearInterval(int_8);
+							clearInterval(int_9);
+							clearInterval(int_10);
+							clearInterval(int_11);
+							clearInterval(int_12);
+							clearInterval(int_13);
+							clearInterval(int_14);
+							clearInterval(int_15);
+							clearInterval(int_16);
+							//clearInterval(int_17);
+							clearInterval(int_18);
+						});
+						
+						$('#change-password-dialog-modal').on('hidden.bs.modal', function () {
+							int_1 = setInterval(load_totalagentscall,5000);
+							int_2 = setInterval(load_totalagentspaused,5000);
+							int_3 = setInterval(load_totalagentswaitingcall,5000);
+							int_4 = setInterval(load_RingingCalls,15000);
+							int_5 = setInterval(load_IncomingQueue,15000);
+							int_6 = setInterval(load_AnsweredCalls,15000);
+							int_7 = setInterval(load_DroppedCalls,15000);
+							int_24 = setInterval(load_DroppedCallsPercentage,15000);
+							int_8 = setInterval(load_TotalInboundCalls,30000);
+							int_9 = setInterval(load_TotalOutboundCalls,30000);
+							int_10 = setInterval(load_LiveOutbound,30000);
+							int_11 = setInterval(load_cluster_status,60000);
+							int_12 = setInterval(load_campaigns_resources,30000);
+							int_13 = setInterval(load_campaigns_monitoring,20000);
+							int_14 = setInterval(load_agents_monitoring_summary,15000);
+							int_15 = setInterval(load_realtime_agents_monitoring,3000);
+							int_16 = setInterval(load_realtime_calls_monitoring,3000);
+							//int_17 = setInterval(load_realtime_sla_monitoring,10000);
+							int_18 = setInterval(load_view_agent_information,3000);
+						});
+				}
+		});
+	</script>
     </body>
 </html>
