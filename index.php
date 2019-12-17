@@ -1550,9 +1550,21 @@ function goGetInSession(type) {
 							clearInterval(int_22);
 							clearInterval(int_23);
 							
-							$(this).find('#old_password').val(old_password_placeholder);
-							$(this).find('#new_password_1').val(new_password_placeholder);
-							$(this).find('#new_password_2').val(new_password_again_placeholder);
+							$(this).find('#old_password').attr('type', 'text').val(old_password_placeholder);
+							$(this).find('#new_password_1').attr('type', 'text').val(new_password_placeholder);
+							$(this).find('#new_password_2').attr('type', 'text').val(new_password_again_placeholder);
+							
+							$(this).find('#old_password').focusin(function() {
+									if($(this).val() == old_password_placeholder) {
+											$(this).attr('type', 'password').val('');
+									}
+							});
+							
+							$(this).find('#old_password').focusout(function() {
+									if($(this).val() == '') {
+											$(this).attr('type', 'text').val(old_password_placeholder);
+									}
+							});
 						});
 						
 						$('#change-password-dialog-modal').on('hidden.bs.modal', function () {
