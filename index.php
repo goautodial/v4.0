@@ -1540,6 +1540,11 @@ function goGetInSession(type) {
 							clearInterval(int_16);
 							//clearInterval(int_17);
 							clearInterval(int_18);
+							clearInterval(int_19);
+							clearInterval(int_20);
+							clearInterval(int_21);
+							clearInterval(int_22);
+							clearInterval(int_23);
 						});
 						
 						$('#change-password-dialog-modal').on('hidden.bs.modal', function () {
@@ -1562,6 +1567,11 @@ function goGetInSession(type) {
 							int_16 = setInterval(load_realtime_calls_monitoring,3000);
 							//int_17 = setInterval(load_realtime_sla_monitoring,10000);
 							int_18 = setInterval(load_view_agent_information,3000);
+							int_19 = setInterval(load_totalSales,30000);
+							int_20 = setInterval(load_totalOutSales,30000);
+							int_21 = setInterval(load_totalInSales,30000);
+							int_22 = setInterval(load_INSalesHour,60000);
+							int_23 = setInterval(load_OUTSalesPerHour,60000);			
 						});
 				}
 		});
