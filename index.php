@@ -1550,43 +1550,43 @@ function goGetInSession(type) {
 							clearInterval(int_22);
 							clearInterval(int_23);
 							
-							$(this).find('#old_password').attr('type', 'text').val(old_password_placeholder);
-							$(this).find('#new_password_1').attr('type', 'text').val(new_password_placeholder);
-							$(this).find('#new_password_2').attr('type', 'text').val(new_password_again_placeholder);
+							$(this).find('#old_password').attr('type', 'text').val(old_password_placeholder).css('color', '#ccc');
+							$(this).find('#new_password_1').attr('type', 'text').val(new_password_placeholder).css('color', '#ccc');
+							$(this).find('#new_password_2').attr('type', 'text').val(new_password_again_placeholder).css('color', '#ccc');
 							
 							$(this).find('#old_password').focusin(function() {
 									if($(this).val() == old_password_placeholder) {
-											$(this).attr('type', 'password').val('');
+											$(this).attr('type', 'password').val('').css('color', 'inherit');
 									}
 							});
 							
 							$(this).find('#old_password').focusout(function() {
 									if($(this).val() == '') {
-											$(this).attr('type', 'text').val(old_password_placeholder);
+											$(this).attr('type', 'text').val(old_password_placeholder).css('color', '#ccc');
 									}
 							});
 							
 							$(this).find('#new_password_1').focusin(function() {
 									if($(this).val() == new_password_placeholder) {
-											$(this).attr('type', 'password').val('');
+											$(this).attr('type', 'password').val('').css('color', 'inherit');
 									}
 							});
 							
 							$(this).find('#new_password_1').focusout(function() {
 									if($(this).val() == '') {
-											$(this).attr('type', 'text').val(new_password_placeholder);
+											$(this).attr('type', 'text').val(new_password_placeholder).css('color', '#ccc');
 									}
 							});
 							
 							$(this).find('#new_password_2').focusin(function() {
 									if($(this).val() == new_password_again_placeholder) {
-											$(this).attr('type', 'password').val('');
+											$(this).attr('type', 'password').val('').css('color', 'inherit');
 									}
 							});
 							
 							$(this).find('#new_password_2').focusout(function() {
 									if($(this).val() == '') {
-											$(this).attr('type', 'text').val(new_password_again_placeholder);
+											$(this).attr('type', 'text').val(new_password_again_placeholder).css('color', '#ccc');
 									}
 							});
 						});
