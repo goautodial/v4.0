@@ -1565,6 +1565,30 @@ function goGetInSession(type) {
 											$(this).attr('type', 'text').val(old_password_placeholder);
 									}
 							});
+							
+							$(this).find('#new_password_1').focusin(function() {
+									if($(this).val() == new_password_placeholder) {
+											$(this).attr('type', 'password').val('');
+									}
+							});
+							
+							$(this).find('#new_password_1').focusout(function() {
+									if($(this).val() == '') {
+											$(this).attr('type', 'text').val(new_password_placeholder);
+									}
+							});
+							
+							$(this).find('#new_password_2').focusin(function() {
+									if($(this).val() == new_password_again_placeholder) {
+											$(this).attr('type', 'password').val('');
+									}
+							});
+							
+							$(this).find('#new_password_2').focusout(function() {
+									if($(this).val() == '') {
+											$(this).attr('type', 'text').val(new_password_again_placeholder);
+									}
+							});
 						});
 						
 						$('#change-password-dialog-modal').on('hidden.bs.modal', function () {
