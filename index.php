@@ -1521,6 +1521,10 @@ function goGetInSession(type) {
 	<script>
 		$(function(){
 				if ($("#change-password-dialog-modal").length > 0) {
+					 var old_password_placeholder = '<?=$lh->translationFor("insert_old_password")?>';
+					 var new_password_placeholder = '<?=$lh->translationFor("insert_new_password")?>';
+					 var new_password_again_placeholder = '<?=$lh->translationFor("insert_new_password_again")?>';
+						
 						$('#change-password-dialog-modal').on('show.bs.modal', function () {
 							clearInterval(int_1);
 							clearInterval(int_2);
@@ -1545,6 +1549,10 @@ function goGetInSession(type) {
 							clearInterval(int_21);
 							clearInterval(int_22);
 							clearInterval(int_23);
+							
+							$(this).find('#old_password').val(old_password_placeholder);
+							$(this).find('#new_password_1').val(new_password_placeholder);
+							$(this).find('#new_password_2').val(new_password_again_placeholder);
 						});
 						
 						$('#change-password-dialog-modal').on('hidden.bs.modal', function () {
