@@ -64,6 +64,11 @@ error_reporting(E_ALL)
 		$db = new \creamy\DbHandler();
 		$statsOk = $db->weHaveSomeValidStatistics();
 		$custsOk = $db->weHaveAtLeastOneCustomerOrContact();
+		$checkWebRTC = $api->CheckWebrtc($user->getUserId());
+		$use_webrtc = $_SESSION['use_webrtc'];
+		if (is_numeric($checkWebRTC)) {
+				$use_webrtc = $checkWebRTC;
+		}
 		
 		$goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
 	
@@ -1097,7 +1102,7 @@ function goGetInSession(type) {
 	var uPass = "<?php echo $_SESSION['phone_this'];?>";
 	//console.log(phone_login);
 	if (phone_login.length > 0 && phone_pass.length > 0) {
-		var use_webrtc = <?=($_SESSION['use_webrtc'] ? $_SESSION['use_webrtc'] : 0)?>;
+		var use_webrtc = <?=($use_webrtc ? $use_webrtc : 0)?>;
 		if (use_webrtc) {
 			registerPhone(phone_login, phone_pass);
 		}
