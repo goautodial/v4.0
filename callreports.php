@@ -310,7 +310,7 @@
 				$('body').append(form);  // This line is not necessary
 				$(form).submit();
 			});
-
+			filterchange();
 			$('#agent_detail_login').DataTable();
 			$('#table_agent_pdetailSM').DataTable();
 	
@@ -538,7 +538,9 @@
 				var request = "";
 				var URL = 'reports.php';
 				var campaign_ID = $("#campaign_id").val();
-				
+
+                                $('.campaign_div').show();
+	
 				$('#table').empty();
 				$(".report-loader").fadeIn("slow");				
 				
