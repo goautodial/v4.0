@@ -64,6 +64,11 @@ error_reporting(E_ALL)
 		$db = new \creamy\DbHandler();
 		$statsOk = $db->weHaveSomeValidStatistics();
 		$custsOk = $db->weHaveAtLeastOneCustomerOrContact();
+		$checkWebRTC = $api->CheckWebrtc($user->getUserId());
+		$use_webrtc = $_SESSION['use_webrtc'];
+		if (is_numeric($checkWebRTC)) {
+				$use_webrtc = $checkWebRTC;
+		}
 		
 		$goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
 	
@@ -729,7 +734,7 @@ error_reporting(E_ALL)
         /*
         * Modal Dialogs
         */
-        include_once ("./php/ModalPasswordDialogs.php");
+        //include_once ("./php/ModalPasswordDialogs.php");
 ?>
 <script src="js/dashboard/sweetalert/dist/sweetalert.min.js"></script>
 <script>
@@ -1097,7 +1102,7 @@ function goGetInSession(type) {
 	var uPass = "<?php echo $_SESSION['phone_this'];?>";
 	//console.log(phone_login);
 	if (phone_login.length > 0 && phone_pass.length > 0) {
-		var use_webrtc = <?=($_SESSION['use_webrtc'] ? $_SESSION['use_webrtc'] : 0)?>;
+		var use_webrtc = <?=($use_webrtc ? $use_webrtc : 0)?>;
 		if (use_webrtc) {
 			registerPhone(phone_login, phone_pass);
 		}
@@ -1518,5 +1523,107 @@ function goGetInSession(type) {
 		var goAvatar = new Vue(goOptions);
 	</script>
 		<?php print $ui->creamyFooter(); ?>
+	<script>
+		$(function(){
+				if ($("#change-password-dialog-modal").length > 0) {
+					 var old_password_placeholder = '<?=$lh->translationFor("insert_old_password")?>';
+					 var new_password_placeholder = '<?=$lh->translationFor("insert_new_password")?>';
+					 var new_password_again_placeholder = '<?=$lh->translationFor("insert_new_password_again")?>';
+						
+						$('#change-password-dialog-modal').on('show.bs.modal', function () {
+							clearInterval(int_1);
+							clearInterval(int_2);
+							clearInterval(int_3);
+							clearInterval(int_4);
+							clearInterval(int_5);
+							clearInterval(int_6);
+							clearInterval(int_7);
+							clearInterval(int_8);
+							clearInterval(int_9);
+							clearInterval(int_10);
+							clearInterval(int_11);
+							clearInterval(int_12);
+							clearInterval(int_13);
+							clearInterval(int_14);
+							clearInterval(int_15);
+							clearInterval(int_16);
+							//clearInterval(int_17);
+							clearInterval(int_18);
+							clearInterval(int_19);
+							clearInterval(int_20);
+							clearInterval(int_21);
+							clearInterval(int_22);
+							clearInterval(int_23);
+							
+							$(this).find('#old_password').attr('type', 'text').val(old_password_placeholder).css('color', '#ccc');
+							$(this).find('#new_password_1').attr('type', 'text').val(new_password_placeholder).css('color', '#ccc');
+							$(this).find('#new_password_2').attr('type', 'text').val(new_password_again_placeholder).css('color', '#ccc');
+							
+							$(this).find('#old_password').focusin(function() {
+									if($(this).val() == old_password_placeholder) {
+											$(this).attr('type', 'password').val('').css('color', 'inherit');
+									}
+							});
+							
+							$(this).find('#old_password').focusout(function() {
+									if($(this).val() == '') {
+											$(this).attr('type', 'text').val(old_password_placeholder).css('color', '#ccc');
+									}
+							});
+							
+							$(this).find('#new_password_1').focusin(function() {
+									if($(this).val() == new_password_placeholder) {
+											$(this).attr('type', 'password').val('').css('color', 'inherit');
+									}
+							});
+							
+							$(this).find('#new_password_1').focusout(function() {
+									if($(this).val() == '') {
+											$(this).attr('type', 'text').val(new_password_placeholder).css('color', '#ccc');
+									}
+							});
+							
+							$(this).find('#new_password_2').focusin(function() {
+									if($(this).val() == new_password_again_placeholder) {
+											$(this).attr('type', 'password').val('').css('color', 'inherit');
+									}
+							});
+							
+							$(this).find('#new_password_2').focusout(function() {
+									if($(this).val() == '') {
+											$(this).attr('type', 'text').val(new_password_again_placeholder).css('color', '#ccc');
+									}
+							});
+						});
+						
+						$('#change-password-dialog-modal').on('hidden.bs.modal', function () {
+							int_1 = setInterval(load_totalagentscall,5000);
+							int_2 = setInterval(load_totalagentspaused,5000);
+							int_3 = setInterval(load_totalagentswaitingcall,5000);
+							int_4 = setInterval(load_RingingCalls,15000);
+							int_5 = setInterval(load_IncomingQueue,15000);
+							int_6 = setInterval(load_AnsweredCalls,15000);
+							int_7 = setInterval(load_DroppedCalls,15000);
+							int_24 = setInterval(load_DroppedCallsPercentage,15000);
+							int_8 = setInterval(load_TotalInboundCalls,30000);
+							int_9 = setInterval(load_TotalOutboundCalls,30000);
+							int_10 = setInterval(load_LiveOutbound,30000);
+							int_11 = setInterval(load_cluster_status,60000);
+							int_12 = setInterval(load_campaigns_resources,30000);
+							int_13 = setInterval(load_campaigns_monitoring,20000);
+							int_14 = setInterval(load_agents_monitoring_summary,15000);
+							int_15 = setInterval(load_realtime_agents_monitoring,3000);
+							int_16 = setInterval(load_realtime_calls_monitoring,3000);
+							//int_17 = setInterval(load_realtime_sla_monitoring,10000);
+							int_18 = setInterval(load_view_agent_information,3000);
+							int_19 = setInterval(load_totalSales,30000);
+							int_20 = setInterval(load_totalOutSales,30000);
+							int_21 = setInterval(load_totalInSales,30000);
+							int_22 = setInterval(load_INSalesHour,60000);
+							int_23 = setInterval(load_OUTSalesPerHour,60000);			
+						});
+				}
+		});
+	</script>
     </body>
 </html>

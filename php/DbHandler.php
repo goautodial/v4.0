@@ -46,9 +46,10 @@ require_once('goCRMAPISettings.php');
  * @link URL http://digitalleaves.com
  */
 class DbHandler {
-    	/** Database connector */
-   	private $dbConnector;
+    /** Database connector */
+    private $dbConnector;
 	private $dbConnectorAsterisk;
+    private $dbConnectorKamailio;
 	/** Language handler */
 	private $lh;
 	private $api;
@@ -59,6 +60,7 @@ class DbHandler {
 		// Database connector
 		$this->dbConnector = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType($dbConnectorType);
 		$this->dbConnectorAsterisk = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfTypeAsterisk($dbConnectorType);
+		$this->dbConnectorKamailio = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfTypeKamailio($dbConnectorType);
 
 		// language handler
 		$locale = $this->getLocaleSetting();
@@ -305,7 +307,7 @@ class DbHandler {
                     'salt' => base64_encode($salt)
                 ];
                 $pass_hash = password_hash($password, PASSWORD_BCRYPT, $pass_options);
-                $pass_hash = substr($pass_hash, 29, 31);				
+                $pass_hash = substr($pass_hash, 29, 31);
 			} else {$pass_hash = $password;}
 
 			if ( preg_match("/Y/i", $status) ) {
@@ -479,7 +481,13 @@ class DbHandler {
 	 */
 	public function changePassword($userid, $oldpassword, $password1, $password2) {
 		// safety check
-		if ($password1 != $password2) return false;
+		if ($password1 !== $password2) return false;
+        
+        $rpasshash 			= $this->dbConnectorAsterisk->getOne("system_settings");
+        $pass_hash_enabled 	= $rpasshash['pass_hash_enabled'];
+        $pass_cost 			= $rpasshash['pass_cost'];
+        $pass_key 			= $rpasshash['pass_key'];
+        
 		// get old password hash to check both.
 		// $this->dbConnector->where("id", $userid);
 		$this->dbConnectorAsterisk->where("user_id", $userid);
@@ -488,20 +496,61 @@ class DbHandler {
 		if ($userobj) {
 			// $password_hash = $userobj["password_hash"];
 			// $status = $userobj["status"];
-			$password_hash = $userobj["pass"];
+			$password_hash = ($pass_hash_enabled > 0) ? $userobj["pass_hash"] : $userobj["pass"];
 			$status = $userobj["active"];
+            $phone_login = $userobj['phone_login'];
+            $ha1 = '';
+            $ha1b = '';
+
 			// if ($status == 1) { // user is active, check old password.
-			if ($status == 'Y' || $status == 'y') { 
+			if (strtoupper($status) === 'Y') {
 				// if (\creamy\PassHash::check_password($password_hash, $oldpassword)) {
+                if ($pass_hash_enabled > 0) {
+                    $oldpassword = $this->encrypt_passwd($oldpassword, $pass_cost, $pass_key);
+                }
+                
 				if ($password_hash == $oldpassword) {
 	                // oldpassword is correct, change password.
 	                // $newPasswordHash = \creamy\PassHash::hash($password1);
-	                $newPasswordHash = $password1;
+                    if ($pass_hash_enabled > 0) {
+                        $newPasswordHash = $this->encrypt_passwd($password1, $pass_cost, $pass_key);
+                        $data = array("pass" => '', "phone_pass" => '', "pass_hash" => $newPasswordHash);
+                    } else {
+                        $newPasswordHash = $password1;
+                        $data = Array("pass" => $newPasswordHash, "phone_pass" => $newPasswordHash, "pass_hash" => '');
+                    }
 					// $this->dbConnector->where("id", $userid);
 					$this->dbConnectorAsterisk->where("user_id", $userid);
 					// $data = Array("password_hash" => $newPasswordHash);
-					$data = Array("pass" => $newPasswordHash, "phone_pass" => $newPasswordHash);
-					return $this->dbConnectorAsterisk->update(CRM_USERS_TABLE_NAME_ASTERISK, $data);
+					$chUserPass = $this->dbConnectorAsterisk->update(CRM_USERS_TABLE_NAME_ASTERISK, $data);
+                    
+                    if ($chUserPass) {
+                        $this->dbConnector->where("setting", "GO_agent_wss_sip");
+                        $querygo 	            = $this->dbConnector->getOne("settings", "value");
+                        $realm 		            = $querygo['value'];
+                        
+                        if  ($pass_hash_enabled > 0) {
+                            $ha1 			    = md5 ("{$phone_login}:{$realm}:{$newPasswordHash}");
+                            $ha1b 			    = md5 ("{$phone_login}@{$realm}:{$realm}:{$newPasswordHash}");
+                            $newPasswordHash 	= '';
+                        }
+
+                        $this->dbConnector->where("setting", "GO_agent_domain");
+                        $rowd 					= $this->dbConnector->getOne("settings", "value");
+
+                        $domain 				= (!is_null($rowd['value']) || $rowd['value'] !== '') ? $rowd['value'] : 'goautodial.com';
+                    
+                        $datakam 				= array(
+                            "password" 				=> $newPasswordHash,
+                            "ha1" 					=> $ha1,
+                            "ha1b" 					=> $ha1b
+                        );
+                        $this->dbConnectorKamailio->where('username', $phone_login);
+                        $this->dbConnectorKamailio->where('domain', $domain);
+                        $this->dbConnectorKamailio->update('subscriber', $datakam);
+                    }
+                    
+                    return $chUserPass;
 	            } else {
 	                // oldpassword is incorrect
 	                return false;
@@ -2266,6 +2315,17 @@ class DbHandler {
 		$return = ($this->dbConnector->getRowCount() > 0) ? $result : false;
 		return $return;
 	}
+    
+    private function encrypt_passwd($password, $cost, $salt) {
+        $pass_options = [
+            'cost' => $cost,
+            'salt' => base64_encode($salt)
+        ];
+        $pass_hash = password_hash($password, PASSWORD_BCRYPT, $pass_options);
+        $pass_hash = substr($pass_hash, 29, 31);
+        
+        return $pass_hash;
+    }
 }
 
 ?>
