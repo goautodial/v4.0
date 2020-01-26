@@ -460,7 +460,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-3 control-label" for="list_desc"><?php $lh->translateText("list_description"); ?>:</label>
+						<label class="col-sm-3 control-label text-nowrap" for="list_desc"><?php $lh->translateText("list_description"); ?>:</label>
 						<div class="col-sm-9 mb">
 							<input type="text" class="form-control" name="list_desc" id="list_desc" placeholder="<?php $lh->translateText("list_description"); ?>"  value="<?php echo $next_listdesc;?>" maxlength="255" />
 						</div>
