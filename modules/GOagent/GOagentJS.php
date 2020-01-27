@@ -6923,12 +6923,12 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
         }
 
         var manual_dial_only_type_flag = '';
-        if ( (mdtype == 'ALT') || (mdtype == 'ADDR3') ) {
+        if ( (mdtype == 'ALT') || (mdtype == 'ADDR3') || (typeof $(".formMain input[name='address3']").val() !== 'undefined' || $(".formMain input[name='address3']").val() !== '') || ($(".formMain input[name='alt_phone']").val() !== '') ) {
             agent_dialed_type = mdtype;
             agent_dialed_number = mdnPhonENumbeR;
-            if (mdtype == 'ALT')
+            if (mdtype == 'ALT' || $(".formMain input[name='alt_phone']").val() !== '')
                 {manual_dial_only_type_flag = 'ALTPhone';}
-            if (mdtype == 'ADDR3')
+            if (mdtype == 'ADDR3' || $(".formMain input[name='address3']").val() !== '')
                 {manual_dial_only_type_flag = 'Address3';}
         }
 

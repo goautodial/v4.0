@@ -707,6 +707,8 @@ input:checked + .slider:before {
 												<input type="hidden" value="" name="seconds">
 												<!--CUSTOM FORM LOADED-->
 												<input type="hidden" value="0" name="FORM_LOADED">
+												<!--ADDRESS3-->
+												<input type="hidden" value="<?php echo $address3;?>" name="address3">
 												
 												<!--<div class="row">
 													<div class="col-sm-4">
