@@ -2454,7 +2454,7 @@ function btnDialHangup () {
             
             var MDtype = '';
             if ($("#DialALTPhone").is(':checked') == true) {
-                MDtype = 'ADDR3';
+                MDtype = 'ALT';
             }
             
             ManualDialNext('','','','','','0','',MDtype);
