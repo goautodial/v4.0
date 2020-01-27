@@ -7094,6 +7094,14 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     $(".formMain input[name='phone_code']").val(cust_phone_code).trigger('change');
                     cust_phone_number                       = thisVdata.phone_number;
                     $(".formMain input[name='phone_number']").val(cust_phone_number).trigger('change');
+                    if (cust_phone_number === '' && thisVdata.alt_phone !== '') {
+                        cust_phone_number = thisVdata.alt_phone;
+                        $(".formMain input[name='phone_number']").val(cust_phone_number).trigger('change');
+                    }
+                    if (cust_phone_number === '' && thisVdata.address3 !== '') {
+                        cust_phone_number = thisVdata.address3;
+                        $(".formMain input[name='phone_number']").val(cust_phone_number).trigger('change');
+                    }
                     $(".formMain input[name='title']").val(thisVdata.title);
                     cust_first_name                         = thisVdata.first_name;
                     if (cust_first_name !== '') {
