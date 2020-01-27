@@ -2452,7 +2452,12 @@ function btnDialHangup () {
             //live_customer_call = 1;
             //toggleStatus('LIVE');
             
-            ManualDialNext('','','','','','0');
+            var MDtype = '';
+            if ($("#DialALTPhone").is(':checked') == true) {
+                MDtype = 'ADDR3';
+            }
+            
+            ManualDialNext('','','','','','0','',MDtype);
         }
     }
 }
@@ -6923,15 +6928,14 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
         }
 
         var manual_dial_only_type_flag = '';
-        if ( (mdtype == 'ALT') || (mdtype == 'ADDR3') || ($(".formMain input[name='address3']").val() !== '') || ($(".formMain input[name='alt_phone']").val() !== '') ) {
+        if ( (mdtype == 'ALT') || (mdtype == 'ADDR3') ) {
             agent_dialed_type = mdtype;
             agent_dialed_number = mdnPhonENumbeR;
-            if (mdtype == 'ALT' || $(".formMain input[name='alt_phone']").val() !== '')
+            if (mdtype == 'ALT')
                 {manual_dial_only_type_flag = 'ALTPhone';}
-            if (mdtype == 'ADDR3' || $(".formMain input[name='address3']").val() !== '')
+            if (mdtype == 'ADDR3')
                 {manual_dial_only_type_flag = 'Address3';}
         }
-        console.log('manual_dial_only_type_flag', $(".formMain input[name='alt_phone']").val(), $(".formMain input[name='address3']").val());
 
         if ( ($("#LeadPreview").prop('checked')) && (active_ingroup_dial.length < 1) ) {
             reselect_preview_dial = 1;
