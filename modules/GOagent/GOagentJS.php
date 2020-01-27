@@ -8276,7 +8276,7 @@ function GetCustomFields(listid, show, getData, viewFields) {
         })
         .done(function (result) {
             if (result !== null) {
-                if (result.result == 'success') {
+                if (result.result == 'success' && result.data !== null) {
                     var customHTML = '';
                     if (typeof viewFields !== 'undefined' && viewFields) {
                         customHTML = '<div class="row"><div class="col-sm-12"><h4 style="border-bottom: 1px solid #f4f4f4; margin: 10.5px -15px; padding: 0 15px 15px;"><?=$lh->translationFor('custom_fields')?></h4></div></div>';
