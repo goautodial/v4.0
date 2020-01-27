@@ -5686,7 +5686,7 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
             if (auto_dial_level == 0) {
                 if ($("#DialALTPhone").is(':checked')) {
                     reselect_alt_dial = 1;
-                    open_dispo_screen = 0;
+                    open_dispo_screen = 1;
                 } else {
                     reselect_alt_dial = 0;
                     open_dispo_screen = 1;
@@ -5694,7 +5694,7 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
             } else {
                 if ($("#DialALTPhone").is(':checked')) {
                     reselect_alt_dial = 1;
-                    open_dispo_screen = 0;
+                    open_dispo_screen = 1;
                     auto_dial_level = 0;
                     manual_dial_in_progress = 1;
                     auto_dial_alt_dial = 1;
