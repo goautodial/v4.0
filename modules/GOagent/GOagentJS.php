@@ -2452,7 +2452,12 @@ function btnDialHangup () {
             //live_customer_call = 1;
             //toggleStatus('LIVE');
             
-            ManualDialNext('','','','','','0');
+            var MDtype = '';
+            if ($("#DialALTPhone").is(':checked') == true) {
+                MDtype = 'ALT';
+            }
+            
+            ManualDialNext('','','','','','0','',MDtype);
         }
     }
 }
@@ -5681,7 +5686,7 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
             if (auto_dial_level == 0) {
                 if ($("#DialALTPhone").is(':checked')) {
                     reselect_alt_dial = 1;
-                    open_dispo_screen = 0;
+                    open_dispo_screen = 1;
                 } else {
                     reselect_alt_dial = 0;
                     open_dispo_screen = 1;
@@ -5689,7 +5694,7 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
             } else {
                 if ($("#DialALTPhone").is(':checked')) {
                     reselect_alt_dial = 1;
-                    open_dispo_screen = 0;
+                    open_dispo_screen = 1;
                     auto_dial_level = 0;
                     manual_dial_in_progress = 1;
                     auto_dial_alt_dial = 1;
@@ -7089,6 +7094,14 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     $(".formMain input[name='phone_code']").val(cust_phone_code).trigger('change');
                     cust_phone_number                       = thisVdata.phone_number;
                     $(".formMain input[name='phone_number']").val(cust_phone_number).trigger('change');
+                    if (cust_phone_number === '' && thisVdata.alt_phone !== '') {
+                        cust_phone_number = thisVdata.alt_phone;
+                        $(".formMain input[name='phone_number']").val(cust_phone_number).trigger('change');
+                    }
+                    if (cust_phone_number === '' && thisVdata.address3 !== '') {
+                        cust_phone_number = thisVdata.address3;
+                        $(".formMain input[name='phone_number']").val(cust_phone_number).trigger('change');
+                    }
                     $(".formMain input[name='title']").val(thisVdata.title);
                     cust_first_name                         = thisVdata.first_name;
                     if (cust_first_name !== '') {
@@ -8276,7 +8289,7 @@ function GetCustomFields(listid, show, getData, viewFields) {
         })
         .done(function (result) {
             if (result !== null) {
-                if (result.result == 'success') {
+                if (result.result == 'success' && result.data !== null) {
                     var customHTML = '';
                     if (typeof viewFields !== 'undefined' && viewFields) {
                         customHTML = '<div class="row"><div class="col-sm-12"><h4 style="border-bottom: 1px solid #f4f4f4; margin: 10.5px -15px; padding: 0 15px 15px;"><?=$lh->translationFor('custom_fields')?></h4></div></div>';
