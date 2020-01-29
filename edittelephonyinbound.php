@@ -1823,7 +1823,7 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 				$ivr = $api->API_getAllIVRs();
 				$scripts = $api->API_getAllScripts();
 				$voicefiles = $api->API_getAllVoiceFiles();
-				
+				$phones = $api->API_getAllPhones();	
 				$output = $api->API_getDIDInfo($did);
 				//var_dump($ingroups);
 	
@@ -1968,23 +1968,33 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 													</select>
 												</div>
 											</div>
-												<!-- FOR AGENT UNAVAILABLE ACTION --
-												<!--IF route_unavail = EXTEN --
-													<div class="form-group" id="ru_exten" style="display: none;">
-														<label for="ru_exten" class="col-sm-3 control-label">Extension</label>
-														<div class="col-sm-9 mb">
-															<input type="text" class="form-control" name="ru_exten" id="ru_exten" value="<?php /*echo $output->data->did_pattern;?>">
-														</div>
+												<!-- FOR AGENT UNAVAILABLE ACTION -->
+												<!--IF route_unavail = EXTEN -->
+													<div class="form-group" id="ru_exten" <?php if ($output->data->user_unavailable_action  != "EXTEN") { ?> style="display: none;" <?php }?>>
+															<div class="form-group">
+                                                                                                <label for="ru_exten" class="col-sm-3 control-label"><?php $lh->translateText("custom_extension"); ?>: </label>
+                                                                                                <div class="col-sm-9 mb">
+                                                                                                        <input type="text" name="ru_exten" id="route_exten" placeholder="Extension" class="form-control" value="<?php echo $output->data->extension; ?>" required>
+                                                                                                </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                                <label for="ru_exten_context" class="col-sm-3 control-label"><?php $lh->translateText("extension_context"); ?>: </label>
+                                                                                                <div class="col-sm-9 mb">
+                                                                                                        <input type="text" name="ru_exten_context" id="ru_exten_context" placeholder="Extension Context" class="form-control" value="<?php echo $output->data->exten_context;?>" required>
+                                                                                                </div>
+                                                                                        </div>
+															<!--<input type="text" class="form-control" name="ru_exten" id="ru_exten" value="<?php //echo $output->data->did_pattern;?>">
+														</div>-->
 													</div>
-												<!--IF route_unavail = INGROUP --
-													<div class="form-group" id="ru_ingroup" style="display: none;">
+												<!--IF route_unavail = INGROUP -->
+													<div class="form-group" id="ru_ingroup" <?php if ($output->data->user_unavailable_action  != "IN_GROUP") { ?> style="display: none;" <?php }?>>
 														<label for="ru_ingroup" class="col-sm-3 control-label">Ingroup</label>
 														<div class="col-sm-9 mb">
 															<select name="ru_ingroup" id="ru_ingroup" class="form-control">
 																<?php
 																	for($i=0;$i<count($ingroups->group_id);$i++) {
 																?>
-																	<option value="<?php echo $ingroups->group_id[$i];?>">
+																	<option value="<?php echo $ingroups->group_id[$i];?>" <?php if ($ingroups->group_id[$i] == $output->data->group_id)echo "selected";?>>
 																		<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
 																	</option>									
 																<?php
@@ -1993,15 +2003,15 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 															</select>
 														</div>
 													</div>
-												<!--IF route_unavail = PHONE --
-													<div class="form-group" id="ru_phone" style="display: none;">
+												<!--IF route_unavail = PHONE -->
+													<div class="form-group" id="ru_phone" <?php if ($output->data->user_unavailable_action  != "PHONE") { ?> style="display: none;" <?php }?>>
 														<label for="exten" class="col-sm-3 control-label">Phone</label>
 														<div class="col-sm-9 mb">
 															<select name="ru_phone" id="ru_phone" class="form-control">
 																<?php
 																	for($i=0;$i<count($phones->extension);$i++) {
 																?>
-																	<option value="<?php echo $phones->extension[$i];?>">
+																	<option value="<?php echo $phones->extension[$i];?>" <?php if ($phones->extension[$i] == $output->data->phone)echo "selected";?>>
 																		<?php echo $phones->extension[$i].' - '.$phones->server_ip[$i].' - '.$phones->dialplan_number[$i];?>
 																	</option>									
 																<?php
@@ -2010,27 +2020,40 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 															</select>
 														</div>
 													</div>
-												<!--IF route_unavail = VOICEMAIL --
-													<div class="form-group" id="ru_voicemail" style="display: none;">
+												<!--IF route_unavail = VOICEMAIL -->
+													<div class="form-group" id="ru_voicemail" <?php if ($output->data->user_unavailable_action  != "VOICEMAIL") { ?> style="display: none;" <?php }?>>
 														<label for="exten" class="col-sm-3 control-label">Voicemail</label>
 														<div class="col-sm-9 mb">
-															<input type="text" class="form-control" name="exten" id="exten" value="<?php echo $output->data->did_pattern;*/?>">
+															<select name="ru_voicemail" id="voicemail_ext" class="form-control">
+                                                                                                                                 <?php
+                                                                                            			                 for($i=0;$i<count($voicemails->voicemail_id);$i++) {
+                                                                                                                		 ?>
+                                                                                                                        		<option value="<?php echo $voicemails->voicemail_id[$i];?>" <?php if ($voicemails->voicemail_id[$i] == $output->data->voicemail_ext)echo "selected";?>>
+                                                                                                                                <?php echo $voicemails->voicemail_id[$i].' - '.$voicemails->fullname[$i];?>
+                                                                                                                        </option>                                                                    
+                                                                                                                <?php
+                                                                                                                        }
+                                                                                                                ?>
+
+                                                                                                                        </select>
+															<!-- <input type="text" class="form-control" name="exten" id="exten" value="<?php echo $output->data->did_pattern;?>"> -->
 														</div>
-													</div>-->
+													</div>
 											<div class="form-group">
 												<label for="user_route_settings_ingroup" class="col-sm-3 control-label"><?php $lh->translateText("agent_route_settings"); ?>: </label>
 												<div class="col-sm-9 mb">
 													<select name="user_route_settings_ingroup" id="user_route_settings_ingroup" class="form-control">
-														<option value=""><?php $lh->translateText("-none-"); ?></option>
+														<!--<option value="AGENTDIRECT"><?php $lh->translateText("AGENTDIRECT"); ?></option>-->
 													<?php
+														
 														for($i=0;$i<count($ingroups->group_id);$i++) {
-															if ($ingroups->group_id[$i] != "AGENTDIRECT") {
+															//if ($ingroups->group_id[$i] != "AGENTDIRECT") {
 													?>
 														<option value="<?php echo $ingroups->group_id[$i];?>" <?php if ($output->data->user_route_settings_ingroup == $ingroups->group_id[$i]) echo "selected";?> >
 															<?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
 														</option>
 													<?php
-															}
+															//}
 														}
 													?>
 													</select>

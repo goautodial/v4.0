@@ -514,29 +514,47 @@
 			$filter_clean_cid_number 			= $_POST["cid_num"]; 
 			$filter_clean_cid_number 			= stripslashes($filter_clean_cid_number);
 		}
+		
+		$voicemail_ext = $_POST['route_voicemail'];
+		$ext = $_POST['route_exten'];
+		$ext_cont = $_POST['route_exten_context'];
+		$phone = $_POST['route_phone_exten'];
+		$ingroup = $_POST['route_ingroupid'];
+		$defaultAD = $_POST['user_route_settings_ingroup'];
 
-		$postfields 							= array(
-			'goAction' 								=> 'goEditDID',
-			'did_id' 								=> $modify_did,
-			'did_pattern' 							=> $did_pattern,
-			'did_description' 						=> $desc,
-			'did_route' 							=> $route,
-			'did_active' 							=> $status,
+		if($route == "AGENT"){
+			$voicemail_ext = $_POST['ru_voicemail'];
+			$ext = $_POST['ru_exten'];
+			$ext_cont = $_POST['ru_exten_context'];
+			$phone = $_POST['ru_phone'];
+			$ingroup = $_POST['ru_ingroup'];
+		}else{
+			$defaultAD = "AGENTDIRECT";
+		}
+		
+
+		$postfields = array(
+			'goAction' 						=> 'goEditDID',
+			'did_id' 						=> $modify_did,
+			'did_pattern' 						=> $did_pattern,
+			'did_description' 					=> $desc,
+			'did_route' 						=> $route,
+			'did_active' 						=> $status,
 			'filter_clean_cid_number' 				=> $filter_clean_cid_number,
-			'user' 									=> $_POST['route_agentid'],
+			'user' 							=> $_POST['route_agentid'],
 			'user_unavailable_action' 				=> $_POST['route_unavail'],
-			'user_route_settings_ingroup' 			=> $_POST['user_route_settings_ingroup'],
-			'group_id' 								=> $_POST['route_ingroupid'],
-			'phone' 								=> $_POST['route_phone_exten'],
-			'server_ip' 							=> $_POST['route_phone_server'],
-			'menu_id' 								=> $_POST['route_ivr'],
-			'voicemail_ext' 						=> $_POST['route_voicemail'],
-			'extension' 							=> $_POST['route_exten'],
-			'exten_context' 						=> $_POST['route_exten_context']
+			'user_route_settings_ingroup' 				=> $defaultAD,
+			'group_id' 						=> $ingroup,
+			'phone' 						=> $phone,
+			'server_ip' 						=> $_POST['route_phone_server'],
+			'menu_id' 						=> $_POST['route_ivr'],
+			'voicemail_ext' 					=> $voicemail_ext,
+			'extension' 						=> $ext,
+			'exten_context' 					=> $ext_cont
 		);				
 
 		$output 								= $api->API_modifyDID($postfields);
-
+		
 		if ($output->result == "success") { 
 			$status 							= 1; 
 		} else { 
