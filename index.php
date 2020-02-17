@@ -1256,7 +1256,9 @@ function goGetInSession(type) {
 					dataType: 'json',
 					success: function(JSONObject){ 
 						console.log(userid);
+						var vu_user_id = JSONObject.vu_user_id;
 						$('#modal-userid').html(JSONObject.data[0].vu_user_id);
+						//$('#modal-userid').html(JSONObject.data[0].vu_user_id);
 						//global_userid = JSONObject.data[0].vu_user_id;                                        
 						$('#modal-username').html(JSONObject.data[0].vla_user);
 						$('#modal-fullname').html(JSONObject.data[0].vu_full_name);
