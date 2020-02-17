@@ -1035,6 +1035,7 @@
 									</select>
 								</div>
 							</div>
+							<!--
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="route" ><?php $lh->translateText('did_route'); ?></label>
 								<div class="col-sm-8 mb">
@@ -1048,6 +1049,7 @@
 									</select>
 								</div>
 							</div>
+							-->
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="user_groups"><?php $lh->translateText('user_groups'); ?></label>
 								<div class="col-sm-8 mb">
@@ -1066,11 +1068,12 @@
 								</div>
 							</div>
 						</fieldset>
+						<?php /*?>
 						<h4><?php $lh->translateText('route_settings'); ?>
-                           <br>
-                           <small><?php $lh->translateText('fill_up_route'); ?></small>
-                        </h4>
-                        <fieldset>
+                        			   <br>
+			                           <small><?php $lh->translateText('fill_up_route'); ?></small>
+			                        </h4>
+			                        <fieldset>
 						<!-- IF DID ROUTE = AGENT-->
 
 							<div id="form_route_agent">
@@ -1228,6 +1231,7 @@
 								</div>
 							</div><!-- end of custom extension div -->
 						</fieldset>
+						<?php */?>
 					</div><!-- End of Step -->
 				
 				
