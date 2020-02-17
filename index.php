@@ -1256,24 +1256,26 @@ function goGetInSession(type) {
 					dataType: 'json',
 					success: function(JSONObject){ 
 						console.log(userid);
-						var vu_user_id = JSONObject.vu_user_id;
-						$('#modal-userid').html(JSONObject.data[0].vu_user_id);
-						//$('#modal-userid').html(JSONObject.data[0].vu_user_id);
-						//global_userid = JSONObject.data[0].vu_user_id;                                        
-						$('#modal-username').html(JSONObject.data[0].vla_user);
-						$('#modal-fullname').html(JSONObject.data[0].vu_full_name);
-						$('#modal-status-vu').html(JSONObject.data[0].vla_status);
-						$('#modal-campaign').html(JSONObject.data[0].vla_campaign_id);
-						$('#modal-usergroup-vu').html(JSONObject.data[0].vu_user_group);     
-						//$('#modal-userlevel-vu').html(JSONObject.data[0].vu_user_level);                                        
-						$('#modal-phonelogin-vu').html(JSONObject.data[0].vu_phone_login);
-						$('#modal-custphone').html(JSONObject.data[0].vl_phone_number);
-						$('#modal-conf-exten').html(JSONObject.data[0].vla_conf_exten);
-						$('#modal-server-ip').html(JSONObject.data[0].vla_server_ip);
-						//$('#modal-campaign_cid').html(JSONObject.data[0].campaign_cid);
-						var avatardata = '<avatar username="'+ JSONObject.data[0].vu_full_name +'" src="'+ b64image +'" :size="160"></avatar>';
-						$('#modal-avatar').html(avatardata);
-						goAvatar._init(goOptions);
+						if (typeof JSONObject.data[0].vu_user_id !== 'undefined') {
+								$('#modal-userid').html(JSONObject.data[0].vu_user_id);
+								//global_userid = JSONObject.data[0].vu_user_id;                                        
+								$('#modal-username').html(JSONObject.data[0].vla_user);
+								$('#modal-fullname').html(JSONObject.data[0].vu_full_name);
+								$('#modal-status-vu').html(JSONObject.data[0].vla_status);
+								$('#modal-campaign').html(JSONObject.data[0].vla_campaign_id);
+								$('#modal-usergroup-vu').html(JSONObject.data[0].vu_user_group);     
+								//$('#modal-userlevel-vu').html(JSONObject.data[0].vu_user_level);                                        
+								$('#modal-phonelogin-vu').html(JSONObject.data[0].vu_phone_login);
+								$('#modal-custphone').html(JSONObject.data[0].vl_phone_number);
+								$('#modal-conf-exten').html(JSONObject.data[0].vla_conf_exten);
+								$('#modal-server-ip').html(JSONObject.data[0].vla_server_ip);
+								//$('#modal-campaign_cid').html(JSONObject.data[0].campaign_cid);
+								var avatardata = '<avatar username="'+ JSONObject.data[0].vu_full_name +'" src="'+ b64image +'" :size="160"></avatar>';
+								$('#modal-avatar').html(avatardata);
+								goAvatar._init(goOptions);
+						} else {
+								$('#modal-username').html(user);
+						}
 					}
 				});                        
 			});
