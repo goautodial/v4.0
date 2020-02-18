@@ -101,7 +101,7 @@ var UnixTimeMS = 0;
 var t = new Date();
 var c = new Date();
 var refresh_interval = 1000;
-var SIPserver = '<?=$SIPserver?>';
+var SIPserver = '<?=(!empty($SIPserver) ? $SIPserver : 'kamailio')?>';
 var check_s;
 var getFields = false;
 var hangup_all_non_reserved= 1;	//set to 1 to force hangup all non-reserved channels upon Hangup Customer
@@ -2879,6 +2879,10 @@ function checkIfStillLoggedIn(logged_out, last_call) {
                             title: "<?=$lh->translationFor('logged_out')?>",
                             text: result.message,
                             type: 'warning'
+                        }, function(){
+                            setTimeout(function() {
+                                location.reload(true);
+                            }, 5000);
                         });
                     }
                 }
