@@ -548,6 +548,18 @@
 			$xfer_groups 							= stripslashes($xfer_groups);
 		}*/
 		
+		$survey_wait_sec	 						= NULL; 
+		if (isset($_POST["survey_wait_sec"])) { 
+			$survey_wait_sec 						= $_POST["survey_wait_sec"]; 
+			$survey_wait_sec 						= stripslashes($survey_wait_sec);
+		}
+		
+		$survey_no_response_action 					= NULL; 
+		if (isset($_POST["survey_no_response_action"])) { 
+			$survey_no_response_action 				= $_POST["survey_no_response_action"]; 
+			$survey_no_response_action 				= stripslashes($survey_no_response_action);
+		}
+		
 		if (is_array($_POST["closer_campaigns"])) {
 			$closerCampaigns 						= "";
 			
@@ -661,7 +673,9 @@
 			"inbound_man"								=> $inbound_man,
 			"closer_campaigns"							=> $closerCampaigns,
 			"xfer_groups" 								=> $xfergroups,
-			"use_custom_cid"							=> $use_custom_cid
+			"use_custom_cid"							=> $use_custom_cid,
+			"survey_wait_sec"							=> $survey_wait_sec,
+			"survey_no_response_action"					=> $survey_no_response_action
 		);
 		
 		$output 									= $api->API_Request("goCampaigns", $postfields);

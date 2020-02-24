@@ -2124,6 +2124,23 @@
 																		<input type="number" class="form-control" id="survey_ni_digit" name="survey_ni_digit" min="0" maxlength="10" value="<?php if(!empty($campaign->data->survey_ni_digit)){echo $campaign->data->survey_ni_digit;}else{echo "8";} ?>">
 																	</div>
 																</div>
+																<div class="form-group">
+																	<label class="col-sm-3 control-label"><?php $lh->translateText("survey_wait_seconds"); ?>:</label>
+																	<div class="col-sm-9 mb">
+																		<input type="number" class="form-control" id="survey_wait_sec" name="survey_wait_sec" min="0" maxlength="10" value="<?php if(!empty($campaign->data->survey_wait_sec)){echo $campaign->data->survey_wait_sec;}else{echo "10";} ?>">
+																	</div>
+																</div>
+																<div class="form-group">
+																	<label class="col-sm-3 control-label"><?php $lh->translateText("survey_no_response_action"); ?>:</label>
+																	<div class="col-sm-9 mb">
+																		<select id="survey_no_response_action" name="survey_no_response_action" class="form-control select2">
+																			<option value="OPTIN" <?php if($campaign->data->survey_no_response_action == "OPTIN") echo "selected";?>>OPTIN</option>
+																			<option value="OPTOUT" <?php if($campaign->data->survey_no_response_action == "OPTOUT") echo "selected";?>>OPTOUT</option>
+																			<option value="DROP" <?php if($campaign->data->survey_no_response_action == "DROP") echo "selected";?>>DROP</option>
+																		</select>
+																	</div>
+																</div>
+																
 																<!--<div class="form-group">
 																	<label class="col-sm-3 control-label">Survey Not interested audio file:</label>
 																	<div class="col-sm-7 mb">
