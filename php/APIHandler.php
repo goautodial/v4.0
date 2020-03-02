@@ -156,7 +156,7 @@ if(isset($_SESSION["user"])){
 			'hostname' => $_SERVER['REMOTE_ADDR']);
 
 		$postdata = array_merge($default_entries, $postfields);
-
+var_dump($url, $postdata);die();
 		// Call the API
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
