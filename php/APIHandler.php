@@ -122,7 +122,7 @@ if(isset($_SESSION["user"])){
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, 1);
-		//curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 0);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
@@ -169,7 +169,7 @@ if(isset($_SESSION["user"])){
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		//curl_setopt($ch, CURLOPT_CONNECTTIMEOUT , 0); //gg
-		//curl_setopt($ch, CURLOPT_TIMEOUT  , 0); //gg
+		curl_setopt($ch, CURLOPT_TIMEOUT  , 0); //gg
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
 		curl_close($ch);
