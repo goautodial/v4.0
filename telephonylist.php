@@ -1192,6 +1192,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 				mimeType:"multipart/form-data",
 				statusCode: {
 					503: function(responseObject, textStatus, errorThrown) {
+						//console.log(responseObject, textStatus, errorThrown);
 				            // Service Unavailable (503)
 				            // This code will be executed if the server returns a 503 response
 					    //alert(responseObject + textStatus);
