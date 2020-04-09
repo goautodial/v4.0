@@ -1,7 +1,7 @@
 //white-labeling
 company_url = "http://www.goautodial.com/"
 portal_title = "GOautodial Inc."
-dashboard_sub-header = "Welcome to GOautodial Inc. !"
+dashboard_sub-header = "Benvenuti in GOautodial Inc. !"
 
 // DASHBOARD
 
@@ -13,32 +13,32 @@ telephony = "Telefonia"
 campaigns = "Campagne"
 campaign_management = "Gestione campagne"
 
-call_recordings = "Call Recordings"
-play_call_recording = "Play Call Recording"
-download_call_recording = "Download Call Recording"
-call_recordings_management = "Call Recordings Management"
+call_recordings = "Registrazioni chiamate"
+play_call_recording = "Riproduci registrazione chiamata"
+download_call_recording = "Scarica registrazione chiamata"
+call_recordings_management = "Gestione registrazione chiamate"
 crm = "C . R . M"
-contacts = "Contacts"
+contacts = "Contatti"
 crm_title = "Customer Relationship Management"
-call_recordings = "Call Recordings"
-list_management = "List Management"
-contacts_call_recordings_management = "Contacts & Call Recordings Management"
+call_recordings = "Registrazioni chiamate"
+list_management = "Gestione lista"
+contacts_call_recordings_management = "Gestione Contatti e Registrazione chiamate"
 
 // MUSIC ON HOLD
 	
-music_on_hold = "Music on Hold"
-music_on_hold_management = "Music on Hold Management"
-voice_files = "Voice Files"
-voice_files_management = "Play Voice Files"
-audiofiles = "Audio Files"
-audiofiles_management = "Audio Files Management"
-support = "Support"
-call_reports = "Call Reports"
-admin_logs = "Admin Logs"
-call_times = "Call Times"
-call_times_management = "Call Times Management"
-carriers = "Carriers"
-carriers_management = "Carriers Management"
+music_on_hold = "Musica di attesa"
+music_on_hold_management = "Gestione Musica di attesa"
+voice_files = "File Voci"
+voice_files_management = "Riproduci File Voci"
+audiofiles = "File Audio"
+audiofiles_management = "Gestione File Audio"
+support = "Supporto"
+call_reports = "Report Chiamate"
+admin_logs = "Log Admin"
+call_times = "Tempi Chiamate"
+call_times_management = "Gestione Tempi Chiamate"
+carriers = "Carrier"
+carriers_management = "Gestione Carrier"
 
 // SYSTEM SETTINGS
 		
