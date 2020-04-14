@@ -65,7 +65,8 @@
 	
 	if (!empty($output->custom_fields)) {
 		$custom_fields = $output->custom_fields;
-		var_dump($custom_fields);
+		$custom_fields_values = $output->custom_fields_values;
+		var_dump($custom_fields_values);
 	}
 	
 	if (empty($is_customer) || is_null($is_customer)) {
