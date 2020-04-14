@@ -63,7 +63,7 @@
 		$is_customer 	= $output->is_customer;
 	}
 	
-	var_dump($output->custom_fields);
+	var_dump(!empty($output->custom_fields));
 	
 	if (empty($is_customer) || is_null($is_customer)) {
 		$is_customer = 0;
