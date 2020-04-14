@@ -26,6 +26,7 @@
 	
 	$api 											= \creamy\APIHandler::getInstance();
 
+	$list_id 										= $_POST["list_id"];
 	$lead_id 										= $_POST["lead_id"];
 	$first_name 									= $_POST["first_name"];
 	$middle_initial 								= $_POST["middle_initial"];
@@ -55,6 +56,9 @@
 	
 	$lead_id 										= $_POST["lead_id"];
 	$lead_id 										= stripslashes( $lead_id );
+	
+	$list_id 										= $_POST["list_id"];
+	$list_id 										= stripslashes( $list_id );
 	
 	// email
 	$email 											= NULL; 
@@ -178,7 +182,8 @@
 	}
 		
 	$postfields 									= array(	
-		"goAction" 										=> "goEditLeads",	
+		"goAction" 										=> "goEditLeads",
+		"list_id"										=> $list_id,
 		"lead_id" 										=> $lead_id, 
 		"first_name" 									=> $first_name, 
 		"middle_initial" 								=> $middle_initial, 

@@ -387,7 +387,7 @@
 											<!--LEAD ID-->
 											<input type="hidden" value="<?php echo $lead_id;?>" name="lead_id">
 											<!--LIST ID-->
-											<input type="hidden" value="<?php echo $list_id;?>" name="list_id">
+											<input type="hidden" value="<?php echo $list_id_ct;?>" name="list_id">
 											<!--ENTRY LIST ID-->
 											<input type="hidden" value="<?php echo $entry_list_id;?>" name="entry_list_id">
 											<!--VENDOR ID-->
