@@ -619,6 +619,8 @@
 													$A_multi_position 			= $fieldsvalues->multi_position;
 													$A_name_position 			= $fieldsvalues->name_position;
 													$A_field_order 				= $fieldsvalues->field_order;
+													
+													$cf_fields[]				= $A_field_label;
 
 													$field_HTML='';
 													if ($cf_count < 2) {
@@ -793,10 +795,15 @@
 													
 													$viewall .= "<div class=\"col-md-$field_COL col-sm-12\"><div class=\"mda-form-group label-floating\">\n";
 													$viewall .= " $field_HTML\n";
-													$viewall .= "</div></div>";
+													$viewall .= "</div></div>\n";
 												}
 												
 												echo $viewall;
+												
+												if (!empty($cf_fields)) {
+													$cf_fields = implode(",", $cf_fields);
+													echo "<input type=\"hidden\" value=\"$cf_fields\" name=\"custom_fields\">\n";
+												}
 												?>
 											</div>
 										</form>
