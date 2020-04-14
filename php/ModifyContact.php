@@ -202,8 +202,6 @@
 		"user_id" 										=> $user_id,
 		"custom_fields"									=> $custom_fields
     );
-	
-	var_dump($postfields);die();
 
 	$output 										= $api->API_editLeads($postfields);
 
