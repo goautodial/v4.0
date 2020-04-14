@@ -185,7 +185,7 @@
 										<?=$lh->translationFor('contact_information')?></a>
 								 </li>
 								 <?php
-								 if (!empty($output->custom_fields)) {
+								 if (!empty($custom_fields)) {
 								 ?>
 								 <li role="presentation">
 									<a href="#custom_forms" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
@@ -593,7 +593,7 @@
 								</div><!--End of Profile-->
 								
 								<?php
-								if (!empty($output->custom_fields)) {
+								if (!empty($custom_fields)) {
 								?>
 								<div id="custom_forms" role="tabpanel" class="tab-pane">
 									<fieldset>
