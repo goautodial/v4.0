@@ -63,7 +63,10 @@
 		$is_customer 	= $output->is_customer;
 	}
 	
-	var_dump(!empty($output->custom_fields));
+	if (!empty($output->custom_fields)) {
+		$custom_fields = $output->custom_fields;
+		var_dump($custom_fields);
+	}
 	
 	if (empty($is_customer) || is_null($is_customer)) {
 		$is_customer = 0;
@@ -559,6 +562,11 @@
 												</select>
 												<label for="gender"><?php $lh->translateText("disposition"); ?></label>
 											</div><!-- /.dispo -->
+										</form>
+										<form role="form" id="custom_form" class="formMain form-inline">
+											<div id="custom_fields">
+												
+											</div>
 										</form>
 									<br/>
 
