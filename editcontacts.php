@@ -791,7 +791,7 @@
 														$field_HTML .= "</SELECT>";
 													}
 													
-													$viewall .= "<div class=\"col-sm-$field_COL\"><div class=\"mda-form-group label-floating\">\n";
+													$viewall .= "<div class=\"col-md-$field_COL col-sm-12\"><div class=\"mda-form-group label-floating\">\n";
 													$viewall .= " $field_HTML\n";
 													$viewall .= "</div></div>";
 												}
@@ -964,9 +964,9 @@
 					if($('#name_form')[0].checkValidity()) {
 					    if($('#gender_form')[0].checkValidity()) {
 							if($('#contact_details_form')[0].checkValidity()) {
-								var postData = $("#name_form, #gender_form, #contact_details_form, #comment_form").serialize() + '&is_customer=' + $('#convert-customer').is(':checked') + '&user_id=' + <?php echo $user->getUserId(); ?> + '&log_user=' + log_user + '&log_group=' + log_group;
+								var postData = $("#name_form, #gender_form, #contact_details_form, #comment_form, #custom_form").serialize() + '&is_customer=' + $('#convert-customer').is(':checked') + '&user_id=' + <?php echo $user->getUserId(); ?> + '&log_user=' + log_user + '&log_group=' + log_group;
 								$.ajax({
-									url: "./php/ModifyContact.php",
+									url: "./php/ModifyContact.phpxx",
 									type: 'POST',
 									data: postData,
 									success: function(data) {
