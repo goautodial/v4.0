@@ -211,6 +211,6 @@
 		$status 									= $output->result; 
 	}
 
-	echo json_encode($status);    
+	echo json_encode($output);    
 
 ?>
