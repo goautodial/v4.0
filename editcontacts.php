@@ -594,6 +594,7 @@
 								
 								<?php
 								if (!empty($custom_fields)) {
+									var_dump($custom_fields_values['CreditCardNumber']);
 								?>
 								<div id="custom_forms" role="tabpanel" class="tab-pane">
 									<fieldset>
