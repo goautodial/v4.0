@@ -66,7 +66,6 @@
 	if (!empty($output->custom_fields)) {
 		$custom_fields = $output->custom_fields;
 		$custom_fields_values = $output->custom_fields_values;
-		var_dump($custom_fields_values);
 	}
 	
 	if (empty($is_customer) || is_null($is_customer)) {
@@ -185,6 +184,16 @@
 										<span class="fa fa-user hidden"></span>
 										<?=$lh->translationFor('contact_information')?></a>
 								 </li>
+								 <?php
+								 if (!empty($output->custom_fields)) {
+								 ?>
+								 <li role="presentation">
+									<a href="#custom_forms" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
+										<?=$lh->translationFor('custom_forms')?></a>
+								 </li>
+								 <?php
+								 }
+								 ?>
 								 <li role="presentation">
 									<a href="#comments_tab" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
 										<span class="fa fa-comments-o hidden"></span>
@@ -564,11 +573,6 @@
 												<label for="gender"><?php $lh->translateText("disposition"); ?></label>
 											</div><!-- /.dispo -->
 										</form>
-										<form role="form" id="custom_form" class="formMain form-inline">
-											<div id="custom_fields">
-												
-											</div>
-										</form>
 									<br/>
 
 								   </fieldset>
@@ -587,6 +591,22 @@
 									   </div>
 									</fieldset>
 								</div><!--End of Profile-->
+								
+								<?php
+								if (!empty($output->custom_fields)) {
+								?>
+								<div id="custom_forms" role="tabpanel" class="tab-pane">
+									<fieldset>
+										<form role="form" id="custom_form" class="formMain form-inline">
+											<div id="custom_fields">
+												
+											</div>
+										</form>
+									</fieldset>
+								</div>
+								<?php
+								}
+								?>
 									
 									<div id="comments_tab" role="tabpanel" class="tab-pane">
 										<div class="row">
