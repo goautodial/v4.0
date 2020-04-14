@@ -168,7 +168,14 @@
 	$is_customer 									= 0;
 	if ( $is_customer === "true" ) {
 		$is_customer 								= 1;
-	} 
+	}
+	
+	if ( isset($_POST["custom_fields"]) ) {
+		$c_fields = explode(",", $_POST["custom_fields"]);
+		foreach ($c_fields as $field) {
+			$custom_fields[$field] = $_POST[$field];
+		}
+	}
 		
 	$postfields 									= array(	
 		"goAction" 										=> "goEditLeads",	
@@ -192,8 +199,11 @@
 		"status" 										=> $dispo,		
 		"avatar" 										=> "",
 		"is_customer"									=> $is_customer,
-		"user_id" 										=> $user_id
+		"user_id" 										=> $user_id,
+		"custom_fields"									=> $custom_fields
     );
+	
+	var_dump($postfields);die();
 
 	$output 										= $api->API_editLeads($postfields);
 

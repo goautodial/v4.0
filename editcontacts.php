@@ -973,7 +973,7 @@
 							if($('#contact_details_form')[0].checkValidity()) {
 								var postData = $("#name_form, #gender_form, #contact_details_form, #comment_form, #custom_form").serialize() + '&is_customer=' + $('#convert-customer').is(':checked') + '&user_id=' + <?php echo $user->getUserId(); ?> + '&log_user=' + log_user + '&log_group=' + log_group;
 								$.ajax({
-									url: "./php/ModifyContact.phpxx",
+									url: "./php/ModifyContact.php",
 									type: 'POST',
 									data: postData,
 									success: function(data) {
