@@ -598,9 +598,10 @@
 								<div id="custom_forms" role="tabpanel" class="tab-pane">
 									<fieldset>
 										<form role="form" id="custom_form" class="formMain form-inline">
-											<div id="custom_fields" class="row">
+											<div id="custom_fields" style="padding-top: 10px;" class="row">
 												<?php
 												$viewall = '';
+												$cf_count = count($custom_fields);
 												foreach ($custom_fields as $idx => $fieldsvalues) {
 													$A_field_id 				= $fieldsvalues->field_id;
 													$A_field_label 				= $fieldsvalues->field_label;
@@ -620,7 +621,13 @@
 													$A_field_order 				= $fieldsvalues->field_order;
 
 													$field_HTML='';
-													$field_COL = 4;
+													if ($cf_count < 2) {
+														$field_COL = 12;
+													} else if ($cf_count < 3) {
+														$field_COL = 6;
+													} else {
+														$field_COL = 4;
+													}
 
 													if ($A_field_type=='SELECT') {
 														$field_HTML .= "<select size=1 name=$A_field_label id=$A_field_label class='mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select'>\n";
