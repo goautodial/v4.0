@@ -26,6 +26,7 @@
 	
 	$api 											= \creamy\APIHandler::getInstance();
 
+	$list_id 										= $_POST["list_id"];
 	$lead_id 										= $_POST["lead_id"];
 	$first_name 									= $_POST["first_name"];
 	$middle_initial 								= $_POST["middle_initial"];
@@ -55,6 +56,9 @@
 	
 	$lead_id 										= $_POST["lead_id"];
 	$lead_id 										= stripslashes( $lead_id );
+	
+	$list_id 										= $_POST["list_id"];
+	$list_id 										= stripslashes( $list_id );
 	
 	// email
 	$email 											= NULL; 
@@ -168,10 +172,18 @@
 	$is_customer 									= 0;
 	if ( $is_customer === "true" ) {
 		$is_customer 								= 1;
-	} 
+	}
+	
+	if ( isset($_POST["custom_fields"]) ) {
+		$c_fields = explode(",", $_POST["custom_fields"]);
+		foreach ($c_fields as $field) {
+			$custom_fields[$field] = $_POST[$field];
+		}
+	}
 		
 	$postfields 									= array(	
-		"goAction" 										=> "goEditLeads",	
+		"goAction" 										=> "goEditLeads",
+		"list_id"										=> $list_id,
 		"lead_id" 										=> $lead_id, 
 		"first_name" 									=> $first_name, 
 		"middle_initial" 								=> $middle_initial, 
@@ -192,7 +204,8 @@
 		"status" 										=> $dispo,		
 		"avatar" 										=> "",
 		"is_customer"									=> $is_customer,
-		"user_id" 										=> $user_id
+		"user_id" 										=> $user_id,
+		"custom_fields"									=> $custom_fields
     );
 
 	$output 										= $api->API_editLeads($postfields);

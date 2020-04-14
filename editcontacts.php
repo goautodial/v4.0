@@ -63,6 +63,11 @@
 		$is_customer 	= $output->is_customer;
 	}
 	
+	if (!empty($output->custom_fields)) {
+		$custom_fields = $output->custom_fields;
+		$custom_fields_values = $output->custom_fields_values;
+	}
+	
 	if (empty($is_customer) || is_null($is_customer)) {
 		$is_customer = 0;
 	}
@@ -179,6 +184,16 @@
 										<span class="fa fa-user hidden"></span>
 										<?=$lh->translationFor('contact_information')?></a>
 								 </li>
+								 <?php
+								 if (!empty($custom_fields)) {
+								 ?>
+								 <li role="presentation">
+									<a href="#custom_forms" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
+										<?=$lh->translationFor('custom_forms')?></a>
+								 </li>
+								 <?php
+								 }
+								 ?>
 								 <li role="presentation">
 									<a href="#comments_tab" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
 										<span class="fa fa-comments-o hidden"></span>
@@ -364,7 +379,7 @@
 									</div>
 								</div>
 								
-								<div id="profile" role="tabpanel" class="tab-pane active">
+								<div id="profile" role="tabpanel" class="tab-pane active" data-list-id="<?=$list_id_ct?>">
 									<fieldset>
 										<h4><a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">Edit Information</a></h4>
 										<br/>
@@ -372,7 +387,7 @@
 											<!--LEAD ID-->
 											<input type="hidden" value="<?php echo $lead_id;?>" name="lead_id">
 											<!--LIST ID-->
-											<input type="hidden" value="<?php echo $list_id;?>" name="list_id">
+											<input type="hidden" value="<?php echo $list_id_ct;?>" name="list_id">
 											<!--ENTRY LIST ID-->
 											<input type="hidden" value="<?php echo $entry_list_id;?>" name="entry_list_id">
 											<!--VENDOR ID-->
@@ -559,23 +574,229 @@
 											</div><!-- /.dispo -->
 										</form>
 									<br/>
-
 								   </fieldset>
-								   <!-- FOOTER BUTTONS -->
-									<fieldset class="footer-buttons">
-										<div style="display: inline-block; width: 220px; padding-right: 70px;">
-											<div class="material-switch pull-right" style="margin-left: 20px;">
-												<input id="convert-customer" name="convert-customer" value="0" type="checkbox"/>
-												<label for="convert-customer" class="label-primary" style="width: 0px;"></label>
-											</div>
-											<div style="font-weight: bold;"><?php $lh->translateText("convert_to_customer"); ?></div>
-										</div>
-									   <div class="col-sm-4 pull-right">
-											<a href="crm.php" type="button" class="btn btn-danger" id="cancel"><i class="fa fa-close"></i> <?php $lh->translateText('cancel'); ?> </a>
-											<button type="submit" class="btn btn-primary" name="submit" id="submit_edit_form"> <span id="update_button"><i class="fa fa-check"></i> <?php $lh->translateText('update'); ?> </span></button>
-									   </div>
-									</fieldset>
 								</div><!--End of Profile-->
+								
+								<?php
+								if (!empty($custom_fields)) {
+								?>
+								<div id="custom_forms" role="tabpanel" class="tab-pane">
+									<fieldset>
+										<form role="form" id="custom_form" class="formMain form-inline">
+											<div id="custom_fields" style="padding-top: 10px;" class="row">
+												<?php
+												$viewall = '';
+												$cf_count = count($custom_fields);
+												foreach ($custom_fields as $idx => $fieldsvalues) {
+													$A_field_id 				= $fieldsvalues->field_id;
+													$A_field_label 				= $fieldsvalues->field_label;
+													$A_field_name 				= $fieldsvalues->field_name;
+													$A_field_description 		= $fieldsvalues->field_description;
+													$A_field_rank 				= $fieldsvalues->field_rank;
+													$A_field_help 				= $fieldsvalues->field_help;
+													$A_field_type 				= $fieldsvalues->field_type;
+													$A_field_options 			= $fieldsvalues->field_options;
+													$A_field_size 				= $fieldsvalues->field_size;
+													$A_field_max 				= $fieldsvalues->field_max;
+													$A_field_default 			= $fieldsvalues->field_default;
+													$A_field_cost 				= $fieldsvalues->field_cost;
+													$A_field_required 			= $fieldsvalues->field_required;
+													$A_multi_position 			= $fieldsvalues->multi_position;
+													$A_name_position 			= $fieldsvalues->name_position;
+													$A_field_order 				= $fieldsvalues->field_order;
+													
+													$cf_fields[]				= $A_field_label;
+
+													$field_HTML='';
+													if ($cf_count < 2) {
+														$field_COL = 12;
+													} else if ($cf_count < 3) {
+														$field_COL = 6;
+													} else {
+														$field_COL = 4;
+													}
+
+													if ($A_field_type=='SELECT') {
+														$field_HTML .= "<select size=1 name=$A_field_label id=$A_field_label class='mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select'>\n";
+													}
+
+													if ($A_field_type=='MULTI'){
+														$field_HTML .= "<select MULTIPLE size=$A_field_size name=$A_field_label id=$A_field_label class='mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select'>\n";
+													}
+
+													if ( ($A_field_type=='SELECT') or ($A_field_type=='MULTI') or ($A_field_type=='RADIO') or ($A_field_type=='CHECKBOX') )
+													{
+														$A_field_options = str_replace("\r\n", "\n", $A_field_options);
+														$field_options_array = explode("\n", $A_field_options);
+
+														$field_options_count = count($field_options_array);
+														$te=0;
+														while ($te < $field_options_count)
+														{
+															if (preg_match("/,/",$field_options_array[$te])) {
+																$field_selected='';
+																$field_options_value_array = explode(",",$field_options_array[$te]);
+
+																if ( ($A_field_type=='SELECT') or ($A_field_type=='MULTI') )
+																{
+
+																	//if ($A_field_default == "$field_options_value_array[0]") {$field_selected = 'SELECTED';}
+																	if ($custom_fields_values->{$A_field_label} == "$field_options_value_array[0]") {$field_selected = 'SELECTED';}
+																	$field_option_text = (!empty($field_options_value_array[1])) ? $field_options_value_array[1] : $field_options_value_array[0];
+																	$field_HTML .= "<option value=\"$field_options_value_array[0]\" $field_selected>" . trim($field_option_text) . "</option>\n";
+																}
+
+																if ( ($A_field_type=='RADIO') or ($A_field_type=='CHECKBOX') )
+																{
+
+																	if ($A_multi_position=='VERTICAL')
+																	{
+																		$field_HTML .= " &nbsp; ";
+																	}
+
+																	//if ($A_field_default == "$field_options_value_array[0]") {$field_selected = 'CHECKED';}
+																	if ($custom_fields_values->{$A_field_label} == "$field_options_value_array[0]") {$field_selected = 'CHECKED';}
+
+																	$lblname = $A_field_label.'[]';
+
+																	$field_HTML .= "<input type=$A_field_type name=$lblname id=\"{$lblname}_{$field_options_value_array[0]}\" value=\"$field_options_value_array[0]\" $field_selected> $field_options_value_array[1]\n";
+
+
+																	if ($A_multi_position=='VERTICAL')
+																	{
+																		$field_HTML .= "<BR>\n";
+																	}
+																}
+															}
+															$te++;
+														}
+													}
+
+													if ( ($A_field_type=='SELECT') or ($A_field_type=='MULTI') )
+													{
+														$field_HTML .= "</select>\n";
+														$field_HTML .= "<label for=\"$A_field_label\">$A_field_name</label>";
+													}
+													if ($A_field_type=='TEXT')
+													{
+														if ($A_field_default=='NULL')
+														{
+															$A_field_default='';
+														}
+														$field_HTML .= "<input type=text size=$A_field_size maxlength=$A_field_max name=$A_field_label id=$A_field_label value=\"{$custom_fields_values->{$A_field_label}}\" class=\"mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched\">\n";
+														$field_HTML .= "<label for=\"$A_field_label\">$A_field_name</label>";
+													}
+													if ($A_field_type=='AREA')
+													{
+														$field_COL = 12;
+														$field_HTML .= "<textarea name=$A_field_label id=$A_field_label maxlength=$A_field_max rows=$A_field_size style='min-width: 90%' class='mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea'>{$custom_fields_values->{$A_field_label}}</textarea>\n";
+														$field_HTML .= "<label for=\"$A_field_label\">$A_field_name</label>";
+													}
+													if ($A_field_type=='DISPLAY')
+													{
+														if ($A_field_default=='NULL')
+														{
+															$A_field_default='';
+														}
+														$field_COL = 12;
+														$field_HTML .= nl2br($A_field_default) . "\n";
+													}
+													if ($A_field_type=='SCRIPT')
+													{
+														if ($A_field_options=='NULL')
+														{
+															$A_field_options='';
+														}
+														$field_COL = 12;
+														$field_HTML .= nl2br($A_field_options) . "\n";
+													}
+													if ($A_field_type=='DATE')
+													{
+														if ( (strlen($custom_fields_values->{$A_field_label})<1) or ($custom_fields_values->{$A_field_label}=='NULL') ) {$custom_fields_values->{$A_field_label}=0;}
+														$day_diff = $custom_fields_values->{$A_field_label};
+														$default_date = date("Y-m-d", mktime(date("H"),date("i"),date("s"),date("m"),date("d")+$day_diff,date("Y")));
+														$field_HTML .= "<input type=text size=11 maxlength=10 name=$A_field_label id=$A_field_label value=\"$default_date\">\n";
+														$field_HTML .= "<script language=\"JavaScript\">\n";
+														$field_HTML .= "var o_cal = new tcal ({\n";
+														$field_HTML .= "	'formname': 'form_custom_{$modifyid}',\n";
+														$field_HTML .= "	'controlname': '$A_field_label'});\n";
+														$field_HTML .= "o_cal.a_tpl.yearscroll = false;\n";
+														$field_HTML .= "</script>\n";
+														// $baseurl = base_url();
+														 //$urlcalendar = './css/images/cal.gif';
+														//$field_HTML .= "<img id=\"$A_field_label\" name=\"$A_field_label\" src=\"$urlcalendar\">";
+													}
+
+													if ($A_field_type=='TIME')
+													{
+														$minute_diff = $custom_fields_values->{$A_field_label};
+														$default_time = date("H:i:s", mktime(date("H"),date("i")+$minute_diff,date("s"),date("m"),date("d"),date("Y")));
+														$default_hour = date("H", mktime(date("H"),date("i")+$minute_diff,date("s"),date("m"),date("d"),date("Y")));
+														$default_minute = date("i", mktime(date("H"),date("i")+$minute_diff,date("s"),date("m"),date("d"),date("Y")));
+														$field_HTML .= "<input type=hidden name=$A_field_label id=$A_field_label value=\"$default_time\">";
+														$field_HTML .= "<SELECT name=HOUR_$A_field_label id=HOUR_$A_field_label  class='mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select'>";
+														$field_HTML .= "<option>00</option>";
+														$field_HTML .= "<option>01</option>";
+														$field_HTML .= "<option>02</option>";
+														$field_HTML .= "<option>03</option>";
+														$field_HTML .= "<option>04</option>";
+														$field_HTML .= "<option>05</option>";
+														$field_HTML .= "<option>06</option>";
+														$field_HTML .= "<option>07</option>";
+														$field_HTML .= "<option>08</option>";
+														$field_HTML .= "<option>09</option>";
+														$field_HTML .= "<option>10</option>";
+														$field_HTML .= "<option>11</option>";
+														$field_HTML .= "<option>12</option>";
+														$field_HTML .= "<option>13</option>";
+														$field_HTML .= "<option>14</option>";
+														$field_HTML .= "<option>15</option>";
+														$field_HTML .= "<option>16</option>";
+														$field_HTML .= "<option>17</option>";
+														$field_HTML .= "<option>18</option>";
+														$field_HTML .= "<option>19</option>";
+														$field_HTML .= "<option>20</option>";
+														$field_HTML .= "<option>21</option>";
+														$field_HTML .= "<option>22</option>";
+														$field_HTML .= "<option>23</option>";
+														$field_HTML .= "<OPTION value=\"$default_hour\" selected>$default_hour</OPTION>";
+														$field_HTML .= "</SELECT>";
+														$field_HTML .= "<SELECT name=MINUTE_$A_field_label id=MINUTE_$A_field_label  class='mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select'>";
+														$field_HTML .= "<option>00</option>";
+														$field_HTML .= "<option>05</option>";
+														$field_HTML .= "<option>10</option>";
+														$field_HTML .= "<option>15</option>";
+														$field_HTML .= "<option>20</option>";
+														$field_HTML .= "<option>25</option>";
+														$field_HTML .= "<option>30</option>";
+														$field_HTML .= "<option>35</option>";
+														$field_HTML .= "<option>40</option>";
+														$field_HTML .= "<option>45</option>";
+														$field_HTML .= "<option>50</option>";
+														$field_HTML .= "<option>55</option>";
+														$field_HTML .= "<OPTION value=\"$default_minute\" selected>$default_minute</OPTION>";
+														$field_HTML .= "</SELECT>";
+													}
+													
+													$viewall .= "<div class=\"col-md-$field_COL col-sm-12\"><div class=\"mda-form-group label-floating\">\n";
+													$viewall .= " $field_HTML\n";
+													$viewall .= "</div></div>\n";
+												}
+												
+												echo $viewall;
+												
+												if (!empty($cf_fields)) {
+													$cf_fields = implode(",", $cf_fields);
+													echo "<input type=\"hidden\" value=\"$cf_fields\" name=\"custom_fields\">\n";
+												}
+												?>
+											</div>
+										</form>
+									</fieldset>
+								</div>
+								<?php
+								}
+								?>
 									
 									<div id="comments_tab" role="tabpanel" class="tab-pane">
 										<div class="row">
@@ -594,6 +815,21 @@
 											</div>
 										</div>
 									</div>
+
+								   <!-- FOOTER BUTTONS -->
+									<fieldset class="footer-buttons">
+										<div style="display: inline-block; width: 220px; padding-right: 70px;">
+											<div class="material-switch pull-right" style="margin-left: 20px;">
+												<input id="convert-customer" name="convert-customer" value="0" type="checkbox"/>
+												<label for="convert-customer" class="label-primary" style="width: 0px;"></label>
+											</div>
+											<div style="font-weight: bold;"><?php $lh->translateText("convert_to_customer"); ?></div>
+										</div>
+									   <div class="col-sm-4 pull-right">
+											<a href="crm.php" type="button" class="btn btn-danger" id="cancel"><i class="fa fa-close"></i> <?php $lh->translateText('cancel'); ?> </a>
+											<button type="submit" class="btn btn-primary" name="submit" id="submit_edit_form"> <span id="update_button"><i class="fa fa-check"></i> <?php $lh->translateText('update'); ?> </span></button>
+									   </div>
+									</fieldset>
 								</div>
 							</div>
 
@@ -735,7 +971,7 @@
 					if($('#name_form')[0].checkValidity()) {
 					    if($('#gender_form')[0].checkValidity()) {
 							if($('#contact_details_form')[0].checkValidity()) {
-								var postData = $("#name_form, #gender_form, #contact_details_form, #comment_form").serialize() + '&is_customer=' + $('#convert-customer').is(':checked') + '&user_id=' + <?php echo $user->getUserId(); ?> + '&log_user=' + log_user + '&log_group=' + log_group;
+								var postData = $("#name_form, #gender_form, #contact_details_form, #comment_form, #custom_form").serialize() + '&is_customer=' + $('#convert-customer').is(':checked') + '&user_id=' + <?php echo $user->getUserId(); ?> + '&log_user=' + log_user + '&log_group=' + log_group;
 								$.ajax({
 									url: "./php/ModifyContact.php",
 									type: 'POST',
