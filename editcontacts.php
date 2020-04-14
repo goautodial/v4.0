@@ -574,6 +574,7 @@
 											</div><!-- /.dispo -->
 										</form>
 									<br/>
+								   </fieldset>
 								</div><!--End of Profile-->
 								
 								<?php
@@ -815,7 +816,6 @@
 										</div>
 									</div>
 
-								   </fieldset>
 								   <!-- FOOTER BUTTONS -->
 									<fieldset class="footer-buttons">
 										<div style="display: inline-block; width: 220px; padding-right: 70px;">
