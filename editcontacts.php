@@ -653,7 +653,8 @@
 																if ( ($A_field_type=='SELECT') or ($A_field_type=='MULTI') )
 																{
 
-																	if ($A_field_default == "$field_options_value_array[0]") {$field_selected = 'SELECTED';}
+																	//if ($A_field_default == "$field_options_value_array[0]") {$field_selected = 'SELECTED';}
+																	if ($custom_fields_values[$A_field_label] == "$field_options_value_array[0]") {$field_selected = 'SELECTED';}
 																	$field_option_text = (!empty($field_options_value_array[1])) ? $field_options_value_array[1] : $field_options_value_array[0];
 																	$field_HTML .= "<option value=\"$field_options_value_array[0]\" $field_selected>" . trim($field_option_text) . "</option>\n";
 																}
@@ -666,7 +667,8 @@
 																		$field_HTML .= " &nbsp; ";
 																	}
 
-																	if ($A_field_default == "$field_options_value_array[0]") {$field_selected = 'CHECKED';}
+																	//if ($A_field_default == "$field_options_value_array[0]") {$field_selected = 'CHECKED';}
+																	if ($custom_fields_values[$A_field_label] == "$field_options_value_array[0]") {$field_selected = 'CHECKED';}
 
 																	$lblname = $A_field_label.'[]';
 
@@ -694,13 +696,13 @@
 														{
 															$A_field_default='';
 														}
-														$field_HTML .= "<input type=text size=$A_field_size maxlength=$A_field_max name=$A_field_label id=$A_field_label value=\"$A_field_default\" class=\"mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched\">\n";
+														$field_HTML .= "<input type=text size=$A_field_size maxlength=$A_field_max name=$A_field_label id=$A_field_label value=\"{$custom_fields_values[$A_field_label]}\" class=\"mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched\">\n";
 														$field_HTML .= "<label for=\"$A_field_label\">$A_field_name</label>";
 													}
 													if ($A_field_type=='AREA')
 													{
 														$field_COL = 12;
-														$field_HTML .= "<textarea name=$A_field_label id=$A_field_label maxlength=$A_field_max rows=$A_field_size style='min-width: 90%' class='mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea'></textarea>\n";
+														$field_HTML .= "<textarea name=$A_field_label id=$A_field_label maxlength=$A_field_max rows=$A_field_size style='min-width: 90%' class='mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea'>{$custom_fields_values[$A_field_label]}</textarea>\n";
 														$field_HTML .= "<label for=\"$A_field_label\">$A_field_name</label>";
 													}
 													if ($A_field_type=='DISPLAY')
@@ -723,24 +725,24 @@
 													}
 													if ($A_field_type=='DATE')
 													{
-														if ( (strlen($A_field_default)<1) or ($A_field_default=='NULL') ) {$A_field_default=0;}
-															$day_diff = $A_field_default;
-															$default_date = date("Y-m-d", mktime(date("H"),date("i"),date("s"),date("m"),date("d")+$day_diff,date("Y")));
-															$field_HTML .= "<input type=text size=11 maxlength=10 name=$A_field_label id=$A_field_label value=\"$default_date\">\n";
-															$field_HTML .= "<script language=\"JavaScript\">\n";
-															$field_HTML .= "var o_cal = new tcal ({\n";
-															$field_HTML .= "	'formname': 'form_custom_{$modifyid}',\n";
-															$field_HTML .= "	'controlname': '$A_field_label'});\n";
-															$field_HTML .= "o_cal.a_tpl.yearscroll = false;\n";
-															$field_HTML .= "</script>\n";
-															// $baseurl = base_url();
-															 //$urlcalendar = './css/images/cal.gif';
-															//$field_HTML .= "<img id=\"$A_field_label\" name=\"$A_field_label\" src=\"$urlcalendar\">";
+														if ( (strlen($custom_fields_values[$A_field_label])<1) or ($custom_fields_values[$A_field_label]=='NULL') ) {$custom_fields_values[$A_field_label]=0;}
+														$day_diff = $custom_fields_values[$A_field_label];
+														$default_date = date("Y-m-d", mktime(date("H"),date("i"),date("s"),date("m"),date("d")+$day_diff,date("Y")));
+														$field_HTML .= "<input type=text size=11 maxlength=10 name=$A_field_label id=$A_field_label value=\"$default_date\">\n";
+														$field_HTML .= "<script language=\"JavaScript\">\n";
+														$field_HTML .= "var o_cal = new tcal ({\n";
+														$field_HTML .= "	'formname': 'form_custom_{$modifyid}',\n";
+														$field_HTML .= "	'controlname': '$A_field_label'});\n";
+														$field_HTML .= "o_cal.a_tpl.yearscroll = false;\n";
+														$field_HTML .= "</script>\n";
+														// $baseurl = base_url();
+														 //$urlcalendar = './css/images/cal.gif';
+														//$field_HTML .= "<img id=\"$A_field_label\" name=\"$A_field_label\" src=\"$urlcalendar\">";
 													}
 
 													if ($A_field_type=='TIME')
 													{
-														$minute_diff = $A_field_default;
+														$minute_diff = $custom_fields_values[$A_field_label];
 														$default_time = date("H:i:s", mktime(date("H"),date("i")+$minute_diff,date("s"),date("m"),date("d"),date("Y")));
 														$default_hour = date("H", mktime(date("H"),date("i")+$minute_diff,date("s"),date("m"),date("d"),date("Y")));
 														$default_minute = date("i", mktime(date("H"),date("i")+$minute_diff,date("s"),date("m"),date("d"),date("Y")));
