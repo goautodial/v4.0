@@ -600,6 +600,7 @@
 										<form role="form" id="custom_form" class="formMain form-inline">
 											<div id="custom_fields" class="row">
 												<?php
+												$viewall = '';
 												foreach ($custom_fields as $idx => $fieldsvalues) {
 													$A_field_id 				= $fieldsvalues->field_id;
 													$A_field_label 				= $fieldsvalues->field_label;
@@ -619,6 +620,7 @@
 													$A_field_order 				= $fieldsvalues->field_order;
 
 													$field_HTML='';
+													$field_COL = 4;
 
 													if ($A_field_type=='SELECT') {
 														$field_HTML .= "<select size=1 name=$A_field_label id=$A_field_label class='mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select'>\n";
@@ -677,6 +679,7 @@
 													if ( ($A_field_type=='SELECT') or ($A_field_type=='MULTI') )
 													{
 														$field_HTML .= "</select>\n";
+														$field_HTML .= "<label for=\"$A_field_label\">$A_field_name</label>";
 													}
 													if ($A_field_type=='TEXT')
 													{
@@ -689,6 +692,7 @@
 													}
 													if ($A_field_type=='AREA')
 													{
+														$field_COL = 12;
 														$field_HTML .= "<textarea name=$A_field_label id=$A_field_label maxlength=$A_field_max rows=$A_field_size style='min-width: 90%' class='mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea'></textarea>\n";
 														$field_HTML .= "<label for=\"$A_field_label\">$A_field_name</label>";
 													}
@@ -698,6 +702,7 @@
 														{
 															$A_field_default='';
 														}
+														$field_COL = 12;
 														$field_HTML .= nl2br($A_field_default) . "\n";
 													}
 													if ($A_field_type=='SCRIPT')
@@ -706,6 +711,7 @@
 														{
 															$A_field_options='';
 														}
+														$field_COL = 12;
 														$field_HTML .= nl2br($A_field_options) . "\n";
 													}
 													if ($A_field_type=='DATE')
@@ -776,13 +782,12 @@
 														$field_HTML .= "</SELECT>";
 													}
 													
-													$viewall.= " $field_HTML\n";
-													$last_field_rank=$A_field_rank;
+													$viewall .= "<div class=\"col-sm-$field_COL\"><div class=\"mda-form-group label-floating\">\n";
+													$viewall .= " $field_HTML\n";
+													$viewall .= "</div></div>";
 												}
 												
-												echo '<div class="col-sm-12"><div class="mda-form-group label-floating">';
 												echo $viewall;
-												echo '</div></div>';
 												?>
 											</div>
 										</form>
