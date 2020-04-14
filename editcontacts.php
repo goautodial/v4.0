@@ -364,7 +364,7 @@
 									</div>
 								</div>
 								
-								<div id="profile" role="tabpanel" class="tab-pane active">
+								<div id="profile" role="tabpanel" class="tab-pane active" data-list-id="<?=$list_id_ct?>">
 									<fieldset>
 										<h4><a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">Edit Information</a></h4>
 										<br/>
