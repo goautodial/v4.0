@@ -574,22 +574,6 @@
 											</div><!-- /.dispo -->
 										</form>
 									<br/>
-
-								   </fieldset>
-								   <!-- FOOTER BUTTONS -->
-									<fieldset class="footer-buttons">
-										<div style="display: inline-block; width: 220px; padding-right: 70px;">
-											<div class="material-switch pull-right" style="margin-left: 20px;">
-												<input id="convert-customer" name="convert-customer" value="0" type="checkbox"/>
-												<label for="convert-customer" class="label-primary" style="width: 0px;"></label>
-											</div>
-											<div style="font-weight: bold;"><?php $lh->translateText("convert_to_customer"); ?></div>
-										</div>
-									   <div class="col-sm-4 pull-right">
-											<a href="crm.php" type="button" class="btn btn-danger" id="cancel"><i class="fa fa-close"></i> <?php $lh->translateText('cancel'); ?> </a>
-											<button type="submit" class="btn btn-primary" name="submit" id="submit_edit_form"> <span id="update_button"><i class="fa fa-check"></i> <?php $lh->translateText('update'); ?> </span></button>
-									   </div>
-									</fieldset>
 								</div><!--End of Profile-->
 								
 								<?php
@@ -830,6 +814,22 @@
 											</div>
 										</div>
 									</div>
+
+								   </fieldset>
+								   <!-- FOOTER BUTTONS -->
+									<fieldset class="footer-buttons">
+										<div style="display: inline-block; width: 220px; padding-right: 70px;">
+											<div class="material-switch pull-right" style="margin-left: 20px;">
+												<input id="convert-customer" name="convert-customer" value="0" type="checkbox"/>
+												<label for="convert-customer" class="label-primary" style="width: 0px;"></label>
+											</div>
+											<div style="font-weight: bold;"><?php $lh->translateText("convert_to_customer"); ?></div>
+										</div>
+									   <div class="col-sm-4 pull-right">
+											<a href="crm.php" type="button" class="btn btn-danger" id="cancel"><i class="fa fa-close"></i> <?php $lh->translateText('cancel'); ?> </a>
+											<button type="submit" class="btn btn-primary" name="submit" id="submit_edit_form"> <span id="update_button"><i class="fa fa-check"></i> <?php $lh->translateText('update'); ?> </span></button>
+									   </div>
+									</fieldset>
 								</div>
 							</div>
 
