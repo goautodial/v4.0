@@ -52,10 +52,14 @@
 									<div class="">
 										<select multiple="multiple" class="select2-3 form-control" id="selected_campaigns" name="campaigns[]" style="width:100%;">';
 											if(EXPORTCALLREPORT_ALLCAMPAIGNS === "y"){
-												$display .= '<option value="ALL">--- ALL CAMPAIGNS ---</option>';
+												$display .= '<option value="ALL" selected>--- ALL CAMPAIGNS ---</option>';
 											}
 											for($i=0; $i < count($campaigns->campaign_id);$i++) {
-												$display .= '<option value="'.$campaigns->campaign_id[$i].'">'.$campaigns->campaign_id[$i].' - '.$campaigns->campaign_name[$i].'</option>';
+												$isSelected = '';
+												if ($i < 1 && EXPORTCALLREPORT_ALLCAMPAIGNS !== "y") {
+													$isSelected = ' selected';
+												}
+												$display .= '<option value="'.$campaigns->campaign_id[$i].'"'.$isSelected.'>'.$campaigns->campaign_id[$i].' - '.$campaigns->campaign_name[$i].'</option>';
 											}
 			$display .= '				 </select>
 									</div>
@@ -175,12 +179,19 @@
 				$('#submit_export').html("Downloading.....");
 				$('#submit_export').attr("disabled", true);
 				
-				toDateVal = $('#start_filterdate').val();
-				$('#export_callreport_form').append("<input type='hidden' name='fromDate' value='"+
-									toDateVal+"' />");
-				fromDateVal = $('#end_filterdate').val();
-				$('#export_callreport_form').append("<input type='hidden' name='toDate' value='"+
-									fromDateVal+"' />");
+				fromDateVal = $('#start_filterdate').val();
+				if ($('#export_callreport_form').find('input[name="fromDate"]').length < 1) {
+					$('#export_callreport_form').append("<input type='hidden' name='fromDate' value='"+fromDateVal+"' />");
+				} else {
+					$('#export_callreport_form').find('input[name="fromDate"]').val(fromDateVal);
+				}
+				
+				toDateVal = $('#end_filterdate').val();
+				if ($('#export_callreport_form').find('input[name="toDate"]').length < 1) {
+					$('#export_callreport_form').append("<input type='hidden' name='toDate' value='"+toDateVal+"' />");
+				} else {
+					$('#export_callreport_form').find('input[name="toDate"]').val(toDateVal);
+				}
 				
 				//alert($("#toDate").val());
 				
