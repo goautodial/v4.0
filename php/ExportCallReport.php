@@ -34,7 +34,7 @@ if(isset($_POST['campaigns']) && $_POST['campaigns'] != NULL){
     $campaigns = implode(",", $campaigns);
     $postfields["campaigns"] = $campaigns;
 }else{
-    $postfields["campaigns"] = "";
+    $postfields["campaigns"] = "ALL";
 }
 
 if(isset($_POST['inbounds']) && $_POST['inbounds'] != NULL){
