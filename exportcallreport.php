@@ -175,12 +175,19 @@
 				$('#submit_export').html("Downloading.....");
 				$('#submit_export').attr("disabled", true);
 				
-				toDateVal = $('#start_filterdate').val();
-				$('#export_callreport_form').append("<input type='hidden' name='fromDate' value='"+
-									toDateVal+"' />");
-				fromDateVal = $('#end_filterdate').val();
-				$('#export_callreport_form').append("<input type='hidden' name='toDate' value='"+
-									fromDateVal+"' />");
+				fromDateVal = $('#start_filterdate').val();
+				if ($('#export_callreport_form').find('input[name="fromDate"]').length < 1) {
+					$('#export_callreport_form').append("<input type='hidden' name='fromDate' value='"+fromDateVal+"' />");
+				} else {
+					$('#export_callreport_form').find('input[name="fromDate"]').val(fromDateVal);
+				}
+				
+				toDateVal = $('#end_filterdate').val();
+				if ($('#export_callreport_form').find('input[name="toDate"]').length < 1) {
+					$('#export_callreport_form').append("<input type='hidden' name='toDate' value='"+toDateVal+"' />");
+				} else {
+					$('#export_callreport_form').find('input[name="toDate"]').val(toDateVal);
+				}
 				
 				//alert($("#toDate").val());
 				
