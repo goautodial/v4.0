@@ -80,23 +80,23 @@ if($fromDate != NULL)
 
 $output = $api->API_Request("goReports", $postfields);
 
-if($output->result == "success"){
-    
-    $header = implode(",",$output->header);
-    
-    $filename = "Export_Call_Report.".date("Y-m-d").".csv";
-    
-    header('Content-type: application/csv');
-    header('Content-Disposition: attachment; filename='.$filename);
-    
-    echo $header."\n";
-    $array_rows = json_decode(json_encode($output->rows), true);
-    foreach($array_rows as $temp){
-        foreach($temp as $value){
-            echo $value.",";
-        }
-        echo "\n";
-    }
-}
-//   var_dump($output);
+//if($output->result == "success"){
+//    
+//    $header = implode(",",$output->header);
+//    
+//    $filename = "Export_Call_Report.".date("Y-m-d").".csv";
+//    
+//    header('Content-type: application/csv');
+//    header('Content-Disposition: attachment; filename='.$filename);
+//    
+//    echo $header."\n";
+//    $array_rows = json_decode(json_encode($output->rows), true);
+//    foreach($array_rows as $temp){
+//        foreach($temp as $value){
+//            echo $value.",";
+//        }
+//        echo "\n";
+//    }
+//}
+var_dump($output);
 ?>
