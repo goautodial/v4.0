@@ -107,7 +107,7 @@
 											for($i=0; $i < count($disposition->status);$i++) {
 												if($disposition->campaign_id[$i] != NULL){
 													if(in_array($disposition->status[$i], $campaigns->campaign_id)){
-														$display .= '<option value="'.$disposition->status[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
+														$display .= '<option value="'.$disposition->status_name[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
 													}
 												} else {
 													$display .= '<option value="'.$disposition->status[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
