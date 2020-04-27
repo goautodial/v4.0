@@ -107,8 +107,8 @@
 		}
 	}
 	
-	$uname = (isset($_GET['uname'])) ? $_GET['uname'] : '';
-	$upass = (isset($_GET['upass'])) ? $_GET['upass'] : '';
+	$uname = (isset($_GET['username'])) ? $_GET['username'] : '';
+	$upass = (isset($_GET['password'])) ? $_GET['password'] : '';
 ?>
 <html>
     <head>
