@@ -31,7 +31,7 @@
 	ini_set('memory_limit','2048M');
 	ini_set('upload_max_filesize', '600M');
 	ini_set('post_max_size', '600M');
-	ini_set('max_execution_time', 0);
+	ini_set('max_execution_time', 3600);
 	
 	$postfields = array(
 		'goFileMe' => curl_file_create($_FILES['file_upload']['tmp_name'], $_FILES['file_upload']['type'], $_FILES["file_upload"]["name"]),

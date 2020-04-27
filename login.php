@@ -106,6 +106,9 @@
 			}
 		}
 	}
+	
+	$uname = (isset($_GET['username'])) ? $_GET['username'] : '';
+	$upass = (isset($_GET['password'])) ? $_GET['password'] : '';
 ?>
 <html>
     <head>
@@ -155,11 +158,11 @@
         <p id="p1" style="" class="login-box-msg"><?php $lh->translateText("sign_in"); ?></p>
         <form action="" method="post">
           <div class="form-group has-feedback">
-            <input id="input1" type="text" style="" class="form-control" name="username" placeholder="<?php $lh->translateText("username_or_email"); ?>"/>
+            <input id="input1" type="text" style="" class="form-control" name="username" placeholder="<?php $lh->translateText("username_or_email"); ?>" value="<?=$uname?>"/>
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <input id="input2" type="password" style="" name="password" class="form-control" placeholder="<?php $lh->translateText("password"); ?>"/>
+            <input id="input2" type="password" style="" name="password" class="form-control" placeholder="<?php $lh->translateText("password"); ?>" value="<?=$upass?>"/>
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
           </div>
 	    	<div name="error-message" style="color: red;">
