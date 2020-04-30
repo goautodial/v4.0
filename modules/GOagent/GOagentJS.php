@@ -3596,12 +3596,18 @@ function CheckForIncoming () {
             $(".formMain input[name='title']").val(this_VDIC_data.title).trigger('change');
             if (this_VDIC_data.first_name !== '') {
                 $("#cust_full_name a[id='first_name']").editable('setValue', this_VDIC_data.first_name, true);
+            } else {
+                $("#cust_full_name a[id='first_name']").editable('setValue', null, true);
             }
             if (this_VDIC_data.middle_initial !== '') {
                 $("#cust_full_name a[id='middle_initial']").editable('setValue', this_VDIC_data.middle_initial, true);
+            } else {
+                $("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);
             }
             if (this_VDIC_data.last_name !== '') {
                 $("#cust_full_name a[id='last_name']").editable('setValue', this_VDIC_data.last_name, true);
+            } else {
+                $("#cust_full_name a[id='last_name']").editable('setValue', null, true);
             }
 
             $(".formMain input[name='address1']").val(this_VDIC_data.address1).trigger('change');
@@ -4917,12 +4923,15 @@ function UpdateFieldsData() {
             var regUDfirst_name = new RegExp("first_name,","ig");
             if (fields_list.match(regUDfirst_name))
                 {$("#cust_full_name a[id='first_name']").editable('setValue', UDfieldsData.first_name, true);}
+            else {$("#cust_full_name a[id='first_name']").editable('setValue', null, true);}
             var regUDmiddle_initial = new RegExp("middle_initial,","ig");
             if (fields_list.match(regUDmiddle_initial))
                 {$("#cust_full_name a[id='middle_initial']").editable('setValue', UDfieldsData.middle_initial, true);}
+            else {$("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);}
             var regUDlast_name = new RegExp("last_name,","ig");
             if (fields_list.match(regUDlast_name))
                 {$("#cust_full_name a[id='last_name']").editable('setValue', UDfieldsData.last_name, true);}
+            else {$("#cust_full_name a[id='last_name']").editable('setValue', null, true);}
             var regUDaddress1 = new RegExp("address1,","ig");
             if (fields_list.match(regUDaddress1))
                 {$(".formMain input[name='address1']").val(UDfieldsData.address1);}
@@ -7110,14 +7119,20 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     cust_first_name                         = thisVdata.first_name;
                     if (cust_first_name !== '') {
                         $("#cust_full_name a[id='first_name']").editable('setValue', cust_first_name, true);
+                    } else {
+                        $("#cust_full_name a[id='first_name']").editable('setValue', null, true);
                     }
                     cust_middle_initial                     = thisVdata.middle_initial;
                     if (cust_middle_initial != '') {
                         $("#cust_full_name a[id='middle_initial']").editable('setValue', cust_middle_initial, true);
+                    } else {
+                        $("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);
                     }
                     cust_last_name                          = thisVdata.last_name;
                     if (cust_last_name !== '') {
                         $("#cust_full_name a[id='last_name']").editable('setValue', cust_last_name, true);
+                    } else {
+                        $("#cust_full_name a[id='last_name']").editable('setValue', null, true);
                     }
                     
                     // ECCS Customization
