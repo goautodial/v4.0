@@ -2061,8 +2061,9 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
         }
     });
     
-    $("a[id='last_name']").on('click', function() {
-        console.log('test');
+    $(".isDisabled a").on('click', function(e) {
+        e.preventDefault();
+        return false;
     });
 });
 
