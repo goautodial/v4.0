@@ -2062,9 +2062,8 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
     });
     
     $("#cust_full_name a").on('click', function(e) {
-        //$(this).editable('hide');
         if ($("#cust_full_name").hasClass('isDisabled')) {
-            console.log('testing');
+            $(this).editable('hide');
         }
     });
 });
@@ -6545,7 +6544,8 @@ function CustomerData_update() {
         $(".formMain #custom_fields [id^='custom_']").prop('checked', false);
         $('.input-disabled').prop('disabled', true);
         $('.input-phone-disabled').prop('disabled', true);
-        $('#cust_full_name .editable').editable('disable');
+        //$('#cust_full_name .editable').editable('disable');
+        $("#cust_full_name").addClass('isDisabled');
         $('.hide_div').hide();
         $("input:required, select:required").removeClass("required_div");
     });
@@ -10297,7 +10297,8 @@ function minimizeModal(modal_id) {
     if (disable_alter_custphone == 'N') {
         $('.input-phone-disabled').prop('disabled', false);
     }
-    $('#cust_full_name .editable').editable('enable');
+    //$('#cust_full_name .editable').editable('enable');
+    $("#cust_full_name").removeClass('isDisabled');
     $("input:required, select:required").addClass("required_div");
     
     var txtBox=document.getElementById("first_name" );

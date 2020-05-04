@@ -1964,7 +1964,8 @@ input:checked + .slider:before {
 								} else {
 										$('.input-phone-disabled').prop('disabled', false);
 								}
-								$('#cust_full_name .editable').editable('enable');
+								//$('#cust_full_name .editable').editable('enable');
+								$("#cust_full_name").removeClass('isDisabled');
 				    //$('.hide_div').show();
 				    $("input:required, select:required").addClass("required_div");
 				    $('#edit-profile').addClass('hidden');
