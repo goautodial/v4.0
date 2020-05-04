@@ -6209,7 +6209,7 @@ function DispoSelectSubmit() {
             
             //$("#cust_full_name").html('');
             $("#cust_full_name").addClass('hidden');
-            $("#cust_number").empty();
+            $("#cust_number").empty().html('(000)000-0000');
 	    <?php if(ECCS_BLIND_MODE === 'y'){ ?> $("span#span-cust-number").addClass("hidden");  $("#cust_number").val(''); <?php } ?>
             $("#cust_avatar").html(goGetAvatar());
             //goAvatar._init(goOptions);
@@ -6378,7 +6378,7 @@ function ManualDialSkip() {
                     custchannellive = 1;
                     
                     $("#cust_full_name").addClass('hidden');
-                    $("#cust_number").empty();
+                    $("#cust_number").empty().html('(000)000-0000');
 		    <?php if(ECCS_BLIND_MODE === 'y'){ ?> $("span#span-cust-number").addClass("hidden");  $("#cust_number").val(''); <?php } ?>
                     $("#cust_avatar").html(goGetAvatar());
                     //goAvatar._init(goOptions);

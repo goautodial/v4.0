@@ -647,7 +647,7 @@ input:checked + .slider:before {
 
 									<?php } else { ?>
                                                                         <!-- /.ECCS Customization -->
-									<span id="cust_number"></span>
+									<span id="cust_number">(000)000-0000</span>
 									<?php } ?>
 								</p>
 						            </div>
