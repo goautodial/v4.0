@@ -1915,9 +1915,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             }
             $.when(this.render(response))
             .then($.proxy(function() {
-                if (!this.options.isAgent) {
-                    this.handleEmpty();
-                }
+                //this.handleEmpty();
             }, this));
         },
         
