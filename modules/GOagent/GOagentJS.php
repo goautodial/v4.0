@@ -6111,9 +6111,9 @@ function DispoSelectSubmit() {
             }
             $(".formMain input[name='phone_number']").val('').trigger('change');
             $(".formMain input[name='title']").val('').trigger('change');
-            $("#cust_full_name a[id='first_name']").editable('setValue', '   ', true);
-            $("#cust_full_name a[id='middle_initial']").editable('setValue', '   ', true);
-            $("#cust_full_name a[id='last_name']").editable('setValue', '   ', true);
+            $("#cust_full_name a[id='first_name']").editable('setValue', null, true);
+            $("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);
+            $("#cust_full_name a[id='last_name']").editable('setValue', null, true);
 	    <?php
                  if(ECCS_BLIND_MODE === 'y'){
             ?>
@@ -6208,7 +6208,7 @@ function DispoSelectSubmit() {
             $("#SecondsDISP").html('0');
             
             //$("#cust_full_name").html('');
-            $("#cust_full_name").addClass('hidden');
+            ///////$("#cust_full_name").addClass('hidden');
             $("#cust_number").empty().html('(000)000-0000');
 	    <?php if(ECCS_BLIND_MODE === 'y'){ ?> $("span#span-cust-number").addClass("hidden");  $("#cust_number").val(''); <?php } ?>
             $("#cust_avatar").html(goGetAvatar());
@@ -6343,9 +6343,9 @@ function ManualDialSkip() {
                     }
                     $(".formMain input[name='phone_number']").val('');
                     $(".formMain input[name='title']").val('');
-                    $("#cust_full_name a[id='first_name']").editable('setValue', '   ', true);
-                    $("#cust_full_name a[id='middle_initial']").editable('setValue', '   ', true);
-                    $("#cust_full_name a[id='last_name']").editable('setValue', '   ', true);
+                    $("#cust_full_name a[id='first_name']").editable('setValue', null, true);
+                    $("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);
+                    $("#cust_full_name a[id='last_name']").editable('setValue', null, true);
                     //$(".formMain input[name='first_name.value		='';
                     //$(".formMain input[name='middle_initial.value	='';
                     //$(".formMain input[name='last_name.value		='';
@@ -6377,7 +6377,7 @@ function ManualDialSkip() {
                     previous_dispo = '';
                     custchannellive = 1;
                     
-                    $("#cust_full_name").addClass('hidden');
+                    ///////$("#cust_full_name").addClass('hidden');
                     $("#cust_number").empty().html('(000)000-0000');
 		    <?php if(ECCS_BLIND_MODE === 'y'){ ?> $("span#span-cust-number").addClass("hidden");  $("#cust_number").val(''); <?php } ?>
                     $("#cust_avatar").html(goGetAvatar());
