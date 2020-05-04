@@ -234,7 +234,7 @@ function response($order_id,$amount,$response_code,$response_desc){
 			$(function() {
 			//turn to inline mode
 			//$.fn.editable.defaults.mode = 'inline';    //buttons
-			$.fn.editable.defaults.disabled = true;
+			//$.fn.editable.defaults.disabled = true;
 			$.fn.editableform.buttons =
 				'<button type="submit" class="btn btn-primary btn-sm editable-submit" style="padding: 8px 10px;">'+
 					'<i class="fa fa-check"></i>'+
@@ -625,7 +625,7 @@ input:checked + .slider:before {
 										</div>
 										<div class="col-lg-11 col-md-11 col-sm-10">
 								<!-- ECCS Customization-->
-						  <h4 id="cust_full_name" class="hidden">
+						  <h4 id="cust_full_name" class="isDisabled">
 									<?php if(ECCS_BLIND_MODE === 'n'){ ?>
 									<span id="first_name_label" class="hidden"><?=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name"></a> <span id="middle_initial_label" class="hidden"><?=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial"></a> <span id="last_name_label" class="hidden"><?=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name"></a>
 									<?php } ?>
@@ -1968,7 +1968,7 @@ input:checked + .slider:before {
 								
 								$('#cust_full_name .editable').each(function() {
 									var thisXvalue = $(this).html();
-									if (thisXvalue == '   ') {
+									if (thisXvalue.length < 1) {
 										$(this).css('text-decoration', 'underline dashed');
 									} else {
 										$(this).css('text-decoration', 'none');
@@ -2761,6 +2761,10 @@ input:checked + .slider:before {
 					$("[data-toggle='control-sidebar']").attr("title", "Enter to Show Login Tab");
 				}
 				
+				$('.isDisabled').on('click', function(e) {
+					e.stopPropagation();
+					return false;
+				});
 			});
 		</script>
 		<?php } //end if ECCS_BLIND_MODE ?>
