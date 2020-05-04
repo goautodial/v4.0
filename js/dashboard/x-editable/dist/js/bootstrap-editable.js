@@ -1664,7 +1664,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         **/         
         disable: function() {
             this.options.disabled = true;
-            hideThis = (hideThis === undefined) ? true : hideThis;
+            console.log(this.options.isAgent);
             if (!this.options.isAgent) {
                 this.hide();
                 this.handleEmpty(this.isEmpty);
