@@ -2763,6 +2763,7 @@ input:checked + .slider:before {
 				
 				$('.isDisabled a').on('click', function(e) {
 					e.stopPropagation();
+					console.log('test');
 					return false;
 				});
 			});
