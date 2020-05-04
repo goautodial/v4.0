@@ -235,6 +235,7 @@ function response($order_id,$amount,$response_code,$response_desc){
 			//turn to inline mode
 			//$.fn.editable.defaults.mode = 'inline';    //buttons
 			//$.fn.editable.defaults.disabled = true;
+			$.fn.editable.defaults.isAgent = true;
 			$.fn.editableform.buttons =
 				'<button type="submit" class="btn btn-primary btn-sm editable-submit" style="padding: 8px 10px;">'+
 					'<i class="fa fa-check"></i>'+
@@ -1984,7 +1985,6 @@ input:checked + .slider:before {
 				    //$('input[name="first_name"]').focus();
 								editProfileEnabled = true;
 				});
-				$('#cust_full_name .editable').editable('option', 'isAgent', true);
 				$('#cust_full_name .editable').editable('disable', false);
 
 				$("#submit_edit_form").click(function(){

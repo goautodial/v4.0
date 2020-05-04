@@ -1662,11 +1662,10 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         Disables editable
         @method disable()
         **/         
-        disable: function(hideThis) {
+        disable: function() {
             this.options.disabled = true;
             hideThis = (hideThis === undefined) ? true : hideThis;
-            console.log(this.options.isAgent);
-            if (hideThis) {
+            if (!this.options.isAgent) {
                 this.hide();
                 this.handleEmpty(this.isEmpty);
             }
@@ -2316,7 +2315,11 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @since 1.4.5        
         @default #FFFF80 
         **/
-        highlight: '#FFFF80'
+        highlight: '#FFFF80',
+        /**
+        Added by Chris
+        **/
+        isAgent: false
     };
     
 }(window.jQuery));
