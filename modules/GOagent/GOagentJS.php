@@ -2062,7 +2062,7 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
     });
     
     $(".isDisabled a").on('click', function(e) {
-        console.log('test');
+        $(this).editable('hide');
     });
 });
 
