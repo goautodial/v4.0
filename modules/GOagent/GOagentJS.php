@@ -2062,8 +2062,7 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
     });
     
     $(".isDisabled a").on('click', function(e) {
-        e.preventDefault();
-        return false;
+        console.log('test');
     });
 });
 
