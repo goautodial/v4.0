@@ -1912,11 +1912,11 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             if(this.container) {
                 this.container.option('value', this.value);
             }
+            console.log('rendering', this.render(response));
             $.when(this.render(response))
             .then($.proxy(function() {
                 this.handleEmpty();
             }, this));
-            console.log(response);
         },
         
         /**
