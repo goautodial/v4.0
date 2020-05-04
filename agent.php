@@ -1984,6 +1984,7 @@ input:checked + .slider:before {
 				    //$('input[name="first_name"]').focus();
 								editProfileEnabled = true;
 				});
+				$('#cust_full_name .editable').editable('option', 'isAgent', true);
 				$('#cust_full_name .editable').editable('disable', false);
 
 				$("#submit_edit_form").click(function(){
