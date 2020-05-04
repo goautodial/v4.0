@@ -461,7 +461,10 @@ function response($order_id,$amount,$response_code,$response_desc){
                         }
                         .editableform .form-group {
                                 padding: 0 !important;
-                        }	
+                        }
+			.editable-disabled {
+					color: #000 !important;
+			}
 	</style>
 
 	<!-- ECCS Customiztion -->
@@ -625,7 +628,7 @@ input:checked + .slider:before {
 										</div>
 										<div class="col-lg-11 col-md-11 col-sm-10">
 								<!-- ECCS Customization-->
-						  <h4 id="cust_full_name" class="isDisabled">
+						  <h4 id="cust_full_name">
 									<?php if(ECCS_BLIND_MODE === 'n'){ ?>
 									<span id="first_name_label" class="hidden"><?=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name"></a> <span id="middle_initial_label" class="hidden"><?=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial"></a> <span id="last_name_label" class="hidden"><?=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name"></a>
 									<?php } ?>
@@ -1981,6 +1984,7 @@ input:checked + .slider:before {
 				    //$('input[name="first_name"]').focus();
 								editProfileEnabled = true;
 				});
+				$('#cust_full_name .editable').editable('disable', false);
 
 				$("#submit_edit_form").click(function(){
 				//alert("User Created!");
@@ -2760,12 +2764,6 @@ input:checked + .slider:before {
 				} else {
 					$("[data-toggle='control-sidebar']").attr("title", "Enter to Show Login Tab");
 				}
-				
-				$('.isDisabled a').click(function(e) {
-					e.stopPropagation();
-					console.log('test');
-					return false;
-				});
 			});
 		</script>
 		<?php } //end if ECCS_BLIND_MODE ?>
