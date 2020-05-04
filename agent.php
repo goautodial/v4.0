@@ -2761,7 +2761,7 @@ input:checked + .slider:before {
 					$("[data-toggle='control-sidebar']").attr("title", "Enter to Show Login Tab");
 				}
 				
-				$('.isDisabled').on('click', function(e) {
+				$('.isDisabled a').on('click', function(e) {
 					e.stopPropagation();
 					return false;
 				});
