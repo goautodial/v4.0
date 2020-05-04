@@ -4208,3 +4208,8 @@ label span{
     padding-left: 10px;
     font-weight: normal;
 }
+
+#cust_full_name.isDisabled a, #cust_full_name.isDisabled a:hover, #cust_full_name.isDisabled a:visited {
+  color: #fff !important;
+  cursor: default !important;
+}
