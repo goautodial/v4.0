@@ -1985,7 +1985,7 @@ input:checked + .slider:before {
 				    //$('input[name="first_name"]').focus();
 								editProfileEnabled = true;
 				});
-				$('#cust_full_name .editable').editable('disable', false);
+				//$('#cust_full_name .editable').editable('disable');
 
 				$("#submit_edit_form").click(function(){
 				//alert("User Created!");
