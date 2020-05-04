@@ -2061,9 +2061,11 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
         }
     });
     
-    $(".isDisabled a").on('click', function(e) {
+    $("#cust_full_name a").on('click', function(e) {
         //$(this).editable('hide');
-        console.log('testing');
+        if ($("#cust_full_name").hasClass('isDisabled')) {
+            console.log('testing');
+        }
     });
 });
 
