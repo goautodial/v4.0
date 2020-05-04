@@ -1662,9 +1662,12 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         Disables editable
         @method disable()
         **/         
-        disable: function() {
-            this.options.disabled = true; 
-            this.hide();           
+        disable: function(hideThis) {
+            this.options.disabled = true;
+            hideThis = (hideThis === undefined) ? true : hideThis;
+            if (hideThis) {
+                this.hide();
+            }
             this.$element.addClass('editable-disabled');
             this.handleEmpty(this.isEmpty);
             //do not stop focus on this element
