@@ -463,7 +463,7 @@ function response($order_id,$amount,$response_code,$response_desc){
                                 padding: 0 !important;
                         }
 			.editable-disabled {
-					color: #000 !important;
+					color: #fff !important;
 			}
 	</style>
 
