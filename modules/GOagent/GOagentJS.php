@@ -2060,6 +2060,10 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
             return false;
         }
     });
+    
+    $("a[id='last_name']").on('click', function() {
+        console.log('test');
+    });
 });
 
 function checkSidebarIfOpen(startUp) {

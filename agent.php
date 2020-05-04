@@ -195,7 +195,7 @@ function response($order_id,$amount,$response_code,$response_desc){
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>		
         <!-- X-Editable -->
         <link rel="stylesheet" src="js/dashboard/x-editable/dist/css/bootstrap-editable.css">
-        <script type="text/javascript" src="js/dashboard/x-editable/dist/js/bootstrap-editable.js"></script>
+        <script type="text/javascript" src="js/dashboard/x-editable/dist/js/bootstrap-editable.min.js"></script>
 
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
