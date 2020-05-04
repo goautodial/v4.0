@@ -1904,6 +1904,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @param {boolean} convertStr whether to convert value from string to internal format
         **/         
         setValue: function(value, convertStr, response) {
+            console.log(value);
             if(convertStr) {
                 this.value = this.input.str2value(value);
             } else {
