@@ -30,5 +30,5 @@
         $agent									= 0;
     }
         
-    echo number_format($agent); 
+    echo json_encode($agent); 
 ?>

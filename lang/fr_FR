@@ -826,6 +826,7 @@ campaign_type = "Type de campagne"
 did_tfn_extension = "Extension SDA/TFN"
 call_route = "Route d'appel"
 ingroup = "Groupe entrant"
+copy_campaign = "Campagne de copie"
 // IVR = "IVR"
 
 ivr = "IVR"

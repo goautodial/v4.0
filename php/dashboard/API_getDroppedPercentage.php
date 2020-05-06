@@ -41,5 +41,5 @@
         	$output                                                                         = 0;
 	}
 
-    echo number_format($output);
+    echo json_encode($output);
 ?>
