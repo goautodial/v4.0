@@ -2061,11 +2061,11 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
         }
     });
     
-    $("#cust_full_name a").on('click', function(e) {
-        if ($("#cust_full_name").hasClass('isDisabled')) {
-            $(this).editable('hide');
-        }
-    });
+    //$("#cust_full_name a").on('click', function(e) {
+    //    if ($("#cust_full_name").hasClass('isDisabled')) {
+    //        $(this).editable('hide');
+    //    }
+    //});
 });
 
 function checkSidebarIfOpen(startUp) {
@@ -3601,21 +3601,27 @@ function CheckForIncoming () {
             $(".formMain input[name='phone_number']").val(cust_phone_number).trigger('change');
             $(".formMain input[name='title']").val(this_VDIC_data.title).trigger('change');
             if (this_VDIC_data.first_name !== '') {
-                $("#cust_full_name a[id='first_name']").editable('setValue', this_VDIC_data.first_name, true);
+                //$("#cust_full_name a[id='first_name']").editable('setValue', this_VDIC_data.first_name, true);
+                $(".formMain input[name='first_name']").val(this_VDIC_data.first_name).trigger('change');
+                $("#cust_full_name a[id='first_name']").html(this_VDIC_data.first_name);
             } else {
-                $("#cust_full_name a[id='first_name']").editable('setValue', null, true);
+                //$("#cust_full_name a[id='first_name']").editable('setValue', null, true);
                 $("#cust_full_name a[id='first_name']").html('Firstname');
             }
             if (this_VDIC_data.middle_initial !== '') {
-                $("#cust_full_name a[id='middle_initial']").editable('setValue', this_VDIC_data.middle_initial, true);
+                //$("#cust_full_name a[id='middle_initial']").editable('setValue', this_VDIC_data.middle_initial, true);
+                $(".formMain input[name='middle_initial']").val(this_VDIC_data.middle_initial).trigger('change');
+                $("#cust_full_name a[id='middle_initial']").html(this_VDIC_data.middle_initial);
             } else {
-                $("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);
+                //$("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);
                 $("#cust_full_name a[id='middle_initial']").html('M.I.');
             }
             if (this_VDIC_data.last_name !== '') {
-                $("#cust_full_name a[id='last_name']").editable('setValue', this_VDIC_data.last_name, true);
+                //$("#cust_full_name a[id='last_name']").editable('setValue', this_VDIC_data.last_name, true);
+                $(".formMain input[name='last_name']").val(this_VDIC_data.last_name).trigger('change');
+                $("#cust_full_name a[id='last_name']").html(this_VDIC_data.last_name);
             } else {
-                $("#cust_full_name a[id='last_name']").editable('setValue', null, true);
+                //$("#cust_full_name a[id='last_name']").editable('setValue', null, true);
                 $("#cust_full_name a[id='last_name']").html('Lastname');
             }
 
@@ -4930,24 +4936,33 @@ function UpdateFieldsData() {
             if (fields_list.match(regUDtitle))
                 {$(".formMain input[name='title']").val(UDfieldsData.title);}
             var regUDfirst_name = new RegExp("first_name,","ig");
-            if (fields_list.match(regUDfirst_name))
-                {$("#cust_full_name a[id='first_name']").editable('setValue', UDfieldsData.first_name, true);}
+            if (fields_list.match(regUDfirst_name)) {
+                //$("#cust_full_name a[id='first_name']").editable('setValue', UDfieldsData.first_name, true);
+                $(".formMain input[name='first_name']").val(UDfieldsData.first_name);
+                $("#cust_full_name a[id='first_name']").html(UDfieldsData.first_name);
+            }
             else {
-                $("#cust_full_name a[id='first_name']").editable('setValue', null, true);
+                //$("#cust_full_name a[id='first_name']").editable('setValue', null, true);
                 $("#cust_full_name a[id='first_name']").html('Firstname');
             }
             var regUDmiddle_initial = new RegExp("middle_initial,","ig");
-            if (fields_list.match(regUDmiddle_initial))
-                {$("#cust_full_name a[id='middle_initial']").editable('setValue', UDfieldsData.middle_initial, true);}
+            if (fields_list.match(regUDmiddle_initial)) {
+                //$("#cust_full_name a[id='middle_initial']").editable('setValue', UDfieldsData.middle_initial, true);
+                $(".formMain input[name='middle_initial']").val(UDfieldsData.middle_initial);
+                $("#cust_full_name a[id='middle_initial']").html(UDfieldsData.middle_initial);
+            }
             else {
-                $("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);
+                //$("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);
                 $("#cust_full_name a[id='middle_initial']").html('M.I.');
             }
             var regUDlast_name = new RegExp("last_name,","ig");
-            if (fields_list.match(regUDlast_name))
-                {$("#cust_full_name a[id='last_name']").editable('setValue', UDfieldsData.last_name, true);}
+            if (fields_list.match(regUDlast_name)) {
+                //$("#cust_full_name a[id='last_name']").editable('setValue', UDfieldsData.last_name, true);
+                $(".formMain input[name='last_name']").val(UDfieldsData.last_name);
+                $("#cust_full_name a[id='last_name']").html(UDfieldsData.last_name);
+            }
             else {
-                $("#cust_full_name a[id='last_name']").editable('setValue', null, true);
+                //$("#cust_full_name a[id='last_name']").editable('setValue', null, true);
                 $("#cust_full_name a[id='last_name']").html('Lastname');
             }
             var regUDaddress1 = new RegExp("address1,","ig");
@@ -6129,11 +6144,14 @@ function DispoSelectSubmit() {
             }
             $(".formMain input[name='phone_number']").val('').trigger('change');
             $(".formMain input[name='title']").val('').trigger('change');
-            $("#cust_full_name a[id='first_name']").editable('setValue', null, true);
+            //$("#cust_full_name a[id='first_name']").editable('setValue', null, true);
+            $(".formMain input[name='first_name']").val('').trigger('change');
             $("#cust_full_name a[id='first_name']").html('Firstname');
-            $("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);
+            //$("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);
+            $(".formMain input[name='middle_initial']").val('').trigger('change');
             $("#cust_full_name a[id='middle_initial']").html('M.I.');
-            $("#cust_full_name a[id='last_name']").editable('setValue', null, true);
+            //$("#cust_full_name a[id='last_name']").editable('setValue', null, true);
+            $(".formMain input[name='last_name']").val('').trigger('change');
             $("#cust_full_name a[id='last_name']").html('Lastname');
 	    <?php
                  if(ECCS_BLIND_MODE === 'y'){
@@ -6364,15 +6382,15 @@ function ManualDialSkip() {
                     }
                     $(".formMain input[name='phone_number']").val('');
                     $(".formMain input[name='title']").val('');
-                    $("#cust_full_name a[id='first_name']").editable('setValue', null, true);
+                    //$("#cust_full_name a[id='first_name']").editable('setValue', null, true);
                     $("#cust_full_name a[id='first_name']").html('Firstname');
-                    $("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);
+                    //$("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);
                     $("#cust_full_name a[id='middle_initial']").html('M.I.');
-                    $("#cust_full_name a[id='last_name']").editable('setValue', null, true);
+                    //$("#cust_full_name a[id='last_name']").editable('setValue', null, true);
                     $("#cust_full_name a[id='last_name']").html('Lastname');
-                    //$(".formMain input[name='first_name.value		='';
-                    //$(".formMain input[name='middle_initial.value	='';
-                    //$(".formMain input[name='last_name.value		='';
+                    $(".formMain input[name='first_name']").val('');
+                    $(".formMain input[name='middle_initial']").val('');
+                    $(".formMain input[name='last_name']").val('');
                     $(".formMain input[name='address1']").val('');
                     $(".formMain input[name='address2']").val('');
                     $(".formMain input[name='address3']").val('');
@@ -6462,9 +6480,12 @@ function CustomerData_update() {
         goVendorLeadCode: $(".formMain input[name='vendor_lead_code']").val(),
         goPhoneNumber: $(".formMain input[name='phone_number']").val(),
         goTitle: $(".formMain input[name='title']").val(),
-        goFirstName: $("#cust_full_name a[id='first_name']").editable('getValue', true),
-        goMiddleInitial: $("#cust_full_name a[id='middle_initial']").editable('getValue', true),
-        goLastName: $("#cust_full_name a[id='last_name']").editable('getValue', true),
+        //goFirstName: $("#cust_full_name a[id='first_name']").editable('getValue', true),
+        //goMiddleInitial: $("#cust_full_name a[id='middle_initial']").editable('getValue', true),
+        //goLastName: $("#cust_full_name a[id='last_name']").editable('getValue', true),
+        goFirstName: $(".formMain input[name='first_name']").val(),
+        goMiddleInitial: $(".formMain input[name='middle_initial']").val(),
+        goLastName: $(".formMain input[name='last_name']").val(),
         goAddress1: $(".formMain input[name='address1']").val(),
         goAddress2: $(".formMain input[name='address2']").val(),
         goAddress3: $(".formMain input[name='address3']").val(),
@@ -6545,7 +6566,7 @@ function CustomerData_update() {
         $('.input-disabled').prop('disabled', true);
         $('.input-phone-disabled').prop('disabled', true);
         //$('#cust_full_name .editable').editable('disable');
-        $("#cust_full_name").addClass('isDisabled');
+        //$("#cust_full_name").addClass('isDisabled');
         $('.hide_div').hide();
         $("input:required, select:required").removeClass("required_div");
     });
@@ -7143,23 +7164,29 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     $(".formMain input[name='title']").val(thisVdata.title);
                     cust_first_name                         = thisVdata.first_name;
                     if (cust_first_name !== '') {
-                        $("#cust_full_name a[id='first_name']").editable('setValue', cust_first_name, true);
+                        //$("#cust_full_name a[id='first_name']").editable('setValue', cust_first_name, true);
+                        $(".formMain input[name='first_name']").val(cust_first_name).trigger('change');
+                        $("#cust_full_name a[id='first_name']").html(cust_first_name);
                     } else {
-                        $("#cust_full_name a[id='first_name']").editable('setValue', null, true);
+                        //$("#cust_full_name a[id='first_name']").editable('setValue', null, true);
                         $("#cust_full_name a[id='first_name']").html('Firstname');
                     }
                     cust_middle_initial                     = thisVdata.middle_initial;
                     if (cust_middle_initial != '') {
-                        $("#cust_full_name a[id='middle_initial']").editable('setValue', cust_middle_initial, true);
+                        //$("#cust_full_name a[id='middle_initial']").editable('setValue', cust_middle_initial, true);
+                        $(".formMain input[name='middle_initial']").val(cust_middle_initial).trigger('change');
+                        $("#cust_full_name a[id='middle_initial']").html(cust_middle_initial);
                     } else {
-                        $("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);
+                        //$("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);
                         $("#cust_full_name a[id='middle_initial']").html('M.I.');
                     }
                     cust_last_name                          = thisVdata.last_name;
                     if (cust_last_name !== '') {
-                        $("#cust_full_name a[id='last_name']").editable('setValue', cust_last_name, true);
+                        //$("#cust_full_name a[id='last_name']").editable('setValue', cust_last_name, true);
+                        $(".formMain input[name='last_name']").val(cust_last_name).trigger('change');
+                        $("#cust_full_name a[id='last_name']").html(cust_last_name);
                     } else {
-                        $("#cust_full_name a[id='last_name']").editable('setValue', null, true);
+                        //$("#cust_full_name a[id='last_name']").editable('setValue', null, true);
                         $("#cust_full_name a[id='last_name']").html('Lastname');
                     }
                     
@@ -8661,7 +8688,8 @@ function replaceCustomFields(view) {
                 if (typeof view === 'undefined') {
                     if (/first_name|middle_initial|last_name/.test(output[i])) {
                         if (typeof view === 'undefined') {
-                            newValue = $("#cust_full_name a[id='" + output[i] + "']").editable('getValue', true);
+                            //newValue = $("#cust_full_name a[id='" + output[i] + "']").editable('getValue', true);
+                            newValue = $(".formMain input[name='" + output[i] + "']").val();
                         }
                     } else {
                         var tagName = $(".formMain [name='" + output[i] + "']").prop('tagName');
@@ -8685,7 +8713,8 @@ function replaceCustomFields(view) {
                 var newValue = '';
                 
                 if (/first_name|middle_initial|last_name/.test(fieldID)) {
-                    newValue = $("#cust_full_name a[id='" + fieldID + "']").editable('getValue', true);
+                    //newValue = $("#cust_full_name a[id='" + fieldID + "']").editable('getValue', true);
+                    newValue = $(".formMain input[name='" + fieldID + "']").val();
                 } else {
                     var tagName = $(".formMain [name='" + fieldID + "']").prop('tagName');
                     newValue = $(".formMain " + tagName.toLowerCase() + "[name='" + fieldID + "']").val();
@@ -9664,11 +9693,14 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 	encoded = utf8_decode(xtest);
 
 	if (urlschema == 'DEFAULT') {
-        var getFirstName = $("#cust_full_name a[id='first_name']").editable('getValue', true);
+        //var getFirstName = $("#cust_full_name a[id='first_name']").editable('getValue', true);
+        var getFirstName = $(".formMain input[name='first_name']").val();
             getFirstName = (getFirstName !== ' ') ? getFirstName : '';
-        var getMiddleName = $("#cust_full_name a[id='middle_initial']").editable('getValue', true);
+        //var getMiddleName = $("#cust_full_name a[id='middle_initial']").editable('getValue', true);
+        var getMiddleName = $(".formMain input[name='middle_initial']").val();
             getMiddleName = (getMiddleName !== ' ') ? getMiddleName : '';
-        var getLastName = $("#cust_full_name a[id='last_name']").editable('getValue', true);
+        //var getLastName = $("#cust_full_name a[id='last_name']").editable('getValue', true);
+        var getLastName = $(".formMain input[name='last_name']").val();
             getLastName = (getLastName !== ' ') ? getLastName : '';
 		web_form_varsX = 
 		"&lead_id=" + $(".formMain input[name='lead_id']").val() + 
@@ -9870,11 +9902,14 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 			{web_form_vars = web_form_varsX;}
 		if (webformnumber == '2')
 			{web_form_vars_two = web_form_varsX;}
-        var getFirstName = $("#cust_full_name a[id='first_name']").editable('getValue', true);
+        //var getFirstName = $("#cust_full_name a[id='first_name']").editable('getValue', true);
+        var getFirstName = $(".formMain input[name='first_name']").val();
             getFirstName = (getFirstName !== ' ') ? getFirstName : '';
-        var getMiddleName = $("#cust_full_name a[id='middle_initial']").editable('getValue', true);
+        //var getMiddleName = $("#cust_full_name a[id='middle_initial']").editable('getValue', true);
+        var getMiddleName = $(".formMain input[name='middle_initial']").val();
             getMiddleName = (getMiddleName !== ' ') ? getMiddleName : '';
-        var getLastName = $("#cust_full_name a[id='last_name']").editable('getValue', true);
+        //var getLastName = $("#cust_full_name a[id='last_name']").editable('getValue', true);
+        var getLastName = $(".formMain input[name='last_name']").val();
             getLastName = (getLastName !== ' ') ? getLastName : '';
 
 		var SCvendor_lead_code = $(".formMain input[name='vendor_lead_code']").val();
@@ -10298,7 +10333,7 @@ function minimizeModal(modal_id) {
         $('.input-phone-disabled').prop('disabled', false);
     }
     //$('#cust_full_name .editable').editable('enable');
-    $("#cust_full_name").removeClass('isDisabled');
+    //$("#cust_full_name").removeClass('isDisabled');
     $("input:required, select:required").addClass("required_div");
     
     var txtBox=document.getElementById("first_name" );
