@@ -54,9 +54,10 @@
         <!-- CHOSEN-->
    		<link rel="stylesheet" href="js/dashboard/chosen_v1.2.0/chosen.min.css">
 		
-		<!-- Date Range Picker -->	
-        <script type="text/javascript" src="js/plugins/daterangepicker/daterangepicker.js"></script>
-		<link rel="stylesheet" href="css/daterangepicker/daterangepicker-bs3.css"></link>  		
+		<!-- Date Range Picker -->
+		<script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>	
+	        <script type="text/javascript" src="js/plugins/daterangepicker/daterangepickerv3.js"></script>
+		<link rel="stylesheet" href="css/daterangepicker/daterangepickerv3.css"></link>  		
     </head>
 
     <?php print $ui->creamyBody(); ?>
@@ -827,7 +828,19 @@
 			var agentlog = $(this).attr('data-agentlog');
 			var userid = $(this).attr('data-user');
 			var username = $(this).attr('data-name');	
-			
+
+			$('#table_'+agentlog).empty();
+                       	$('#table_'+agentlog).DataTable().destroy();
+
+                       	var agentlogTable = $('#table_'+agentlog).DataTable({
+                       		destroy:true,
+                                stateSave:true,
+                                drawCallback:function(settings) {
+                                	var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                                                pagination.toggle(this.api().page.info().pages > 1);
+                                        }
+                        });				
+
 			$(".report-loader").fadeIn("slow");
 			$("#daterange_input-"+agentlog+"").val("");
 			$("#modal_stats_"+agentlog+"").modal("toggle");
@@ -835,7 +848,10 @@
 			$('#user_container').html(userid + " - " + username);
 			
 			$("#daterange_input-"+agentlog+"").daterangepicker({
-				"opens": "left"
+				"opens": "left",
+				"autoUpdateInput": false,
+				"startDate": Date.now(),
+				"endDate": Date.now()
 			}, function(start, end, label) {
 				var userid = $("#user_agentlog").val();
 				var sdate = start.format('YYYY-MM-DD');
@@ -926,8 +942,9 @@
 					}
 				});
 			});
+
 		});
-			
+
 		// user emergency logout
 		$(document).on('click','.emergency-logout',function() {
 			var userid = $(this).attr('data-emergency-logout-username');

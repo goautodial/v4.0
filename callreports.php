@@ -265,7 +265,7 @@
                                     <label><?php $lh->translateText("end_date"); ?></label>
                                     <div class="form-group">
                                         <div class='input-group date' id='datetimepicker2'>
-                                            <input type='text' class="form-control" id="end_filterdate" name="end_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y H:i:s");?>" />
+                                            <input type='text' class="form-control" id="end_filterdate" name="end_filterdate" placeholder="<?php echo date("m/d/Y H:i:s");?>" value="<?php echo date("m/d/Y");?> 11:59 PM" />
                                             <span class="input-group-addon">
                                                 <!-- <span class="glyphicon glyphicon-calendar"></span>-->
                                                 <span class="fa fa-calendar"></span>

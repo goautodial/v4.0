@@ -838,6 +838,7 @@ campaign_type = "Campaign Type"
 did_tfn_extension = "DID/TFN Extension"
 call_route = "Call Route"
 ingroup = "Ingroup"
+copy_campaign = "Copy Campaign"
 
 // IVR
 
