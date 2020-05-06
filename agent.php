@@ -628,9 +628,9 @@ input:checked + .slider:before {
 										</div>
 										<div class="col-lg-11 col-md-11 col-sm-10">
 								<!-- ECCS Customization-->
-						  <h4 id="cust_full_name">
+						  <h4 id="cust_full_name" class="isDisabled">
 									<?php if(ECCS_BLIND_MODE === 'n'){ ?>
-									<span id="first_name_label" class="hidden"><?=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name"></a> <span id="middle_initial_label" class="hidden"><?=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial"></a> <span id="last_name_label" class="hidden"><?=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name"></a>
+									<span id="first_name_label" class="hidden"><?=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name">Firstname</a> <span id="middle_initial_label" class="hidden"><?=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial">M.I.</a> <span id="last_name_label" class="hidden"><?=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name">Lastname</a>
 									<?php } ?>
 									<!-- ECCS Customization -->
 									<?php if(ECCS_BLIND_MODE === 'y'){ ?>
