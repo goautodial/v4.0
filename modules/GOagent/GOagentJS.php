@@ -3610,7 +3610,7 @@ function CheckForIncoming () {
                 $("#cust_full_name a[id='middle_initial']").editable('setValue', this_VDIC_data.middle_initial, true);
             } else {
                 $("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);
-                $("#cust_full_name a[id='middle_initial']").html('Middle');
+                $("#cust_full_name a[id='middle_initial']").html('M.I.');
             }
             if (this_VDIC_data.last_name !== '') {
                 $("#cust_full_name a[id='last_name']").editable('setValue', this_VDIC_data.last_name, true);
@@ -4941,7 +4941,7 @@ function UpdateFieldsData() {
                 {$("#cust_full_name a[id='middle_initial']").editable('setValue', UDfieldsData.middle_initial, true);}
             else {
                 $("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);
-                $("#cust_full_name a[id='middle_initial']").html('Middle');
+                $("#cust_full_name a[id='middle_initial']").html('M.I.');
             }
             var regUDlast_name = new RegExp("last_name,","ig");
             if (fields_list.match(regUDlast_name))
@@ -6132,7 +6132,7 @@ function DispoSelectSubmit() {
             $("#cust_full_name a[id='first_name']").editable('setValue', null, true);
             $("#cust_full_name a[id='first_name']").html('Firstname');
             $("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);
-            $("#cust_full_name a[id='middle_initial']").html('Middle');
+            $("#cust_full_name a[id='middle_initial']").html('M.I.');
             $("#cust_full_name a[id='last_name']").editable('setValue', null, true);
             $("#cust_full_name a[id='last_name']").html('Lastname');
 	    <?php
@@ -6230,7 +6230,7 @@ function DispoSelectSubmit() {
             
             //$("#cust_full_name").html('');
             ///////$("#cust_full_name").addClass('hidden');
-            $("#cust_number").empty().html('(000)000-0000');
+            $("#cust_number").empty().html('');
 	    <?php if(ECCS_BLIND_MODE === 'y'){ ?> $("span#span-cust-number").addClass("hidden");  $("#cust_number").val(''); <?php } ?>
             $("#cust_avatar").html(goGetAvatar());
             //goAvatar._init(goOptions);
@@ -6367,7 +6367,7 @@ function ManualDialSkip() {
                     $("#cust_full_name a[id='first_name']").editable('setValue', null, true);
                     $("#cust_full_name a[id='first_name']").html('Firstname');
                     $("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);
-                    $("#cust_full_name a[id='middle_initial']").html('Middle');
+                    $("#cust_full_name a[id='middle_initial']").html('M.I.');
                     $("#cust_full_name a[id='last_name']").editable('setValue', null, true);
                     $("#cust_full_name a[id='last_name']").html('Lastname');
                     //$(".formMain input[name='first_name.value		='';
@@ -6402,7 +6402,7 @@ function ManualDialSkip() {
                     custchannellive = 1;
                     
                     ///////$("#cust_full_name").addClass('hidden');
-                    $("#cust_number").empty().html('(000)000-0000');
+                    $("#cust_number").empty().html('');
 		    <?php if(ECCS_BLIND_MODE === 'y'){ ?> $("span#span-cust-number").addClass("hidden");  $("#cust_number").val(''); <?php } ?>
                     $("#cust_avatar").html(goGetAvatar());
                     //goAvatar._init(goOptions);
@@ -7153,7 +7153,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                         $("#cust_full_name a[id='middle_initial']").editable('setValue', cust_middle_initial, true);
                     } else {
                         $("#cust_full_name a[id='middle_initial']").editable('setValue', null, true);
-                        $("#cust_full_name a[id='middle_initial']").html('Middle');
+                        $("#cust_full_name a[id='middle_initial']").html('M.I.');
                     }
                     cust_last_name                          = thisVdata.last_name;
                     if (cust_last_name !== '') {

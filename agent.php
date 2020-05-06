@@ -278,7 +278,7 @@ function response($order_id,$amount,$response_code,$response_desc){
 					type: 'text',
 					title: '<?=$lh->translationFor('enter_middle_initial')?>',
 					placeholder: '<?=$lh->translationFor('enter_middle_initial')?>',
-					emptytext: 'Middle',
+					emptytext: 'M.I.',
 					unsavedclass: null,
 					inputclass: 'text-color-black',
 					placement: 'bottom',
@@ -647,7 +647,7 @@ input:checked + .slider:before {
 
 									<?php } else { ?>
                                                                         <!-- /.ECCS Customization -->
-									<span id="cust_number">(000)000-0000</span>
+									<span id="cust_number"></span>
 									<?php } ?>
 								</p>
 						            </div>
@@ -713,7 +713,7 @@ input:checked + .slider:before {
 												<!--ADDRESS3-->
 												<input type="hidden" value="<?php echo $address3;?>" name="address3">
 												
-												<!--<div class="row">
+												<div class="row">
 													<div class="col-sm-4">
 														<div class="mda-form-group label-floating">
 															<input id="first_name" name="first_name" type="text" maxlength="30"  value="<?php echo $first_name;?>"
@@ -735,7 +735,7 @@ input:checked + .slider:before {
 															<label for="last_name">Last Name</label>
 														</div>
 													</div>
-												</div>-->
+												</div>
 												</form>
 												
 												<form id="contact_details_form" class="formMain">
