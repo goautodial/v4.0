@@ -725,7 +725,7 @@ input:checked + .slider:before {
 														<div class="mda-form-group label-floating">
 															<input id="middle_initial" name="middle_initial" type="text" maxlength="1" value="<?php echo $middle_initial;?>"
 																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-															<label for="middle_initial">Middle Name</label>
+															<label for="middle_initial">Middle Initial</label>
 														</div>
 													</div>
 													<div class="col-sm-4">
