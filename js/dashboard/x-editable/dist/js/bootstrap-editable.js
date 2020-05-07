@@ -1663,10 +1663,12 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @method disable()
         **/         
         disable: function() {
-            this.options.disabled = true; 
-            this.hide();           
+            this.options.disabled = true;
+            if (!this.options.isAgent) {
+                this.hide();
+                this.handleEmpty(this.isEmpty);
+            }
             this.$element.addClass('editable-disabled');
-            this.handleEmpty(this.isEmpty);
             //do not stop focus on this element
             this.$element.attr('tabindex', -1);                
         },
@@ -1911,7 +1913,7 @@ Makes editable any HTML element on the page. Applied as jQuery method.
             }
             $.when(this.render(response))
             .then($.proxy(function() {
-                this.handleEmpty();
+                //this.handleEmpty();
             }, this));
         },
         
@@ -2312,7 +2314,11 @@ Makes editable any HTML element on the page. Applied as jQuery method.
         @since 1.4.5        
         @default #FFFF80 
         **/
-        highlight: '#FFFF80'
+        highlight: '#FFFF80',
+        /**
+        Added by Chris
+        **/
+        isAgent: false
     };
     
 }(window.jQuery));

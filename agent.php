@@ -194,8 +194,8 @@ function response($order_id,$amount,$response_code,$response_desc){
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>		
         <!-- X-Editable -->
-        <link rel="stylesheet" src="js/dashboard/x-editable/dist/css/bootstrap-editable.css">
-        <script type="text/javascript" src="js/dashboard/x-editable/dist/js/bootstrap-editable.min.js"></script>
+        <!--<link rel="stylesheet" src="js/dashboard/x-editable/dist/css/bootstrap-editable.css">-->
+        <!--<script type="text/javascript" src="js/dashboard/x-editable/dist/js/bootstrap-editable.min.js"></script>-->
 
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
@@ -232,69 +232,69 @@ function response($order_id,$amount,$response_code,$response_desc){
 			});
 			
 			$(function() {
-			//turn to inline mode
-			//$.fn.editable.defaults.mode = 'inline';    //buttons
-			$.fn.editable.defaults.disabled = true;
-			$.fn.editableform.buttons =
-				'<button type="submit" class="btn btn-primary btn-sm editable-submit" style="padding: 8px 10px;">'+
-					'<i class="fa fa-check"></i>'+
-				'</button>'+
-				'<button type="button" class="btn btn-default btn-sm editable-cancel" style="padding: 8px 10px;">'+
-					'<i class="fa fa-remove"></i>'+
-				'</button>';
+				//turn to inline mode
+				//$.fn.editable.defaults.mode = 'inline';    //buttons
+				//$.fn.editable.defaults.disabled = true;
+				//$.fn.editableform.buttons =
+				//	'<button type="submit" class="btn btn-primary btn-sm editable-submit" style="padding: 8px 10px;">'+
+				//		'<i class="fa fa-check"></i>'+
+				//	'</button>'+
+				//	'<button type="button" class="btn btn-default btn-sm editable-cancel" style="padding: 8px 10px;">'+
+				//		'<i class="fa fa-remove"></i>'+
+				//	'</button>';
 				
-				$("a[id='first_name'], a[id='middle_initial'], a[id='last_name']").on('hidden', function() {
-					var thisID = $(this).attr('id');
-					//$('#'+thisID+'_label').addClass('hidden');
-				});
+				//$("a[id='first_name'], a[id='middle_initial'], a[id='last_name']").on('hidden', function() {
+				//	var thisID = $(this).attr('id');
+				//	//$('#'+thisID+'_label').addClass('hidden');
+				//});
+				//
+				//$("a[id='first_name'], a[id='middle_initial'], a[id='last_name']").on('shown', function() {
+				//	var thisID = $(this).attr('id');
+				//	var oldValue = $(this).editable('getValue', true);
+				//	if ($(this).html() !== '   ') {
+				//		//$('div.editable-input input').val($(this).text());
+				//		//$(this).editable('setValue', oldValue, true);
+				//	} else {
+				//		//$('div.editable-input input').val('');
+				//		//$(this).editable('setValue', '', true);
+				//	}
+				//	//$('#'+thisID+'_label').removeClass('hidden');
+				//});
 				
-				$("a[id='first_name'], a[id='middle_initial'], a[id='last_name']").on('shown', function() {
-					var thisID = $(this).attr('id');
-					var oldValue = $(this).editable('getValue', true);
-					if ($(this).html() !== '   ') {
-						//$('div.editable-input input').val($(this).text());
-						//$(this).editable('setValue', oldValue, true);
-					} else {
-						//$('div.editable-input input').val('');
-						//$(this).editable('setValue', '', true);
-					}
-					//$('#'+thisID+'_label').removeClass('hidden');
-				});
-				
-				$("a[id='first_name']").editable({
-					type: 'text',
-					title: '<?=$lh->translationFor('enter_first_name')?>',
-					placeholder: '<?=$lh->translationFor('enter_first_name')?>',
-					emptytext: 'First Name',
-					unsavedclass: null,
-					inputclass: 'text-color-black',
-					onblur: 'submit',
-					placement: 'bottom',
-					success: function(response, newValue) {
-						console.log(response, newValue);
-					}
-				});
-				$("a[id='middle_initial']").editable({
-					type: 'text',
-					title: '<?=$lh->translationFor('enter_middle_initial')?>',
-					placeholder: '<?=$lh->translationFor('enter_middle_initial')?>',
-					emptytext: 'Middle',
-					unsavedclass: null,
-					inputclass: 'text-color-black',
-					placement: 'bottom',
-					onblur: 'submit'
-				});
-				$("a[id='last_name']").editable({
-					type: 'text',
-					value: '',
-					title: '<?=$lh->translationFor('enter_last_name')?>',
-					placeholder: '<?=$lh->translationFor('enter_last_name')?>',
-					emptytext: 'Last Name',
-					unsavedclass: null,
-					inputclass: 'text-color-black',
-					placement: 'bottom',
-					onblur: 'submit'
-				});
+				//$("a[id='first_name']").editable({
+				//	type: 'text',
+				//	title: '<?=$lh->translationFor('enter_first_name')?>',
+				//	placeholder: '<?=$lh->translationFor('enter_first_name')?>',
+				//	emptytext: 'Firstname',
+				//	unsavedclass: null,
+				//	inputclass: 'text-color-black',
+				//	onblur: 'submit',
+				//	placement: 'bottom',
+				//	success: function(response, newValue) {
+				//		console.log(response, newValue);
+				//	}
+				//});
+				//$("a[id='middle_initial']").editable({
+				//	type: 'text',
+				//	title: '<?=$lh->translationFor('enter_middle_initial')?>',
+				//	placeholder: '<?=$lh->translationFor('enter_middle_initial')?>',
+				//	emptytext: 'M.I.',
+				//	unsavedclass: null,
+				//	inputclass: 'text-color-black',
+				//	placement: 'bottom',
+				//	onblur: 'submit'
+				//});
+				//$("a[id='last_name']").editable({
+				//	type: 'text',
+				//	value: '',
+				//	title: '<?=$lh->translationFor('enter_last_name')?>',
+				//	placeholder: '<?=$lh->translationFor('enter_last_name')?>',
+				//	emptytext: 'Lastname',
+				//	unsavedclass: null,
+				//	inputclass: 'text-color-black',
+				//	placement: 'bottom',
+				//	onblur: 'submit'
+				//});
 				
 				//$("#callback-list").DataTable({"bDestroy": true, "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 5 ] }, { "bSearchable": false, "aTargets": [ 2, 5 ] }] });
 			});
@@ -461,7 +461,10 @@ function response($order_id,$amount,$response_code,$response_desc){
                         }
                         .editableform .form-group {
                                 padding: 0 !important;
-                        }	
+                        }
+			.editable-disabled {
+					color: #fff !important;
+			}
 	</style>
 
 	<!-- ECCS Customiztion -->
@@ -625,9 +628,9 @@ input:checked + .slider:before {
 										</div>
 										<div class="col-lg-11 col-md-11 col-sm-10">
 								<!-- ECCS Customization-->
-						  <h4 id="cust_full_name" class="hidden">
+						  <h4 id="cust_full_name" class="isDisabled">
 									<?php if(ECCS_BLIND_MODE === 'n'){ ?>
-									<span id="first_name_label" class="hidden"><?=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name"></a> <span id="middle_initial_label" class="hidden"><?=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial"></a> <span id="last_name_label" class="hidden"><?=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name"></a>
+									<span id="first_name_label" class="hidden"><?=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name">Firstname</a> <span id="middle_initial_label" class="hidden"><?=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial">M.I.</a> <span id="last_name_label" class="hidden"><?=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name">Lastname</a>
 									<?php } ?>
 									<!-- ECCS Customization -->
 									<?php if(ECCS_BLIND_MODE === 'y'){ ?>
@@ -710,7 +713,7 @@ input:checked + .slider:before {
 												<!--ADDRESS3-->
 												<input type="hidden" value="<?php echo $address3;?>" name="address3">
 												
-												<!--<div class="row">
+												<div class="row">
 													<div class="col-sm-4">
 														<div class="mda-form-group label-floating">
 															<input id="first_name" name="first_name" type="text" maxlength="30"  value="<?php echo $first_name;?>"
@@ -722,7 +725,7 @@ input:checked + .slider:before {
 														<div class="mda-form-group label-floating">
 															<input id="middle_initial" name="middle_initial" type="text" maxlength="1" value="<?php echo $middle_initial;?>"
 																class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-															<label for="middle_initial">Middle Name</label>
+															<label for="middle_initial">Middle Initial</label>
 														</div>
 													</div>
 													<div class="col-sm-4">
@@ -732,7 +735,7 @@ input:checked + .slider:before {
 															<label for="last_name">Last Name</label>
 														</div>
 													</div>
-												</div>-->
+												</div>
 												</form>
 												
 												<form id="contact_details_form" class="formMain">
@@ -1961,19 +1964,20 @@ input:checked + .slider:before {
 								} else {
 										$('.input-phone-disabled').prop('disabled', false);
 								}
-								$('#cust_full_name .editable').editable('enable');
+								//$('#cust_full_name .editable').editable('enable');
+								//$("#cust_full_name").removeClass('isDisabled');
 				    //$('.hide_div').show();
 				    $("input:required, select:required").addClass("required_div");
 				    $('#edit-profile').addClass('hidden');
 								
-								$('#cust_full_name .editable').each(function() {
-									var thisXvalue = $(this).html();
-									if (thisXvalue == '   ') {
-										$(this).css('text-decoration', 'underline dashed');
-									} else {
-										$(this).css('text-decoration', 'none');
-									}
-								});
+								//$('#cust_full_name .editable').each(function() {
+								//	var thisXvalue = $(this).html();
+								//	if (thisXvalue.length < 1) {
+								//		$(this).css('text-decoration', 'underline dashed');
+								//	} else {
+								//		$(this).css('text-decoration', 'none');
+								//	}
+								//});
 				    
 				    var txtBox=document.getElementById("first_name" );
 								txtBox.focus();
@@ -1981,6 +1985,7 @@ input:checked + .slider:before {
 				    //$('input[name="first_name"]').focus();
 								editProfileEnabled = true;
 				});
+				//$('#cust_full_name .editable').editable('disable');
 
 				$("#submit_edit_form").click(function(){
 				//alert("User Created!");
@@ -2760,7 +2765,6 @@ input:checked + .slider:before {
 				} else {
 					$("[data-toggle='control-sidebar']").attr("title", "Enter to Show Login Tab");
 				}
-				
 			});
 		</script>
 		<?php } //end if ECCS_BLIND_MODE ?>
