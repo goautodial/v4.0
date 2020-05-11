@@ -14505,7 +14505,7 @@ RTCSession.prototype.sendDTMF = function(tones, options) {
     interToneGap = Math.abs(interToneGap);
   }
 
-  if (this.tones) {
+  if (Array.isArray(this.tones) && this.tones.length) {
     // Tones are already queued, just add to the queue
     this.tones += tones;
     return;
