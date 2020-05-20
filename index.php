@@ -465,7 +465,8 @@ error_reporting(E_ALL)
 							</div>
 						</div>
 						<!-- End Agent Monitoring Summary -->
-						
+					
+						<?php if(STATEWIDE_SALES_REPORT !== 'y'){ ?>
 						<!-- VECTOR MAP LOADER -->
 						<div class="col-lg-9">
 							<div class="panel panel-transparent">
@@ -473,6 +474,37 @@ error_reporting(E_ALL)
 							   <div id="world-map" style="height: 390px"></div>
 							</div>
 						</div>
+						<?php } else { ?>
+							<!--  AGENT SALES REPORT -->
+						<div class="col-lg-9">
+							<div class="panel panel-default" tabindex="-1">
+								<div class="panel-heading">
+									<div class="panel-title"><h4><?=$lh->translateText("sales_agent")?></h4></div>
+								</div>
+								<div class="responsive">
+									<div class="col-sm-12">
+										<table id="agent-sales" class="table table-striped table-hover display compact" style="width: 100%">
+											<thead>
+												<tr>
+													<th style="font-size: small;">Agent Name</th>
+													<th style="font-size: small;">Agent ID</th>
+													<th style="font-size: small;">Sales Count</th>
+													<th style="font-size: small;">Amount</th>
+											</thead>
+											<tbody>
+												<!-- data is in API_GetAgentSales.php -->
+											</tbody>
+										</table>
+									</div>
+									<div class="panel-footer clearfix">
+										<a href="#" class="pull-left">
+										<small></small>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						<?php } ?>
 							<br>
 					</div>
 						
@@ -1383,6 +1415,11 @@ function goGetInSession(type) {
 					//load_realtime_sla_monitoring();
 				// ---- view agent information modal
 					load_view_agent_information();
+
+					<?php if(STATEWIDE_SALES_REPORT === 'y'){ ?>
+				// ---- Statewide Customization
+					load_agent_sales();
+					<?php } ?>
 		});
 		
 		//Refresh functions() after 5000 milliseconds
@@ -1426,7 +1463,12 @@ function goGetInSession(type) {
 				var int_20 = setInterval(load_totalOutSales,30000);
 				var int_21 = setInterval(load_totalInSales,30000);
 				var int_22 = setInterval(load_INSalesHour,60000);
-				var int_23 = setInterval(load_OUTSalesPerHour,60000);			
+				var int_23 = setInterval(load_OUTSalesPerHour,60000);
+
+			 <?php if(STATEWIDE_SALES_REPORT === 'y'){ ?>
+                         // ---- Statewide Customization
+                         	var int_25 = setInterval(load_agent_sales,30000);
+                         <?php } ?>	
 		
 		$('#modal_view_agent_information').on('show.bs.modal', function () {
 			clearInterval(int_1);
@@ -1452,6 +1494,10 @@ function goGetInSession(type) {
 			clearInterval(int_21);
 			clearInterval(int_22);
 			clearInterval(int_23);
+			<?php if(STATEWIDE_SALES_REPORT === 'y'){ ?>
+                        // ---- Statewide Customization
+			clearInterval(int_25);	
+                        <?php } ?>
 		});
 		
 		$('#modal_view_agent_information').on('hidden.bs.modal', function () {
@@ -1479,6 +1525,10 @@ function goGetInSession(type) {
 			int_21 = setInterval(load_totalInSales,30000);
 			int_22 = setInterval(load_INSalesHour,60000);
 			int_23 = setInterval(load_OUTSalesPerHour,60000);
+			<?php if(STATEWIDE_SALES_REPORT === 'y'){ ?>
+                        // ---- Statewide Customization
+                        int_25 = setInterval(load_agent_sales,30000);
+                        <?php } ?>
 		});
 	</script>
 	

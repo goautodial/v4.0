@@ -47,6 +47,38 @@
 			} 
 		});
     }
+
+    function load_agent_sales(){
+		 $.ajax({
+                        url: "./php/dashboard/API_getSalesAgent.php",
+                        //cache: false,
+                        dataType: 'json',
+                        success: function(data){
+				var JSONStringSalesAgent = data;
+                                var JSONObjectSalesAgent = JSON.parse(JSONStringSalesAgent);
+                                $('#agent-sales').DataTable({
+                                        destroy: true,
+                                        responsive: true,
+                                        data: JSONObjectSalesAgent,
+                                        searching: false,
+                                        filter: false,
+                                        info: false,
+                                        paging: false,
+                                        paginate: false,
+                                        stateSave: true,
+                                        drawCallback: function() {
+                                                var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                                                pagination.toggle(this.api().page.info().pages > 1);
+                                        },
+                                        columnDefs:[
+                                                { searchable: false, targets: 0 },
+                                                { sortable: false, targets: 0 }
+                                        ]
+                                });
+                                goAvatar._init(goOptions);
+			}
+		});
+    }
     
     function load_view_agent_information(){        
 		var user = document.getElementById("modal-username").innerText;
