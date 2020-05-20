@@ -448,33 +448,7 @@ error_reporting(E_ALL)
 					</div><!-- END OF ROW -->
 					
 					<div class="row">
-						<!-- Agent Monitoring Summary -->
-						<div class="col-lg-3">
-							<div class="panel panel-default">
-							   <div class="panel-heading">
-								  <div class="panel-title"><?=$lh->translateText("agent_monitoring_summary")?></div>
-							   </div>
-							   <div data-height="230" data-scrollable="yes" class="list-group">
-									<span id="refresh_agents_monitoring_summary"></span>
-							   </div>
-							   <div class="panel-footer clearfix">
-									<a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" class="pull-right">
-										<medium><?=$lh->translateText("view_more")?></medium> <em class="fa fa-arrow-right"></em>
-									</a>
-							   </div>
-							</div>
-						</div>
-						<!-- End Agent Monitoring Summary -->
-					
-						<?php if(STATEWIDE_SALES_REPORT !== 'y'){ ?>
-						<!-- VECTOR MAP LOADER -->
-						<div class="col-lg-9">
-							<div class="panel panel-transparent">
-							   <!--<div data-vector-map="" data-height="450" data-scale='0' data-map-name="world_mill"></div>-->
-							   <div id="world-map" style="height: 390px"></div>
-							</div>
-						</div>
-						<?php } else { ?>
+						<?php if(STATEWIDE_SALES_REPORT === 'y') { ?>
 							<!--  AGENT SALES REPORT -->
 						<div class="col-lg-9">
 							<div class="panel panel-default" tabindex="-1">
@@ -502,6 +476,34 @@ error_reporting(E_ALL)
 										</a>
 									</div>
 								</div>
+							</div>
+						</div>
+						<?php } ?>
+
+						<!-- Agent Monitoring Summary -->
+						<div class="col-lg-3">
+							<div class="panel panel-default">
+							   <div class="panel-heading">
+								  <div class="panel-title"><?=$lh->translateText("agent_monitoring_summary")?></div>
+							   </div>
+							   <div data-height="230" data-scrollable="yes" class="list-group">
+									<span id="refresh_agents_monitoring_summary"></span>
+							   </div>
+							   <div class="panel-footer clearfix">
+									<a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" class="pull-right">
+										<medium><?=$lh->translateText("view_more")?></medium> <em class="fa fa-arrow-right"></em>
+									</a>
+							   </div>
+							</div>
+						</div>
+						<!-- End Agent Monitoring Summary -->
+					
+						<?php if(STATEWIDE_SALES_REPORT !== 'y'){ ?>
+						<!-- VECTOR MAP LOADER -->
+						<div class="col-lg-9">
+							<div class="panel panel-transparent">
+							   <!--<div data-vector-map="" data-height="450" data-scale='0' data-map-name="world_mill"></div>-->
+							   <div id="world-map" style="height: 390px"></div>
 							</div>
 						</div>
 						<?php } ?>
