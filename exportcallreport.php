@@ -72,6 +72,11 @@
 								<div class="mb">
 									<div class="">
 										<select multiple="multiple" class="select2-3 form-control" id="selected_inbounds" name="inbounds[]" style="width:100%;">';
+											if(EXPORTCALLREPORT_ALLCAMPAIGNS === "y"){
+                                                                                                $display .= '<option value="ALL">--- ALL ---</option>
+';
+                                                                                        }
+
 											for($i=0; $i < count($inbound->group_id);$i++) {
 												$display .= '<option value="'.$inbound->group_id[$i].'">'.$inbound->group_id[$i].' - '.$inbound->group_name[$i].'</option>';
 											}

@@ -34,7 +34,7 @@ if(isset($_POST['campaigns']) && $_POST['campaigns'] != NULL){
     $campaigns = implode(",", $campaigns);
     $postfields["campaigns"] = $campaigns;
 }else{
-    $postfields["campaigns"] = "ALL";
+    $postfields["campaigns"] = NULL;
 }
 
 if(isset($_POST['inbounds']) && $_POST['inbounds'] != NULL){
@@ -88,7 +88,12 @@ if($output->result == "success"){
     
     header('Content-type: application/csv');
     header('Content-Disposition: attachment; filename='.$filename);
-    
+    header('Expires: 0');
+    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    header('Pragma: public');
+    ob_clean();
+    flush();
+
     echo $header."\n";
     $array_rows = json_decode(json_encode($output->rows), true);
     foreach($array_rows as $temp){
