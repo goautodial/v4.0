@@ -266,7 +266,7 @@ error_reporting(E_ALL)
 							<div class="row">
 								<div class="col-lg-12" style="padding: 0px;">
 									<!-- demian -->
-									<a href="#" data-toggle="modal" data-target="#realtime_calls_monitoring">
+									<a href="#" data-toggle="modal" data-target="#<?php if(REALTIME_CALLS_MONITORING === 'y') echo 'realtime_calls_monitoring'?>">
 										<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center bg-info info_sun_boxes">
 											<em class="fa fa-sun-o fa-3x"></em><div class="h2 m0"><span class="text-lg"></span></div>
 											<div class="text-white"><?=$lh->translateText("realtime_calls_monitor")?></div>                                 
@@ -1428,7 +1428,9 @@ function goGetInSession(type) {
 					load_agents_monitoring_summary();
 				// ---- realtime monitoring
 					load_realtime_agents_monitoring();
+					<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
 					load_realtime_calls_monitoring();
+					<?php } ?>
 					//load_realtime_sla_monitoring();
 				// ---- view agent information modal
 					load_view_agent_information();
@@ -1469,7 +1471,9 @@ function goGetInSession(type) {
 			
 			// ... realtime monitoring ...
 				var int_15 = setInterval(load_realtime_agents_monitoring,3000);
+				<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
 				var int_16 = setInterval(load_realtime_calls_monitoring,3000);
+				<?php } ?>
 				//var int_17 = setInterval(load_realtime_sla_monitoring,10000);
 			
 			// ... view agent information modal  ...
@@ -1503,7 +1507,9 @@ function goGetInSession(type) {
 			clearInterval(int_13);
 			clearInterval(int_14);
 			clearInterval(int_15);
+			<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
 			clearInterval(int_16);
+			<?php } ?>
 			//clearInterval(int_17);
 			clearInterval(int_18);
 			clearInterval(int_19);
@@ -1534,7 +1540,9 @@ function goGetInSession(type) {
 			int_13 = setInterval(load_campaigns_monitoring,20000);
 			int_14 = setInterval(load_agents_monitoring_summary,15000);
 			int_15 = setInterval(load_realtime_agents_monitoring,3000);
+			<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
 			int_16 = setInterval(load_realtime_calls_monitoring,3000);
+			<?php } ?>
 			//int_17 = setInterval(load_realtime_sla_monitoring,10000);
 			int_18 = setInterval(load_view_agent_information,3000);
 			int_19 = setInterval(load_totalSales,30000);
@@ -1694,7 +1702,9 @@ function goGetInSession(type) {
 							int_13 = setInterval(load_campaigns_monitoring,20000);
 							int_14 = setInterval(load_agents_monitoring_summary,15000);
 							int_15 = setInterval(load_realtime_agents_monitoring,3000);
+							<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
 							int_16 = setInterval(load_realtime_calls_monitoring,3000);
+							<?php } ?>
 							//int_17 = setInterval(load_realtime_sla_monitoring,10000);
 							int_18 = setInterval(load_view_agent_information,3000);
 							int_19 = setInterval(load_totalSales,30000);

@@ -234,4 +234,5 @@ define ('LEADUPLOAD_CHECK_PHONES_IN_SYSTEM', 'n'); //enable or disable Lead Uplo
 define ('STATEWIDE_SALES_REPORT', 'n'); //Customization Requested by Statewide. 
 
 define ('EXPORTCALLREPORT_ALLCAMPAIGNS', 'y');
+define ('REALTIME_CALLS_MONITORING', 'n'); //Change to 'y' to enable realtime calls monitoring in Dashboard (not advisable for heavy systems)
 ?>
