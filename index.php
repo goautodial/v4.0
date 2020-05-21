@@ -367,6 +367,37 @@ error_reporting(E_ALL)
 									</div>
 								</div>
 							</div>
+							<?php if(STATEWIDE_SALES_REPORT === 'y') { ?>
+							<!--  AGENT SALES REPORT -->
+							<div class="row">
+								<div class="panel panel-default" tabindex="-1">
+									<div class="panel-heading">
+										<div class="panel-title"><h4><?=$lh->translateText("sales_agent")?></h4></div>
+									</div>
+									<div class="responsive">
+										<div class="col-sm-12">
+											<table id="agent-sales" class="table table-striped table-hover display compact" style="width: 100%">
+												<thead>
+													<tr>
+														<th style="font-size: small;">Agent Name</th>
+														<th style="font-size: small;">Agent ID</th>
+														<th style="font-size: small;">Sales Count</th>
+														<th style="font-size: small;">Amount</th>
+												</thead>
+												<tbody>
+													<!-- data is in API_GetAgentSales.php -->
+												</tbody>
+											</table>
+										</div>
+										<div class="panel-footer clearfix">
+											<a href="#" class="pull-left">
+											<small></small>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<?php } ?>
 						</div><!-- END OF COLUMN 9 -->
 	
 						<aside class="col-lg-3">
@@ -464,37 +495,7 @@ error_reporting(E_ALL)
 					</div><!-- END OF ROW -->
 					
 					<div class="row">
-						<?php if(STATEWIDE_SALES_REPORT === 'y') { ?>
-						<!--  AGENT SALES REPORT -->
-						<div class="col-lg-9">
-							<div class="panel panel-default" tabindex="-1">
-								<div class="panel-heading">
-									<div class="panel-title"><h4><?=$lh->translateText("sales_agent")?></h4></div>
-								</div>
-								<div class="responsive">
-									<div class="col-sm-12">
-										<table id="agent-sales" class="table table-striped table-hover display compact" style="width: 100%">
-											<thead>
-												<tr>
-													<th style="font-size: small;">Agent Name</th>
-													<th style="font-size: small;">Agent ID</th>
-													<th style="font-size: small;">Sales Count</th>
-													<th style="font-size: small;">Amount</th>
-											</thead>
-											<tbody>
-												<!-- data is in API_GetAgentSales.php -->
-											</tbody>
-										</table>
-									</div>
-									<div class="panel-footer clearfix">
-										<a href="#" class="pull-left">
-										<small></small>
-										</a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<?php } else { ?>
+						<?php if(STATEWIDE_SALES_REPORT !== 'y') { ?>
 						<!-- Agent Monitoring Summary -->
 						<div class="col-lg-3">
 							<div class="panel panel-default">
