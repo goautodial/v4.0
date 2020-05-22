@@ -418,431 +418,433 @@ window_focus = false;
 $(window).load(function() {
 var refreshId = setInterval(function() {
     if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
-	//Start of checking for live calls
-	//if (live_customer_call == 1) {
-	//    live_call_seconds++;
-	//    //$("input[name='SecondS']").val(live_call_seconds);
-	//    //$("div:contains('CALL LENGTH:') > span").html(live_call_seconds);
-	//    //$("div:contains('SESSION ID:') > span").html(session_id);
-	//    toggleButton('DialHangup', 'hangup');
-	//    toggleButton('ResumePause', 'off');
-	//    
-	//    if (CheckDEADcall > 0) {
-	//        if (CheckDEADcallON < 1) {
-	//            toggleStatus('DEAD');
-	//            toggleButton('ParkCall', 'off');
-	//            toggleButton('TransferCall', 'off');
-	//            CheckDEADcallON = 1;
-	//            
-	//            if (xfer_in_call > 0 && customer_3way_hangup_logging == 'ENABLED') {
-	//                customer_3way_hangup_counter_trigger = 1;
-	//                customer_3way_hangup_counter = 1;
-	//            }
-	//        }
-	//    }
-	//}
-	
-	if (live_customer_call < 1) {
-	    editProfileEnabled = false;
-	    $("#for_dtmf").addClass('hidden');
-	    $('#edit-profile').addClass('hidden');
-	    $("#reload-script").addClass('hidden');
-	    $("#dialer-pad-ast, #dialer-pad-hash").addClass('hidden');
-	    $("#dialer-pad-clear, #dialer-pad-undo").removeClass('hidden');
-	    $("#btnLogMeOut").removeClass("disabled");
-	    //toggleStatus('NOLIVE');
-	    
-	    if (dialingINprogress < 1) {
-		//toggleButton('DialHangup', 'dial');
-		//toggleButton('ResumePause', 'on');
-	    }
-	    
-	    if (per_call_notes == 'ENABLED') {
-		$("#call_notes_content").removeClass('hidden');
-	    } else {
-		$("#call_notes_content").addClass('hidden');
-	    }
-	}
-	//End of checking for live calls
-
-	$("#LeadLookUP").prop('checked', true);
-	    
-	if (check_r < 1) {
-	    toggleButtons(dial_method, ivr_park_call, call_requeue_button);
-	    if (agent_status_view > 0) {
-		$("#agents-tab").removeClass('hidden');
-	    } else {
-		$("#agents-tab").addClass('hidden');
-	    }
-	}
-
-	epoch_sec++;
-	check_r++;
-	even++;
-	if (even > 1) {
-	    even = 0;
-	}
-	
-	WaitingForNextStep = 0;
-	if ( (CloserSelecting == 1) || (TerritorySelecting == 1) )	{WaitingForNextStep = 1;}
-    
-    if (disable_alter_custphone != 'HIDE') {
-        $("#phone_number").removeClass('hidden');
-        $("#phone_number_DISP").addClass('hidden');
-    } else {
-        $("#phone_number").addClass('hidden');
-        $("#phone_number_DISP").removeClass('hidden');
-    }
-	
-	if (open_dispo_screen == 1) {
-	    wrapup_counter = 0;
-	    if (wrapup_seconds > 0) {
-		//showDiv('WrapupBox');
-		//$("#WrapupTimer").html(wrapup_seconds);
-		wrapup_waiting = 1;
-	    }
-
-	    CustomerData_update();
-	    //if (hide_gender < 1)
-	    //{
-	    //    $("#GENDERhideFORie").html('');
-	    //    $("#GENDERhideFORieALT").html('<select size="1" name="gender_list" class="cust_form" id="gender_list"><option value="U">U - <?=$lh->translationFor('undefined')?></option><option value="M">M - <?=$lh->translationFor('male')?></option><option value="F">F - <?=$lh->translationFor('female')?></option></select>');
-	    //}
-
-	    DispoSelectBox();
-	    //DispoSelectContent_create('','ReSET');
-	    WaitingForNextStep = 1;
-	    open_dispo_screen = 0;
-	    LIVE_default_xfer_group = default_xfer_group;
-	    LIVE_campaign_recording = campaign_recording;
-	    LIVE_campaign_rec_filename = campaign_rec_filename;
-	    if (disable_alter_custphone != 'HIDE') {
-            $("#DispoSelectPhone").html(dialed_number);
-        } else {
-            $("#DispoSelectPhone").html('');
+        //Start of checking for live calls
+        //if (live_customer_call == 1) {
+        //    live_call_seconds++;
+        //    //$("input[name='SecondS']").val(live_call_seconds);
+        //    //$("div:contains('CALL LENGTH:') > span").html(live_call_seconds);
+        //    //$("div:contains('SESSION ID:') > span").html(session_id);
+        //    toggleButton('DialHangup', 'hangup');
+        //    toggleButton('ResumePause', 'off');
+        //    
+        //    if (CheckDEADcall > 0) {
+        //        if (CheckDEADcallON < 1) {
+        //            toggleStatus('DEAD');
+        //            toggleButton('ParkCall', 'off');
+        //            toggleButton('TransferCall', 'off');
+        //            CheckDEADcallON = 1;
+        //            
+        //            if (xfer_in_call > 0 && customer_3way_hangup_logging == 'ENABLED') {
+        //                customer_3way_hangup_counter_trigger = 1;
+        //                customer_3way_hangup_counter = 1;
+        //            }
+        //        }
+        //    }
+        //}
+        
+        if (live_customer_call < 1) {
+            editProfileEnabled = false;
+            $("#for_dtmf").addClass('hidden');
+            $('#edit-profile').addClass('hidden');
+            $("#reload-script").addClass('hidden');
+            $("#dialer-pad-ast, #dialer-pad-hash").addClass('hidden');
+            $("#dialer-pad-clear, #dialer-pad-undo").removeClass('hidden');
+            $("#btnLogMeOut").removeClass("disabled");
+            //toggleStatus('NOLIVE');
+            
+            if (dialingINprogress < 1) {
+            //toggleButton('DialHangup', 'dial');
+            //toggleButton('ResumePause', 'on');
+            }
+            
+            if (per_call_notes == 'ENABLED') {
+            $("#call_notes_content").removeClass('hidden');
+            } else {
+            $("#call_notes_content").addClass('hidden');
+            }
         }
-	    if (auto_dial_level == 0) {
-		if ($("#DialALTPhone").is(':checked') == true) {
-		    reselect_alt_dial = 1;
-		    toggleButton('DialHangup', 'dial');
-
-		    $("#MainStatusSpan").html("<b><?=$lh->translationFor('dial_next_call')?></b>");
-		} else {
-		    reselect_alt_dial = 0;
-		}
-	    }
-
-	    // Submit custom form if it is custom_fields_enabled
-	    if (custom_fields_enabled > 0) {
-		//alert("IFRAME submitting!");
-		//vcFormIFrame.document.form_custom_fields.submit();
-	    }
-	}
-	
-	if (AgentDispoing > 0) {
-	    WaitingForNextStep = 1;
-	    CheckForConfCalls(session_id, '0');
-	    AgentDispoing++;
-	}
-	
-	if (agent_choose_ingroups_skip_count > 0) {
-	    agent_choose_ingroups_skip_count--;
-	    if (agent_choose_ingroups_skip_count == 0)
-		{CloserSelectSubmit();}
-	}
-	if (agent_select_territories_skip_count > 0) {
-	    agent_select_territories_skip_count--;
-	    if (agent_select_territories_skip_count == 0)
-		{TerritorySelectSubmit();}
-	}
-	if (logout_stop_timeouts == 1)	{WaitingForNextStep = 1;}
-	if ( (custchannellive < -30) && (lastcustchannel.length > 3) && (no_empty_session_warnings < 1) ) {CustomerChannelGone();}
-	if ( (custchannellive < -10) && (lastcustchannel.length > 3) ) {ReCheckCustomerChan();}
-	if ( (nochannelinsession > 16) && (check_r > 15) && (no_empty_session_warnings < 1) ) {NoneInSession();}
-	if (external_transferconf_count > 0) {external_transferconf_count = (external_transferconf_count - 1);}
-	if (manual_auto_hotkey == 1) {
-	    manual_auto_hotkey = 0;
-	    ManualDialNext('','','','','','0');
-	}
-	if (manual_auto_hotkey > 1) {manual_auto_hotkey = (manual_auto_hotkey - 1);}
-	
-	if (agent_lead_search_override == 'NOT_ACTIVE') {
-	    if (agent_lead_search == 'ENABLED') {
-		$("#agent-lead-search").removeClass('hidden');
-	    } else {
-		$("#agent-lead-search").addClass('hidden');
-	    }
-	}
-
-	if (WaitingForNextStep == 0) {
-	    if (trigger_ready > 0) {
-		trigger_ready = 0;
-		if (auto_resume_precall == 'Y')
-		    {AutoDial_Resume_Pause("VDADready");}
-	    }
-	    
-	    // check for live channels in conference room and get current datetime
-	    CheckForConfCalls(session_id, '0');
-	    
-	    // refresh agent status view
-	    if ($("#agents-tab").hasClass('active')) {
-		agent_status_view_active = 1;
-	    } else {
-		agent_status_view_active = 0;
-	    }
-	    if (agent_status_view_active > 0) {
-		RefreshAgentsView('AgentViewStatus', agent_status_view);
-	    }
-	    if (view_calls_in_queue_active > 0) {
-		RefreshCallsInQueue(view_calls_in_queue);
-	    }
-	    if (xfer_select_agents_active > 0) {
-		RefreshAgentsView('AgentXferViewSelect', agent_status_view);
-	    }
-	    if (agentonly_callbacks == '1')
-		{CB_count_check++;}
-
-	    if (AutoDialWaiting == 1) {
-		CheckForIncoming();
-	    }
-
-	    if (MD_channel_look == 1) {
-		ManualDialCheckChannel(XDcheck);
-	    }
-	    
-	    if ( (CB_count_check > 19) && (agentonly_callbacks == '1') ) {
-		CallBacksCountCheck();
-		CB_count_check = 0;
-	    }
-	    if ( (even > 0) && (agent_display_dialable_leads > 0) ) {
-		//DiaLableLeaDsCounT();
-	    }
-	    if (live_customer_call == 1) {
-		live_call_seconds++;
-		$(".formMain input[name='seconds']").val(live_call_seconds);
-		$("#SecondsDISP").html(live_call_seconds);
-		$("#for_dtmf").removeClass('hidden');
-		if (!editProfileEnabled)
-		    $('#edit-profile').removeClass('hidden');
-		$("#reload-script").removeClass('hidden');
-		$("#dialer-pad-ast, #dialer-pad-hash").removeClass('hidden');
-		$("#dialer-pad-clear, #dialer-pad-undo").addClass('hidden');
-		$("#btnLogMeOut").addClass("disabled");
-	    }
-	    if (XD_live_customer_call == 1) {
-		XD_live_call_seconds++;
-		$("#xferlength").val(XD_live_call_seconds);
-		if (!editProfileEnabled)
-		    $('#edit-profile').removeClass('hidden');
-		$("#reload-script").removeClass('hidden');
-		$("#btnLogMeOut").addClass("disabled");
-	    }
-	    if (customerparked == 1) {
-		customerparkedcounter++;
-		var parked_mm = Math.floor(customerparkedcounter/60);  // The minutes
-		var parked_ss = customerparkedcounter % 60;            // The balance of seconds
-		if (parked_ss < 10)
-		    {parked_ss = "0" + parked_ss;}
-		var parked_mmss = parked_mm + ":" + parked_ss;
-		$("#ParkCounterSpan").html("<?=$lh->translationFor('time_on_park')?>: " + parked_mmss);
-				}
-	    if (customer_3way_hangup_counter_trigger > 0) {
-		if (customer_3way_hangup_counter > customer_3way_hangup_seconds) {
-		    var customer_3way_timer_seconds = (XD_live_call_seconds - customer_3way_hangup_counter);
-		    //customer_3way_hangup_process('DURING_CALL',customer_3way_timer_seconds);
-
-		    customer_3way_hangup_counter = 0;
-		    customer_3way_hangup_counter_trigger = 0;
-
-		    if (customer_3way_hangup_action == 'DISPO') {
-			customer_3way_hangup_dispo_message = '<?=$lh->translationFor('customer_hangup_3way')?>';
-			BothCallHangup();
-		    }
-					} else {
-		    customer_3way_hangup_counter++;
-		    //document.getElementById("debugbottomspan").innerHTML = "<?=$lang['customer_3way_hangup']?> " + customer_3way_hangup_counter;
-					}
-				}
-	    if ( (update_fields > 0) && (update_fields_data.length > 2) ) {
-		UpdateFieldsData();
-				}
-	    if ( (timer_action != 'NONE') && (timer_action.length > 3) && (timer_action_seconds <= live_call_seconds) && (timer_action_seconds >= 0) ) {
-		TimerActionRun('', '');
-	    }
-	    if (HKdispo_display > 0) {
-		if ( (HKdispo_display == 3) && (HKfinish == 1) ) {
-		    HKfinish = 0;
-		    DispoSelectSubmit();
-		    //AutoDialWaiting = 1;
-		    //AutoDial_Resume_Pause("VDADready");
-		}
-		if (HKdispo_display == 1) {
-		    //if (hot_keys_active == 1)
-		    //	{showDiv('HotKeyEntriesBox');}
-		    //hideDiv('HotKeyActionBox');
-		}
-		HKdispo_display--;
-	    }
-	    if (all_record == 'YES') {
-		if (all_record_count < allcalls_delay)
-		    {all_record_count++;}
-		else {
-		    ConfSendRecording('MonitorConf', session_id , '');
-		    all_record = 'NO';
-		    all_record_count = 0;
-		}
-	    }
-
-
-	    if (active_display == 1) {
-		check_s = check_r.toString();
-		if ( (check_s.match(/00$/)) || (check_r < 2) )  {
-		    CheckForConfCalls(session_id, '0');
-		}
-	    }
-	    if (check_r < 2) {
-		// nothing to see here... move along...
-	    } else {
-		//check_for_live_calls();
-		check_s = check_r.toString();
-	    }
-	    if ( (blind_monitoring_now > 0) && ( (blind_monitor_warning == 'ALERT') || (blind_monitor_warning == 'NOTICE') ||  (blind_monitor_warning == 'AUDIO') || (blind_monitor_warning == 'ALERT_NOTICE') || (blind_monitor_warning == 'ALERT_AUDIO') || (blind_monitor_warning == 'NOTICE_AUDIO') || (blind_monitor_warning == 'ALL') ) ) {
-		if ( (blind_monitor_warning == 'NOTICE') || (blind_monitor_warning == 'ALERT_NOTICE') || (blind_monitor_warning == 'NOTICE_AUDIO') || (blind_monitor_warning == 'ALL') ) {
-		    //document.getElementById("blind_monitor_notice_span_contents").innerHTML = blind_monitor_message + "<br />";
-		    //showDiv('blind_monitor_notice_span');
-		}
-		if (blind_monitoring_now_trigger > 0) {
-		    if ( (blind_monitor_warning == 'ALERT') || (blind_monitor_warning == 'ALERT_NOTICE') || (blind_monitor_warning == 'ALERT_AUDIO') || (blind_monitor_warning == 'ALL') ) {
-			//document.getElementById("blind_monitor_alert_span_contents").innerHTML = blind_monitor_message;
-			//showDiv('blind_monitor_alert_span');
-		    }
-		    if ( (blind_monitor_filename.length > 0) && ( (blind_monitor_warning == 'AUDIO') || (blind_monitor_warning == 'ALERT_AUDIO')|| (blind_monitor_warning == 'NOTICE_AUDIO') || (blind_monitor_warning == 'ALL') ) ) {
-			BasicOriginateCall(blind_monitor_filename, 'NO', 'YES', session_id, 'YES', '', '1', '0', '1');
-		    }
-		    blind_monitoring_now_trigger = 0;
-		}
-	    } else {
-		//hideDiv('blind_monitor_notice_span');
-		//document.getElementById("blind_monitor_notice_span_contents").innerHTML = '';
-		//hideDiv('blind_monitor_alert_span');
-	    }
-	    if (wrapup_seconds > 0) {
-		//document.getElementById("WrapupTimer").innerHTML = (wrapup_seconds - wrapup_counter);
-		wrapup_counter++;
-		if ( (wrapup_counter > wrapup_seconds) && ($("#WrapupBox").is(':visible')) ) {
-		    wrapup_waiting = 0;
-		    //hideDiv('WrapupBox');
-		    if ($("#DispoSelectStop").is(':checked')) {
-			if (auto_dial_level != '0') {
-			    AutoDialWaiting = 0;
-			    //alert('wrapup pause');
-			    AutoDial_Resume_Pause("VDADpause");
-			    //document.getElementById("DiaLControl").innerHTML = DiaLControl_auto_HTML;
-			}
-			pause_calling = 1;
-			if (dispo_check_all_pause != '1') {
-			    DispoSelectStop = false;
-			    $("#DispoSelectStop").prop('checked', false);
-			    //alert("unchecking PAUSE");
-			}
-		    } else {
-			if (auto_dial_level != '0') {
-			    AutoDialWaiting = 1;
-			    //alert('wrapup ready');
-			    AutoDial_Resume_Pause("VDADready", "NEW_ID", "WRAPUP");
-			    //document.getElementById("DiaLControl").innerHTML = DiaLControl_auto_HTML_ready;
-			}
-		    }
-		}
-	    }
-	    if (consult_custom_wait > 0) {
-		//if (consult_custom_wait == '1')
-		//    {vcFormIFrame.document.form_custom_fields.submit();}
-		if (consult_custom_wait >= consult_custom_delay)
-		    {SendManualDial('YES');}
-		else
-		    {consult_custom_wait++;}
-	    }
-	}
-	
-	//Check for Callbacks
-	if (enable_callback_alert) {
-	    checkForCallbacks();
-	}
-	
-	//Check if Agent is still logged in
-	checkIfStillLoggedIn(check_if_logged_out, check_last_call);
+        //End of checking for live calls
+    
+        $("#LeadLookUP").prop('checked', true);
+            
+        if (check_r < 1) {
+            toggleButtons(dial_method, ivr_park_call, call_requeue_button);
+            if (agent_status_view > 0) {
+            $("#agents-tab").removeClass('hidden');
+            } else {
+            $("#agents-tab").addClass('hidden');
+            }
+        }
+    
+        epoch_sec++;
+        check_r++;
+        even++;
+        if (even > 1) {
+            even = 0;
+        }
+        
+        WaitingForNextStep = 0;
+        if ( (CloserSelecting == 1) || (TerritorySelecting == 1) )	{WaitingForNextStep = 1;}
+        
+        if (disable_alter_custphone != 'HIDE') {
+            $("#phone_number").removeClass('hidden');
+            $("#phone_number_DISP").addClass('hidden');
+        } else {
+            $("#phone_number").addClass('hidden');
+            $("#phone_number_DISP").removeClass('hidden');
+        }
+        
+        if (open_dispo_screen == 1) {
+            wrapup_counter = 0;
+            if (wrapup_seconds > 0) {
+            //showDiv('WrapupBox');
+            //$("#WrapupTimer").html(wrapup_seconds);
+            wrapup_waiting = 1;
+            }
+    
+            CustomerData_update();
+            //if (hide_gender < 1)
+            //{
+            //    $("#GENDERhideFORie").html('');
+            //    $("#GENDERhideFORieALT").html('<select size="1" name="gender_list" class="cust_form" id="gender_list"><option value="U">U - <?=$lh->translationFor('undefined')?></option><option value="M">M - <?=$lh->translationFor('male')?></option><option value="F">F - <?=$lh->translationFor('female')?></option></select>');
+            //}
+    
+            DispoSelectBox();
+            //DispoSelectContent_create('','ReSET');
+            WaitingForNextStep = 1;
+            open_dispo_screen = 0;
+            LIVE_default_xfer_group = default_xfer_group;
+            LIVE_campaign_recording = campaign_recording;
+            LIVE_campaign_rec_filename = campaign_rec_filename;
+            if (disable_alter_custphone != 'HIDE') {
+                $("#DispoSelectPhone").html(dialed_number);
+            } else {
+                $("#DispoSelectPhone").html('');
+            }
+            if (auto_dial_level == 0) {
+            if ($("#DialALTPhone").is(':checked') == true) {
+                reselect_alt_dial = 1;
+                toggleButton('DialHangup', 'dial');
+    
+                $("#MainStatusSpan").html("<b><?=$lh->translationFor('dial_next_call')?></b>");
+            } else {
+                reselect_alt_dial = 0;
+            }
+            }
+    
+            // Submit custom form if it is custom_fields_enabled
+            if (custom_fields_enabled > 0) {
+            //alert("IFRAME submitting!");
+            //vcFormIFrame.document.form_custom_fields.submit();
+            }
+        }
+        
+        if (AgentDispoing > 0) {
+            WaitingForNextStep = 1;
+            CheckForConfCalls(session_id, '0');
+            AgentDispoing++;
+        }
+        
+        if (agent_choose_ingroups_skip_count > 0) {
+            agent_choose_ingroups_skip_count--;
+            if (agent_choose_ingroups_skip_count == 0)
+            {CloserSelectSubmit();}
+        }
+        if (agent_select_territories_skip_count > 0) {
+            agent_select_territories_skip_count--;
+            if (agent_select_territories_skip_count == 0)
+            {TerritorySelectSubmit();}
+        }
+        if (logout_stop_timeouts == 1)	{WaitingForNextStep = 1;}
+        if ( (custchannellive < -30) && (lastcustchannel.length > 3) && (no_empty_session_warnings < 1) ) {CustomerChannelGone();}
+        if ( (custchannellive < -10) && (lastcustchannel.length > 3) ) {ReCheckCustomerChan();}
+        if ( (nochannelinsession > 16) && (check_r > 15) && (no_empty_session_warnings < 1) ) {NoneInSession();}
+        if (external_transferconf_count > 0) {external_transferconf_count = (external_transferconf_count - 1);}
+        if (manual_auto_hotkey == 1) {
+            manual_auto_hotkey = 0;
+            ManualDialNext('','','','','','0');
+        }
+        if (manual_auto_hotkey > 1) {manual_auto_hotkey = (manual_auto_hotkey - 1);}
+        
+        if (agent_lead_search_override == 'NOT_ACTIVE') {
+            if (agent_lead_search == 'ENABLED') {
+            $("#agent-lead-search").removeClass('hidden');
+            } else {
+            $("#agent-lead-search").addClass('hidden');
+            }
+        }
+    
+        if (WaitingForNextStep == 0) {
+            if (trigger_ready > 0) {
+            trigger_ready = 0;
+            if (auto_resume_precall == 'Y')
+                {AutoDial_Resume_Pause("VDADready");}
+            }
+            
+            // check for live channels in conference room and get current datetime
+            CheckForConfCalls(session_id, '0');
+            
+            // refresh agent status view
+            if ($("#agents-tab").hasClass('active')) {
+            agent_status_view_active = 1;
+            } else {
+            agent_status_view_active = 0;
+            }
+            if (agent_status_view_active > 0) {
+            RefreshAgentsView('AgentViewStatus', agent_status_view);
+            }
+            if (view_calls_in_queue_active > 0) {
+            RefreshCallsInQueue(view_calls_in_queue);
+            }
+            if (xfer_select_agents_active > 0) {
+            RefreshAgentsView('AgentXferViewSelect', agent_status_view);
+            }
+            if (agentonly_callbacks == '1')
+            {CB_count_check++;}
+    
+            if (AutoDialWaiting == 1) {
+            CheckForIncoming();
+            }
+    
+            if (MD_channel_look == 1) {
+            ManualDialCheckChannel(XDcheck);
+            }
+            
+            if ( (CB_count_check > 19) && (agentonly_callbacks == '1') ) {
+            CallBacksCountCheck();
+            CB_count_check = 0;
+            }
+            if ( (even > 0) && (agent_display_dialable_leads > 0) ) {
+            //DiaLableLeaDsCounT();
+            }
+            if (live_customer_call == 1) {
+            live_call_seconds++;
+            $(".formMain input[name='seconds']").val(live_call_seconds);
+            $("#SecondsDISP").html(live_call_seconds);
+            $("#for_dtmf").removeClass('hidden');
+            if (!editProfileEnabled)
+                $('#edit-profile').removeClass('hidden');
+            $("#reload-script").removeClass('hidden');
+            $("#dialer-pad-ast, #dialer-pad-hash").removeClass('hidden');
+            $("#dialer-pad-clear, #dialer-pad-undo").addClass('hidden');
+            $("#btnLogMeOut").addClass("disabled");
+            }
+            if (XD_live_customer_call == 1) {
+            XD_live_call_seconds++;
+            $("#xferlength").val(XD_live_call_seconds);
+            if (!editProfileEnabled)
+                $('#edit-profile').removeClass('hidden');
+            $("#reload-script").removeClass('hidden');
+            $("#btnLogMeOut").addClass("disabled");
+            }
+            if (customerparked == 1) {
+            customerparkedcounter++;
+            var parked_mm = Math.floor(customerparkedcounter/60);  // The minutes
+            var parked_ss = customerparkedcounter % 60;            // The balance of seconds
+            if (parked_ss < 10)
+                {parked_ss = "0" + parked_ss;}
+            var parked_mmss = parked_mm + ":" + parked_ss;
+            $("#ParkCounterSpan").html("<?=$lh->translationFor('time_on_park')?>: " + parked_mmss);
+                    }
+            if (customer_3way_hangup_counter_trigger > 0) {
+            if (customer_3way_hangup_counter > customer_3way_hangup_seconds) {
+                var customer_3way_timer_seconds = (XD_live_call_seconds - customer_3way_hangup_counter);
+                //customer_3way_hangup_process('DURING_CALL',customer_3way_timer_seconds);
+    
+                customer_3way_hangup_counter = 0;
+                customer_3way_hangup_counter_trigger = 0;
+    
+                if (customer_3way_hangup_action == 'DISPO') {
+                customer_3way_hangup_dispo_message = '<?=$lh->translationFor('customer_hangup_3way')?>';
+                BothCallHangup();
+                }
+                        } else {
+                customer_3way_hangup_counter++;
+                //document.getElementById("debugbottomspan").innerHTML = "<?=$lang['customer_3way_hangup']?> " + customer_3way_hangup_counter;
+                        }
+                    }
+            if ( (update_fields > 0) && (update_fields_data.length > 2) ) {
+            UpdateFieldsData();
+                    }
+            if ( (timer_action != 'NONE') && (timer_action.length > 3) && (timer_action_seconds <= live_call_seconds) && (timer_action_seconds >= 0) ) {
+            TimerActionRun('', '');
+            }
+            if (HKdispo_display > 0) {
+            if ( (HKdispo_display == 3) && (HKfinish == 1) ) {
+                HKfinish = 0;
+                DispoSelectSubmit();
+                //AutoDialWaiting = 1;
+                //AutoDial_Resume_Pause("VDADready");
+            }
+            if (HKdispo_display == 1) {
+                //if (hot_keys_active == 1)
+                //	{showDiv('HotKeyEntriesBox');}
+                //hideDiv('HotKeyActionBox');
+            }
+            HKdispo_display--;
+            }
+            if (all_record == 'YES') {
+            if (all_record_count < allcalls_delay)
+                {all_record_count++;}
+            else {
+                ConfSendRecording('MonitorConf', session_id , '');
+                all_record = 'NO';
+                all_record_count = 0;
+            }
+            }
+    
+    
+            if (active_display == 1) {
+            check_s = check_r.toString();
+            if ( (check_s.match(/00$/)) || (check_r < 2) )  {
+                CheckForConfCalls(session_id, '0');
+            }
+            }
+            if (check_r < 2) {
+            // nothing to see here... move along...
+            } else {
+            //check_for_live_calls();
+            check_s = check_r.toString();
+            }
+            if ( (blind_monitoring_now > 0) && ( (blind_monitor_warning == 'ALERT') || (blind_monitor_warning == 'NOTICE') ||  (blind_monitor_warning == 'AUDIO') || (blind_monitor_warning == 'ALERT_NOTICE') || (blind_monitor_warning == 'ALERT_AUDIO') || (blind_monitor_warning == 'NOTICE_AUDIO') || (blind_monitor_warning == 'ALL') ) ) {
+            if ( (blind_monitor_warning == 'NOTICE') || (blind_monitor_warning == 'ALERT_NOTICE') || (blind_monitor_warning == 'NOTICE_AUDIO') || (blind_monitor_warning == 'ALL') ) {
+                //document.getElementById("blind_monitor_notice_span_contents").innerHTML = blind_monitor_message + "<br />";
+                //showDiv('blind_monitor_notice_span');
+            }
+            if (blind_monitoring_now_trigger > 0) {
+                if ( (blind_monitor_warning == 'ALERT') || (blind_monitor_warning == 'ALERT_NOTICE') || (blind_monitor_warning == 'ALERT_AUDIO') || (blind_monitor_warning == 'ALL') ) {
+                //document.getElementById("blind_monitor_alert_span_contents").innerHTML = blind_monitor_message;
+                //showDiv('blind_monitor_alert_span');
+                }
+                if ( (blind_monitor_filename.length > 0) && ( (blind_monitor_warning == 'AUDIO') || (blind_monitor_warning == 'ALERT_AUDIO')|| (blind_monitor_warning == 'NOTICE_AUDIO') || (blind_monitor_warning == 'ALL') ) ) {
+                BasicOriginateCall(blind_monitor_filename, 'NO', 'YES', session_id, 'YES', '', '1', '0', '1');
+                }
+                blind_monitoring_now_trigger = 0;
+            }
+            } else {
+            //hideDiv('blind_monitor_notice_span');
+            //document.getElementById("blind_monitor_notice_span_contents").innerHTML = '';
+            //hideDiv('blind_monitor_alert_span');
+            }
+            if (wrapup_seconds > 0) {
+            //document.getElementById("WrapupTimer").innerHTML = (wrapup_seconds - wrapup_counter);
+            wrapup_counter++;
+            if ( (wrapup_counter > wrapup_seconds) && ($("#WrapupBox").is(':visible')) ) {
+                wrapup_waiting = 0;
+                //hideDiv('WrapupBox');
+                if ($("#DispoSelectStop").is(':checked')) {
+                if (auto_dial_level != '0') {
+                    AutoDialWaiting = 0;
+                    //alert('wrapup pause');
+                    AutoDial_Resume_Pause("VDADpause");
+                    //document.getElementById("DiaLControl").innerHTML = DiaLControl_auto_HTML;
+                }
+                pause_calling = 1;
+                if (dispo_check_all_pause != '1') {
+                    DispoSelectStop = false;
+                    $("#DispoSelectStop").prop('checked', false);
+                    //alert("unchecking PAUSE");
+                }
+                } else {
+                if (auto_dial_level != '0') {
+                    AutoDialWaiting = 1;
+                    //alert('wrapup ready');
+                    AutoDial_Resume_Pause("VDADready", "NEW_ID", "WRAPUP");
+                    //document.getElementById("DiaLControl").innerHTML = DiaLControl_auto_HTML_ready;
+                }
+                }
+            }
+            }
+            if (consult_custom_wait > 0) {
+            //if (consult_custom_wait == '1')
+            //    {vcFormIFrame.document.form_custom_fields.submit();}
+            if (consult_custom_wait >= consult_custom_delay)
+                {SendManualDial('YES');}
+            else
+                {consult_custom_wait++;}
+            }
+        }
+        
+        //Check for Callbacks
+        if (enable_callback_alert) {
+            checkForCallbacks();
+        }
+        
+        //Check if Agent is still logged in
+        checkIfStillLoggedIn(check_if_logged_out, check_last_call);
+        
+        GetAgentSalesCount();
     } else {
-	updateButtons();
-	
-	if (DefaultALTDial == 1) {
-	    $("#DialALTPhone").prop('checked', true);
-	}
-	
-	$("#LeadLookUP").prop('checked', true);
-	
-	if ( (agent_pause_codes_active == 'Y') || (agent_pause_codes_active == 'FORCE') ) {
-	    $("#pause_code_link").removeClass('hidden');
-	}
-	if (allow_closers != 'Y') {
-	    toggleButton('LocalCloser', 'hide');
-			}
-	
-	if (agent_lead_search_override !== 'DISABLED') {
-	    $("#agent-lead-search").removeClass('hidden');
-	} else {
-	    $("#agent-lead-search").addClass('hidden');
-	}
-	
-	$("#sessionIDspan").html(session_id);
-	if ( (LIVE_campaign_recording == 'NEVER') || (LIVE_campaign_recording == 'ALLFORCE') ) {
-	    //$("#RecordControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
-	    $("#RecordControl").addClass('hidden');
-			} else if ( LIVE_campaign_recording == 'ONDEMAND' ) {
-	    $("#RecordControl").removeClass('hidden');
-	}
-	
-	if (per_call_notes == 'ENABLED') {
-	    $("#call_notes_content").removeClass('hidden');
-	} else {
-	    $("#call_notes_content").addClass('hidden');
-	}
-	
-	if (INgroupCOUNT > 0) {
-	    //if (closer_default_blended == 1)
-	    //    {$("#closerSelectBlended").prop('checked', true);}
-	    //CloserSelectContent_create();
-	    //showDiv('CloserSelectBox');
-	    //CloserSelecting = 1;
-	    //CloserSelectContent_create();
-	    if (agent_choose_ingroups_DV == "MGRLOCK")
-		{agent_choose_ingroups_skip_count = 4;}
-	} else {
-	    //hideDiv('CloserSelectBox');
-	    //MainPanelToFront();
-	    //CloserSelecting = 0;
-	    if (dial_method == "INBOUND_MAN") {
-		dial_method = "MANUAL";
-		auto_dial_level = 0;
-		starting_dial_level = 0;
-		toggleButton('DialHangup', 'dial');
-	    }
-	}
-	
-	if (agentonly_callbacks == '1')
-	    {CB_count_check++;}
-	
-	if ( (CB_count_check > 19) && (agentonly_callbacks == '1') ) {
-	    CallBacksCountCheck();
-	    CB_count_check = 0;
-	}
-	
-	//Check if Agent is still logged in
-	checkLogin++;
-	if (checkLogin > 2) {
-	    checkLogin = 0;
-	    checkIfStillLoggedIn(false);
-	}
+        updateButtons();
+        
+        if (DefaultALTDial == 1) {
+            $("#DialALTPhone").prop('checked', true);
+        }
+        
+        $("#LeadLookUP").prop('checked', true);
+        
+        if ( (agent_pause_codes_active == 'Y') || (agent_pause_codes_active == 'FORCE') ) {
+            $("#pause_code_link").removeClass('hidden');
+        }
+        if (allow_closers != 'Y') {
+            toggleButton('LocalCloser', 'hide');
+                }
+        
+        if (agent_lead_search_override !== 'DISABLED') {
+            $("#agent-lead-search").removeClass('hidden');
+        } else {
+            $("#agent-lead-search").addClass('hidden');
+        }
+        
+        $("#sessionIDspan").html(session_id);
+        if ( (LIVE_campaign_recording == 'NEVER') || (LIVE_campaign_recording == 'ALLFORCE') ) {
+            //$("#RecordControl").html("<img src=\"./images/vdc_LB_startrecording_OFF.gif\" border=\"0\" alt=\"<?=$lh->translationFor('start_recording')?>\" />");
+            $("#RecordControl").addClass('hidden');
+                } else if ( LIVE_campaign_recording == 'ONDEMAND' ) {
+            $("#RecordControl").removeClass('hidden');
+        }
+        
+        if (per_call_notes == 'ENABLED') {
+            $("#call_notes_content").removeClass('hidden');
+        } else {
+            $("#call_notes_content").addClass('hidden');
+        }
+        
+        if (INgroupCOUNT > 0) {
+            //if (closer_default_blended == 1)
+            //    {$("#closerSelectBlended").prop('checked', true);}
+            //CloserSelectContent_create();
+            //showDiv('CloserSelectBox');
+            //CloserSelecting = 1;
+            //CloserSelectContent_create();
+            if (agent_choose_ingroups_DV == "MGRLOCK")
+            {agent_choose_ingroups_skip_count = 4;}
+        } else {
+            //hideDiv('CloserSelectBox');
+            //MainPanelToFront();
+            //CloserSelecting = 0;
+            if (dial_method == "INBOUND_MAN") {
+            dial_method = "MANUAL";
+            auto_dial_level = 0;
+            starting_dial_level = 0;
+            toggleButton('DialHangup', 'dial');
+            }
+        }
+        
+        if (agentonly_callbacks == '1')
+            {CB_count_check++;}
+        
+        if ( (CB_count_check > 19) && (agentonly_callbacks == '1') ) {
+            CallBacksCountCheck();
+            CB_count_check = 0;
+        }
+        
+        //Check if Agent is still logged in
+        checkLogin++;
+        if (checkLogin > 2) {
+            checkLogin = 0;
+            checkIfStillLoggedIn(false);
+        }
     }
     
     //console.log(window_focus);
