@@ -9685,6 +9685,8 @@ function GetAgentSalesCount() {
         goUser: uName,
         goPass: uPass,
         campaign_id: campaign,
+        log_user: user,
+        log_group: user_group,
         responsetype: 'json'
     };
 
