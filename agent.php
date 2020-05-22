@@ -485,7 +485,7 @@ function response($order_id,$amount,$response_code,$response_desc){
 		        height: 60px;
 		}
 
-		//toggle
+		/*toggle*/
 		.switch {
   position: relative;
   display: inline-block;
@@ -626,7 +626,7 @@ input:checked + .slider:before {
 										<div id="cust_avatar" class="col-lg-1 col-md-1 col-sm-2 text-center hidden-xs" style="height: 64px;">
 											<avatar username="Dialed Client" src="<?php echo CRM_DEFAULTS_USER_AVATAR;?>" :size="64"></avatar>
 										</div>
-										<div class="col-lg-11 col-md-11 col-sm-10">
+										<div class="<?php if (ECCS_BLIND_MODE === 'n') { echo "col-lg-9 col-md-9 col-sm-7"; } else { echo "col-lg-11 col-md-11 col-sm-10"; } ?>>
 								<!-- ECCS Customization-->
 						  <h4 id="cust_full_name" class="isDisabled">
 									<?php if(ECCS_BLIND_MODE === 'n'){ ?>
@@ -650,7 +650,13 @@ input:checked + .slider:before {
 									<span id="cust_number"></span>
 									<?php } ?>
 								</p>
-						            </div>
+						    </div>
+										<?php if (ECCS_BLIND_MODE === 'n') { ?>
+										<div id="agent_stats" class="col-lg-2 col-md-2 col-sm-3 hidden-xs" style="font-size: 18px;">
+											<p style="margin: 0;">Sales: <span id="agent_sales_count" style="float: right;">1,000</span></p>
+											<p style="margin: 0;">Amount: <span id="agent_total_amount" style="float: right;">1,000</span></p>
+										</div>
+										<?php } ?>
 									</div>
 								</div>
 							<!-- /.card heading -->
