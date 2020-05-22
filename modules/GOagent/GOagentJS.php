@@ -9709,10 +9709,11 @@ function GetAgentSalesCount() {
                 var amountCount = (typeof thisAmount[0].amount !== 'undefined' ? thisAmount[0].amount : 0);
                 $("#agent_total_amount").html(amountCount);
             }
-            
-            var thisSales = result.sales;
-            var saleCount = (typeof thisSales[0].sale !== 'undefined' ? thisSales[0].sale : 0);
-            $("#agent_sales_count").html(saleCount);
+            if (result.sales !== null && result.sales.length > 0) {
+                var thisSales = result.sales;
+                var saleCount = (typeof thisSales[0].sale !== 'undefined' ? thisSales[0].sale : 0);
+                $("#agent_sales_count").html(saleCount);
+            }
         }
     });
 }
