@@ -9700,7 +9700,18 @@ function GetAgentSalesCount() {
         }
     })
     .done(function (result) {
-        console.log(result);
+        if (result.result == 'success') {
+            if (result.amount !== null && result.amount.length > 0) {
+                var thisAmount = result.amount;
+                $("#amount_container").show();
+                var amountCount = (typeof thisAmount[0].amount !== 'undefined' ? thisAmount[0].amount : 0);
+                $("#agent_total_amount").html(amountCount);
+            }
+            
+            var thisSales = result.sales;
+            var saleCount = (typeof thisSales[0].sale !== 'undefined' ? thisSales[0].sale : 0);
+            $("#agent_sales_count").html(saleCount);
+        }
     });
 }
 
