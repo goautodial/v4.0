@@ -652,9 +652,9 @@ input:checked + .slider:before {
 								</p>
 						    </div>
 										<?php if (ECCS_BLIND_MODE === 'n') { ?>
-										<div id="agent_stats" class="col-lg-2 col-md-2 col-sm-3 hidden-xs" style="font-size: 18px;">
-											<p style="margin: 0;">Sales: <span id="agent_sales_count" style="float: right;">1,000</span></p>
-											<p style="margin: 0;">Amount: <span id="agent_total_amount" style="float: right;">1,000</span></p>
+										<div id="agent_stats" class="col-lg-2 col-md-2 col-sm-3 hidden-xs" style="font-size: 18px; display: none;">
+											<p style="margin: 0;">Sales: <span id="agent_sales_count" style="float: right;">0</span></p>
+											<p style="margin: 0;">Amount: <span id="agent_total_amount" style="float: right;">0</span></p>
 										</div>
 										<?php } ?>
 									</div>

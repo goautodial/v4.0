@@ -2262,6 +2262,8 @@ function btnLogMeIn () {
                 $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'CheckWebRTC'}, function(result) {
                     use_webrtc = parseInt(result);
                 });
+                
+                $("#agent_stats").show();
             } else {
                 swal({
                     title: '<?=$lh->translationFor('error')?>',
