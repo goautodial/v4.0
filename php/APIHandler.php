@@ -627,6 +627,13 @@ if(isset($_SESSION["user"])){
 		);		
 		return $this->API_Request("goDashboard", $postfields);
 	}
+
+	public function API_getSalesAgent(){
+		$postfields = array(
+                        'goAction' => 'goGetSalesAgent'
+                );
+                return $this->API_Request("goDashboard", $postfields);
+	}
 	
 	public function API_getAllDispositions(){
 		$postfields = array(

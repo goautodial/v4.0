@@ -266,7 +266,7 @@ error_reporting(E_ALL)
 							<div class="row">
 								<div class="col-lg-12" style="padding: 0px;">
 									<!-- demian -->
-									<a href="#" data-toggle="modal" data-target="#realtime_calls_monitoring">
+									<a href="#" data-toggle="modal" data-target="#<?php if(REALTIME_CALLS_MONITORING === 'y') echo 'realtime_calls_monitoring'?>">
 										<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center bg-info info_sun_boxes">
 											<em class="fa fa-sun-o fa-3x"></em><div class="h2 m0"><span class="text-lg"></span></div>
 											<div class="text-white"><?=$lh->translateText("realtime_calls_monitor")?></div>                                 
@@ -367,6 +367,37 @@ error_reporting(E_ALL)
 									</div>
 								</div>
 							</div>
+							<?php if(STATEWIDE_SALES_REPORT === 'y') { ?>
+							<!--  AGENT SALES REPORT -->
+							<div class="row">
+								<div class="panel panel-default" tabindex="-1">
+									<div class="panel-heading">
+										<div class="panel-title"><h4><?=$lh->translateText("sales_agent")?></h4></div>
+									</div>
+									<div class="responsive">
+										<div class="col-sm-12">
+											<table id="agent-sales" class="table table-striped table-hover display compact" style="width: 100%">
+												<thead>
+													<tr>
+														<th style="font-size: small;">Agent Name</th>
+														<th style="font-size: small;">Agent ID</th>
+														<th style="font-size: small;">Sales Count</th>
+														<th style="font-size: small;">Amount</th>
+												</thead>
+												<tbody>
+													<!-- data is in API_GetAgentSales.php -->
+												</tbody>
+											</table>
+										</div>
+										<div class="panel-footer clearfix">
+											<a href="#" class="pull-left">
+											<small></small>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<?php } ?>
 						</div><!-- END OF COLUMN 9 -->
 	
 						<aside class="col-lg-3">
@@ -442,12 +473,29 @@ error_reporting(E_ALL)
 									</a>
 								</div>
 							</div>
-							
+							<?php if(STATEWIDE_SALES_REPORT === 'y') { ?>
+							<!-- Agent Monitoring Summary -->
+							<div class="panel panel-default">
+							   <div class="panel-heading">
+								  <div class="panel-title"><?=$lh->translateText("agent_monitoring_summary")?></div>
+							   </div>
+							   <div data-height="230" data-scrollable="yes" class="list-group">
+									<span id="refresh_agents_monitoring_summary"></span>
+							   </div>
+							   <div class="panel-footer clearfix">
+									<a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" class="pull-right">
+										<medium><?=$lh->translateText("view_more")?></medium> <em class="fa fa-arrow-right"></em>
+									</a>
+							   </div>
+							</div>
+							<!-- End Agent Monitoring Summary -->
+							<?php } ?>
 						</aside><!-- END OF COLUMN 3 -->
 	
 					</div><!-- END OF ROW -->
 					
 					<div class="row">
+						<?php if(STATEWIDE_SALES_REPORT !== 'y') { ?>
 						<!-- Agent Monitoring Summary -->
 						<div class="col-lg-3">
 							<div class="panel panel-default">
@@ -465,7 +513,7 @@ error_reporting(E_ALL)
 							</div>
 						</div>
 						<!-- End Agent Monitoring Summary -->
-						
+
 						<!-- VECTOR MAP LOADER -->
 						<div class="col-lg-9">
 							<div class="panel panel-transparent">
@@ -473,6 +521,7 @@ error_reporting(E_ALL)
 							   <div id="world-map" style="height: 390px"></div>
 							</div>
 						</div>
+						<?php } ?>
 							<br>
 					</div>
 						
@@ -1379,10 +1428,17 @@ function goGetInSession(type) {
 					load_agents_monitoring_summary();
 				// ---- realtime monitoring
 					load_realtime_agents_monitoring();
+					<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
 					load_realtime_calls_monitoring();
+					<?php } ?>
 					//load_realtime_sla_monitoring();
 				// ---- view agent information modal
 					load_view_agent_information();
+
+					<?php if(STATEWIDE_SALES_REPORT === 'y'){ ?>
+				// ---- Statewide Customization
+					load_agent_sales();
+					<?php } ?>
 		});
 		
 		//Refresh functions() after 5000 milliseconds
@@ -1415,7 +1471,9 @@ function goGetInSession(type) {
 			
 			// ... realtime monitoring ...
 				var int_15 = setInterval(load_realtime_agents_monitoring,3000);
+				<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
 				var int_16 = setInterval(load_realtime_calls_monitoring,3000);
+				<?php } ?>
 				//var int_17 = setInterval(load_realtime_sla_monitoring,10000);
 			
 			// ... view agent information modal  ...
@@ -1426,7 +1484,12 @@ function goGetInSession(type) {
 				var int_20 = setInterval(load_totalOutSales,30000);
 				var int_21 = setInterval(load_totalInSales,30000);
 				var int_22 = setInterval(load_INSalesHour,60000);
-				var int_23 = setInterval(load_OUTSalesPerHour,60000);			
+				var int_23 = setInterval(load_OUTSalesPerHour,60000);
+
+			 <?php if(STATEWIDE_SALES_REPORT === 'y'){ ?>
+                         // ---- Statewide Customization
+                         	var int_25 = setInterval(load_agent_sales,30000);
+                         <?php } ?>	
 		
 		$('#modal_view_agent_information').on('show.bs.modal', function () {
 			clearInterval(int_1);
@@ -1444,7 +1507,9 @@ function goGetInSession(type) {
 			clearInterval(int_13);
 			clearInterval(int_14);
 			clearInterval(int_15);
+			<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
 			clearInterval(int_16);
+			<?php } ?>
 			//clearInterval(int_17);
 			clearInterval(int_18);
 			clearInterval(int_19);
@@ -1452,6 +1517,10 @@ function goGetInSession(type) {
 			clearInterval(int_21);
 			clearInterval(int_22);
 			clearInterval(int_23);
+			<?php if(STATEWIDE_SALES_REPORT === 'y'){ ?>
+                        // ---- Statewide Customization
+			clearInterval(int_25);	
+                        <?php } ?>
 		});
 		
 		$('#modal_view_agent_information').on('hidden.bs.modal', function () {
@@ -1471,7 +1540,9 @@ function goGetInSession(type) {
 			int_13 = setInterval(load_campaigns_monitoring,20000);
 			int_14 = setInterval(load_agents_monitoring_summary,15000);
 			int_15 = setInterval(load_realtime_agents_monitoring,3000);
+			<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
 			int_16 = setInterval(load_realtime_calls_monitoring,3000);
+			<?php } ?>
 			//int_17 = setInterval(load_realtime_sla_monitoring,10000);
 			int_18 = setInterval(load_view_agent_information,3000);
 			int_19 = setInterval(load_totalSales,30000);
@@ -1479,6 +1550,10 @@ function goGetInSession(type) {
 			int_21 = setInterval(load_totalInSales,30000);
 			int_22 = setInterval(load_INSalesHour,60000);
 			int_23 = setInterval(load_OUTSalesPerHour,60000);
+			<?php if(STATEWIDE_SALES_REPORT === 'y'){ ?>
+                        // ---- Statewide Customization
+                        int_25 = setInterval(load_agent_sales,30000);
+                        <?php } ?>
 		});
 	</script>
 	
@@ -1627,7 +1702,9 @@ function goGetInSession(type) {
 							int_13 = setInterval(load_campaigns_monitoring,20000);
 							int_14 = setInterval(load_agents_monitoring_summary,15000);
 							int_15 = setInterval(load_realtime_agents_monitoring,3000);
+							<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
 							int_16 = setInterval(load_realtime_calls_monitoring,3000);
+							<?php } ?>
 							//int_17 = setInterval(load_realtime_sla_monitoring,10000);
 							int_18 = setInterval(load_view_agent_information,3000);
 							int_19 = setInterval(load_totalSales,30000);

@@ -231,6 +231,8 @@ define ('ECCS_BLIND_MODE', "n"); //Customizations requested by ECCS. Accessibili
 define ('LEADUPLOAD_LEAD_MAPPING', "n"); // Customization requested by Yoothit. Lead Mapping
 define ('LEADUPLOAD_CUSTOM_DELIMITER', ""); //put special characters here, for multiple separate by [space]
 define ('LEADUPLOAD_CHECK_PHONES_IN_SYSTEM', 'n'); //enable or disable Lead Upload Feature: check duplicates in entire system
+define ('STATEWIDE_SALES_REPORT', 'n'); //Customization Requested by Statewide. 
 
 define ('EXPORTCALLREPORT_ALLCAMPAIGNS', 'y');
+define ('REALTIME_CALLS_MONITORING', 'n'); //Change to 'y' to enable realtime calls monitoring in Dashboard (not advisable for heavy systems)
 ?>

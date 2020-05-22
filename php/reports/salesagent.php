@@ -21,7 +21,7 @@
 */
 
 	require_once('APIHandler.php');
-	
+
 	$api		= \creamy\APIHandler::getInstance();
 	$fromDate	= date('Y-m-d 00:00:01');
 	$toDate 	= date('Y-m-d 23:59:59');
@@ -59,6 +59,12 @@
 		$userGroup = $_POST["userGroup"];
 		$userGroup = stripslashes($userGroup);
 	}
+
+	if(STATEWIDE_SALES_REPORT === 'y'){
+		$statewide_sales_report = 'y';
+	} else {
+		$statewide_sales_report = 'n';
+	}
 		
 	$postfields = array(
 		'goAction' => 'goGetSalesAgent',		
@@ -67,7 +73,8 @@
 		'toDate' => $toDate,
 		'campaignID' => $campaign_id,
 		'request' => $request,
-		'statuses' => $statuses
+		'statuses' => $statuses,
+		'statewide_sales_report' => $statewide_sales_report
 	);
 
 	$output = $api->API_getReports($postfields);
@@ -77,6 +84,14 @@
 		//var_dump($output);
 		
 		// SALES PER AGENT
+		// Statewide Customization
+                if(STATEWIDE_SALES_REPORT === 'y' && $output->col_exists == '1'){
+                       $statewide = '<th nowrap> Amount </th>';
+                } else {
+                       $statewide = '';
+                }
+                // ./Statewide Customization
+
 		if (strtolower($_POST['request']) === "outbound") {
 			$outbound = '';
 			
@@ -89,6 +104,9 @@
 									<th nowrap> Agent Name </th>
 									<th nowrap> Agent ID </th>
 									<th nowrap> Sales Count </th>
+									<!-- statewide customization -->
+									'. $statewide .'
+									<!-- ./statewide customization -->
 								</tr>
 							</thead>
 							<tbody>
@@ -108,6 +126,11 @@
 						$outbound .= '<tfoot><tr class="warning"><th nowrap colspan="2"> Total Agents: ';
 							$outbound .= $output->TOTAgents.'</th>';
 							$outbound .= '<th nowrap>'.$output->TOToutbound.'</th>';
+							// Statewide Customization
+							if(STATEWIDE_SALES_REPORT === 'y' && $output->col_exists == '1'){
+							$outbound .= '<th nowrap>'.$output->TOTOUTamount.'</th>';
+							}
+							// ./ Statewide Customization
 						$outbound .= '</tr></tfoot>';
 					}
 
@@ -127,6 +150,9 @@
 								<th nowrap> Agent Name </th>
 								<th nowrap> Agent ID </th>
 								<th nowrap> Sales Count </th>
+								<!-- statewide customization -->
+								'. $statewide .'
+								<!-- ./ statewide customization -->
 							</tr>
 						</thead>
 						<tbody>
@@ -145,6 +171,11 @@
 					$inbound .= '<tfoot><tr class="warning"><th nowrap colspan="2"> Total Agents: ';
 						$inbound .= count($output->BOTsorted_output).'</th>';
 						$inbound .= '<th nowrap>'.$output->TOTinbound.'</th>';
+						// Statewide Customization
+						if(STATEWIDE_SALES_REPORT === 'y' && $output->col_exists == '1'){
+						$inbound .= '<th nowrap>'.$output->TOTINamount.'</th>';
+						}
+						// ./ Statewide Customization
 					$inbound .= '</tr></tfoot>';
 				}
 					
