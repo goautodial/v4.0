@@ -1509,6 +1509,8 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                         logout_stop_timeouts = 0;
                         just_logged_in = true;
                         
+                        $("#agent_stats").show();
+                        
                         $.each(result.data, function(key, value) {
                             if (key == 'campaign_settings') {
                                 $.each(value, function(cKey, cValue) {
@@ -2262,8 +2264,6 @@ function btnLogMeIn () {
                 $.post("<?=$module_dir?>GOagentJS.php", {'module_name': 'GOagent', 'action': 'CheckWebRTC'}, function(result) {
                     use_webrtc = parseInt(result);
                 });
-                
-                $("#agent_stats").show();
             } else {
                 swal({
                     title: '<?=$lh->translationFor('error')?>',
@@ -2336,6 +2336,8 @@ function sendLogout (logMeOut) {
             if (result.result == 'success') {
                 MainPanelToFront();
                 is_logged_in = 0;
+                
+                $("#agent_stats").hide();
                	<?php
 			//ECCS Customization
 			if( ECCS_BLIND_MODE === 'y'){
@@ -9672,6 +9674,33 @@ function set_length(SLnumber, SLlength_goal, SLdirection) {
 		result = "0" + result;
 	}
 	return result;
+}
+
+
+function GetAgentSalesCount() {
+    var postData = {
+        goAction: 'goGetSalesAgent',
+        goServerIP: server_ip,
+        goSessionName: session_name,
+        goUser: uName,
+        goPass: uPass,
+        campaign_id: campaign,
+        responsetype: 'json'
+    };
+
+    $.ajax({
+        type: 'POST',
+        url: '<?=$goAPI?>/goDashboard/goAPI.php',
+        processData: true,
+        data: postData,
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    })
+    .done(function (result) {
+        console.log(result);
+    });
 }
 
 
