@@ -6094,7 +6094,7 @@ function DispoSelectSubmit() {
                 goPhoneNumber: cust_phone_number,
                 goPhoneCode: cust_phone_code,
                 goDialMethod: dial_method,
-                goUniqueid: $(".formMain input[name='uniqueid']").val(),
+                goUniqueID: $(".formMain input[name='uniqueid']").val(),
                 goCallBackLeadStatus: CallBackLeadStatus,
                 goComments: encodeURIComponent(CallBackComments),
                 goCustomFieldNames: custom_field_names,
