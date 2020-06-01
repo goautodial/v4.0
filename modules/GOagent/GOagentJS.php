@@ -2345,6 +2345,8 @@ function sendLogout (logMeOut) {
                 is_logged_in = 0;
                 
                 $("#agent_stats").hide();
+                $("#agent_total_amount").html(0);
+                $("#agent_sales_count").html(0);
                	<?php
 			//ECCS Customization
 			if( ECCS_BLIND_MODE === 'y'){
@@ -9709,12 +9711,15 @@ function GetAgentSalesCount() {
             if (thisData.amount !== null && thisData.amount.length > 0) {
                 var amountCount = (typeof thisData.amount !== 'undefined' ? thisData.amount : 0);
                 $("#amount_container").show();
-                $("#agent_total_amount").html(amountCount);
+                $("#agent_total_amount").html(numberWithCommas(amountCount));
             }
             if (thisData.sales !== null && thisData.sales.length > 0) {
                 var saleCount = (typeof thisData.sales !== 'undefined' ? thisData.sales : 0);
-                $("#agent_sales_count").html(saleCount);
+                $("#agent_sales_count").html(numberWithCommas(saleCount));
             }
+        } else {
+            $("#agent_total_amount").html(0);
+            $("#agent_sales_count").html(0);
         }
     });
 }
@@ -10402,6 +10407,10 @@ function maximizeModal(modal_id) {
         toggleButton('ResumePause', btnIsPaused);
     }
     $('#MDPhonENumbeR').prop('readonly', false);
+}
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 }
 
 String.prototype.toUpperFirst = function() {
