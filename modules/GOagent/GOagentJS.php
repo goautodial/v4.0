@@ -2345,6 +2345,8 @@ function sendLogout (logMeOut) {
                 is_logged_in = 0;
                 
                 $("#agent_stats").hide();
+                $("#agent_total_amount").html(0);
+                $("#agent_sales_count").html(0);
                	<?php
 			//ECCS Customization
 			if( ECCS_BLIND_MODE === 'y'){
@@ -9686,19 +9688,16 @@ function set_length(SLnumber, SLlength_goal, SLdirection) {
 
 function GetAgentSalesCount() {
     var postData = {
-        goAction: 'goGetSalesAgent',
-        goServerIP: server_ip,
-        goSessionName: session_name,
+        goAction: 'goGetAgentSalesCount',
         goUser: uName,
         goPass: uPass,
-        campaign_id: campaign,
-        session_user: user,
+        goCampaign: campaign,
         responsetype: 'json'
     };
 
     $.ajax({
         type: 'POST',
-        url: '<?=$goAPI?>/goDashboard/goAPI.php',
+        url: '<?=$goAPI?>/goAgent/goAPI.php',
         processData: true,
         data: postData,
         dataType: "json",
@@ -9708,17 +9707,19 @@ function GetAgentSalesCount() {
     })
     .done(function (result) {
         if (result.result == 'success') {
-            if (result.amount !== null && result.amount.length > 0) {
-                var thisAmount = result.amount;
+            var thisData = result.data;
+            if (thisData.amount !== null && thisData.amount.length > 0) {
+                var amountCount = (typeof thisData.amount !== 'undefined' ? thisData.amount : 0);
                 $("#amount_container").show();
-                var amountCount = (typeof thisAmount[0].amount !== 'undefined' ? thisAmount[0].amount : 0);
-                $("#agent_total_amount").html(amountCount);
+                $("#agent_total_amount").html(numberWithCommas(amountCount));
             }
-            if (result.sales !== null && result.sales.length > 0) {
-                var thisSales = result.sales;
-                var saleCount = (typeof thisSales[0].sale !== 'undefined' ? thisSales[0].sale : 0);
-                $("#agent_sales_count").html(saleCount);
+            if (thisData.sales !== null && thisData.sales.length > 0) {
+                var saleCount = (typeof thisData.sales !== 'undefined' ? thisData.sales : 0);
+                $("#agent_sales_count").html(numberWithCommas(saleCount));
             }
+        } else {
+            $("#agent_total_amount").html(0);
+            $("#agent_sales_count").html(0);
         }
     });
 }
@@ -10406,6 +10407,10 @@ function maximizeModal(modal_id) {
         toggleButton('ResumePause', btnIsPaused);
     }
     $('#MDPhonENumbeR').prop('readonly', false);
+}
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 }
 
 String.prototype.toUpperFirst = function() {
