@@ -9705,18 +9705,16 @@ function GetAgentSalesCount() {
     })
     .done(function (result) {
         if (result.result == 'success') {
-            console.log(result.data);
-            /*if (result.amount !== null && result.amount.length > 0) {
-                var thisAmount = result.amount;
+            var thisData = result.data;
+            if (thisData.amount !== null && thisData.amount.length > 0) {
+                var amountCount = (typeof thisData.amount !== 'undefined' ? thisData.amount : 0);
                 $("#amount_container").show();
-                var amountCount = (typeof thisAmount[0].amount !== 'undefined' ? thisAmount[0].amount : 0);
                 $("#agent_total_amount").html(amountCount);
             }
-            if (result.sales !== null && result.sales.length > 0) {
-                var thisSales = result.sales;
-                var saleCount = (typeof thisSales[0].sale !== 'undefined' ? thisSales[0].sale : 0);
+            if (thisData.sales !== null && thisData.sales.length > 0) {
+                var saleCount = (typeof thisData.sales.sale !== 'undefined' ? thisData.sales.sale : 0);
                 $("#agent_sales_count").html(saleCount);
-            }*/
+            }
         }
     });
 }
