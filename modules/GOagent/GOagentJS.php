@@ -126,7 +126,7 @@ var ECCS_DIAL_TIMEOUT = 2;
 var has_inbound_call = 0;
 var check_inbound_call = true;
 var dialInterval;
-var REALTIME_CALLS_MONITORING = '<?=REALTIME_CALLS_MONITORING?>';
+var STATEWIDE_SALES_REPORT = '<?=STATEWIDE_SALES_REPORT?>';
 
 <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
 var enable_eccs_shortcuts = 1;
@@ -774,7 +774,7 @@ var refreshId = setInterval(function() {
         //Check if Agent is still logged in
         checkIfStillLoggedIn(check_if_logged_out, check_last_call);
         
-        if (REALTIME_CALLS_MONITORING === "y") {
+        if (STATEWIDE_SALES_REPORT === "y") {
             GetAgentSalesCount();
         }
     } else {
@@ -1514,7 +1514,7 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                         logout_stop_timeouts = 0;
                         just_logged_in = true;
                         
-                        if (REALTIME_CALLS_MONITORING === "y") {
+                        if (STATEWIDE_SALES_REPORT === "y") {
                             $("#agent_stats").show();
                         }
                         
