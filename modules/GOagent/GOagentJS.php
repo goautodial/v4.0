@@ -9712,7 +9712,7 @@ function GetAgentSalesCount() {
                 $("#agent_total_amount").html(amountCount);
             }
             if (thisData.sales !== null && thisData.sales.length > 0) {
-                var saleCount = (typeof thisData.sales.sale !== 'undefined' ? thisData.sales.sale : 0);
+                var saleCount = (typeof thisData.sales !== 'undefined' ? thisData.sales : 0);
                 $("#agent_sales_count").html(saleCount);
             }
         }
