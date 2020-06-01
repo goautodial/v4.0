@@ -9686,19 +9686,16 @@ function set_length(SLnumber, SLlength_goal, SLdirection) {
 
 function GetAgentSalesCount() {
     var postData = {
-        goAction: 'goGetSalesAgent',
-        goServerIP: server_ip,
-        goSessionName: session_name,
+        goAction: 'goGetAgentSalesCount',
         goUser: uName,
         goPass: uPass,
-        campaign_id: campaign,
-        session_user: user,
+        goCampaign: campaign,
         responsetype: 'json'
     };
 
     $.ajax({
         type: 'POST',
-        url: '<?=$goAPI?>/goDashboard/goAPI.php',
+        url: '<?=$goAPI?>/goAgent/goAPI.php',
         processData: true,
         data: postData,
         dataType: "json",
@@ -9708,7 +9705,8 @@ function GetAgentSalesCount() {
     })
     .done(function (result) {
         if (result.result == 'success') {
-            if (result.amount !== null && result.amount.length > 0) {
+            console.log(result.data);
+            /*if (result.amount !== null && result.amount.length > 0) {
                 var thisAmount = result.amount;
                 $("#amount_container").show();
                 var amountCount = (typeof thisAmount[0].amount !== 'undefined' ? thisAmount[0].amount : 0);
@@ -9718,7 +9716,7 @@ function GetAgentSalesCount() {
                 var thisSales = result.sales;
                 var saleCount = (typeof thisSales[0].sale !== 'undefined' ? thisSales[0].sale : 0);
                 $("#agent_sales_count").html(saleCount);
-            }
+            }*/
         }
     });
 }
