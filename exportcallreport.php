@@ -230,8 +230,8 @@
 				?>
 				console.log(campaigns.campaign_id);
 				console.log(customDispo);
-				if(selectedCampaigns != null){
-					if( selectedCampaigns.includes("ALL") ) {
+				//if(selectedCampaigns != null){
+					if( selectedCampaigns.includes("ALL") || selectedCampaigns == null) {
 						for(i=0; i < campaigns.campaign_id.length; i++){
 							if( customDispo[campaigns.campaign_id[i]] != null ) {
 								statuses = customDispo[campaigns.campaign_id[i]].split(", ");
@@ -272,7 +272,7 @@
 							}
 						}
 					}
-				}
+				//}
 				
 				$('#selected_statuses').html(statOptions);
 			});

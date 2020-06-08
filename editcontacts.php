@@ -301,13 +301,8 @@
 														<th><?php $lh->translateText("event_time"); ?></th>
 														<th><?php $lh->translateText("campaign_id"); ?></th>
 														<th><?php $lh->translateText("agent_log_id"); ?></th>
-														<th><?php $lh->translateText("pause_sec"); ?></th>
-														<th><?php $lh->translateText("wait_sec"); ?></th>
-														<th><?php $lh->translateText("talk_sec"); ?></th>
-														<th><?php $lh->translateText("dispo_sec"); ?></th>
+														<th><?php $lh->translateText("length_in_sec"); ?></th>
 														<th><?php $lh->translateText("status"); ?></th>
-														<th><?php $lh->translateText("user_group"); ?></th>
-														<th><?php $lh->translateText("sub_status"); ?></th>
 													</tr>
 												</thead>
 												<tbody>
@@ -318,13 +313,8 @@
 																	<td><small>'.date('M. d, Y h:i A', strtotime($output->agentlog->event_time[$i])).'</small></td>
 																	<td><small>'.$output->agentlog->campaign_id[$i].'</small></td>
 																	<td><small>'.$output->agentlog->agent_log_id[$i].'</small></td>
-																	<td><small>'.$output->agentlog->pause_sec[$i].'</small></td>
-																	<td><small>'.$output->agentlog->wait_sec[$i].'</small></td>
-																	<td><small>'.$output->agentlog->talk_sec[$i].'</small></td>
-																	<td><small>'.$output->agentlog->dispo_sec[$i].'</small></td>
-																	<td><small>'.$output->agentlog->status[$i].'</small></td>
-																	<td><small>'.$output->agentlog->user_group[$i].'</small></td>
-																	<td><small>'.$output->agentlog->sub_status[$i].'</small></td>
+																	<td><small>'.gmdate('H:i:s', $output->agentlog->talk_sec[$i]).'</small></td>																	
+																	<td><small>'.$output->agentlog->status[$i].'</small></td>																
 																</tr>
 															';
 														}

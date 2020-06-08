@@ -364,7 +364,7 @@
 		data: { type: "all" },
         cache: false,
         success: function(data){
-			console.log(data);
+			//console.log(data);
             $("#refresh_TotalCalls").html(data);
         } 
     });
@@ -372,13 +372,12 @@
     
     function load_TotalInboundCalls(){
     $.ajax({
-        //url: "./php/dashboard/API_getTotalInboundCalls.php",
 		type: "POST",
 		url: "./php/dashboard/API_getTotalCalls.php",
 		data: { type: "inbound" },		
         cache: false,
         success: function(data){
-			console.log(data);
+			//console.log(data);
             $("#refresh_TotalInCalls").html(data);
         } 
     });
@@ -386,13 +385,12 @@
 
     function load_TotalOutboundCalls(){
     $.ajax({
-        //url: "./php/dashboard/API_getTotalOutboundCalls.php",
 		type: "POST",
 		url: "./php/dashboard/API_getTotalCalls.php",
 		data: { type: "outbound" },		
         cache: false,
         success: function(data){
-			console.log(data);
+			//console.log(data);
             $("#refresh_TotalOutCalls").html(data);
         } 
     });
