@@ -2623,7 +2623,7 @@ function hotKeysAvailable(e) {
                     alt_dial_status_display = 0;
                     DialedCallHangup('NO', 'YES', HKdispo);
                     
-                    if (ECCS_BLIND_MODE == 'y' && ECCS_DIAL_TIMEOUT > 0) {
+                    if (ECCS_BLIND_MODE == 'y' && ECCS_DIAL_TIMEOUT > 0 && HKdispo !== 'CALLBK') {
                         setTimeout(function() {
                             btnDialHangup();
                         }, 1000);
