@@ -2424,7 +2424,7 @@ function sendLogout (logMeOut) {
 
 function btnDialHangup () {
     //console.log(live_customer_call + ' ' + toggleButton('DialHangup'));
-    console.log('4', live_customer_call, dialingINprogress, ECCS_BLIND_MODE, AutoDialReady);
+    //console.log('4', live_customer_call, dialingINprogress, ECCS_BLIND_MODE, AutoDialReady);
     if (live_customer_call == 1 || dialingINprogress == 1) {
         if (toggleButton('DialHangup')) {
             dialingINprogress = 0;
@@ -2614,12 +2614,12 @@ function hotKeysAvailable(e) {
                     DialedCallHangup('NO', 'YES', HKdispo);
                 }
             } else {
-                console.log('1', 'NO', 'YES', HKdispo);
+                //console.log('1', 'NO', 'YES', HKdispo);
                 // transfer call to answering maching message with hotkey
                 if ( (HKdispo == 'LTMG') || (HKdispo == 'XFTAMM') ) {
                     mainxfer_send_redirect('XfeRVMAIL', lastcustchannel, lastcustserverip);
                 } else {
-                    console.log('2', 'NO', 'YES', HKdispo);
+                    //console.log('2', 'NO', 'YES', HKdispo);
                     HKdispo_display = 4;
                     HKfinish = 1;
                     $("#HotKeyDispo").html(HKdispo + " - " + HKstatus);
@@ -2629,10 +2629,11 @@ function hotKeysAvailable(e) {
                     alt_phone_dialing = starting_alt_phone_dialing;
                     alt_dial_active = 0;
                     alt_dial_status_display = 0;
+                    dialingINprogress = 0;
                     DialedCallHangup('NO', 'YES', HKdispo);
                     
                     if (ECCS_BLIND_MODE == 'y' && ECCS_DIAL_TIMEOUT > 0 && HKdispo !== 'CALLBK') {
-                        console.log('3', ECCS_BLIND_MODE, ECCS_DIAL_TIMEOUT, HKdispo);
+                        //console.log('3', ECCS_BLIND_MODE, ECCS_DIAL_TIMEOUT, HKdispo);
                         setTimeout(function() {
                             btnDialHangup();
                         }, ECCS_DIAL_TIMEOUT * 1000);
