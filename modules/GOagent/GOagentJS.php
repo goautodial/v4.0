@@ -1924,6 +1924,10 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
             var cbComment = $("#callback-comments").val();
             ReschedCallback(reschedule_cb_id, cbDate, cbComment, cbOnly);
         }
+        
+        if (ECCS_BLIND_MODE == 'y' && ECCS_DIAL_TIMEOUT > 0) {
+            btnDialHangup();
+        }
     });
     
     $("#openWebForm").click(function() {
