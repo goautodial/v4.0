@@ -2606,6 +2606,7 @@ function hotKeysAvailable(e) {
         var HKstatus = hotkeys_content[HKdispo];
         if (HKdispo) {
             CustomerData_update();
+            console.log('NO', 'YES', HKdispo);
 	
             if ( (HKdispo == 'ALTPH2') || (HKdispo == 'ADDR3') ) {
                 if ($("#DiaLALTPhone").prop('checked')) {
