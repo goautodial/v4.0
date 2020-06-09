@@ -495,7 +495,7 @@ var refreshId = setInterval(function() {
             $("#phone_number_DISP").removeClass('hidden');
         }
         
-        if (open_dispo_screen == 1) {
+        if (open_dispo_screen == 1 && ECCS_BLIND_MODE !== 'y') {
             wrapup_counter = 0;
             if (wrapup_seconds > 0) {
             //showDiv('WrapupBox');
