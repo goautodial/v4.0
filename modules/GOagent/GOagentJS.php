@@ -2433,10 +2433,8 @@ function btnDialHangup () {
             toggleButton('DialHangup', 'hangup', false);
             DialedCallHangup();
             
-            if (ECCS_BLIND_MODE === 'y') {
-                $("#DispoSelection").val('A');
-                DispoSelectSubmit();
-            }
+            $("#DispoSelection").val('A');
+            DispoSelectSubmit();
         }
     } else {
         toggleButton('DialHangup', 'hangup', false);
