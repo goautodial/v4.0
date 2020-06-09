@@ -2424,6 +2424,7 @@ function sendLogout (logMeOut) {
 
 function btnDialHangup () {
     //console.log(live_customer_call + ' ' + toggleButton('DialHangup'));
+    console.log('4', live_customer_call, dialingINprogress, ECCS_BLIND_MODE, AutoDialReady);
     if (live_customer_call == 1 || dialingINprogress == 1) {
         if (toggleButton('DialHangup')) {
             dialingINprogress = 0;
