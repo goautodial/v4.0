@@ -2606,17 +2606,19 @@ function hotKeysAvailable(e) {
         var HKstatus = hotkeys_content[HKdispo];
         if (HKdispo) {
             CustomerData_update();
-            console.log('NO', 'YES', HKdispo);
+            console.log('0', 'NO', 'YES', HKdispo);
 	
             if ( (HKdispo == 'ALTPH2') || (HKdispo == 'ADDR3') ) {
                 if ($("#DiaLALTPhone").prop('checked')) {
                     DialedCallHangup('NO', 'YES', HKdispo);
                 }
             } else {
+                console.log('1', 'NO', 'YES', HKdispo);
                 // transfer call to answering maching message with hotkey
                 if ( (HKdispo == 'LTMG') || (HKdispo == 'XFTAMM') ) {
                     mainxfer_send_redirect('XfeRVMAIL', lastcustchannel, lastcustserverip);
                 } else {
+                    console.log('2', 'NO', 'YES', HKdispo);
                     HKdispo_display = 4;
                     HKfinish = 1;
                     $("#HotKeyDispo").html(HKdispo + " - " + HKstatus);
@@ -2627,7 +2629,6 @@ function hotKeysAvailable(e) {
                     alt_dial_active = 0;
                     alt_dial_status_display = 0;
                     DialedCallHangup('NO', 'YES', HKdispo);
-                    open_dispo_screen = 0;
                     
                     if (ECCS_BLIND_MODE == 'y' && ECCS_DIAL_TIMEOUT > 0 && HKdispo !== 'CALLBK') {
                         setTimeout(function() {
