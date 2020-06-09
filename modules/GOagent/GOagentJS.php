@@ -2432,6 +2432,11 @@ function btnDialHangup () {
             check_inbound_call = true;
             toggleButton('DialHangup', 'hangup', false);
             DialedCallHangup();
+            
+            if (ECCS_BLIND_MODE === 'y') {
+                $("#DispoSelection").val('A');
+                DispoSelectSubmit();
+            }
         }
     } else {
         toggleButton('DialHangup', 'hangup', false);
