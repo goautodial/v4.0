@@ -2630,8 +2630,8 @@ function hotKeysAvailable(e) {
                     alt_dial_status_display = 0;
                     DialedCallHangup('NO', 'YES', HKdispo);
                     
-                    console.log('3', ECCS_BLIND_MODE, ECCS_DIAL_TIMEOUT, HKdispo);
                     if (ECCS_BLIND_MODE == 'y' && ECCS_DIAL_TIMEOUT > 0 && HKdispo !== 'CALLBK') {
+                        console.log('3', ECCS_BLIND_MODE, ECCS_DIAL_TIMEOUT, HKdispo);
                         setTimeout(function() {
                             btnDialHangup();
                         }, ECCS_DIAL_TIMEOUT * 1000);
