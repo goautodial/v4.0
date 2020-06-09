@@ -72,18 +72,83 @@ $postfields["custom_fields"] = $custom_fields;
 $postfields["per_call_notes"] = $per_call_notes;
 $postfields["rec_location"] = $rec_location;
 
+$limit = 20000;
+$offset = 0;
+
 if($toDate != NULL)
     $postfields["toDate"] = $toDate;
 
 if($fromDate != NULL)
     $postfields["fromDate"] = $fromDate;
 
-$output = $api->API_Request("goReports", $postfields);
+$postfields["goAction"] = "goExportCountRows";
+$row_output = $api->API_Request("goReports", $postfields);
 
-if($output->result == "success"){
+$postfields["goAction"] = "goExportCallReport";
+
+$data_header = [];
+$data_row = [];
+$display = "";
+$display2 = "";
+
+if($row_output->result == "success"){
+	$count = $row_output->row_count;
+
+	if($count > $limit){
+		$postfields["limit"] = $limit;
+		$postfields["offset"] = $offset;
+		while($last_row_offset <= $count){
+			$postfields["offset"] = $offset;
+			$output = $api->API_Request("goReports", $postfields);
+
+			if($output->result == "success"){
+
+				if($offset == 0){
+					$data_header = $output->header;
+				}
+				$data_row[] = json_decode(json_encode($output->rows), true);
+			}
+			$last_row_offset = $offset;
+			$offset = $offset + $limit;
+			$data_row = array_merge($data_row);
+		}
+		$i = 0;
+		foreach($data_row as $array_rows){
+		    foreach($array_rows as $temp){
+	        	foreach($temp as $value){
+				if($i <= 250000){
+	        	    		$display .= $value.",";
+				} else {
+					$display2 .= $value.",";
+				}
+		        }
+			if($i <= 250000){
+	        		$display .= "\n";
+			} else {
+				$display2 .= "\n";
+			}
+	            }
+		    $i++;
+		}
+	} else {
+		$output = $api->API_Request("goReports", $postfields);
+		$data_header = $output->header;
+		$data_row = $output->rows;
+		
+		$array_rows = json_decode(json_encode($data_row), true);
+                foreach($array_rows as $temp){
+                    foreach($temp as $value){
+                        $display .= $value.",";
+                    }
+                    $display .= "\n";
+                }
+	}
+
+    if($output->result == "success"){
     
-    $header = implode(",",$output->header);
-    
+    //$header = implode(",",$output->header);
+    $header = implode(",",$data_header);
+
     $filename = "Export_Call_Report.".date("Y-m-d").".csv";
     
     header('Content-type: application/csv');
@@ -95,13 +160,18 @@ if($output->result == "success"){
     flush();
 
     echo $header."\n";
-    $array_rows = json_decode(json_encode($output->rows), true);
-    foreach($array_rows as $temp){
+    //$array_rows = json_decode(json_encode($output->rows), true);
+    //$array_rows = json_decode(json_encode($data_row), true);
+    /*foreach($array_rows as $temp){
         foreach($temp as $value){
             echo $value.",";
         }
         echo "\n";
+        }*/
+    echo $display;
+    echo $display2;
     }
+
 }
-//var_dump($output);
+//var_dump($array_rows);
 ?>

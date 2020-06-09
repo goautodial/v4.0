@@ -26,33 +26,21 @@
 	$output 									= $api->API_getSalesAgent();    
     	$sales										= '[';
      
-    foreach ($output->sales as $key => $value) {
-    
-        $full_name[] 								= $value->full_name;
-        $users[]	 								= $value->user;
-        $sale[] 								= $value->sale;
-    }
-
     foreach($output->amount as $key => $value) {
 	$amount_users[]								= $value->user;
+	$full_name[] 								= $value->full_name;
+	$sale[]									= $value->sale;
 	$amount[]								= $value->amount;
     }	
 
     $k 								= 0;
-    foreach($users as $user){
+    foreach($amount_users as $user){
     
        	$sales 								.= '[';  
        	$sales 								.= '"'.$full_name[$k].'",';   
        	$sales 								.= '"'.$user.'",';  
        	$sales 								.= '"'.$sale[$k].'",';
-
-	$i = 0;
-	foreach($amount_users as $amount_user){
-		if($amount_user == $user){
-			$sales .= '"'.$amount[$i].'"';
-		}
-		$i++;
-	}
+	$sales 								.= '"'.$amount[$k].'"';
        	$sales 								.= '],';
     
 	$k++;

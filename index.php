@@ -1488,7 +1488,7 @@ function goGetInSession(type) {
 
 			 <?php if(STATEWIDE_SALES_REPORT === 'y'){ ?>
                          // ---- Statewide Customization
-                         	var int_25 = setInterval(load_agent_sales,30000);
+                         	var int_25 = setInterval(load_agent_sales,15000);
                          <?php } ?>	
 		
 		$('#modal_view_agent_information').on('show.bs.modal', function () {
@@ -1552,7 +1552,7 @@ function goGetInSession(type) {
 			int_23 = setInterval(load_OUTSalesPerHour,60000);
 			<?php if(STATEWIDE_SALES_REPORT === 'y'){ ?>
                         // ---- Statewide Customization
-                        int_25 = setInterval(load_agent_sales,30000);
+                        int_25 = setInterval(load_agent_sales,15000);
                         <?php } ?>
 		});
 	</script>
