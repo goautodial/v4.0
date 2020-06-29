@@ -2061,11 +2061,12 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
     <?php } ?>
     
     // WebSocket Keep-alive
-    var checkWebsocketConn = setInterval(function() {
-        if (is_logged_in && (use_webrtc && phoneRegistered) && typeof socket !== 'undefined' && (live_customer_call < 1 && XD_live_customer_call < 1)) {
-            socket.send('PING');
-        }
-    }, 60000);
+    // https://goautodial.org/issues/8136
+    // var checkWebsocketConn = setInterval(function() {
+	// if (is_logged_in && (use_webrtc && phoneRegistered) && typeof socket !== 'undefined' && (live_customer_call < 1 && XD_live_customer_call < 1)) {
+    //        socket.send('PING');
+    //     }
+    // }, 60000);
     
     $("ul.nav.navbar-nav li, ul.nav.nav-tabs li").on('click', function(e) {
         if (minimizedDispo) {

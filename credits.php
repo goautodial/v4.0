@@ -132,6 +132,7 @@
 								<span><b>Contributors:</b></span>
 								<br/>
 								<div class="contributors">
+									Augusto Monge<br />									
                                     Rafael R. Pekson II<br />
                                     Willard Ty H. Manansala<br />
                                     Jerico James F. Milo<br />
@@ -144,6 +145,7 @@
                                     Regie V. Irupang<br />
                                     Erwin C. De Luna<br />
                                     Jin Kevin Dionisio<br />
+                                    Huaguan Gao (高华冠) - Chinese translation<br />
                                 </div>
 								<br />
 								<br />
