@@ -257,33 +257,33 @@
 														<div class="row">
 															<?php
 																$autodial_level = $campaign->data->auto_dial_level;
-																
+																$autodial_level_adv = $campaign->auto_dial_level;
 															?>
 															<div class="col-lg-8">
 																<select id="auto_dial_level" class="form-control" name="auto_dial_level" <?php if($campaign->data->dial_method !== "RATIO") echo "disabled";?>>
 																<option value="OFF" <?php if($campaign->data->dial_method == "MANUAL") echo "selected";?> disabled>OFF</option>
-																<option value="SLOW"<?php if($autodial_level == "1") echo "selected";?>>SLOW</option>
-																<option VALUE="NORMAL" <?php if($autodial_level == "2") echo "selected";?>>NORMAL</option>
-																<option VALUE="HIGH" <?php if($autodial_level == "4") echo "selected";?>>HIGH</option>
-																<option VALUE="MAX"<?php if($autodial_level == "6") echo "selected";?>>MAX</option>
-																<option VALUE="MAX_PREDICTIVE"<?php if($autodial_level == "10" || $campaign->data->dial_method == "ADAPT_TAPERED") echo "selected";?> disabled>MAX PREDICTIVE</option>
-																<option value="ADVANCE" <?php if($autodial_level != "0" && $autodial_level != "1" && $autodial_level != "2" && $autodial_level != "4" && $autodial_level != "6" && $autodial_level != "10") echo "selected";?> >ADVANCE</option>
+																<option value="SLOW"<?php if($autodial_level_adv !== 'ADVANCE' && $autodial_level == "1") echo "selected";?>>SLOW</option>
+																<option VALUE="NORMAL" <?php if($autodial_level_adv !== 'ADVANCE' && $autodial_level == "2") echo "selected";?>>NORMAL</option>
+																<option VALUE="HIGH" <?php if($autodial_level_adv !== 'ADVANCE' && $autodial_level == "4") echo "selected";?>>HIGH</option>
+																<option VALUE="MAX"<?php if($autodial_level_adv !== 'ADVANCE' && $autodial_level == "6") echo "selected";?>>MAX</option>
+																<option VALUE="MAX_PREDICTIVE"<?php if($autodial_level_adv !== 'ADVANCE' && $autodial_level == "10" || $campaign->data->dial_method == "ADAPT_TAPERED") echo "selected";?> disabled>MAX PREDICTIVE</option>
+																<option value="ADVANCE" <?php if($autodial_level_adv === 'ADVANCE') echo "selected";?> >ADVANCE</option>
 																</select>
 															</div>
 															<div class="col-lg-4">
-																<select id="auto_dial_level_adv" class="form-control <?php if($autodial_level == "0" || $autodial_level == "1" || $autodial_level == "2" || $autodial_level == "4" || $autodial_level == "6" || $autodial_level == "10") echo "hide";?> " name="auto_dial_level_adv">
+																<select id="auto_dial_level_adv" class="form-control <?php if($autodial_level_adv !== 'ADVANCE') echo "hide";?> " name="auto_dial_level_adv">
 <?php if($server->data->max_vicidial_trunks == NULL){ ?>
-																	<option value="1">1.0</option>
+																	<option value="1" <?php if($autodial_level == "1") echo "selected"; ?> >1.0</option>
 																	<option value="1.5" <?php if($autodial_level == "1.5") echo "selected"; ?> >1.5</option>
-																	<option value="2">2.0</option>
+																	<option value="2" <?php if($autodial_level == "2") echo "selected"; ?> >2.0</option>
 																	<option value="2.5" <?php if($autodial_level == "2.5") echo "selected"; ?> >2.5</option>
 																	<option value="3.0" <?php if($autodial_level == "3.0") echo "selected"; ?> >3.0</option>
 																	<option value="3.5" <?php if($autodial_level == "3.5") echo "selected"; ?> >3.5</option>
-																	<option value="4">4.0</option>
+																	<option value="4" <?php if($autodial_level == "4") echo "selected"; ?> >4.0</option>
 																	<option value="4.5" <?php if($autodial_level == "4.5") echo "selected"; ?> >4.5</option>
 																	<option value="5.0" <?php if($autodial_level == "5.0") echo "selected"; ?> >5.0</option>
 																	<option value="5.5" <?php if($autodial_level == "5.5") echo "selected"; ?> >5.5</option>
-																	<option value="6">6.0</option>
+																	<option value="6" <?php if($autodial_level == "6") echo "selected"; ?> >6.0</option>
 																	<option value="6.5" <?php if($autodial_level == "6.5") echo "selected"; ?> >6.5</option>
 																	<option value="7.0" <?php if($autodial_level == "7.0") echo "selected"; ?> >7.0</option>
 																	<option value="7.5" <?php if($autodial_level == "7.5") echo "selected"; ?> >7.5</option>
@@ -291,7 +291,7 @@
 																	<option value="8.5" <?php if($autodial_level == "8.5") echo "selected"; ?> >8.5</option>
 																	<option value="9.0" <?php if($autodial_level == "9.0") echo "selected"; ?> >9.0</option>
 																	<option value="9.5" <?php if($autodial_level == "9.5") echo "selected"; ?> >9.5</option>
-																	<option value="10">10.0</option>
+																	<option value="10" <?php if($autodial_level == "10") echo "selected"; ?> >10.0</option>
 																	<option value="10.5" <?php if($autodial_level == "10.5") echo "selected"; ?> >10.5</option>
 																	<option value="11.0" <?php if($autodial_level == "11.0") echo "selected"; ?> >11.0</option>
 																	<option value="11.5" <?php if($autodial_level == "11.5") echo "selected"; ?> >11.5</option>
