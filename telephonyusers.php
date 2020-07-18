@@ -504,7 +504,7 @@
 		$columns = array($lh->translationFor("event_time"), $lh->translationFor("status"), $lh->translationFor("phone_number"), $lh->translationFor("campaign_id"), $lh->translationFor("user_group"), $lh->translationFor("list_id"), $lh->translationFor("lead_id"), $lh->translationFor("term_reason"));
 		$hideOnMedium = array($lh->translationFor("user_group"), $lh->translationFor("list_id"));
 		$hideOnLow = array($lh->translationFor("campaign_id"), $lh->translationFor("user_group"), $lh->translationFor("status"));
-		$result = $ui->generateTableHeaderWithItems($columns, "table_outbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		$result = $ui->generateTableHeaderWithItems($columns, "table_outbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 	
 		
 		echo $ui->modalFormStructureAgentLog('modal_stats_outbound', 'outbound', $lh->translationFor("outbound"), $result.'</table>', '', 'info-circle', '');
@@ -513,7 +513,7 @@
 		$columns = array($lh->translationFor("event_time"), $lh->translationFor("status"), $lh->translationFor("phone_number"), $lh->translationFor("campaign_id"), $lh->translationFor("user_group"), $lh->translationFor("list_id"), $lh->translationFor("lead_id"), $lh->translationFor("term_reason"));
 		$hideOnMedium = array($lh->translationFor("user_group"), $lh->translationFor("list_id"));
 		$hideOnLow = array($lh->translationFor("campaign_id"), $lh->translationFor("user_group"), $lh->translationFor("status"));
-		$result = $ui->generateTableHeaderWithItems($columns, "table_inbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		$result = $ui->generateTableHeaderWithItems($columns, "table_inbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 		
 		echo $ui->modalFormStructureAgentLog('modal_stats_inbound', 'inbound', $lh->translationFor("inbound"), $result.'</table>', '', 'info-circle', '');	
 		
@@ -521,7 +521,7 @@
 		$columns = array($lh->translationFor("log_id"), $lh->translationFor("user"), $lh->translationFor("event"), $lh->translationFor("event_time"), $lh->translationFor("campaign_id"), $lh->translationFor("user_group"));
 		$hideOnMedium = array($lh->translationFor("log_id"), $lh->translationFor("list_id"));
 		$hideOnLow = array($lh->translationFor("log_id"), $lh->translationFor("user"));
-		$result = $ui->generateTableHeaderWithItems($columns, "table_userlog", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		$result = $ui->generateTableHeaderWithItems($columns, "table_userlog", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 		
 		echo $ui->modalFormStructureAgentLog('modal_stats_userlog', 'userlog', $lh->translationFor("userlog"), $result.'</table>', '', 'info-circle', '');			
 	?>

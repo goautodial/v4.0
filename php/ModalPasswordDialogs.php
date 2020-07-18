@@ -112,7 +112,7 @@ $koButton = $ui->modalDismissButton("changepassCancelButton", $lh->translationFo
 $buttons = $okButton.$koButton;
 
 // form
-$form = $ui->modalFormStructure("change-password-dialog-modal", "passwordform", $lh->translationFor("change_password"), null, $fields, $buttons, "lock", "changepasswordresult");
+$form = $ui->modalFormStructure("change-password-dialog-modal", "passwordform", $lh->translationFor("change_password"), null, $fields, $buttons, "lock", "changepasswordresult", '');
 print $form;
 ?>
 <script>

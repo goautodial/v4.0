@@ -3430,7 +3430,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 		//$hideOnMedium = array($this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
 		//$hideOnLow = array($this->lh->translationFor("agent_id"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
-		$result = $this->generateTableHeaderWithItems($columns, "T_userslist", "responsive display no-wrap table-bordered table-striped", true, false);
+		$result = $this->generateTableHeaderWithItems($columns, "T_userslist", "responsive display no-wrap table-bordered table-striped", true, false, '', '', '');
 	
 		// iterate through all users
 		for($i=0;$i<count($output->user_id);$i++) {
@@ -3765,7 +3765,7 @@ error_reporting(E_ERROR | E_PARSE);
 			# Result was OK!
 			$checkbox_all = $this->getCheckAll("phone");
 			$columns = array($this->lh->translationFor("extension"), $this->lh->translationFor("protocol"),$this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("voicemail"), $checkbox_all, $this->lh->translationFor("action"));
-			$result = $this->generateTableHeaderWithItems($columns, "T_phones", "responsive display no-wrap table-bordered table-striped", true, false);
+			$result = $this->generateTableHeaderWithItems($columns, "T_phones", "responsive display no-wrap table-bordered table-striped", true, false, '', '', '');
 
 			for ($i=0;$i < count($output->extension);$i++) {
 				if ($output->active[$i] == "Y") {
