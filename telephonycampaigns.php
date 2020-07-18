@@ -1173,7 +1173,7 @@
 						style="width:100%; height:100%;">
 											<optgroup label="System Statuses">
 												<?php 
-													$dialStatus = $api->API_getAllDialStatuses('ALL', 1);
+													//$dialStatus = $api->API_getAllDialStatuses('ALL', 1);
 													 //foreach($output->status as key => $val){
 													for($i=0;$i<=count($dialStatus->status->system);$i++) { 
 												?>
