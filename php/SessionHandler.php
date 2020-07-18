@@ -113,6 +113,7 @@ class SessionHandler {
 		// Run the garbage collector in 15% of f. calls
 		if (rand(1, 100) <= 15) $this->_GC();
 		// Run the garbage collector for expired sessions
+		$session_id = $session_id ?? '';
 		$this->db->where('session_id', md5($session_id));
 		$this->db->where('last_activity', time(), '<');
 		$result = $this->db->get($this->table);
@@ -138,7 +139,11 @@ class SessionHandler {
 		$result = $this->db->getOne($this->table, 'user_data');
 		
 		// Return data or null
-		return ($this->db->getRowCount() > 0 && ($row = $result)) ? $this->encrypt ?  $this->decrypt($row['user_data']) : $row['user_data'] : NULL;
+		//return ($this->db->getRowCount() > 0 && ($row = $result)) ? $this->encrypt ?  $this->decrypt($row['user_data']) : $row['user_data'] : NULL;
+		
+		// Return empty string not null PHP > 7.0
+		// https://www.php.net/manual/en/function.session-start.php#120589
+		return ($this->db->getRowCount() > 0 && ($row = $result)) ? $this->encrypt ?  $this->decrypt($row['user_data']) : $row['user_data'] : '';		
 	}
 	
 	/** Initialize session
