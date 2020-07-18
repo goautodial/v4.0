@@ -104,7 +104,7 @@
                 <section class="content">
 				<?php
 					if ($perm->recordings_display !== 'N') {
-					$callrecs = $api->API_getCallRecordingList();
+					$callrecs = $api->API_getCallRecordingList("", "", "", "");
 					//var_dump($callrecs);
 				?>
                 	<div class="row">
