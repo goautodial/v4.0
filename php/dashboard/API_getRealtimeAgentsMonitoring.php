@@ -2,7 +2,7 @@
 /**
  * @file        API_getRealtimeAgentsMonitoring.php
  * @brief       Displays realtime monitoring data and HTML
- * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @copyright   Copyright (c) 2020 GOautodial Inc.
  * @author		Demian Lizandro A. Biscocho 
  *
  * @par <b>License</b>:
@@ -27,7 +27,7 @@
 
     $barracks 										= '[';   
     
-    if (!empty($output->data)) {
+    if (is_array($output->data)) {
 		foreach ($output->data as $key => $value) {
 	
 			$userid 								= $api->escapeJsonString($value->vu_user_id);
