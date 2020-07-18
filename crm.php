@@ -95,7 +95,7 @@
                     </ol>
                 </section>
 			<?php
-				$leads = $api->API_getLeads();
+				$leads = $api->API_getLeads('', '', '', '', '', '');
 			?>
                 <!-- Main content -->
                 <section class="content">
@@ -163,7 +163,7 @@
 			<?php
 				$lists = $api->API_getAllLists();
 				$disposition = $api->API_getAllDispositions();
-				$dialStatus = $api->API_getAllDialStatuses("ALL");
+				$dialStatus = $api->API_getAllDialStatuses("ALL", 1);
 				//echo "<pre>";
 				//var_dump($dialStatus);
 			?>
