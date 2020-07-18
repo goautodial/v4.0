@@ -1270,7 +1270,7 @@ error_reporting(E_ERROR | E_PARSE);
        	   $columns = array("id", "name", "email", "role", "status", "action");
 	       $hideOnMedium = array("email", "creation_date", "role");
 	       $hideOnLow = array("email", "creation_date", "role", "status");
-		   $result = $this->generateTableHeaderWithItems($columns, "users", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		   $result = $this->generateTableHeaderWithItems($columns, "users", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 
 	       // iterate through all contacts
 	       foreach ($users as $userData) {
@@ -2232,7 +2232,7 @@ error_reporting(E_ERROR | E_PARSE);
 	public function getCustomerTypesAdminTable() {
 		// generate table
 		$items = array("Id", $this->lh->translationFor("name"));
-		$table = $this->generateTableHeaderWithItems($items, "customerTypes", "table-bordered table-striped", true);
+		$table = $this->generateTableHeaderWithItems($items, "customerTypes", "table-bordered table-striped", true, '', '', '', '');
 		if ($customerTypes = $this->db->getCustomerTypes()) {
 			foreach ($customerTypes as $customerType) {
 				$table .= "<tr><td>".$customerType["id"]."</td><td><span class='text'>".$customerType["description"].'
@@ -2304,7 +2304,7 @@ error_reporting(E_ERROR | E_PARSE);
 	   $columns[] = $this->lh->translationFor("action");
 	   $hideOnMedium = array("email", "phone_number");
 	   $hideOnLow = array("email", "phone_number");
-	   $result = $this->generateTableHeaderWithItems($columns, "contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+	   $result = $this->generateTableHeaderWithItems($columns, "contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 
        // print suffix
        $result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
@@ -2320,7 +2320,7 @@ error_reporting(E_ERROR | E_PARSE);
 	   $columns[] = $this->lh->translationFor("action");
 	   $hideOnMedium = array("user_level", "user_group");
 	   $hideOnLow = array("user","user_level", "user_level");
-	   $result = $this->generateTableHeaderWithItems($columns, "T_users", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+	   $result = $this->generateTableHeaderWithItems($columns, "T_users", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 
        // print suffix
        $result .= $this->generateTableFooterWithItems($columns, true, false, $hideOnMedium, $hideOnLow);
@@ -2568,7 +2568,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	private function getMessageListAsTable($messages, $folder) {
 		$columns = array("", "favorite", "name", "subject", "attachment", "date");
-		$table = $this->generateTableHeaderWithItems($columns, "messagestable", "table-hover table-striped mailbox table-mailbox", true, true);
+		$table = $this->generateTableHeaderWithItems($columns, "messagestable", "table-hover table-striped mailbox table-mailbox", true, true, '', '', '');
 		$user = \creamy\CreamyUser::currentUser();
 		foreach ($messages as $message) {
 			$from = $this->db->getDataForUser($message['user_from']);
@@ -2607,7 +2607,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	private function getCallListAsTable($calls, $folder) {
 		$columns = array("", "name", "duration", "date", "playback");
-		$table = $this->generateTableHeaderWithItems($columns, "callstable", "table-hover table-striped calls table-calls", true, true);
+		$table = $this->generateTableHeaderWithItems($columns, "callstable", "table-hover table-striped calls table-calls", true, true, '', '', '');
 		foreach ($calls as $call) {
 			//if ($call["message_read"] == 0) $table .= '<tr class="unread">';
 			//else
@@ -3426,12 +3426,12 @@ error_reporting(E_ERROR | E_PARSE);
 			$checkbox_all = "";
 		}
 
-		 $columns = array("  ", $this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $checkbox_all, $this->lh->translationFor("action"));
+		$columns = array("  ", $this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $checkbox_all, $this->lh->translationFor("action"));
 
 		//$hideOnMedium = array($this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
 		//$hideOnLow = array($this->lh->translationFor("agent_id"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
 		$result = $this->generateTableHeaderWithItems($columns, "T_userslist", "responsive display no-wrap table-bordered table-striped", true, false, '', '', '');
-	
+		
 		// iterate through all users
 		for($i=0;$i<count($output->user_id);$i++) {
 			$user_id = $output->user_id[$i];
@@ -3550,7 +3550,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$columns = array($this->lh->translationFor('user_group'), $this->lh->translationFor('group_name'), $this->lh->translationFor('type'), $this->lh->translationFor('force_timeclock'), $this->lh->translationFor('action'));
 	    $hideOnMedium = array($this->lh->translationFor('type'), $this->lh->translationFor('force_timeclock'));
 	    $hideOnLow = array($this->lh->translationFor('user_group'), $this->lh->translationFor('type'), $this->lh->translationFor('force_timeclock'));
-		$result = $this->generateTableHeaderWithItems($columns, "usergroups_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		$result = $this->generateTableHeaderWithItems($columns, "usergroups_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 
 
 			for($i=0;$i < count($output->user_group);$i++) {
@@ -3712,7 +3712,7 @@ error_reporting(E_ERROR | E_PARSE);
 		# Result was OK!
 
 			$columns = array($this->lh->translationFor('user'), $this->lh->translationFor('ip_address'), $this->lh->translationFor('date_and_time'), $this->lh->translationFor('action'), $this->lh->translationFor('details'), $this->lh->translationFor('sql_query'));
-			$result = $this->generateTableHeaderWithItems($columns, "adminlogs_table", "table-bordered table-striped", true, false);
+			$result = $this->generateTableHeaderWithItems($columns, "adminlogs_table", "table-bordered table-striped", true, false, '', '', '');
 	
 			foreach ($output->data as $log) {
 				$details = stripslashes($log->details);
@@ -3838,7 +3838,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$columns = array($this->lh->translationFor('voicemail_id'), $this->lh->translationFor('name'), $this->lh->translationFor('status'), $this->lh->translationFor('new_message'), $this->lh->translationFor('old_message'), $this->lh->translationFor('delete'), $this->lh->translationFor('user_group'), $this->lh->translationFor('action'));
 	    $hideOnMedium = array($this->lh->translationFor('status'), $this->lh->translationFor('new_message'), $this->lh->translationFor('old_message'), $this->lh->translationFor('delete'), $this->lh->translationFor('user_group'));
 	    $hideOnLow = array($this->lh->translationFor('voicemail_id'), $this->lh->translationFor('status'), $this->lh->translationFor('new_message'), $this->lh->translationFor('old_message'), $this->lh->translationFor('delete'), $this->lh->translationFor('user_group'));
-		$result = $this->generateTableHeaderWithItems($columns, "voicemails_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		$result = $this->generateTableHeaderWithItems($columns, "voicemails_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 
 			for($i=0;$i < count($output->voicemail_id);$i++) {
 
@@ -3974,7 +3974,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    	$columns = array("Date", "Customer", "Phone Number", "Agent", "Duration", "Action");
 	    	$hideOnMedium = array("Agent", "Duration");
 	    	$hideOnLow = array("Customer", "Phone Number", "Agent", "Duration");
-			$result = $this->generateTableHeaderWithItems($columns, "table_callrecordings", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+			$result = $this->generateTableHeaderWithItems($columns, "table_callrecordings", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 
 			//$result .= "<tr><td colspan='6'>".$output->query."</tr>";
 
@@ -4069,7 +4069,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $columns = array($this->lh->translationFor('moh_name'), $this->lh->translationFor('status'), $this->lh->translationFor('random_order'), $this->lh->translationFor('group'), $this->lh->translationFor('action'));
 	    $hideOnMedium = array("Random Order", "Group", "Status");
 		$hideOnLow = array( "Random Order", "Group", "Status");
-	    $result = $this->generateTableHeaderWithItems($columns, "music-on-hold_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+	    $result = $this->generateTableHeaderWithItems($columns, "music-on-hold_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 
 	    for($i=0;$i<count($output->moh_id);$i++) {
 			$action = $this->getUserActionMenuForMusicOnHold($output->moh_id[$i], $output->moh_name[$i], $perm);
@@ -4154,7 +4154,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $columns = array($this->lh->translationFor('file_name'), $this->lh->translationFor('date'), $this->lh->translationFor('size'), $this->lh->translationFor('action'));
 	    $hideOnMedium = array("Date");
 		$hideOnLow = array( "Date");
-		$result = $this->generateTableHeaderWithItems($columns, "voicefiles", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		$result = $this->generateTableHeaderWithItems($columns, "voicefiles", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 	    $server_port = getenv("SERVER_PORT");
 		//$web_ip = getenv("SERVER_ADDR");
 		//$web_ip = $_SERVER['SERVER_NAME'];
@@ -4233,7 +4233,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    //$hideOnMedium = array($this->lh->translationFor("type"), $this->lh->translationFor("status"), $this->lh->translationFor("user_group"));
 	    //$hideOnLow = array($this->lh->translationFor("script_id"), $this->lh->translationFor("type"), $this->lh->translationFor("status"), $this->lh->translationFor("user_group"));
 
-		$result = $this->generateTableHeaderWithItems($columns, "scripts_table", "display responsive no-wrap table-bordered table-striped", true, false);
+		$result = $this->generateTableHeaderWithItems($columns, "scripts_table", "display responsive no-wrap table-bordered table-striped", true, false, '', '', '');
 
 	    for($i=0;$i<count($output->script_id);$i++) {
 		$action = $this->getUserActionMenuForScripts($output->script_id[$i], $output->script_name[$i], $perm);
@@ -4301,7 +4301,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    # Result was OK!
 	    $columns = array($this->lh->translationFor("filter_id"), $this->lh->translationFor("filter_name"), $this->lh->translationFor("filter_comments"), $this->lh->translationFor("user_group"), $this->lh->translationFor("action"));
 
-		$result = $this->generateTableHeaderWithItems($columns, "filters_table", "display responsive no-wrap table-bordered table-striped", true, false);
+		$result = $this->generateTableHeaderWithItems($columns, "filters_table", "display responsive no-wrap table-bordered table-striped", true, false, '', '', '');
 
 	    for($i=0;$i<count($output->filter_id);$i++) {
 		$action = $this->getUserActionMenuForFilters($output->filter_id[$i], $output->filter_name[$i], $perm);
@@ -4387,7 +4387,7 @@ error_reporting(E_ERROR | E_PARSE);
         $hideOnMedium = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('user_group'));
 		$hideOnLow = array( $this->lh->translationFor('call_time_id'), $this->lh->translationFor('Schedule'), $this->lh->translationFor('user_group'));
 		
-		$result = $this->generateTableHeaderWithItems($columns, "calltimes", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		$result = $this->generateTableHeaderWithItems($columns, "calltimes", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 		
 	    for($i=0;$i<count($output->call_time_id);$i++) {
 		    $action = $this->getUserActionMenuForCalltimes($output->call_time_id[$i], $output->call_time_name[$i]);
@@ -4541,7 +4541,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$hideOnMedium = array($this->lh->translationFor('asterisk'),$this->lh->translationFor('trunks'), $this->lh->translationFor('gmt'));
 			$hideOnLow = array($this->lh->translationFor('server_ip'), $this->lh->translationFor('server_name'), $this->lh->translationFor('status'), $this->lh->translationFor('asterisk'),$this->lh->translationFor('trunks'),$this->lh->translationFor('gmt'));
 
-			$result = $this->generateTableHeaderWithItems($columns, "servers_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+			$result = $this->generateTableHeaderWithItems($columns, "servers_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 
 				for($i=0;$i<count($output->server_id);$i++) {
 
@@ -4610,7 +4610,7 @@ error_reporting(E_ERROR | E_PARSE);
         $hideOnMedium = array($this->lh->translationFor('server_ip'), $this->lh->translationFor('protocol'));
 		$hideOnLow = array( $this->lh->translationFor('carrier_id'), $this->lh->translationFor('server_ip'), $this->lh->translationFor('protocol'), $this->lh->translationFor('status'));
 
-		$result = $this->generateTableHeaderWithItems($columns, "carriers", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		$result = $this->generateTableHeaderWithItems($columns, "carriers", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 
 	      for($i=0;$i<count($output->carrier_id);$i++) {
 
@@ -5667,7 +5667,7 @@ error_reporting(E_ERROR | E_PARSE);
        	   $columns = array($this->lh->translationFor('lead_id'), $this->lh->translationFor('full_name'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('status'), $this->lh->translationFor('action'));
 	       $hideOnMedium = array($this->lh->translationFor('lead_id'), $this->lh->translationFor('status'));
 	       $hideOnLow = array( $this->lh->translationFor('lead_id'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('status'));
-		   $result = $this->generateTableHeaderWithItems($columns, "table_contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+		   $result = $this->generateTableHeaderWithItems($columns, "table_contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 
 			for($i=0;$i<=count($output->list_id);$i++) {
 		   	//for($i=0;$i<=500;$i++) {
@@ -6109,7 +6109,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$columns = array($this->lh->translationFor("phone_number"), $this->lh->translationFor("campaign"), $this->lh->translationFor("action"));
 			$hideOnMedium = array();
 			$hideOnLow = array( $this->lh->translationFor("campaign") );
-			$result = $this->generateTableHeaderWithItems($columns, "table_dnc", "display responsive no-wrap table-bordered table-striped", true, false);
+			$result = $this->generateTableHeaderWithItems($columns, "table_dnc", "display responsive no-wrap table-bordered table-striped", true, false, '', '', '');
 
 			for($i=0;$i < count($output->phone_number);$i++) {
 				$result .= '<tr>
@@ -6259,7 +6259,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$hideOnMedium = array();
 			$hideOnLow = array( );
 			$outbound = "";
-			$outbound = $this->generateTableHeaderWithItems($columns, "table_outbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+			$outbound = $this->generateTableHeaderWithItems($columns, "table_outbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 			
 			for($i=0;$i < count($output->outbound->campaign_id);$i++) {
 				$outbound .= '<tr>
@@ -6279,7 +6279,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$hideOnMedium = array();
 			$hideOnLow = array( );
 			$inbound = "";
-			$inbound = $this->generateTableHeaderWithItems($columns, "table_inbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+			$inbound = $this->generateTableHeaderWithItems($columns, "table_inbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 			
 			for($i=0;$i < count($output->inbound->campaign_id);$i++) {
 				$inbound .= '<tr>
@@ -6299,7 +6299,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$hideOnMedium = array();
 			$hideOnLow = array( );
 			$userlog = "";
-			$userlog = $this->generateTableHeaderWithItems($columns, "table_userstat", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow);
+			$userlog = $this->generateTableHeaderWithItems($columns, "table_userstat", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 			
 			for($i=0;$i < count($output->userlog->user_log_id);$i++) {
 				$userlog .= '<tr>
