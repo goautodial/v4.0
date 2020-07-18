@@ -2,9 +2,10 @@
  /**
  * @file 		telephonycampaigns.php
  * @brief 		Manage Campaigns, Dispositions & etc.
- * @copyright 	Copyright (C) GOautodial Inc.
- * @author		Alexander Jim H. Abenoja  <alex@goautodial.com>
- * @author     	Noel Umandap  <noelumandap@goautodial.com>
+ * @copyright 	Copyright (c) 2020 GOautodial Inc.
+ * @author		Alexander Jim H. Abenoja
+ * @author     	Noel Umandap
+ * @author		Demian Lizandro A. Biscocho
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -165,7 +166,7 @@
 								}
 								$disposition = $api->API_getAllDispositions();
 								$leadrecycling = $api->API_getAllLeadRecycling();
-								$dialStatus = $api->API_getAllDialStatuses();
+								$dialStatus = $api->API_getAllDialStatuses('ALL', 1);
 								$ingroup = $api->API_getAllInGroups();
 								$ivr = $api->API_getAllIVRs();
 								$voicemails = $api->API_getAllVoiceFiles();
@@ -1172,7 +1173,7 @@
 						style="width:100%; height:100%;">
 											<optgroup label="System Statuses">
 												<?php 
-													$dialStatus = $api->API_getAllDialStatuses();
+													$dialStatus = $api->API_getAllDialStatuses('ALL', 1);
 													 //foreach($output->status as key => $val){
 													for($i=0;$i<=count($dialStatus->status->system);$i++) { 
 												?>
@@ -1382,10 +1383,10 @@
 		$modalTitle = $lh->translationFor("pause_codes");
 		$modalSubtitle = "";
 		$columns = array($lh->translationFor("pause_codes"), $lh->translationFor("pause_name"), $lh->translationFor("billable"), $lh->translationFor("action"));
-		$result = $ui->generateTableHeaderWithItems($columns, "pause_codes_list", "display responsive no-wrap table-bordered table-striped", true, false);
+		$result = $ui->generateTableHeaderWithItems($columns, "pause_codes_list", "display responsive no-wrap table-bordered table-striped", true, false, '', '', '');
 		$bodyInputs = $result.'</tbody></table>';				
 		$modalFooter = $ui->buttonWithLink("", "", "Create New", "button", null, "success", "btn-new-pause-code", "data-campaign=''");
-		$modalFormPC = $ui->modalFormStructure('modal_view_pause_codes', '', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '', '');
+		$modalFormPC = $ui->modalFormStructure('modal_view_pause_codes', '', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '', '', '');
 		
 		echo $modalFormPC;
 		
@@ -1395,11 +1396,11 @@
 		$pauseCodeInput = $ui->singleFormGroupWrapper($ui->singleFormInputElement("", "pause_code", "text", "", null, null, false, false, false, "pause-code", "col-lg-9"), $lh->translationFor("pause_code"), "col-lg-3");
 		$pauseCodeNameInput = $ui->singleFormGroupWrapper($ui->singleFormInputElement("", "pause_code_name", "text", "", null, null, false, false, false, "pause-code-name", "col-lg-9"), $lh->translationFor("pause_name"), "col-lg-3");
 		$options = array("YES" => "YES", "NO" => "NO", "HALF" => "HALF");
-		$billableInput = $ui->singleFormGroupWithSelect($lh->translationFor("billable"), "", "billable", $options, "", true, "col-lg-3", "col-lg-9");
+		$billableInput = $ui->singleFormGroupWithSelect($lh->translationFor("billable"), "", "billable", $options, "", true, "col-lg-3", "col-lg-9", "");
 		//$hiddenidinput = $ui->hiddenFormField("customer-type-id");
 		$bodyInputs = $campaignIdInput.$pauseCodeInput.$pauseCodeNameInput.$billableInput;
 		$modalFooter = $ui->buttonWithLink("", "", $lh->translationFor("save"), "button", null, "success", "btn-save-pause-code", "data-id='$id'").$ui->buttonWithLink("", "", $lh->translationFor("update"), "button", null, "success", "btn-update-pause-code", "", "hide");		
-		$modalFormPCF = $ui->modalFormStructure('modal_form_pause_codes', 'form_pause_codes', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '');
+		$modalFormPCF = $ui->modalFormStructure('modal_form_pause_codes', 'form_pause_codes', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '', '', '');
 	
 		echo $modalFormPCF;
 		
@@ -1408,10 +1409,10 @@
 	<?php
 		// hotkeys modal + datatable
 		$columnsHKT = array($lh->translationFor("hotkeys"), $lh->translationFor("status"), $lh->translationFor("description"), $lh->translationFor("action"));
-		$resultHKT = $ui->generateTableHeaderWithItems($columnsHKT, "hotkeys_list", "display responsive no-wrap table-bordered table-striped", true, false);
+		$resultHKT = $ui->generateTableHeaderWithItems($columnsHKT, "hotkeys_list", "display responsive no-wrap table-bordered table-striped", true, false, '', '', '');
 		$bodyInputsHKT = $resultHKT.'</tbody></table>';				
 		$modalFooterHKT = $ui->buttonWithLink("", "", $lh->translationFor("create_new"), "button", null, "success", "btn-new-hotkey", "data-campaign=''");
-		$modalFormHKT = $ui->modalFormStructure('modal_view_hotkeys', '', $lh->translationFor("hotkeys"), "", $bodyInputsHKT, $modalFooterHKT, '', '');
+		$modalFormHKT = $ui->modalFormStructure('modal_view_hotkeys', '', $lh->translationFor("hotkeys"), "", $bodyInputsHKT, $modalFooterHKT, '', '', '');
 		
 		echo $modalFormHKT;
 		
@@ -1422,7 +1423,7 @@
 		$statusInputHKF = $ui->singleFormGroupWithSelectHiddenInput($lh->translationFor("status"), "", "status", "", "", true, "col-lg-3", "col-lg-9", "select2 status", array("id" => "hotkey_status_name", "name" => "status_name", "value" => ""));		
 		$bodyInputsHKF = $campaignIdInputHKF.$hotkeyInputHKF.$statusInputHKF;
 		$modalFooterHKF = $ui->buttonWithLink("", "", $lh->translationFor("save"), "button", null, "success", "btn-save-hotkey", "data-id='$id'");		
-		$modalFormHKF = $ui->modalFormStructure('modal_form_hotkeys', 'form_hotkeys', $lh->translationFor("hotkeys"), "", $bodyInputsHKF, $modalFooterHKF, '');
+		$modalFormHKF = $ui->modalFormStructure('modal_form_hotkeys', 'form_hotkeys', $lh->translationFor("hotkeys"), "", $bodyInputsHKF, $modalFooterHKF, '', '', '');
 	
 		echo $modalFormHKF;
 		
@@ -1430,7 +1431,7 @@
 		$modalTitle = $lh->translationFor("lists");
 		$modalSubtitle = "";
 		$columns = array($lh->translationFor("list_id"), $lh->translationFor("list_name"), $lh->translationFor("description"), $lh->translationFor("leads_count"), $lh->translationFor("active"), $lh->translationFor("last_call_date"), $lh->translationFor("action"));
-		$result = $ui->generateTableHeaderWithItems($columns, "lists_list", "display responsive no-wrap table-bordered table-striped", true, false);
+		$result = $ui->generateTableHeaderWithItems($columns, "lists_list", "display responsive no-wrap table-bordered table-striped", true, false, '', '', '');
 		$bodyInputs = $result.'</tbody></table>';
 		$appendToBody = '<div class="form-group pull-left" style="margin-left: 5px;"><p style="text-align: left;"> This Campaign has <b><span class="count_active"></span> active</b> lists and <b><span class="count_inactive"></span> inactive</b> lists<br/> This Campaign has <b><span class="count_leads"></span> leads</b> in the queue (hopper)<br/><a href="#" style="color: green;" class="view-leads-on-hopper" data-campaign="">'.$lh->translationFor("view_leads").'</a></p></div>';
 		$modalFooter = $ui->modalDismissButton("", $lh->translationFor("close"));
@@ -1619,7 +1620,7 @@
 			$columns = array($lh->translationFor("order"), $lh->translationFor("priority"), $lh->translationFor("lead_id"), $lh->translationFor("list_id"), $lh->translationFor("phone_number"), $lh->translationFor("state"), $lh->translationFor("status"), $lh->translationFor("count"), $lh->translationFor("gmt"), $lh->translationFor("alt_phone"), $lh->translationFor("source"));
 			//$hideOnMedium = array($lh->translationFor("order"), $lh->translationFor("priority"), $lh->translationFor("state"), $lh->translationFor("count"), $lh->translationFor("gmt"));
 			//$hideOnLow = array($lh->translationFor("order"), $lh->translationFor("priority"), $lh->translationFor("state"), $lh->translationFor("count"), $lh->translationFor("gmt"), $lh->translationFor("alt"), $lh->translationFor("source"));
-			$result = $ui->generateTableHeaderWithItems($columns, "leads_on_hopper", "display responsive no-wrap table-bordered table-striped", true, false);
+			$result = $ui->generateTableHeaderWithItems($columns, "leads_on_hopper", "display responsive no-wrap table-bordered table-striped", true, false, '', '', '');
 			$bodyInputs = $result.'</tbody></table>';
 			$modalFooter = $ui->modalDismissButton("", $lh->translationFor("close"));
 			$modalFormVLH = $ui->modalFormStructure('modal_view_leads_on_hopper', '', $modalTitle, $modalSubtitle, $bodyInputs, $modalFooter, '', '', 'modal-lg');
@@ -1630,7 +1631,7 @@
 			$modalTitle = $lh->translationFor("custom_disposition");
 			$modalSubtitle = "";
 			$columns = array($lh->translationFor("status"), $lh->translationFor("status_name"), $lh->translationFor("SEL"), $lh->translationFor("HA"), $lh->translationFor("sale"), "dnc", $lh->translationFor("CC"), "ni", $lh->translationFor("UW"), $lh->translationFor("SCB"), $lh->translationFor("action"));
-			$result = $ui->generateTableHeaderWithItems($columns, "table_campaign_disposition", "display responsive compact table-bordered table-striped", true, false);
+			$result = $ui->generateTableHeaderWithItems($columns, "table_campaign_disposition", "display responsive compact table-bordered table-striped", true, false, '', '', '');
 			$hiddenidinput = $ui->hiddenFormField("edit_campaign", "", "edit_campaign");
 			$bodyInputs = $hiddenidinput.$result.'</tbody></table>';
 			$appendToBody = '<div class="form-group pull-left" style="margin-left: 5px;"><h4>LEGEND</h4><p style="text-align: left;"><b>SEL:</b>  '.$lh->translationFor("selectable").'<br/><b>HA:</b>  '.$lh->translationFor("human_answered").'<br/><b>DNC:</b>  '.$lh->translationFor("DNC").'<br/><b>NI:</b>  '.$lh->translationFor("NI").'<br/><b>CC:</b>  '.$lh->translationFor("customer_contact").'<br/><b>UW:</b>  '.$lh->translationFor("unworkable").'<br/><b>SCB:</b>  '.$lh->translationFor("scheduled_callback").'</p></div>';
@@ -1643,7 +1644,7 @@
 			$modalTitle = $lh->translationFor("Lead Recycling");
 			$modalSubtitle = "";
 			$columns = array($lh->translationFor("ID"), $lh->translationFor("status"), $lh->translationFor("Attempt Delay"), $lh->translationFor("Max Attempts"), $lh->translationFor("active"), $lh->translationFor("action"));
-			$result = $ui->generateTableHeaderWithItems($columns, "table_campaign_leadrecycling", "display responsive compact no-wrap table-bordered table-striped", true, false);
+			$result = $ui->generateTableHeaderWithItems($columns, "table_campaign_leadrecycling", "display responsive compact no-wrap table-bordered table-striped", true, false, '', '', '');
 			$hiddenidinput = $ui->hiddenFormField("edit_leadrecycling_campaign", "", "edit_leadrecycling_campaign");
 			$hiddenidinputLR = $ui->hiddenFormField("edit_leadrecycling", "", "edit_leadrecycling");
 			$bodyInputs = $hiddenidinput.$hiddenidinputLR.$result.'</tbody></table>';
