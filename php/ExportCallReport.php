@@ -87,7 +87,7 @@ $row_output = $api->API_Request("goReports", $postfields);
 $postfields["goAction"] = "goExportCallReport";
 
 $data_header = [];
-$data_row = [];
+$data_row = "";
 $display = "";
 $display2 = "";
 
@@ -106,42 +106,47 @@ if($row_output->result == "success"){
 				if($offset == 0){
 					$data_header = $output->header;
 				}
-				$data_row[] = json_decode(json_encode($output->rows), true);
+                //$data_row[] = json_decode(json_encode($output->rows), true);
+                $data_row .= $output->rows;
 			}
 			$last_row_offset = $offset;
 			$offset = $offset + $limit;
-			$data_row = array_merge($data_row);
+			// $data_row = array_merge($data_row);
 		}
 		$i = 0;
-		foreach($data_row as $array_rows){
-		    foreach($array_rows as $temp){
-	        	foreach($temp as $value){
-				if($i <= 250000){
-	        	    		$display .= $value.",";
-				} else {
-					$display2 .= $value.",";
-				}
-		        }
-			if($i <= 250000){
-	        		$display .= "\n";
-			} else {
-				$display2 .= "\n";
-			}
-	            }
-		    $i++;
-		}
+		// foreach($data_row as $array_rows){
+		//     foreach($array_rows as $temp){
+	    //     	foreach($temp as $value){
+		// 		if($i <= 250000){
+	    //     	    		$display .= $value.",";
+		// 		} else {
+		// 			$display2 .= $value.",";
+		// 		}
+		//         }
+		// 	if($i <= 250000){
+	    //     		$display .= "\n";
+		// 	} else {
+		// 		$display2 .= "\n";
+		// 	}
+	    //         }
+		//     $i++;
+        // }
+        
+        $display = $data_row;
 	} else {
 		$output = $api->API_Request("goReports", $postfields);
 		$data_header = $output->header;
 		$data_row = $output->rows;
 		
-		$array_rows = json_decode(json_encode($data_row), true);
-                foreach($array_rows as $temp){
-                    foreach($temp as $value){
-                        $display .= $value.",";
-                    }
-                    $display .= "\n";
-                }
+		// $array_rows = json_decode(json_encode($data_row), true);
+        // foreach($array_rows as $temp){
+        //     foreach($temp as $value){
+        //         $display .= $value.",";
+        //     }
+        //     $display .= "\n";
+        // }
+
+        $display = $data_row;
 	}
 
     if($output->result == "success"){
@@ -160,16 +165,8 @@ if($row_output->result == "success"){
     flush();
 
     echo $header."\n";
-    //$array_rows = json_decode(json_encode($output->rows), true);
-    //$array_rows = json_decode(json_encode($data_row), true);
-    /*foreach($array_rows as $temp){
-        foreach($temp as $value){
-            echo $value.",";
-        }
-        echo "\n";
-        }*/
     echo $display;
-    echo $display2;
+    
     }
 
 }
