@@ -61,7 +61,7 @@
 	$scripts = $api->API_getAllScripts();
 	$carriers = $api->API_getAllCarriers();
 	$leadfilter = $api->API_getAllLeadFilters();
-	$dialStatus = $api->API_getAllDialStatuses($campaign_id);
+	$dialStatus = $api->API_getAllDialStatuses($campaign_id, '');
 	$sdialStatus = $api->API_getAllDialStatusesSurvey($campaign_id);
 	$campdialStatus = $api->API_getAllCampaignDialStatuses($campaign_id);
 	$dids = $api->API_getAllDIDs();
