@@ -1029,10 +1029,10 @@ error_reporting(E_ERROR | E_PARSE);
 			  '.$this->checkboxInputWithLabel($ev_text, "eventEmail", "eventEmail", $cv).'
 			  '.$this->singleFormGroupWithInputGroup($this->singleFormInputElement("company_name", "company_name", "text", $cn_text, $cn, "building-o"), $cn_text).'
 			  '.$this->singleFormGroupWithFileUpload("company_logo", "company_logo", $cl, $cl_text, null).'
-			  '.$this->singleFormGroupWithSelect($es_text, "theme", "theme", $tOpts, $ct, false).'
-			  '.$this->singleFormGroupWithSelect($tz_text, "timezone", "timezone", \creamy\CRMUtils::getTimezonesAsArray(), $tz).'
-			  '.$this->singleFormGroupWithSelect($lo_text, "locale", "locale", \creamy\LanguageHandler::getAvailableLanguages(), $lo).'
-			  '.$this->singleFormGroupWithSelect($vg_text, "voicemail_greeting", "voicemail_greeting", $vgOpts, $vg).'
+			  '.$this->singleFormGroupWithSelect($es_text, "theme", "theme", $tOpts, $ct, false, '', '', '').'
+			  '.$this->singleFormGroupWithSelect($tz_text, "timezone", "timezone", \creamy\CRMUtils::getTimezonesAsArray(), $tz, '', '', '', '').'
+			  '.$this->singleFormGroupWithSelect($lo_text, "locale", "locale", \creamy\LanguageHandler::getAvailableLanguages(), $lo, '', '', '', '').'
+			  '.$this->singleFormGroupWithSelect($vg_text, "voicemail_greeting", "voicemail_greeting", $vgOpts, $vg, '', '', '', '').'
 			  '.$this->singleFormGroupWithInputGroup($this->singleFormInputElement("google_api_key", "google_api_key", "text", $go_text, $go, "google"), $go_text).'
 			  '.$this->singleFormGroupWithInputGroup($this->singleFormInputElement("slave_db_ip", "slave_db_ip", "text", $db_text, $slaveDB, "database"), $db_text).'
 			  <div class="box-footer">
@@ -1357,7 +1357,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 		// generate a table with all elements.
 		$items = array("name", "version", "enabled", "action");
-		$table = $this->generateTableHeaderWithItems($items, "moduleslist", "table-striped", true, false, array(), array("version", "action"));
+		$table = $this->generateTableHeaderWithItems($items, "moduleslist", "table-striped", true, false, array(), array("version", "action"), '');
 		// fill table
 		foreach ($allModules as $moduleClass => $moduleDefinition) {
 			// module data
