@@ -1,7 +1,7 @@
 //white-labeling
-company_url = "https://loginnet.ru/"
-portal_title = "ПОРТАЛ КОМПАНИИ LOGINNET."
-dashboard_sub-header = "Добропожаловать в портал ЛогинНет. !"
+company_url = "https://goautodial.com"
+portal_title = "ПОРТАЛ КОМПАНИИ GOAUTODIAL."
+dashboard_sub-header = "Добропожаловать в портал GOautodial. !"
 
 // DASHBOARD
 
