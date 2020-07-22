@@ -876,7 +876,7 @@
                         div#cust_avatar div#avatar{
                                 height: 45px!important;
                                 width: 45px!important;
-                                background: url(..img/avatars/default/defaultAvatar.png) 0% 0% / 45px 45px no-repeat content-box!important;
+                                background: url(../img/avatars/default/defaultAvatar.png) 0% 0% / 45px 45px no-repeat content-box!important;
                         }
 
                         h4#cust_full_name{
