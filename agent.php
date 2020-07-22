@@ -550,7 +550,7 @@ input:checked + .slider:before {
 		</style>
 		<!-- ECCS CSS -->
 	<!--	<link href="./css/bootstrap-toggle.min.css" type="text/css" /> -->
-		<link href="eccs4.css" rel="stylesheet" type="text/css"/>
+		<link href="./css/eccs4.css" rel="stylesheet" type="text/css"/>
 		
 	<!--	<script src="./js/bootstrap-toggle.min.js" type="text/javascript"></script> -->
 	<?php }// end if ?>
