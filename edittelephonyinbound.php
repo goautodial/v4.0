@@ -453,7 +453,7 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 																	<?php
 																		$drop_action_ingroup = NULL;
 																			for($x=0; $x<count($ingroup->group_id);$x++) {
-																				if ($output->data->drop_inbound_group == $ingroup->voicemail_id[$x]) {
+																				if ($output->data->drop_inbound_group == $ingroup->group_id[$x]) {
 																					$drop_action_ingroup .= '<option value="'.$ingroup->group_id[$x].'" selected> '.$ingroup->group_id[$x].' - '.$ingroup->group_name[$x].' </option>';
 																				} else {
 																					$drop_action_ingroup .= '<option value="'.$ingroup->group_id[$x].'"> '.$ingroup->group_id[$x].' - '.$ingroup->group_name[$x].' </option>';
