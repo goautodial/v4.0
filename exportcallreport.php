@@ -2,7 +2,7 @@
 /**
  * @file        exportcallreport.php
  * @brief       Handles report requests
- * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @copyright   Copyright (c) 2020 GOautodial Inc.
  * @author      Alexander Jim H. Abenoja
  *
  * @par <b>License</b>:
@@ -21,9 +21,16 @@
 */
 
 	require_once('./php/APIHandler.php');
-	
 	$api = \creamy\APIHandler::getInstance();
+	$user = \creamy\CreamyUser::currentUser();
 	
+	//proper user redirects
+	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
+		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
+			header("location: agent.php");
+		}
+	}
+		
 	$session_user = $api->GetSessionUser();
 	$session_group = $api->GetSessionGroup();	
 
