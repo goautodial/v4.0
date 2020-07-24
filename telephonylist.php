@@ -2,7 +2,7 @@
 /**
  * @file 		telephonylist.php
  * @brief 		Manage List and Upload Leads
- * @copyright 	Copyright (c) 2018 GOautodial Inc. 
+ * @copyright 	Copyright (c) 2020 GOautodial Inc. 
  * @author		Demian Lizandro A. Biscocho
  * @author     	Alexander Jim H. Abenoja
  *
@@ -20,24 +20,32 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
-        ini_set('memory_limit','1024M');
-        ini_set('upload_max_filesize', '600M');
-        ini_set('post_max_size', '600M');
-        ini_set('max_execution_time', 0);
+	ini_set('memory_limit','1024M');
+	ini_set('upload_max_filesize', '600M');
+	ini_set('post_max_size', '600M');
+	ini_set('max_execution_time', 0);
 
 	require_once('./php/UIHandler.php');
 	require_once('./php/APIHandler.php');
 	require_once('./php/CRMDefaults.php');
-        require_once('./php/LanguageHandler.php');
-        include('./php/Session.php');
+	require_once('./php/LanguageHandler.php');
+	include('./php/Session.php');
 
 	$ui = \creamy\UIHandler::getInstance();
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	
+	//proper user redirects
+	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
+		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
+			header("location: agent.php");
+		}
+	}	
 
 	$perm = $api->goGetPermissions('list,customfields');
 	$checkbox_all = $ui->getCheckAll("list");
+	
 ?>
 <html>
     <head>

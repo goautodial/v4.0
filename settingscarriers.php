@@ -2,7 +2,7 @@
 /**
  * @file        settingscarriers.php
  * @brief       Manage Carriers
- * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @copyright   Copyright (c) 2020 GOautodial Inc.
  * @author      Alexander Jim Abenoja
  * @author		Demian Lizandro A. Biscocho
  * @author		Noel Umandap
@@ -32,6 +32,13 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	
+	//proper user redirects
+	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
+		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
+			header("location: agent.php");
+		}
+	}	
 	
 	//$gopackage = $api->API_getGOPackage();
 	$perm = $api->goGetPermissions('carriers', $_SESSION['usergroup']);

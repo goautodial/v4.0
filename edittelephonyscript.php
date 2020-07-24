@@ -2,7 +2,7 @@
 /**
  * @file 		edittelephonyscript.php
  * @brief 		Edit scripts
- * @copyright 	Copyright (c) 2018 GOautodial Inc. 
+ * @copyright 	Copyright (c) 2020 GOautodial Inc. 
  * @author		Demian Lizandro A. Biscocho
  * @author     	Alexander Jim H. Abenoja
  *
@@ -31,6 +31,13 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	
+	//proper user redirects
+	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
+		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
+			header("location: agent.php");
+		}
+	}	
 
 	$script_id = NULL;
 	if (isset($_POST["script_id"])) {

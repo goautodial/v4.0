@@ -2,7 +2,7 @@
 /**
  * @file        settingsservers.php
  * @brief       Manage servers
- * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @copyright   Copyright (c) 2020 GOautodial Inc.
  * @author      Alexander Jim Abenoja
  * @author		Demian Lizandro A. Biscocho
  *
@@ -31,6 +31,13 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	
+	//proper user redirects
+	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
+		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
+			header("location: agent.php");
+		}
+	}	
 	
 	$perm = $api->goGetPermissions('servers', $_SESSION['usergroup']);
 ?>

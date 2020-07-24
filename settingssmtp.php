@@ -2,7 +2,7 @@
 /**
  * @file        settingsmtp.php
  * @brief       Manage SMTP settings
- * @copyright   Copyright (c) 2019 GOautodial Inc.
+ * @copyright   Copyright (c) 2020 GOautodial Inc.
  * @author      Alexander Jim Abenoja
  *
  * @par <b>License</b>:
@@ -29,6 +29,13 @@
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	
+	//proper user redirects
+	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
+		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
+			header("location: agent.php");
+		}
+	}	
 ?>
 <html>
     <head>

@@ -2,9 +2,9 @@
 /**
  * @file 		settingsusergroups.php
  * @brief 		Usergroup settings page
- * @copyright 	Copyright (c) 2018 GOautodial Inc. 
- * @author     	Alexander Jim H. Abenoja <alex@goautodial.com>
- * @author		Demian Lizandro A. Biscocho <demian@goautodial.com> 
+ * @copyright 	Copyright (c) 2020 GOautodial Inc. 
+ * @author     	Alexander Jim H. Abenoja
+ * @author		Demian Lizandro A. Biscocho
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -29,6 +29,14 @@
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	
+	//proper user redirects
+	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
+		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
+			header("location: agent.php");
+		}
+	}
+	
 ?>
 <html>
     <head>
