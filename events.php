@@ -23,21 +23,28 @@
 	THE SOFTWARE.
 */
 
-// check if Creamy has been installed.
-require_once('./php/CRMDefaults.php');
-if (!file_exists(CRM_INSTALLED_FILE)) { // check if already installed 
-	header("location: ./install.php");
-}
+	// check if Creamy has been installed.
+	require_once('./php/CRMDefaults.php');
+	if (!file_exists(CRM_INSTALLED_FILE)) { // check if already installed 
+		header("location: ./install.php");
+	}
 
-// initialize session and DDBB handler
-require_once('./php/Session.php');
-include_once('./php/UIHandler.php');
-require_once('./php/LanguageHandler.php');
-require_once('./php/DbHandler.php');
-$ui = \creamy\UIHandler::getInstance();
-$lh = \creamy\LanguageHandler::getInstance();
-$user = \creamy\CreamyUser::currentUser();
-$db = new \creamy\DbHandler();
+	// initialize session and DDBB handler
+	require_once('./php/Session.php');
+	include_once('./php/UIHandler.php');
+	require_once('./php/LanguageHandler.php');
+	require_once('./php/DbHandler.php');
+	$ui = \creamy\UIHandler::getInstance();
+	$lh = \creamy\LanguageHandler::getInstance();
+	$user = \creamy\CreamyUser::currentUser();
+	$db = new \creamy\DbHandler();
+	
+	//proper user redirects
+	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
+		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
+			header("location: agent.php");
+		}
+	}	
 
 // create new event with client id?
 if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
