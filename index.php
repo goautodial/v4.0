@@ -1,76 +1,71 @@
 <?php
-/*
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL)
-*/
 /**
-	The MIT License (MIT)
-	
-	Copyright (c) 2015 Ignacio Nieto Carvajal
-	
-	Permission is hereby granted, free of charge, to any person obtaining a copy
-	of this software and associated documentation files (the "Software"), to deal
-	in the Software without restriction, including without limitation the rights
-	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-	copies of the Software, and to permit persons to whom the Software is
-	furnished to do so, subject to the following conditions:
-	
-	The above copyright notice and this permission notice shall be included in
-	all copies or substantial portions of the Software.
-	
-	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-	THE SOFTWARE.
-*/
+ * @file 		index.php
+ * @brief 		Dashboard application
+ * @copyright 	Copyright (c) 2020 GOautodial Inc. 
+ * @author     	Christopher Lomuntad 
+ * @author		Demian Lizandro A. Biscocho
+ * @author		Alexander Jim H. Abenoja
+ * @author		Ignacio Nieto Carvajal
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+**/
 
 	// check if Creamy has been installed.
-		require_once('./php/CRMDefaults.php');
-		require_once('./php/APIHandler.php');
-		require_once('./php/UIHandler.php');
-		require_once('./php/LanguageHandler.php');
-		require_once('./php/DbHandler.php');
-		$ui = \creamy\UIHandler::getInstance();
-		$lh = \creamy\LanguageHandler::getInstance();
-		$api = \creamy\APIHandler::getInstance();
+	require_once('./php/CRMDefaults.php');
+	require_once('./php/APIHandler.php');
+	require_once('./php/UIHandler.php');
+	require_once('./php/LanguageHandler.php');
+	require_once('./php/DbHandler.php');
+	$ui = \creamy\UIHandler::getInstance();
+	$lh = \creamy\LanguageHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 		
 	// Try to get the authenticated user.
-		require_once('./php/Session.php');
-		try {
-			$user = \creamy\CreamyUser::currentUser();	
-		} catch (\Exception $e) {
-			header("location: ./logout.php");
-			die();
-		}
+	require_once('./php/Session.php');
+	try {
+		$user = \creamy\CreamyUser::currentUser();	
+	} catch (\Exception $e) {
+		header("location: ./logout.php");
+		die();
+	}
 	
 	//proper user redirects
-		if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
-			if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
-				header("location: agent.php");
-			}
+	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
+		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
+			header("location: agent.php");
 		}
+	}
 
-	
-		$perms = $api->goGetPermissions('dashboard,servers', $_SESSION['usergroup']);
-		if ($perms->dashboard->dashboard_display === 'N') {
-			header("location: crm.php");
-		}
+
+	$perms = $api->goGetPermissions('dashboard,servers', $_SESSION['usergroup']);
+	if ($perms->dashboard->dashboard_display === 'N') {
+		header("location: crm.php");
+	}
 
 	// calculate number of statistics and customers
-		$db = new \creamy\DbHandler();
-		$statsOk = $db->weHaveSomeValidStatistics();
-		$custsOk = $db->weHaveAtLeastOneCustomerOrContact();
-		$checkWebRTC = $api->CheckWebrtc($user->getUserId());
-		$use_webrtc = $_SESSION['use_webrtc'];
-		if (is_numeric($checkWebRTC)) {
-				$use_webrtc = $checkWebRTC;
-		}
-		
-		$goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
+	$db = new \creamy\DbHandler();
+	$statsOk = $db->weHaveSomeValidStatistics();
+	$custsOk = $db->weHaveAtLeastOneCustomerOrContact();
+	$checkWebRTC = $api->CheckWebrtc($user->getUserId());
+	$use_webrtc = $_SESSION['use_webrtc'];
+	if (is_numeric($checkWebRTC)) {
+			$use_webrtc = $checkWebRTC;
+	}
+	
+	$goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
 	
 	// APIs FOR FILTER LIST
 		//$campaign = $api->API_getAllCampaigns($_SESSION['usergroup']);
@@ -78,12 +73,12 @@ error_reporting(E_ALL)
 	/*
 	 * API for call statistics - Demian
 	*/
-		$dropped_calls_today = $ui->API_goGetTotalDroppedCalls($_SESSION['user']);
-		$calls_incoming_queue = $ui->API_goGetIncomingQueue($_SESSION['user']);
-		$callsperhour = $ui->API_goGetCallsPerHour($_SESSION['user'], 'json');
-		$max = 0;
-		//$callsperhour = explode(";",trim($callsperhour, ';'));
-		$callsperhour = json_decode($callsperhour);
+	$dropped_calls_today = $ui->API_goGetTotalDroppedCalls($_SESSION['user']);
+	$calls_incoming_queue = $ui->API_goGetIncomingQueue($_SESSION['user']);
+	$callsperhour = $ui->API_goGetCallsPerHour($_SESSION['user'], 'json');
+	$max = 0;
+	//$callsperhour = explode(";",trim($callsperhour, ';'));
+	$callsperhour = json_decode($callsperhour);
 	
 	foreach ($callsperhour AS $idx => $temp){
 		//$temp = explode("=",$temp);
