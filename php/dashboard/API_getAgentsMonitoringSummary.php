@@ -20,7 +20,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+	
 	require_once('APIHandler.php');
+	
+	if (!isset($_SESSION['user']) || $_SESSION["userrole"] == CRM_DEFAULTS_USER_ROLE_AGENT) { 
+		die("This file cannot be accessed directly"); 
+	}
 	
 	$api 										= \creamy\APIHandler::getInstance();
 	$output 									= $api->API_getRealtimeAgentsMonitoring();

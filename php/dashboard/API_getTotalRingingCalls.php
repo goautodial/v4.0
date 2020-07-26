@@ -2,7 +2,7 @@
 /**
  * @file        API_getTotalRingingCalls.php
  * @brief       Displays active outbound ringing calls
- * @copyright   Copyright (c) 2018 GOautodial Inc.
+ * @copyright   Copyright (c) 2020 GOautodial Inc.
  * @author		Demian Lizandro A. Biscocho 
  *
  * @par <b>License</b>:
@@ -22,9 +22,12 @@
 
 	require_once('APIHandler.php');
 	
+	if (!isset($_SESSION['user']) || $_SESSION["userrole"] == CRM_DEFAULTS_USER_ROLE_AGENT) { 
+		die("This file cannot be accessed directly"); 
+	}	
+	
 	$api 										= \creamy\APIHandler::getInstance();
-	$output 									= $api->API_getTotalRingingCalls();
-    
+	$output 									= $api->API_getTotalRingingCalls();    
     $calls 										= $output->data;
     
     if($calls == NULL || $calls == 0){
