@@ -588,7 +588,7 @@
 				}
 
 				if(filter_type === "call_export_report"){
-				     URL = './exportcallreport.php';
+				     URL = './php/reports/exportcallreport.php';
 				}
 				
 				$.ajax({

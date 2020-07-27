@@ -20,16 +20,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('./php/APIHandler.php');
+	require_once('APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
-	$user = \creamy\CreamyUser::currentUser();
-	
-	//proper user redirects
-	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
-		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
-			header("location: agent.php");
-		}
-	}
 		
 	$session_user = $api->GetSessionUser();
 	$session_group = $api->GetSessionGroup();	
