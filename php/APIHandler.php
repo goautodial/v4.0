@@ -46,6 +46,25 @@ if(isset($_SESSION["user"])){
 	define("log_pass", $_SESSION["password_hash"]);
 	//define("responsetype", "json");
 }
+
+$uri = $_SERVER['REQUEST_URI'];
+$uri = explode('/', $uri);
+$uri = explode('.php', $uri[1]);
+$uri = $uri[0];
+
+if($uri == '') {
+	$uri = 'index';
+}
+
+if($uri != 'index'){
+    if($uri != 'login'){
+        if (!isset($_SESSION['user'])) {
+			if($uri == 'php')
+				die("This file cannot be accessed directly");
+        }
+    }
+}
+
 /**
  *  APIHandler.
  *  This class is in charge of storing the API Connections for the basic functionality of the system.
