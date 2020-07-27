@@ -688,7 +688,7 @@ input:checked + .slider:before {
 										<div id="contact_info" role="tabpanel" class="tab-pane active">
 
 											<fieldset style="padding-bottom: 0px; margin-bottom: 0px;">
-												<h4>
+												<h4 style="position: absolute; right: 40px;">
 													<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile"><?=$lh->translationFor('edit_information')?></a>
 												</h4>
 												<!-- <br/> -->
