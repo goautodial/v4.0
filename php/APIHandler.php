@@ -54,11 +54,11 @@
 	$uri = explode('.php', $uri[1]);
 	$uri = $uri[0];
 
-	if ($uri == '') { $uri = 'index'; }
-
 	if ($uri != 'index') {
 		if ($uri != 'login') {
-			if (!isset($_SESSION['user'])) { if ($uri == 'php') die("This file cannot be accessed directly"); }
+			if (!isset($_SESSION['user']) || $_SESSION["userrole"] == CRM_DEFAULTS_USER_ROLE_AGENT) { 
+				if ($uri == 'php') die("This file cannot be accessed directly"); 
+			}
 		}
 	}
 
@@ -1204,9 +1204,9 @@
 				"goAction" => "goCheckWebrtc",
 				"user_id" => $user_id
 			);
-	$result = $this->API_Request("goSettings", $postfields);
-			return $result->result;
-	}
+		$result = $this->API_Request("goSettings", $postfields);
+				return $result->result;
+		}
 
 
 		// escape existing special characters already in the database
