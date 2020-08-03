@@ -169,9 +169,11 @@
 		$donotsendemail 							= 1;
 	}
 
-	$is_customer 									= 0;
+	//$is_customer 									= 0;
 	if ( $is_customer === "true" ) {
 		$is_customer 								= 1;
+	} else {
+		$is_customer = 0;
 	}
 	
 	if ( isset($_POST["custom_fields"]) ) {

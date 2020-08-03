@@ -935,7 +935,7 @@
 				if (is_customer > 0) {
 					$('#convert-customer').prop('checked', true);
 					$('#convert-customer').val("1");
-					$('#convert-customer').prop('disabled', true);
+					//$('#convert-customer').prop('disabled', true);
 				}
 				
 				$('#heading_full_name').text("<?php echo $fullname;?>");
@@ -980,7 +980,7 @@
 										if(data == 1){
 											swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("contact_update_success"); ?>",type: "success"},function(){location.reload();});
 										}else{
-											sweetAlert("<?php $lh->translateText("oops"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>", "error");
+											sweetAlert("<?php $lh->translateText("oops"); ?>", "<?php $lh->translateText("something_went_wrong"); ?> " + data, "error");
 										}
 									}
 								});
