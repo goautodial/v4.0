@@ -83,11 +83,11 @@ if ($validated == 1) {
 	$confirmationEmail = isset($_POST["confirmationEmail"]) ? true : false;
 	$eventEmail = isset($_POST["eventEmail"]) ? true : false;
 	$theme = $_POST["theme"];
-	$baseURL = $_POST["base_url"];
+	$baseURL = htmlentities($_POST["base_url"]);
 	$minFreq = $_POST["jobScheduling"];
-	$customCompanyName = isset($_POST["company_name"]) ? $_POST["company_name"] : null;
-	$googleAPIKey = $_POST["google_api_key"];
-	$slave_db_ip = $_POST["slave_db_ip"];
+	$customCompanyName = isset($_POST["company_name"]) ? htmlentities($_POST["company_name"]) : null;
+	$googleAPIKey = htmlentities($_POST["google_api_key"]);
+	$slave_db_ip = htmlentities($_POST["slave_db_ip"]);
 	$voicemail_greeting = $_POST["voicemail_greeting"];
 	// generate settings array
 	$data = array(
