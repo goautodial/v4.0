@@ -63,7 +63,7 @@
 		$postal_code	= $output->data->postal_code;
 		$gender 	= $output->data->gender;
 		$date_of_birth 	= $output->data->date_of_birth;
-		$comments 	= htmlentities($output->data->comments);
+		$comments 	= $output->data->comments;
 		$title 	= $output->data->title;
 		$call_count 	= $output->data->call_count;
 		$last_local_call_time 	= $output->data->last_local_call_time;
@@ -940,7 +940,7 @@
 				
 				$('#heading_full_name').text("<?php echo $fullname;?>");
 				$('#heading_lead_id').text("<?php echo $lead_id;?>");
-				$('#comments').text("<?php echo $comments;?>");
+				$('#comments').text("<?php echo htmlentities($comments);?>");
 
 				$('#date_of_birth').datetimepicker({ //start date contacts
 				icons: {
