@@ -63,7 +63,7 @@
 		$postal_code	= $output->data->postal_code;
 		$gender 	= $output->data->gender;
 		$date_of_birth 	= $output->data->date_of_birth;
-		$comments 	= $output->data->comments;
+		$comments 	= htmlentities($output->data->comments);
 		$title 	= $output->data->title;
 		$call_count 	= $output->data->call_count;
 		$last_local_call_time 	= $output->data->last_local_call_time;
