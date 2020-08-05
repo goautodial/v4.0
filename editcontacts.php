@@ -940,7 +940,7 @@
 				
 				$('#heading_full_name').text("<?php echo $fullname;?>");
 				$('#heading_lead_id').text("<?php echo $lead_id;?>");
-				$('#comments').text("<?php echo htmlentities($comments);?>");
+				$('#comments').html("<?php echo htmlentities($comments);?>");
 
 				$('#date_of_birth').datetimepicker({ //start date contacts
 				icons: {
