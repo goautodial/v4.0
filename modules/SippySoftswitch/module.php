@@ -89,7 +89,7 @@ class SippySoftswitch extends Module {
 		
 		$sippy_balance = json_encode($output);		
 		
-		$quoteBox = $this->ui()->boxWithQuote($this->lh()->translationFor("justgovoip_balance"), ($this->lh()->translationFor("remaining_balance")).": $".$sippy_balance);
+		$quoteBox = $this->ui()->boxWithQuote($this->lh()->translationFor("justgovoip_balance"), ($this->lh()->translationFor("remaining_balance")).": $".number_format($sippy_balance), '');
 		$content .= $this->ui()->fullRowWithContent($quoteBox);		
 		
 		return $content;
