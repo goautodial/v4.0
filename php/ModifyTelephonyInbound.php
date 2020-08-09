@@ -243,6 +243,18 @@
 			$onhold_prompt_filename 			= stripslashes($onhold_prompt_filename);
 		}
 		
+		$no_agents_extension_context					= NULL;
+		if (isset($_POST["no_agents_extension_context"])) {
+			$no_agents_extension_context 				= $_POST["no_agents_extension_context"];
+			$no_agents_extension_context 				= stripslashes($no_agents_extension_context);
+		}
+
+		$no_agents_extension							= NULL;
+		if (isset($_POST["no_agents_extension"])) {
+			$no_agents_extension		 				= $_POST["no_agents_extension"];
+			$no_agents_extension		 				= stripslashes($no_agents_extension);
+		}
+		
 		$postfields 							= array(
 			'goAction' 								=> 'goEditIngroup',
 			'group_id' 								=> $modify_groupid, 
@@ -274,6 +286,8 @@
 			'no_agents_voicemail' 					=> $no_agents_voicemail, 
 			'no_agents_ingroup' 					=> $no_agents_ingroup, 
 			'no_agents_callmenu' 					=> $no_agents_callmenu, 
+			'no_agents_extension_context' 				=> $no_agents_extension_context,
+			'no_agents_extension' 					=> $no_agents_extension,
 			'welcome_message_filename' 				=> $welcome_message_filename, 
 			'play_welcome_message' 					=> $play_welcome_message, 
 			'moh_context' 							=> $moh_context, 
