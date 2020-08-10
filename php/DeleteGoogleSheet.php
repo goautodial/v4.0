@@ -22,8 +22,6 @@
 */
 require_once('APIHandler.php');
 $api = \creamy\APIHandler::getInstance();
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
 /*
     require_once('goCRMAPISettings.php');
 
@@ -56,7 +54,7 @@ error_reporting(E_ALL);
 
  	$postfields = array(
          	'goAction' => 'goUpdateCampaignGoogleSheet',
-		'campaign_id' => $astDB->escape($_POST['campaign_id']),
+		'campaign_id' => $_POST['campaign_id'],
          	'google_sheet_ids' => trim($new_sheet_ids)
      	);
 var_dump($postfields);
