@@ -57,7 +57,7 @@ $api = \creamy\APIHandler::getInstance();
 		'campaign_id' => $_POST['campaign_id'],
          	'google_sheet_ids' => trim($new_sheet_ids)
      	);
-var_dump($postfields);
+
     $output = $api->API_updateCampaignGoogleSheet($postfields);
 
 	if ($output->result=="success") {
