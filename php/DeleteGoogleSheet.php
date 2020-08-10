@@ -50,13 +50,14 @@ $api = \creamy\APIHandler::getInstance();
 	}
 	$new_sheet_ids = trim($new_sheet_ids, " ");
 	
-	$postfields['google_sheet_ids'] = $new_sheet_ids;
-var_dump($postfields);
-// 	$postfields = array(
-//         	'goAction' => 'goUpdateCampaignGoogleSheet',
-//         	'google_sheet_ids' => $new_sheet_ids
-//     	);
+	//$postfields['google_sheet_ids'] = $new_sheet_ids;
 
+ 	$postfields = array(
+         	'goAction' => 'goUpdateCampaignGoogleSheet',
+		'campaign_id' => $astDB->escape($_POST['campaign_id']),
+         	'google_sheet_ids' => trim($new_sheet_ids)
+     	);
+var_dump($postfields);
     $output = $api->API_updateCampaignGoogleSheet($postfields);
 
 	if ($output->result=="success") {
