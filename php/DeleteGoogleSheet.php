@@ -58,7 +58,7 @@ $api = \creamy\APIHandler::getInstance();
     );
 
     $output = $api->API_updateCampaignGoogleSheet($postfields);
-
+var_dump($output);
 	if ($output->result=="success") {
 		echo json_encode(1);
 	} else {
