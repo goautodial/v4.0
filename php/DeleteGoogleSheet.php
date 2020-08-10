@@ -22,6 +22,8 @@
 */
 require_once('APIHandler.php');
 $api = \creamy\APIHandler::getInstance();
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 /*
     require_once('goCRMAPISettings.php');
 
