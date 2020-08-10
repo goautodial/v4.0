@@ -48,7 +48,7 @@ $api = \creamy\APIHandler::getInstance();
 		'google_sheet_ids' => trim($new_sheet_ids)
 	);
 
-	$output = $api->API_updateCampaignGoogleSheet($postfields);
+	$output = $api->API_addGoogleSheet($postfields);
 
 	if ($output->result=="success") {
 		echo json_encode(1);
