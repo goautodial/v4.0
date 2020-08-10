@@ -1055,7 +1055,7 @@
 			return $this->API_Request("goDispositions", $postfields);
 		}
 		
-		public function API_addGoogleSheet($postfields){
+		public function API_updateCampaignGoogleSheet($postfields){
 			return $this->API_Request("goCampaigns", $postfields);
 		}
 
