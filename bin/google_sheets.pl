@@ -14,9 +14,11 @@ use JSON qw( decode_json );     # From CPAN
 use Data::Dumper;               # Perl core module
 use Time::Local;
 use POSIX qw(strftime);
+use Cwd;
 
 my $ua = LWP::UserAgent->new;
-
+my $CLIdir = getcwd();
+$CLIdir =~ s/\/bin//;
 
 ### begin parsing run-time options ###
 $Q = 1;
