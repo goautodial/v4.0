@@ -51,14 +51,14 @@ $api = \creamy\APIHandler::getInstance();
 	$new_sheet_ids = trim($new_sheet_ids, " ");
 	
 	$postfields['google_sheet_ids'] = $new_sheet_ids;
-
+var_dump($postfields);
 // 	$postfields = array(
 //         	'goAction' => 'goUpdateCampaignGoogleSheet',
 //         	'google_sheet_ids' => $new_sheet_ids
 //     	);
 
     $output = $api->API_updateCampaignGoogleSheet($postfields);
-var_dump($postfields);
+
 	if ($output->result=="success") {
 		echo json_encode(1);
 	} else {
