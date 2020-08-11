@@ -1694,6 +1694,7 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
 			if (typeof default_country_code !== 'undefined') {
 				var thisObj = country_codes[default_country_code];
 				$("#code_flag").attr('class', 'flag flag-'+thisObj['tld']);
+				$("#MDDiaLCodE").val(thisObj['code']);
 			}
                         
                         var vro_patt = /DISABLED/;
