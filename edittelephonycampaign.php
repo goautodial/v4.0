@@ -104,6 +104,7 @@
   		<link rel="stylesheet" href="css/iCheck/all.css">
 		<!-- Bootstrap Color Picker -->
   		<link rel="stylesheet" href="adminlte/colorpicker/bootstrap-colorpicker.min.css">
+		<link rel="stylesheet" href="css/flags/flags.min.css">
 		<!-- bootstrap color picker -->
 		<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>   		
 		<style type="text/css">
@@ -851,7 +852,7 @@
 																<div class="col-sm-9 mb">
 																	<select class="form-control" id="default_country_code" name="default_country_code">
 																		<?php foreach ($campaign->country_codes as $cKey => $cCode) { ?>
-																			<option value="<?php echo $cKey; ?>" <?php if((empty($campaign->default_country_code) && $cKey === 'US_1') || (!empty($campaign->default_country_code) && $campaign->default_country_code == $cKey)) echo "selected";?>><i class="flag flag-<?php echo $cCode->tld; ?>"></i> <?php echo $cCode->name; ?></option>
+																			<option value="<?php echo $cKey; ?>" <?php if((empty($campaign->default_country_code) && $cKey === 'USA_1') || (!empty($campaign->default_country_code) && $campaign->default_country_code == $cKey)) echo "selected";?>><i class="flag flag-<?php echo $cCode->tld; ?>"></i> <?php echo $cCode->name; ?></option>
 																		<?php } ?>
 																	</select>
 																</div>
