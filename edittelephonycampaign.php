@@ -850,6 +850,7 @@
 															<div class="form-group">
 																<label class="col-sm-3 control-label"><?php $lh->translateText("default_country_code"); ?>:</label>
 																<div class="col-sm-9 mb">
+																	<div class="flag flag-<?php if(!empty($campaign->default_country_code)) { echo $campaign->default_country_code; } else { echo "us"; } ?>" style="position: absolute; top: 11px; left: 30px;"></div>
 																	<select class="form-control" id="default_country_code" name="default_country_code">
 																		<?php foreach ($campaign->country_codes as $cKey => $cCode) { ?>
 																			<option value="<?php echo $cKey; ?>" <?php if((empty($campaign->default_country_code) && $cKey === 'USA_1') || (!empty($campaign->default_country_code) && $campaign->default_country_code == $cKey)) echo "selected";?>><?php echo "(+" . $cCode->code . ") " . $cCode->name; ?></option>
