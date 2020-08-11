@@ -1684,7 +1684,7 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                             $.globalEval("disable_dispo_screen = '1';");
                             $.globalEval("disable_dispo_status = '"+disable_dispo_status+"';");
                         }
-                        
+		
                         if (alt_phone_dialing == 1) {
                             $("#DialALTPhoneMenu").show();
                         } else {
@@ -2014,6 +2014,10 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
             if (key !== 'USA_1' && key !== 'CAN_1' && key !== 'PHL_63' && key !== 'GBR_44') {
                 country_list += '<li data-code="'+obj['code']+'" data-tld="'+obj['tld']+'"><i class="flag flag-'+obj['tld']+'"></i> '+ obj['name'] +'</li>';
             }
+	    
+	    if (typeof default_country_code !== 'undefined' && default_country_code === key) {
+		$("#code_flag").attr('class', 'flag flag-'+obj['tld']);
+	    }
         }
         
         $("#country_codes").html(country_list);
