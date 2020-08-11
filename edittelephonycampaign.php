@@ -851,7 +851,7 @@
 																<label class="col-sm-3 control-label"><?php $lh->translateText("default_country_code"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<?php
-																	var_dump($campaign->country_codes);
+																	var_dump($campaign->country_codes->{$campaign->default_country_code}->tld);
 																	?>
 																	<div id="flag" class="flag flag-<?php if(!empty($campaign->default_country_code)) { echo $campaign->default_country_code; } else { echo "us"; } ?>" style="position: absolute; top: 11px; left: 30px;"></div>
 																	<select class="form-control" id="default_country_code" name="default_country_code" style="padding-left: 35px;">
