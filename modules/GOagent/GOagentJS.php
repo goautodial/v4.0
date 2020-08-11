@@ -1690,6 +1690,11 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                         } else {
                             $("#DialALTPhoneMenu").hide();
                         }
+			
+			if (typeof default_country_code !== 'undefined') {
+				var thisObj = country_codes[default_country_code];
+				$("#code_flag").attr('class', 'flag flag-'+thisObj['tld']);
+			}
                         
                         var vro_patt = /DISABLED/;
                         var camp_rec = campaign_recording;
@@ -2014,10 +2019,6 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
             if (key !== 'USA_1' && key !== 'CAN_1' && key !== 'PHL_63' && key !== 'GBR_44') {
                 country_list += '<li data-code="'+obj['code']+'" data-tld="'+obj['tld']+'"><i class="flag flag-'+obj['tld']+'"></i> '+ obj['name'] +'</li>';
             }
-	    
-	    if (typeof default_country_code !== 'undefined' && default_country_code === key) {
-		$("#code_flag").attr('class', 'flag flag-'+obj['tld']);
-	    }
         }
         
         $("#country_codes").html(country_list);
