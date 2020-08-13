@@ -14,6 +14,7 @@ use JSON qw( decode_json );     # From CPAN
 use Data::Dumper;               # Perl core module
 use Time::Local;
 use POSIX qw(strftime);
+use POSIX qw(tzset);
 use File::Basename;
 
 my $ua = LWP::UserAgent->new;
@@ -132,26 +133,25 @@ $sthA->finish();
 
 # Getting System Settings
 $serverGMT = 0;
-($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime();
-$stmtA = "SELECT local_gmt FROM servers where active='Y' limit 1;";
-$sthA = $dbhA->prepare($stmtA) or die "preparing: ",$dbhA->errstr;
+
+$stmtA = "SELECT value FROM settings WHERE setting='timezone' AND context='creamy';";
+$sthA = $dbhG->prepare($stmtA) or die "preparing: ",$dbhA->errstr;
 $sthA->execute or die "executing: $stmtA ", $dbhA->errstr;
 $sthArows = $sthA->rows;
 if ($sthArows > 0) {
-    @aryS = $sthA->fetchrow_array;
-    $DBserverGMT = $aryS[0];
+	@aryS = $sthA->fetchrow_array;
+	$DBserverGMT = $aryS[0];
 	if (length($DBserverGMT) > 0) {
-		$serverGMT = $DBserverGMT;
+		$ENV{TZ} = "$DBserverGMT";
 	}
-	if ($isdst) {
-		$serverGMT++;
-	}
-} else {
-	$serverGMT = strftime "%z", localtime;
-	$serverGMT =~ s/\+//g;
-	$serverGMT = ($serverGMT + 0);
-	$serverGMT = sprintf("%.2f", ($serverGMT / 100));
 }
+
+($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime();
+$serverGMT = strftime "%z", localtime;
+$serverGMT =~ s/\+//g;
+$serverGMT = ($serverGMT + 0);
+$serverGMT = sprintf("%.2f", ($serverGMT / 100));
+
 my $LOCAL_GMT_OFF = $serverGMT;
 my $LOCAL_GMT_OFF_STD = $serverGMT;
 $sthA->finish();
