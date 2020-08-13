@@ -143,6 +143,7 @@ if ($sthArows > 0) {
 	$DBserverGMT = $aryS[0];
 	if (length($DBserverGMT) > 0) {
 		$ENV{TZ} = "$DBserverGMT";
+		tzset;
 	}
 }
 
