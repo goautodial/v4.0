@@ -73,6 +73,7 @@ Update GOautodial database:
 MariaDB [goautodialdb]> ALTER TABLE go_campaigns ADD COLUMN manual_dial_min_digits INT(11) DEFAULT '6';
 MariaDB [goautodialdb]> ALTER TABLE go_campaigns ADD COLUMN auto_dial_level VARCHAR(20) DEFAULT 'NORMAL';
 MariaDB [goautodialdb]> ALTER TABLE users ADD COLUMN enable_webrtc tinyint(1)  DEFAULT '1';
+MariaDB [goautodialdb]> ALTER TABLE go_campaigns ADD COLUMN default_country_code VARCHAR(20) DEFAULT 'USA_1';
 </pre>
 
 Wiki: https://goautodial.org/projects/goautodialce/wiki
