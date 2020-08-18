@@ -581,6 +581,17 @@
 							
 												<div class="tab-pane fade in" id="tab_2">
 													<fieldset>
+														<div class="form-group">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("default_country_code"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<div id="flag" class="flag flag-<?php if(!empty($campaign->country_codes->{$campaign->default_country_code}->tld)) { echo $campaign->country_codes->{$campaign->default_country_code}->tld; } else { echo "us"; } ?>" style="position: absolute; top: 11px; left: 30px;"></div>
+																<select class="form-control" id="default_country_code" name="default_country_code" style="padding-left: 35px;">
+																	<?php foreach ($campaign->country_codes as $cKey => $cCode) { ?>
+																		<option data-tld="<?php echo $cCode->tld; ?>" value="<?php echo $cKey; ?>" <?php if((empty($campaign->default_country_code) && $cKey === 'USA_1') || (!empty($campaign->default_country_code) && $campaign->default_country_code == $cKey)) echo "selected";?>><?php echo $cCode->name . " (+" . $cCode->code . ")"; ?></option>
+																	<?php } ?>
+																</select>
+															</div>
+														</div>
 														<?php if($campaign->campaign_type != "SURVEY") { ?>
 														<div class="form-group">
 															<label class="col-sm-3 control-label"><?php $lh->translateText("allowed_inbound_and_blended"); ?>:</label>
@@ -845,17 +856,6 @@
 																<label class="col-sm-3 control-label"><?php $lh->translateText("manual_dial_min_digits"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<input type="number" min="3" max="20" class="form-control" id="manual_dial_min_digits" name="manual_dial_min_digits" value="<?php echo $campaign->manual_dial_min_digits; ?>">
-																</div>
-															</div>
-															<div class="form-group">
-																<label class="col-sm-3 control-label"><?php $lh->translateText("default_country_code"); ?>:</label>
-																<div class="col-sm-9 mb">
-																	<div id="flag" class="flag flag-<?php if(!empty($campaign->country_codes->{$campaign->default_country_code}->tld)) { echo $campaign->country_codes->{$campaign->default_country_code}->tld; } else { echo "us"; } ?>" style="position: absolute; top: 11px; left: 30px;"></div>
-																	<select class="form-control" id="default_country_code" name="default_country_code" style="padding-left: 35px;">
-																		<?php foreach ($campaign->country_codes as $cKey => $cCode) { ?>
-																			<option data-tld="<?php echo $cCode->tld; ?>" value="<?php echo $cKey; ?>" <?php if((empty($campaign->default_country_code) && $cKey === 'USA_1') || (!empty($campaign->default_country_code) && $campaign->default_country_code == $cKey)) echo "selected";?>><?php echo $cCode->name . " (+" . $cCode->code . ")"; ?></option>
-																		<?php } ?>
-																	</select>
 																</div>
 															</div>
 															<div class="form-group">
@@ -1283,17 +1283,6 @@
 																	</div>
 																</div>
 																<div class="form-group">
-																	<label class="col-sm-3 control-label"><?php $lh->translateText("default_country_code"); ?>:</label>
-																	<div class="col-sm-9 mb">
-																		<div id="flag" class="flag flag-<?php if(!empty($campaign->country_codes->{$campaign->default_country_code}->tld)) { echo $campaign->country_codes->{$campaign->default_country_code}->tld; } else { echo "us"; } ?>" style="position: absolute; top: 11px; left: 30px;"></div>
-																		<select class="form-control" id="default_country_code" name="default_country_code" style="padding-left: 35px;">
-																			<?php foreach ($campaign->country_codes as $cKey => $cCode) { ?>
-																				<option data-tld="<?php echo $cCode->tld; ?>" value="<?php echo $cKey; ?>" <?php if((empty($campaign->default_country_code) && $cKey === 'USA_1') || (!empty($campaign->default_country_code) && $campaign->default_country_code == $cKey)) echo "selected";?>><?php echo $cCode->name . " (+" . $cCode->code . ")"; ?></option>
-																			<?php } ?>
-																		</select>
-																	</div>
-																</div>
-																<div class="form-group">
 																	<label class="col-sm-3 control-label">Caller ID for 3-way Calls:</label>
 																	<div class="col-sm-9 mb">
 																		<select class="form-control" id="three_way_call_cid" name="three_way_call_cid">
@@ -1566,17 +1555,6 @@
 																<label class="col-sm-3 control-label"><?php $lh->translateText("manual_dial_min_digits"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<input type="number" min="3" max="20" class="form-control" id="manual_dial_min_digits" name="manual_dial_min_digits" value="<?php echo $campaign->manual_dial_min_digits; ?>">
-																</div>
-															</div>
-															<div class="form-group">
-																<label class="col-sm-3 control-label"><?php $lh->translateText("default_country_code"); ?>:</label>
-																<div class="col-sm-9 mb">
-																	<div id="flag" class="flag flag-<?php if(!empty($campaign->country_codes->{$campaign->default_country_code}->tld)) { echo $campaign->country_codes->{$campaign->default_country_code}->tld; } else { echo "us"; } ?>" style="position: absolute; top: 11px; left: 30px;"></div>
-																	<select class="form-control" id="default_country_code" name="default_country_code" style="padding-left: 35px;">
-																		<?php foreach ($campaign->country_codes as $cKey => $cCode) { ?>
-																			<option data-tld="<?php echo $cCode->tld; ?>" value="<?php echo $cKey; ?>" <?php if((empty($campaign->default_country_code) && $cKey === 'USA_1') || (!empty($campaign->default_country_code) && $campaign->default_country_code == $cKey)) echo "selected";?>><?php echo $cCode->name . " (+" . $cCode->code . ")"; ?></option>
-																		<?php } ?>
-																	</select>
 																</div>
 															</div>
 															<div class="form-group">
@@ -2331,6 +2309,7 @@
 															<?php //} ?>
 														<?php } else { ?>
 															<!--Default-->
+
 														<?php }
 														
 														if ($campaign->campaign_type != "SURVEY") {
