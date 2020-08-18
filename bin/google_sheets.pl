@@ -23,6 +23,7 @@ $CLIdir =~ s/\/bin//;
 
 ### begin parsing run-time options ###
 $Q = 1;
+$QQ = 1;
 $check_dup = 1;
 if (length($ARGV[0])>1) {
 	$i=0;
@@ -49,6 +50,8 @@ if (length($ARGV[0])>1) {
 		if ($args =~ /--nodupcheck/i) {
 			$check_dup = 0;
 		}
+		if ($args =~ /--xdebug/i)
+			{$QQ = 0;}
 	}
 }
 
@@ -320,7 +323,55 @@ if ($sthGrows > 0) {
 
         ### Find out if DST to raise the gmt offset ###
         $AC_GMT_diff = ($gmt_offset - $SLOCAL_GMT_OFF_STD);
-	$AC_localtime = timelocal($Ssec,$Smin,($Shour + $AC_GMT_diff),$Smday,$Smon,($Syear + 1900));
+
+        if (!$QQ) {
+            print "$gmt_offset\n";
+            print "$SLOCAL_GMT_OFF_STD\n";
+            print "$AC_GMT_diff\n";
+            print "$Shour\n";
+            print (23 + $AC_GMT_diff);
+            print "\n";
+            print "Sec: $Ssec  Min: $Smin Hour: $Shour Day: $Smday Mon: $Smon Year: $Syear\n";
+            print "\n\n";
+        }
+        
+        $Thour = ($Shour + $AC_GMT_diff);
+        $Tmday = $Smday;
+        $Tmon = $Smon;
+        $Tyear = ($Syear + 1900);
+        if ($Thour > 23) {
+            $Thour -= 23;
+            $Tmday += 1;
+        } elsif ($Thour < 0) {
+            $Thour += 23;
+            $Tmday -= 1;
+        }
+        
+        $isLeapYear = IsLeapYear($Tyear) ? 29 : 28;
+        if ($Tmon == 3 || $Tmon == 5 || $Tmon == 8 || $Tmon == 10) {
+            if ($Tmday > 30) {
+                $Tmday -= 30;
+                $Tmon += 1;
+            } elsif ($Tmday < 1) {
+                $Tmday += 31;
+                $Tmon -= 1;
+            }
+        } elsif ($Tmon == 1) {
+            if ($Tmday > $isLeapYear) {
+                $Tmday -= $isLeapYear;
+                $Tmon += 1;
+            } elsif ($Tmday < 1) {
+                $Tmday += 31;
+                $Tmon -= 1;
+            }
+        }
+
+        if (!$QQ) {
+            print "$Thour\n";
+            print "$Tmday\n\n";
+        }
+        
+	$AC_localtime = timelocal($Ssec,$Smin,$Thour,$Tmday,$Tmon,$Tyear);
         $Xhour = strftime "%H", localtime($AC_localtime);
         $Xmin = strftime "%M", localtime($AC_localtime);
         $Xsec = strftime "%S", localtime($AC_localtime);
@@ -963,6 +1014,14 @@ if ($sthGrows > 0) {
 		}
 		
 		return sprintf("%.2f", $gmt_offset);
+	}
+
+	sub IsLeapYear {
+	    my $year = shift;
+	    return 0 if $year % 4;
+	    return 1 if $year % 100;
+	    return 0 if $year % 400;
+	    return 1;
 	}
 }
 $sthG->finish();
