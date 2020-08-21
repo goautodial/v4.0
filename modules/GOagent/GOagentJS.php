@@ -1684,12 +1684,18 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                             $.globalEval("disable_dispo_screen = '1';");
                             $.globalEval("disable_dispo_status = '"+disable_dispo_status+"';");
                         }
-                        
+		
                         if (alt_phone_dialing == 1) {
                             $("#DialALTPhoneMenu").show();
                         } else {
                             $("#DialALTPhoneMenu").hide();
                         }
+			
+			if (typeof default_country_code !== 'undefined') {
+				var thisObj = country_codes[default_country_code];
+				$("#code_flag").attr('class', 'flag flag-'+thisObj['tld']);
+				$("#MDDiaLCodE").val(thisObj['code']);
+			}
                         
                         var vro_patt = /DISABLED/;
                         var camp_rec = campaign_recording;

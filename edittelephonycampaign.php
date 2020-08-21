@@ -104,6 +104,7 @@
   		<link rel="stylesheet" href="css/iCheck/all.css">
 		<!-- Bootstrap Color Picker -->
   		<link rel="stylesheet" href="adminlte/colorpicker/bootstrap-colorpicker.min.css">
+		<link rel="stylesheet" href="css/flags/flags.min.css">
 		<!-- bootstrap color picker -->
 		<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>   		
 		<style type="text/css">
@@ -580,6 +581,17 @@
 							
 												<div class="tab-pane fade in" id="tab_2">
 													<fieldset>
+														<div class="form-group">
+															<label class="col-sm-3 control-label"><?php $lh->translateText("default_country_code"); ?>:</label>
+															<div class="col-sm-9 mb">
+																<div id="flag" class="flag flag-<?php if(!empty($campaign->country_codes->{$campaign->default_country_code}->tld)) { echo $campaign->country_codes->{$campaign->default_country_code}->tld; } else { echo "us"; } ?>" style="position: absolute; top: 11px; left: 30px;"></div>
+																<select class="form-control" id="default_country_code" name="default_country_code" style="padding-left: 35px;">
+																	<?php foreach ($campaign->country_codes as $cKey => $cCode) { ?>
+																		<option data-tld="<?php echo $cCode->tld; ?>" value="<?php echo $cKey; ?>" <?php if((empty($campaign->default_country_code) && $cKey === 'USA_1') || (!empty($campaign->default_country_code) && $campaign->default_country_code == $cKey)) echo "selected";?>><?php echo $cCode->name . " (+" . $cCode->code . ")"; ?></option>
+																	<?php } ?>
+																</select>
+															</div>
+														</div>
 														<?php if($campaign->campaign_type != "SURVEY") { ?>
 														<div class="form-group">
 															<label class="col-sm-3 control-label"><?php $lh->translateText("allowed_inbound_and_blended"); ?>:</label>
@@ -2297,6 +2309,7 @@
 															<?php //} ?>
 														<?php } else { ?>
 															<!--Default-->
+
 														<?php }
 														
 														if ($campaign->campaign_type != "SURVEY") {
@@ -2943,6 +2956,10 @@
             }
 			
 			$(document).ready(function() {
+				$("#default_country_code").on('change', function(e) {
+					var thisOption = e.target.options[e.target.selectedIndex];
+					$("#flag").attr('class', 'flag flag-'+$(thisOption).data('tld'));
+				});
 			
 			$('.select').select2({ theme: 'bootstrap' });
 			$.fn.select2.defaults.set( "theme", "bootstrap" );

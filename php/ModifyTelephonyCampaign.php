@@ -586,6 +586,12 @@
 			$xfergroups 							= $xfer_groups; 
 		}
 		
+		$default_country_code 						= NULL; 
+		if (isset($_POST["default_country_code"])) { 
+			$default_country_code 					= $_POST["default_country_code"]; 
+			$default_country_code 					= stripslashes($default_country_code);
+		}
+		
 		$postfields 								= array(
 			"goAction" 									=> "goEditCampaign", #action performed by the [[API:Functions]]
 			"campaign_id" 								=> $campaign_id,
@@ -675,7 +681,8 @@
 			"xfer_groups" 								=> $xfergroups,
 			"use_custom_cid"							=> $use_custom_cid,
 			"survey_wait_sec"							=> $survey_wait_sec,
-			"survey_no_response_action"					=> $survey_no_response_action
+			"survey_no_response_action"					=> $survey_no_response_action,
+			"default_country_code"						=> $default_country_code
 		);
 		
 		$output 									= $api->API_Request("goCampaigns", $postfields);

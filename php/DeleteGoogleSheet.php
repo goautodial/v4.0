@@ -52,10 +52,11 @@ $api = \creamy\APIHandler::getInstance();
 	
 	//$postfields['google_sheet_ids'] = $new_sheet_ids;
 
-	$postfields = array(
-        'goAction' => 'goUpdateCampaignGoogleSheet',
-        'google_sheet_ids' => $new_sheet_ids
-    );
+ 	$postfields = array(
+         	'goAction' => 'goUpdateCampaignGoogleSheet',
+		'campaign_id' => $_POST['campaign_id'],
+         	'google_sheet_ids' => trim($new_sheet_ids)
+     	);
 
     $output = $api->API_updateCampaignGoogleSheet($postfields);
 

@@ -219,6 +219,24 @@
 			$no_agents_callmenu 				= stripslashes($no_agents_callmenu);
 		}
 		
+		$no_agents_did	 					= NULL; 
+		if (isset($_POST["no_agents_did"])) { 
+			$no_agents_did 					= $_POST["no_agents_did"]; 
+			$no_agents_did 					= stripslashes($no_agents_did);
+		}
+		
+		$no_agents_extension 					= NULL; 
+		if (isset($_POST["no_agents_extension"])) { 
+			$no_agents_extension				= $_POST["no_agents_extension"]; 
+			$no_agents_extension				= stripslashes($no_agents_extension);
+		}
+		
+		$no_agents_extension_context 				= NULL; 
+		if (isset($_POST["no_agents_extension_context"])) { 
+			$no_agents_extension_context			= $_POST["no_agents_extension_context"]; 
+			$no_agents_extension_context			= stripslashes($no_agents_extension_context);
+		}
+		
 		$welcome_message_filename 				= NULL; 
 		if (isset($_POST["welcome_message_filename"])) { 
 			$welcome_message_filename 			= $_POST["welcome_message_filename"]; 
@@ -286,8 +304,9 @@
 			'no_agents_voicemail' 					=> $no_agents_voicemail, 
 			'no_agents_ingroup' 					=> $no_agents_ingroup, 
 			'no_agents_callmenu' 					=> $no_agents_callmenu, 
-			'no_agents_extension_context' 				=> $no_agents_extension_context,
-			'no_agents_extension' 					=> $no_agents_extension,
+			'no_agents_did'						=> $no_agents_did, 
+			'no_agents_extension'					=> $no_agents_extension, 
+			'no_agents_extension_context'				=> $no_agents_extension_context, 
 			'welcome_message_filename' 				=> $welcome_message_filename, 
 			'play_welcome_message' 					=> $play_welcome_message, 
 			'moh_context' 							=> $moh_context, 
