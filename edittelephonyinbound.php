@@ -1073,14 +1073,14 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 														    <div class="col-sm-6">
 				                                                                                        <label for="no_agents_extension" class="col-sm-4 control-label"><?php $lh->translateText("extension"); ?></label>
                                 				                                                        <div class="col-sm-8 mb">
-                                                                				                                <input type="number" class="form-control" name="no_agents_extension" id="no_agents_extension" maxlength="255" min="0" value="<?php if ($output->data->no_agents_extension != NULL)echo $output->data->no_agents_extension; else echo "8304";?>" />
+                                                                				                                <input type="number" class="form-control" name="no_agents_extension" id="no_agents_extension" maxlength="255" min="0" value="<?php if ($output->data->no_agent_action_value  != NULL && strpos($output->data->no_agent_action_value, ',')!==false)echo explode(',',$output->data->no_agent_action_value,2)[0]; else echo "8304";?>" />
                                                                                         					<br/>
                                                                               					        </div>
 														    </div>
 														    <div class="col-sm-6">
 															<label for="no_agents_extension_context" class="col-sm-4 control-label"><?php $lh->translateText("context"); ?></label>
                                                                                                                         <div class="col-sm-8 mb">
-                                                                                                                                <input type="text" class="form-control" name="no_agents_extension_context" id="no_agents_extension_context" maxlength="255" value="<?php if ($output->data->no_agents_extension_context != NULL)echo $output->data->no_agents_extension_context; else echo "default";?>" />
+                                                                                                                                <input type="text" class="form-control" name="no_agents_extension_context" id="no_agents_extension_context" maxlength="255" value="<?php if ($output->data->no_agent_action_value != NULL && strpos($output->data->no_agent_action_value, ',')!==false)echo explode(',',$output->data->no_agent_action_value,2)[1]; else echo "default";?>" />
                                                                                                                                 <br/>
                                                                                                                           </div>
 														    </div>
