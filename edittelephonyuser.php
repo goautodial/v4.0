@@ -247,9 +247,9 @@
 													</div>
 												</div>
 												<?php
-												if($use_webrtc == "1" && $user->getUserRole() == CRM_DEFAULTS_USER_ROLE_ADMIN && !is_null($output->data->enable_webrtc)) {
+												if($use_webrtc == "1" && !is_null($output->data->enable_webrtc)) {
 												?>
-												<div class="form-group">
+												<div class="form-group" <?=($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN) ? 'style="display: none;"' : ""; ?>>
 													<label for="userlevel" class="col-sm-2 control-label"><?php if($use_webrtc == "1"){ echo "<i class='fa fa-info-circle' title='You can see this field because WebRTC is enabled in the system.'></i> ";} ?><?php $lh->translateText("enable_webrtc"); ?></label>
 													<div class="col-sm-10 mb">
 														<select class="form-control" name="enable_webrtc" id="enable_webrtc">
