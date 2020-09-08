@@ -122,7 +122,7 @@ var reschedule_cb_id = 0;
 var just_logged_in = false;
 var editProfileEnabled = false;
 var ECCS_BLIND_MODE = '<?=ECCS_BLIND_MODE?>';
-var ECCS_DIAL_TIMEOUT = 2;
+var ECCS_DIAL_TIMEOUT = 3;
 var ECCS_NO_LIVE = false;
 var has_inbound_call = 0;
 var check_inbound_call = true;
@@ -2633,9 +2633,9 @@ function hotKeysAvailable(e) {
                     DialedCallHangup('NO', 'YES', HKdispo);
                     
                     if (ECCS_BLIND_MODE == 'y' && ECCS_DIAL_TIMEOUT > 0) {
-                        //setTimeout(function() {
-                        //    btnDialHangup();
-                        //}, 1000);
+                        setTimeout(function() {
+                            btnDialHangup();
+                        }, (ECCS_DIAL_TIMEOUT * 1000));
                     }
                 
                     if (custom_fields_enabled > 0) {
