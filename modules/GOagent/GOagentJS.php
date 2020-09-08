@@ -123,6 +123,7 @@ var just_logged_in = false;
 var editProfileEnabled = false;
 var ECCS_BLIND_MODE = '<?=ECCS_BLIND_MODE?>';
 var ECCS_DIAL_TIMEOUT = 2;
+var ECCS_NO_LIVE = false;
 var has_inbound_call = 0;
 var check_inbound_call = true;
 var dialInterval;
@@ -1314,7 +1315,7 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
         });
    
      <?php
-	}	
+	}
     // /. ECCS Customization
     ?>
 
@@ -1730,7 +1731,7 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                             hotkeyId['key'] = a;				
                             } 
                         }
-                        console.log("Hotkey ID: " + hotkeyId);
+                        console.log("Hotkey ID:", hotkeyId);
                         //triggerHotkey();
                         hotKeysAvailable(hotkeyId);
                     }
@@ -2605,7 +2606,7 @@ function hotKeysAvailable(e) {
     }
     
     //console.log('keydown: '+ hotkeys[e.key], event);
-    if (live_customer_call || MD_ring_seconds > 4) {
+    if (live_customer_call || MD_ring_seconds > 2) {
         var HKdispo = hotkeys[e.key];
         var HKstatus = hotkeys_content[HKdispo];
         if (HKdispo) {
@@ -2632,9 +2633,9 @@ function hotKeysAvailable(e) {
                     DialedCallHangup('NO', 'YES', HKdispo);
                     
                     if (ECCS_BLIND_MODE == 'y' && ECCS_DIAL_TIMEOUT > 0) {
-                        setTimeout(function() {
-                            btnDialHangup();
-                        }, 1000);
+                        //setTimeout(function() {
+                        //    btnDialHangup();
+                        //}, 1000);
                     }
                 
                     if (custom_fields_enabled > 0) {
@@ -5268,9 +5269,15 @@ function ManualDialCheckChannel(taskCheckOR) {
                 if ( (MDchannel.match(regMDL)) && (asterisk_version != '1.0.8') && (asterisk_version != '1.0.9') ) {
                     // bad grab of Local channel, try again
                     MD_ring_seconds++;
+                    if (ECCS_BLIND_MODE === 'y') {
+                        ECCS_NO_LIVE = true;
+                    }
                 } else {
                     dialingINprogress = 0;
                     custchannellive = 1;
+                    if (ECCS_BLIND_MODE === 'y') {
+                        ECCS_NO_LIVE = false;
+                    }
                     
                     $(".formMain input[name='uniqueid']").val(this_MD_data.uniqueid);
                     $("#callchannel").html(this_MD_data.channel);
@@ -5415,7 +5422,7 @@ function ManualDialCheckChannel(taskCheckOR) {
         }
     });
     
-    if ( (MD_ring_seconds > 49) && (MD_ring_seconds > dial_timeout) ) {
+    if ( (MD_ring_seconds > 49) || (MD_ring_seconds > dial_timeout) ) {
         MD_channel_look = 0;
         MD_ring_seconds = 0;
         
@@ -9905,28 +9912,28 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 						var CFN_value = '';
 						var field_parsed=0;
 						if ( (CFT_array[CFN_tick]=='TIME') && (field_parsed < 1) ) {
-							var CFN_field_hour = 'HOUR_' + CFN_field;
-							var cIndex_hour = vcFormIFrame.document.form_custom_fields[CFN_field_hour].selectedIndex;
-							var CFN_value_hour =  vcFormIFrame.document.form_custom_fields[CFN_field_hour].options[cIndex_hour].value;
-							var CFN_field_minute = 'MINUTE_' + CFN_field;
-							var cIndex_minute = vcFormIFrame.document.form_custom_fields[CFN_field_minute].selectedIndex;
-							var CFN_value_minute =  vcFormIFrame.document.form_custom_fields[CFN_field_minute].options[cIndex_minute].value;
-							var CFN_value = CFN_value_hour + ':' + CFN_value_minute + ':00'
+							//var CFN_field_hour = 'HOUR_' + CFN_field;
+							//var cIndex_hour = vcFormIFrame.document.form_custom_fields[CFN_field_hour].selectedIndex;
+							//var CFN_value_hour =  vcFormIFrame.document.form_custom_fields[CFN_field_hour].options[cIndex_hour].value;
+							//var CFN_field_minute = 'MINUTE_' + CFN_field;
+							//var cIndex_minute = vcFormIFrame.document.form_custom_fields[CFN_field_minute].selectedIndex;
+							//var CFN_value_minute =  vcFormIFrame.document.form_custom_fields[CFN_field_minute].options[cIndex_minute].value;
+							//var CFN_value = CFN_value_hour + ':' + CFN_value_minute + ':00'
 							field_parsed=1;
 						}
 						if ( (CFT_array[CFN_tick]=='SELECT') && (field_parsed < 1) ) {
-							var cIndex = vcFormIFrame.document.form_custom_fields[CFN_field].selectedIndex;
-							var CFN_value =  vcFormIFrame.document.form_custom_fields[CFN_field].options[cIndex].value;
+							//var cIndex = vcFormIFrame.document.form_custom_fields[CFN_field].selectedIndex;
+							//var CFN_value =  vcFormIFrame.document.form_custom_fields[CFN_field].options[cIndex].value;
 							field_parsed=1;
 						}
 						if ( (CFT_array[CFN_tick]=='MULTI') && (field_parsed < 1) ) {
 							var chosen = '';
 							var CFN_field = CFN_field + '[]';
-							for (i=0; i < vcFormIFrame.document.form_custom_fields[CFN_field].options.length; i++) {
-								if (vcFormIFrame.document.form_custom_fields[CFN_field].options[i].selected) {
-									chosen = chosen + '' + vcFormIFrame.document.form_custom_fields[CFN_field].options[i].value + ',';
-                                }
-                            }
+							//for (i=0; i < vcFormIFrame.document.form_custom_fields[CFN_field].options.length; i++) {
+							//	if (vcFormIFrame.document.form_custom_fields[CFN_field].options[i].selected) {
+							//		chosen = chosen + '' + vcFormIFrame.document.form_custom_fields[CFN_field].options[i].value + ',';
+                            //    }
+                            //}
 							var CFN_value = chosen;
 							if (CFN_value.length > 0) {CFN_value = CFN_value.slice(0,-1);}
 							field_parsed=1;
@@ -9935,18 +9942,18 @@ function URLDecode(encodedvar, scriptformat, urlschema, webformnumber) {
 							{
 							var chosen = '';
 							var CFN_field = CFN_field + '[]';
-							var len = vcFormIFrame.document.form_custom_fields[CFN_field].length;
-							for (i = 0; i < len; i++) {
-								if (vcFormIFrame.document.form_custom_fields[CFN_field][i].checked) {
-									chosen = chosen + '' + vcFormIFrame.document.form_custom_fields[CFN_field][i].value + ',';
-                                }
-                            }
+							//var len = vcFormIFrame.document.form_custom_fields[CFN_field].length;
+							//for (i = 0; i < len; i++) {
+							//	if (vcFormIFrame.document.form_custom_fields[CFN_field][i].checked) {
+							//		chosen = chosen + '' + vcFormIFrame.document.form_custom_fields[CFN_field][i].value + ',';
+                            //    }
+                            //}
 							var CFN_value = chosen;
 							if (CFN_value.length > 0) {CFN_value = CFN_value.slice(0,-1);}
 							field_parsed = 1;
 						}
 						if (field_parsed < 1) {
-							var CFN_value = vcFormIFrame.document.form_custom_fields[CFN_field].value;
+							//var CFN_value = vcFormIFrame.document.form_custom_fields[CFN_field].value;
 							field_parsed=1;
                         }
                     } else {
