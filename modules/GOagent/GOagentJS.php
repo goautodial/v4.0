@@ -1731,7 +1731,7 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                             hotkeyId['key'] = a;				
                             } 
                         }
-                        console.log("Hotkey ID: " + hotkeyId);
+                        console.log("Hotkey ID:", hotkeyId);
                         //triggerHotkey();
                         hotKeysAvailable(hotkeyId);
                     }
