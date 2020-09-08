@@ -2427,9 +2427,12 @@ function sendLogout (logMeOut) {
     }
 }
 
-function btnDialHangup () {
+function btnDialHangup (is_true) {
+    if (typeof is_true === 'undefined') {
+        is_true = false;
+    }
     //console.log(live_customer_call + ' ' + toggleButton('DialHangup'));
-    if (live_customer_call == 1 || dialingINprogress == 1) {
+    if (!is_true && (live_customer_call == 1 || dialingINprogress == 1)) {
         if (toggleButton('DialHangup')) {
             dialingINprogress = 0;
             has_inbound_call = 0;
@@ -2634,7 +2637,7 @@ function hotKeysAvailable(e) {
                     
                     if (ECCS_BLIND_MODE == 'y' && ECCS_DIAL_TIMEOUT > 0) {
                         setTimeout(function() {
-                            btnDialHangup();
+                            btnDialHangup(true);
                         }, (ECCS_DIAL_TIMEOUT * 1000));
                     }
                 
