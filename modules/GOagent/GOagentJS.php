@@ -129,6 +129,7 @@ var check_inbound_call = true;
 var dialInterval;
 var STATEWIDE_SALES_REPORT = '<?=STATEWIDE_SALES_REPORT?>';
 var is_call_cb = false;
+var hotkeysReady = true;
 
 <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
 var enable_eccs_shortcuts = 1;
@@ -2625,7 +2626,7 @@ function hotKeysAvailable(e) {
     }
     
     //console.log('keydown: '+ hotkeys[e.key], event);
-    if (live_customer_call || MD_ring_seconds > 2) {
+    if (hotkeysReady && (live_customer_call || MD_ring_seconds > 2)) {
         var HKdispo = hotkeys[e.key];
         var HKstatus = hotkeys_content[HKdispo];
         if (HKdispo) {
@@ -2669,8 +2670,15 @@ function hotKeysAvailable(e) {
         //AutoDialWaiting = 1;
         //AutoDial_ReSume_PauSe("VDADready");
         //alert(HKdispo + " - " + HKdispo_ary[0] + " - " + HKdispo_ary[1]);
+            hotkeysReady = false;
         }
     }
+    
+    setTimeout(function() {
+        if (!hotkeysReady) {
+            hotkeysReady = true;
+        }
+    }, 2000);
 }
 
 function toggleButton (taskname, taskaction, taskenable, taskhide, toupperfirst, tolowerelse) {
