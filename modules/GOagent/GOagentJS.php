@@ -9292,6 +9292,7 @@ function CallBackDateSubmit() {
     $("#DispoSelection").val('CBHOLD');
     $("#callback-datepicker").modal('hide');
     DispoSelectSubmit();
+    CallBacksCountCheck();
     <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
 	enable_eccs_shortcuts = 1;
     is_call_cb = false;
