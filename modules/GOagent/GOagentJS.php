@@ -3536,7 +3536,7 @@ function CheckForIncoming () {
 
         var this_VDIC_data = result.data;
         has_inbound_call = this_VDIC_data.has_call;
-        if (this_VDIC_data.has_call == '1') {
+        if (this_VDIC_data.has_call == '1' && has_outbound_call < 1) {
             AutoDialWaiting = 0;
             QUEUEpadding = 0;
             
