@@ -1259,12 +1259,14 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
     ?>
 	    // Keyboard Shortcuts
 	    $(document).keydown(function(e){
-		if( enable_eccs_shortcuts == 0 ){
-			return;
-		}
+            if( enable_eccs_shortcuts == 0 ){
+                return;
+            }
+            
             if (AgentDispoing < 1) {
                 // User Exit
                 if(e.shiftKey && e.key == "End"){
+                    hotkeysReady = false;
                       if (is_logged_in && (live_customer_call > 0 || XD_live_customer_call > 0)) {
                           swal({
                               title: '<?=$lh->translationFor('error')?>',
@@ -1277,6 +1279,7 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
       
                 // Phone Log In
                 } else if(e.shiftKey && e.key == "Home") {
+                    hotkeysReady = false;
                       if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
                           swal({
                               title: '<?=$lh->translationFor('error')?>',
@@ -1289,6 +1292,7 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
       
                     // Dial or Hangup
                     } else if(e.shiftKey && e.key == "!") {
+                      hotkeysReady = false;
                       console.log('Shift: ' + e.shiftKey, 'Key: ' + e.key);
                       btnDialHangup();
                         
@@ -1314,6 +1318,12 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                           $("a[href='#callbackslist']").click();
                       }
                     }
+                
+                if (!hotkeysReady) {
+                    setTimeout(function() {
+                        hotkeysReady = true;
+                    }, 2000);
+                }
             }
         });
    
@@ -2635,7 +2645,7 @@ function hotKeysAvailable(e) {
     }
     
     //console.log('keydown: '+ hotkeys[e.key], event);
-    if (hotkeysReady && (live_customer_call || MD_ring_seconds > 4)) {
+    if (hotkeysReady && (live_customer_call || MD_ring_seconds > 4 || has_outbound_call > 0)) {
         var HKdispo = hotkeys[e.key];
         var HKstatus = hotkeys_content[HKdispo];
         if (HKdispo) {
