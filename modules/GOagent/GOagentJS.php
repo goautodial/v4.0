@@ -2637,7 +2637,7 @@ function hotKeysAvailable(e) {
                     
                     if (ECCS_BLIND_MODE == 'y' && ECCS_DIAL_TIMEOUT > 0) {
                         setTimeout(function() {
-                            btnDialHangup(true);
+                            //btnDialHangup(true);
                         }, (ECCS_DIAL_TIMEOUT * 1000));
                     }
                 
