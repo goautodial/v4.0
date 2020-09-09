@@ -2485,7 +2485,9 @@ function btnDialHangup (is_true) {
                 dialInterval = setInterval(function() {
                     if (!check_inbound_call && !is_call_cb) {
                         toggleButton('ResumePause', 'off');
-                        ManualDialNext('','','','','','0');
+                        if (has_inbound_call < 1 && live_customer_call < 1) {
+                            ManualDialNext('','','','','','0');
+                        }
                             
                         clearInterval(dialInterval);
                         dialInterval = undefined;
