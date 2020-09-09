@@ -2444,10 +2444,10 @@ function btnDialHangup (is_true) {
     } else {
         toggleButton('DialHangup', 'hangup', false);
         if (ECCS_BLIND_MODE == 'y') {
-            console.log('is_call_cb', is_call_cb);
-            console.log('AutoDialReady', AutoDialReady);
+            //console.log('is_call_cb', is_call_cb);
+            //console.log('AutoDialReady', AutoDialReady);
+            var dialCount = 0;
             if (AutoDialReady > 0) {
-                var dialCount = 0;
                 dialInterval = setInterval(function() {
                     if (!check_inbound_call && !is_call_cb) {
                         console.log('Has Inbound Call', has_inbound_call);
@@ -2479,13 +2479,19 @@ function btnDialHangup (is_true) {
                 }, 1000);
             } else {
                 dialInterval = setInterval(function() {
-                    if (!is_call_cb) {
+                    if (!check_inbound_call && !is_call_cb) {
                         toggleButton('ResumePause', 'off');
                         ManualDialNext('','','','','','0');
                             
                         clearInterval(dialInterval);
                         dialInterval = undefined;
                     }
+                    
+                    if (dialCount >= ECCS_DIAL_TIMEOUT) {
+                        check_inbound_call = false;
+                    }
+                    
+                    dialCount++;
                 }, 1000);
             }
         } else {
