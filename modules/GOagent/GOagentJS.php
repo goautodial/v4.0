@@ -125,6 +125,7 @@ var ECCS_BLIND_MODE = '<?=ECCS_BLIND_MODE?>';
 var ECCS_DIAL_TIMEOUT = 2;
 var ECCS_NO_LIVE = false;
 var has_inbound_call = 0;
+var has_outbound_call = 0;
 var check_inbound_call = true;
 var dialInterval;
 var STATEWIDE_SALES_REPORT = '<?=STATEWIDE_SALES_REPORT?>';
@@ -606,12 +607,12 @@ var refreshId = setInterval(function() {
             if (agentonly_callbacks == '1')
             {CB_count_check++;}
     
-            if (AutoDialWaiting == 1) {
-            CheckForIncoming();
+            if (AutoDialWaiting == 1 && (has_outbound_call < 1 && has_inbound_call < 1)) {
+                CheckForIncoming();
             }
     
-            if (MD_channel_look == 1) {
-            ManualDialCheckChannel(XDcheck);
+            if (MD_channel_look == 1 && (has_outbound_call < 1 && has_inbound_call < 1)) {
+                ManualDialCheckChannel(XDcheck);
             }
             
             if ( (CB_count_check > 19) && (agentonly_callbacks == '1') ) {
@@ -2438,6 +2439,7 @@ function btnDialHangup (is_true) {
         if (toggleButton('DialHangup')) {
             dialingINprogress = 0;
             has_inbound_call = 0;
+            has_outbound_call = 0;
             check_inbound_call = true;
             toggleButton('DialHangup', 'hangup', false);
             DialedCallHangup();
@@ -5223,6 +5225,7 @@ function ManualDialCheckChannel(taskCheckOR) {
         if (MDlookCID == "NO") {
             MD_ring_seconds++;
             dispnum = lead_dial_number;
+            has_outbound_call = 1;
             var status_display_number = phone_number_format(dispnum);
             
             var status_display_content = '';
@@ -5261,6 +5264,7 @@ function ManualDialCheckChannel(taskCheckOR) {
                     XD_live_customer_call = 1;
                     XD_live_call_seconds = 0;
                     MD_channel_look = 0;
+                    has_outbound_call = 1;
 
                     var called3rdparty = $(".formXFER input[name='xfernumber']").val();
                     if (hide_xfer_number_to_dial == 'ENABLED')
@@ -5329,6 +5333,8 @@ function ManualDialCheckChannel(taskCheckOR) {
                     live_customer_call = 1;
                     live_call_seconds = 0;
                     MD_channel_look = 0;
+                    has_outbound_call = 1;
+                    
                     var status_display_content = '';
                     if (status_display_CALLID > 0) {status_display_content += "<br><b><?=$lh->translationFor('uid')?>:</b> " + CIDcheck;}
                     if (status_display_LEADID > 0) {status_display_content += "<br><b><?=$lh->translationFor('lead_id')?>:</b> " + $(".formMain input[name='lead_id']").val();}
