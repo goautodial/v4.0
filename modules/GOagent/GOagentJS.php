@@ -5907,7 +5907,15 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
                         ManualDialOnly('Address3');
                     } else {
                         if (hotkeysused == 'YES') {
+                            <?php if( ECCS_BLIND_MODE === 'y'){ ?>
+                            if(altdispo == 'CALLBK'){
+                                manual_auto_hotkey = 0;
+                            } else {
+                                manual_auto_hotkey = 2;
+                            }
+                           <?php } else { ?>
                             manual_auto_hotkey = 2;
+                           <?php } ?>
                             alt_dial_active = 0;
                             alt_dial_status_display = 0;
 
