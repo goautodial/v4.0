@@ -2444,6 +2444,7 @@ function btnDialHangup (is_true) {
     } else {
         toggleButton('DialHangup', 'hangup', false);
         if (ECCS_BLIND_MODE == 'y') {
+            console.log('is_call_cb', is_call_cb);
             if (AutoDialReady > 0) {
                 var dialCount = 0;
                 dialInterval = setInterval(function() {
