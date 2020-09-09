@@ -2443,7 +2443,10 @@ function btnDialHangup (is_true) {
             DialedCallHangup();
         }
     } else {
-        //toggleButton('DialHangup', 'hangup', false);
+        if (!is_call_cb) {
+            toggleButton('DialHangup', 'hangup', false);
+        }
+        
         if (ECCS_BLIND_MODE == 'y') {
             //console.log('is_call_cb', is_call_cb);
             //console.log('AutoDialReady', AutoDialReady);
