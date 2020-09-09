@@ -2478,8 +2478,15 @@ function btnDialHangup (is_true) {
                     dialCount++;
                 }, 1000);
             } else {
-                toggleButton('ResumePause', 'off');
-                ManualDialNext('','','','','','0');
+                dialInterval = setInterval(function() {
+                    if (!is_call_cb) {
+                        toggleButton('ResumePause', 'off');
+                        ManualDialNext('','','','','','0');
+                            
+                        clearInterval(dialInterval);
+                        dialInterval = undefined;
+                    }
+                }, 1000);
             }
         } else {
             toggleButton('ResumePause', 'off');
