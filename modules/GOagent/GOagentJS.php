@@ -2633,7 +2633,7 @@ function hotKeysAvailable(e) {
     }
     
     //console.log('keydown: '+ hotkeys[e.key], event);
-    if (hotkeysReady && (live_customer_call || MD_ring_seconds > 2)) {
+    if (hotkeysReady && (live_customer_call || MD_ring_seconds > 4)) {
         var HKdispo = hotkeys[e.key];
         var HKstatus = hotkeys_content[HKdispo];
         if (HKdispo) {
