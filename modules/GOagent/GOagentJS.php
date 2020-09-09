@@ -2478,7 +2478,7 @@ function btnDialHangup (is_true) {
                             AutoDial_Resume_Pause("VDADpause");
                             
                             console.log('Live Customer Call', live_customer_call);
-                            if (has_inbound_call < 1 && live_customer_call < 1) {
+                            if (has_inbound_call < 1 && live_customer_call < 1 && waiting_on_dispo < 1) {
                                 has_outbound_call = 1;
                                 ManualDialNext('','','','','','0');
                             }
@@ -2498,7 +2498,7 @@ function btnDialHangup (is_true) {
                 dialInterval = setInterval(function() {
                     if (!check_inbound_call && !is_call_cb) {
                         toggleButton('ResumePause', 'off');
-                        if (has_inbound_call < 1 && live_customer_call < 1) {
+                        if (has_inbound_call < 1 && live_customer_call < 1 && waiting_on_dispo < 1) {
                             has_outbound_call = 1;
                             ManualDialNext('','','','','','0');
                         }
