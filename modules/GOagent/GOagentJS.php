@@ -128,6 +128,7 @@ var has_inbound_call = 0;
 var check_inbound_call = true;
 var dialInterval;
 var STATEWIDE_SALES_REPORT = '<?=STATEWIDE_SALES_REPORT?>';
+var is_call_cb = false;
 
 <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
 var enable_eccs_shortcuts = 1;
@@ -2446,7 +2447,7 @@ function btnDialHangup (is_true) {
             if (AutoDialReady > 0) {
                 var dialCount = 0;
                 dialInterval = setInterval(function() {
-                    if (!check_inbound_call) {
+                    if (!check_inbound_call && !is_call_cb) {
                         console.log('Has Inbound Call', has_inbound_call);
                         if (has_inbound_call > 0) {
                             console.log('Already had a call...');
@@ -2636,8 +2637,11 @@ function hotKeysAvailable(e) {
                     DialedCallHangup('NO', 'YES', HKdispo);
                     
                     if (ECCS_BLIND_MODE == 'y' && ECCS_DIAL_TIMEOUT > 0) {
+                        if (HKdispo === 'CALLBK') {
+                            is_call_cb = true;
+                        }
                         setTimeout(function() {
-                            //btnDialHangup(true);
+                            btnDialHangup(true);
                         }, (ECCS_DIAL_TIMEOUT * 1000));
                     }
                 
@@ -9252,6 +9256,7 @@ function CallBackDateSubmit() {
     DispoSelectSubmit();
     <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
 	enable_eccs_shortcuts = 1;
+    is_call_cb = false;
     <?php } ?>
 }
 
@@ -9603,6 +9608,8 @@ function ReschedCallback(cbId, cbDate, cbComment, cbOnly) {
         $("#callback-date").val('');
         $("#callback-comments").val('');
         $("#callback-datepicker").modal('hide');
+        
+        is_call_cb = false;
     });
 }
 
