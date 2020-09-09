@@ -3504,6 +3504,10 @@ function CheckForConfCalls (confnum, force) {
 }
 
 function CheckForIncoming () {
+    if (has_outbound_call > 0) {
+        return false;
+    }
+    
     all_record = 'NO';
     all_record_count = 0;
 
@@ -3536,7 +3540,7 @@ function CheckForIncoming () {
 
         var this_VDIC_data = result.data;
         has_inbound_call = this_VDIC_data.has_call;
-        if (this_VDIC_data.has_call == '1' && has_outbound_call < 1) {
+        if (this_VDIC_data.has_call == '1') {
             AutoDialWaiting = 0;
             QUEUEpadding = 0;
             
