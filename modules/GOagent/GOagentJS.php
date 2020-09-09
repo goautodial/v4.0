@@ -2469,6 +2469,7 @@ function btnDialHangup (is_true) {
                             
                             console.log('Live Customer Call', live_customer_call);
                             if (has_inbound_call < 1 && live_customer_call < 1) {
+                                has_outbound_call = 1;
                                 ManualDialNext('','','','','','0');
                             }
                         }
@@ -2488,6 +2489,7 @@ function btnDialHangup (is_true) {
                     if (!check_inbound_call && !is_call_cb) {
                         toggleButton('ResumePause', 'off');
                         if (has_inbound_call < 1 && live_customer_call < 1) {
+                            has_outbound_call = 1;
                             ManualDialNext('','','','','','0');
                         }
                             
@@ -5226,7 +5228,6 @@ function ManualDialCheckChannel(taskCheckOR) {
         if (MDlookCID == "NO") {
             MD_ring_seconds++;
             dispnum = lead_dial_number;
-            has_outbound_call = 1;
             var status_display_number = phone_number_format(dispnum);
             
             var status_display_content = '';
@@ -5798,6 +5799,8 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
     if (process_post_hangup == 1) {
         live_customer_call = 0;
         live_call_seconds = 0;
+        has_inbound_call = 0;
+        has_outbound_call = 0;
         MD_ring_seconds = 0;
         CallCID = '';
         MDnextCID = '';
