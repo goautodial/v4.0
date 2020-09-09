@@ -7060,6 +7060,8 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
         inOUT = 'OUT';
         all_record = 'NO';
         all_record_count = 0;
+        has_outbound_call = 1;
+        
         if (dial_method == "INBOUND_MAN") {
             auto_dial_level = 0;
 
