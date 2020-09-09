@@ -607,11 +607,11 @@ var refreshId = setInterval(function() {
             if (agentonly_callbacks == '1')
             {CB_count_check++;}
     
-            if (AutoDialWaiting == 1 && (has_outbound_call < 1 && has_inbound_call < 1)) {
+            if (AutoDialWaiting == 1 && has_outbound_call < 1) {
                 CheckForIncoming();
             }
     
-            if (MD_channel_look == 1 && (has_outbound_call < 1 && has_inbound_call < 1)) {
+            if (MD_channel_look == 1 && has_inbound_call < 1) {
                 ManualDialCheckChannel(XDcheck);
             }
             
