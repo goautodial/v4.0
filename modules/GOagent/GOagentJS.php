@@ -4889,6 +4889,7 @@ function NewCallbackCall(taskCBid, taskLEADid, taskCBalt) {
     }
     if (move_on == 1) {
         if (waiting_on_dispo > 0) {
+            console.log('system_delay_try_again', 'NewCallbackCall');
             swal({
                 title: "<?=$lh->translationFor('system_delay_try_again')?>",
                 text: "<?=$lh->translationFor('code')?>: " + agent_log_id + " - " + waiting_on_dispo,
@@ -5448,6 +5449,7 @@ function ManualDialCheckChannel(taskCheckOR) {
 // Insert the new manual dial as a lead and go to manual dial screen
 function NewManualDialCall(tempDiaLnow) {
     if (waiting_on_dispo > 0) {
+        console.log('system_delay_try_again', 'NewManualDialCall');
         swal({
             title: '<?=$lh->translationFor('error')?>',
             text: "<?=$lh->translationFor('system_delay_try_again')?><br><?=$lh->translationFor('code')?>:" + agent_log_id + " - " + waiting_on_dispo,
@@ -5527,6 +5529,7 @@ function NewManualDialCallFast() {
         swal("<?=$lh->translationFor('must_enter_number_to_fdial')?>");
     } else {
         if (waiting_on_dispo > 0) {
+            console.log('system_delay_try_again', 'NewManualDialCallFast');
             swal({
                 title: '<?=$lh->translationFor('error')?>',
                 text: "<?=$lh->translationFor('system_delay_try_again')?><br><?=$lh->translationFor('code')?>:" + agent_log_id + " - " + waiting_on_dispo,
@@ -7001,6 +7004,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
         dialingINprogress = 0;
         alt_phone_dialing = starting_alt_phone_dialing;
         auto_dial_level = starting_dial_level;
+        console.log('system_delay_try_again', 'ManualDialNext');
         swal({
             title: '<?=$lh->translationFor('error')?>',
             text: "<?=$lh->translationFor('system_delay_try_again')?><br><?=$lh->translationFor('code')?>: " + agent_log_id + " - " + waiting_on_dispo,
