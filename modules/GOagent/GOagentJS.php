@@ -2650,6 +2650,7 @@ function hotKeysAvailable(e) {
         var HKstatus = hotkeys_content[HKdispo];
         if (HKdispo) {
             CustomerData_update();
+            dialingINprogress = 0;
 	
             if ( (HKdispo == 'ALTPH2') || (HKdispo == 'ADDR3') ) {
                 if ($("#DiaLALTPhone").prop('checked')) {
