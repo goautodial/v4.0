@@ -2650,7 +2650,6 @@ function hotKeysAvailable(e) {
         var HKstatus = hotkeys_content[HKdispo];
         if (HKdispo) {
             CustomerData_update();
-            dialingINprogress = 0;
 	
             if ( (HKdispo == 'ALTPH2') || (HKdispo == 'ADDR3') ) {
                 if ($("#DiaLALTPhone").prop('checked')) {
@@ -2690,6 +2689,8 @@ function hotKeysAvailable(e) {
         //AutoDialWaiting = 1;
         //AutoDial_ReSume_PauSe("VDADready");
         //alert(HKdispo + " - " + HKdispo_ary[0] + " - " + HKdispo_ary[1]);
+        
+            dialingINprogress = 0;
         }
         
         hotkeysReady = false;
