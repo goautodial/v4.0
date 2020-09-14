@@ -2689,8 +2689,9 @@ function hotKeysAvailable(e) {
         //AutoDialWaiting = 1;
         //AutoDial_ReSume_PauSe("VDADready");
         //alert(HKdispo + " - " + HKdispo_ary[0] + " - " + HKdispo_ary[1]);
-        
-            dialingINprogress = 0;
+            
+            if (ECCS_BLIND_MODE == 'n')
+                dialingINprogress = 0;
         }
         
         hotkeysReady = false;
