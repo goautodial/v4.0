@@ -571,7 +571,7 @@ var refreshId = setInterval(function() {
             if (deBug) console.log("ManualDialNext", "Line #: <?=__LINE__?>");
             ManualDialNext('','','','','','0');
         }
-        if (manual_auto_hotkey > 1) {manual_auto_hotkey = (manual_auto_hotkey - 1);}
+        if (manual_auto_hotkey > 1 && !is_call_cb) {manual_auto_hotkey = (manual_auto_hotkey - 1);}
         
         if (agent_lead_search_override == 'NOT_ACTIVE') {
             if (agent_lead_search == 'ENABLED') {
@@ -5933,13 +5933,13 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
                             alt_dial_status_display = 0;
                             reselect_alt_dial = 0;
 	           <?php if( ECCS_BLIND_MODE === 'y'){ ?>
-        	            if(altdispo == 'CALLBK'){
-				manual_auto_hotkey = 0;
-			    } else {
-				manual_auto_hotkey = 2;
-			    }
+                            if(altdispo == 'CALLBK'){
+                                manual_auto_hotkey = 0;
+                            } else {
+                                manual_auto_hotkey = 2;
+                            }
 	           <?php } else { ?>
-        	            manual_auto_hotkey = 2;
+                            manual_auto_hotkey = 2;
 	           <?php } ?>
                         }
                     }
@@ -5949,10 +5949,10 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
                     alt_dial_active = 0;
                     alt_dial_status_display = 0;
 	        <?php if( ECCS_BLIND_MODE === 'y'){ ?>
- 		    if(altdispo == 'CALLBK'){
-                	 manual_auto_hotkey = 0;
+                    if(altdispo == 'CALLBK'){
+                        manual_auto_hotkey = 0;
                     } else {
-                         manual_auto_hotkey = 2;
+                        manual_auto_hotkey = 2;
                     }
            <?php } else { ?>
                     manual_auto_hotkey = 2;
