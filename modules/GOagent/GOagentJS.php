@@ -2675,11 +2675,10 @@ function hotKeysAvailable(e) {
                     
                     console.log("dial_method", dial_method);
                     console.log("HKdispo", HKdispo);
+                    if (HKdispo === 'CALLBK') {
+                        is_call_cb = true;
+                    }
                     if (ECCS_BLIND_MODE == 'y' && ECCS_DIAL_TIMEOUT > 0 && (dial_method !== "MANUAL" || (dial_method === "MANUAL" && HKdispo === 'CALLBK'))) {
-                        if (HKdispo === 'CALLBK') {
-                            is_call_cb = true;
-                        }
-                        
                         setTimeout(function() {
                             btnDialHangup(true);
                         }, (ECCS_DIAL_TIMEOUT * 1000));
