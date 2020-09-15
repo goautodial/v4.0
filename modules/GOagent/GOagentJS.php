@@ -2676,7 +2676,7 @@ function hotKeysAvailable(e) {
                             is_call_cb = true;
                         }
                         setTimeout(function() {
-                            btnDialHangup(true);
+                            //btnDialHangup(true);
                         }, (ECCS_DIAL_TIMEOUT * 1000));
                     }
                 
