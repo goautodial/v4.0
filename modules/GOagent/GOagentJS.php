@@ -2496,6 +2496,8 @@ function btnDialHangup (is_true) {
                 }, 1000);
             } else {
                 dialInterval = setInterval(function() {
+                    console.log("check_inbound_call", check_inbound_call);
+                    console.log("is_call_cb", is_call_cb);
                     if (!check_inbound_call && !is_call_cb) {
                         toggleButton('ResumePause', 'off');
                         if (has_inbound_call < 1 && live_customer_call < 1 && waiting_on_dispo < 1) {
