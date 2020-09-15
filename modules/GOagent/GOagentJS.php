@@ -2671,12 +2671,12 @@ function hotKeysAvailable(e) {
                     alt_dial_status_display = 0;
                     DialedCallHangup('NO', 'YES', HKdispo);
                     
-                    if (ECCS_BLIND_MODE == 'y' && ECCS_DIAL_TIMEOUT > 0) {
+                    if (ECCS_BLIND_MODE == 'y' && ECCS_DIAL_TIMEOUT > 0 && dial_method !== "MANUAL") {
                         if (HKdispo === 'CALLBK') {
                             is_call_cb = true;
                         }
                         setTimeout(function() {
-                            //btnDialHangup(true);
+                            btnDialHangup(true);
                         }, (ECCS_DIAL_TIMEOUT * 1000));
                     }
                 
