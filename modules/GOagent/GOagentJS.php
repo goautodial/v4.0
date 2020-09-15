@@ -2671,15 +2671,16 @@ function hotKeysAvailable(e) {
                     alt_dial_status_display = 0;
                     DialedCallHangup('NO', 'YES', HKdispo);
                     
+                    console.log("dial_method", dial_method);
+                    console.log("HKdispo", HKdispo);
                     if (ECCS_BLIND_MODE == 'y' && ECCS_DIAL_TIMEOUT > 0 && (dial_method !== "MANUAL" || (dial_method === "MANUAL" && HKdispo === 'CALLBK'))) {
                         if (HKdispo === 'CALLBK') {
                             is_call_cb = true;
                         }
                         
-                        btnDialHangup(true);
-                        //setTimeout(function() {
-                        //    btnDialHangup(true);
-                        //}, (ECCS_DIAL_TIMEOUT * 1000));
+                        setTimeout(function() {
+                            btnDialHangup(true);
+                        }, (ECCS_DIAL_TIMEOUT * 1000));
                     }
                 
                     if (custom_fields_enabled > 0) {
