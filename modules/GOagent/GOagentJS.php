@@ -6419,7 +6419,12 @@ function DispoSelectSubmit() {
                             if (manual_auto_hotkey > 0) {
                                 manual_auto_hotkey = 0;
                                 if (deBug) console.log("ManualDialNext", "Line #: <?=__LINE__?>");
-                                ManualDialNext('','','','','','0');
+                                var mdTimer = setInterval(function() {
+                                    if (waiting_on_dispo < 1) {
+                                        ManualDialNext('','','','','','0');
+                                        clearInterval(mdTimer);
+                                    }
+                                }, 1000);
                             }
                         }
                     }
@@ -9340,8 +9345,8 @@ function CallBackDateSubmit() {
     CallBacksCountCheck();
     <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
 	enable_eccs_shortcuts = 1;
-    is_call_cb = false;
     <?php } ?>
+    is_call_cb = false;
 }
 
 
