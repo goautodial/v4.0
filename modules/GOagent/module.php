@@ -866,7 +866,7 @@ EOF;
 					</div>
 				</div>
 				<div class="row">
-					$eccsTabStopDatePicker;
+					$eccsTabStopDatePicker
 					<div class="col-md-12">
 						<div class="mda-form-group label-floating">
 							<textarea id="callback-comments" name="callback-comments" rows="5" data-tooltip="tooltip" title="Callback Comment" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea" style="resize:none; width: 100%;"></textarea>
