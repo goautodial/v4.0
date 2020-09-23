@@ -1300,7 +1300,7 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                         
                     // Resume or Pause
                     } else if(e.shiftKey && e.key == "@") {
-                      if (live_customer_call < 1) {
+                      if (live_customer_call < 1 && dialingINprogress < 1 && !ECCS_NO_LIVE) {
                           btnResumePause();
                     }
       
