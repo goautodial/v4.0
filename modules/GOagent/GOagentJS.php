@@ -131,7 +131,7 @@ var dialInterval;
 var STATEWIDE_SALES_REPORT = '<?=STATEWIDE_SALES_REPORT?>';
 var is_call_cb = false;
 var hotkeysReady = true;
-var deBug = true; //set to false to disable debugging mode
+var deBug = false; //set to false to disable debugging mode
 
 <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
 var enable_eccs_shortcuts = 1;
