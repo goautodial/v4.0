@@ -2147,7 +2147,7 @@
 			});
 
 			$(document).on('click', '.btn-new-pause-code', function(){
-				var campaign_id = $(this).data('campaign');
+				var campaign_id = $(this).attr('data-campaign');
 				$('.campaign-id').val(campaign_id);
 
 				$('.pause-code').val('');
