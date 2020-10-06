@@ -2066,12 +2066,13 @@
 							destroy: true,
 							responsive: true,
 							stateSave: true,
+							processing: true,
 							drawCallback: function(settings) {
 								var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 								pagination.toggle(this.api().page.info().pages > 1);
 							},
 							language: {
-								loadingRecords: "Loading data... Please wait..."
+								processing: "Loading data... Please wait..."
 							},
 							columnDefs: [{ 
 								width: "25%", 
