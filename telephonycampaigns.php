@@ -2044,7 +2044,8 @@
 				}
 			});
 
-			$(document).on('click', '.view-pause-codes', function(){				
+			$(document).on('click', '.view-pause-codes', function(){
+				$('#pause_codes_list').DataTable().clear().draw();
 				$('#modal_view_pause_codes').modal("toggle");				
 				var campaign_id = $(this).data('id');
 				$('.btn-new-pause-code').attr('data-campaign', campaign_id);
