@@ -1410,7 +1410,7 @@ error_reporting(E_ERROR | E_PARSE);
 		}
 		$moduleName = $this->lh->translationFor("whatsapp_settings");
 		$moduleDescription = $this->lh->translationFor("whatsapp_desc");
-		$action = $this->getActionButtonForWhatsappChat($whatsapp_status);
+		$action = $this->getActionButtonForWhatsapp($whatsapp_status);
 		$table .= "<tr><td><b>$moduleName</b><br/><div class='small hide-on-low'>$moduleDescription</div></td><td class='small hide-on-low'>$moduleVersion</td><td class='small hide-on-low'>$status</td><td>$action</td></tr>";
 
 		// close table
