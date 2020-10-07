@@ -56,8 +56,9 @@
 
 	if ($uri != 'index') {
 		if ($uri != 'login') {
-			if (!isset($_SESSION['user']) || $_SESSION["userrole"] == CRM_DEFAULTS_USER_ROLE_AGENT) { 
-				if ($uri == 'php') die("This file cannot be accessed directly"); 
+			if (!isset($_SESSION['user'])){
+// || $_SESSION["userrole"] == CRM_DEFAULTS_USER_ROLE_AGENT) { 
+				//if ($uri == 'php') die("This file cannot be accessed directly"); 
 			}
 		}
 	}
@@ -1206,6 +1207,101 @@
 			);
 		$result = $this->API_Request("goSettings", $postfields);
 				return $result->result;
+		}
+
+		public function CheckChat($user_id = null){
+                        $postfields = array(
+                                "goAction" => "goCheckChat",
+                                "user_id" => $user_id
+                        );
+                $result = $this->API_Request("goSettings", $postfields);
+                                return $result->result;
+                }
+
+		//Agent Chat
+		public function API_AgentChatActivation($postfields){
+                        return $this->API_Request("goAgentChat", $postfields);
+                }
+
+		public function API_getUserDetails($userid){
+                        $postfields = array(
+                                'goAction' => 'goGetUserInfo',
+                                'userid' => $userid
+                        );
+                        return $this->API_Request("goAgentChat", $postfields);
+                }
+		
+		public function API_chatUsers($userid){
+			$postfields = array(
+				'goAction' => 'goGetChatUsers',
+				'userid' => $userid
+			);	
+			return $this->API_Request("goAgentChat", $postfields);
+		}
+
+		public function API_insertChat($to_user_id, $userid, $chat_message){
+			$postfields = array(
+				'goAction' => 'goInsertChat',
+				'to_user_id' => $to_user_id,
+				'userid' => $userid,
+				'chat_message' => $chat_message
+			);	
+			return $this->API_Request("goAgentChat", $postfields);
+		}
+
+		public function API_showUserChat($userid, $to_user_id){
+			$postfields = array(
+				'goAction' => 'goEditUserStatus',
+				'userid' => $userid,
+				'to_user_id' => $to_user_id
+			);	
+			return $this->API_Request("goAgentChat", $postfields);
+		}
+
+		public function API_getUserChat($userid, $to_user_id, $action){
+			$postfields = array(
+				'goAction' => 'goGetUserChat',
+				'userid' => $userid,
+				'to_user_id' => $to_user_id,
+				'action' => $action
+			);
+			return $this->API_Request("goAgentChat", $postfields);
+		}
+
+		public function API_editUserStatus($userid, $to_user_id, $chat_action){
+                        $postfields = array(
+                                'goAction' => 'goEditUserStatus',
+                                'userid' => $userid,
+                                'to_user_id' => $to_user_id,
+				'chat_action' => $chat_action
+                        );
+                        return $this->API_Request("goAgentChat", $postfields);
+                }
+
+		public function API_getUnreadMessageCount($to_user_id, $userid){
+			$postfields = array(
+				'goAction' => 'goGetUnreadMessages',
+				'to_user_id' => $userid,
+				'userid' => $to_user_id
+			);
+			return $this->API_Request("goAgentChat", $postfields);
+		}
+
+		public function API_updateTypingStatus($is_type, $login_details_id){
+			$postfields = array(
+				'goAction' => 'goUpdateTypingStatus',
+				'is_type' => $is_type,
+				'login_details_id' => $login_details_id
+			);
+			return $this->API_Request("goAgentChat", $postfields);
+		}
+
+		public function API_fetchIsTypeStatus($userid){
+			$postfields = array(
+				'goAction' => 'goFetchIsTypeStatus',
+				'userid' => $userid,
+			);
+			return $this->API_Request("goAgentChat", $postfields);
 		}
 
 

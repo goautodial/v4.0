@@ -139,7 +139,7 @@ function response($order_id,$amount,$response_code,$response_desc){
 	echo "</table>";
 */
 
-
+$agent_chat_status = $ui->API_getAgentChatActivation();
 
 
 ?>
@@ -202,6 +202,9 @@ function response($order_id,$amount,$response_code,$response_desc){
 		
 		<!-- flag sprites -->
 		<link rel="stylesheet" href="css/flags/flags.min.css">
+
+		<!-- CHAT -->	
+	        <!-- <script src="modules/GoChat/js/chat.js"></script> -->
 
         <script type="text/javascript">
 			history.pushState('', document.title, window.location.pathname);
@@ -564,7 +567,7 @@ input:checked + .slider:before {
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyAgentHeader($user); ?>
             <!-- Left side column. contains the logo and sidebar -->
-			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar()); ?>
+		<?php print $ui->getAgentSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar()); ?>
 
             <!-- Right side column. Contains the navbar and content of the page -->
             <aside class="content-wrapper">
@@ -1641,6 +1644,9 @@ input:checked + .slider:before {
 							</div>
 						</div>
 					</div-->
+			
+			<!-- AGENT CHAT -->
+			<?php if($agent_chat_status) include("includes/chatapp.php");?>
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
 
@@ -1651,6 +1657,7 @@ input:checked + .slider:before {
     <!-- Create the tabs -->
     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
       <li id="dialer-tab" class="active"><a href="#control-sidebar-dialer-tab" data-toggle="tab"><i class="fa fa-phone"></i></a></li>
+      <?php if($agent_chat_status) echo '<li id="chat-tab"><a href="#control-sidebar-chat-tab" data-toggle="tab"><i class="fa fa-comments-o"></i></a></li>'; ?> 
       <li id="agents-tab" class="hidden"><a href="#control-sidebar-users-tab" data-toggle="tab"><i class="fa fa-users"></i></a></li>
       <li id="settings-tab"><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-user"></i></a></li>
     </ul>
@@ -1801,6 +1808,33 @@ input:checked + .slider:before {
         </ul>
       </div>
       <!-- /.tab-pane -->
+	<?php if($agent_chat_status){ ?>
+      <!-- tab-pane -->
+      <!-- chat tab -->
+      <div class="tab-pane" id="control-sidebar-chat-tab">
+	<ul class="contacts-list">
+	<li>
+           <div class="center-block" style="text-align: center; /*background: #181f23 none repeat scroll 0 0;*/ margin: 0 10px; padding-bottom: 1px; pa
+dding-top: 10px;">
+               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+               <p><?=$ui->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 96, false, true, false)?></p>
+               <p style="color:white;"><?=$user->getUserName()?><br><small><?=$lh->translationFor("nice_to_see_you_again")?></small></p>
+               </a>
+           </div>
+       </li>
+       <li>
+	Contact List
+           <!--<div>&nbsp;</div>-->
+       </li>
+	
+	
+	<?php
+	   include('includes/chat-tab.php');
+	?>
+	</ul>	
+      </div>
+      <!-- /. tab-pane -->
+	<?php } ?>
     </div>
   </aside>
   <!-- /.control-sidebar -->
@@ -2519,10 +2553,10 @@ input:checked + .slider:before {
 		<!-- SnackbarJS -->
         <script src="js/snackbar.js" type="text/javascript"></script>
 		<!-- Vue Avatar -->
-        <!-- <script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>
+        <!--<script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>
         <script src="js/vue-avatar/vue-avatar.min.js" type="text/javascript"></script> -->
 		<script type='text/javascript'>
-			var goOptions = {
+			/*var goOptions = {
 				el: 'body',
 				components: {
 					'avatar': Avatar.Avatar,
@@ -2547,7 +2581,7 @@ input:checked + .slider:before {
 			};
 			var goAvatar = new Vue(goOptions);
 			
-			goAvatar._init();
+			goAvatar._init();*/
 		</script>
 		<!-- ECCS Customization -->
 		<?php
