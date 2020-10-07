@@ -1220,8 +1220,8 @@
 
 		//Agent Chat
 		public function API_AgentChatActivation($postfields){
-                        return $this->API_Request("goAgentChat", $postfields);
-                }
+			return $this->API_Request("goAgentChat", $postfields);
+		}
 
 		public function API_getUserDetails($userid){
                         $postfields = array(
@@ -1302,6 +1302,11 @@
 				'userid' => $userid,
 			);
 			return $this->API_Request("goAgentChat", $postfields);
+		}
+
+		//Whatsapp
+		public function API_WhatsappActivation($postfields){
+			return $this->API_Request("goWhatsApp", $postfields);
 		}
 
 

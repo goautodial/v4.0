@@ -1401,6 +1401,18 @@ error_reporting(E_ERROR | E_PARSE);
 		$action = $this->getActionButtonForAgentChat($agent_chat_status);
 		$table .= "<tr><td><b>$moduleName</b><br/><div class='small hide-on-low'>$moduleDescription</div></td><td class='small hide-on-low'>$moduleVersion</td><td class='small hide-on-low'>$status</td><td>$action</td></tr>";
 
+		//insert whatsapp_custom
+		$whatsapp_status = $this->API_getWhatsappActivation();
+		if ($whatsapp_status == 1) { // module is enabled.
+			$status = "<i class='fa fa-check-square-o'></i>";
+		} else { // module is disabled.
+			$status = "<i class='fa fa-times-circle-o'></i>";
+		}
+		$moduleName = $this->lh->translationFor("whatsapp_settings");
+		$moduleDescription = $this->lh->translationFor("whatsapp_desc");
+		$action = $this->getActionButtonForWhatsappChat($whatsapp_status);
+		$table .= "<tr><td><b>$moduleName</b><br/><div class='small hide-on-low'>$moduleDescription</div></td><td class='small hide-on-low'>$moduleVersion</td><td class='small hide-on-low'>$status</td><td>$action</td></tr>";
+
 		// close table
 		$table .= $this->generateTableFooterWithItems($items, true, false, array(), array("version", "action"));
 
@@ -1988,6 +2000,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$smtp_status = $this->API_getSMTPActivation(); // smtp_status
 		$gopackage = $this->api->API_getGOPackage(); // smtp_status
 		$agent_chat_status = $this->API_getAgentChatActivation(); //agent_chat_status
+		$whatsapp_status = $this->API_getWhatsappActivation(); //whatsapp_status
 		$usergroup = (!isset($usergroup) ? $_SESSION['usergroup'] : $usergroup);
 		$perms = $this->api->goGetPermissions('sidebar', $usergroup);
 		$perms = json_decode(stripslashes($perms->data->permissions));
@@ -2015,8 +2028,8 @@ error_reporting(E_ERROR | E_PARSE);
 			if ($smtp_status == 1) {  // module is enabled.
 				$adminArea .= $this->getSidebarItem("./settingssmtp.php", "envelope-square", $this->lh->translationFor("smtp_settings")); // smtp settings 
 			}
-			if ($agent_chat_status == 1) { // module is enabled.
-				//$adminArea .= $this->getSidebarItem("./settingsagentchat.php", "envelope-square", $this->lh->translationFor("agent_chat_settings")); // agent chat settings
+			if ($whatsapp_status == 1) { // module is enabled.
+				$adminArea .= $this->getSidebarItem("./settingswhatsapp.php", "envelope-square", $this->lh->translationFor("whatsapp_settings")); // whatsapp settings
 			}
 
 			$adminArea .= '</ul></li>';
@@ -2233,40 +2246,36 @@ error_reporting(E_ERROR | E_PARSE);
 		}
 		
 		if ($tab == 'settings') {
-                        $tabpanes .= '<ul class="control-sidebar-menu" id="go_tab_profile">
-                                <li>
-                                        <div class="center-block" style="text-align: center; background: #181f23 none repeat scroll 0 0; margin: 0 10px; padding-bottom:
- 1px; padding-top: 10px;">
-                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                        <p>'.$avatarElement.'</p>
-                                                        <p style="color:white;">'.$user->getUserName().'<br><small>'.$this->lh->translationFor("nice_to_see_you_again").
-'</small></p>
-                                                </a>
-                                        </div>
-                                </li>';
-			
-                        if ($user->userHasBasicPermission()) {
-                                $tabpanes .= '<li>
-                                        <div class="text-center"><a href="" data-toggle="modal" id="change-password-toggle" data-target="#change-password-dialog-modal">
-'.$this->lh->translationFor("change_password").'</a></div>
-                                        <div class="text-center"><a href="./messages.php">'.$this->lh->translationFor("messages").'</a></div>
-                                        <div class="text-center"><a href="./notifications.php">'.$this->lh->translationFor("notifications").'</a></div>
-                                        <div class="text-center"><a href="./tasks.php">'.$this->lh->translationFor("tasks").'</a></div>
-                                </li>';
-                        }
-			
-                        $tabpanes .= '</ul>
-                          <ul class="control-sidebar-menu" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">
-                                <li>
-                                        <div class="center-block" style="text-align: center">
-                                                <a href="./profile.php" class="btn btn-warning"><i class="fa fa-user"></i> '.$this->lh->translationFor("my_profile").'</
-a>
-                                                 &nbsp;
-                                     <a href="./logout.php" id="cream-agent-logout" class="btn btn-warning"><i class="fa fa-sign-out"></i> '.$this->lh->translationFor("exit").'</a>
-                                        </div>
-                                </li>
-                          </ul>'."\n";
-                }
+			$tabpanes .= '<ul class="control-sidebar-menu" id="go_tab_profile">
+				<li>
+					<div class="center-block" style="text-align: center; background: #181f23 none repeat scroll 0 0; margin: 0 10px; padding-bottom: 1px; padding-top: 10px;">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<p>'.$avatarElement.'</p>
+							<p style="color:white;">'.$user->getUserName().'<br><small>'.$this->lh->translationFor("nice_to_see_you_again").'</small></p>
+						</a>
+					</div>
+				</li>';
+
+			if ($user->userHasBasicPermission()) {
+				$tabpanes .= '<li>
+					<div class="text-center"><a href="" data-toggle="modal" id="change-password-toggle" data-target="#change-password-dialog-modal">'.$this->lh->translationFor("change_password").'</a></div>
+					<div class="text-center"><a href="./messages.php">'.$this->lh->translationFor("messages").'</a></div>
+					<div class="text-center"><a href="./notifications.php">'.$this->lh->translationFor("notifications").'</a></div>
+					<div class="text-center"><a href="./tasks.php">'.$this->lh->translationFor("tasks").'</a></div>
+				</li>';
+			}
+
+			$tabpanes .= '</ul>
+				<ul class="control-sidebar-menu" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">
+					<li>
+						<div class="center-block" style="text-align: center">
+							<a href="./profile.php" class="btn btn-warning"><i class="fa fa-user"></i> '.$this->lh->translationFor("my_profile").'</a>
+							&nbsp;
+							<a href="./logout.php" id="cream-agent-logout" class="btn btn-warning"><i class="fa fa-sign-out"></i> '.$this->lh->translationFor("exit").'</a>
+						</div>
+					</li>
+				</ul>'."\n";
+		}
 
 		$tabpanes .= "</div>\n";
 
@@ -6343,6 +6352,46 @@ a>
 				$return .= '<li><a class="activate-agent-chat" href="#" data-id="0" >'.$this->lh->translationFor("disable").'</a></li>';
 			}else{
 				$return .= '<li><a class="activate-agent-chat" href="#" data-id="1" >'.$this->lh->translationFor("enable").'</a></li>';
+			}
+		$return .= '</ul>
+		</div>';
+		return $return;
+	}
+
+	public function API_getWhatsappActivation() {
+		$url = gourl."/goWhatsApp/goAPI.php"; #URL to GoAutoDial API. (required)
+		$postfields["goUser"] = goUser; #Username goes here. (required)
+		$postfields["goPass"] = goPass; #Password goes here. (required)
+		$postfields["goAction"] = "goGetWhatsappActivation"; #action performed by the [[API:Functions]]. (required)
+		$postfields["responsetype"] = responsetype; #json. (required)
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$output = json_decode($data);
+		if ($output->result == "success")
+			return $output->data->value;
+		else
+			return '0';
+	}
+	
+	private function getActionButtonForWhatsapp($status) {
+	   $return = '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
+		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
+					    <span class="caret"></span>
+					    <span class="sr-only">Toggle Dropdown</span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">';
+			if ($status == 1) {
+				$return .= '<li><a class="activate-whatsapp" href="#" data-id="0" >'.$this->lh->translationFor("disable").'</a></li>';
+			}else{
+				$return .= '<li><a class="activate-whatsapp" href="#" data-id="1" >'.$this->lh->translationFor("enable").'</a></li>';
 			}
 		$return .= '</ul>
 		</div>';
