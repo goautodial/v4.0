@@ -3805,7 +3805,9 @@ function CheckForIncoming () {
                                 case "HIDDEN":
                                 case "DATE":
                                 case "TIME":
-                                    $(field_name + " [id='custom_" + field + "']").val(custom_values_array[idx]);
+                                    if (typeof custom_values_array[idx] !== 'undefined' && custom_values_array[idx] !== '') {
+                                        $(field_name + " [id='custom_" + field + "']").val(custom_values_array[idx]);
+                                    }
                                     break;
                                 case "CHECKBOX":
                                 case "RADIO":
@@ -3830,7 +3832,9 @@ function CheckForIncoming () {
                                     });
                                     break;
                                 default:
-                                    $(field_name + " [id='custom_" + field + "']").html(custom_values_array[idx]);
+                                    if (typeof custom_values_array[idx] !== 'undefined' && custom_values_array[idx] !== '') {
+                                        $(field_name + " [id='custom_" + field + "']").html(custom_values_array[idx]);
+                                    }
                             }
                         });
                         
@@ -7415,7 +7419,9 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                                         case "HIDDEN":
                                         case "DATE":
                                         case "TIME":
-                                            $(field_name + " [id='custom_" + field + "']").val(custom_values_array[idx]);
+                                            if (typeof custom_values_array[idx] !== 'undefined' && custom_values_array[idx] !== '') {
+                                                $(field_name + " [id='custom_" + field + "']").val(custom_values_array[idx]);
+                                            }
                                             break;
                                         case "CHECKBOX":
                                         case "RADIO":
@@ -7440,7 +7446,9 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                                             });
                                             break;
                                         default:
-                                            $(field_name + " [id='custom_" + field + "']").html(custom_values_array[idx]);
+                                            if (typeof custom_values_array[idx] !== 'undefined' && custom_values_array[idx] !== '') {
+                                                $(field_name + " [id='custom_" + field + "']").html(custom_values_array[idx]);
+                                            }
                                     }
                                 });
                             
