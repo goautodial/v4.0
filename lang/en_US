@@ -1527,3 +1527,11 @@ areacode_deleted = "Areacode Successfully Deleted"
 modify_areacode	= "Modify Areacode"
 modifying_an_areacode = "Modifying an Areacode"
 success_modified_areacode = "Sucessfully Modified the Areacode"
+
+//Agent Chat
+agent_chat_settings = "Agent Chat Settings"
+agent_chat_desc = "A module for Agent to Agent Chat"
+
+//Whatsapp
+whatsapp_settings = "Whatsapp Settings"
+whatsapp_desc = "A module for Whatsapp"

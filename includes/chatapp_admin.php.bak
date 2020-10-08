@@ -1,0 +1,96 @@
+<style>
+    #chatbox{
+        position: fixed;
+        bottom: -5px;
+        z-index: 1000;
+        cursor: pointer;
+        line-height: 30px;
+        width: 338px;
+	/*height: 445px;*/
+        right: 240;
+    } 
+
+    #chatbox .direct-chat-messages ul{
+	padding-left: 5px;
+    }
+
+    .direct-chat-text.direct-chat-text{
+	word-break: break-word;
+	line-height: 18px;
+    }
+
+    .direct-chat-messages{
+	height: 360px;
+    }
+
+</style>
+<div class="box box-info box-solid direct-chat direct-chat-info collapsed-box" id="chatbox">
+  <div class="box-header with-border">
+    <div id="chatCollapse" data-widget="collapse">
+    <h3 class="box-title fa fa-minus"> &nbsp;<span class="chat-title">Agent Chat</span></h3>
+    </div>
+    <div class="box-tools pull-right">
+      <!--<span id="new-messages" data-toggle="tooltip" title="New Messages" class="badge bg-red">New</span>-->
+      <!--<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>-->
+      <!-- In box-tools add this button if you intend to use the contacts pane -->
+      <!--<button class="btn btn-box-tool" data-toggle="tooltip" title="Contacts" data-widget="chat-pane-toggle"><i class="fa fa-comments"></i></button>-->
+      <!--<button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>-->
+    </div>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body">
+    <!-- Conversations are loaded here -->
+    <div class="direct-chat-messages">
+    </div>
+    <!--/.direct-chat-messages-->
+
+    <!-- Contacts are loaded here -->
+    <div class="direct-chat-contacts">
+      <ul class="contacts-list">
+        <?php
+	    /*$chatUsers = $api->API_chatUsers($_SESSION['userid']);
+            $i = 0;
+            foreach ($chatUsers->userid as $userid) {
+                $avatar = NULL;
+                if ($chatUsers->avatar) {
+                    $avatar = "./php/ViewImage.php?user_id=" . $userid;
+                }
+                $sessionAvatar = $ui->getVueAvatar($chatUsers->username, $avatar, 36, false);
+        ?>
+        <li>
+          <a href="#" class="contact" data-touserid="<?=$userid?>">
+            <!--<img class="contacts-list-img" src="../dist/img/user1-128x128.jpg" alt="Contact Avatar">-->
+	    <span class="contacts-list-img" alt="Contact Avatar"><?php echo $sessionAvatar;?></span>
+            <div class="contacts-list-info">
+              <span class="contacts-list-name">
+                <?=$chatUsers->username[$i]?>
+                <small id="unread_<?=$userid?>" class="contacts-list-date pull-right"></small>
+                </span>
+              <!--<span class="contacts-list-msg">How have you been? I was...</span>-->
+            </div>
+            <!-- /.contacts-list-info -->
+          </a>
+        </li>
+        <?php
+                $i++;
+            }*/
+        ?>
+        <!-- End Contact Item -->
+      </ul>
+      <!-- /.contatcts-list -->
+    </div>
+    <!-- /.direct-chat-pane -->
+  </div>
+  <!-- /.box-body -->
+  <div class="box-footer">
+    <div class="input-group">
+      <input type="text" id="chatMessage" data-touserid="" name="message" placeholder="Type Message ..." class="form-control" autocomplete="off">
+        <input type="hidden" value="<?=$_SESSION['userid']?>">
+      <span class="input-group-btn">
+      <button type="button" id="chatButton" data-touserid="" class="submit btn btn-info btn-flat">Send</button>
+      </span>
+    </div>
+  </div>
+  <!-- /.box-footer-->
+</div>
+<!--/.direct-chat -->
