@@ -3812,24 +3812,28 @@ function CheckForIncoming () {
                                 case "CHECKBOX":
                                 case "RADIO":
                                     var checkThis = custom_values_array[idx].split(',');
-                                    $.each($(field_name + " [id^='custom_" + field + "']"), function() {
-                                        if (checkThis.indexOf($(this).val()) > -1) {
-                                            $(this).prop('checked', true);
-                                        } else {
-                                            $(this).prop('checked', false);
-                                        }
-                                    });
+                                    if (typeof checkThis[0] !== 'undefined' && checkThis[0] !== '') {
+                                        $.each($(field_name + " [id^='custom_" + field + "']"), function() {
+                                            if (checkThis.indexOf($(this).val()) > -1) {
+                                                $(this).prop('checked', true);
+                                            } else {
+                                                $(this).prop('checked', false);
+                                            }
+                                        });
+                                    }
                                     break;
                                 case "SELECT":
                                 case "MULTI":
                                     var selectThis = custom_values_array[idx].split(',');
-                                    $.each($(field_name  + " [id='custom_" + field + "'] option"), function() {
-                                        if (selectThis.indexOf($(this).val()) > -1) {
-                                            $(this).prop('selected', true);
-                                        } else {
-                                            $(this).prop('selected', false);
-                                        }
-                                    });
+                                    if (typeof selectThis[0] !== 'undefined' && selectThis[0] !== '') {
+                                        $.each($(field_name  + " [id='custom_" + field + "'] option"), function() {
+                                            if (selectThis.indexOf($(this).val()) > -1) {
+                                                $(this).prop('selected', true);
+                                            } else {
+                                                $(this).prop('selected', false);
+                                            }
+                                        });
+                                    }
                                     break;
                                 default:
                                     if (typeof custom_values_array[idx] !== 'undefined' && custom_values_array[idx] !== '') {
@@ -7426,24 +7430,28 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                                         case "CHECKBOX":
                                         case "RADIO":
                                             var checkThis = custom_values_array[idx].split(',');
-                                            $.each($(field_name + " [id^='custom_" + field + "']"), function() {
-                                                if (checkThis.indexOf($(this).val()) > -1) {
-                                                    $(this).prop('checked', true);
-                                                } else {
-                                                    $(this).prop('checked', false);
-                                                }
-                                            });
+                                            if (typeof checkThis[0] !== 'undefined' && checkThis[0] !== '') {
+                                                $.each($(field_name + " [id^='custom_" + field + "']"), function() {
+                                                    if (checkThis.indexOf($(this).val()) > -1) {
+                                                        $(this).prop('checked', true);
+                                                    } else {
+                                                        $(this).prop('checked', false);
+                                                    }
+                                                });
+                                            }
                                             break;
                                         case "SELECT":
                                         case "MULTI":
                                             var selectThis = custom_values_array[idx].split(',');
-                                            $.each($(field_name  + " [id='custom_" + field + "'] option"), function() {
-                                                if (selectThis.indexOf($(this).val()) > -1) {
-                                                    $(this).prop('selected', true);
-                                                } else {
-                                                    $(this).prop('selected', false);
-                                                }
-                                            });
+                                            if (typeof selectThis[0] !== 'undefined' && selectThis[0] !== '') {
+                                                $.each($(field_name  + " [id='custom_" + field + "'] option"), function() {
+                                                    if (selectThis.indexOf($(this).val()) > -1) {
+                                                        $(this).prop('selected', true);
+                                                    } else {
+                                                        $(this).prop('selected', false);
+                                                    }
+                                                });
+                                            }
                                             break;
                                         default:
                                             if (typeof custom_values_array[idx] !== 'undefined' && custom_values_array[idx] !== '') {
