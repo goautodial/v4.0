@@ -6703,6 +6703,8 @@ function CustomerData_update() {
         //$("#cust_full_name").addClass('isDisabled');
         $('.hide_div').hide();
         $("input:required, select:required").removeClass("required_div");
+        
+        GetCustomFields(custom_fields_list_id, false, true);
     });
 }
 
