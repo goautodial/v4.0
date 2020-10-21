@@ -6704,7 +6704,7 @@ function CustomerData_update() {
         $('.hide_div').hide();
         $("input:required, select:required").removeClass("required_div");
         
-        GetCustomFields(custom_fields_list_id, false, true);
+        GetCustomFields(custom_fields_list_id, true, true);
     });
 }
 
