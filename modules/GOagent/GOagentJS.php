@@ -6371,6 +6371,10 @@ function DispoSelectSubmit() {
             active_ingroup_dial = '';
             nocall_dial_flag = 'DISABLED';
             
+            $(".formMain #custom_fields [id^='custom_']").val('');
+            $(".formMain #custom_fields [id^='custom_']").prop('checked', false);
+            GetCustomFields(custom_fields_list_id, true, true);
+            
             $("#SecondsDISP").html('0');
             
             //$("#cust_full_name").html('');
@@ -6695,8 +6699,6 @@ function CustomerData_update() {
     .done(function (result) {
         console.log('Customer data updated...');
         
-        $(".formMain #custom_fields [id^='custom_']").val('');
-        $(".formMain #custom_fields [id^='custom_']").prop('checked', false);
         $('.input-disabled').prop('disabled', true);
         $('.input-phone-disabled').prop('disabled', true);
         //$('#cust_full_name .editable').editable('disable');
@@ -6704,7 +6706,11 @@ function CustomerData_update() {
         $('.hide_div').hide();
         $("input:required, select:required").removeClass("required_div");
         
-        GetCustomFields(custom_fields_list_id, true, true);
+        if (open_dispo_screen < 1) {
+            $(".formMain #custom_fields [id^='custom_']").val('');
+            $(".formMain #custom_fields [id^='custom_']").prop('checked', false);
+            GetCustomFields(custom_fields_list_id, true, true);
+        }
     });
 }
 
