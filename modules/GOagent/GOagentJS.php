@@ -132,6 +132,7 @@ var STATEWIDE_SALES_REPORT = '<?=STATEWIDE_SALES_REPORT?>';
 var is_call_cb = false;
 var hotkeysReady = true;
 var deBug = false; //set to false to disable debugging mode
+var clear_custom_fields = true;
 
 <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
 var enable_eccs_shortcuts = 1;
@@ -502,6 +503,7 @@ var refreshId = setInterval(function() {
         
         if (open_dispo_screen == 1) {
             wrapup_counter = 0;
+            clear_custom_fields = false;
             if (wrapup_seconds > 0) {
             //showDiv('WrapupBox');
             //$("#WrapupTimer").html(wrapup_seconds);
@@ -6370,6 +6372,7 @@ function DispoSelectSubmit() {
             DispoQMcsCODE = '';
             active_ingroup_dial = '';
             nocall_dial_flag = 'DISABLED';
+            clear_custom_fields = true;
             
             $(".formMain #custom_fields [id^='custom_']").val('');
             $(".formMain #custom_fields [id^='custom_']").prop('checked', false);
@@ -6706,7 +6709,7 @@ function CustomerData_update() {
         $('.hide_div').hide();
         $("input:required, select:required").removeClass("required_div");
         
-        if (open_dispo_screen < 1) {
+        if (clear_custom_fields) {
             $(".formMain #custom_fields [id^='custom_']").val('');
             $(".formMain #custom_fields [id^='custom_']").prop('checked', false);
             GetCustomFields(custom_fields_list_id, true, true);
