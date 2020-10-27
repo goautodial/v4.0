@@ -139,9 +139,6 @@ function response($order_id,$amount,$response_code,$response_desc){
 	echo "</table>";
 */
 
-$agent_chat_status = $ui->API_getAgentChatActivation();
-
-
 ?>
 
 <html>
@@ -1645,8 +1642,6 @@ input:checked + .slider:before {
 						</div>
 					</div-->
 			
-			<!-- AGENT CHAT -->
-			<?php if($agent_chat_status) include("includes/chatapp.php");?>
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
 
@@ -1657,7 +1652,6 @@ input:checked + .slider:before {
     <!-- Create the tabs -->
     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
       <li id="dialer-tab" class="active"><a href="#control-sidebar-dialer-tab" data-toggle="tab"><i class="fa fa-phone"></i></a></li>
-      <?php if($agent_chat_status) echo '<li id="chat-tab"><a href="#control-sidebar-chat-tab" data-toggle="tab"><i class="fa fa-comments-o"></i></a></li>'; ?> 
       <li id="agents-tab" class="hidden"><a href="#control-sidebar-users-tab" data-toggle="tab"><i class="fa fa-users"></i></a></li>
       <li id="settings-tab"><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-user"></i></a></li>
     </ul>
@@ -1808,33 +1802,6 @@ input:checked + .slider:before {
         </ul>
       </div>
       <!-- /.tab-pane -->
-	<?php if($agent_chat_status){ ?>
-      <!-- tab-pane -->
-      <!-- chat tab -->
-      <div class="tab-pane" id="control-sidebar-chat-tab">
-	<ul class="contacts-list">
-	<li>
-           <div class="center-block" style="text-align: center; /*background: #181f23 none repeat scroll 0 0;*/ margin: 0 10px; padding-bottom: 1px; pa
-dding-top: 10px;">
-               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-               <p><?=$ui->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 96, false, true, false)?></p>
-               <p style="color:white;"><?=$user->getUserName()?><br><small><?=$lh->translationFor("nice_to_see_you_again")?></small></p>
-               </a>
-           </div>
-       </li>
-       <li>
-	Contact List
-           <!--<div>&nbsp;</div>-->
-       </li>
-	
-	
-	<?php
-	   include('includes/chat-tab.php');
-	?>
-	</ul>	
-      </div>
-      <!-- /. tab-pane -->
-	<?php } ?>
     </div>
   </aside>
   <!-- /.control-sidebar -->

@@ -1389,30 +1389,6 @@ error_reporting(E_ERROR | E_PARSE);
 		$action = $this->getActionButtonForSMTP($smtp_status);
 		$table .= "<tr><td><b>$moduleName</b><br/><div class='small hide-on-low'>$moduleDescription</div></td><td class='small hide-on-low'>$moduleVersion</td><td class='small hide-on-low'>$status</td><td>$action</td></tr>";
 
-		//insert agent_chat_custom
-		$agent_chat_status = $this->API_getAgentChatActivation();
-		if ($agent_chat_status == 1) { // module is enabled.
-			$status = "<i class='fa fa-check-square-o'></i>";
-		} else { // module is disabled.
-			$status = "<i class='fa fa-times-circle-o'></i>";
-		}
-		$moduleName = $this->lh->translationFor("agent_chat_settings");
-		$moduleDescription = $this->lh->translationFor("agent_chat_desc");
-		$action = $this->getActionButtonForAgentChat($agent_chat_status);
-		$table .= "<tr><td><b>$moduleName</b><br/><div class='small hide-on-low'>$moduleDescription</div></td><td class='small hide-on-low'>$moduleVersion</td><td class='small hide-on-low'>$status</td><td>$action</td></tr>";
-
-		//insert whatsapp_custom
-		$whatsapp_status = $this->API_getWhatsappActivation();
-		if ($whatsapp_status == 1) { // module is enabled.
-			$status = "<i class='fa fa-check-square-o'></i>";
-		} else { // module is disabled.
-			$status = "<i class='fa fa-times-circle-o'></i>";
-		}
-		$moduleName = $this->lh->translationFor("whatsapp_settings");
-		$moduleDescription = $this->lh->translationFor("whatsapp_desc");
-		$action = $this->getActionButtonForWhatsapp($whatsapp_status);
-		$table .= "<tr><td><b>$moduleName</b><br/><div class='small hide-on-low'>$moduleDescription</div></td><td class='small hide-on-low'>$moduleVersion</td><td class='small hide-on-low'>$status</td><td>$action</td></tr>";
-
 		// close table
 		$table .= $this->generateTableFooterWithItems($items, true, false, array(), array("version", "action"));
 
@@ -1467,7 +1443,6 @@ error_reporting(E_ERROR | E_PARSE);
 	                    		'.$moduleTopbarElements.'
 	                    		'.$this->getTopbarMessagesMenu($user).'
 		                    	'.$this->getTopbarNotificationsMenu($user).'
-		                    	'.$this->getTopbarTasksMenu($user).'
 		                    	<li>
 			                    	<a href="#" class="visible-xs" data-toggle="control-sidebar" style="padding-top: 17px; padding-bottom: 18px;"><i class="fa fa-cogs"></i></a>
 										<a href="#" class="hidden-xs" data-toggle="control-sidebar" style="padding-top: 14px; padding-bottom: 14px;">
@@ -1999,8 +1974,6 @@ error_reporting(E_ERROR | E_PARSE);
 		$mh = \creamy\ModuleHandler::getInstance();
 		$smtp_status = $this->API_getSMTPActivation(); // smtp_status
 		$gopackage = $this->api->API_getGOPackage(); // smtp_status
-		$agent_chat_status = $this->API_getAgentChatActivation(); //agent_chat_status
-		$whatsapp_status = $this->API_getWhatsappActivation(); //whatsapp_status
 		$usergroup = (!isset($usergroup) ? $_SESSION['usergroup'] : $usergroup);
 		$perms = $this->api->goGetPermissions('sidebar', $usergroup);
 		$perms = json_decode(stripslashes($perms->data->permissions));
@@ -2184,19 +2157,14 @@ error_reporting(E_ERROR | E_PARSE);
 	public function getRightSidebar($userid, $username, $avatar, $tabs = array()) {
 		$mh = \creamy\ModuleHandler::getInstance();
 		$user = \creamy\CreamyUser::currentUser();
-		$agent_chat_status = $this->API_getAgentChatActivation();
 		// prefix: structure and home link
 		// old img element : <img src="'.$avatar.'" class="img-circle" alt="User Image" />
 		$result = '<aside class="control-sidebar control-sidebar-dark">'."\n";
 
 		// Create Tabs
 		if (count($tabs) < 1) {
-			//$tabs = array('commenting-o'=>'messaging', 'phone'=>'dialer', 'user'=>'settings');
-			if($agent_chat_status){
-			    $tabs = array('comments-o' => 'chat', 'user'=>'settings');
-			} else {
-			    $tabs = array('user'=>'settings');
-			}
+		    //$tabs = array('commenting-o'=>'messaging', 'phone'=>'dialer', 'user'=>'settings');
+		    $tabs = array('user'=>'settings');
 		}
 		$tabresult = '<ul class="nav nav-tabs nav-justified control-sidebar-tabs">'."\n";
 		$tabpanes = '<div class="tab-content" style="border-width:0; overflow-y: hidden; padding-bottom: 30px;">'."\n";
@@ -2218,9 +2186,6 @@ error_reporting(E_ERROR | E_PARSE);
 		$result .= "</aside>\n";
 		$result .= "<div class='control-sidebar-bg' style='position: fixed; height: auto;'></div>\n";
 
-		if($agent_chat_status)
-		    $result .= "<div class='chatappdiv'></div>";
-
 		return $result;
 	}
 
@@ -2229,22 +2194,6 @@ error_reporting(E_ERROR | E_PARSE);
 
 		$isActive = ($active) ? ' active' : '';
 		$tabpanes = '<div class="tab-pane'.$isActive.'" id="control-sidebar-'.$tab.'-tab">'."\n";
-		$agent_chat_status = $this->API_getAgentChatActivation();
-		if($agent_chat_status){
-		    if ($tab == 'chat') {
-			$tabpanes .= '<ul class="contacts-list">
-				<li>
-					<div class="center-block" style="text-align: center; margin: 0 10px; padding-bottom: 1px; padding-top: 10px;">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							<p>'.$avatarElement.'</p>
-							<p style="color:white;">'.$user->getUserName().'<br><small>'.$this->lh->translationFor("nice_to_see_you_again").'</small></p>
-						</a>
-					</div>
-				</li>';
-			$tabpanes .= '</ul>'."\n";
-		    }
-		}
-		
 		if ($tab == 'settings') {
 			$tabpanes .= '<ul class="control-sidebar-menu" id="go_tab_profile">
 				<li>
@@ -5892,21 +5841,12 @@ error_reporting(E_ERROR | E_PARSE);
    		$css .= '<link href="css/select2/select2-bootstrap.min.css" rel="stylesheet" type="text/css"/>'."\n";
    		$css .= '<link href="css/calendar.css" rel="stylesheet" type="text/css"/>'."\n";
 		
-		//for chat
-		$css .= '<link href="modules/GoChat/css/style.css" rel="stylesheet" type="text/css"/>'."\n";
-	
 		/* JS that needs to be declared first */
 		$css .= '<script src="js/jquery.min.js"></script>'."\n"; // required JS
 		$css .= '<script src="js/bootstrap.min.js" type="text/javascript"></script>'."\n"; // required JS
 		$css .= '<script src="js/jquery-ui.min.js" type="text/javascript"></script>'."\n"; // required JS
 		$css .= '<script src="js/calendar_db.js" type="text/javascript" ></script>'."\n";
 		
-		$agent_chat_status = $this->API_getAgentChatActivation();
-		if($agent_chat_status){
-		    $css .= '<script src="modules/GoChat/js/chat.js"></script>'."\n";
-		    $css .= '<script>$(document).ready(function() { $(".chatappdiv").load("../includes/chatapp_admin.php"); });</script>'."\n";
-		}
-
 		return $css;
 	}
 
@@ -6312,86 +6252,6 @@ error_reporting(E_ERROR | E_PARSE);
 				$return .= '<li><a class="activate-smtp" href="#" data-id="0" >'.$this->lh->translationFor("disable").'</a></li>';
 			}else{
 				$return .= '<li><a class="activate-smtp" href="#" data-id="1" >'.$this->lh->translationFor("enable").'</a></li>';
-			}
-		$return .= '</ul>
-		</div>';
-		return $return;
-	}
-
-	public function API_getAgentChatActivation() {
-		$url = gourl."/goAgentChat/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = goUser; #Username goes here. (required)
-		$postfields["goPass"] = goPass; #Password goes here. (required)
-		$postfields["goAction"] = "goGetAgentChatActivation"; #action performed by the [[API:Functions]]. (required)
-		$postfields["responsetype"] = responsetype; #json. (required)
-
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
-		if ($output->result == "success")
-			return $output->data->value;
-		else
-			return '0';
-	}
-	
-	private function getActionButtonForAgentChat($status) {
-	   $return = '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
-		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
-					    <span class="caret"></span>
-					    <span class="sr-only">Toggle Dropdown</span>
-		    </button>
-		    <ul class="dropdown-menu" role="menu">';
-			if ($status == 1) {
-				$return .= '<li><a class="activate-agent-chat" href="#" data-id="0" >'.$this->lh->translationFor("disable").'</a></li>';
-			}else{
-				$return .= '<li><a class="activate-agent-chat" href="#" data-id="1" >'.$this->lh->translationFor("enable").'</a></li>';
-			}
-		$return .= '</ul>
-		</div>';
-		return $return;
-	}
-
-	public function API_getWhatsappActivation() {
-		$url = gourl."/goWhatsApp/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = goUser; #Username goes here. (required)
-		$postfields["goPass"] = goPass; #Password goes here. (required)
-		$postfields["goAction"] = "goGetWhatsappActivation"; #action performed by the [[API:Functions]]. (required)
-		$postfields["responsetype"] = responsetype; #json. (required)
-
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
-		if ($output->result == "success")
-			return $output->data->value;
-		else
-			return '0';
-	}
-	
-	private function getActionButtonForWhatsapp($status) {
-	   $return = '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
-		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
-					    <span class="caret"></span>
-					    <span class="sr-only">Toggle Dropdown</span>
-		    </button>
-		    <ul class="dropdown-menu" role="menu">';
-			if ($status == 1) {
-				$return .= '<li><a class="activate-whatsapp" href="#" data-id="0" >'.$this->lh->translationFor("disable").'</a></li>';
-			}else{
-				$return .= '<li><a class="activate-whatsapp" href="#" data-id="1" >'.$this->lh->translationFor("enable").'</a></li>';
 			}
 		$return .= '</ul>
 		</div>';
