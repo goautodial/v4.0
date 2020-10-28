@@ -9520,7 +9520,7 @@ function getContactList() {
         goUser: uName,
         goPass: uPass,
         //goLimit: 50, sabi ni sir chi itaas daw limit
-        goLimit: 5000,
+        goLimit: 1000,
         goCampaign: campaign,
         goLeadSearchMethod: agent_lead_search_method,
         goIsLoggedIn: is_logged_in,
