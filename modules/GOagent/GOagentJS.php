@@ -7225,6 +7225,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
         })
         .done(function (result) {
             //dialingINprogress = 0;
+            console.log(result);
 
             if (active_ingroup_dial.length > 0) {
                 AutoDial_Resume_Pause("VDADready",'','','NO_STATUS_CHANGE');
