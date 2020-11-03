@@ -9606,14 +9606,14 @@ function getContactList(search_string) {
             });
             
             var typingTimer;
-            var doneTypingInterval = 5000;
+            var doneTypingInterval = 1000;
             var $searchBox = $("#contacts-list_filter input");
             $searchBox.on('keyup', function() {
                 clearTimeout(typingTimer);
                 var searching_for = $(this).val();
                 if (searching_for.length >=3 ) {
-                    $(".preloader").fadeIn('slow');
                     typingTimer = setTimeout(function() {
+                        $(".preloader").fadeIn('slow');
                         getContactList(searching_for);
                     }, doneTypingInterval);
                 }
