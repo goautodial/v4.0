@@ -9511,7 +9511,8 @@ function TimerActionRun(taskaction, taskdialalert) {
         {timer_action = 'NONE';}	
 }
 
-function getContactList() {
+function getContactList(search_string) {
+    if (typeof search_string === 'undefined') var search_string = '';
     $("#contacts-list").dataTable().fnDestroy();
     $("#contacts-list").css('width', '100%');
     $("#contacts-list tbody").empty();
@@ -9525,6 +9526,7 @@ function getContactList() {
         goCampaign: campaign,
         goLeadSearchMethod: agent_lead_search_method,
         goIsLoggedIn: is_logged_in,
+        goSearchString: search_string,
         responsetype: 'json'
     };
     
@@ -9581,7 +9583,7 @@ function getContactList() {
                 }],
                 "fnInitComplete": function() {
                     $(".preloader").fadeOut('slow');
-                    $("#contacts-list_wrapper:first-child div").find('[class="col-sm-6"]:not(:first-child)').html('<div id="contacts-list_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="contacts-list"></label></div>');
+                    $("#contacts-list_wrapper:first-child div").find('[class="col-sm-6"]:not(:first-child)').html('<div id="contacts-list_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control input-sm" placeholder="" aria-controls="contacts-list" value="'+search_string+'"></label></div>');
                 }
             });
             $("#contacts-list_filter").parent('div').attr('class', 'col-sm-6 hidden-xs');
