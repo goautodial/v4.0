@@ -9562,6 +9562,7 @@ function getContactList(search_string) {
             $("#contacts-list").DataTable({
                 "bDestroy": true,
                 "searching": false,
+                "processing": true,
                 "aoColumnDefs": [{
                     "bSortable": false,
                     "aTargets": [ 7 ],
@@ -9605,7 +9606,7 @@ function getContactList(search_string) {
             });
             
             var typingTimer;
-            var doneTypingInterval = 2000;
+            var doneTypingInterval = 1000;
             $("#contacts-list_filter input").on('change', function() {
                 clearTimeout(typingTimer);
                 var searching_for = $(this).val();
