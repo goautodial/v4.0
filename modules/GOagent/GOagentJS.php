@@ -9612,12 +9612,16 @@ function getContactList(search_string) {
             var doneTypingInterval = 1000;
             var $searchBox = $("#contacts-list_filter input");
             $searchBox.on('keyup', function(e) {
-                if (e.which == 13) {
-                    e.preventDefault();
-                    return false;
-                }
                 clearTimeout(typingTimer);
                 var searching_for = $(this).val();
+                if (e.which == 13 && searching_for.length < 3) {
+                    swal({
+                        title: '<?=$lh->translationFor('error')?>',
+                        text: 'Search string should be at least 3 characters.',
+                        type: 'error',
+                        allowEnterKey: false
+                    });
+                }
                 if (searching_for.length >= 3 && autoSearch) {
                     typingTimer = setTimeout(function() {
                         console.log(autoSearch);
@@ -9636,13 +9640,6 @@ function getContactList(search_string) {
                         console.log(autoSearch);
                         $(".preloader").fadeIn('slow');
                         getContactList(searching_for);
-                    } else {
-                        swal({
-                            title: '<?=$lh->translationFor('error')?>',
-                            text: 'Search string should be at least 3 characters.',
-                            type: 'error',
-                            allowEnterKey: false
-                        });
                     }
                 }
             });
