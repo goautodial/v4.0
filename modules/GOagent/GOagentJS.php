@@ -9581,6 +9581,7 @@ function getContactList() {
                 }],
                 "fnInitComplete": function() {
                     $(".preloader").fadeOut('slow');
+                    $("#contacts-list_wrapper:first-child div").find('[class="col-sm-6"]').html('test');
                 }
             });
             $("#contacts-list_filter").parent('div').attr('class', 'col-sm-6 hidden-xs');
