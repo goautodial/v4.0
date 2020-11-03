@@ -9606,13 +9606,15 @@ function getContactList(search_string) {
             });
             
             var typingTimer;
+            var autoSearch = true;
             var doneTypingInterval = 1000;
             var $searchBox = $("#contacts-list_filter input");
             $searchBox.on('keyup', function() {
                 clearTimeout(typingTimer);
                 var searching_for = $(this).val();
-                if (searching_for.length >= 3) {
+                if (searching_for.length >= 3 && autoSearch) {
                     typingTimer = setTimeout(function() {
+                        console.log(autoSearch);
                         $(".preloader").fadeIn('slow');
                         getContactList(searching_for);
                     }, doneTypingInterval);
@@ -9621,7 +9623,12 @@ function getContactList(search_string) {
             
             $searchBox.on('keydown', function (e) {
                 clearTimeout(typingTimer);
-                console.log(e.which);
+                if (e.which == 13) {
+                    autoSearch = false;
+                    console.log(autoSearch);
+                    $(".preloader").fadeIn('slow');
+                    getContactList(searching_for);
+                }
             });
         } else {
             $(".preloader").fadeOut('slow');
