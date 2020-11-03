@@ -9624,10 +9624,19 @@ function getContactList(search_string) {
             $searchBox.on('keydown', function (e) {
                 clearTimeout(typingTimer);
                 if (e.which == 13) {
-                    autoSearch = false;
-                    console.log(autoSearch);
-                    $(".preloader").fadeIn('slow');
-                    getContactList(searching_for);
+                    var searching_for = $(this).val();
+                    if (searching_for.length >= 3) {
+                        autoSearch = false;
+                        console.log(autoSearch);
+                        $(".preloader").fadeIn('slow');
+                        getContactList(searching_for);
+                    } else {
+                        swal({
+                            title: '<?=$lh->translationFor('error')?>',
+                            text: 'Search string should be at least 3 characters.',
+                            type: 'error'
+                        });
+                    }
                 }
             });
         } else {
