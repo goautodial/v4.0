@@ -9606,7 +9606,7 @@ function getContactList(search_string) {
             });
             
             var typingTimer;
-            var doneTypingInterval = 1000;
+            var doneTypingInterval = 5000;
             var $searchBox = $("#contacts-list_filter input");
             $searchBox.on('keyup', function() {
                 clearTimeout(typingTimer);
