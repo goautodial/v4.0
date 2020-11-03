@@ -9609,7 +9609,11 @@ function getContactList(search_string) {
             var autoSearch = true;
             var doneTypingInterval = 1000;
             var $searchBox = $("#contacts-list_filter input");
-            $searchBox.on('keyup', function() {
+            $searchBox.on('keyup', function(e) {
+                if (e.which == 13) {
+                    e.preventDefault();
+                    return false;
+                }
                 clearTimeout(typingTimer);
                 var searching_for = $(this).val();
                 if (searching_for.length >= 3 && autoSearch) {
