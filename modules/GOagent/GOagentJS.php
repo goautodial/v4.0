@@ -9607,7 +9607,8 @@ function getContactList(search_string) {
             
             var typingTimer;
             var doneTypingInterval = 1000;
-            $("#contacts-list_filter input").on('change', function() {
+            var $searchBox = $("#contacts-list_filter input");
+            $searchBox.on('keyup', function() {
                 clearTimeout(typingTimer);
                 var searching_for = $(this).val();
                 if (searching_for.length >=3 ) {
@@ -9616,6 +9617,10 @@ function getContactList(search_string) {
                         getContactList(searching_for);
                     }, doneTypingInterval);
                 }
+            });
+            
+            $searchBox.on('keydown', function () {
+                clearTimeout(typingTimer);
             });
         } else {
             $(".preloader").fadeOut('slow');
