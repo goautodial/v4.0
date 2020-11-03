@@ -9615,6 +9615,7 @@ function getContactList(search_string) {
                 clearTimeout(typingTimer);
                 var searching_for = $(this).val();
                 if (e.which == 13 && searching_for.length < 3) {
+                    $(this).focusout();
                     swal({
                         title: '<?=$lh->translationFor('error')?>',
                         text: 'Search string should be at least 3 characters.',
