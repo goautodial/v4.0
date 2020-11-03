@@ -9611,6 +9611,7 @@ function getContactList(search_string) {
                 clearTimeout(typingTimer);
                 var searching_for = $(this).val();
                 if (searching_for.length >=3 ) {
+                    $(".preloader").fadeIn('slow');
                     typingTimer = setTimeout(function() {
                         getContactList(searching_for);
                     }, doneTypingInterval);
