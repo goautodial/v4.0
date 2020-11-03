@@ -9543,21 +9543,23 @@ function getContactList(search_string) {
     .done(function (result) {
         if (result.result == 'success') {
             var leadsList = result.leads;
-            $.each(leadsList, function(key, value) {
-                var thisComments = value.comments;
-                var commentTitle = '';
-                if (thisComments !== null) {
-                    if (thisComments.length > 20) {
-                        commentTitle = ' title="'+thisComments+'"';
-                        thisComments = thisComments.substring(0, 20) + "...";
+            if (leadsList != null) {
+                $.each(leadsList, function(key, value) {
+                    var thisComments = value.comments;
+                    var commentTitle = '';
+                    if (thisComments !== null) {
+                        if (thisComments.length > 20) {
+                            commentTitle = ' title="'+thisComments+'"';
+                            thisComments = thisComments.substring(0, 20) + "...";
+                        }
                     }
-                }
-                
-                var customer_name = (value.first_name || '') + ' ' + (value.middle_initial || '') + ' ' + (value.last_name || '');
-                var last_call_time = (value.last_local_call_time || '0000-00-00 00:00:00');
-                var appendThis = '<tr data-id="'+value.lead_id+'"><td>'+value.lead_id+'</td><td>'+customer_name+'</td><td>'+value.phone_number+'</td><td>'+last_call_time+'</td><td>'+value.campaign_id+'</td><td>'+value.status+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="lead-info-'+value.lead_id+'" data-leadid="'+value.lead_id+'" onclick="ViewCustInfo('+value.lead_id+');" class="btn btn-info btn-sm" style="margin: 2px;" title="<?=$lh->translationFor('view_contact_info')?>"><i class="fa fa-file-text-o"></i></button><button id="dial-lead-'+value.lead_id+'" data-leadid="'+value.lead_id+'" onclick="ManualDialNext(\'\','+value.lead_id+','+value.phone_code+','+value.phone_number+',\'\',\'0\');" class="btn btn-primary btn-sm disabled" style="margin: 2px;" title="<?=$lh->translationFor('call_contact_number')?>"><i class="fa fa-phone"></i></button></td></tr>';
-                $("#contacts-list tbody").append(appendThis);
-            });
+                    
+                    var customer_name = (value.first_name || '') + ' ' + (value.middle_initial || '') + ' ' + (value.last_name || '');
+                    var last_call_time = (value.last_local_call_time || '0000-00-00 00:00:00');
+                    var appendThis = '<tr data-id="'+value.lead_id+'"><td>'+value.lead_id+'</td><td>'+customer_name+'</td><td>'+value.phone_number+'</td><td>'+last_call_time+'</td><td>'+value.campaign_id+'</td><td>'+value.status+'</td><td'+commentTitle+'>'+thisComments+'</td><td class="text-center" style="white-space: nowrap;"><button id="lead-info-'+value.lead_id+'" data-leadid="'+value.lead_id+'" onclick="ViewCustInfo('+value.lead_id+');" class="btn btn-info btn-sm" style="margin: 2px;" title="<?=$lh->translationFor('view_contact_info')?>"><i class="fa fa-file-text-o"></i></button><button id="dial-lead-'+value.lead_id+'" data-leadid="'+value.lead_id+'" onclick="ManualDialNext(\'\','+value.lead_id+','+value.phone_code+','+value.phone_number+',\'\',\'0\');" class="btn btn-primary btn-sm disabled" style="margin: 2px;" title="<?=$lh->translationFor('call_contact_number')?>"><i class="fa fa-phone"></i></button></td></tr>';
+                    $("#contacts-list tbody").append(appendThis);
+                });
+            }
             $("#contacts-list").css('width', '100%');
             $("#contacts-list").DataTable({
                 "bDestroy": true,
