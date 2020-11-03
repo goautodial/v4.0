@@ -9609,9 +9609,11 @@ function getContactList(search_string) {
             $("#contacts-list_filter input").on('change', function() {
                 clearTimeout(typingTimer);
                 var searching_for = $(this).val();
-                typingTimer = setTimeout(function() {
-                    console.log('Searching for: ' + searching_for);
-                }, doneTypingInterval);
+                if (searching_for.length >=3 ) {
+                    typingTimer = setTimeout(function() {
+                        getContactList(searching_for);
+                    }, doneTypingInterval);
+                }
             });
         } else {
             $(".preloader").fadeOut('slow');
