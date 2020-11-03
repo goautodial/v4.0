@@ -9603,6 +9603,16 @@ function getContactList(search_string) {
                     $("button[id^='dial-lead-']").removeClass('disabled');
                 }
             });
+            
+            var typingTimer;
+            var doneTypingInterval = 2000;
+            $("#contacts-list_filter input").on('change', function() {
+                clearTimeout(typingTimer);
+                var searching_for = $(this).val();
+                typingTimer = setTimeout(function() {
+                    console.log('Searching for: ' + searching_for);
+                }, doneTypingInterval);
+            });
         } else {
             $(".preloader").fadeOut('slow');
             $("#contacts-list").DataTable();
