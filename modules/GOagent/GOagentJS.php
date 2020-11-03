@@ -9611,7 +9611,7 @@ function getContactList(search_string) {
             $searchBox.on('keyup', function() {
                 clearTimeout(typingTimer);
                 var searching_for = $(this).val();
-                if (searching_for.length >=3 ) {
+                if (searching_for.length >= 3) {
                     typingTimer = setTimeout(function() {
                         $(".preloader").fadeIn('slow');
                         getContactList(searching_for);
@@ -9619,8 +9619,9 @@ function getContactList(search_string) {
                 }
             });
             
-            $searchBox.on('keydown', function () {
+            $searchBox.on('keydown', function (e) {
                 clearTimeout(typingTimer);
+                console.log(e.which);
             });
         } else {
             $(".preloader").fadeOut('slow');
