@@ -9638,7 +9638,8 @@ function getContactList(search_string) {
                         swal({
                             title: '<?=$lh->translationFor('error')?>',
                             text: 'Search string should be at least 3 characters.',
-                            type: 'error'
+                            type: 'error',
+                            allowEnterKey: false
                         });
                     }
                 }
