@@ -9559,6 +9559,7 @@ function getContactList() {
             $("#contacts-list").css('width', '100%');
             $("#contacts-list").DataTable({
                 "bDestroy": true,
+                "searching": false,
                 "aoColumnDefs": [{
                     "bSortable": false,
                     "aTargets": [ 7 ],
