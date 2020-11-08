@@ -44,9 +44,9 @@ PHP extensions: BCMath, FRP, GD, Gettext, IMAP, Intl, JSON, MBString, OPcache, P
 
 <h3>Help, Installation and other HOWTOs:</h3>
 
-Visit the our open source community portal: https://goautodial.org. 
+Visit our open source community portal: https://goautodial.org. 
 
-If you'd like professional help visit our commercial portal: https://goautodial.com.
+If you'd like to go cloud and/or get professional help, please visit: https://goautodial.com.
 
 <h3>License:</h3>
 
