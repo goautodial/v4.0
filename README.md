@@ -1,8 +1,8 @@
-<h1>GOautodial Open source Multi-channel Contact Center Application</h1>
+<h1>GOautodial Open Source Omni-channel Contact Center Suite</h1>
 
 <h2>https://goautodial.org</h2>
 
-GOautodial is the next generation open source omni-channel contact center suite. Built from the ground up using established open source technologies.
+GOautodial is the next generation open source omni-channel contact center suite. Built from the ground-up using established open source technologies.
 
 <h3>Major Features:</h3>
 
