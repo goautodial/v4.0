@@ -42,7 +42,12 @@ MySQL (version 5.5 and up) or MariaDB 10.0.1 (recommended)<br>
 
 PHP extensions: BCMath, FRP, GD, Gettext, IMAP, Intl, JSON, MBString, OPcache, Pear, XML and XMLRPC
 
-<h3>Installation and other HOWTOs:</h3>
+<h3>Help, Installation and other HOWTOs:</h3>
 
-https://goautodial.org/projects/goautodialce/wiki
+Visit the our open source community portal: https://goautodial.org. 
 
+If you'd like professional help visit our commercial portal: https://goautodial.com.
+
+<h3>License:</h3>
+
+GOautodial is released under the AGPLv2 license (https://www.gnu.org/licenses/agpl.html). 
