@@ -1,80 +1,48 @@
 <h1>GOautodial Open source Multi-channel Contact Center Application</h1>
 
-<h2>https://goautodial.org/projects/goautodialce</h2>
+<h2>https://goautodial.org</h2>
 
-The GOautodial CE Application (also called "GOautodial app") is the next generation open source omni-channel web based contact center application.
+GOautodial is the next generation open source omni-channel contact center suite. Built from the ground up using established open source technologies.
 
-Rewritten from ground up using the following standards and technologies:
+<h3>Major Features:</h3>
 
-Bootstrap 3<br>
-WebRTC<br>
+Predictive, preview and manual dialing + inbound IVR and ACD<br>
+Customer Relationship Manager (CRM)<br>
+Ticketing system (under development)<br>
+Instant messaging (under development)<br>
+Social media (under development)<br>
+REST APIs and plugin based system<br>
+Reports and analytics<br>
+Multi-language<br>
+
+<h3>Technology and Core Components:</h3>
+
+Asterisk<br>
+Bootstrap3<br>
 HTML5<br>
-PHP7<br>
+JSSIP<br>
+Javascript<br>
 JQuery<br>
-REST API<br>
+Kamailio<br>
+MariaDB<br>
+NodeJS<br>
+PHP7<br>
+SocketIO<br>
+Vicidial<br>
+WebRTC<br>
 
-Major Features:
+<h3>Requirements:</h3>
 
-Multi-channel contact center application (voice and non-voice)
-Predictive dialer + Inbound IVR and ACD
-Ticketing system (under development)
-Live chat
-SMS (under development)
-Fax (under development)
-Email
-Social media (under development)
-CRM type application
-Responsive design supporting major web browsers
-Modular API and plugin based system
-Reports and analytics
-Multi-language
+Apache 2.4 (and up)<br>
+PHP version 7.0 to 7.4 (recommended)<br>
+mysqli extension for PHP<br>
+MySQL (version 5.5 and up) or MariaDB 10.0.1 (recommended)<br>
 
-To install (assumming your document root directory is /var/www/html):
+<h3>Recommendations:</h3>
 
-<pre>
-cd /var/www
-git clone https://github.com/goautodial/v4.0 html
-</pre>
+PHP extensions: BCMath, FRP, GD, Gettext, IMAP, Intl, JSON, MBString, OPcache, Pear, XML and XMLRPC
 
-<pre>
-cd /var/www/html
-git clone https://github.com/goautodial/goAPIv2
-</pre>
+<h3>Installation and other HOWTOs:</h3>
 
-Edit the 3 configuration files (inside /var/www/html/):
+https://goautodial.org/projects/goautodialce/wiki
 
-1. astguiclient.conf 
-2. php/Config.php
-3. php/goCRMAPISettings.php
-
-<pre>
-cd /var/www/html/
-cp astguiclient.conf-sample astguiclient.conf
-nano astguiclient.conf
-</pre>
-
-<pre>
-cd /var/www/html/php/
-cp Config.php-sample Config.php
-nano Config.php
-</pre>
-
-<pre>
-cd /var/www/html/php/
-cp goCRMAPISettings.php-sample goCRMAPISettings.php
-nano goCRMAPISettings.php
-</pre>
-
-Replace the default database name, users and passwords according to your preference.
-
-Update GOautodial database:
-
-<pre>
-MariaDB [goautodialdb]> ALTER TABLE go_campaigns ADD COLUMN auto_dial_level VARCHAR(20) DEFAULT 'NORMAL';
-MariaDB [goautodialdb]> ALTER TABLE go_campaigns ADD COLUMN default_country_code VARCHAR(20) DEFAULT 'USA_1';
-MariaDB [goautodialdb]> ALTER TABLE go_campaigns ADD COLUMN manual_dial_min_digits INT(11) DEFAULT '6';
-MariaDB [goautodialdb]> ALTER TABLE users ADD COLUMN enable_chat tinyint(1) NULL DEFAULT '1';
-MariaDB [goautodialdb]> ALTER TABLE users ADD COLUMN enable_webrtc tinyint(1) DEFAULT '1';
-</pre>
-
-Wiki: https://goautodial.org/projects/goautodialce/wiki
