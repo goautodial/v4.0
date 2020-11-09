@@ -841,6 +841,18 @@
 																</div>
 															</div>
 															<div class="form-group">
+																<label class="col-sm-3 control-label"><?php $lh->translateText("call_count_limit"); ?>:</label>
+																<div class="col-sm-9 mb">
+																	<input type="number" class="form-control" id="call_count_limit" name="call_count_limit" value="<?php echo $campaign->data->call_count_limit; ?>">
+																</div>
+															</div>
+															<div class="form-group">
+																<label class="col-sm-3 control-label"><?php $lh->translateText("call_count_target"); ?>:</label>
+																<div class="col-sm-9 mb">
+																	<input type="number" class="form-control" id="call_count_target" name="call_count_target" value="<?php echo $campaign->data->call_count_target; ?>">
+																</div>
+															</div>
+															<div class="form-group">
 																<label class="col-sm-3 control-label"><?php $lh->translateText("dial_timeout"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<input type="text" class="form-control" id="dial_time_out" name="dial_timeout" value="<?php echo $campaign->data->dial_timeout; ?>">
@@ -1528,6 +1540,18 @@
 																			<?php } ?>
 																		<?php } ?>
 																	</select>
+																</div>
+															</div>
+															<div class="form-group">
+																<label class="col-sm-3 control-label"><?php $lh->translateText("call_count_limit"); ?>:</label>
+																<div class="col-sm-9 mb">
+																	<input type="number" class="form-control" id="call_count_limit" name="call_count_limit" value="<?php echo $campaign->data->call_count_limit; ?>">
+																</div>
+															</div>
+															<div class="form-group">
+																<label class="col-sm-3 control-label"><?php $lh->translateText("call_count_target"); ?>:</label>
+																<div class="col-sm-9 mb">
+																	<input type="number" class="form-control" id="call_count_target" name="call_count_target" value="<?php echo $campaign->data->call_count_target; ?>">
 																</div>
 															</div>
 															<div class="form-group">

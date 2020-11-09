@@ -162,6 +162,18 @@
 			$lead_filter 							= stripslashes($lead_filter);
 		}
 		
+		$call_count_limit 							= ""; 
+		if (isset($_POST["call_count_limit"])) { 
+			$call_count_limit 						= $_POST["call_count_limit"]; 
+			$call_count_limit 						= stripslashes($call_count_limit);
+		}
+		
+		$call_count_target 							= ""; 
+		if (isset($_POST["call_count_target"])) { 
+			$call_count_target 						= $_POST["call_count_target"]; 
+			$call_count_target 						= stripslashes($call_count_target);
+		}
+		
 		$dial_timeout 								= NULL; 
 		if (isset($_POST["dial_timeout"])) { 
 			$dial_timeout 							= $_POST["dial_timeout"]; 
@@ -615,6 +627,8 @@
 			"lead_order" 								=> $lead_order,
 			"lead_order_secondary" 						=> $lead_order_secondary,
 			"lead_filter" 								=> $lead_filter,
+			"call_count_limit"							=> $call_count_limit,
+			"call_count_target"							=> $call_count_target,
 			"dial_timeout" 								=> $dial_timeout,
 			"manual_dial_prefix" 						=> $manual_dial_prefix,
 			"get_call_launch" 							=> $get_call_launch,
