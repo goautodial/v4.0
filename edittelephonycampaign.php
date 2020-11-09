@@ -843,13 +843,13 @@
 															<div class="form-group">
 																<label class="col-sm-3 control-label"><?php $lh->translateText("call_count_limit"); ?>:</label>
 																<div class="col-sm-9 mb">
-																	<input type="number" class="form-control" id="call_count_limit" name="call_count_limit" value="<?php echo $campaign->data->call_count_limit; ?>">
+																	<input type="number" class="form-control" id="call_count_limit" name="call_count_limit" min="0" value="<?php echo $campaign->data->call_count_limit; ?>">
 																</div>
 															</div>
 															<div class="form-group">
 																<label class="col-sm-3 control-label"><?php $lh->translateText("call_count_target"); ?>:</label>
 																<div class="col-sm-9 mb">
-																	<input type="number" class="form-control" id="call_count_target" name="call_count_target" value="<?php echo $campaign->data->call_count_target; ?>">
+																	<input type="number" class="form-control" id="call_count_target" name="call_count_target" min="0" value="<?php echo $campaign->data->call_count_target; ?>">
 																</div>
 															</div>
 															<div class="form-group">
