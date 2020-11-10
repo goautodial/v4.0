@@ -1177,7 +1177,7 @@
 		                            <div class="col-sm-9 mb">
 		                                <select id="leadrecycling_status" name="leadrecycling_status" class="form-control select2" 
 						size="" onmousedown="if(this.options.length>8){this.size=8;}"  onchange='this.size=0;' onblur="this.size=0;"
-						style="width:100%; height:100%;">
+						style="width:100%;">
 											<optgroup label="System Statuses">
 												<?php 
 													//$dialStatus = $api->API_getAllDialStatuses('ALL', 1);
