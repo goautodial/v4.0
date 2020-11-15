@@ -35,12 +35,12 @@ WebRTC<br>
 
 Apache 2.4 (and up)<br>
 PHP version 7.0 to 7.4 (recommended)<br>
-mysqli extension for PHP<br>
+MySQLi extension for PHP<br>
 MySQL (version 5.5 and up) or MariaDB 10.0.1 (recommended)<br>
 
 <h3>Recommendations:</h3>
 
-PHP extensions: BCMath, FRP, GD, Gettext, IMAP, Intl, JSON, MBString, OPcache, Pear, XML and XMLRPC
+PHP extensions: BCMath, FPM, GD, Gettext, IMAP, Intl, JSON, MBString, OPcache, PDO, Pear, XML and XMLRPC
 
 <h3>Help, Installation and other HOWTOs:</h3>
 
