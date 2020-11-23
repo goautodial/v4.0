@@ -1292,7 +1292,7 @@
 						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 						pagination.toggle(this.api().page.info().pages > 1);
 					},
-					order: [[ 1, "desc"]],
+					order: [[ 1, "asc"]],
 					columnDefs:[
 						{ width: "16%", targets: 6 },
 						{ searchable: false, targets: [ 0, 6 ] },
@@ -1309,6 +1309,7 @@
 						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 						pagination.toggle(this.api().page.info().pages > 1);
 					},
+					order: [[ 1, "asc"]],
 					columnDefs:[
 						{ width: "16%", targets: 5 },
 						{ searchable: false, targets: [ 0, 5 ] },
@@ -1324,6 +1325,7 @@
 						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 						pagination.toggle(this.api().page.info().pages > 1);
 					},
+					order: [[ 1, "asc"]],
 					columnDefs:[
 						{ width: "16%", targets: 5 },
 						{ searchable: false, targets: [ 0, 5 ] },
