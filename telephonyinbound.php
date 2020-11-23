@@ -193,7 +193,7 @@
 									   	?>	
 											<tr>
                                                 <td><avatar username='<?php echo $ingroup->group_name[$i];?>' :size='36'></avatar></td>
-												<td><strong><?php if (($_SESSION['usergroup'] === "ADMIN" && $perm->inbound->inbound_update !== 'N') || ($_SESSION['usergroup'] !== "ADMIN" && $perm->inbound->inbound_update !== 'N' && !preg_match("/^AGENTDIRECT/", $ingroup->group_name[$i]))) { echo '<a class="edit-ingroup" data-id="'.$ingroup->group_id[$i].'">'; } ?><?php echo $ingroup->group_id[$i];?><?php if ($perm->inbound->inbound_update !== 'N') { echo '</a>'; } ?></strong></td>
+												<td><strong><?php if (($_SESSION['usergroup'] === "ADMIN" && $perm->inbound->inbound_update !== 'N') || ($_SESSION['usergroup'] !== "ADMIN" && $perm->inbound->inbound_update !== 'N' && !preg_match("/^AGENTDIRECT/", $ingroup->group_id[$i]))) { echo '<a class="edit-ingroup" data-id="'.$ingroup->group_id[$i].'">'; } ?><?php echo $ingroup->group_id[$i];?><?php if ($perm->inbound->inbound_update !== 'N') { echo '</a>'; } ?></strong></td>
 												<td><?php echo $ingroup->group_name[$i];?></td>
 												<td><?php echo $ingroup->queue_priority[$i];?></td>
 												<td><?php echo $ingroup->active[$i];?></td>
