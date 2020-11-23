@@ -51,6 +51,8 @@
 	if(isset($_POST["role"])){
 		$userrole = $_POST["role"];
 	}
+	
+	var_dump($_SESSION);
 
 	$output = $api->API_getUserInfo($current_user, "userInfo");
 	$voicemails = $api->API_getAllVoiceMails();
