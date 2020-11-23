@@ -198,7 +198,7 @@
 												<td><?php echo $ingroup->queue_priority[$i];?></td>
 												<td><?php echo $ingroup->active[$i];?></td>
 												<td><?php echo $ingroup->call_time_id[$i];?></td>
-												<td><?php echo $action_INGROUP;?></td>
+												<td><?php if ($_SESSION['usergroup'] !== "ADMIN" && $perm->inbound->inbound_update !== 'N' && !preg_match("/^AGENTDIRECT/", $ingroup->group_id[$i])) echo $action_INGROUP;?></td>
 											</tr>
 										<?php
 											}
