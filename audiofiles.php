@@ -328,13 +328,17 @@
 	                            <label class="col-sm-4 control-label" for="user_group"><?php $lh->translateText("user_group"); ?>: </label>
 	                            <div class="col-sm-8 mb">
 	                                <select id="user_group" class="form-control select2-1" name="user_group" style="width:100%;">
+												<?php
+												if ($_SESSION['usergroup'] === "ADMIN") {
+												?>
 	                                	<option value="---ALL---">  ALL USER GROUPS  </option>
+	                                 <?php
+												}
+	                                    for($i=0;$i<count($user_groups->user_group);$i++){
+	                                 ?>
+	                                    <option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i].' - '.$user_groups->group_name[$i];?>  </option>
 	                                    <?php
-	                                        for($i=0;$i<count($user_groups->user_group);$i++){
-	                                    ?>
-	                                        <option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i].' - '.$user_groups->group_name[$i];?>  </option>
-	                                    <?php
-	                                        }
+	                                    }
 	                                    ?>
 	                                </select>
 	                            </div>
