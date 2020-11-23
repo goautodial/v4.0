@@ -51,14 +51,15 @@
 	if(isset($_POST["role"])){
 		$userrole = $_POST["role"];
 	}
-	
-	var_dump($_SESSION);
 
 	$output = $api->API_getUserInfo($current_user, "userInfo");
 	$voicemails = $api->API_getAllVoiceMails();
 	$user_groups = $api->API_getAllUserGroups();
 	$perm = $api->goGetPermissions('user');
-	$use_webrtc = $api->CheckWebrtc();	
+	$use_webrtc = $api->CheckWebrtc();
+	
+	$admin_level = $_SESSION['level'];
+	$admin_group = $_SESSION['usergroup'];
 ?>
 <html>
     <head>
@@ -238,7 +239,7 @@
 																}else{
 																	$userlevel .= '<option value="8" > 8 </option>';
 																}
-																if ($output->data->user_level > 8) {
+																if ($admin_level > 8 && $admin_group !== "ADMIN") {
 																	if($output->data->user_level == "9"){
 																		$userlevel .= '<option value="9" selected> 9 </option>';
 																	}else{
