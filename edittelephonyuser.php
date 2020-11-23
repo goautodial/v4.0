@@ -236,10 +236,12 @@
 																}else{
 																	$userlevel .= '<option value="8" > 8 </option>';
 																}
-																if($output->data->user_level == "9"){
-																	$userlevel .= '<option value="9" selected> 9 </option>';
-																}else{
-																	$userlevel .= '<option value="9" > 9 </option>';
+																if ($output->data->user_level < 9 && $output->data->user_group !== "ADMIN") {
+																	if($output->data->user_level == "9"){
+																		$userlevel .= '<option value="9" selected> 9 </option>';
+																	}else{
+																		$userlevel .= '<option value="9" > 9 </option>';
+																	}
 																}
 															echo $userlevel;
 														?>
