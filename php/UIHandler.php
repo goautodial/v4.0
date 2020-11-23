@@ -4088,8 +4088,8 @@ error_reporting(E_ERROR | E_PARSE);
 		$hideOnLow = array( "Random Order", "Group", "Status");
 	    $result = $this->generateTableHeaderWithItems($columns, "music-on-hold_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 
-	  for($i=0;$i<count($output->moh_id);$i++) {
-     $action = ($user_group === "ADMIN" || ($user_group !== "ADMIN" && $output->moh_id[$i] !== 'default')) ? $this->getUserActionMenuForMusicOnHold($output->moh_id[$i], $output->moh_name[$i], $perm) : "";
+	    for($i=0;$i<count($output->moh_id);$i++) {
+			$action = $this->getUserActionMenuForMusicOnHold($output->moh_id[$i], $output->moh_name[$i], $perm);
 
 			if ($output->active[$i] == "Y") {
 				$output->active[$i] = "Active";
