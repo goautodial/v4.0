@@ -1292,6 +1292,7 @@
 						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 						pagination.toggle(this.api().page.info().pages > 1);
 					},
+					order: [[ 1, "desc"]],
 					columnDefs:[
 						{ width: "16%", targets: 6 },
 						{ searchable: false, targets: [ 0, 6 ] },
