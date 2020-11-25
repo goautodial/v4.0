@@ -77,6 +77,7 @@
                                                                                         }
 
 											for($i=0; $i < count($inbound->group_id);$i++) {
+												if ($_SESSION['usergroup'] !== "ADMIN" && preg_match("/^AGENTDIRECT/", $inbound->group_id[$i])) continue;
 												$display .= '<option value="'.$inbound->group_id[$i].'">'.$inbound->group_id[$i].' - '.$inbound->group_name[$i].'</option>';
 											}
 			$display .= '				 </select>
