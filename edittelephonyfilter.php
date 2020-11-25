@@ -121,13 +121,13 @@
 				<div class="form-group mt">
 					<label for="filter_name" class="col-sm-2 control-label"><?php $lh->translateText("filter_name"); ?></label>
 					<div class="col-sm-10 mb">
-						<input type="text" class="form-control" name="filter_name" id="filter_name" placeholder="<?php $lh->translateText("filter_name"); ?> (<?php $lh->translateText("mandatory"); ?>)" value="<?php echo $output->filter_name;?>" <?php if ($_SESSION['usergroup'] !== "ADMIN" && $filter_id === "FILTEMP") { echo "readonly"; }>
+						<input type="text" class="form-control" name="filter_name" id="filter_name" placeholder="<?php $lh->translateText("filter_name"); ?> (<?php $lh->translateText("mandatory"); ?>)" value="<?php echo $output->filter_name;?>" <?php if ($_SESSION['usergroup'] !== "ADMIN" && $filter_id === "FILTEMP") { echo "readonly"; } ?>>
 					</div>
 				</div>
 				<div class="form-group mt">
 					<label for="filter_comments" class="col-sm-2 control-label"><?php $lh->translateText("filter_comments"); ?></label>
 					<div class="col-sm-10 mb">
-						<input type="text" class="form-control" name="filter_comments" id="filter_comments" placeholder="<?php $lh->translateText("filter_comments"); ?>" value="<?php echo $output->filter_comments;?>" <?php if ($_SESSION['usergroup'] !== "ADMIN" && $filter_id === "FILTEMP") { echo "readonly"; }>
+						<input type="text" class="form-control" name="filter_comments" id="filter_comments" placeholder="<?php $lh->translateText("filter_comments"); ?>" value="<?php echo $output->filter_comments;?>" <?php if ($_SESSION['usergroup'] !== "ADMIN" && $filter_id === "FILTEMP") { echo "readonly"; } ?>>
 					</div>
 				</div>
 				<div class="form-group<?=($_SESSION['usergroup'] !== 'ADMIN' ? ' hidden' : '')?>">
@@ -162,7 +162,7 @@
 					<div class="col-sm-10">
 						<div class="panel">
 							<div class="panel-body">
-								<textarea rows="14" class="form-control note-editor" id="filter_sql" name="filter_sql" <?php if ($_SESSION['usergroup'] !== "ADMIN" && $filter_id === "FILTEMP") { echo "readonly"; }><?php echo str_replace('Â', '', htmlspecialchars_decode($output->filter_sql, ENT_QUOTES));?></textarea>
+								<textarea rows="14" class="form-control note-editor" id="filter_sql" name="filter_sql" <?php if ($_SESSION['usergroup'] !== "ADMIN" && $filter_id === "FILTEMP") { echo "readonly"; } ?>><?php echo str_replace('Â', '', htmlspecialchars_decode($output->filter_sql, ENT_QUOTES));?></textarea>
 							</div>
 						</div>
 					</div>
