@@ -4088,8 +4088,8 @@ error_reporting(E_ERROR | E_PARSE);
 		$hideOnLow = array( "Random Order", "Group", "Status");
 	    $result = $this->generateTableHeaderWithItems($columns, "music-on-hold_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 
-	    for($i=0;$i<count($output->moh_id);$i++) {
-			$action = $this->getUserActionMenuForMusicOnHold($output->moh_id[$i], $output->moh_name[$i], $perm);
+	  for($i=0;$i<count($output->moh_id);$i++) {
+     $action = ($user_group === "ADMIN" || ($user_group !== "ADMIN" && $output->moh_id[$i] !== 'default')) ? $this->getUserActionMenuForMusicOnHold($output->moh_id[$i], $output->moh_name[$i], $perm) : "";
 
 			if ($output->active[$i] == "Y") {
 				$output->active[$i] = "Active";
@@ -4311,7 +4311,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 	// API Filters
 
-	public function getListAllFilters($userid, $perm) {
+	public function getListAllFilters($userid, $perm, $user_group) {
 	    $output = $this->api->API_getAllFilters($userid);
 
 	    if ($output->result=="success") {
@@ -4321,7 +4321,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$result = $this->generateTableHeaderWithItems($columns, "filters_table", "display responsive no-wrap table-bordered table-striped", true, false, '', '', '');
 
 	    for($i=0;$i<count($output->filter_id);$i++) {
-		$action = $this->getUserActionMenuForFilters($output->filter_id[$i], $output->filter_name[$i], $perm);
+		$action = ($user_group === "ADMIN" || ($user_group !== "ADMIN" && $output->filter_id[$i] !== 'FILTEMP')) ? $this->getUserActionMenuForFilters($output->filter_id[$i], $output->filter_name[$i], $perm) : "";
 			
 			$preFix = "<a class='edit_filter' data-id='".$output->filter_id[$i]."'>";
 			$sufFix = "</a>";
