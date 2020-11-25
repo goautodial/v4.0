@@ -172,18 +172,18 @@
 				
 			<!-- FOOTER BUTTONS -->
 			<fieldset class="footer-buttons">
-				<?php
-				if ($_SESSION['usergroup'] === "ADMIN" || ($_SESSION['usergroup'] !== "ADMIN" && $filter_id !== "FILTEMP")) {
-				?>
 				<div class="box-footer">
 				   <div class="col-sm-3 pull-right">
 						<a href="telephonyfilters.php" id="cancel" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-						<button type="submit" class="btn btn-primary" id="modifyOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> <?php $lh->translateText("update"); ?></span></button>						
+						<?php
+						if ($_SESSION['usergroup'] === "ADMIN" || ($_SESSION['usergroup'] !== "ADMIN" && $filter_id !== "FILTEMP")) {
+						?>
+						<button type="submit" class="btn btn-primary" id="modifyOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> <?php $lh->translateText("update"); ?></span></button>
+						<?php
+						}
+						?>
 				   </div>
 				</div>
-				<?php
-				}
-				?>
 			</fieldset>
 			</div><!-- end of tab content -->
 	                    	</div><!-- tab panel -->
