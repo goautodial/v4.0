@@ -191,7 +191,7 @@
                                     <select class="form-control select2" name="ingroup_id" id="ingroup_id" style="width:100%;">
                                         <?php
                                             for($i=0; $i < count($ingroups->group_id);$i++) {
-												if (preg_match("/^AGENTDIRECT/", $ingroups->group_id[$i])) break;
+												if (preg_match("/^AGENTDIRECT/", $ingroups->group_id[$i])) continue;
                                         ?>
                                             <option value="<?php echo $ingroups->group_id[$i];?>"><?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?></option>
                                         <?php
