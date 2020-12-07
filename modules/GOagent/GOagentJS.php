@@ -6144,7 +6144,6 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
 
 
 function DispoSelectSubmit() {
-    console.log('Disposing call...');
     if (VDCL_group_id.length > 1) {var group = VDCL_group_id;}
     else {var group = campaign;}
 
@@ -6196,6 +6195,7 @@ function DispoSelectSubmit() {
                 show: true
             });
         } else {
+            console.log('Disposing call...');
             var postData = {
                 goServerIP: server_ip,
                 goSessionName: session_name,
