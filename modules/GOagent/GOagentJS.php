@@ -6183,6 +6183,10 @@ function DispoSelectSubmit() {
             var selectedDate = moment(currDate).format('YYYY-MM-DD HH:mm:00');
             $("#date-selected").html(moment(currDate).format('dddd, MMMM Do YYYY, h:mm a'));
             $("#callback-date").val(selectedDate);
+            
+            $("#DispoSelectStop").prop('checked', true);
+            pause_calling = 1;
+            
             if (agentonly_callbacks > 0) {
                 $("#my_callback_only p, #my_callback_only div").show();
             } else {
@@ -9369,6 +9373,9 @@ function CallBackDateSubmit() {
     
     $("#DispoSelection").val('CBHOLD');
     $("#callback-datepicker").modal('hide');
+    
+    $("#DispoSelectStop").prop('checked', false);
+    
     DispoSelectSubmit();
     CallBacksCountCheck();
     <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
