@@ -948,4 +948,5 @@ button.max-modal, button.min-modal {
 
 span.month, span.year, span.decade {
 	padding: 5px;
+	display: inline-block;
 }
