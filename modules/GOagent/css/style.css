@@ -957,3 +957,10 @@ span.month, span.year, span.decade {
 [class^='datepicker-'] th.next {
 	text-align: right;
 }
+#callback-datepicker {
+	overflow-y: auto;
+}
+#callback-datepicker:before {
+	background-color: #000;
+	opacity: .5;
+}

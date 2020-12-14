@@ -133,6 +133,7 @@ var is_call_cb = false;
 var hotkeysReady = true;
 var deBug = false; //set to false to disable debugging mode
 var clear_custom_fields = true;
+var previous_dispo = 'NEW';
 
 <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
 var enable_eccs_shortcuts = 1;
@@ -6560,7 +6561,7 @@ function ManualDialSkip() {
                     VDCL_group_id = '';
                     fronter = '';
                     previous_called_count = '';
-                    previous_dispo = '';
+                    previous_dispo = 'NEW';
                     custchannellive = 1;
                     
                     ///////$("#cust_full_name").addClass('hidden');
