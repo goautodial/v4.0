@@ -157,7 +157,7 @@ function response($order_id,$amount,$response_code,$response_desc){
         <!-- Customized Style -->
         <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
         <?php 
-			print $ui->standardizedThemeCSS(); 
+			print $ui->agentStandardizedThemeCSS();
 			print $ui->creamyThemeCSS();
 			print $ui->dataTablesTheme();
 		?>      

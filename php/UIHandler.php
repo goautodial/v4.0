@@ -5849,6 +5849,37 @@ error_reporting(E_ERROR | E_PARSE);
 		
 		return $css;
 	}
+ 
+	/**
+	 * Returns the agent UI standardized theme css for all pages.
+	 */
+	public function agentStandardizedThemeCSS() {
+		$css = "";
+		$css .= '<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />'."\n"; // bootstrap basic css
+		$css .= '<link href="css/creamycrm.css" rel="stylesheet" type="text/css" />'."\n"; // creamycrm css
+		$css .= '<link href="css/circle-buttons.css" rel="stylesheet" type="text/css" />'."\n"; // circle buttons css
+		$css .= '<link href="css/ionicons.min.css" rel="stylesheet" type="text/css" />'."\n"; // ionicons
+		$css .= '<link href="css/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />'."\n"; // bootstrap3 css
+		$css .= '<link rel="stylesheet" href="css/fontawesome/css/font-awesome.min.css">'."\n"; // font-awesome css
+		$css .= '<link rel="stylesheet" href="css/dashboard/simple-line-icons/css/simple-line-icons.css">'; // line css
+		$css .= '<link rel="stylesheet" href="css/dashboard/animate.css/animate.min.css">'."\n"; // animate css
+		$css .= '<link rel="stylesheet" href="css/dashboard/css/bootstrap.css" id="bscss">'; // bootstrap css
+		$css .= '<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">'."\n";
+		$css .= '<link href="css/bootstrap-glyphicons.css" rel="stylesheet">'."\n";
+		$css .= '<link rel="stylesheet" href="css/customizedLoader.css">'."\n"; // preloader css
+		$css .= '<link rel="stylesheet" href="js/dashboard/sweetalert/dist/sweetalert.css">'."\n"; // sweetalert
+   		$css .= '<link href="css/select2/select2.min.css" rel="stylesheet" type="text/css"/>'."\n";
+   		$css .= '<link href="css/select2/select2-bootstrap.min.css" rel="stylesheet" type="text/css"/>'."\n";
+   		$css .= '<link href="css/calendar.css" rel="stylesheet" type="text/css"/>'."\n";
+		
+		/* JS that needs to be declared first */
+		$css .= '<script src="js/jquery.min.js"></script>'."\n"; // required JS
+		$css .= '<script src="js/bootstrap.min.js" type="text/javascript"></script>'."\n"; // required JS
+		$css .= '<script src="js/jquery-ui.min.js" type="text/javascript"></script>'."\n"; // required JS
+		$css .= '<script src="js/calendar_db.js" type="text/javascript" ></script>'."\n";
+		
+		return $css;
+	}
 
 	public function dataTablesTheme() {
 		$css = "";
