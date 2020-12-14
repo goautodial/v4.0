@@ -945,3 +945,7 @@ button.max-modal, button.min-modal {
 		margin: 0 auto;
 	}
 }
+
+span.month, span.year, span.decade {
+	padding: 5px;
+}
