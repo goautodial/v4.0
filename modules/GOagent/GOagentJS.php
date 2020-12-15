@@ -8698,6 +8698,7 @@ function checkForCallbacks() {
             if (!value.seen && (minsBetween <= 5 && minsBetween >= 0)) {
                 callback_alert = true;
                 AutoDial_Resume_Pause("VDADpause");
+                toggleButtons(dial_method);
                 swalContent  = '';
                 <?php if( ECCS_BLIND_MODE === 'y' ){ ?>
 		swalContent += '<div class="swal-callback" title="Call Back">';
@@ -8771,6 +8772,7 @@ function checkForCallbacks() {
                 if (newMinsBetween <= 5 && newMinsBetween >= 0) {
                     callback_alert = true;
                     AutoDial_Resume_Pause("VDADpause");
+                    toggleButtons(dial_method);
                     swalContent  = '';
                     swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Name:</strong> '+value.cust_name+'</div>';
                     swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Phone:</strong> '+phone_number_format(value.phone_number)+' <span style="float:right;"><a class="btn btn-sm btn-success" onclick="NewCallbackCall('+key+', '+value.lead_id+');"><i class="fa fa-phone"></i></a> &nbsp; <a class="btn btn-sm btn-primary" onclick=\'ShowCBDatePicker('+key+', "'+value.callback_time+'", "'+value.comments+'");\'><i class="fa fa-calendar"></i></a></span></div>';
