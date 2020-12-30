@@ -25,7 +25,7 @@
 	require_once('APIHandler.php');
 	$api 										= \creamy\APIHandler::getInstance();
 	$list_id									= $_POST["listid"];
-    $output										= $api->API_listExport($list_id);
+    /*$output										= $api->API_listExport($list_id);
 	
     if ($output->result == "success") {
         //$filename = $output->getReports->filename;
@@ -56,7 +56,61 @@
 			unset($filtered_row);			
         }
         
+      */
+
+	$postfields["goAction"] = "goListExportCountRows";
+	$postfields["list_id"] = $list_id;
+
+	$row_output = $api->API_Request("goLists", $postfields);
+
+	$limit = 20000;
+	$offset = 0;
+
+	$data_header = [];
+	$data_row = "";
+	$display = "";
+
+	$postfields["goAction"] = "goListExport";
+
+	if ($row_output->result == "success") {
+		$count = $row_output->row_count;
+
+		if($count > $limit){
+			
+			$postfields["limit"] = $limit;
+			$postfields["offset"] = $offset;
+			while($last_row_offset <= $count){
+				$postfields["offset"] = $offset;
+				$output = $api->API_Request("goLists", $postfields);
+	
+				if($output->result == "success"){
+					if($offset == 0){
+						$data_header = $output->header;
+					}
+					$data_row .= $output->row;
+				}
+				$last_row_offset = $offset;
+				$offset = $offset + $limit;
+			}
+			$i = 0;        
+			
+			$display = $data_row;
+		} else {
+			$output = $api->API_Request("goLists", $postfields);
+			$data_header = $output->header;
+			$data_row = $output->row;
+			
+			$display = $data_row;
+		}
         
+		$header 								= implode(",", $data_header);        
+        	$filename 								= "LIST_.".$_POST["listid"]."_".date("Ymd")."_".date("His").".csv";
+        
+	        header('Content-type: application/csv');
+        	header('Content-Disposition: attachment; filename='.$filename);
+        
+	        echo $header."\n";
+		echo $display;  
     } else {
 		echo "Failed to Process Request... Please inform the administrator.";
 	}
