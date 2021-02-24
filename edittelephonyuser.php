@@ -62,6 +62,7 @@
 	$admin_group = $_SESSION['usergroup'];
 	
 	$modify_phones = $_SESSION['modify_phones'];
+	var_dump($modify_phones);
 ?>
 <html>
     <head>
