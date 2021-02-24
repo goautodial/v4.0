@@ -57,7 +57,7 @@
 	$user_groups = $api->API_getAllUserGroups();
 	$perm = $api->goGetPermissions('user');
 	$use_webrtc = $api->CheckWebrtc();
-	$modify_phones = $api->CheckPhones();
+	//$modify_phones = $api->CheckPhones();
 	
 	$admin_level = $_SESSION['level'];
 	$admin_group = $_SESSION['usergroup'];
