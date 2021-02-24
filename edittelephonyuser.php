@@ -60,6 +60,8 @@
 	
 	$admin_level = $_SESSION['level'];
 	$admin_group = $_SESSION['usergroup'];
+	
+	$modify_phones = $_SESSION['modify_phones'];
 ?>
 <html>
     <head>
@@ -272,7 +274,7 @@
 			<?php //var_dump($use_webrtc);?>
 													<label for="phone_login" class="col-sm-2 control-label"><?php if($use_webrtc == "1"){ echo "<i class='fa fa-info-circle' title='You cannot edit this field since WebRTC is enabled.'></i> ";} ?> Phone Login</label>
 													<div class="col-sm-10 mb">
-														<input type="text" class="form-control" name="phone_login" id="phone_login"  <?php if($use_webrtc == "1"){ echo "disabled";} ?>
+														<input type="text" class="form-control" name="phone_login" id="phone_login"  <?php if($use_webrtc == "1" && !$modify_phones){ echo "disabled";} ?>
 															value="<?php echo $output->data->phone_login;?>" maxlength="20" placeholder="<?php $lh->translateText("phone_login"); ?>" />
 														<label id="phone_login-error"></label>
 													</div>
