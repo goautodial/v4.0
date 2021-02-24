@@ -61,8 +61,6 @@
 	
 	$admin_level = $_SESSION['level'];
 	$admin_group = $_SESSION['usergroup'];
-	
-	var_dump($modify_phones);
 ?>
 <html>
     <head>
