@@ -574,12 +574,12 @@ input:checked + .slider:before {
 			{ ?> 
 				
                 <!-- Content Header (Page header) -->
-                <section id="contact_info_crumbs" class="content-heading">
+                <!-- <section id="contact_info_crumbs" class="content-heading">
                 <span id="contact_info_bar"><?php $lh->translateText("contact_information"); ?></span>
                     <ol class="breadcrumb hidden-xs pull-right">
                           <li class="active"><i class="fa fa-home"></i> <?php $lh->translateText('home'); ?></li>
                     </ol>
-                </section>
+                </section> -->
 			<?php }//end if ?>
                         <!-- /.ECCS Customization -->
 
@@ -588,25 +588,25 @@ input:checked + .slider:before {
 			<?php if(ECCS_BLIND_MODE === 'y'){ ?>
 			<div class="col-lg-3">
 			<?php } ?>
-                          <div id="popup-hotkeys" class="panel clearfix">
-                          <div class="panel-heading"><b><?=$lh->translationFor('hotkeys')?></b></div>
-                              <div class="panel-body"><?=$lh->translationFor('no_available_hotkeys')?></div>
-                                  <div class="panel-footer clearfix">
-                                      <div class="text-danger sidecolor" style="padding-right: 5px; background-color: inherit;">
-                                          <?php if(ECCS_BLIND_MODE === 'n'){ ?>
-                                          <small><b><?=$lh->translationFor('note')?>:</b> <?=$lh->translationFor('hotkeys_note')?></small>
-                                          <?php } else { ?>
-                                          <small id="" style="" class="">Login to Phone Dialer [Shift + Home]</small><br>
-                                          <small id"" style="" class="">Shortcut Keys to Exit [Shift + End]</small><br>
-                                          <small id"" style="" class="">Shortcut Keys to Dial/Hangup [Shift + 1]</small><br>
-                                          <small id"" style="" class="">Shortcut Keys to Pause/Resume [Shift + 2]</small><br>
-                                          <small id"" style="" class="">Shortcut Keys to Open Webform [Shift + 3]</small><br>
-                                          <small id"" style="" class="">Shortcut Keys to Lead Preview [Shift + 4]</small><br>
-                                          <small id"" style="" class="">Shortcut Keys to Callback List [Shift + 5]</small>
-                                          <?php } ?>
-                                      </div>
-                                  </div>
-                              </div>
+				<div id="popup-hotkeys" class="panel clearfix">
+				<div class="panel-heading"><b><?=$lh->translationFor('hotkeys')?></b></div>
+					<div class="panel-body"><?=$lh->translationFor('no_available_hotkeys')?></div>
+						<div class="panel-footer clearfix">
+							<div class="text-danger sidecolor" style="padding-right: 5px; background-color: inherit;">
+								<?php if(ECCS_BLIND_MODE === 'n'){ ?>
+								<small><b><?=$lh->translationFor('note')?>:</b> <?=$lh->translationFor('hotkeys_note')?></small>
+								<?php } else { ?>
+								<small id="" style="" class="">Login to Phone Dialer [Shift + Home]</small><br>
+								<small id"" style="" class="">Shortcut Keys to Exit [Shift + End]</small><br>
+								<small id"" style="" class="">Shortcut Keys to Dial/Hangup [Shift + 1]</small><br>
+								<small id"" style="" class="">Shortcut Keys to Pause/Resume [Shift + 2]</small><br>
+								<small id"" style="" class="">Shortcut Keys to Open Webform [Shift + 3]</small><br>
+								<small id"" style="" class="">Shortcut Keys to Lead Preview [Shift + 4]</small><br>
+								<small id"" style="" class="">Shortcut Keys to Callback List [Shift + 5]</small>
+								<?php } ?>
+							</div>
+						</div>
+					</div>
 			<?php if(ECCS_BLIND_MODE === 'y'){ ?>
                         <div class="row">
 				<input type="text" id="freeTestField" class="hidden">
@@ -620,43 +620,43 @@ input:checked + .slider:before {
 						<div id="cust_info" class="card">
 								<!-- ECCS Customization -->
 								<?php // if(ECCS_BLIND_MODE === 'y'){?>
-								<div style="background-image:;" class="card-heading bg-inverse">
+								<!-- <div style="background-image:;" class="card-heading bg-inverse">
 								<?php //}//end if?>
 									<div class="row">
 										<div id="cust_avatar" class="col-lg-1 col-md-1 col-sm-2 text-center hidden-xs" style="height: 64px;">
-											<avatar username="Dialed Client" src="<?php echo CRM_DEFAULTS_USER_AVATAR;?>" :size="64"></avatar>
+											<avatar username="Dialed Client" src="<?php //echo CRM_DEFAULTS_USER_AVATAR;?>" :size="64"></avatar>
 										</div>
-										<div class="<?php if (ECCS_BLIND_MODE === 'n') { echo "col-lg-9 col-md-9 col-sm-7"; } else { echo "col-lg-11 col-md-11 col-sm-10"; } ?>">
+										<div class="<?php //if (ECCS_BLIND_MODE === 'n') { echo "col-lg-9 col-md-9 col-sm-7"; } else { echo "col-lg-11 col-md-11 col-sm-10"; } ?>">
 								<!-- ECCS Customization-->
-						  <h4 id="cust_full_name" class="isDisabled">
-									<?php if(ECCS_BLIND_MODE === 'n'){ ?>
-									<span id="first_name_label" class="hidden"><?=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name">Firstname</a> <span id="middle_initial_label" class="hidden"><?=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial">M.I.</a> <span id="last_name_label" class="hidden"><?=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name">Lastname</a>
-									<?php } ?>
+						  <!-- <h4 id="cust_full_name" class="isDisabled">
+									<?php //if(ECCS_BLIND_MODE === 'n'){ ?>
+									<span id="first_name_label" class="hidden"><?//=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name">Firstname</a> <span id="middle_initial_label" class="hidden"><?//=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial">M.I.</a> <span id="last_name_label" class="hidden"><?//=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name">Lastname</a>
+									<?php //} ?>
 									<!-- ECCS Customization -->
-									<?php if(ECCS_BLIND_MODE === 'y'){ ?>
-									<span id="cust_campaign_name"></span>
-									<span id="first_name_label" class="hidden"><?=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name"></a> <span id="middle_initial_label" class="hidden"><?=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial"></a> <span id="last_name_label" class="hidden"><?=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name"></a>
+									<?php //if(ECCS_BLIND_MODE === 'y'){ ?>
+									<!-- <span id="cust_campaign_name"></span>
+									<span id="first_name_label" class="hidden"><?//=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name"></a> <span id="middle_initial_label" class="hidden"><?//=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial"></a> <span id="last_name_label" class="hidden"><?//=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name"></a>
 									<span id="cust_call_type"></span>
-									<?php }//end if ?>
+									<?php //}//end if ?>
          <!-- /.ECCS Customization -->
-								</h4>
+								<!-- </h4>
 						                <p class="ng-binding animated fadeInUpShort">
 									 <!-- ECCS Customization -->
-                                                                        <?php if(ECCS_BLIND_MODE === 'y'){ ?> 
-										<span id="span-cust-number" class="hidden"><label for="cust_number"> Client Number[#CN]: </label> <input type="text" id="cust_number" style="background-color:; border:; color:black; margin-top: 5px; padding-left: 5px; font-size: 14pt; font-weight: 600;" onclick="this.setSelectionRange(0, this.value.length)" readonly/>"Ctrl+C" to Copy Number.</span>
+                                                                        <?php //if(ECCS_BLIND_MODE === 'y'){ ?> 
+										<!-- <span id="span-cust-number" class="hidden"><label for="cust_number"> Client Number[#CN]: </label> <input type="text" id="cust_number" style="background-color:; border:; color:black; margin-top: 5px; padding-left: 5px; font-size: 14pt; font-weight: 600;" onclick="this.setSelectionRange(0, this.value.length)" readonly/>"Ctrl+C" to Copy Number.</span>
 
-									<?php } else { ?>
+									<?php //} else { ?>
                                                                         <!-- /.ECCS Customization -->
-									<span id="cust_number"></span>
-									<?php } ?>
+									<!-- <span id="cust_number"></span>
+									<?php //} ?>
 								</p>
 						    </div>
-										<?php if (ECCS_BLIND_MODE === 'n') { ?>
+										<?php //if (ECCS_BLIND_MODE === 'n') { ?>
 										<div id="agent_stats" class="col-lg-2 col-md-2 col-sm-3 hidden-xs" style="font-size: 18px; display: none;">
 											<p style="margin: 0;">Sales: <span id="agent_sales_count" style="float: right;">0</span></p>
 											<p id="amount_container" style="margin: 0; display: none;">Amount: <span id="agent_total_amount" style="float: right;">0</span></p>
 										</div>
-										<?php } ?>
+										<?php //} ?>
 									</div>
 								</div>
 							<!-- /.card heading -->
@@ -681,6 +681,11 @@ input:checked + .slider:before {
 												<span class="fa fa-file-text-o hidden"></span>
 												<?=$lh->translationFor('script')?></a>
 										 </li>
+										 <li role="presentation">
+                                                                                        <a href="#rc" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
+                                                                                                <span class="fa fa-rocket"></span>
+                                                                                                <?=$lh->translationFor('Chat')?></a>
+                                                                                 </li>
 									  </ul>
 									</div>
 									<!-- Tab panes-->
@@ -928,6 +933,14 @@ input:checked + .slider:before {
 											</div><!-- /.row -->
 										</div>
 										<!-- End of Scripts -->
+
+										<!-- Rocket Chat -->
+                                                                                <div id="rc" role="tabpanel" class="tab-pane">
+                                                                                        <div class="row">
+                                                                                                <div id="rc_div"></div>
+                                                                                        </div><!-- /.row -->
+                                                                                </div>
+                                                                                <!-- End of Rocket Chat -->
 									</div>
 								</div>
 								
@@ -1817,7 +1830,6 @@ input:checked + .slider:before {
 		<?php print $ui->standardizedThemeJS();?>
 		<script type="text/javascript">									
 			$(document).ready(function() {
-				
 				var folder = <?php print $folder; ?>;
 				var selectedAll = false;
 				var selectedMessages = [];
