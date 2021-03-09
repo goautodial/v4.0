@@ -64,7 +64,7 @@
 		<!-- Date Range Picker -->
 		<script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>	
 	        <script type="text/javascript" src="js/plugins/daterangepicker/daterangepickerv3.js"></script>
-		<link rel="stylesheet" href="css/daterangepicker/daterangepickerv3.css"></link>  		
+		<link rel="stylesheet" href="css/daterangepicker/daterangepickerv3.css"></link>  	
     </head>
 
     <?php print $ui->creamyBody(); ?>
@@ -252,6 +252,13 @@
 										<input type="text" class="form-control" name="user_form" id="user_form" placeholder="<?php $lh->translateText("user_id"); ?> (<?php $lh->translateText("mandatory"); ?>)" 
 											value="<?php echo $user_id_for_form;?>" title="<?php $lh->translateText("alphanumberic_only_instruction"); ?>" maxlength="20" required>
 										<label id="user-duplicate-error"></label>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="email" class="col-sm-4 control-label"><?php $lh->translateText("email"); ?></label>
+									<div class="col-sm-8 mb">
+										<input type="text" class="form-control" name="email" id="email" autocomplete="new-password" maxlength="100" placeholder="<?php $lh->translateText("email"); ?>" />
+										<small><span id="email_check"></span></small>
 									</div>
 								</div>
 								<div class="form-group mt">

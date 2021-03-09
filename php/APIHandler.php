@@ -47,6 +47,11 @@
 		define("session_password", $_SESSION["phone_this"]);
 		define("log_pass", $_SESSION["password_hash"]);
 		//define("responsetype", "json");
+	}else{
+		define("session_user", "TEST DEBUG");
+                define("session_usergroup", "ADMIN");
+                define("session_password", "TEST DEBUG");
+                define("log_pass", "TEST");
 	}
 
 	$uri = $_SERVER['REQUEST_URI'];
@@ -58,7 +63,7 @@
 		if ($uri != 'login') {
 			if (!isset($_SESSION['user'])){
 // || $_SESSION["userrole"] == CRM_DEFAULTS_USER_ROLE_AGENT) { 
-				if ($uri == 'php') die("This file cannot be accessed directly"); 
+				//if ($uri == 'php') die("This file cannot be accessed directly"); 
 			}
 		}
 	}
@@ -196,6 +201,57 @@
 				return array("output" => $output, "data" => $data, "URL" => $url, "CONNECTION" => $postdata);
 			else
 				return $output;
+		}
+
+		public function API_StarwoodTestUpload($return_data = NULL){
+			$url = gourl."/goUploadLeads/goAPI.php";
+			$responsetype = "json";
+			$upload_url = "https://wits.justgocloud.com/leadsdata.csv";
+			
+			$finfo = finfo_open('text/csv');
+			$finfo = finfo_file($finfo, $upload_url);
+
+			//$goFileMe = new CURLFile($upload_url, 'text/csv');
+			//$goFileMe = curl_file_create($upload_url, 'text/csv', $upload_url);
+
+			// Constant Data to be passed
+			$default_entries = array(
+				'goUser' => 'admin',
+				'goPass' => '6Arlk87V7SKfZU%2Fm6LPceuERHduvFiu',
+				'responsetype' => $responsetype,
+				'session_user' => 'admin',
+				'log_user' => 'admin',
+				'log_group' => 'ADMIN',
+				'log_pass' => log_pass,
+				'log_ip' => $_SERVER['REMOTE_ADDR'],
+				'hostname' => $_SERVER['REMOTE_ADDR'],
+				'goAction' => 'goUploadMe',
+				'goDupcheck' => 'DUPLIST',
+				'goListId' => '5054',
+				'goFileMe' => $goFileMe
+			);
+
+			$postdata = $default_entries;
+			// Call the API
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, 1);
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			//curl_setopt($ch, CURLOPT_CONNECTTIMEOUT , 0); //gg
+			curl_setopt($ch, CURLOPT_SAFE_UPLOAD, true);
+			curl_setopt($ch, CURLOPT_TIMEOUT  , 0); //gg
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+			$data = curl_exec($ch);
+			curl_close($ch);
+			$output = json_decode($data);
+				
+			/*if(!empty($return_data))
+				return array("output" => $output, "data" => $data, "URL" => $url, "CONNECTION" => $postdata);
+			else
+				return $output;*/
+
+			return $data;
 		}
 
 		public function API_getGOPackage(){
@@ -1216,6 +1272,331 @@
                         );
                 $result = $this->API_Request("goSettings", $postfields);
                                 return $result->result;
+                }
+
+		//Agent Chat
+		public function API_AgentChatActivation($postfields){
+			return $this->API_Request("goAgentChat", $postfields);
+		}
+
+		public function API_getUserDetails($userid){
+                        $postfields = array(
+                                'goAction' => 'goGetUserInfo',
+                                'userid' => $userid
+                        );
+                        return $this->API_Request("goAgentChat", $postfields);
+                }
+		
+		public function API_chatUsers($userid){
+			$postfields = array(
+				'goAction' => 'goGetChatUsers',
+				'userid' => $userid
+			);	
+			return $this->API_Request("goAgentChat", $postfields);
+		}
+
+		public function API_insertChat($to_user_id, $userid, $chat_message){
+			$postfields = array(
+				'goAction' => 'goInsertChat',
+				'to_user_id' => $to_user_id,
+				'userid' => $userid,
+				'chat_message' => $chat_message
+			);	
+			return $this->API_Request("goAgentChat", $postfields);
+		}
+
+		public function API_showUserChat($userid, $to_user_id){
+			$postfields = array(
+				'goAction' => 'goEditUserStatus',
+				'userid' => $userid,
+				'to_user_id' => $to_user_id
+			);	
+			return $this->API_Request("goAgentChat", $postfields);
+		}
+
+		public function API_getUserChat($userid, $to_user_id, $action){
+			$postfields = array(
+				'goAction' => 'goGetUserChat',
+				'userid' => $userid,
+				'to_user_id' => $to_user_id,
+				'action' => $action
+			);
+			return $this->API_Request("goAgentChat", $postfields);
+		}
+
+		public function API_editUserStatus($userid, $to_user_id, $chat_action){
+                        $postfields = array(
+                                'goAction' => 'goEditUserStatus',
+                                'userid' => $userid,
+                                'to_user_id' => $to_user_id,
+				'chat_action' => $chat_action
+                        );
+                        return $this->API_Request("goAgentChat", $postfields);
+                }
+
+		public function API_getUnreadMessageCount($to_user_id, $userid){
+			$postfields = array(
+				'goAction' => 'goGetUnreadMessages',
+				'to_user_id' => $userid,
+				'userid' => $to_user_id
+			);
+			return $this->API_Request("goAgentChat", $postfields);
+		}
+
+		public function API_updateTypingStatus($is_type, $login_details_id){
+			$postfields = array(
+				'goAction' => 'goUpdateTypingStatus',
+				'is_type' => $is_type,
+				'login_details_id' => $login_details_id
+			);
+			return $this->API_Request("goAgentChat", $postfields);
+		}
+
+		public function API_fetchIsTypeStatus($userid){
+			$postfields = array(
+				'goAction' => 'goFetchIsTypeStatus',
+				'userid' => $userid,
+			);
+			return $this->API_Request("goAgentChat", $postfields);
+		}
+
+		//Whatsapp
+		public function API_WhatsappActivation($postfields){
+			return $this->API_Request("goWhatsApp", $postfields);
+		}
+
+		public function API_getWhatsappSettings(){
+			$postfields = array(
+                                'goAction' => 'goGetWhatsappSettings'
+                        );
+                        return $this->API_Request("goWhatsApp", $postfields);
+                }
+
+		public function API_editWhatsappSetting($data){
+			$postfields = array(
+				'goAction' => 'goEditWhatsappSettings'
+			);
+
+			$postfields = array_merge($data, $postfields);
+
+			return $this->API_Request("goWhatsApp", $postfields);
+		}
+		
+		public function API_WhatsAppGetAllChat($chatId, $action, $messageId){
+                        $postfields = array(
+                                'goAction' => 'goGetAllChatWhatsApp',
+				'chatId' => $chatId,
+				'action' => $action,
+				'messageId' => $messageId
+                        );
+
+                        return $this->API_Request("goWhatsApp", $postfields);
+                }
+
+		public function API_WhatsAppSend($phone, $body){
+			$curl = curl_init();
+			curl_setopt_array($curl, array(
+			CURLOPT_URL => "https://us-central1-whatsapp-center.cloudfunctions.net/api/sendMessage?user=eu149&token=onckywrgvyoz2egw&instance=159360",
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "POST",
+			CURLOPT_POSTFIELDS =>"{\r\n  \"phone\": $phone,\r\n  \"body\": \"$body\"\r\n}",
+			CURLOPT_HTTPHEADER => array(
+			    "Content-Type: text/plain"
+			  ),
+			));
+			$response = curl_exec($curl);
+			curl_close($curl);
+			
+			return $response;
+			
+                }
+
+		public function API_WhatsAppWebHookURL(){
+			$getSettings = $this->API_getWhatsappSettings();
+			$callbackURL = $getSettings->callback_url;
+			$curl = curl_init();
+			curl_setopt_array($curl, array(
+			CURLOPT_URL => "https://us-central1-whatsapp-center.cloudfunctions.net/api/webhook?user=eu149&token=onckywrgvyoz2egw&instance=159360",
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "POST",
+			CURLOPT_POSTFIELDS =>"{\r\n  \"webhookUrl\": \"$callbackURL\"\r\n}",
+			CURLOPT_HTTPHEADER => array(
+			  "Content-Type: text/plain"
+			),
+			));
+			$response = curl_exec($curl);
+			curl_close($curl);
+			
+			return $response;
+		}
+
+		public function API_whatsappChatUsers($userid){
+			$postfields = array(
+				'goAction' => 'goGetWhatsAppContacts',
+				'userid' => $userid
+			);	
+			return $this->API_Request("goWhatsApp", $postfields);
+		}
+		
+		public function API_GetWhatsappDispo(){
+                        $postfields = array(
+                                'goAction' => 'goGetWhatsAppDispo'
+                        );
+                        return $this->API_Request("goWhatsApp", $postfields);
+                }
+		
+		public function API_InsertWhatsappChatLog($chatId, $userId, $dispo, $start_time, $end_time){
+                        $postfields = array(
+                                'goAction' => 'goAddWhatsappChatLogs',
+				'chatId' => $chatId, 
+				'userId' => $userId,
+				'dispo' => $dispo,
+				'start_time' => $start_time,
+				'end_time' => $end_time
+                        );
+                        return $this->API_Request("goWhatsApp", $postfields);
+			//return $postfields;
+                }
+
+		public function API_whatsappInsertChat($to_user_id, $userid, $chat_message){
+			$postfields = array(
+				'goAction' => 'goInsertChat',
+				'to_user_id' => $to_user_id,
+				'userid' => $userid,
+				'chat_message' => $chat_message
+			);	
+			return $this->API_Request("goWhatsApp", $postfields);
+		}
+
+		public function API_showWhatsappUserChat($userid, $to_user_id){
+			$postfields = array(
+				'goAction' => 'goEditUserStatus',
+				'userid' => $userid,
+				'to_user_id' => $to_user_id
+			);	
+			return $this->API_Request("goWhatsApp", $postfields);
+		}
+
+		public function API_getWhatsappUserChat($userid, $to_user_id, $action){
+			$postfields = array(
+				'goAction' => 'goGetUserChat',
+				'userid' => $userid,
+				'to_user_id' => $to_user_id,
+				'action' => $action
+			);
+			return $this->API_Request("goWhatsApp", $postfields);
+		}
+
+		public function API_editWhatsappChatStatus($chatId, $chat_action){
+			$postfields = array(
+				'goAction' => 'goEditWhatsappChatStatus',
+				'chatId' => $chatId,
+				'chat_action' => $chat_action
+			);
+			return $this->API_Request("goWhatsApp", $postfields);
+		}
+
+		public function API_getWhatsappUnreadMessageCount($to_user_id, $userid){
+			$postfields = array(
+				'goAction' => 'goGetUnreadMessages',
+				'to_user_id' => $userid,
+				'userid' => $to_user_id
+			);
+			return $this->API_Request("goWhatsApp", $postfields);
+		}
+	
+		public function API_getWhatsAppRealtimeMonitoring(){
+                        $postfields = array(
+                                'goAction' => 'goGetWhatsAppRealtimeMonitoring'
+                        );
+                        return $this->API_Request("goWhatsApp", $postfields);
+                }
+
+		public function API_getWhatsAppUsersSummary(){
+                        $postfields = array(
+                                'goAction' => 'goGetWhatsAppUsersSummary'
+                        );
+                        return $this->API_Request("goWhatsApp", $postfields);
+                }
+
+		public function API_getWhatsAppChatSummary(){
+                        $postfields = array(
+                                'goAction' => 'goGetWhatsAppChatSummary'
+                        );
+                        return $this->API_Request("goWhatsApp", $postfields);
+                }
+
+		public function API_getWhatsAppAssignedChats($userid){
+                        $postfields = array(
+                                'goAction' => 'goGetWhatsAppAssignedChats',
+                                'userid' => $userid
+                        );
+                        return $this->API_Request("goWhatsApp", $postfields);
+                }
+
+		public function API_whatsAppLogin($userid){
+                        $postfields = array(
+                                'goAction' => 'goWhatsAppLogin',
+				'userid' => $userid
+                        );
+                        return $this->API_Request("goWhatsApp", $postfields);
+                }
+
+		public function API_whatsAppLogout($userid){
+                        $postfields = array(
+                                'goAction' => 'goWhatsAppLogout',
+                                'userid' => $userid
+                        );
+                        return $this->API_Request("goWhatsApp", $postfields);
+                }
+		
+		public function API_whatsAppPauseResume($userid, $action){
+                        $postfields = array(
+                                'goAction' => 'goWhatsAppResumePause',
+                                'userid' => $userid,
+				'action' => $action
+                        );
+                        return $this->API_Request("goWhatsApp", $postfields);
+                }
+
+		public function API_whatsAppQueue(){
+                        $postfields = array(
+                                'goAction' => 'goAddWhatsAppQueue'
+                        );
+                        return $this->API_Request("goWhatsApp", $postfields);
+                }
+
+		public function API_getWhatsAppUsers(){
+                        $postfields = array(
+                                'goAction' => 'goGetWhatsAppUsers'
+                        );
+                        return $this->API_Request("goWhatsApp", $postfields);
+                }
+
+		public function API_whatsAppTransferChat($id, $userid){
+                        $postfields = array(
+                                'goAction' => 'goWhatsAppTransferChat',
+				'id' => $id,
+				'userid' => $userid
+                        );
+                        return $this->API_Request("goWhatsApp", $postfields);
+                }
+
+		public function API_whatsAppAssignChats(){
+                        $postfields = array(
+                                'goAction' => 'goWhatsAppAssignChat'
+                        );
+                        return $this->API_Request("goWhatsApp", $postfields);
                 }
 
 		// escape existing special characters already in the database

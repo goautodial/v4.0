@@ -1017,6 +1017,25 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
             }, function(sureToLogout){
                 if (sureToLogout) {
                     swal.close();
+		    //Whatsapp
+		    var userid = $('#wa-userid').val();
+		    $.ajax({
+                        url:"php/WhatsappLogout.php",
+                        method:"POST",
+                        data:{userid:userid, action:'0'},
+                        success:function(data){
+                            console.log("Whatsapp Logged Out...");
+                        }
+                    });
+		    // ./Whatsapp
+            
+            // Rocket Chat
+                var rcWin = document.getElementById('rc_frame').contentWindow;
+                rcWin.postMessage({
+                    event: 'log-me-out-iframe'
+                }, '<?php echo ROCKETCHAT_URL;?>');
+            // Rocket Chat
+
                     if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
                         logoutWarn = false;
                         btnLogMeOut();
