@@ -133,6 +133,7 @@ var is_call_cb = false;
 var hotkeysReady = true;
 var deBug = false; //set to false to disable debugging mode
 var clear_custom_fields = true;
+var previous_dispo = 'NEW';
 
 <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
 var enable_eccs_shortcuts = 1;
@@ -6163,7 +6164,6 @@ function DispoSelectContent_create(taskDSgrp,taskDSstage) {
 
 
 function DispoSelectSubmit() {
-    console.log('Disposing call...');
     if (VDCL_group_id.length > 1) {var group = VDCL_group_id;}
     else {var group = campaign;}
 
@@ -6203,6 +6203,10 @@ function DispoSelectSubmit() {
             var selectedDate = moment(currDate).format('YYYY-MM-DD HH:mm:00');
             $("#date-selected").html(moment(currDate).format('dddd, MMMM Do YYYY, h:mm a'));
             $("#callback-date").val(selectedDate);
+            
+            $("#DispoSelectStop").prop('checked', true);
+            pause_calling = 1;
+            
             if (agentonly_callbacks > 0) {
                 $("#my_callback_only p, #my_callback_only div").show();
             } else {
@@ -6215,6 +6219,7 @@ function DispoSelectSubmit() {
                 show: true
             });
         } else {
+            console.log('Disposing call...');
             var postData = {
                 goServerIP: server_ip,
                 goSessionName: session_name,
@@ -6575,7 +6580,7 @@ function ManualDialSkip() {
                     VDCL_group_id = '';
                     fronter = '';
                     previous_called_count = '';
-                    previous_dispo = '';
+                    previous_dispo = 'NEW';
                     custchannellive = 1;
                     
                     ///////$("#cust_full_name").addClass('hidden');
@@ -8712,6 +8717,7 @@ function checkForCallbacks() {
             if (!value.seen && (minsBetween <= 5 && minsBetween >= 0)) {
                 callback_alert = true;
                 AutoDial_Resume_Pause("VDADpause");
+                toggleButtons(dial_method);
                 swalContent  = '';
                 <?php if( ECCS_BLIND_MODE === 'y' ){ ?>
 		swalContent += '<div class="swal-callback" title="Call Back">';
@@ -8785,6 +8791,7 @@ function checkForCallbacks() {
                 if (newMinsBetween <= 5 && newMinsBetween >= 0) {
                     callback_alert = true;
                     AutoDial_Resume_Pause("VDADpause");
+                    toggleButtons(dial_method);
                     swalContent  = '';
                     swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Name:</strong> '+value.cust_name+'</div>';
                     swalContent += '<div style="padding: 0 30px; text-align: left; line-height: 24px;"><strong>Phone:</strong> '+phone_number_format(value.phone_number)+' <span style="float:right;"><a class="btn btn-sm btn-success" onclick="NewCallbackCall('+key+', '+value.lead_id+');"><i class="fa fa-phone"></i></a> &nbsp; <a class="btn btn-sm btn-primary" onclick=\'ShowCBDatePicker('+key+', "'+value.callback_time+'", "'+value.comments+'");\'><i class="fa fa-calendar"></i></a></span></div>';
@@ -9388,6 +9395,9 @@ function CallBackDateSubmit() {
     
     $("#DispoSelection").val('CBHOLD');
     $("#callback-datepicker").modal('hide');
+    
+    $("#DispoSelectStop").prop('checked', false);
+    
     DispoSelectSubmit();
     CallBacksCountCheck();
     <?php if( ECCS_BLIND_MODE === 'y' ) { ?>

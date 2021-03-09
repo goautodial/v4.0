@@ -1264,6 +1264,14 @@
 		$result = $this->API_Request("goSettings", $postfields);
 				return $result->result;
 		}
+		
+		public function CheckPhones(){
+			$postfields = array(
+				"goAction" => "goCheckPhones"
+			);
+			$result = $this->API_Request("goSettings", $postfields);
+			return $result->result;
+		}
 
 		public function CheckChat($user_id = null){
                         $postfields = array(

@@ -950,7 +950,7 @@
 							}											
 							
 						} else {
-							<?php echo $lh->translateText("no_data"); ?>
+							console.log("<?php echo $lh->translateText("no_data"); ?>");
 						}
 						
 					}

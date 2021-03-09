@@ -347,181 +347,181 @@
   content: "\e078";
 }
 .glyphicon-chevron-left:before {
-  content: "\e079";
+  content: "\e079" !important;
 }
 .glyphicon-chevron-right:before {
-  content: "\e080";
+  content: "\e080" !important;
 }
 .glyphicon-plus-sign:before {
-  content: "\e081";
+  content: "\e081" !important;
 }
 .glyphicon-minus-sign:before {
-  content: "\e082";
+  content: "\e082" !important;
 }
 .glyphicon-remove-sign:before {
-  content: "\e083";
+  content: "\e083" !important;
 }
 .glyphicon-ok-sign:before {
-  content: "\e084";
+  content: "\e084" !important;
 }
 .glyphicon-question-sign:before {
-  content: "\e085";
+  content: "\e085" !important;
 }
 .glyphicon-info-sign:before {
-  content: "\e086";
+  content: "\e086" !important;
 }
 .glyphicon-screenshot:before {
-  content: "\e087";
+  content: "\e087" !important;
 }
 .glyphicon-remove-circle:before {
-  content: "\e088";
+  content: "\e088" !important;
 }
 .glyphicon-ok-circle:before {
-  content: "\e089";
+  content: "\e089" !important;
 }
 .glyphicon-ban-circle:before {
-  content: "\e090";
+  content: "\e090" !important;
 }
 .glyphicon-arrow-left:before {
-  content: "\e091";
+  content: "\e091" !important;
 }
 .glyphicon-arrow-right:before {
-  content: "\e092";
+  content: "\e092" !important;
 }
 .glyphicon-arrow-up:before {
-  content: "\e093";
+  content: "\e093" !important;
 }
 .glyphicon-arrow-down:before {
-  content: "\e094";
+  content: "\e094" !important;
 }
 .glyphicon-share-alt:before {
-  content: "\e095";
+  content: "\e095" !important;
 }
 .glyphicon-resize-full:before {
-  content: "\e096";
+  content: "\e096" !important;
 }
 .glyphicon-resize-small:before {
-  content: "\e097";
+  content: "\e097" !important;
 }
 .glyphicon-exclamation-sign:before {
-  content: "\e101";
+  content: "\e101" !important;
 }
 .glyphicon-gift:before {
-  content: "\e102";
+  content: "\e102" !important;
 }
 .glyphicon-leaf:before {
-  content: "\e103";
+  content: "\e103" !important;
 }
 .glyphicon-fire:before {
-  content: "\e104";
+  content: "\e104" !important;
 }
 .glyphicon-eye-open:before {
-  content: "\e105";
+  content: "\e105" !important;
 }
 .glyphicon-eye-close:before {
-  content: "\e106";
+  content: "\e106" !important;
 }
 .glyphicon-warning-sign:before {
-  content: "\e107";
+  content: "\e107" !important;
 }
 .glyphicon-plane:before {
-  content: "\e108";
+  content: "\e108" !important;
 }
 .glyphicon-calendar:before {
-  content: "\e109";
+  content: "\e109" !important;
 }
 .glyphicon-random:before {
-  content: "\e110";
+  content: "\e110" !important;
 }
 .glyphicon-comment:before {
-  content: "\e111";
+  content: "\e111" !important;
 }
 .glyphicon-magnet:before {
-  content: "\e112";
+  content: "\e112" !important;
 }
 .glyphicon-chevron-up:before {
-  content: "\e113";
+  content: "\e113" !important;
 }
 .glyphicon-chevron-down:before {
-  content: "\e114";
+  content: "\e114" !important;
 }
 .glyphicon-retweet:before {
-  content: "\e115";
+  content: "\e115" !important;
 }
 .glyphicon-shopping-cart:before {
-  content: "\e116";
+  content: "\e116" !important;
 }
 .glyphicon-folder-close:before {
-  content: "\e117";
+  content: "\e117" !important;
 }
 .glyphicon-folder-open:before {
-  content: "\e118";
+  content: "\e118" !important;
 }
 .glyphicon-resize-vertical:before {
-  content: "\e119";
+  content: "\e119" !important;
 }
 .glyphicon-resize-horizontal:before {
-  content: "\e120";
+  content: "\e120" !important;
 }
 .glyphicon-hdd:before {
-  content: "\e121";
+  content: "\e121" !important;
 }
 .glyphicon-bullhorn:before {
-  content: "\e122";
+  content: "\e122" !important;
 }
 .glyphicon-bell:before {
-  content: "\e123";
+  content: "\e123" !important;
 }
 .glyphicon-certificate:before {
-  content: "\e124";
+  content: "\e124" !important;
 }
 .glyphicon-thumbs-up:before {
-  content: "\e125";
+  content: "\e125" !important;
 }
 .glyphicon-thumbs-down:before {
-  content: "\e126";
+  content: "\e126" !important;
 }
 .glyphicon-hand-right:before {
-  content: "\e127";
+  content: "\e127" !important;
 }
 .glyphicon-hand-left:before {
-  content: "\e128";
+  content: "\e128" !important;
 }
 .glyphicon-hand-up:before {
-  content: "\e129";
+  content: "\e129" !important;
 }
 .glyphicon-hand-down:before {
-  content: "\e130";
+  content: "\e130" !important;
 }
 .glyphicon-circle-arrow-right:before {
-  content: "\e131";
+  content: "\e131" !important;
 }
 .glyphicon-circle-arrow-left:before {
-  content: "\e132";
+  content: "\e132" !important;
 }
 .glyphicon-circle-arrow-up:before {
-  content: "\e133";
+  content: "\e133" !important;
 }
 .glyphicon-circle-arrow-down:before {
-  content: "\e134";
+  content: "\e134" !important;
 }
 .glyphicon-globe:before {
-  content: "\e135";
+  content: "\e135" !important;
 }
 .glyphicon-wrench:before {
-  content: "\e136";
+  content: "\e136" !important;
 }
 .glyphicon-tasks:before {
-  content: "\e137";
+  content: "\e137" !important;
 }
 .glyphicon-filter:before {
-  content: "\e138";
+  content: "\e138" !important;
 }
 .glyphicon-briefcase:before {
-  content: "\e139";
+  content: "\e139" !important;
 }
 .glyphicon-fullscreen:before {
-  content: "\e140";
+  content: "\e140" !important;
 }
 .glyphicon-dashboard:before {
   content: "\e141";
@@ -944,4 +944,23 @@ button.max-modal, button.min-modal {
 		max-width: 280px;
 		margin: 0 auto;
 	}
+}
+
+span.month, span.year, span.decade {
+	padding: 5px;
+	display: inline-block;
+	min-width: 38px;
+}
+[class^='datepicker-'] th.picker-switch {
+	text-align: center;
+}
+[class^='datepicker-'] th.next {
+	text-align: right;
+}
+#callback-datepicker {
+	overflow-y: auto;
+}
+#callback-datepicker:before {
+	background-color: #000;
+	opacity: .5;
 }

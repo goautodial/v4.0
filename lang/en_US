@@ -1514,6 +1514,8 @@ enter_last_name = "Enter Last Name"
 lead_mapping = "Lead Mapping"
 check_phones_in_system = "CHECK	DUPLICATES IN ENTIRE SYSTEM"
 
+no_data = "No Data"
+
 // AREACODE CALLER ID
 
 areacode = "Areacode"

@@ -250,8 +250,9 @@
                                                 <option value="conf">  conf  </option>
 						<?php
 						for($i=0;$i<count($audio_files->file_name);$i++){
+							$file = substr($audio_files->file_name[$i], 0, strrpos($audio_files->file_name[$i], "."));
 						?>
-							<option value="<?php echo $audio_files->file_name[$i];?>">  <?php echo $audio_files->file_name[$i]; ?>  </option>
+							<option value="<?php echo $file;?>">  <?php echo $file; ?>  </option>
 	    		<?php
            		    }		
             		?>
@@ -359,8 +360,9 @@
                                                 <option value="conf">  conf  </option>
                                                 <?php
                                                 for($i=0;$i<count($audio_files->file_name);$i++){
+							$file = substr($audio_files->file_name[$i], 0, strrpos($audio_files->file_name[$i], "."));
                                                 ?>
-                                                        <option value="<?php echo $audio_files->file_name[$i];?>">  <?php echo $audio_files->file_name[$i]; ?>  </option>
+                                                        <option value="<?php echo $file;?>">  <?php echo $file; ?>  </option>
 
                         <?php
                             }
