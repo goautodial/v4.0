@@ -1037,7 +1037,7 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                     event: 'log-me-out-iframe'
                 }, '<?php echo ROCKETCHAT_URL;?>');
             // Rocket Chat
-
+	    <?php } ?>
                     if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
                         logoutWarn = false;
                         btnLogMeOut();
@@ -1064,7 +1064,6 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                     refresh_interval = 1000;
                 }
             });
-	    <?php } ?>
         }
     });
    
