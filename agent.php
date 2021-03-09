@@ -724,19 +724,13 @@ input:checked + .slider:before {
 												<span class="fa fa-file-text-o hidden"></span>
 												<?=$lh->translationFor('script')?></a>
 										 </li>
-<<<<<<< HEAD
 										<?php if(ROCKETCHAT_ENABLE === 'y'){?>
-=======
->>>>>>> a452bdd4f3bba6cb9998b01439df56d7bc6d7dc2
 										 <li role="presentation">
                                                                                         <a href="#rc" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
                                                                                                 <span class="fa fa-rocket"></span>
                                                                                                 <?=$lh->translationFor('Chat')?></a>
                                                                                  </li>
-<<<<<<< HEAD
 										<?php }?>
-=======
->>>>>>> a452bdd4f3bba6cb9998b01439df56d7bc6d7dc2
 									  </ul>
 									</div>
 									<!-- Tab panes-->
@@ -984,7 +978,6 @@ input:checked + .slider:before {
 											</div><!-- /.row -->
 										</div>
 										<!-- End of Scripts -->
-<<<<<<< HEAD
 										
 										<?php if(ROCKETCHAT_ENABLE === 'y'){?>
 										<!-- Rocket Chat -->
@@ -995,16 +988,6 @@ input:checked + .slider:before {
                                                                                 </div>
                                                                                 <!-- End of Rocket Chat -->
 										<?php } ?>
-=======
-
-										<!-- Rocket Chat -->
-                                                                                <div id="rc" role="tabpanel" class="tab-pane">
-                                                                                        <div class="row">
-                                                                                                <div id="rc_div"></div>
-                                                                                        </div><!-- /.row -->
-                                                                                </div>
-                                                                                <!-- End of Rocket Chat -->
->>>>>>> a452bdd4f3bba6cb9998b01439df56d7bc6d7dc2
 									</div>
 								</div>
 								
@@ -1928,7 +1911,6 @@ dding-top: 10px;">
 		<script type="text/javascript">	
 			var rcToken = "";								
 			$(document).ready(function() {
-<<<<<<< HEAD
 		               <?php if(ROCKETCHAT_ENABLE === 'y'){?> 
 				//Initialize RocketChat
 				$('<iframe>', {
@@ -1970,8 +1952,6 @@ dding-top: 10px;">
 				//./rocketchat
 				<?php } ?>				
 
-=======
->>>>>>> a452bdd4f3bba6cb9998b01439df56d7bc6d7dc2
 				var folder = <?php print $folder; ?>;
 				var selectedAll = false;
 				var selectedMessages = [];
