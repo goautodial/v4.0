@@ -1029,7 +1029,8 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                         }
                     });
 		    // ./Whatsapp
-            
+
+           <?php if(ROCKETCHAT_ENABLE === 'y'){?> 
             // Rocket Chat
                 var rcWin = document.getElementById('rc_frame').contentWindow;
                 rcWin.postMessage({
@@ -1063,6 +1064,7 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                     refresh_interval = 1000;
                 }
             });
+	    <?php } ?>
         }
     });
    
