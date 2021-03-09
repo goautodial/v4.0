@@ -139,6 +139,9 @@ function response($order_id,$amount,$response_code,$response_desc){
 	echo "</table>";
 */
 
+$agent_chat_status = $ui->API_getAgentChatActivation();
+$whatsapp_status = $ui->API_getWhatsappActivation();
+
 ?>
 
 <html>
@@ -547,6 +550,7 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
 		</style>
 		<!-- ECCS CSS -->
 	<!--	<link href="./css/bootstrap-toggle.min.css" type="text/css" /> -->
@@ -567,13 +571,13 @@ input:checked + .slider:before {
 		<?php print $ui->getAgentSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar()); ?>
 
             <!-- Right side column. Contains the navbar and content of the page -->
-            <aside class="content-wrapper">
+            <aside class="content-wrapper" style="padding-left: 0 !important; padding-right: 0 !important;" >
                 <!-- Content Header (Page header) -->
   			<!-- ECCS Customization -->
                 	<?php if(ECCS_BLIND_MODE !== 'y')
 			{ ?> 
 				
-                <!-- Content Header (Page header) -->
+                <!-- Content Header (Page header) 
                 <section id="contact_info_crumbs" class="content-heading">
                 <span id="contact_info_bar"><?php $lh->translateText("contact_information"); ?></span>
                     <ol class="breadcrumb hidden-xs pull-right">
@@ -582,9 +586,47 @@ input:checked + .slider:before {
                 </section>
 			<?php }//end if ?>
                         <!-- /.ECCS Customization -->
-
+		
                 <!-- Main content -->
-                <section class="content">
+<!-- <ul class="nav nav-tabs nav-justified content-tabs" style="position: absolute; top: 120px; width: 84%; left: 55px;"> -->
+    <!-- <li id="dialer-tab" class="active"><a href="#control-dialer-tab" data-toggle="tab">Dialer</a></li>
+    <li id="whatsapp-tab" class=""><a href="#control-whatsapp-tab" data-toggle="tab">Whatsapp</a></li>-->
+    <style>
+	#btn-dialer-tab, #btn-whatsapp-tab{
+		box-shadow: 0 0 black;
+		color: black;
+		margin: 5px 50px 0px 0px;
+		background: lightgrey;
+	}
+	section#contact_info_crumbs{
+		margin-bottom: 0px; /*5px;*/
+		padding-left: 40px;
+		padding-right: 40px;
+	}
+	div.tab-content, div.tab-pane section.content{
+		/*padding-top: 2.5px;*/
+		padding-top: 0px !important;
+	}
+    </style>
+<!-- WhatsApp Button
+    <div class="row">
+    <a href="#" class="btn col-lg-3 pull-right" id="btn-dialer-tab">Dialer</a>
+    <?php if($whatsapp_status) { ?>
+    <a href="#" class="btn col-lg-3 pull-right" id="btn-whatsapp-tab" style="background-color: #009688; color: white;">Whatsapp<span id="wa-notiff-badge"></span></a>
+    <?php } ?>
+    </div>
+-->
+<!-- </ul> -->
+<div class="tab-content" style="border-width:0; overflow-y: auto; padding-left: 0px; padding-right: 0px;">
+    <!-- Home tab content -->
+    <?php if($whatsapp_status) { ?>
+    <div class="tab-pane" id="control-whatsapp-tab">
+		<section class="whatsapp-content content" style="overflow: hidden;"></section>
+    </div>
+    <?php } ?>
+    <div class="tab-pane active" id="control-dialer-tab">
+		<input type="hidden" id="wa-userid" name="userid" value="<?php print $user->getUserId(); ?>">
+                <section class="content" style="padding-left:0px !important; padding-right:0px !important; padding-top:0px !important;">
 			<?php if(ECCS_BLIND_MODE === 'y'){ ?>
 			<div class="col-lg-3">
 			<?php } ?>
@@ -618,6 +660,7 @@ input:checked + .slider:before {
 					<!-- standard custom edition form -->
 					<div class="container-custom ng-scope">
 						<div id="cust_info" class="card">
+						<?php /* card-header?>
 								<!-- ECCS Customization -->
 								<?php // if(ECCS_BLIND_MODE === 'y'){?>
 								<div style="background-image:;" class="card-heading bg-inverse">
@@ -660,7 +703,7 @@ input:checked + .slider:before {
 									</div>
 								</div>
 							<!-- /.card heading -->
-								
+						<?php */?>				
 							<!-- Card body -->
 						        <div class="card-body custom-tabpanel">
 				                	<div role="tabpanel" class="panel panel-transparent">
@@ -681,6 +724,13 @@ input:checked + .slider:before {
 												<span class="fa fa-file-text-o hidden"></span>
 												<?=$lh->translationFor('script')?></a>
 										 </li>
+										<?php if(ROCKETCHAT_ENABLE === 'y'){?>
+										 <li role="presentation">
+                                                                                        <a href="#rc" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
+                                                                                                <span class="fa fa-rocket"></span>
+                                                                                                <?=$lh->translationFor('Chat')?></a>
+                                                                                 </li>
+										<?php }?>
 									  </ul>
 									</div>
 									<!-- Tab panes-->
@@ -928,6 +978,16 @@ input:checked + .slider:before {
 											</div><!-- /.row -->
 										</div>
 										<!-- End of Scripts -->
+										
+										<?php if(ROCKETCHAT_ENABLE === 'y'){?>
+										<!-- Rocket Chat -->
+                                                                                <div id="rc" role="tabpanel" class="tab-pane">
+                                                                                        <div class="row">
+                                                                                        	<div id="rc_div"></div>
+											</div><!-- /.row -->
+                                                                                </div>
+                                                                                <!-- End of Rocket Chat -->
+										<?php } ?>
 									</div>
 								</div>
 								
@@ -1642,7 +1702,11 @@ input:checked + .slider:before {
 						</div>
 					</div-->
 			
+			<!-- AGENT CHAT -->
+			<?php if($agent_chat_status) include("includes/chatapp.php");?>
                 </section><!-- /.content -->
+	</div>
+</div>	
             </aside><!-- /.right-side -->
 
             <?php //print $ui->creamyFooter(); ?>
@@ -1652,11 +1716,12 @@ input:checked + .slider:before {
     <!-- Create the tabs -->
     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
       <li id="dialer-tab" class="active"><a href="#control-sidebar-dialer-tab" data-toggle="tab"><i class="fa fa-phone"></i></a></li>
+      <?php if($agent_chat_status) echo '<li id="chat-tab"><a href="#control-sidebar-chat-tab" data-toggle="tab"><i class="fa fa-comments-o"></i></a></li>'; ?> 
       <li id="agents-tab" class="hidden"><a href="#control-sidebar-users-tab" data-toggle="tab"><i class="fa fa-users"></i></a></li>
       <li id="settings-tab"><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-user"></i></a></li>
     </ul>
     <!-- Tab panes -->
-    <div class="tab-content" style="border-width:0; overflow-y: auto; padding-bottom: 30px;">
+    <div class="tab-content" style="border-width:0; overflow-y: auto;">
       <!-- Home tab content -->
       <div class="tab-pane active" id="control-sidebar-dialer-tab">
         <ul class="control-sidebar-menu" id="go_agent_dialer">
@@ -1729,7 +1794,7 @@ input:checked + .slider:before {
 			</li>
         </ul>
 		
-        <ul class="control-sidebar-menu" id="go_agent_login" style="width: 100%; margin: 25px auto 15px; text-align: center;">
+        <ul class="control-sidebar-menu" id="go_agent_login" style="width: 100%; margin: 15px auto 15px; text-align: center;">
 			
         </ul>
 		
@@ -1802,8 +1867,36 @@ input:checked + .slider:before {
         </ul>
       </div>
       <!-- /.tab-pane -->
+	<?php if($agent_chat_status){ ?>
+      <!-- tab-pane -->
+      <!-- chat tab -->
+      <div class="tab-pane" id="control-sidebar-chat-tab">
+	<ul class="contacts-list">
+	<li>
+           <div class="center-block" style="text-align: center; /*background: #181f23 none repeat scroll 0 0;*/ margin: 0 10px; padding-bottom: 1px; pa
+dding-top: 10px;">
+               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+               <p><?=$ui->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 96, false, true, false)?></p>
+               <p style="color:white;"><?=$user->getUserName()?><br><small><?=$lh->translationFor("nice_to_see_you_again")?></small></p>
+               </a>
+           </div>
+       </li>
+       <li>
+	Contact List
+           <!--<div>&nbsp;</div>-->
+       </li>
+	
+	
+	<?php
+	   include('includes/chat-tab.php');
+	?>
+	</ul>	
+      </div>
+      <!-- /. tab-pane -->
+	<?php } ?>
     </div>
   </aside>
+
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
@@ -1815,9 +1908,50 @@ input:checked + .slider:before {
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 
 		<?php print $ui->standardizedThemeJS();?>
-		<script type="text/javascript">									
+		<script type="text/javascript">	
+			var rcToken = "";								
 			$(document).ready(function() {
-				
+		               <?php if(ROCKETCHAT_ENABLE === 'y'){?> 
+				//Initialize RocketChat
+				$('<iframe>', {
+		                   src: '<?php echo ROCKETCHAT_URL;?>?layout=embedded',
+		                   id:  'rc_frame',
+				   name: 'rc_frame',
+		                   frameborder: 0,
+                		   width: '100%',
+		                   height: '100%',
+                		   scrolling: 'no'
+		                   }).appendTo('#rc_div');
+
+				var rcUser = '<?php echo $_SESSION['user']?>';
+				var rcHandshake = '<?php echo $_SESSION['rc_handshake']?>';	
+
+				$.ajax({
+					url: "./php/LoginRocketChat.php",
+					type: 'POST',
+					dataType: "json",
+					data: {user: rcUser, pass: rcHandshake},
+					success: function(data) {
+						rcToken = data.data.authToken;
+						console.log(rcToken);
+						rcWin = document.getElementById('rc_frame').contentWindow;
+						//rcWin.postMessage({
+						//	event: 'login-with-token',
+						//	loginToken: rcToken
+						//}, '<?php echo ROCKETCHAT_URL;?>');
+						
+						setTimeout(function() {
+							rcWin.postMessage({
+								event: 'log-me-in-iframe',
+								user: rcUser,
+								pass: rcHandshake
+							}, '<?php echo ROCKETCHAT_URL;?>');
+						}, 3000);
+					}
+				});
+				//./rocketchat
+				<?php } ?>				
+
 				var folder = <?php print $folder; ?>;
 				var selectedAll = false;
 				var selectedMessages = [];
