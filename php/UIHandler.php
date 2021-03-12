@@ -2080,6 +2080,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$callreports .= '</ul></li>';
 			
 			// WhatsApp Settings
+   $whatsapp_status = 0; // permanently disabled -- chris
 			if ($whatsapp_status == 1) { // module is enabled.
 				$whatsapp = '<li class="treeview"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("WhatsApp").'</span><i class=
 "fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
