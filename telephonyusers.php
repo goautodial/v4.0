@@ -315,22 +315,6 @@
 										</select>
 									</div>
 								</div>
-								<div class="form-group">
-									<label class="col-sm-4 control-label" for="ip"><?php $lh->translateText("server_ip"); ?></label>
-									<div class="col-sm-8 mb">
-										<select name="ip" id="ip" class="form-control" required>
-											<?php
-												for($i=0;$i < count($servers->server_id);$i++){
-											?>
-											<option value="<?php echo $servers->server_ip[$i];?>">
-												<?php echo $servers->server_ip[$i].' - '.$servers->server_id[$i].' - '.$servers->server_description[$i];?>
-											</option>
-											<?php
-												}
-											?>
-										</select>
-									</div>
-								</div>
 	                        </fieldset>
 	                     </div>
 					</form>

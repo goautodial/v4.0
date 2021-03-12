@@ -5908,7 +5908,10 @@ error_reporting(E_ERROR | E_PARSE);
    		$css .= '<link href="css/calendar.css" rel="stylesheet" type="text/css"/>'."\n";
 		
 		//for chat
-		$css .= '<link href="modules/GoChat/css/style.css" rel="stylesheet" type="text/css"/>'."\n";
+		$agent_chat_status = $this->API_getAgentChatActivation();
+		if($agent_chat_status){
+   $css .= '<link href="modules/GoChat/css/style.css" rel="stylesheet" type="text/css"/>'."\n";
+  }
 	
 		/* JS that needs to be declared first */
 		$css .= '<script src="js/jquery.min.js"></script>'."\n"; // required JS
@@ -5916,7 +5919,6 @@ error_reporting(E_ERROR | E_PARSE);
 		$css .= '<script src="js/jquery-ui.min.js" type="text/javascript"></script>'."\n"; // required JS
 		$css .= '<script src="js/calendar_db.js" type="text/javascript" ></script>'."\n";
 		
-		$agent_chat_status = $this->API_getAgentChatActivation();
 		if($agent_chat_status){
 		    $css .= '<script src="modules/GoChat/js/chat.js"></script>'."\n";
 		    $css .= '<script>$(document).ready(function() { $(".chatappdiv").load("../includes/chatapp_admin.php"); });</script>'."\n";
