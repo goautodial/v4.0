@@ -181,6 +181,7 @@
 	$count_users = count($all_users->user);
 	$license_seats = intval($all_users->licensedSeats);
 	$avail_seats = $license_seats-$count_users;
+	$servers = $api->API_getAllServers();
 ?>
 	<!-- ADD USER MODAL -->
 	    <div class="modal fade" id="user-wizard-modal" aria-labelledby="T_User" >
@@ -315,6 +316,22 @@
 										</select>
 									</div>
 								</div>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="ip"><?php $lh->translateText("server_ip"); ?></label>
+									<div class="col-sm-8 mb">
+										<select name="ip" id="ip" class="form-control" required>
+											<?php
+												for($i=0;$i < count($servers->server_id);$i++){
+											?>
+											<option value="<?php echo $servers->server_ip[$i];?>">
+												<?php echo $servers->server_ip[$i].' - '.$servers->server_id[$i].' - '.$servers->server_description[$i];?>
+											</option>
+											<?php
+												}
+											?>
+										</select>
+									</div>
+								</div>
 	                        </fieldset>
 	                     </div>
 					</form>
@@ -327,7 +344,6 @@
 
  <?php
 	if((isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0) || $_SESSION['show_phones'] == 1 ){
-		$servers = $api->API_getAllServers();
 ?>
 	<!-- ADD PHONE MODAL -->
 	    <div class="modal fade" id="phone-wizard-modal" aria-labelledby="T_Phones" >
