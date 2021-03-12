@@ -5924,7 +5924,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    $css .= '<script>$(document).ready(function() { $(".chatappdiv").load("../includes/chatapp_admin.php"); });</script>'."\n";
 		}
 
-		//$css .= '<script src="whatsapp2/js/script.js"></script>'."\n";
+		$css .= '<script src="whatsapp2/js/script.js"></script>'."\n";
 
 		return $css;
 	}
