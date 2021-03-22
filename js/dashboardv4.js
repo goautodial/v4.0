@@ -185,7 +185,7 @@
 
     function load_realtime_inbound_monitoring(){
 		$.ajax({
-			url: "./php/dashboard/API_getRealtimeAgentsMonitoring.php",
+			url: "./php/dashboard/API_getRealtimeInboundMonitoring.php",
 			cache: false,
 			dataType: 'json',
 			success: function(values){

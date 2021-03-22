@@ -593,6 +593,13 @@
 			);		
 			return $this->API_Request("goDashboard", $postfields);
 		}
+			
+		public function API_getRealtimeInboundMonitoring(){
+			$postfields = array(
+				'goAction' => 'goGetRealtimeInboundMonitoring'
+			);		
+			return $this->API_Request("goDashboard", $postfields);
+		}
 
 		public function API_getTotalDroppedCalls(){
 			$postfields = array(
