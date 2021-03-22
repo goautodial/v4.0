@@ -1452,6 +1452,9 @@ function goGetInSession(type) {
 					<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
 					load_realtime_calls_monitoring();
 					<?php } ?>
+					<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
+					load_realtime_inbound_monitoring();
+					<?php } ?>
 					//load_realtime_sla_monitoring();
 				// ---- view agent information modal
 					load_view_agent_information();

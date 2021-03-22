@@ -182,6 +182,29 @@
 			} 
 		});
     } 
+
+    function load_realtime_inbound_monitoring(){
+		$.ajax({
+			url: "./php/dashboard/API_getRealtimeAgentsMonitoring.php",
+			cache: false,
+			dataType: 'json',
+			success: function(values){
+				var JSONStringrealtime = values;
+				var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
+				$('#realtime_inbound_monitoring_table').DataTable({
+					destroy:true,
+					responsive:true,
+					data:JSONObjectrealtime,
+					stateSave: true,
+					drawCallback: function() {
+						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+						pagination.toggle(this.api().page.info().pages > 1);
+					}
+				});
+				goAvatar._init(goOptions);
+			} 
+		});
+    }
     
     function load_realtime_sla_monitoring(){
     $.ajax({
