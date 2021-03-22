@@ -641,7 +641,7 @@
 									<th style="font-size: small;"><?=$lh->translateText("agent_name")?></th>                                                    
 									<th style="font-size: small;"><?=$lh->translateText("inbound_group")?></th>
 									<th style="font-size: small;"><?=$lh->translateText("status")?></th>
-									<th style="font-size: small;"><?=$lh->translateText("call_in_queue")?></th>
+									<th style="font-size: small;"><?=$lh->translateText("calls_in_queue")?></th>
 									<th style="font-size: small;"><?=$lh->translateText("mm:ss")?></th>
 									<th style="font-size: small;"><?=$lh->translateText("campaign")?></th>
 									<th style="font-size: small;"><?=$lh->translateText("phone_number")?></th>
