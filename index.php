@@ -262,7 +262,7 @@
 										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_RingingCalls">0</span></div>
 										<div class="text"><?=$lh->translateText("ringing_calls")?></div>
 									</div>
-									<a href="#" data-toggle="modal" data-target="#<?php if(REALTIME_INBOUND_MONITORING === 'y') echo 'realtime_inbound_monitoring'?>" style="text-decoration : none; color: black;">
+									<a href="#" data-toggle="modal" data-target="#<?php if(REALTIME_INBOUND_MONITORING === 'y') echo 'realtime_inbound_monitoring'?>" style="text-decoration : none; color: rgba(0, 0, 0, 0.8);">
 										<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
 											<div class="h2 m0"><span class="text-lg text-muted" id="refresh_IncomingQueue">0</span></div>
 											<div class="text"><?=$lh->translateText("incoming_calls")?></div>
