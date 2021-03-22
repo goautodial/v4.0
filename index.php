@@ -262,10 +262,12 @@
 										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_RingingCalls">0</span></div>
 										<div class="text"><?=$lh->translateText("ringing_calls")?></div>
 									</div>
-									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
-										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_IncomingQueue">0</span></div>
-										<div class="text"><?=$lh->translateText("incoming_calls")?></div>
-									</div>	                	
+									<a href="#" data-toggle="modal" data-target="#<?php if(REALTIME_INBOUND_MONITORING === 'y') echo 'realtime_inbound_monitoring'?>" style="text-decoration : none">
+										<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
+											<div class="h2 m0"><span class="text-lg text-muted" id="refresh_IncomingQueue">0</span></div>
+											<div class="text"><?=$lh->translateText("incoming_calls")?></div>
+										</div>
+									</a>
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
 										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_AnsweredCalls">0</span></div>
 											<div class="text"><?=$lh->translateText("answered_calls")?></div>
@@ -621,6 +623,39 @@
 			</div>	
 		</div>
 		<!-- End of Campaigns Monitoring -->
+		
+		<!-- Realtime Inbound Monitoring -->
+		<div class="modal fade" id="realtime_inbound_monitoring" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-lg modal-dialog" style="min-width: 75%">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4><?=$lh->translateText("realtime_inbound_monitoring")?></h4>
+					</div>
+					<div class="modal-body">
+						<div class="content table-responsive table-full-width">
+						<!-- <div class="col-sm-12">-->
+							<table class="table table-striped table-hover display compact" id="realtime_inbound_monitoring_table" style="width: 100%">
+								<thead>                                            
+									<th style="color: white;">Pic</th>
+									<th style="font-size: small;"><?=$lh->translateText("agent_name")?></th>                                                    
+									<th style="font-size: small;"><?=$lh->translateText("inbound_group")?></th>
+									<th style="font-size: small;"><?=$lh->translateText("status")?></th>
+									<th style="font-size: small;"><?=$lh->translateText("call_in_queue")?></th>
+									<th style="font-size: small;"><?=$lh->translateText("mm:ss")?></th>
+									<th style="font-size: small;"><?=$lh->translateText("campaign")?></th>
+									<th style="font-size: small;"><?=$lh->translateText("phone_number")?></th>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						<!--</div>-->
+						</div>
+					</div>
+				</div>
+			</div>	
+		</div>
+		<!-- End of Realtime Inbound Monitoring -->
 		
 		<!-- Realtime Service Level Monitoring -->
 		<div class="modal fade" id="realtime_sla_monitoring" tabindex="-1" role="dialog" aria-hidden="true">
