@@ -37,6 +37,7 @@
 			$campname 								= $api->escapeJsonString($value->vla_campaign_name);    
 			$station 								= $api->escapeJsonString($value->vla_extension);
 			$user_group 							= $api->escapeJsonString($value->vu_user_group);
+			$closer_campaigns						= $api->escapeJsonString($value->vla_closer_campaigns);
 			$sessionid 								= $api->escapeJsonString($value->vla_conf_exten);
 			$status 								= $api->escapeJsonString($value->vla_status);
 			$call_type 								= $api->escapeJsonString($value->vla_comments);
@@ -49,7 +50,7 @@
 			$last_state_change 						= (!isset($value->last_state_change)) ? $last_call_finish : $api->escapeJsonString($value->last_state_change);
 			$lead_id 								= $api->escapeJsonString($value->vla_lead_id);
 			$agent_log_id 							= $api->escapeJsonString($value->vla_agent_log_id);
-			$vla_callerid 							= $api->escapeJsonString($value->vla_callerid);    
+			$vla_callerid 							= $api->escapeJsonString($value->vla_callerid);
 			$cust_phone 							= (!isset($value->vl_phone_number)) ? "" : $api->escapeJsonString($value->vl_phone_number);
 			$pausecode 								= $api->escapeJsonString($value->vla_pausecode);
 			//$vla_conference						= $api->escapeJsonString($value->vla_conf_exten);
@@ -149,6 +150,11 @@
 			
 			$call_time_MS 							= "$call_time_M_int:$call_time_SEC";
 			$statustxt								= $status;
+            
+            $closer_campaigns                       = trim(substr($closer_campaigns, 0, -1));
+            $closer_campaigns                       = implode(", ", explode(" ", $closer_campaigns));
+            
+            $calls_in_queue                         = 0;
 			
 			switch ($status) {
 				case "PAUSED":
@@ -214,11 +220,12 @@
 			$barracks 								.= '[';
 			$barracks 								.= '"'.$sessionAvatar.'",';
 			$barracks 								.= '"<a id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#modal_view_agent_information\" data-id=\"'.$userid.'\" data-user=\"'.$agentid.'\" class=\"text-blue\"><strong>'.$agentname.'</strong></a>",'; 
-			$barracks 								.= '"'.$user_group.'",';    
+			$barracks 								.= '"'.$closer_campaigns.'",';    
 			$barracks 								.= '"<b class=\"'.$textclass.'\">'.$statustxt.''.$CM.'</b>",';    
-			$barracks 								.= '"'.$cust_phone.'",';         
+			$barracks 								.= '"<b class=\"'.$textclass.'\">'.$calls_in_queue.'</b>",';
 			$barracks 								.= '"<b class=\"'.$textclass.'\">'.$call_time_MS.'</b>",';
-			$barracks 								.= '"'.$campname.'"';
+			$barracks 								.= '"'.$campname.'",';
+			$barracks 								.= '"'.$cust_phone.'"';         
 			$barracks 								.= '],';
 		}    
 		
