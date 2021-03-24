@@ -222,7 +222,7 @@
 			$barracks 								.= '"<a id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#modal_view_agent_information\" data-id=\"'.$userid.'\" data-user=\"'.$agentid.'\" class=\"text-blue\"><strong>'.$agentname.'</strong></a>",'; 
 			$barracks 								.= '"'.$closer_campaigns.'",';    
 			$barracks 								.= '"<b class=\"'.$textclass.'\">'.$statustxt.''.$CM.'</b>",';    
-			$barracks 								.= '"<b class=\"'.$textclass.'\">'.$calls_in_queue.'</b>",';
+			$barracks 								.= '"'.$calls_in_queue.'",';
 			$barracks 								.= '"<b class=\"'.$textclass.'\">'.$call_time_MS.'</b>",';
 			$barracks 								.= '"'.$campname.'",';
 			$barracks 								.= '"'.$cust_phone.'"';         
