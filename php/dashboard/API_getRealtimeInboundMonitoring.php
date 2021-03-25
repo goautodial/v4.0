@@ -155,8 +155,8 @@
             $closer_campaigns                       = implode(", ", explode(" ", $closer_campaigns));
             
             $calls_in_queue                         = 0;
-            if (is_array($output->calls_in_queue) && isset($output->calls_in_queue[$agentid])) {
-                $calls_in_queue = $output->calls_in_queue[$agentid];
+            if (is_array($output->calls_in_queue) && isset($output->calls_in_queue->{$agentid})) {
+                $calls_in_queue = $output->calls_in_queue->{$agentid};
             }
 			
 			switch ($status) {
