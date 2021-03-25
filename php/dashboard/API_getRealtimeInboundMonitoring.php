@@ -29,6 +29,8 @@
     $barracks 										= '[';   
     
     if (is_array($output->data)) {
+        $calls_queue                                = (array) $output->calls_in_queue;
+        
 		foreach ($output->data as $key => $value) {
 	
 			$userid 								= $api->escapeJsonString($value->vu_user_id);
@@ -155,8 +157,8 @@
             $closer_campaigns                       = implode(", ", explode(" ", $closer_campaigns));
             
             $calls_in_queue                         = 0;
-            if (is_array($output->calls_in_queue) && isset($output->calls_in_queue->{$agentid})) {
-                $calls_in_queue = $output->calls_in_queue->{$agentid};
+            if (is_array($calls_queue) && isset($calls_queue[$agentid])) {
+                $calls_in_queue = $calls_queue[$agentid];
             }
 			
 			switch ($status) {
