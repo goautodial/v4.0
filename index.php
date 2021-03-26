@@ -642,6 +642,7 @@
 						<!-- <div class="col-sm-12">-->
 							<div class="inbound_filter">
 								<select id="inbound_filter" class="form-control">
+									<option value=""></option>
 									<?php
 									if (!empty($ingroup_list)) {
 										$group_id = $ingroup_list->group_id;
