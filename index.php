@@ -76,6 +76,7 @@
 	$dropped_calls_today = $ui->API_goGetTotalDroppedCalls($_SESSION['user']);
 	$calls_incoming_queue = $ui->API_goGetIncomingQueue($_SESSION['user']);
 	$callsperhour = $ui->API_goGetCallsPerHour($_SESSION['user'], 'json');
+	$ingroup_list = $ui->API_getAllInGroups();
 	$max = 0;
 	//$callsperhour = explode(";",trim($callsperhour, ';'));
 	$callsperhour = json_decode($callsperhour);
@@ -111,6 +112,7 @@
 	if($dropped_calls_today == NULL || $dropped_calls_today == 0)
 		$dropped_calls_today = 0;
 	
+	var_dump($ingroup_list);
 ?>
 <html>
     <head>
