@@ -157,7 +157,10 @@
             
             $closer_campaigns                       = trim(substr($closer_campaigns, 0, -1));
 			$closer_campaigns						= explode(" ", $closer_campaigns);
-			$ingroup_exists							= (preg_grep ("/^$ingroup$/", $closer_campaigns) ? true : false);
+			$ingroup_exists							= true;
+			if (isset($ingroup)) {
+				$ingroup_exists						= (preg_grep ("/$ingroup/i", $closer_campaigns) ? true : false);
+			}
             $closer_campaigns                       = implode(", ", $closer_campaigns);
             
             $calls_in_queue                         = 0;
