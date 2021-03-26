@@ -548,6 +548,12 @@
 			$filter_clean_cid_number 			= stripslashes($filter_clean_cid_number);
 		}
 		
+		$list_id	 							= NULL; 
+		if (isset($_POST["list_id"])) { 
+			$list_id 							= $_POST["list_id"];
+			$list_id 							= stripslashes($list_id);
+		}
+		
 		$voicemail_ext = $_POST['route_voicemail'];
 		$ext = $_POST['route_exten'];
 		$ext_cont = $_POST['route_exten_context'];
@@ -583,7 +589,8 @@
 			'menu_id' 						=> $_POST['route_ivr'],
 			'voicemail_ext' 					=> $voicemail_ext,
 			'extension' 						=> $ext,
-			'exten_context' 					=> $ext_cont
+			'exten_context' 					=> $ext_cont,
+			'list_id'						=> $list_id
 		);				
 
 		$output 								= $api->API_modifyDID($postfields);
