@@ -203,6 +203,7 @@
 					},
                     initComplete: function() {
                         this.api().columns().every(function() {
+                            var column = this;
                             $('#inbound_filter').change(function() {
                                 var val = $.fn.dataTable.util.escapeRegex(
                                     $(this).val()
