@@ -1356,17 +1356,6 @@ function goGetInSession(type) {
 			});
 			
 			// Get campaign information
-			var inbTable = $('#realtime_inbound_monitoring_table').DataTable({
-				destroy:true,
-				responsive:true,
-				data:{},
-				stateSave: true,
-				drawCallback: function() {
-					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
-					pagination.toggle(this.api().page.info().pages > 1);
-				}
-			});
-			
 			$(document).on('click','#onclick-campaigninfo',function(){
 				var campid = $(this).attr('data-id');
 				$.ajax({
@@ -1420,6 +1409,17 @@ function goGetInSession(type) {
 			 });
 			
 			// ---- loads datatable functions
+			
+			var inbTable = $('#realtime_inbound_monitoring_table').DataTable({
+				destroy:true,
+				responsive:true,
+				data:{},
+				stateSave: true,
+				drawCallback: function() {
+					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+					pagination.toggle(this.api().page.info().pages > 1);
+				}
+			});
 			
 			// ---- Fixed Action Button
 					$(".bottom-menu").on('mouseenter mouseleave', function () {
