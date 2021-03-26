@@ -112,7 +112,9 @@
 	if($dropped_calls_today == NULL || $dropped_calls_today == 0)
 		$dropped_calls_today = 0;
 	
-	//var_dump($ingroup_list);
+	echo "\n\n<!--";
+	var_dump($ingroup_list);
+	echo "-->\n";
 ?>
 <html>
     <head>
