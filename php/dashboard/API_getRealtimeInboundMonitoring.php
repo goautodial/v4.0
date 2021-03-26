@@ -23,8 +23,10 @@
 	
 	require_once('APIHandler.php');
 	
+    $ingroup 										= $_REQUEST['ingroup'];
+	
 	$api 											= \creamy\APIHandler::getInstance();
-	$output 										= $api->API_getRealtimeInboundMonitoring();
+	$output 										= $api->API_getRealtimeInboundMonitoring($ingroup);
 
     $barracks 										= '[';   
     
@@ -154,7 +156,9 @@
 			$statustxt								= $status;
             
             $closer_campaigns                       = trim(substr($closer_campaigns, 0, -1));
-            $closer_campaigns                       = implode(", ", explode(" ", $closer_campaigns));
+			$closer_campaigns						= explode(" ", $closer_campaigns);
+			$ingroup_exists							= (preg_grep ("/^$ingroup$/", $closer_campaigns) ? true : false);
+            $closer_campaigns                       = implode(", ", $closer_campaigns);
             
             $calls_in_queue                         = 0;
             if (is_array($calls_queue) && isset($calls_queue[$agentid])) {
@@ -222,7 +226,7 @@
 				break;
 			}
 
-            if (!empty($closer_campaigns)) {
+            if (!empty($closer_campaigns) && $ingroup_exists) {
                 $barracks 								.= '[';
                 $barracks 								.= '"'.$sessionAvatar.'",';
                 $barracks 								.= '"<a id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#modal_view_agent_information\" data-id=\"'.$userid.'\" data-user=\"'.$agentid.'\" class=\"text-blue\"><strong>'.$agentname.'</strong></a>",'; 

@@ -184,8 +184,11 @@
     } 
 
     function load_realtime_inbound_monitoring(inbTable){
+        var thisData = {
+            "ingroup": $("#inbound_filter").val()
+        };
 		$.ajax({
-			url: "./php/dashboard/API_getRealtimeInboundMonitoring.php",
+			url: "./php/dashboard/API_getRealtimeInboundMonitoring.php?ingroup="+thisData,
 			cache: false,
 			dataType: 'json',
 			success: function(values){

@@ -594,9 +594,10 @@
 			return $this->API_Request("goDashboard", $postfields);
 		}
 			
-		public function API_getRealtimeInboundMonitoring(){
+		public function API_getRealtimeInboundMonitoring($ingroup){
 			$postfields = array(
-				'goAction' => 'goGetRealtimeInboundMonitoring'
+				'goAction' => 'goGetRealtimeInboundMonitoring',
+				'goIngroup' => $ingroup
 			);		
 			return $this->API_Request("goDashboard", $postfields);
 		}
