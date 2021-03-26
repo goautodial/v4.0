@@ -183,7 +183,7 @@
 		});
     } 
 
-    function load_realtime_inbound_monitoring(){
+    function load_realtime_inbound_monitoring(inbTable){
 		$.ajax({
 			url: "./php/dashboard/API_getRealtimeInboundMonitoring.php",
 			cache: false,
