@@ -143,7 +143,8 @@
 				<!-- =============== PAGE VENDOR STYLES ===============-->
 					<!-- WEATHER ICONS-->
 			<link rel="stylesheet" href="js/dashboard/weather-icons/css/weather-icons.min.css">
-			
+		
+		<link rel="stylesheet" href="css/custom.css">
     </head>
     <?php print $ui->creamyBody(); ?>
         <div data-ui-view="" data-autoscroll="false" class="wrapper ng-scope">
