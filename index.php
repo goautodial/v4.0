@@ -638,7 +638,6 @@
 						<!-- <div class="col-sm-12">-->
 							<div class="inbound_filter">
 								<select id="inbound_filter" class="form-control">
-									<option>TEST INBOUND</option>
 								</select>
 							</div>
 							<table class="table table-striped table-hover display compact" id="realtime_inbound_monitoring_table" style="width: 100%">
