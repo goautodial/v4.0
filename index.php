@@ -112,9 +112,9 @@
 	if($dropped_calls_today == NULL || $dropped_calls_today == 0)
 		$dropped_calls_today = 0;
 	
-	echo "\n\n<!--";
-	var_dump($ingroup_list);
-	echo "-->\n";
+	//echo "\n\n<!--";
+	//var_dump($ingroup_list);
+	//echo "-->\n";
 ?>
 <html>
     <head>
@@ -642,6 +642,17 @@
 						<!-- <div class="col-sm-12">-->
 							<div class="inbound_filter">
 								<select id="inbound_filter" class="form-control">
+									<?php
+									if (!empty($ingroup_list)) {
+										$group_id = $ingroup_list->group_id;
+										$group_name = $ingroup_list->group_name;
+										foreach ($group_id as $idx => $group) {
+											if (!preg_match("/^(AGENTDIRECT|AGENTDIRECT_CHAT)$/", $group)) {
+												echo "<option value='" . $group . "'>" . $group_name[$idx] . "</option>";
+											}
+										}
+									}
+									?>
 								</select>
 							</div>
 							<table class="table table-striped table-hover display compact" id="realtime_inbound_monitoring_table" style="width: 100%">
