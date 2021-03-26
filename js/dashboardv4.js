@@ -188,7 +188,7 @@
             "ingroup": $("#inbound_filter").val()
         };
 		$.ajax({
-			url: "./php/dashboard/API_getRealtimeInboundMonitoring.php?ingroup="+thisData,
+			url: "./php/dashboard/API_getRealtimeInboundMonitoring.php?ingroup="+$("#inbound_filter").val(),
 			cache: false,
 			dataType: 'json',
 			success: function(values){
