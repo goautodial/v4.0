@@ -1355,7 +1355,9 @@ function goGetInSession(type) {
 				clear_campaign_form();
 			});
 			
-			// Get campaign information 
+			// Get campaign information
+			var inbTable;
+			
 			$(document).on('click','#onclick-campaigninfo',function(){
 				var campid = $(this).attr('data-id');
 				$.ajax({
@@ -1453,7 +1455,7 @@ function goGetInSession(type) {
 					load_realtime_calls_monitoring();
 					<?php } ?>
 					<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
-					var inbTable = $('#realtime_inbound_monitoring_table').DataTable({
+					inbTable = $('#realtime_inbound_monitoring_table').DataTable({
 						destroy:true,
 						responsive:true,
 						data:{},
