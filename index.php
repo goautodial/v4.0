@@ -635,10 +635,15 @@
 					<div class="modal-body">
 						<div class="content table-responsive table-full-width">
 						<!-- <div class="col-sm-12">-->
+							<div class="inbound_filter">
+								<select id="inbound_filter">
+									<option>TEST INBOUND</option>
+								</select>
+							</div>
 							<table class="table table-striped table-hover display compact" id="realtime_inbound_monitoring_table" style="width: 100%">
-								<thead>                                            
+								<thead>
 									<th style="color: white;">Pic</th>
-									<th style="font-size: small;"><?=$lh->translateText("agent_name")?></th>                                                    
+									<th style="font-size: small;"><?=$lh->translateText("agent_name")?></th>
 									<th style="font-size: small;"><?=$lh->translateText("inbound_group")?></th>
 									<th style="font-size: small;"><?=$lh->translateText("status")?></th>
 									<th style="font-size: small;"><?=$lh->translateText("calls_in_queue")?></th>
