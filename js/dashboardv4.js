@@ -191,6 +191,7 @@
 			success: function(values){
 				var JSONStringrealtime = values;
 				var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
+                console.log(inbTable);
 				$('#realtime_inbound_monitoring_table').DataTable({
 					destroy:true,
 					responsive:true,

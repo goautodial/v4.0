@@ -1453,6 +1453,17 @@ function goGetInSession(type) {
 					load_realtime_calls_monitoring();
 					<?php } ?>
 					<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
+					var inbTable = $('#realtime_inbound_monitoring_table').DataTable({
+						destroy:true,
+						responsive:true,
+						data:{},
+						stateSave: true,
+						drawCallback: function() {
+							var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+							pagination.toggle(this.api().page.info().pages > 1);
+						}
+					});
+					
 					load_realtime_inbound_monitoring();
 					<?php } ?>
 					//load_realtime_sla_monitoring();
@@ -1499,7 +1510,7 @@ function goGetInSession(type) {
 				var int_16 = setInterval(load_realtime_calls_monitoring,3000);
 				<?php } ?>
 				<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
-				var int_17 = setInterval(load_realtime_inbound_monitoring, 3000);
+				//var int_17 = setInterval(load_realtime_inbound_monitoring, 3000);
 				<?php } ?>
 				//var int_17 = setInterval(load_realtime_sla_monitoring,10000);
 			
@@ -1571,7 +1582,7 @@ function goGetInSession(type) {
 			int_16 = setInterval(load_realtime_calls_monitoring,3000);
 			<?php } ?>
 			<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
-			int_17 = setInterval(load_realtime_inbound_monitoring,3000);
+			//int_17 = setInterval(load_realtime_inbound_monitoring,3000);
 			<?php } ?>
 			//int_17 = setInterval(load_realtime_sla_monitoring,10000);
 			int_18 = setInterval(load_view_agent_information,3000);
@@ -1736,7 +1747,7 @@ function goGetInSession(type) {
 							int_16 = setInterval(load_realtime_calls_monitoring,3000);
 							<?php } ?>
 							<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
-							int_17 = setInterval(load_realtime_inbound_monitoring,3000);
+							//int_17 = setInterval(load_realtime_inbound_monitoring,3000);
 							<?php } ?>
 							//int_17 = setInterval(load_realtime_sla_monitoring,10000);
 							int_18 = setInterval(load_view_agent_information,3000);
