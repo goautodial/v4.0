@@ -1356,7 +1356,16 @@ function goGetInSession(type) {
 			});
 			
 			// Get campaign information
-			var inbTable;
+			var inbTable = $('#realtime_inbound_monitoring_table').DataTable({
+				destroy:true,
+				responsive:true,
+				data:{},
+				stateSave: true,
+				drawCallback: function() {
+					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+					pagination.toggle(this.api().page.info().pages > 1);
+				}
+			});
 			
 			$(document).on('click','#onclick-campaigninfo',function(){
 				var campid = $(this).attr('data-id');
@@ -1455,17 +1464,6 @@ function goGetInSession(type) {
 					load_realtime_calls_monitoring();
 					<?php } ?>
 					<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
-					inbTable = $('#realtime_inbound_monitoring_table').DataTable({
-						destroy:true,
-						responsive:true,
-						data:{},
-						stateSave: true,
-						drawCallback: function() {
-							var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
-							pagination.toggle(this.api().page.info().pages > 1);
-						}
-					});
-					
 					load_realtime_inbound_monitoring(inbTable);
 					<?php } ?>
 					//load_realtime_sla_monitoring();
