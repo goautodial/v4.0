@@ -200,7 +200,18 @@
 					drawCallback: function() {
 						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 						pagination.toggle(this.api().page.info().pages > 1);
-					}
+					},
+                    initComplete: function() {
+                        this.api().columns().every(function() {
+                            $('#inbound_filter').change(function() {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+             
+                                column.search(val ? '^' + val + '$' : '', true, false).draw();
+                            });
+                        });
+                    }
 				});
 				goAvatar._init(goOptions);
 			} 
