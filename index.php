@@ -1464,7 +1464,7 @@ function goGetInSession(type) {
 						}
 					});
 					
-					load_realtime_inbound_monitoring();
+					load_realtime_inbound_monitoring(inbTable);
 					<?php } ?>
 					//load_realtime_sla_monitoring();
 				// ---- view agent information modal
