@@ -1510,7 +1510,7 @@ function goGetInSession(type) {
 				var int_16 = setInterval(load_realtime_calls_monitoring,3000);
 				<?php } ?>
 				<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
-				//var int_17 = setInterval(load_realtime_inbound_monitoring, 3000);
+				var int_17 = setInterval(load_realtime_inbound_monitoring, 3000, inbTable);
 				<?php } ?>
 				//var int_17 = setInterval(load_realtime_sla_monitoring,10000);
 			
@@ -1582,7 +1582,7 @@ function goGetInSession(type) {
 			int_16 = setInterval(load_realtime_calls_monitoring,3000);
 			<?php } ?>
 			<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
-			//int_17 = setInterval(load_realtime_inbound_monitoring,3000);
+			int_17 = setInterval(load_realtime_inbound_monitoring,3000,inbTable);
 			<?php } ?>
 			//int_17 = setInterval(load_realtime_sla_monitoring,10000);
 			int_18 = setInterval(load_view_agent_information,3000);
@@ -1747,7 +1747,7 @@ function goGetInSession(type) {
 							int_16 = setInterval(load_realtime_calls_monitoring,3000);
 							<?php } ?>
 							<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
-							//int_17 = setInterval(load_realtime_inbound_monitoring,3000);
+							int_17 = setInterval(load_realtime_inbound_monitoring,3000,inbTable);
 							<?php } ?>
 							//int_17 = setInterval(load_realtime_sla_monitoring,10000);
 							int_18 = setInterval(load_view_agent_information,3000);
