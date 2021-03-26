@@ -195,6 +195,7 @@
 				$('#realtime_inbound_monitoring_table').DataTable({
 					destroy:true,
 					responsive:true,
+                    searching: false,
 					data:JSONObjectrealtime,
 					stateSave: true,
 					drawCallback: function() {

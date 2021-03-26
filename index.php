@@ -1308,6 +1308,7 @@ function goGetInSession(type) {
 	var inbTable = $('#realtime_inbound_monitoring_table').DataTable({
 		destroy:true,
 		responsive:true,
+		searching: false,
 		data:{},
 		stateSave: true,
 		drawCallback: function() {
