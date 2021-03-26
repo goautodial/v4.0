@@ -637,7 +637,7 @@
 						<div class="content table-responsive table-full-width">
 						<!-- <div class="col-sm-12">-->
 							<div class="inbound_filter">
-								<select id="inbound_filter">
+								<select id="inbound_filter" class="form-control">
 									<option>TEST INBOUND</option>
 								</select>
 							</div>
