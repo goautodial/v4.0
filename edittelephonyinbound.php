@@ -2070,21 +2070,30 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 										
 									<!-- IF DID ROUTE = IN-GROUP-->
 										<div id="form_route_ingroup" class="form-group" <?php if ($output->data->did_route  != "IN_GROUP") { ?> style="display: none;" <?php }?> >
-										<label for="route_ingroupid" class="col-sm-3 control-label"><?php $lh->translateText("ingroup_id"); ?>: </label>
-										<div class="col-sm-9 mb">
-											<select name="route_ingroupid" id="route_ingroupid" class="form-control">
-												<?php
-													for($i=0;$i<count($ingroups->group_id);$i++) {
-												?>
-													<option value="<?php echo $ingroups->group_id[$i];?>" <?php if ($ingroups->group_id[$i] == $output->data->group_id)echo "selected";?>>
-													     <?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
-													</option>				
-												<?php
-													}
-												?>
-											</select>
+											<div class="form-group">
+												<label for="route_ingroupid" class="col-sm-3 control-label"><?php $lh->translateText("ingroup_id"); ?>: </label>
+												<div class="col-sm-9 mb">
+													<select name="route_ingroupid" id="route_ingroupid" class="form-control">
+														<?php
+															for($i=0;$i<count($ingroups->group_id);$i++) {
+														?>
+															<option value="<?php echo $ingroups->group_id[$i];?>" <?php if ($ingroups->group_id[$i] == $output->data->group_id)echo "selected";?>>
+																 <?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
+															</option>				
+														<?php
+															}
+														?>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="route_ingroup_listid" class="col-sm-3 control-label"><?php $lh->translateText("ingroup_id_list_id"); ?>: </label>
+												<div class="col-sm-9 mb">
+													<input type="text" class="form-control" name="list_id" id="route_ingroup_listid" value="<?php echo $output->data->list_id;?>">
+												</div>
+											</div>
 										</div>
-										</div><!-- end of ingroup div -->
+									<!-- end of ingroup div -->
 										
 									<!-- IF DID ROUTE = PHONE -->
 										<div id="form_route_phone" <?php if ($output->data->did_route  != "PHONE") { ?> style="display: none;" <?php }?> >
