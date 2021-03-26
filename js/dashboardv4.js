@@ -198,6 +198,7 @@
 					destroy:true,
 					responsive:true,
                     searching: false,
+                    order: [[ 5, "desc" ]],
 					data:JSONObjectrealtime,
 					stateSave: true,
 					drawCallback: function() {

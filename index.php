@@ -1324,6 +1324,7 @@ function goGetInSession(type) {
 		destroy:true,
 		responsive:true,
 		searching: false,
+		order: [[ 5, "desc" ]],
 		data:{},
 		stateSave: true,
 		drawCallback: function() {
