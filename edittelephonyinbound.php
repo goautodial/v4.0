@@ -2180,7 +2180,7 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 						       			<fieldset>
 							       			<div class="form-group mt">
 							       				<label for="cid_num" class="col-sm-2 control-label"><?php $lh->translateText("clean_cid_number"); ?></label>
-							       				<div class="col-sm-10 mb">
+							       				<div class="col-sm-9 mb">
 													<input type="text" class="form-control" name="cid_num" id="cid_num" value="<?php echo $output->data->filter_clean_cid_number;?>" maxlength="20">
 												</div>
 							       			</div>
@@ -2194,24 +2194,6 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 															for($i=0;$i < 1;$i++) {
 														?>
 															<option value="<?php echo $phone_extension->server_ip[$i];?>" <?php if ($phone_extension->server_ip[$i] == $output->data->server_ip)echo "selected";?>>
-																<?php echo 'GOautodial - '.$phone_extension->server_ip[$i];?>
-															</option>									
-														<?php
-															}
-														?>
-													</select>
-												</div>
-											</div>
-											
-											<div class="form-group">
-												<label for="route_phone_server" class="col-sm-3 control-label"><?php $lh->translateText("server_ip"); ?>: </label>
-												<div class="col-sm-9 mb">
-													<select name="route_phone_server" id="route_phone_server" class="form-control">
-														<option value="" > <?php $lh->translateText("-none-"); ?> </option>
-														<?php
-															for($i=0;$i < 1;$i++) {
-														?>
-															<option value="<?php echo $phone_extension->server_ip[$i];?>" <?php if ($phone_extension->server_ip[$i] == $output->data->server_ip) echo "selected";?>>
 																<?php echo 'GOautodial - '.$phone_extension->server_ip[$i];?>
 															</option>									
 														<?php
