@@ -1685,10 +1685,12 @@ function goGetInSession(type) {
 			if ($("#realtime_inbound_monitoring").length > 0) {
 				var open = false;
 				function isOpen(){
-					if(open)
+					if(open) {
 						return "inbound filter is open";
-					else
+					} else {
+						load_realtime_inbound_monitoring(inbTable);
 						return "inbound filter is closed";
+					}
 				}
 				
 				$("#inbound_filter").on("click", function() {
