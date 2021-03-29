@@ -2070,21 +2070,30 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 										
 									<!-- IF DID ROUTE = IN-GROUP-->
 										<div id="form_route_ingroup" class="form-group" <?php if ($output->data->did_route  != "IN_GROUP") { ?> style="display: none;" <?php }?> >
-										<label for="route_ingroupid" class="col-sm-3 control-label"><?php $lh->translateText("ingroup_id"); ?>: </label>
-										<div class="col-sm-9 mb">
-											<select name="route_ingroupid" id="route_ingroupid" class="form-control">
-												<?php
-													for($i=0;$i<count($ingroups->group_id);$i++) {
-												?>
-													<option value="<?php echo $ingroups->group_id[$i];?>" <?php if ($ingroups->group_id[$i] == $output->data->group_id)echo "selected";?>>
-													     <?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
-													</option>				
-												<?php
-													}
-												?>
-											</select>
+											<div class="form-group">
+												<label for="route_ingroupid" class="col-sm-3 control-label"><?php $lh->translateText("ingroup_id"); ?>: </label>
+												<div class="col-sm-9 mb">
+													<select name="route_ingroupid" id="route_ingroupid" class="form-control">
+														<?php
+															for($i=0;$i<count($ingroups->group_id);$i++) {
+														?>
+															<option value="<?php echo $ingroups->group_id[$i];?>" <?php if ($ingroups->group_id[$i] == $output->data->group_id)echo "selected";?>>
+																 <?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?>
+															</option>				
+														<?php
+															}
+														?>
+													</select>
+												</div>
+											</div>
+											<div class="form-group">
+												<label for="route_ingroup_listid" class="col-sm-3 control-label"><?php $lh->translateText("ingroup_id_list_id"); ?>: </label>
+												<div class="col-sm-9 mb">
+													<input type="text" class="form-control" name="list_id" id="route_ingroup_listid" value="<?php echo $output->data->list_id;?>">
+												</div>
+											</div>
 										</div>
-										</div><!-- end of ingroup div -->
+									<!-- end of ingroup div -->
 										
 									<!-- IF DID ROUTE = PHONE -->
 										<div id="form_route_phone" <?php if ($output->data->did_route  != "PHONE") { ?> style="display: none;" <?php }?> >
@@ -2097,23 +2106,6 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 														?>
 															<option value="<?php echo $phone_extension->extension[$i];?>" <?php if ($phone_extension->extension[$i] == $output->data->phone)echo "selected";?>>
 																<?php echo $phone_extension->extension[$i].' - '.$phone_extension->server_ip[$i].' - '.$phone_extension->dialplan_number[$i];?>
-															</option>									
-														<?php
-															}
-														?>
-													</select>
-												</div>
-											</div>
-											<div class="form-group">
-												<label for="route_phone_server" class="col-sm-3 control-label"><?php $lh->translateText("server_ip"); ?>: </label>
-												<div class="col-sm-9 mb">
-													<select name="route_phone_server" id="route_phone_server" class="form-control">
-														<option value="" > <?php $lh->translateText("-none-"); ?> </option>
-														<?php
-															for($i=0;$i < 1;$i++) {
-														?>
-															<option value="<?php echo $phone_extension->server_ip[$i];?>" <?php if ($phone_extension->server_ip[$i] == $output->data->server_ip)echo "selected";?>>
-																<?php echo 'GOautodial - '.$phone_extension->server_ip[$i];?>
 															</option>									
 														<?php
 															}
@@ -2187,11 +2179,73 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 						       		<div id="tab_2" class="tab-pane fade in">
 						       			<fieldset>
 							       			<div class="form-group mt">
-							       				<label for="cid_num" class="col-sm-2 control-label"><?php $lh->translateText("clean_cid_number"); ?></label>
-							       				<div class="col-sm-10 mb">
+							       				<label for="cid_num" class="col-sm-3 control-label"><?php $lh->translateText("clean_cid_number"); ?></label>
+							       				<div class="col-sm-9 mb">
 													<input type="text" class="form-control" name="cid_num" id="cid_num" value="<?php echo $output->data->filter_clean_cid_number;?>" maxlength="20">
 												</div>
 							       			</div>
+											
+											<div class="form-group">
+												<label for="route_phone_server" class="col-sm-3 control-label"><?php $lh->translateText("server_ip"); ?>: </label>
+												<div class="col-sm-9 mb">
+													<select name="route_phone_server" id="route_phone_server" class="form-control">
+														<option value="" > <?php $lh->translateText("-none-"); ?> </option>
+														<?php
+															for($i=0;$i < 1;$i++) {
+														?>
+															<option value="<?php echo $phone_extension->server_ip[$i];?>" <?php if ($phone_extension->server_ip[$i] == $output->data->server_ip)echo "selected";?>>
+																<?php echo 'GOautodial - '.$phone_extension->server_ip[$i];?>
+															</option>									
+														<?php
+															}
+														?>
+													</select>
+												</div>
+											</div>
+											
+											<div class="form-group">
+												<label for="call_handle_method" class="col-sm-3 control-label"><?php $lh->translateText("call_handle_method"); ?>: </label>
+												<div class="col-sm-9 mb">
+													<select size="1" name="call_handle_method" id="call_handle_method" class="form-control">
+														<option value="CID" <?php if ($output->data->call_handle_method == "CID") echo "selected"; ?>>CID</option>
+														<option value="CIDLOOKUP" <?php if ($output->data->call_handle_method == "CIDLOOKUP") echo "selected"; ?>>CIDLOOKUP</option>
+														<option value="CIDLOOKUPRL" <?php if ($output->data->call_handle_method == "CIDLOOKUPRL") echo "selected"; ?>>CIDLOOKUPRL</option>
+														<option value="CIDLOOKUPRC" <?php if ($output->data->call_handle_method == "CIDLOOKUPRC") echo "selected"; ?>>CIDLOOKUPRC</option>
+														<option value="CIDLOOKUPALT" <?php if ($output->data->call_handle_method == "CIDLOOKUPALT") echo "selected"; ?>>CIDLOOKUPALT</option>
+														<option value="CIDLOOKUPRLALT" <?php if ($output->data->call_handle_method == "CIDLOOKUPRLALT") echo "selected"; ?>>CIDLOOKUPRLALT</option>
+														<option value="CIDLOOKUPRCALT" <?php if ($output->data->call_handle_method == "CIDLOOKUPRCALT") echo "selected"; ?>>CIDLOOKUPRCALT</option>
+														<option value="CIDLOOKUPADDR3" <?php if ($output->data->call_handle_method == "CIDLOOKUPADDR3") echo "selected"; ?>>CIDLOOKUPADDR3</option>
+														<option value="CIDLOOKUPRLADDR3" <?php if ($output->data->call_handle_method == "CIDLOOKUPRLADDR3") echo "selected"; ?>>CIDLOOKUPRLADDR3</option>
+														<option value="CIDLOOKUPRCADDR3" <?php if ($output->data->call_handle_method == "CIDLOOKUPRCADDR3") echo "selected"; ?>>CIDLOOKUPRCADDR3</option>
+														<option value="CIDLOOKUPALTADDR3" <?php if ($output->data->call_handle_method == "CIDLOOKUPALTADDR3") echo "selected"; ?>>CIDLOOKUPALTADDR3</option>
+														<option value="CIDLOOKUPRLALTADDR3" <?php if ($output->data->call_handle_method == "CIDLOOKUPRLALTADDR3") echo "selected"; ?>>CIDLOOKUPRLALTADDR3</option>
+														<option value="CIDLOOKUPRCALTADDR3" <?php if ($output->data->call_handle_method == "CIDLOOKUPRCALTADDR3") echo "selected"; ?>>CIDLOOKUPRCALTADDR3</option>
+														<option value="ANI" <?php if ($output->data->call_handle_method == "ANI") echo "selected"; ?>>ANI</option>
+														<option value="ANILOOKUP" <?php if ($output->data->call_handle_method == "ANILOOKUP") echo "selected"; ?>>ANILOOKUP</option>
+														<option value="ANILOOKUPRL" <?php if ($output->data->call_handle_method == "ANILOOKUPRL") echo "selected"; ?>>ANILOOKUPRL</option>
+														<option value="VIDPROMPT" <?php if ($output->data->call_handle_method == "VIDPROMPT") echo "selected"; ?>>VIDPROMPT</option>
+														<option value="VIDPROMPTLOOKUP" <?php if ($output->data->call_handle_method == "VIDPROMPTLOOKUP") echo "selected"; ?>>VIDPROMPTLOOKUP</option>
+														<option value="VIDPROMPTLOOKUPRL" <?php if ($output->data->call_handle_method == "VIDPROMPTLOOKUPRL") echo "selected"; ?>>VIDPROMPTLOOKUPRL</option>
+														<option value="VIDPROMPTLOOKUPRC" <?php if ($output->data->call_handle_method == "VIDPROMPTLOOKUPRC") echo "selected"; ?>>VIDPROMPTLOOKUPRC</option>
+														<option value="CLOSER" <?php if ($output->data->call_handle_method == "CLOSER") echo "selected"; ?>>CLOSER</option>
+														<option value="3DIGITID" <?php if ($output->data->call_handle_method == "3DIGITID") echo "selected"; ?>>3DIGITID</option>
+														<option value="4DIGITID" <?php if ($output->data->call_handle_method == "4DIGITID") echo "selected"; ?>>4DIGITID</option>
+														<option value="5DIGITID" <?php if ($output->data->call_handle_method == "5DIGITID") echo "selected"; ?>>5DIGITID</option>
+														<option value="10DIGITID" <?php if ($output->data->call_handle_method == "10DIGITID") echo "selected"; ?>>10DIGITID</option>
+													</select>
+												</div>
+											</div>
+											
+											<div class="form-group">
+												<label for="agent_search_method" class="col-sm-3 control-label"><?php $lh->translateText("agent_search_method"); ?>: </label>
+												<div class="col-sm-9 mb">
+													<select size="1" name="agent_search_method" id="agent_search_method" class="form-control">
+														<option value="LB" <?php if ($output->data->agent_search_method == "LB") echo "selected"; ?>>LB - Load Balanced</option>
+														<option value="LO" <?php if ($output->data->agent_search_method == "LO") echo "selected"; ?>>LO - Load Balanced Overflow</option>
+														<option value="SO" <?php if ($output->data->agent_search_method == "SO") echo "selected"; ?>>SO - Server Only</option>
+													</select>
+												</div>
+											</div>
 							       		</fieldset>				       			
 						       		</div>
 							

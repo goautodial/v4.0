@@ -76,6 +76,7 @@
 	$dropped_calls_today = $ui->API_goGetTotalDroppedCalls($_SESSION['user']);
 	$calls_incoming_queue = $ui->API_goGetIncomingQueue($_SESSION['user']);
 	$callsperhour = $ui->API_goGetCallsPerHour($_SESSION['user'], 'json');
+	$ingroup_list = $api->API_getAllInGroups();
 	$max = 0;
 	//$callsperhour = explode(";",trim($callsperhour, ';'));
 	$callsperhour = json_decode($callsperhour);
@@ -114,6 +115,10 @@
 	//Whatsapp
 	$whatsapp_status = $ui->API_getWhatsappActivation();
 	$callWhatsAppWebHookURL = $api->API_WhatsAppWebHookURL();
+	
+	//echo "\n\n<!--";
+	//var_dump($ingroup_list);
+	//echo "-->\n";
 ?>
 <html>
     <head>
@@ -246,6 +251,7 @@
 
 	</style>
 			
+		<link rel="stylesheet" href="css/custom.css">
     </head>
     <?php print $ui->creamyBody(); ?>
         <div data-ui-view="" data-autoscroll="false" class="wrapper ng-scope">
@@ -586,10 +592,12 @@
 										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_RingingCalls">0</span></div>
 										<div class="text"><?=$lh->translateText("ringing_calls")?></div>
 									</div>
-									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
-										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_IncomingQueue">0</span></div>
-										<div class="text"><?=$lh->translateText("incoming_calls")?></div>
-									</div>	                	
+									<a href="#" data-toggle="modal" data-target="#<?php if(REALTIME_INBOUND_MONITORING === 'y') echo 'realtime_inbound_monitoring'?>" style="text-decoration : none; color: rgba(0, 0, 0, 0.8);">
+										<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
+											<div class="h2 m0"><span class="text-lg text-muted" id="refresh_IncomingQueue">0</span></div>
+											<div class="text"><?=$lh->translateText("incoming_calls")?></div>
+										</div>
+									</a>
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
 										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_AnsweredCalls">0</span></div>
 											<div class="text"><?=$lh->translateText("answered_calls")?></div>
@@ -1098,6 +1106,55 @@
 			</div>	
 		</div>
 		<!-- End of Campaigns Monitoring -->
+		
+		<!-- Realtime Inbound Monitoring -->
+		<div class="modal fade" id="realtime_inbound_monitoring" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-lg modal-dialog" style="min-width: 75%">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4><?=$lh->translateText("realtime_inbound_monitoring")?></h4>
+					</div>
+					<div class="modal-body">
+						<div class="content table-responsive table-full-width">
+						<!-- <div class="col-sm-12">-->
+							<div class="inbound_filter">
+								<select id="inbound_filter" class="form-control">
+									<option value="">--- SELECT ALL ---</option>
+									<?php
+									if (!empty($ingroup_list)) {
+										$group_id = $ingroup_list->group_id;
+										$group_name = $ingroup_list->group_name;
+										foreach ($group_id as $idx => $group) {
+											if (!preg_match("/^(AGENTDIRECT|AGENTDIRECT_CHAT)$/", $group)) {
+												echo "<option value='" . $group . "'>" . $group_name[$idx] . "</option>";
+											}
+										}
+									}
+									?>
+								</select>
+							</div>
+							<table class="table table-striped table-hover display compact" id="realtime_inbound_monitoring_table" style="width: 100%">
+								<thead>
+									<th style="color: white;">Pic</th>
+									<th style="font-size: small;"><?=$lh->translateText("agent_name")?></th>
+									<th style="font-size: small;"><?=$lh->translateText("inbound_group")?></th>
+									<th style="font-size: small;"><?=$lh->translateText("status")?></th>
+									<th style="font-size: small;"><?=$lh->translateText("calls_in_queue")?></th>
+									<th style="font-size: small;"><?=$lh->translateText("mm:ss")?></th>
+									<th style="font-size: small;"><?=$lh->translateText("campaign")?></th>
+									<th style="font-size: small;"><?=$lh->translateText("phone_number")?></th>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						<!--</div>-->
+						</div>
+					</div>
+				</div>
+			</div>	
+		</div>
+		<!-- End of Realtime Inbound Monitoring -->
 		
 		<!-- Realtime Service Level Monitoring -->
 		<div class="modal fade" id="realtime_sla_monitoring" tabindex="-1" role="dialog" aria-hidden="true">
@@ -1741,6 +1798,19 @@ function goGetInSession(type) {
 	}
 }
 
+	var inbTable = $('#realtime_inbound_monitoring_table').DataTable({
+		destroy:true,
+		responsive:true,
+		searching: false,
+		order: [[ 5, "desc" ]],
+		data:{},
+		stateSave: true,
+		drawCallback: function() {
+			var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+			pagination.toggle(this.api().page.info().pages > 1);
+		}
+	});
+
     //demian
 		$(document).ready(function(){
 			
@@ -1797,7 +1867,7 @@ function goGetInSession(type) {
 				clear_campaign_form();
 			});
 			
-			// Get campaign information 
+			// Get campaign information
 			$(document).on('click','#onclick-campaigninfo',function(){
 				var campid = $(this).attr('data-id');
 				$.ajax({
@@ -1898,6 +1968,9 @@ function goGetInSession(type) {
 					<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
 					load_realtime_calls_monitoring();
 					<?php } ?>
+					<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
+					load_realtime_inbound_monitoring(inbTable);
+					<?php } ?>
 					//load_realtime_sla_monitoring();
 				// ---- view agent information modal
 					load_view_agent_information();
@@ -1940,6 +2013,9 @@ function goGetInSession(type) {
 				var int_15 = setInterval(load_realtime_agents_monitoring,3000);
 				<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
 				var int_16 = setInterval(load_realtime_calls_monitoring,3000);
+				<?php } ?>
+				<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
+				//var int_17 = setInterval(load_realtime_inbound_monitoring, 3000, inbTable);
 				<?php } ?>
 				//var int_17 = setInterval(load_realtime_sla_monitoring,10000);
 			
@@ -1986,13 +2062,16 @@ function goGetInSession(type) {
 			<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
 			clearInterval(int_16);
 			<?php } ?>
-			//clearInterval(int_17);
+			<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
+			clearInterval(int_17);
+			<?php } ?>
 			clearInterval(int_18);
 			clearInterval(int_19);
 			clearInterval(int_20);
 			clearInterval(int_21);
 			clearInterval(int_22);
 			clearInterval(int_23);
+			clearInterval(int_24);
 			<?php if(STATEWIDE_SALES_REPORT === 'y'){ ?>
                         // ---- Statewide Customization
 			clearInterval(int_25);	
@@ -2024,6 +2103,9 @@ function goGetInSession(type) {
 			<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
 			int_16 = setInterval(load_realtime_calls_monitoring,3000);
 			<?php } ?>
+			<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
+			//int_17 = setInterval(load_realtime_inbound_monitoring,3000,inbTable);
+			<?php } ?>
 			//int_17 = setInterval(load_realtime_sla_monitoring,10000);
 			int_18 = setInterval(load_view_agent_information,3000);
 			int_19 = setInterval(load_totalSales,30000);
@@ -2031,6 +2113,7 @@ function goGetInSession(type) {
 			int_21 = setInterval(load_totalInSales,30000);
 			int_22 = setInterval(load_INSalesHour,60000);
 			int_23 = setInterval(load_OUTSalesPerHour,60000);
+			int_24 = setInterval(load_DroppedCallsPercentage,15000);
 			<?php if(STATEWIDE_SALES_REPORT === 'y'){ ?>
                         // ---- Statewide Customization
                         int_25 = setInterval(load_agent_sales,15000);
@@ -2471,6 +2554,105 @@ function goGetInSession(type) {
 		<?php print $ui->creamyFooter(); ?>
 	<script>
 		$(function(){
+			if ($("#realtime_inbound_monitoring").length > 0) {
+				var open = false;
+				function isOpen(){
+					if(open) {
+						return "inbound filter is open";
+					} else {
+						load_realtime_inbound_monitoring(inbTable);
+						return "inbound filter is closed";
+					}
+				}
+				
+				$("#inbound_filter").on("click", function() {
+					open = !open;
+					console.log(isOpen());
+				});
+				
+				$("#inbound_filter").on("blur", function() {
+					if(open){
+						open = !open;
+						console.log(isOpen());
+					}
+				});
+				
+				$(document).keyup(function(e) {
+					if (e.keyCode == 27) { 
+						if(open){
+							open = !open;
+							console.log(isOpen());
+						}
+					}
+				});
+
+				$('#realtime_inbound_monitoring').on('show.bs.modal', function () {
+					clearInterval(int_1);
+					clearInterval(int_2);
+					clearInterval(int_3);
+					clearInterval(int_4);
+					clearInterval(int_5);
+					clearInterval(int_6);
+					clearInterval(int_7);
+					clearInterval(int_8);
+					clearInterval(int_9);
+					clearInterval(int_10);
+					clearInterval(int_11);
+					clearInterval(int_12);
+					clearInterval(int_13);
+					clearInterval(int_14);
+					clearInterval(int_15);
+					<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
+					clearInterval(int_16);
+					<?php } ?>
+					<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
+					int_17 = setInterval(function() {
+						if (!open) {
+							load_realtime_inbound_monitoring(inbTable);
+                        }
+					},3000);
+					<?php } ?>
+					clearInterval(int_18);
+					clearInterval(int_19);
+					clearInterval(int_20);
+					clearInterval(int_21);
+					clearInterval(int_22);
+					clearInterval(int_23);
+					clearInterval(int_24);
+				});
+				
+				$('#realtime_inbound_monitoring').on('hidden.bs.modal', function () {
+					int_1 = setInterval(load_totalagentscall,5000);
+					int_2 = setInterval(load_totalagentspaused,5000);
+					int_3 = setInterval(load_totalagentswaitingcall,5000);
+					int_4 = setInterval(load_RingingCalls,15000);
+					int_5 = setInterval(load_IncomingQueue,15000);
+					int_6 = setInterval(load_AnsweredCalls,15000);
+					int_7 = setInterval(load_DroppedCalls,15000);
+					int_8 = setInterval(load_TotalInboundCalls,30000);
+					int_9 = setInterval(load_TotalOutboundCalls,30000);
+					int_10 = setInterval(load_LiveOutbound,30000);
+					int_11 = setInterval(load_cluster_status,60000);
+					int_12 = setInterval(load_campaigns_resources,30000);
+					int_13 = setInterval(load_campaigns_monitoring,20000);
+					int_14 = setInterval(load_agents_monitoring_summary,15000);
+					int_15 = setInterval(load_realtime_agents_monitoring,3000);
+					<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
+					int_16 = setInterval(load_realtime_calls_monitoring,3000);
+					<?php } ?>
+					<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
+					clearInterval(int_17);
+					<?php } ?>
+					//int_17 = setInterval(load_realtime_sla_monitoring,10000);
+					int_18 = setInterval(load_view_agent_information,3000);
+					int_19 = setInterval(load_totalSales,30000);
+					int_20 = setInterval(load_totalOutSales,30000);
+					int_21 = setInterval(load_totalInSales,30000);
+					int_22 = setInterval(load_INSalesHour,60000);
+					int_23 = setInterval(load_OUTSalesPerHour,60000);
+					int_24 = setInterval(load_DroppedCallsPercentage,15000);
+				});
+            }
 				if ($("#change-password-dialog-modal").length > 0) {
 					 var old_password_placeholder = '<?=$lh->translationFor("insert_old_password")?>';
 					 var new_password_placeholder = '<?=$lh->translationFor("insert_new_password")?>';
@@ -2493,13 +2675,16 @@ function goGetInSession(type) {
 							clearInterval(int_14);
 							clearInterval(int_15);
 							clearInterval(int_16);
-							//clearInterval(int_17);
+							<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
+							clearInterval(int_17);
+							<?php } ?>
 							clearInterval(int_18);
 							clearInterval(int_19);
 							clearInterval(int_20);
 							clearInterval(int_21);
 							clearInterval(int_22);
 							clearInterval(int_23);
+							clearInterval(int_24);
 							
 							$(this).find('#old_password').attr('type', 'text').val(old_password_placeholder).css('color', '#ccc');
 							$(this).find('#new_password_1').attr('type', 'text').val(new_password_placeholder).css('color', '#ccc');
@@ -2550,7 +2735,6 @@ function goGetInSession(type) {
 							int_5 = setInterval(load_IncomingQueue,15000);
 							int_6 = setInterval(load_AnsweredCalls,15000);
 							int_7 = setInterval(load_DroppedCalls,15000);
-							int_24 = setInterval(load_DroppedCallsPercentage,15000);
 							int_8 = setInterval(load_TotalInboundCalls,30000);
 							int_9 = setInterval(load_TotalOutboundCalls,30000);
 							int_10 = setInterval(load_LiveOutbound,30000);
@@ -2562,13 +2746,17 @@ function goGetInSession(type) {
 							<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
 							int_16 = setInterval(load_realtime_calls_monitoring,3000);
 							<?php } ?>
+							<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
+							//int_17 = setInterval(load_realtime_inbound_monitoring,3000,inbTable);
+							<?php } ?>
 							//int_17 = setInterval(load_realtime_sla_monitoring,10000);
 							int_18 = setInterval(load_view_agent_information,3000);
 							int_19 = setInterval(load_totalSales,30000);
 							int_20 = setInterval(load_totalOutSales,30000);
 							int_21 = setInterval(load_totalInSales,30000);
 							int_22 = setInterval(load_INSalesHour,60000);
-							int_23 = setInterval(load_OUTSalesPerHour,60000);			
+							int_23 = setInterval(load_OUTSalesPerHour,60000);
+							int_24 = setInterval(load_DroppedCallsPercentage,15000);
 						});
 				}
 		});

@@ -156,7 +156,7 @@
 					$nametextclass 					= "text-warning";
 					
 					if (strlen($pausecode) > 0) { 
-						$status 					.= " [$pausecode]"; 
+						$CM 						= " [$pausecode]"; 
 					}
 					
 					if ($call_time_S >= 10){ 

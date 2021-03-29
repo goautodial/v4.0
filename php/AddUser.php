@@ -32,7 +32,8 @@
 		'active' 									=> $_POST['status'], 
 		'seats' 									=> $_POST["seats"],
 		'phone_login' 								=> $_POST["phone_logins"],
-		'phone_pass' 								=> $_POST["phone_pass"]
+		'phone_pass' 								=> $_POST["phone_pass"],
+		'server_ip' 								=> $_POST["ip"]
 	);
 
     $output 									= $api->API_addUser($postfields);
