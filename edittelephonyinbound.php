@@ -2261,6 +2261,7 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 														<option value="LB" <?php if ($output->data->agent_search_method == "LB") echo "selected"; ?>>LB - Load Balanced</option>
 														<option value="LO" <?php if ($output->data->agent_search_method == "LO") echo "selected"; ?>>LO - Load Balanced Overflow</option>
 														<option value="SO" <?php if ($output->data->agent_search_method == "SO") echo "selected"; ?>>SO - Server Only</option>
+													</select>
 												</div>
 											</div>
 							       		</fieldset>				       			
