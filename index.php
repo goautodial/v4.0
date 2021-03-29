@@ -1683,6 +1683,35 @@ function goGetInSession(type) {
 	<script>
 		$(function(){
 			if ($("#realtime_inbound_monitoring").length > 0) {
+				var open = false;
+				function isOpen(){
+					if(open)
+						return "inbound filter is open";
+					else
+						return "inbound filter is closed";
+				}
+				
+				$("#inbound_filter").on("click", function() {
+					open = !open;
+					console.log(isOpen());
+				});
+				
+				$("#inbound_filter").on("blur", function() {
+					if(open){
+						open = !open;
+						console.log(isOpen());
+					}
+				});
+				
+				$(document).keyup(function(e) {
+					if (e.keyCode == 27) { 
+						if(open){
+							open = !open;
+							console.log(isOpen());
+						}
+					}
+				});
+
 				$('#realtime_inbound_monitoring').on('show.bs.modal', function () {
 					clearInterval(int_1);
 					clearInterval(int_2);
@@ -1703,7 +1732,11 @@ function goGetInSession(type) {
 					clearInterval(int_16);
 					<?php } ?>
 					<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
-					int_17 = setInterval(load_realtime_inbound_monitoring,3000,inbTable);
+					int_17 = setInterval(function() {
+						if (!open) {
+							load_realtime_inbound_monitoring(inbTable);
+                        }
+					},3000);
 					<?php } ?>
 					clearInterval(int_18);
 					clearInterval(int_19);
