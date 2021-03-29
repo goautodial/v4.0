@@ -642,7 +642,7 @@
 						<!-- <div class="col-sm-12">-->
 							<div class="inbound_filter">
 								<select id="inbound_filter" class="form-control">
-									<option value=""></option>
+									<option value="">--- SELECT ALL ---</option>
 									<?php
 									if (!empty($ingroup_list)) {
 										$group_id = $ingroup_list->group_id;
@@ -1533,7 +1533,7 @@ function goGetInSession(type) {
 				var int_16 = setInterval(load_realtime_calls_monitoring,3000);
 				<?php } ?>
 				<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
-				var int_17 = setInterval(load_realtime_inbound_monitoring, 3000, inbTable);
+				//var int_17 = setInterval(load_realtime_inbound_monitoring, 3000, inbTable);
 				<?php } ?>
 				//var int_17 = setInterval(load_realtime_sla_monitoring,10000);
 			
@@ -1571,7 +1571,9 @@ function goGetInSession(type) {
 			<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
 			clearInterval(int_16);
 			<?php } ?>
-			//clearInterval(int_17);
+			<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
+			clearInterval(int_17);
+			<?php } ?>
 			clearInterval(int_18);
 			clearInterval(int_19);
 			clearInterval(int_20);
@@ -1605,7 +1607,7 @@ function goGetInSession(type) {
 			int_16 = setInterval(load_realtime_calls_monitoring,3000);
 			<?php } ?>
 			<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
-			int_17 = setInterval(load_realtime_inbound_monitoring,3000,inbTable);
+			//int_17 = setInterval(load_realtime_inbound_monitoring,3000,inbTable);
 			<?php } ?>
 			//int_17 = setInterval(load_realtime_sla_monitoring,10000);
 			int_18 = setInterval(load_view_agent_information,3000);
@@ -1678,6 +1680,69 @@ function goGetInSession(type) {
 		<?php print $ui->creamyFooter(); ?>
 	<script>
 		$(function(){
+			if ($("#realtime_inbound_monitoring").length > 0) {
+				$('#realtime_inbound_monitoring').on('show.bs.modal', function () {
+					clearInterval(int_1);
+					clearInterval(int_2);
+					clearInterval(int_3);
+					clearInterval(int_4);
+					clearInterval(int_5);
+					clearInterval(int_6);
+					clearInterval(int_7);
+					clearInterval(int_8);
+					clearInterval(int_9);
+					clearInterval(int_10);
+					clearInterval(int_11);
+					clearInterval(int_12);
+					clearInterval(int_13);
+					clearInterval(int_14);
+					clearInterval(int_15);
+					<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
+					clearInterval(int_16);
+					<?php } ?>
+					<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
+					int_17 = setInterval(load_realtime_inbound_monitoring,3000,inbTable);
+					<?php } ?>
+					clearInterval(int_18);
+					clearInterval(int_19);
+					clearInterval(int_20);
+					clearInterval(int_21);
+					clearInterval(int_22);
+					clearInterval(int_23);
+				});
+				
+				$('#realtime_inbound_monitoring').on('hidden.bs.modal', function () {
+					int_1 = setInterval(load_totalagentscall,5000);
+					int_2 = setInterval(load_totalagentspaused,5000);
+					int_3 = setInterval(load_totalagentswaitingcall,5000);
+					int_4 = setInterval(load_RingingCalls,15000);
+					int_5 = setInterval(load_IncomingQueue,15000);
+					int_6 = setInterval(load_AnsweredCalls,15000);
+					int_7 = setInterval(load_DroppedCalls,15000);
+					int_24 = setInterval(load_DroppedCallsPercentage,15000);
+					int_8 = setInterval(load_TotalInboundCalls,30000);
+					int_9 = setInterval(load_TotalOutboundCalls,30000);
+					int_10 = setInterval(load_LiveOutbound,30000);
+					int_11 = setInterval(load_cluster_status,60000);
+					int_12 = setInterval(load_campaigns_resources,30000);
+					int_13 = setInterval(load_campaigns_monitoring,20000);
+					int_14 = setInterval(load_agents_monitoring_summary,15000);
+					int_15 = setInterval(load_realtime_agents_monitoring,3000);
+					<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
+					int_16 = setInterval(load_realtime_calls_monitoring,3000);
+					<?php } ?>
+					<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
+					clearInterval(int_17);
+					<?php } ?>
+					//int_17 = setInterval(load_realtime_sla_monitoring,10000);
+					int_18 = setInterval(load_view_agent_information,3000);
+					int_19 = setInterval(load_totalSales,30000);
+					int_20 = setInterval(load_totalOutSales,30000);
+					int_21 = setInterval(load_totalInSales,30000);
+					int_22 = setInterval(load_INSalesHour,60000);
+					int_23 = setInterval(load_OUTSalesPerHour,60000);			
+				});
+            }
 				if ($("#change-password-dialog-modal").length > 0) {
 					 var old_password_placeholder = '<?=$lh->translationFor("insert_old_password")?>';
 					 var new_password_placeholder = '<?=$lh->translationFor("insert_new_password")?>';
@@ -1700,7 +1765,9 @@ function goGetInSession(type) {
 							clearInterval(int_14);
 							clearInterval(int_15);
 							clearInterval(int_16);
-							//clearInterval(int_17);
+							<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
+							clearInterval(int_17);
+							<?php } ?>
 							clearInterval(int_18);
 							clearInterval(int_19);
 							clearInterval(int_20);
@@ -1770,7 +1837,7 @@ function goGetInSession(type) {
 							int_16 = setInterval(load_realtime_calls_monitoring,3000);
 							<?php } ?>
 							<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
-							int_17 = setInterval(load_realtime_inbound_monitoring,3000,inbTable);
+							//int_17 = setInterval(load_realtime_inbound_monitoring,3000,inbTable);
 							<?php } ?>
 							//int_17 = setInterval(load_realtime_sla_monitoring,10000);
 							int_18 = setInterval(load_view_agent_information,3000);
