@@ -236,6 +236,6 @@ define ('STATEWIDE_SALES_REPORT', 'n'); //Customization Requested by Statewide.
 define ('EXPORTCALLREPORT_ALLCAMPAIGNS', 'y');
 define ('REALTIME_CALLS_MONITORING', 'n'); //Change to 'y' to enable realtime calls monitoring in Dashboard (not advisable for heavy systems)
 
-define ('ROCKETCHAT_ENABLE', 'n'); // Change to 'y' to enable rocketchat feature
+define ('ROCKETCHAT_ENABLE', 'y'); // Change to 'y' to enable rocketchat feature
 define ('ROCKETCHAT_URL', "https://rcwits.justgocloud.com"); //Rocketchat URL
 ?>

@@ -223,6 +223,106 @@
     });
     }     
 
+
+/*
+ * * WhatsApp box
+ * */
+    function load_whatsapp_realtime_monitoring(){
+    $.ajax({
+        url: "./php/dashboard/API_getWhatsAppRealtimeMonitoring.php",
+        cache: false,
+        success: function(data){
+	    var data = JSON.parse(data); 
+            $("#refresh_totalagentschat").html(data.active_agents);
+            $("#refresh_totalagentswaitchats").html(data.waiting_agents);
+            $("#refresh_totalagentspausedchat").html(data.paused_agents);
+            $("#refresh_totalunreadchats").html(data.unread_chats);
+            $("#refresh_totalqueuechats").html(data.in_queue_chats);
+            $("#refresh_totalactivechats").html(data.active_chats);
+        } 
+    });
+    }
+
+    function load_whatsapp_agents_chat_monitoring(){
+		$.ajax({
+			url: "./php/dashboard/API_getWhatsAppUsersSummary.php",
+			cache: false,
+			dataType: 'json',
+			success: function(values){
+				var JSONStringrealtime = values;
+				var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
+				$('#realtime_agents_chat_monitoring_table').DataTable({
+					destroy:true,
+					responsive:true,
+					data:JSONObjectrealtime,
+					stateSave: true,
+					drawCallback: function() {
+						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+						pagination.toggle(this.api().page.info().pages > 1);
+					}
+				});
+				goAvatar._init(goOptions);
+			} 
+		});
+    }
+
+    function load_whatsapp_chat_monitoring(){
+		$.ajax({
+			url: "./php/dashboard/API_getWhatsAppChatSummary.php",
+			cache: false,
+			dataType: 'json',
+			success: function(values){
+				var JSONStringrealtime = values;
+				var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
+				$('#realtime_chats_monitoring_table').DataTable({
+					destroy:true,
+					responsive:true,
+					data:JSONObjectrealtime,
+					stateSave: true,
+					drawCallback: function() {
+						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+						pagination.toggle(this.api().page.info().pages > 1);
+					}
+				});
+			} 
+		});
+    }
+
+    function load_whatsapp_assigned_chats(userid){
+                $.ajax({
+                        url: "./php/dashboard/API_getWhatsAppAssignedChats.php",
+			type: "POST",
+                        cache: false,
+			data: {userid:userid},
+                        dataType: 'json',
+                        success: function(values){
+                                var JSONStringrealtime = values;
+                                var JSONObjectrealtime = JSON.parse(JSONStringrealtime);
+                                $('#assigned_chats_monitoring_table').DataTable({
+                                        destroy:true,
+                                        responsive:true,
+                                        data:JSONObjectrealtime,
+                                        stateSave: true,
+                                        drawCallback: function() {
+                                                var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+                                                pagination.toggle(this.api().page.info().pages > 1);
+                                        }
+                                });
+                        }
+                 });
+    }
+
+    function load_whatsapp_queue(){
+                $.ajax({
+                        url: "./php/WhatsappQueue.php",
+                        cache: false,
+                        dataType: 'json',
+                        success: function(values){
+				//console.log();
+                        }
+                });
+    }
+
 /*
 * Agents status box 
 */
