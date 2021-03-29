@@ -1580,6 +1580,7 @@ function goGetInSession(type) {
 			clearInterval(int_21);
 			clearInterval(int_22);
 			clearInterval(int_23);
+			clearInterval(int_24);
 			<?php if(STATEWIDE_SALES_REPORT === 'y'){ ?>
                         // ---- Statewide Customization
 			clearInterval(int_25);	
@@ -1616,6 +1617,7 @@ function goGetInSession(type) {
 			int_21 = setInterval(load_totalInSales,30000);
 			int_22 = setInterval(load_INSalesHour,60000);
 			int_23 = setInterval(load_OUTSalesPerHour,60000);
+			int_24 = setInterval(load_DroppedCallsPercentage,15000);
 			<?php if(STATEWIDE_SALES_REPORT === 'y'){ ?>
                         // ---- Statewide Customization
                         int_25 = setInterval(load_agent_sales,15000);
@@ -1709,6 +1711,7 @@ function goGetInSession(type) {
 					clearInterval(int_21);
 					clearInterval(int_22);
 					clearInterval(int_23);
+					clearInterval(int_24);
 				});
 				
 				$('#realtime_inbound_monitoring').on('hidden.bs.modal', function () {
@@ -1719,7 +1722,6 @@ function goGetInSession(type) {
 					int_5 = setInterval(load_IncomingQueue,15000);
 					int_6 = setInterval(load_AnsweredCalls,15000);
 					int_7 = setInterval(load_DroppedCalls,15000);
-					int_24 = setInterval(load_DroppedCallsPercentage,15000);
 					int_8 = setInterval(load_TotalInboundCalls,30000);
 					int_9 = setInterval(load_TotalOutboundCalls,30000);
 					int_10 = setInterval(load_LiveOutbound,30000);
@@ -1740,7 +1742,8 @@ function goGetInSession(type) {
 					int_20 = setInterval(load_totalOutSales,30000);
 					int_21 = setInterval(load_totalInSales,30000);
 					int_22 = setInterval(load_INSalesHour,60000);
-					int_23 = setInterval(load_OUTSalesPerHour,60000);			
+					int_23 = setInterval(load_OUTSalesPerHour,60000);
+					int_24 = setInterval(load_DroppedCallsPercentage,15000);
 				});
             }
 				if ($("#change-password-dialog-modal").length > 0) {
@@ -1774,6 +1777,7 @@ function goGetInSession(type) {
 							clearInterval(int_21);
 							clearInterval(int_22);
 							clearInterval(int_23);
+							clearInterval(int_24);
 							
 							$(this).find('#old_password').attr('type', 'text').val(old_password_placeholder).css('color', '#ccc');
 							$(this).find('#new_password_1').attr('type', 'text').val(new_password_placeholder).css('color', '#ccc');
@@ -1824,7 +1828,6 @@ function goGetInSession(type) {
 							int_5 = setInterval(load_IncomingQueue,15000);
 							int_6 = setInterval(load_AnsweredCalls,15000);
 							int_7 = setInterval(load_DroppedCalls,15000);
-							int_24 = setInterval(load_DroppedCallsPercentage,15000);
 							int_8 = setInterval(load_TotalInboundCalls,30000);
 							int_9 = setInterval(load_TotalOutboundCalls,30000);
 							int_10 = setInterval(load_LiveOutbound,30000);
@@ -1845,7 +1848,8 @@ function goGetInSession(type) {
 							int_20 = setInterval(load_totalOutSales,30000);
 							int_21 = setInterval(load_totalInSales,30000);
 							int_22 = setInterval(load_INSalesHour,60000);
-							int_23 = setInterval(load_OUTSalesPerHour,60000);			
+							int_23 = setInterval(load_OUTSalesPerHour,60000);
+							int_24 = setInterval(load_DroppedCallsPercentage,15000);
 						});
 				}
 		});
