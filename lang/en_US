@@ -808,6 +808,8 @@ voicemail_box = "Voicemail Box"
 custom_extension = "Extension"
 extension_content = "Extension Content"
 phone_numbers_did_tfn = "Phone Numbers (DIDs/TFNs)"
+call_handle_method = "In-Group Call Handle Method"
+agent_search_method = "In-Group Agent Search Method"
 
 add_phone_number_success = "Phone Number Successfully Created!"
 confirm_delete_phonenumber = "Yes, delete this Phone number"

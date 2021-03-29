@@ -560,6 +560,8 @@
 		$phone = $_POST['route_phone_exten'];
 		$ingroup = $_POST['route_ingroupid'];
 		$defaultAD = $_POST['user_route_settings_ingroup'];
+		$call_handle_method = $_POST['call_handle_method'];
+		$agent_search_method = $_POST['agent_search_method'];
 
 		if($route == "AGENT"){
 			$voicemail_ext = $_POST['ru_voicemail'];
@@ -590,7 +592,9 @@
 			'voicemail_ext' 					=> $voicemail_ext,
 			'extension' 						=> $ext,
 			'exten_context' 					=> $ext_cont,
-			'list_id'						=> $list_id
+			'list_id'						=> $list_id,
+			'call_handle_method'			=> $call_handle_method,
+			'agent_search_method'			=> $agent_search_method
 		);				
 
 		$output 								= $api->API_modifyDID($postfields);
