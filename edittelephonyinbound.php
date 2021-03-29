@@ -2179,7 +2179,7 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 						       		<div id="tab_2" class="tab-pane fade in">
 						       			<fieldset>
 							       			<div class="form-group mt">
-							       				<label for="cid_num" class="col-sm-2 control-label"><?php $lh->translateText("clean_cid_number"); ?></label>
+							       				<label for="cid_num" class="col-sm-3 control-label"><?php $lh->translateText("clean_cid_number"); ?></label>
 							       				<div class="col-sm-9 mb">
 													<input type="text" class="form-control" name="cid_num" id="cid_num" value="<?php echo $output->data->filter_clean_cid_number;?>" maxlength="20">
 												</div>
