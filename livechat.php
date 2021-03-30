@@ -90,7 +90,7 @@
 	$(document).ready(function() {
 
 		$('<iframe>', {
-                   src: '<?php echo ROCKETCHAT_URL.$target;?>',
+                   src: '<?php echo ROCKETCHAT_URL.$target.'?layout=embedded';?>',
                    id:  'rc_frame',
                    frameborder: 0,
                    width: '100%',
