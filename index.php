@@ -1813,7 +1813,21 @@ function goGetInSession(type) {
 	});
 
 		$(document).ready(function(){
-		
+			// AUTOLOGIN
+			<?php if(ROCKETCHAT_ENABLE === 'y' && !isset($_SESSION['gad_authToken'])){?>
+                                var rcUser = '<?php echo $_SESSION['user']?>';
+                                var rcHandshake = '<?php echo $_SESSION['phone_this'];?>';
+                                $.ajax({
+                                        url: "./php/AdminLoginRocketChat.php",
+                                        type: 'POST',
+                                        dataType: "json",
+                                        data: {user: rcUser, pass: rcHandshake},
+                                        success: function(data) {
+                                                console.log("RC AuthToken and UserID Set!");
+                                        }
+                                });
+                        <?php } ?>
+				
 			// Clear previous agent info
 			$('#modal_view_agent_information').on('hidden.bs.modal', function () {
 				clear_agent_form();
