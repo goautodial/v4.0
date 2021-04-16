@@ -367,7 +367,7 @@
 									</a>
 								</div>
 							</div>
-							<?php if($whatsapp_status) { ?>	
+							<?php /*if($whatsapp_status) { ?>	
 							<!-- WHATSAPP AGENT CHAT BOXES -->
 							<div class="row">
 								<div class="col-lg-4 col-sm-6">
@@ -478,7 +478,7 @@
 								</div>	
 							</div>	
 							<!-- END OF CHAT STATUS BOXES -->
-							<?php } ?>
+							<?php }*/ ?>
 						</div>
 						<!-- date widget    -->
 						<div class="col-lg-3 col-md-6 col-sm-12">
@@ -498,7 +498,23 @@
 						</div>
 						<!-- END date widget    -->
 				
-						<?php if($whatsapp_status) { ?>
+						<?php //if($whatsapp_status) { ?>
+						<div class="col-lg-9" id="row_for_rest">
+                                                        <!-- CALLS PER HOUR CHART -->
+                                                        <div class="row">
+                                                          <div id="panelChart9" ng-controller="FlotChartController" class="panel panel-default">
+                                                                 <div class="panel-heading">
+                                                                        <div class="panel-title"><?=$lh->translateText("calls_per_hour")?></div>
+                                                                 </div>
+                                                                 <div collapse="panelChart9" class="panel-wrapper">
+                                                                        <div class="panel-body">
+                                                                           <div class="chart-splinev3 flot-chart"></div> <!-- data is in JS -> demo-flot.js -> search (Overall/Home/Pagkain)-->
+                                                                        </div>
+                                                                 </div>
+                                                          </div>
+                                                        </div>
+                                                        <!-- END widget-->
+						</div>
 						<div class="col-lg-3 col-md-6 col-sm-12">
 							<!-- DROPPED PERCENTAGE -->
 							<div class="panel panel-default">
@@ -556,28 +572,13 @@
 							</div>
 						</div>
 							<!-- END loader widget-->
-						<?php } ?>
+						<?php //} ?>
 					</div>
 					<!-- END OF CHAT WIDGETS --> 
 	
 					<!-- ROW FOR THE REST -->
 					<div class="row"> 
 						<div class="col-lg-9" id="row_for_rest">
-							<!-- CALLS PER HOUR CHART --> 
-							<div class="row">
-							  <div id="panelChart9" ng-controller="FlotChartController" class="panel panel-default">
-								 <div class="panel-heading">
-									<div class="panel-title"><?=$lh->translateText("calls_per_hour")?></div>
-								 </div>
-								 <div collapse="panelChart9" class="panel-wrapper">
-									<div class="panel-body">
-									   <div class="chart-splinev3 flot-chart"></div> <!-- data is in JS -> demo-flot.js -> search (Overall/Home/Pagkain)--> 
-									</div>
-								 </div>
-							  </div>
-							</div>
-							<!-- END widget-->
-		
 							<!-- Today's Phone Calls --> 
 							<div class="row">
 								<div class="col-lg-12" style="padding: 0px;">
@@ -1953,9 +1954,9 @@ function goGetInSession(type) {
 					load_TotalOutboundCalls();
 					load_LiveOutbound();
 				// ---- WhatsApp
-					load_whatsapp_realtime_monitoring();
+					/*load_whatsapp_realtime_monitoring();
 					load_whatsapp_agents_chat_monitoring();
-					load_whatsapp_chat_monitoring();
+					load_whatsapp_chat_monitoring();*/
 
 			// ---- clusterstatus table
 					load_cluster_status();
@@ -2034,14 +2035,14 @@ function goGetInSession(type) {
                          	var int_25 = setInterval(load_agent_sales,15000);
                          <?php } ?>
 
-			<?php if($whatsapp_status) { ?>
+			<?php /*if($whatsapp_status) { ?>
 			// ----	WhatsApp
 				var int_26 = setInterval(load_whatsapp_realtime_monitoring, 5000);
 				var int_27 = setInterval(load_whatsapp_agents_chat_monitoring, 3000);
 				var int_28 = setInterval(load_whatsapp_chat_monitoring, 3000);
 				var int_29 = setInterval(load_whatsapp_queue, 3000);
 				//var int_30 = setInterval(load_whatsapp_assigned_chats(), 3000);
-			<?php } ?>
+			<?php }*/ ?>
 		
 		$('#modal_view_agent_information').on('show.bs.modal', function () {
 			clearInterval(int_1);
@@ -2118,14 +2119,14 @@ function goGetInSession(type) {
                         // ---- Statewide Customization
                         int_25 = setInterval(load_agent_sales,15000);
                         <?php } ?>
-			<?php if($whatsapp_status) { ?>
+			<?php /*if($whatsapp_status) { ?>
 			int_26 = setInterval(load_whatsapp_realtime_monitoring, 5000);
 			int_27 = setInterval(load_whatsapp_agents_chat_monitoring, 3000);
 			int_28 = setInterval(load_whatsapp_chat_monitoring, 3000);
-			<?php } ?>
+			<?php }*/ ?>
 		});
 
-		<?php if($whatsapp_status) { ?>
+		<?php /*if($whatsapp_status) { ?>
 		// Whatsapp
 		var userid = "";
 		var int_30 = setInterval(load_whatsapp_assigned_chats(userid),3000);
@@ -2165,7 +2166,7 @@ function goGetInSession(type) {
                         // ---- Statewide Customization
                         clearInterval(int_25);
                         <?php } ?>
-                        <?php if($whatsapp_status) { ?>
+                        <?php /*if($whatsapp_status) { ?>
                         clearInterval(int_26);
                         clearInterval(int_27);
                         clearInterval(int_28);
@@ -2491,7 +2492,7 @@ function goGetInSession(type) {
                                 }
                         });
                 });
-		<?php } ?>
+		<?php }*/ ?>
 	</script>
 	
    <!-- FLOT CHART-->

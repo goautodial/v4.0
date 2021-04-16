@@ -2170,7 +2170,7 @@ error_reporting(E_ERROR | E_PARSE);
 	//$result .= $this->getSidebarItem("messages.php", "envelope", $this->lh->translationFor("messages"), $numMessages);
 	if(ROCKETCHAT_ENABLE === 'y'){
         //Rocketchat
-		$result .= $this->getSidebarItem("rocketchat.php", "rocket", $this->lh->translationFor("Rocket Chat"), NULL);
+		//$result .= $this->getSidebarItem("rocketchat.php", "rocket", $this->lh->translationFor("Rocket Chat"), NULL);
 		//$result .= $this->getSidebarItem("calls.php", "phone", "Calls");
 	}
         $result .= $this->getSidebarItem("notifications.php", "exclamation", $this->lh->translationFor("notifications"), $numNotifications, "orange");

@@ -726,9 +726,11 @@ input:checked + .slider:before {
 										 </li>
 										<?php if(ROCKETCHAT_ENABLE === 'y'){?>
 										 <li role="presentation">
-                                                                                        <a href="#rc" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
-                                                                                                <span class="fa fa-rocket"></span>
+                                                                                        <a href="#rc" aria-controls="home" id="loginRC" role="tab" data-toggle="tab" class="bb0">
+                                                                                                <!--<span class="fa fa-rocket"></span>-->
                                                                                                 <?=$lh->translationFor('Chat')?></a>
+												<input type="hidden" id="rc-user-id" value="">
+												<input type="hidden" id="rc-auth-token" value="">
                                                                                  </li>
 										<?php }?>
 									  </ul>
@@ -1924,8 +1926,7 @@ dding-top: 10px;">
 		                   }).appendTo('#rc_div');
 
 				var rcUser = '<?php echo $_SESSION['user']?>';
-				var rcHandshake = '<?php echo $_SESSION['rc_handshake']?>';	
-
+				var rcHandshake = '<?php echo $_SESSION['phone_this'];?>';	
 				$.ajax({
 					url: "./php/LoginRocketChat.php",
 					type: 'POST',
@@ -1933,13 +1934,14 @@ dding-top: 10px;">
 					data: {user: rcUser, pass: rcHandshake},
 					success: function(data) {
 						rcToken = data.data.authToken;
-						console.log(rcToken);
+						console.log(data.data);
+						$("#rc-user-id").val(data.data.userId);
+						$("#rc-auth-token").val(rcToken);
 						rcWin = document.getElementById('rc_frame').contentWindow;
 						//rcWin.postMessage({
 						//	event: 'login-with-token',
 						//	loginToken: rcToken
 						//}, '<?php echo ROCKETCHAT_URL;?>');
-						
 						setTimeout(function() {
 							rcWin.postMessage({
 								event: 'log-me-in-iframe',
@@ -1949,6 +1951,37 @@ dding-top: 10px;">
 						}, 3000);
 					}
 				});
+
+				//btnLogMeIn
+				$("#loginRC").click(function(e) {
+					var rcUser = '<?php echo $_SESSION['user']?>';
+	                                var rcHandshake = '<?php echo $_SESSION['phone_this'];?>';
+					var rcWin = document.getElementById('rc_frame').contentWindow
+					rcWin.postMessage({
+                                             event: 'log-me-in-iframe',
+                                             user: rcUser,
+                                             pass: rcHandshake
+                                        }, '<?php echo ROCKETCHAT_URL;?>');
+				});
+
+				/*$("#cream-agent-logout").click(function(e) {
+					var rcWin = document.getElementById('rc_frame').contentWindow;
+					var rcUserID = $("#rc-user-id").val();
+					var rcAuthToken = $("#rc-auth-token").val();
+					$.ajax({
+                                        url: "./php/LogoutRocketChat.php",
+                                        type: 'POST',
+                                        dataType: "json",
+                                        data: {userID: rcUserID, authToken: rcAuthToken},
+                                        success: function(data) {
+                                                console.log(data);
+                                        	rcWin.postMessage({
+                                                	event: 'log-me-out-iframe'
+                                        	}, '<?php echo ROCKETCHAT_URL;?>');
+						alert("Logging out of Rocketchat...");
+					}
+                                	});
+				});*/
 				//./rocketchat
 				<?php } ?>				
 

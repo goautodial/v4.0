@@ -83,6 +83,6 @@
 		$res["msg"] = $output->message;	
 		$res["dups"] = $output->duplicates;	
 		print_r(json_encode($res));
-		//var_dump($output);
+		//var_dump($data);
 	}
 ?>

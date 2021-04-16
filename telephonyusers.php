@@ -258,7 +258,7 @@
 								<div class="form-group">
 									<label for="email" class="col-sm-4 control-label"><?php $lh->translateText("email"); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="email" id="email" autocomplete="new-password" maxlength="100" placeholder="<?php $lh->translateText("email"); ?>" />
+										<input type="email" class="form-control" name="email" id="email" maxlength="100" placeholder="<?php $lh->translateText("email"); ?>" <?php if(ROCKETCHAT_ENABLE === "y")echo "";?> />
 										<small><span id="email_check"></span></small>
 									</div>
 								</div>
