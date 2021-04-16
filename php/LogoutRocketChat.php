@@ -1,7 +1,7 @@
 <?php
 /**
- * @file        LoginRocketChat.php
- * @brief       Logs in user to rocketchat
+ * @file        LogoutRocketChat.php
+ * @brief       Logs out user to rocketchat
  * @copyright   Copyright (c) 2018 GOautodial Inc.
  * @author      Alexander Jim Abenoja
  *
@@ -22,14 +22,13 @@
 
 include('./CRMDefaults.php');
 
-$user = $_POST['user'];
-$pass = $_POST['pass'];
-//$user = "devadmin";
-//$pass = "hayopka2021";
+$userID = $_POST['userID'];
+$authToken = $_POST['authToken'];
+
 //Logs In Rocketchat User
 	$curl = curl_init();
        	curl_setopt_array($curl, array(
-        CURLOPT_URL => ROCKETCHAT_URL."/api/v1/login",
+        CURLOPT_URL => ROCKETCHAT_URL."/api/v1/logout",
         CURLOPT_RETURNTRANSFER => true,
        	CURLOPT_ENCODING => "",
         CURLOPT_MAXREDIRS => 10,
@@ -37,9 +36,9 @@ $pass = $_POST['pass'];
         CURLOPT_FOLLOWLOCATION => true,
        	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => "POST",
-       	CURLOPT_POSTFIELDS =>"{\r\n  \"user\": \"$user\",\r\n  \"password\": \"$pass\"}",
+       	CURLOPT_POSTFIELDS =>"{\r\n  \"X-User-Id\": \"$userID\",\r\n  \"X-Auth-Token\": \"$authToken\"}",
         CURLOPT_HTTPHEADER => array(
-       	        "Content-Type:application/json"
+       	        "Content-Type:application/json", "X-User-Id:$userID",  "X-Auth-Token:$authToken"
        	    )
         ));
        	$response = curl_exec($curl);

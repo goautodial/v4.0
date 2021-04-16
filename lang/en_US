@@ -1575,3 +1575,10 @@ whatsapp_instance = "Whatsapp Instance"
 whatsapp_host = "Whatsapp Host"
 callback_url = "Callback URL"
 whatsapp_modify_sucess = "Successfully Modified Whatsapp Settings"
+
+//RocketChat
+livechat = "Livechat"
+current_chats = "Current Chats"
+analytics = "Analytics"
+realtime_monitoring = "Realtime Monitoring"
+

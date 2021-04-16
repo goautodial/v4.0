@@ -2051,6 +2051,15 @@ error_reporting(E_ERROR | E_PARSE);
 				//$telephonyArea .= $this-> getSidebarItem("./telephonyvoicefiles.php", "files-o", $this->lh->translationFor("voice_files"));
 			}
 			$telephonyArea .= '</ul></li>';
+			
+			$rocketchatAnalytics = "";
+			if(ROCKETCHAT_ENABLE === 'y'){
+				$rocketchatAnalytics .= '<li class="treeview"><a href="#"><i class="fa fa-headphones"></i> <span>'.$this->lh->translationFor("livechat").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
+				$rocketchatAnalytics .= $this-> getSidebarItem("./livechat.php?current_chats", "users", $this->lh->translationFor("current_chats"));
+				$rocketchatAnalytics .= $this-> getSidebarItem("./livechat.php?analytics", "users", $this->lh->translationFor("analytics"));
+				$rocketchatAnalytics .= $this-> getSidebarItem("./livechat.php?realtime_monitoring", "users", $this->lh->translationFor("realtime_monitoring"));
+				$rocketchatAnalytics .= '</ul></li>';
+			}
 
 			if ($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
 				$settings = '<li class="treeview"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("settings").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';				
@@ -2137,6 +2146,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$telephonyArea = '';
 		}
 		$result .= $telephonyArea;
+		$result .= $rocketchatAnalytics;
 		if ($userrole != CRM_DEFAULTS_USER_ROLE_AGENT) {
 			$result .= $settings;
 		}
@@ -2160,7 +2170,7 @@ error_reporting(E_ERROR | E_PARSE);
 	//$result .= $this->getSidebarItem("messages.php", "envelope", $this->lh->translationFor("messages"), $numMessages);
 	if(ROCKETCHAT_ENABLE === 'y'){
         //Rocketchat
-		$result .= $this->getSidebarItem("rocketchat.php", "rocket", $this->lh->translationFor("Rocket Chat"), NULL);
+		//$result .= $this->getSidebarItem("rocketchat.php", "rocket", $this->lh->translationFor("Rocket Chat"), NULL);
 		//$result .= $this->getSidebarItem("calls.php", "phone", "Calls");
 	}
         $result .= $this->getSidebarItem("notifications.php", "exclamation", $this->lh->translationFor("notifications"), $numNotifications, "orange");
