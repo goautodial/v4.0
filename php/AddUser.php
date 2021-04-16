@@ -21,6 +21,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 	require_once('APIHandler.php');
+	require_once('Session.php');
 	$api 										= \creamy\APIHandler::getInstance();
 
 	$email = $_POST["email"];
@@ -45,10 +46,10 @@
 	
 	if ($output->result=="success") { 
 		//insert curl rocketchat insert; POST: email, name, password, username; HEADER: xauth xtoken
-		$authToken = "Azve2taXDIxZiIkFYvs-yWIBfLd3lLGOkezRFKPGxt3";
-		$userID = "4yM7o5Feayn9uWj7j";
+		$authToken = $_SESSION['gad_authToken'];//"Azve2taXDIxZiIkFYvs-yWIBfLd3lLGOkezRFKPGxt3";
+		$userID = $_SESSION['gad_userID'];//"4yM7o5Feayn9uWj7j";
 		$roles = "livechat-agent";
-			
+				
 		//Logs In Rocketchat User
 	        $curl = curl_init();
 	        curl_setopt_array($curl, array(

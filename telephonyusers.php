@@ -174,6 +174,7 @@
 <!-- MODALS -->
 <?php
 	//$output = $api->API_getAllUsers();
+	//var_dump("AUTH TOKEN:".$_SESSION['gad_authToken']);
 	$user_groups = $api->API_getAllUserGroups();
 	$phones = $api->API_getAllPhones();
 	$max = max($phones->extension);
