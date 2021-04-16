@@ -238,5 +238,5 @@ define ('REALTIME_CALLS_MONITORING', 'n'); //Change to 'y' to enable realtime ca
 define ('REALTIME_INBOUND_MONITORING', 'n'); //Change to 'y' to enable realtime inbound monitoring in Dashboard (not advisable for heavy systems)
 
 define ('ROCKETCHAT_ENABLE', 'n'); // Change to 'y' to enable rocketchat feature
-define ('ROCKETCHAT_URL', ""); //Rocketchat URL example: https://rcwits.justgocloud.com
+define ('ROCKETCHAT_URL', ""); //Rocketchat URL example: https://rocketchat.company.com
 ?>
