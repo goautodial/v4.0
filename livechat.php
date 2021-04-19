@@ -92,41 +92,39 @@
 		$('<iframe>', {
                    src: '<?php echo ROCKETCHAT_URL.$target.'?layout=embedded';?>',
                    id:  'rc_frame',
+		   name: 'rc_frame',
                    frameborder: 0,
                    width: '100%',
                    height: '100%',
                    scrolling: 'no',
-                   load:function(){
-			console.log("LOADED");
-			$('.rcx-sidebar').css('display','none');
-			console.log($('.rcx-sidebar').val());
-                        /*$.ajax({
-                            url: "./php/LoginRocketChat.php",
-                            type: 'POST',
-                            data: {
-                                 user: "felipe", pass: "felipe"
-                            },
-                            success: function(data) {
-                                console.log(data);
-                                var obj = JSON.parse(data);
-                                var authToken = obj.data['authToken'];
-                                console.log(authToken);
-                                document.getElementById("rc_frame").contentWindow.postMessage({
-                                  event: 'login-with-token',
-                                  resume: authToken
-                                        }, '<?php echo ROCKETCHAT_URL;?>/api/v1/login');
-                                }
-                        });*/
-                   }
-                   }).appendTo('#rc_div');	
+                 }).appendTo('#rc_div');
 
-	$('.rcx-sidebar').css('display','none');
-	/*	document.getElementById('rc_frame').onload = function() {
-			console.log("hide sidebar");
-        		$('.rcx-sidebar').css('display','none');
-		}
-	*/
-	//	login_rocketchat("<?php echo $user->getUserName();?>", "<?php echo $user->getUserName();?>");i
+		var rcUser = '<?php echo $_SESSION['user']?>';
+                var rcHandshake = '<?php echo $_SESSION['phone_this'];?>';
+                $.ajax({
+                      url: "./php/AdminLoginRocketChat.php",
+                      type: 'POST',
+                      dataType: "json",
+                      data: {user: rcUser, pass: rcHandshake},
+                      success: function(data) {
+			   //var rcToken = data.data.authToken;
+			   console.log(data);
+			   //console.log(rcToken);
+			   var rcWin = document.getElementById('rc_frame').contentWindow;
+                           /*rcWin.postMessage({
+                           event: 'log-me-in-iframe',
+                           user: rcUser,
+			   pass: rcHandshake
+                      	   }, '<?php echo ROCKETCHAT_URL.$target;?>?layout=embedded');*/
+			   setTimeout(function() {
+                              rcWin.postMessage({
+                              event: 'log-me-in-iframe',
+                              user: rcUser,
+                              pass: rcHandshake
+                              }, '<?php echo ROCKETCHAT_URL.$target;?>?layout=embedded');
+                           }, 5000);
+                      }
+                });
 	}); // end of document ready
 
 	function loadIframe(iframeName, url) {

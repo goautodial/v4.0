@@ -28,13 +28,13 @@
 	$full_name = $_POST["fullname"];
 	$password = $_POST["password"];
 	$username = $_POST["user_form"];
-
+	$usergroup = $_POST["user_group"];
 	$postfields = array(
 		'goAction' 	=> 'goAddUser',
 		'user' 		=> $username, 
 		'pass' 		=> $password, 
 		'full_name' 	=> $full_name, 
-		'user_group' 	=> $_POST['user_group'], 
+		'user_group' 	=> $usergroup, 
 		'active' 	=> $_POST['status'], 
 		'seats' 	=> $_POST["seats"],
 		'phone_login' 	=> $_POST["phone_logins"],
@@ -48,8 +48,11 @@
 		//insert curl rocketchat insert; POST: email, name, password, username; HEADER: xauth xtoken
 		$authToken = $_SESSION['gad_authToken'];//"Azve2taXDIxZiIkFYvs-yWIBfLd3lLGOkezRFKPGxt3";
 		$userID = $_SESSION['gad_userID'];//"4yM7o5Feayn9uWj7j";
+		if($usergroup === "ADMIN"){
+		$roles = "admin\", \"livechat-agent\", \"livechat-manager\", \"bot";
+		}else{
 		$roles = "livechat-agent";
-				
+		}		
 		//Logs In Rocketchat User
 	        $curl = curl_init();
 	        curl_setopt_array($curl, array(
