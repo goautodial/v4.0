@@ -1493,6 +1493,10 @@ error_reporting(E_ERROR | E_PARSE);
 		    				The page is taking too long to load. It probably failed. <br/> Please check your Internet Connection and click the button below to try again...<br/>
 		    				<br/><button type="button" class="btn reload-button" style="display:none; color: #333333;"><i class="fa fa-refresh fa-3x"></i></button>
 		    			</div>
+					<div class="rc-loading-reports" style="display:none; color:white;">
+                                                Exporting and Collecting Data.<br/> Please wait a moment... <br/>
+                                                <br/><button type="button" class="btn reload-button" style="display:none; color: #333333;"><i class="fa fa-refresh fa-3x"></i></button>
+                                        </div>
     			</center>
 
     		</div>
@@ -2298,13 +2302,14 @@ error_reporting(E_ERROR | E_PARSE);
 						<div class="center-block" style="text-align: center">
 							<a href="./profile.php" class="btn btn-warning"><i class="fa fa-user"></i> '.$this->lh->translationFor("my_profile").'</a>
 							&nbsp;
-							<a href="./logout.php" id="cream-agent-logout" class="btn btn-warning"><i class="fa fa-sign-out"></i> '.$this->lh->translationFor("exit").'</a>
+							<a href="./logout.php" id="cream-admin-logout" class="btn btn-warning"><i class="fa fa-sign-out"></i> '.$this->lh->translationFor("exit").'</a>
 						</div>
 					</li>
-				</ul>'."\n";
+				</ul>
+				';
 		}
 
-		$tabpanes .= "</div>\n";
+		$tabpanes .= "</div>";
 
 		return $tabpanes;
 	}

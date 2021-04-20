@@ -102,27 +102,33 @@
 		var rcUser = '<?php echo $_SESSION['user']?>';
                 var rcHandshake = '<?php echo $_SESSION['phone_this'];?>';
                 $.ajax({
-                      url: "./php/AdminLoginRocketChat.php",
+                      url: "./php/LoginRocketChat.php",
                       type: 'POST',
                       dataType: "json",
                       data: {user: rcUser, pass: rcHandshake},
                       success: function(data) {
+			$(".preloader").fadeIn("slow");
+			setTimeout( function() {
+                            $(".rc-loading-reports").fadeIn("slow");
+                        }, 3000 );
+
+                        setTimeout( function() {
+                            $(".reload-button").fadeIn("slow");
+                        }, 15000 );
 			   //var rcToken = data.data.authToken;
 			   console.log(data);
 			   //console.log(rcToken);
 			   var rcWin = document.getElementById('rc_frame').contentWindow;
-                           /*rcWin.postMessage({
-                           event: 'log-me-in-iframe',
-                           user: rcUser,
-			   pass: rcHandshake
-                      	   }, '<?php echo ROCKETCHAT_URL.$target;?>?layout=embedded');*/
 			   setTimeout(function() {
+				console.log("Loading Rocketchat...");
                               rcWin.postMessage({
                               event: 'log-me-in-iframe',
                               user: rcUser,
                               pass: rcHandshake
-                              }, '<?php echo ROCKETCHAT_URL.$target;?>?layout=embedded');
-                           }, 5000);
+                              }, '<?php echo ROCKETCHAT_URL;?>');
+				$(".rc-loading-reports").fadeOut("fast");
+				$(".preloader").fadeOut("slow");
+                           }, 10000);
                       }
                 });
 	}); // end of document ready
