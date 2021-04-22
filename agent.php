@@ -984,7 +984,7 @@ input:checked + .slider:before {
 										<?php if(ROCKETCHAT_ENABLE === 'y'){?>
 										<!-- Rocket Chat -->
                                                                                 <div id="rc" role="tabpanel" class="tab-pane">
-                                                                                        <div class="row">
+                                                                                        <div class="row" id="rc_row">
                                                                                         	<div id="rc_div"></div>
 											</div><!-- /.row -->
                                                                                 </div>

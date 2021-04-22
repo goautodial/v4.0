@@ -47,7 +47,10 @@ $pass = $_POST['pass'];
         curl_close($curl);
 	$output = json_decode($response, TRUE);
 	//$_SESSION['gad_authToken'] = $response->data['authToken'];
+	if(!isset($_SESSION['gad_userID'])){
 	$_SESSION["gad_userID"] = $output["data"]["userId"];
 	$_SESSION["gad_authToken"] = $output["data"]["authToken"];
+	}
 	echo "userID: ".$output["data"]["userId"]."/r/n authToken: ".$output["data"]["authToken"];
+	//var_dump($response);
 ?>

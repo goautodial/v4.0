@@ -1494,7 +1494,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    				<br/><button type="button" class="btn reload-button" style="display:none; color: #333333;"><i class="fa fa-refresh fa-3x"></i></button>
 		    			</div>
 					<div class="rc-loading-reports" style="display:none; color:white;">
-                                                Exporting and Collecting Data.<br/> Please wait a moment... <br/>
+                                                COLLECTING AND EXPORTING DATA<br/> Please wait a moment... <br/>
                                                 <br/><button type="button" class="btn reload-button" style="display:none; color: #333333;"><i class="fa fa-refresh fa-3x"></i></button>
                                         </div>
     			</center>

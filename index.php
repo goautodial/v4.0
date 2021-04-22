@@ -720,63 +720,6 @@
 						</div><!-- END OF COLUMN 9 -->
 	
 						<aside class="col-lg-3">
-							<?php if(!$whatsapp_status) {?>
-							<!-- DROPPED PERCENTAGE -->
-							<div class="panel panel-default">
-								<?php
-									$droppedpercentage = $ui->API_goGetDroppedPercentage($_SESSION['user']);
-									$dropped_percentage = $droppedpercentage->data->getDroppedPercentage;
-									
-									if ($dropped_percentage == NULL)
-										$dropped_percentage = "0";
-									if ($dropped_percentage < "10")
-										$color = "#5d9cec";
-									if ($dropped_percentage >= "10")
-										$color = "#f05050";
-									if ($dropped_percentage > "100"){
-										$color = "#f05050";
-										$dropped_percentage = "100";
-									}
-								?>
-							   <div class="panel-body">
-									<div class="panel-title"><?=$lh->translateText("dropped_calls_percentage")?></div>
-									<center>
-										<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
-											<input type="text"
-											class="knob" value="<?php echo $dropped_percentage; ?>" id="refresh_DroppedCallsPercentage" data-width="150" data-height="150" data-padding="21px"
-											data-fgcolor="<?php echo $color; ?>" data-readonly="true" readonly="readonly"
-											style="	width: 49px;
-												height: 100px;
-												position: absolute;
-												margin-top: 45px;
-												margin-left: -98px;
-												vertical-align: middle;
-												border: 0px;
-												font-style: normal;
-												font-variant: normal;
-												font-weight: bold;
-												/* font-stretch: normal; */
-												font-size: 30px;
-												line-height: normal;
-												font-family: Arial;
-												text-align: center;
-												color: <?php echo $color; ?>;
-												padding: 0px;
-												-webkit-appearance: none;
-												background: none;">
-										</div>
-									</center>
-								   <div class="panel-footer">
-										<p class="text-muted">
-											<em class="fa fa-upload fa-fw"></em>
-											<span><?=$lh->translateText("dropped_calls")?>: </span>
-											<span class="text-dark" id="refresh_DroppedCalls"></span>
-										</p>
-								   </div>
-								</div>
-							</div> 
-							<!-- END loader widget-->
-							<?php } ?>
 							
 							<!-- TASK ACTIVITIES -->
 							<div class="panel panel-default">

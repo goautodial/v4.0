@@ -98,7 +98,7 @@
                    height: '100%',
                    scrolling: 'no',
                  }).appendTo('#rc_div');
-
+		$("#rc_div").hide();
 		var rcUser = '<?php echo $_SESSION['user']?>';
                 var rcHandshake = '<?php echo $_SESSION['phone_this'];?>';
                 $.ajax({
@@ -128,7 +128,10 @@
                               }, '<?php echo ROCKETCHAT_URL;?>');
 				$(".rc-loading-reports").fadeOut("fast");
 				$(".preloader").fadeOut("slow");
-                           }, 10000);
+				setTimeout(function() {
+				$("#rc_div").show();
+				}, 1500);
+                           }, 8000);
                       }
                 });
 	}); // end of document ready
