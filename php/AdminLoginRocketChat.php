@@ -21,6 +21,7 @@
 */
 
 include('./CRMDefaults.php');
+require_once('./Session.php');
 
 $user = $_POST['user'];
 $pass = $_POST['pass'];
@@ -44,6 +45,9 @@ $pass = $_POST['pass'];
         ));
        	$response = curl_exec($curl);
         curl_close($curl);
-	echo $data = $response;
-	//echo json_encode($data);
+	$output = json_decode($response, TRUE);
+	//$_SESSION['gad_authToken'] = $response->data['authToken'];
+	$_SESSION["gad_userID"] = $output["data"]["userId"];
+	$_SESSION["gad_authToken"] = $output["data"]["authToken"];
+	echo "userID: ".$output["data"]["userId"]."/r/n authToken: ".$output["data"]["authToken"];
 ?>

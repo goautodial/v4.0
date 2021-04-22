@@ -1019,7 +1019,7 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                 if (sureToLogout) {
                     swal.close();
 		    //Whatsapp
-		    var userid = $('#wa-userid').val();
+		    /*var userid = $('#wa-userid').val();
 		    $.ajax({
                         url:"php/WhatsappLogout.php",
                         method:"POST",
@@ -1027,17 +1027,36 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                         success:function(data){
                             console.log("Whatsapp Logged Out...");
                         }
-                    });
+                    });*/
 		    // ./Whatsapp
 
-           <?php if(ROCKETCHAT_ENABLE === 'y'){?> 
+		<?php if(ROCKETCHAT_ENABLE === 'y'){?>
             // Rocket Chat
                 var rcWin = document.getElementById('rc_frame').contentWindow;
-                rcWin.postMessage({
-                    event: 'log-me-out-iframe'
-                }, '<?php echo ROCKETCHAT_URL;?>');
+                var rcUserID = $("#rc-user-id").val();
+                var rcAuthToken = $("#rc-auth-token").val();
+                $.ajax({
+                    url: "./php/LogoutRocketChat.php",
+                    type: 'POST',
+                    dataType: "json",
+                    data: {userID: rcUserID, authToken: rcAuthToken},
+                    success: function(data) {
+                    console.log(data);
+                      	rcWin.postMessage({
+                            event: 'log-me-out-iframe'
+                        }, '<?php echo ROCKETCHAT_URL;?>');
+			delayLogoutforRocketchat();
+                    }
+                });
             // Rocket Chat
-	    <?php } ?>
+        	<?php } ?>
+
+		function delayLogoutforRocketchat(){
+			setTimeout(function() {
+				console.log("Logging out of Rocketchat...");
+                        }, 3000);
+		}
+
                     if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
                         logoutWarn = false;
                         btnLogMeOut();
@@ -2361,6 +2380,7 @@ function btnLogMeOut () {
     
 function sendLogout (logMeOut) {
     if (logMeOut) {
+	
         var postData = {
             goAction: 'goLogoutUser',
             goUser: uName,
@@ -9211,8 +9231,10 @@ function removeTabs() {
     $("#url_content_one").remove();
     $("#url_tab_two").remove();
     $("#url_content_two").remove();
+    <?php if(ROCKETCHAT_ENABLE != 'y'){?>
     $("#agent_tablist li").first().addClass('active');
-    $("#agent_tabs div[id='contact_info']").first().addClass('active');
+    $("#agent_tabs div[id='contact_info']").first().addClass('active'); //redirect to active on logout
+    <?php }?>
 }
 
 function PauseCodeSelectBox() {

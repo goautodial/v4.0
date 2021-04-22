@@ -174,6 +174,7 @@
 <!-- MODALS -->
 <?php
 	//$output = $api->API_getAllUsers();
+	//var_dump("AUTH TOKEN:".$_SESSION['gad_authToken']);
 	$user_groups = $api->API_getAllUserGroups();
 	$phones = $api->API_getAllPhones();
 	$max = max($phones->extension);
@@ -181,6 +182,7 @@
 	$count_users = count($all_users->user);
 	$license_seats = intval($all_users->licensedSeats);
 	$avail_seats = $license_seats-$count_users;
+	$servers = $api->API_getAllServers();
 ?>
 	<!-- ADD USER MODAL -->
 	    <div class="modal fade" id="user-wizard-modal" aria-labelledby="T_User" >
@@ -257,7 +259,7 @@
 								<div class="form-group">
 									<label for="email" class="col-sm-4 control-label"><?php $lh->translateText("email"); ?></label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="email" id="email" autocomplete="new-password" maxlength="100" placeholder="<?php $lh->translateText("email"); ?>" />
+										<input type="email" class="form-control" name="email" id="email" maxlength="100" placeholder="<?php $lh->translateText("email"); ?>" <?php if(ROCKETCHAT_ENABLE === "y")echo "";?> />
 										<small><span id="email_check"></span></small>
 									</div>
 								</div>
@@ -315,6 +317,22 @@
 										</select>
 									</div>
 								</div>
+								<div class="form-group">
+									<label class="col-sm-4 control-label" for="ip"><?php $lh->translateText("server_ip"); ?></label>
+									<div class="col-sm-8 mb">
+										<select name="ip" id="ip" class="form-control" required>
+											<?php
+												for($i=0;$i < count($servers->server_id);$i++){
+											?>
+											<option value="<?php echo $servers->server_ip[$i];?>">
+												<?php echo $servers->server_ip[$i].' - '.$servers->server_id[$i].' - '.$servers->server_description[$i];?>
+											</option>
+											<?php
+												}
+											?>
+										</select>
+									</div>
+								</div>
 	                        </fieldset>
 	                     </div>
 					</form>
@@ -327,7 +345,6 @@
 
  <?php
 	if((isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0) || $_SESSION['show_phones'] == 1 ){
-		$servers = $api->API_getAllServers();
 ?>
 	<!-- ADD PHONE MODAL -->
 	    <div class="modal fade" id="phone-wizard-modal" aria-labelledby="T_Phones" >
@@ -555,6 +572,21 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+		// ROCKETCHAT GET X-AUTH-TOKEN AND X-USER-ID
+                        <?php if(ROCKETCHAT_ENABLE === 'y' && !isset($_SESSION['gad_authToken'])){?>
+                                var rcUser = '<?php echo $_SESSION['user']?>';
+                                var rcHandshake = '<?php echo $_SESSION['phone_this'];?>';
+                                $.ajax({
+                                        url: "./php/AdminLoginRocketChat.php",
+                                        type: 'POST',
+                                        dataType: "json",
+                                        data: {user: rcUser, pass: rcHandshake},
+                                        success: function(data) {
+                                                console.log("RC AuthToken and UserID Set!");
+                                        }
+                                });
+                        <?php } ?>
+
 		// initialize select2
 		$('.select').select2({ theme: 'bootstrap' });		
 		$.fn.select2.defaults.set( "theme", "bootstrap" );
