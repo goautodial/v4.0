@@ -720,7 +720,6 @@
 						</div><!-- END OF COLUMN 9 -->
 	
 						<aside class="col-lg-3">
-							
 							<!-- TASK ACTIVITIES -->
 							<div class="panel panel-default">
 								<div class="panel-heading">
@@ -1972,6 +1971,7 @@ function goGetInSession(type) {
 				var int_16 = setInterval(load_realtime_calls_monitoring,3000);
 				<?php } ?>
 				<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
+				var int_17;
 				//var int_17 = setInterval(load_realtime_inbound_monitoring, 3000, inbTable);
 				<?php } ?>
 				//var int_17 = setInterval(load_realtime_sla_monitoring,10000);
@@ -2020,7 +2020,9 @@ function goGetInSession(type) {
 			clearInterval(int_16);
 			<?php } ?>
 			<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
-			clearInterval(int_17);
+			if (typeof int_17 !== 'undefined') {
+				clearInterval(int_17);
+            }
 			<?php } ?>
 			clearInterval(int_18);
 			clearInterval(int_19);
@@ -2633,7 +2635,9 @@ function goGetInSession(type) {
 							clearInterval(int_15);
 							clearInterval(int_16);
 							<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
-							clearInterval(int_17);
+							if (typeof int_17 !== 'undefined') {
+								clearInterval(int_17);
+							}
 							<?php } ?>
 							clearInterval(int_18);
 							clearInterval(int_19);
