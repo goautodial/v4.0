@@ -43,7 +43,7 @@
 		$log_group = '';
 	}
 
-	if(ROCKETCHAT_ENABLE === 'y'){
+	if(ROCKETCHAT_ENABLE === 'y' && isset($_SESSION['gad_authToken'])){
 ?>
 <link rel="stylesheet" href="css/customizedLoader.css">
 <link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
@@ -79,10 +79,10 @@
                                    }).appendTo('#rc_div');
 	
 	$("#rc_div").hide();
-	var rcUser = '<?php echo $_SESSION['user']?>';
-        var rcHandshake = '<?php echo $_SESSION['phone_this'];?>';
+	//var rcUser = '<?php echo $_SESSION['user']?>';
+        //var rcHandshake = '<?php echo $_SESSION['phone_this'];?>';
 	var rcWin = document.getElementById('rc_frame').contentWindow;
-        $.ajax({
+        /*$.ajax({
             url: "./php/AdminLoginRocketChat.php",
             type: 'POST',
             dataType: "json",
@@ -90,7 +90,7 @@
             success: function(data) {
                 //console.log("RC AuthToken and UserID Set!");
             }
-        });
+        });*/
 	console.log("<?php echo $_SESSION['gad_authToken'];?>");
 	setTimeout(function() {
           $.ajax({
@@ -110,7 +110,7 @@
 		
 		}
           });
-	}, 2000);
+	}, 3000);
    });
    function delayLogoutforRocketchat(){
       setTimeout(function() {
@@ -149,8 +149,8 @@
 		
 		$output = json_decode($data);
 	
-		//if(ROCKETCHAT_ENABLE !== 'y')	
-		//header("Location: login.php"); // Redirecting To Login Page
+		if(ROCKETCHAT_ENABLE !== 'y' || !isset($_SESSION['gad_authToken']))	
+		header("Location: login.php"); // Redirecting To Login Page
 	}
 
 ?>

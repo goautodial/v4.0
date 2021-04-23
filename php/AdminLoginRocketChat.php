@@ -51,6 +51,6 @@ $pass = $_POST['pass'];
 	$_SESSION["gad_userID"] = $output["data"]["userId"];
 	$_SESSION["gad_authToken"] = $output["data"]["authToken"];
 	}
-	echo "userID: ".$output["data"]["userId"]."/r/n authToken: ".$output["data"]["authToken"];
+	echo $data = $response;	
 	//var_dump($response);
 ?>
