@@ -183,6 +183,10 @@
 	$license_seats = intval($all_users->licensedSeats);
 	$avail_seats = $license_seats-$count_users;
 	$servers = $api->API_getAllServers();
+
+	if(ROCKETCHAT_ENABLE === 'y'){
+		$license_seats = 1;
+	}
 ?>
 	<!-- ADD USER MODAL -->
 	    <div class="modal fade" id="user-wizard-modal" aria-labelledby="T_User" >

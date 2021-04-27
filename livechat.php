@@ -76,7 +76,7 @@
 			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar()); ?>
 
             <!-- Right side column. Contains the navbar and content of the page -->
-            <aside class="right-side"><?php if(isset($_SESSION['gad_authToken'])) echo $_SESSION['gad_authToken'];?>
+            <aside class="right-side"><?php //if(isset($_SESSION['gad_authToken'])) echo $_SESSION['gad_authToken'];?>
                  <div id="rc_div">
 			<!--<iframe src="<?php echo ROCKETCHAT_URL.$target;?>" id="rc_frame"  width="100%" height="100%">-->
 		</div>
