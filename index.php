@@ -515,11 +515,11 @@
                                                         </div>
                                                         <!-- END widget-->
 						</div>
-						<div class="col-lg-3 col-md-6 col-sm-12">
-							
+						<div class="col-lg-3 col-md-6 col-sm-12">	
 							<!-- DROPPED PERCENTAGE -->
 							<div class="panel panel-default">
 								<?php
+									// Fix on bug #8671
 									$droppedpercentage = $ui->API_goGetDroppedPercentage($_SESSION['user']);
 									$dropped_percentage = $droppedpercentage->data->getDroppedPercentage;
 									
