@@ -76,7 +76,7 @@
 			<?php print $ui->getSidebar($user->getUserId(), $user->getUserName(), $user->getUserRole(), $user->getUserAvatar()); ?>
 
             <!-- Right side column. Contains the navbar and content of the page -->
-            <aside class="right-side">
+            <aside class="right-side"><?php //if(isset($_SESSION['gad_authToken'])) echo $_SESSION['gad_authToken'];?>
                  <div id="rc_div">
 			<!--<iframe src="<?php echo ROCKETCHAT_URL.$target;?>" id="rc_frame"  width="100%" height="100%">-->
 		</div>
@@ -98,7 +98,7 @@
                    height: '100%',
                    scrolling: 'no',
                  }).appendTo('#rc_div');
-
+		$("#rc_div").hide();
 		var rcUser = '<?php echo $_SESSION['user']?>';
                 var rcHandshake = '<?php echo $_SESSION['phone_this'];?>';
                 $.ajax({
@@ -107,22 +107,31 @@
                       dataType: "json",
                       data: {user: rcUser, pass: rcHandshake},
                       success: function(data) {
+			$(".preloader").fadeIn("slow");
+			setTimeout( function() {
+                            $(".rc-loading-reports").fadeIn("slow");
+                        }, 3000 );
+
+                        setTimeout( function() {
+                            $(".reload-button").fadeIn("slow");
+                        }, 15000 );
 			   //var rcToken = data.data.authToken;
 			   console.log(data);
 			   //console.log(rcToken);
 			   var rcWin = document.getElementById('rc_frame').contentWindow;
-                           /*rcWin.postMessage({
-                           event: 'log-me-in-iframe',
-                           user: rcUser,
-			   pass: rcHandshake
-                      	   }, '<?php echo ROCKETCHAT_URL.$target;?>?layout=embedded');*/
 			   setTimeout(function() {
+				console.log("Loading Rocketchat...");
                               rcWin.postMessage({
                               event: 'log-me-in-iframe',
                               user: rcUser,
                               pass: rcHandshake
-                              }, '<?php echo ROCKETCHAT_URL.$target;?>?layout=embedded');
-                           }, 5000);
+                              }, '<?php echo ROCKETCHAT_URL;?>');
+				$(".rc-loading-reports").fadeOut("fast");
+				$(".preloader").fadeOut("slow");
+				setTimeout(function() {
+				$("#rc_div").show();
+				}, 1500);
+                           }, 8000);
                       }
                 });
 	}); // end of document ready

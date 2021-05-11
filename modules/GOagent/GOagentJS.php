@@ -1042,6 +1042,7 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                     data: {userID: rcUserID, authToken: rcAuthToken},
                     success: function(data) {
                     console.log(data);
+		    $("#rc_row").fadeOut();
                       	rcWin.postMessage({
                             event: 'log-me-out-iframe'
                         }, '<?php echo ROCKETCHAT_URL;?>');

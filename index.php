@@ -515,10 +515,11 @@
                                                         </div>
                                                         <!-- END widget-->
 						</div>
-						<div class="col-lg-3 col-md-6 col-sm-12">
+						<div class="col-lg-3 col-md-6 col-sm-12">	
 							<!-- DROPPED PERCENTAGE -->
 							<div class="panel panel-default">
 								<?php
+									// Fix on bug #8671
 									$droppedpercentage = $ui->API_goGetDroppedPercentage($_SESSION['user']);
 									$dropped_percentage = $droppedpercentage->data->getDroppedPercentage;
 									
@@ -720,64 +721,6 @@
 						</div><!-- END OF COLUMN 9 -->
 	
 						<aside class="col-lg-3">
-							<?php if(!$whatsapp_status) {?>
-							<!-- DROPPED PERCENTAGE -->
-							<div class="panel panel-default">
-								<?php
-									$droppedpercentage = $ui->API_goGetDroppedPercentage($_SESSION['user']);
-									$dropped_percentage = $droppedpercentage->data->getDroppedPercentage;
-									
-									if ($dropped_percentage == NULL)
-										$dropped_percentage = "0";
-									if ($dropped_percentage < "10")
-										$color = "#5d9cec";
-									if ($dropped_percentage >= "10")
-										$color = "#f05050";
-									if ($dropped_percentage > "100"){
-										$color = "#f05050";
-										$dropped_percentage = "100";
-									}
-								?>
-							   <div class="panel-body">
-									<div class="panel-title"><?=$lh->translateText("dropped_calls_percentage")?></div>
-									<center>
-										<div width="200" height="200" style="margin-top: 40px;margin-bottom: 40px;">
-											<input type="text"
-											class="knob" value="<?php echo $dropped_percentage; ?>" id="refresh_DroppedCallsPercentage" data-width="150" data-height="150" data-padding="21px"
-											data-fgcolor="<?php echo $color; ?>" data-readonly="true" readonly="readonly"
-											style="	width: 49px;
-												height: 100px;
-												position: absolute;
-												margin-top: 45px;
-												margin-left: -98px;
-												vertical-align: middle;
-												border: 0px;
-												font-style: normal;
-												font-variant: normal;
-												font-weight: bold;
-												/* font-stretch: normal; */
-												font-size: 30px;
-												line-height: normal;
-												font-family: Arial;
-												text-align: center;
-												color: <?php echo $color; ?>;
-												padding: 0px;
-												-webkit-appearance: none;
-												background: none;">
-										</div>
-									</center>
-								   <div class="panel-footer">
-										<p class="text-muted">
-											<em class="fa fa-upload fa-fw"></em>
-											<span><?=$lh->translateText("dropped_calls")?>: </span>
-											<span class="text-dark" id="refresh_DroppedCalls"></span>
-										</p>
-								   </div>
-								</div>
-							</div> 
-							<!-- END loader widget-->
-							<?php } ?>
-							
 							<!-- TASK ACTIVITIES -->
 							<div class="panel panel-default">
 								<div class="panel-heading">
@@ -1813,20 +1756,6 @@ function goGetInSession(type) {
 	});
 
 		$(document).ready(function(){
-			// AUTOLOGIN
-			<?php if(ROCKETCHAT_ENABLE === 'y' && !isset($_SESSION['gad_authToken'])){?>
-                                var rcUser = '<?php echo $_SESSION['user']?>';
-                                var rcHandshake = '<?php echo $_SESSION['phone_this'];?>';
-                                $.ajax({
-                                        url: "./php/AdminLoginRocketChat.php",
-                                        type: 'POST',
-                                        dataType: "json",
-                                        data: {user: rcUser, pass: rcHandshake},
-                                        success: function(data) {
-                                                console.log("RC AuthToken and UserID Set!");
-                                        }
-                                });
-                        <?php } ?>
 				
 			// Clear previous agent info
 			$('#modal_view_agent_information').on('hidden.bs.modal', function () {

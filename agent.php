@@ -941,6 +941,19 @@ input:checked + .slider:before {
 							                	<button type="submit" name="submit" id="submit_edit_form" class="btn btn-primary btn-block btn-flat"><?=$lh->translationFor('submit')?></button>
 							                </div>
 							               </fieldset>
+
+								<div id="custom_fields_content" class="card-body" style="border: 1px solid rgb(221, 230, 233); margin: 0 32px 0 22px; display: none;">
+                                                                        <h4 style="font-weight: 600;">
+                                                                                <?=$lh->translationFor('custom_forms')?>
+                                                                        </h4>
+                                                                        <br>
+                                                                        <form role="form" id="custom_form" class="formMain">
+                                                                                <div id="custom_fields">
+
+                                                                                </div>
+                                                                        </form>
+                                                                </div>
+                                                                <br id="custom_br" style="display: none;">
 										</div><!--End of Profile-->
 										
 										<div id="comments_tab" role="tabpanel" class="tab-pane">
@@ -984,7 +997,7 @@ input:checked + .slider:before {
 										<?php if(ROCKETCHAT_ENABLE === 'y'){?>
 										<!-- Rocket Chat -->
                                                                                 <div id="rc" role="tabpanel" class="tab-pane">
-                                                                                        <div class="row">
+                                                                                        <div class="row" id="rc_row">
                                                                                         	<div id="rc_div"></div>
 											</div><!-- /.row -->
                                                                                 </div>
@@ -993,19 +1006,6 @@ input:checked + .slider:before {
 									</div>
 								</div>
 								
-						        <div id="custom_fields_content" class="card-body" style="border: 1px solid rgb(221, 230, 233); margin: 0 32px 0 22px; display: none;">
-									<h4 style="font-weight: 600;">
-										<?=$lh->translationFor('custom_forms')?>
-									</h4>
-									<br>
-									<form role="form" id="custom_form" class="formMain">
-										<div id="custom_fields">
-											
-										</div>
-									</form>
-								</div>
-								<br id="custom_br" style="display: none;">
-
 					<!-- SCRIPT MODAL -->
 							<div class="modal fade" id="script" name="script" tabindex="-1" role="dialog" aria-hidden="true">
 						        <div class="modal-dialog">

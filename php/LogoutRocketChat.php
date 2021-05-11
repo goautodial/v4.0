@@ -29,7 +29,8 @@ $authToken = $_POST['authToken'];
 	$curl = curl_init();
        	curl_setopt_array($curl, array(
         CURLOPT_URL => ROCKETCHAT_URL."/api/v1/logout",
-        CURLOPT_RETURNTRANSFER => true,
+        //CURLOPT_URL => ROCKETCHAT_URL."/api/v1/method.callAnon/logoutCleanUp",
+	CURLOPT_RETURNTRANSFER => true,
        	CURLOPT_ENCODING => "",
         CURLOPT_MAXREDIRS => 10,
        	CURLOPT_TIMEOUT => 0,
@@ -43,6 +44,10 @@ $authToken = $_POST['authToken'];
         ));
        	$response = curl_exec($curl);
         curl_close($curl);
+	if (isset($_COOKIE['rc_uid']))
+	    unset($_COOKIE['rc_uid']);
+	if (isset($_COOKIE['rc_token']))
+            unset($_COOKIE['rc_token']);
 	echo $data = $response;
 	//echo json_encode($data);
 ?>

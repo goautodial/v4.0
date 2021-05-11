@@ -116,7 +116,7 @@
 							if(isset($userid)) {
 								if ($output->result=="success") {
 								# Result was OK!
-
+								//var_dump($output->data);
 						?>
 							<div class="panel-body">
 							<legend><?php $lh->translateText("modify_user"); ?> : <u id="agent_name"><?php echo $output->data->user; ?></u></legend>

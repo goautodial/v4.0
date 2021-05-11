@@ -42,7 +42,87 @@
 		$details = "Session Expired";
 		$log_group = '';
 	}
+
+	if(ROCKETCHAT_ENABLE === 'y' && isset($_SESSION['gad_authToken'])){
+?>
+<link rel="stylesheet" href="css/customizedLoader.css">
+<link rel="stylesheet" href="adminlte/css/AdminLTE.min.css">
+<div class="preloader">
+                        <div class="pull-right close-preloader" style="display:none;">
+                                <a type="button" class="close-preloader-button" aria-label="Close" style="color:white;"><i class="fa fa-close fa-lg"></i></a>
+                        </div>
+                        <center>
+                                        <span class="dots">
+                                        <div class="circ1"></div><div class="circ2"></div><div class="circ3"></div><div class="circ4"></div>
+                                        </span>
+
+                                        <br/><br/>
+                                        <div class="rc-loading-reports" style="color:white;">
+                                                LOGGING YOU OUT...<br/> Please wait while we redirect you to the Login Page... <br/>
+                                                <br/><button type="button" class="btn reload-button" style="display:none; color: #333333;"><i class="fa fa-refresh fa-3x"></i></button>
+                                        </div>
+                        </center>
+
+                </div>
+<div id="rc_div" ></div>	
+<script language="JavaScript" type="text/javascript" src="/js/jquery.min.js"></script>
+<script>
+   $(document).ready(function() {
+	$('<iframe>', {
+                                   src: '<?php echo ROCKETCHAT_URL;?>?layout=embedded',
+                                   id:  'rc_frame',
+                                   name: 'rc_frame',
+                                   frameborder: 0,
+                                   width: '10%',
+                                   height: '10%',
+                                   scrolling: 'no'
+                                   }).appendTo('#rc_div');
 	
+	$("#rc_div").hide();
+	//var rcUser = '<?php echo $_SESSION['user']?>';
+        //var rcHandshake = '<?php echo $_SESSION['phone_this'];?>';
+	var rcWin = document.getElementById('rc_frame').contentWindow;
+        /*$.ajax({
+            url: "./php/AdminLoginRocketChat.php",
+            type: 'POST',
+            dataType: "json",
+            data: {user: rcUser, pass: rcHandshake},
+            success: function(data) {
+                //console.log("RC AuthToken and UserID Set!");
+            }
+        });*/
+	console.log("<?php echo $_SESSION['gad_authToken'];?>");
+	setTimeout(function() {
+          $.ajax({
+                url: "./php/LogoutRocketChat.php",
+                type: 'POST',
+                dataType: "json",
+                data: {userID: "<?php echo $_SESSION['gad_userID'];?>", authToken: "<?php echo $_SESSION['gad_authToken'];?>"},
+                success: function(data) {
+                //console.log("ERROR 2:" + data);
+	
+		setTimeout(function() {
+                rcWin.postMessage({
+                   event: "log-me-out-iframe"
+                }, "<?php echo ROCKETCHAT_URL;?>");
+                delayLogoutforRocketchat();
+                }, 4000);
+		
+		}
+          });
+	}, 3000);
+   });
+   function delayLogoutforRocketchat(){
+      setTimeout(function() {
+         console.log("Logging out of Rocketchat...");
+	$(location).attr("href", "login.php");
+      }, 1000);
+   }
+</script>
+
+<?php
+//var_dump($_SESSION); 
+	}//rocketchat integration
 	
 	$session_destroyed = session_destroy();
 	
@@ -68,7 +148,8 @@
 		curl_close($ch);
 		
 		$output = json_decode($data);
-		
+	
+		if(ROCKETCHAT_ENABLE !== 'y' || !isset($_SESSION['gad_authToken']))	
 		header("Location: login.php"); // Redirecting To Login Page
 	}
 
