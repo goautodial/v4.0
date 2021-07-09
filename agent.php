@@ -986,7 +986,7 @@ input:checked + .slider:before {
 															<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="reload-script" style="padding: 5px;"><?=$lh->translationFor('reload_script')?></a>
 														</h4>
 														<div id="ScriptContents" style="min-height: 200px; border: dashed 1px #c0c0c0; padding: 20px 5px 5px;">
-															<?php echo $output_script;?>
+															<?php //echo $output_script;?>
 														</div>
 													</fieldset><!-- /.fieldset -->
 												</div><!-- /.col-sm-12 -->
