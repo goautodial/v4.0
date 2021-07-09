@@ -74,6 +74,11 @@
 		.new-width {
 			width: 750px;
 			margin-left: -375px;
+			height: 55%;
+		}
+		.new-width p {
+			height: 20%;
+			overflow-y: auto;
 		}
 		</style>
     </head>
@@ -114,6 +119,9 @@
 						print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					}
 				?>
+			
+
+
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
@@ -170,6 +178,8 @@
 					}
 				});
 			});
+			
+
 		</script>
     </body>
 </html>
