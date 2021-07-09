@@ -202,9 +202,16 @@
 				<div class="form-group">
 					<div class="col-sm-1">&nbsp;</div>
 					<div class="col-sm-11">
+						<?php //echo str_replace("\\\"", "", htmlspecialchars_decode($output->script_text, ENT_QUOTES)); ?>
 						<div class="panel">
 							<div class="panel-body">
-								<textarea rows="14" class="form-control note-editor" id="script_text" name="script_text"><?php echo str_replace('Â', '', htmlspecialchars_decode($output->script_text, ENT_QUOTES));?></textarea>
+									
+								<textarea rows="14" class="form-control note-editor" id="script_text" name="script_text">
+									<?php //echo str_replace("\\\"", "", htmlspecialchars_decode($output->script_text, ENT_QUOTES)); 
+									$filtered_script = str_replace('Â', '', htmlspecialchars_decode($output->script_text, ENT_QUOTES));
+									$filtered_script = stripslashes(str_replace("\"", "", $filtered_script));
+									echo $filtered_script; ?>
+								</textarea>
 							</div>
 						</div>
 					</div>
