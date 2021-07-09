@@ -111,7 +111,7 @@ if (isset($_POST["cid"])) {
 							$voicefiles = $api->API_getAllVoiceFiles();
 							
 							# Result was OK!
-							if($output->ct_default_start != $output->ct_default_stop){
+							if($output->ct_default_start !== NULL && $output->ct_default_stop !== NULL){
 								$start_default =  date('h:i A', strtotime(sprintf("%04d", $output->ct_default_start)));
 								$stop_default =  date('h:i A', strtotime(sprintf("%04d", $output->ct_default_stop)));
 							}else{
@@ -505,15 +505,24 @@ if (isset($_POST["cid"])) {
 					$('#modifyCalltimesOkButton').prop("disabled", true);
 					
 					$.ajax({
-                        url: "./php/ModifyCalltimes.php",
-                        type: 'POST',
-                        data: $("#modifyform").serialize(),
-                        success: function(data) {
-                          console.log(data);
-						  $('#update_button').html("<i class='fa fa-check'></i> Update");
-						  $('#modifyCalltimesOkButton').prop("disabled", false);
+                        			url: "./php/ModifyCalltimes.php",
+                        			type: 'POST',
+                        			data: $("#modifyform").serialize(),
+                        			success: function(data) {
+                          				console.log(data);
+						  	$('#update_button').html("<i class='fa fa-check'></i> Update");
+						  	$('#modifyCalltimesOkButton').prop("disabled", false);
 							if(data == 1){
-								swal("<?php $lh->translateText("success"); ?>", "<?php $lh->translateText("calltime_modify_success"); ?>", "success");
+								swal(
+									{
+										title: "<?php $lh->translateText("success"); ?>", 
+										text: "<?php $lh->translateText("calltime_modify_success"); ?>", 
+										type: "success"
+									},
+									function() {
+										location.replace("./settingscalltimes.php");
+									}
+								);
 							}else{
 								sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>", "error");
 							}
