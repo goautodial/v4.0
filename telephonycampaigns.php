@@ -439,6 +439,8 @@
 										   </thead>
 										   <tbody>
 											   <?php
+											   ini_set('display_errors', 1);
+											   error_reporting(E_ALL);
 												if($areacode->result == "success"){
 											   		for($i=0;$i < count($campaign->campaign_id);$i++){
 														$camp_id = $campaign->campaign_id[$i];
