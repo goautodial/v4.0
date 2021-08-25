@@ -442,8 +442,7 @@
 												if($areacode->result == "success"){
 											   		for($i=0;$i < count($campaign->campaign_id);$i++){
 														$camp_id = $campaign->campaign_id[$i];
-														$areacode_arr = (array) $areacode;
-var_dump($areacode_arr);die();
+var_dump(json_decode($areacode, true));die();
 														if($areacode->active[$camp_id] == "Y"){
 															$areacode->active[$camp_id] = $lh->translationFor("active");
 														}else{
