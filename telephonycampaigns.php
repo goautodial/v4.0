@@ -442,22 +442,22 @@
 												if($areacode->result == "success"){
 											   		for($i=0;$i < count($campaign->campaign_id);$i++){
 														$camp_id = $campaign->campaign_id[$i];
-var_dump($camp_id, $areacode->active->{$camp_id});die();
-														if($areacode->active[$camp_id] == "Y"){
-															$areacode->active[$camp_id] = $lh->translationFor("active");
+														
+														if($areacode->active->{$camp_id} == "Y"){
+															$areacode->active->{$camp_id} = $lh->translationFor("active");
 														}else{
-															$areacode->active[$camp_id] = $lh->translationFor("inactive");
+															$areacode->active->{$camp_id} = $lh->translationFor("inactive");
 														}
 
-													$action_CAMPAIGN = $ui->ActionMenuForAreacodes($areacode->areacode[$camp_id], $areacode->campaign_id[$camp_id], $perm);
+													$action_CAMPAIGN = $ui->ActionMenuForAreacodes($areacode->areacode->{$camp_id}, $areacode->campaign_id->{$camp_id}, $perm);
 											   ?>
 													<tr>
-														<td><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="view_areacode" data-toggle="modal" data-target="#modal_edit_areacode" data-camp="'.$areacode->campaign_id[$camp_id].'" data-ac="'.$areacode->areacode[$camp_id].'">'; } ?><avatar username='<?php echo $areacode->campaign_name[$camp_id];?>' :size='32'></avatar><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></td>
-														<td><strong><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="view_areacode" data-toggle="modal" data-target="#modal_edit_areacode"  data-camp="'.$areacode->campaign_id[$camp_id].'" data-ac="'.$areacode->areacode[$camp_id].'">'; } ?><?php echo $areacode->campaign_id[$camp_id];?><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></strong></td>
-														<td><?php echo $areacode->campaign_name[$camp_id];?></td>
-														<td><?php echo $areacode->areacode[$camp_id];?></td>
-														<td><?php echo $areacode->outbound_cid[$camp_id];?></td>
-														<td><?php echo $areacode->active[$camp_id];?></td>
+														<td><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="view_areacode" data-toggle="modal" data-target="#modal_edit_areacode" data-camp="'.$areacode->campaign_id->{$camp_id}.'" data-ac="'.$areacode->areacode->{$camp_id}.'">'; } ?><avatar username='<?php echo $areacode->campaign_name->{$camp_id};?>' :size='32'></avatar><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></td>
+														<td><strong><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="view_areacode" data-toggle="modal" data-target="#modal_edit_areacode"  data-camp="'.$areacode->campaign_id->{$camp_id}.'" data-ac="'.$areacode->areacode->{$camp_id}.'">'; } ?><?php echo $areacode->campaign_id->{$camp_id};?><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></strong></td>
+														<td><?php echo $areacode->campaign_name->{$camp_id};?></td>
+														<td><?php echo $areacode->areacode->{$camp_id};?></td>
+														<td><?php echo $areacode->outbound_cid->{$camp_id};?></td>
+														<td><?php echo $areacode->active->{$camp_id};?></td>
 														<td><?php echo $action_CAMPAIGN;?></td>													
 													</tr>
 											   <?php
