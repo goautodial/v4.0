@@ -440,6 +440,7 @@
 										   <tbody>
 											   <?php
 												if($areacode->result == "success"){
+													var_dump($areacode);
 											   		for($i=0;$i < count($areacode->campaign_id);$i++){
 
 														if($areacode->active[$i] == "Y"){
