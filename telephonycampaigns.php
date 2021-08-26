@@ -3936,7 +3936,6 @@
 				}, {
 					"targets": 6,
 					"render": function (data, type, row) {
-						console.log(row);
 						return '<div class="btn-group">\
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><?php echo $lh->translationFor("choose_action") ?>\
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">\
