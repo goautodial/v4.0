@@ -3935,7 +3935,10 @@
 					{ "data": "outbound_cid" },
 					{ "data": "active" },
 					{ "data": "action" }
-				]
+				],
+				"drawCallback": function() {
+					goAvatar._init(goOptions);
+				}
 			});
 				
 		}); // end of document ready
