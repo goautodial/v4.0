@@ -23,6 +23,7 @@
 	require_once('APIHandler.php');
 	$api 							= \creamy\APIHandler::getInstance();
 	
+	$draw       					= $_POST["draw"];
 	$start       					= $_POST["start"];
 	$length       					= $_POST["length"];
     $columns                        = $_POST["columns"];
@@ -32,12 +33,11 @@
 	$perm 							= $api->goGetPermissions('campaign', $user_group);
     
     $options                        = array(
+        "draw" => $draw,
         "start" => $start,
         "length" => $length,
-        "order" => array(
-            "column" => $columns[$order[0]["column"]]["name"],
-            "dir" => $order[0]["dir"]
-        ),
+        "order" => $columns[$order[0]["column"]]["data"],
+        "dir" => $order[0]["dir"],
         "search" => $search["value"]
     );
 
