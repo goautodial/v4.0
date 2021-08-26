@@ -3921,6 +3921,11 @@
 					url: './php/GetAreaCodes.php',
 					type: 'POST'
 				},
+				"columnDefs": [{
+					"targets": [0, 6],
+					"searchable": false,
+					"orderable": false
+				}],
 				"columns": [
 					{ "data": "avatar" },
 					{ "data": "campaign_id" },
