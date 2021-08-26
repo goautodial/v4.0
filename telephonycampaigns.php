@@ -3916,10 +3916,11 @@
 				});
 			
 			$('#table_areacode').DataTable( {
-				serverSide: true,
-				ajax: {
-					url: './php/GetAreaCodes.php',
-					type: 'POST'
+				"processing": true,
+				"serverSide": true,
+				"ajax": {
+					"url": './php/GetAreaCodes.php',
+					"type": 'POST'
 				},
 				"order": [[ 1, "desc" ]],
 				"columnDefs": [{
