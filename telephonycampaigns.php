@@ -3920,7 +3920,16 @@
 				ajax: {
 					url: './php/GetAreaCodes.php',
 					type: 'POST'
-				}
+				},
+				"columns": [
+					{ "data": "avatar" },
+					{ "data": "campaign_id" },
+					{ "data": "campaign_name" },
+					{ "data": "areacode" },
+					{ "data": "outbound_cid" },
+					{ "data": "active" },
+					{ "data": "action" }
+				]
 			});
 				
 		}); // end of document ready
