@@ -1736,7 +1736,7 @@
 				]
 			});
 
-			$('#table_areacode').dataTable();
+			//$('#table_areacode').dataTable();
 			
 			$('#table_leadfilter').dataTable();
 			
