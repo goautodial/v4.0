@@ -44,8 +44,8 @@
 
 	$output 						= $api->API_getAllAreacodes($options);
 
-	$data 							= '[';
-	$i								= 0;
+	//$data 							= '[';
+	//$i								= 0;
 
 	
 	//for($i=0;$i<=count($output->campaign_id);$i++) {
@@ -59,8 +59,8 @@
 	//	}
 	//}
 	
-	$data 							= rtrim($data, ",");    
-	$data 							.= ']';		
+	//$data 							= rtrim($data, ",");    
+	//$data 							.= ']';		
 
 	echo json_encode($output);
 
