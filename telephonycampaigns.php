@@ -3929,7 +3929,8 @@
 				}, {
 					"targets": 5,
 					"render": function (data, type, row) {
-						console.log(data, type, row);
+						//console.log(data, type, row);
+						return (data === 'Y' ? 'Active' : 'Inactive');
 					}
 				}],
 				"columns": [
