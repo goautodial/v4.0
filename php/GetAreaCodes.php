@@ -23,10 +23,13 @@
 	require_once('APIHandler.php');
 	$api 							= \creamy\APIHandler::getInstance();
 	
+	$start       					= $_POST["start"];
+	$length       					= $_POST["length"];
+	$order       					= $_POST["order"];
 	$user_group						= $_SESSION["usergroup"];
 	$perm 							= $api->goGetPermissions('campaign', $user_group);
 
-	$output 						= $api->API_getAllAreacodes();
+	//$output 						= $api->API_getAllAreacodes();
 
 	$data 							= '[';
 	$i								= 0;
@@ -46,6 +49,6 @@
 	$data 							= rtrim($data, ",");    
 	$data 							.= ']';		
 
-	echo json_encode($output);
+	echo json_encode($order);
 
 ?>
