@@ -25,11 +25,23 @@
 	
 	$start       					= $_POST["start"];
 	$length       					= $_POST["length"];
+    $columns                        = $_POST["columns"];
+    $search                         = $_POST["search"];
 	$order       					= $_POST["order"];
 	$user_group						= $_SESSION["usergroup"];
 	$perm 							= $api->goGetPermissions('campaign', $user_group);
+    
+    $options                        = array(
+        "start" => $start,
+        "length" => $length,
+        "order" => array(
+            "column" => $columns[$order[0]["column"]]["name"],
+            "dir" => $order[0]["dir"]
+        ),
+        "search" => $search["value"]
+    );
 
-	//$output 						= $api->API_getAllAreacodes();
+	$output 						= $api->API_getAllAreacodes($options);
 
 	$data 							= '[';
 	$i								= 0;
@@ -49,6 +61,6 @@
 	$data 							= rtrim($data, ",");    
 	$data 							.= ']';		
 
-	echo json_encode($order);
+	echo json_encode($output);
 
 ?>
