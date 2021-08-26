@@ -3926,6 +3926,11 @@
 					"targets": [0, 6],
 					"searchable": false,
 					"orderable": false
+				}, {
+					"targets": 5,
+					"render": function (data, type, row) {
+						console.log(data, type, row);
+					}
 				}],
 				"columns": [
 					{ "data": "avatar" },
