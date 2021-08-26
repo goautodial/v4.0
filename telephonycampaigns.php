@@ -3921,6 +3921,7 @@
 					url: './php/GetAreaCodes.php',
 					type: 'POST'
 				},
+				"order": [[ 1, "desc" ]],
 				"columnDefs": [{
 					"targets": [0, 6],
 					"searchable": false,
