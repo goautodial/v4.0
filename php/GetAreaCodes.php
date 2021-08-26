@@ -38,7 +38,8 @@
         "length" => $length,
         "order" => $columns[$order[0]["column"]]["data"],
         "dir" => $order[0]["dir"],
-        "search" => $search["value"]
+        "search" => $search["value"],
+        "can_update" => $perm->campaign_update
     );
 
 	$output 						= $api->API_getAllAreacodes($options);
