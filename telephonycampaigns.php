@@ -3407,7 +3407,7 @@
 												$(".preloader").fadeIn();
 											});
 									} else {
-										sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+										sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
 										$('#finish').val("Submit");
 										$('#finish').prop("disabled", false);
 										areacode_form.children("div").steps("previous");
