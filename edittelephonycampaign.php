@@ -559,10 +559,10 @@
 														<select class="form-control survey_first_audio_file_dropdown" id="survey_first_audio_file_dropdown" data-label="survey_first_audio_file">
 															<option value="">-- Default Value --</option>
 															<?php for($i=0;$i<=count($voicefiles->file_name);$i++) { ?>
-                                                                                                                                                        <?php if(!empty($voicefiles->file_name[$i])) { ?>
-                                                                                                                                                                <option value="<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>"><?php echo substr($voicefiles->file_name[$i], 0, -4); ?></option>
-                                                                                                                                                        <?php } ?>
-                                                                                                                                                <?php } ?>
+																<?php if(!empty($voicefiles->file_name[$i])) { ?>
+																																																							<option value="<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>"><?php echo substr($voicefiles->file_name[$i], 0, -4); ?></option>
+																<?php } ?>
+															<?php } ?>
 
 														</select>
 													</div>
@@ -1958,6 +1958,17 @@
 																</div>
 															</div>
 															<div class="form-group">
+																<label class="col-sm-3 control-label">Caller ID for 3-way Calls:</label>
+																<div class="col-sm-9 mb">
+																	<select class="form-control" id="three_way_call_cid" name="three_way_call_cid">
+																		<option value="CUSTOM_CID" <?php if($campaign->data->three_way_call_cid == "CUSTOM_CID") echo "selected";?>>CUSTOM_CID</option>
+																		<option value="CAMPAIGN" <?php if($campaign->data->three_way_call_cid == "CAMPAIGN") echo "selected";?>>CAMPAIGN</option>
+																		<option value="CUSTOMER" <?php if($campaign->data->three_way_call_cid == "CUSTOMER") echo "selected";?>>CUSTOMER</option>
+																		<option value="AGENT_PHONE" <?php if($campaign->data->three_way_call_cid == "AGENT_PHONE") echo "selected";?>>AGENT PHONE</option>
+																	</select>
+																</div>
+															</div>
+															<div class="form-group">
 																<label class="col-sm-3 control-label"><?php $lh->translateText("dial_timeout"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<input type="text" class="form-control" id="dial_time_out" name="dial_timeout" value="<?php echo $campaign->data->dial_timeout; ?>">
@@ -2305,15 +2316,15 @@
 																		</div><!-- /input-group -->
 																		<select class="form-control select2 survey_fourth_audio_file_dropdown" id="survey_fourth_audio_file_dropdown" data-label="survey_fourth_audio_file">
 																			<option value="">-- Default Value --</option>
-            <?php for($i=0;$i<=count($voicefiles->file_name);$i++) { ?>
-                <?php if(!empty($voicefiles->file_name[$i])) { ?>
-                    <option value="<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>">
-                        <?php echo substr($voicefiles->file_name[$i], 0, -4); ?>
-                    </option>
-<?php //for($i=0;$i<=count($audiofiles->data);$i++) { ?>
-<?php //if(!empty($audiofiles->data[$i]) && (strpos($audiofiles->data[$i], "go_") !== false)) { ?>
-<!--option value="<?php //echo substr($audiofiles->data[$i], 0, -4); ?>"><?php //echo substr($audiofiles->data[$i], 0, -4); ?></option-->
-<?php } ?>
+																			<?php for($i=0;$i<=count($voicefiles->file_name);$i++) { ?>
+																				<?php if(!empty($voicefiles->file_name[$i])) { ?>
+																					<option value="<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>">
+																						<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>
+																					</option>
+																					<?php //for($i=0;$i<=count($audiofiles->data);$i++) { ?>
+																					<?php //if(!empty($audiofiles->data[$i]) && (strpos($audiofiles->data[$i], "go_") !== false)) { ?>
+																					<!--option value="<?php //echo substr($audiofiles->data[$i], 0, -4); ?>"><?php //echo substr($audiofiles->data[$i], 0, -4); ?></option-->
+																				<?php } ?>
 																			<?php } ?>
 																		</select>
 																	</div>
@@ -2328,6 +2339,13 @@
 																	<label class="col-sm-3 control-label"><?php $lh->translateText("survey_fourth_extension"); ?>:</label>
 																	<div class="col-sm-9 mb">
 																		<input type="number" class="form-control" id="survey_fourth_exten" name="survey_fourth_exten" min="0" value="<?php if(!empty($campaign->data->survey_fourth_exten)){echo $campaign->data->survey_fourth_exten;}else{echo "8300";} ?>">
+																	</div>
+																</div>
+																<br /><br />
+																<div class="form-group">
+																	<label class="col-sm-3 control-label">Survey Response Digit Map:</label>
+																	<div class="col-sm-9 mb">
+																		<input type="text" class="form-control" id="survey_response_digit_map" name="survey_response_digit_map" value="<?php echo $campaign->data->survey_response_digit_map; ?>">
 																	</div>
 																</div>
 															<?php //} ?>
