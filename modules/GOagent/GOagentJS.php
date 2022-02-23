@@ -341,6 +341,9 @@ foreach ($camp_info as $idx => $val) {
 		    echo "var {$idx} = $val;\n";
 		} else {
 		    echo "var {$idx} = '{$val}';\n";
+            if ($idx == 'am_message_exten') {
+                echo "var campaign_am_message_exten = '8320';\n";
+            }
 		    if ($idx == 'auto_dial_level') {
 			echo "var starting_dial_level = '{$val}';\n";
 		    }
