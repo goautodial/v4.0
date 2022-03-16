@@ -1279,6 +1279,17 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                 break;
         }
     });
+	
+	// Fix for the double click on hangup button
+	$("#btnDialHangup").click(function() {
+		var thisBtn = $(this);
+		thisBtn.prop('disabled', true);
+		
+		setTimeout(function() {
+		  // enable click after 1 second
+		  thisBtn.prop('disabled', false);
+		}, 1000); // 1 second delay
+	});
     
     $("li[id^='btn']").click(function() {
         var btnID = $(this).attr('id').replace('btn', '');
