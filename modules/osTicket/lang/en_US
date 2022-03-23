@@ -1,4 +1,4 @@
 osticket = "osTicket"
 a_simple_module = "A simple module that enables osTicket integration."
-osticket_api_url = "osTicket API URL"
+osticket_api_url = "osTicket URL"
 osticket_api_key = "osTicket API Key"
