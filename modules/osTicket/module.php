@@ -108,7 +108,8 @@ class OsTicket extends Module {
 	public function needsSidebarDisplay() { return false; }
 
 	public function mainPageViewContent($args) {
-		return $this->sectionWithRandomQuotes($number);
+		//return $this->sectionWithRandomQuotes($number);
+		return "";
 	}
 
 	public function mainPageViewTitle() {
@@ -126,7 +127,8 @@ class OsTicket extends Module {
 	// hooks
 	
 	public function dashboardHook($wantsFullRow = true) {
-		return $this->sectionWithRandomQuotes(1);
+		//return $this->sectionWithRandomQuotes(1);
+		return "";
 	}
 	
 	// settings
