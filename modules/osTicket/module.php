@@ -122,7 +122,7 @@ class osTicket extends Module {
 	}
 	
 	public function mainPageViewIcon() {
-		return "ticket-alt";
+		return "ticket";
 	}
 	
 	// hooks
