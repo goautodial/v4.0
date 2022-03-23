@@ -101,7 +101,7 @@ class osTicket extends Module {
 
 	public function databaseTableFields() {
 		return array(
-			"osticket_api_url" => "VARCHAR(255) NOT NULL",
+			"osticket_url" => "VARCHAR(255) NOT NULL",
 			"osticket_api_key" => "TEXT NULL"
 		);
 	}
@@ -135,7 +135,7 @@ class osTicket extends Module {
 	// settings
 	
 	public function moduleSettings() {
-		return array("osticket_api_url" => CRM_SETTING_TYPE_STRING, "osticket_api_key" => CRM_SETTING_TYPE_STRING); 
+		return array("osticket_url" => CRM_SETTING_TYPE_STRING, "osticket_api_key" => CRM_SETTING_TYPE_STRING); 
 	}
 	
 }
