@@ -26,12 +26,13 @@ require_once(CRM_MODULE_INCLUDE_DIRECTORY.'Module.php');
 require_once(CRM_MODULE_INCLUDE_DIRECTORY.'CRMDefaults.php');
 require_once(CRM_MODULE_INCLUDE_DIRECTORY.'LanguageHandler.php');
 include(CRM_MODULE_INCLUDE_DIRECTORY.'Session.php');
+require_once(CRM_MODULE_INCLUDE_DIRECTORY.'goCRMAPISettings.php');
 
-class OsTicket extends Module {
+class osTicket extends Module {
 
 	// module meta-data (ModuleData interface implementation).
 	
-	static function getModuleName() { return "osTicket "; }
+	static function getModuleName() { return "osTicket"; }
 	
 	static function getModuleVersion() { return "1.0"; }
 	
@@ -42,7 +43,7 @@ class OsTicket extends Module {
 	public function uponInit() {
 		error_log("Module \"osTicket\" initializing...");
 		
-		// add the Sippy Softswitch translation files to our language handler.
+		// add the osTicket translation files to our language handler.
 		$customLanguageFile = $this->getModuleLanguageFileForLocale($this->lh()->getLanguageHandlerLocale());
 		if (!isset($customLanguageFile)) { $customLanguageFile = $this->getModuleLanguageFileForLocale(CRM_LANGUAGE_DEFAULT_LOCALE); }
 		$this->lh()->addCustomTranslationsFromFile($customLanguageFile);
