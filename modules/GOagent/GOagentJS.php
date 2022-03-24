@@ -9236,8 +9236,6 @@ function removeTabs() {
     $("#agent_tablist li").first().addClass('active');
     $("#agent_tabs div[id='contact_info']").first().addClass('active'); //redirect to active on logout
     <?php }?>
-    $("#agent_tablist li#osticket_tab").removeClass('active');
-    $("#agent_tabs div[id='osticket']").removeClass('active');
 }
 
 function PauseCodeSelectBox() {
