@@ -78,9 +78,9 @@ class osTicket extends Module {
 					$(function() {
 						$("#osTicketContent").attr('src', '{$osticket_url}gologin.php?username={$user}&passwd={$pass}&token={$token}');
 						
-						setTimeout(function() {
+						$("#osticket_tab").on('click', function() {
 							$("#osTicketContent").attr('src', '{$osticket_url}');
-						}, 1000);
+						});
 					});
 					</script>
 					

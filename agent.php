@@ -733,7 +733,7 @@ input:checked + .slider:before {
 												<input type="hidden" id="rc-auth-token" value="">
                                                                                  </li>
 										<?php }?>
-										 <li role="presentation">
+										 <li id="osticket_tab" role="presentation">
 											<a href="#osticket" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
 												<span class="fa fa-ticket hidden"></span>
 												<?=$lh->translationFor('osticket')?></a>
