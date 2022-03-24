@@ -47,6 +47,8 @@ class osTicket extends Module {
 		$customLanguageFile = $this->getModuleLanguageFileForLocale($this->lh()->getLanguageHandlerLocale());
 		if (!isset($customLanguageFile)) { $customLanguageFile = $this->getModuleLanguageFileForLocale(CRM_LANGUAGE_DEFAULT_LOCALE); }
 		$this->lh()->addCustomTranslationsFromFile($customLanguageFile);
+		
+		echo $this->getGOagentContent();
 	}
 		
 	public function uponActivation() {
@@ -63,17 +65,16 @@ class osTicket extends Module {
 	
 	// Private functions for this module.
 	
-	private function sectionWithRandomQuotes($number) {
+	private function getContent() {
 		$content = "";
 		
-		$sippy_api_url = $this->valueForModuleSetting("sippy_api_url");
-		$sippy_username = $this->valueForModuleSetting("sippy_username");
+		$osticket_url = $this->valueForModuleSetting("osticket_url");
 		
 		$postfields = array(
 			'username' => $sippy_username,
 		);
 		
-		$ch = curl_init();
+		/* $ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $sippy_api_url);
 		//curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -86,12 +87,9 @@ class osTicket extends Module {
 		$output = curl_exec($ch);
 		$output = round($output, 2);
 		
-		$sippy_balance = json_encode($output);		
+		$sippy_balance = json_encode($output); */
 		
-		$quoteBox = $this->ui()->boxWithQuote($this->lh()->translationFor("justgovoip_balance"), ($this->lh()->translationFor("remaining_balance")).": $".number_format($sippy_balance), '');
-		$content .= $this->ui()->fullRowWithContent($quoteBox);		
-		
-		return $content;
+		return $osticket_url;
 	}
 	
 	// views and code generation
@@ -109,8 +107,7 @@ class osTicket extends Module {
 	public function needsSidebarDisplay() { return false; }
 
 	public function mainPageViewContent($args) {
-		//return $this->sectionWithRandomQuotes($number);
-		return "";
+		return false;
 	}
 
 	public function mainPageViewTitle() {
@@ -128,8 +125,7 @@ class osTicket extends Module {
 	// hooks
 	
 	public function dashboardHook($wantsFullRow = true) {
-		//return $this->sectionWithRandomQuotes(1);
-		return "";
+		return false;
 	}
 	
 	// settings
