@@ -29,7 +29,6 @@
 	require_once('./php/DbHandler.php');
 	require_once('./php/LanguageHandler.php');
 	require_once('./php/SessionHandler.php');
-	require_once('./php/ModuleHandler.php');
 	$session_class = new \creamy\SessionHandler();		
 	
 	// force https protocol
@@ -47,7 +46,6 @@
 	
 	$lh = \creamy\LanguageHandler::getInstance();
 	$ui = \creamy\UIHandler::getInstance();
-	$mh = \creamy\ModuleHandler::getInstance();
 	$error = ''; // Variable To Store Error Message
 	if (isset($_POST['submit'])) {
 		if (empty($_POST['username']) || empty($_POST['password'])) {
