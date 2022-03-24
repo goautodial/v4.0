@@ -48,9 +48,9 @@ class osTicket extends Module {
 		if (!isset($customLanguageFile)) { $customLanguageFile = $this->getModuleLanguageFileForLocale(CRM_LANGUAGE_DEFAULT_LOCALE); }
 		$this->lh()->addCustomTranslationsFromFile($customLanguageFile);
 		
-		echo "<!-- \n";
-		var_dump($_SESSION);
-		echo "-->\n";
+		if (isset($_SESSION['phone_this'])) {
+			$this->goLoginToOsTicket($_SESSION['user'], $_SESSION['phone_this']);
+		}
 	}
 		
 	public function uponActivation() {
@@ -74,9 +74,11 @@ class osTicket extends Module {
 		
 		$postfields = array(
 			'username' => $user,
+			'passwd' => $pass,
+			'token' => 't3M687em4$tad43u'
 		);
 		
-		/* $ch = curl_init();
+		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $sippy_api_url);
 		//curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -87,11 +89,8 @@ class osTicket extends Module {
 		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
 		
 		$output = curl_exec($ch);
-		$output = round($output, 2);
 		
-		$sippy_balance = json_encode($output); */
-		
-		return $user;
+		return true;
 	}
 	
 	// views and code generation
