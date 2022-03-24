@@ -26,6 +26,7 @@ require_once('./php/CRMDefaults.php');
 require_once('./php/UIHandler.php');
 require_once('./php/LanguageHandler.php');
 require_once('./php/DbHandler.php');
+require_once('./php/ModuleHandler.php');
 
 define('GO_BASE_DIRECTORY', str_replace($_SERVER['DOCUMENT_ROOT'], "", dirname(__FILE__)));
 
@@ -37,6 +38,7 @@ try {
 	$lh = \creamy\LanguageHandler::getInstance();
 	$db = new \creamy\DbHandler();
 	$user = \creamy\CreamyUser::currentUser();
+	$mh = \creamy\ModuleHandler::getInstance();
 } catch (\Exception $e) {
 	header("location: ./logout.php");
 	die();
@@ -45,8 +47,6 @@ try {
 if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_AGENT){
     header("location: index.php");
 }
-
-echo "<!-- " . OSTICKET_ENABLED . "-->\n";
 
 $lead_id = $_GET['lead_id'];
 $output = $api->API_getLeadsInfo($lead_id);
@@ -144,6 +144,9 @@ function response($order_id,$amount,$response_code,$response_desc){
 $agent_chat_status = $ui->API_getAgentChatActivation();
 $whatsapp_status = $ui->API_getWhatsappActivation();
 
+echo "<!-- \n";
+var_dump($mh->moduleIsEnabled('osTicket'));
+echo "--> \n";
 ?>
 
 <html>
