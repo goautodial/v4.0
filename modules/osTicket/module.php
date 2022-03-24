@@ -100,7 +100,7 @@ EOF;
 		<script>
 					//Logging in on osTicket
 					$(function() {
-						window.open("{$osticket_url}gologin.php?username={$user}&passwd={$pass}&token={$token}", "osTicket", "width=800,height=600");
+						window.open("{$osticket_url}gologin.php?username={$user}&passwd={$pass}&token={$token}", "osTicket");
 					});
 					</script>
 					
