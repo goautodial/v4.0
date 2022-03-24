@@ -92,6 +92,10 @@ class osTicket extends Module {
 							$("#osticket_tab").removeClass('active');
 							$("#osticket").removeClass('active');
 						});
+						
+						$("#cream-agent-logout").on('click', function() {
+							$.get('{$osticket_url}logout.php');
+						});
 					});
 					</script>
 					
