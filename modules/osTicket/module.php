@@ -70,12 +70,13 @@ class osTicket extends Module {
 	private function goLoginToOsTicket($user, $pass) {
 		$content = "";
 		$osticket_url = $this->valueForModuleSetting("osticket_url") . "gologin.php";
+		$token = $this->valueForModuleSetting("osticket_api_key");
 		
 		$content  = <<<EOF
 		<script>
 					//Logging in on osTicket
 					$(function() {
-						$("#osTicketContent").attr('src', '{$osticket_url}?username={$user}&passwd={$pass}&token=tpft4!tdK6nt7j6a');
+						$("#osTicketContent").attr('src', '{$osticket_url}?username={$user}&passwd={$pass}&token={$token}');
 					});
 					</script>
 					

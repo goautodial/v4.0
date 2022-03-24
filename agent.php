@@ -947,18 +947,18 @@ input:checked + .slider:before {
 							                </div>
 							               </fieldset>
 
-								<div id="custom_fields_content" class="card-body" style="border: 1px solid rgb(221, 230, 233); margin: 0 32px 0 22px; display: none;">
-                                                                        <h4 style="font-weight: 600;">
-                                                                                <?=$lh->translationFor('custom_forms')?>
-                                                                        </h4>
-                                                                        <br>
-                                                                        <form role="form" id="custom_form" class="formMain">
-                                                                                <div id="custom_fields">
+											<div id="custom_fields_content" class="card-body" style="border: 1px solid rgb(221, 230, 233); margin: 0 32px 0 22px; display: none;">
+													<h4 style="font-weight: 600;">
+														<?=$lh->translationFor('custom_forms')?>
+													</h4>
+													<br>
+													<form role="form" id="custom_form" class="formMain">
+														<div id="custom_fields">
 
-                                                                                </div>
-                                                                        </form>
-                                                                </div>
-                                                                <br id="custom_br" style="display: none;">
+														</div>
+													</form>
+											</div>
+											<br id="custom_br" style="display: none;">
 										</div><!--End of Profile-->
 										
 										<div id="comments_tab" role="tabpanel" class="tab-pane">
