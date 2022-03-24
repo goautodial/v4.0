@@ -1014,8 +1014,8 @@ input:checked + .slider:before {
 											<div class="row">
 												<div class="col-sm-12">
 													<fieldset style="padding-bottom: 5px; margin-bottom: 5px;">
-														<div style="min-height: 200px; border: dashed 1px #c0c0c0; padding: 20px 5px 5px;">
-															<iframe id="osTicketContent" src=""></iframe>
+														<div style="min-height: 600px; border: dashed 1px #c0c0c0; margin-top: 20px;">
+															<iframe id="osTicketContent" src="" width="100%" height="100%" frameborder=0></iframe>
 														</div>
 													</fieldset><!-- /.fieldset -->
 												</div><!-- /.col-sm-12 -->
