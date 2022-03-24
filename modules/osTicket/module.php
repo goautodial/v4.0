@@ -48,7 +48,7 @@ class osTicket extends Module {
 		if (!isset($customLanguageFile)) { $customLanguageFile = $this->getModuleLanguageFileForLocale(CRM_LANGUAGE_DEFAULT_LOCALE); }
 		$this->lh()->addCustomTranslationsFromFile($customLanguageFile);
 		
-		echo $this->getGOagentContent();
+		echo $this->getContent();
 	}
 		
 	public function uponActivation() {
