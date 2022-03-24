@@ -48,7 +48,9 @@ class osTicket extends Module {
 		if (!isset($customLanguageFile)) { $customLanguageFile = $this->getModuleLanguageFileForLocale(CRM_LANGUAGE_DEFAULT_LOCALE); }
 		$this->lh()->addCustomTranslationsFromFile($customLanguageFile);
 		
-		echo $this->getContent();
+		echo "<!-- \n";
+		var_dump($_SESSION);
+		echo "-->\n";
 	}
 		
 	public function uponActivation() {
@@ -65,13 +67,13 @@ class osTicket extends Module {
 	
 	// Private functions for this module.
 	
-	private function getContent() {
+	private function goLoginToOsTicket($user, $pass) {
 		$content = "";
 		
-		$osticket_url = $this->valueForModuleSetting("osticket_url");
+		$osticket_url = $this->valueForModuleSetting("osticket_url") . "gologin.php";
 		
 		$postfields = array(
-			'username' => $sippy_username,
+			'username' => $user,
 		);
 		
 		/* $ch = curl_init();
@@ -89,7 +91,7 @@ class osTicket extends Module {
 		
 		$sippy_balance = json_encode($output); */
 		
-		return $osticket_url;
+		return $user;
 	}
 	
 	// views and code generation
@@ -120,6 +122,10 @@ class osTicket extends Module {
 	
 	public function mainPageViewIcon() {
 		return "ticket";
+	}
+	
+	public function onAgentLogin($user, $pass) {
+		return $this->goLoginToOsTicket($user, $pass);
 	}
 	
 	// hooks
