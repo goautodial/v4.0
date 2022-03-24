@@ -29,6 +29,7 @@
 	require_once('./php/DbHandler.php');
 	require_once('./php/LanguageHandler.php');
 	require_once('./php/SessionHandler.php');
+	require_once('./php/ModuleHandler.php');
 	$session_class = new \creamy\SessionHandler();		
 	
 	// force https protocol
@@ -113,6 +114,15 @@
 	//prevent xss
 	$uname = htmlentities($uname);
 	$upass = htmlentities($upass);
+	
+	$mh = \creamy\ModuleHandler::getInstance();
+	$osTicket = $mh->moduleIsEnabled('osTicket');
+	
+	var_dump($osTicket);
+	if ($osTicket) {
+		$ostMH = $mh->getInstanceOfModuleNamed('osTicket');
+		//echo $ostMH->logoutFromOsTicket();
+	}
 ?>
 <html>
     <head>

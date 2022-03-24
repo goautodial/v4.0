@@ -32,10 +32,6 @@
 		session_start(); // Starting Session
 	}
 	
-	require_once('./php/ModuleHandler.php');
-	$mh = \creamy\ModuleHandler::getInstance();
-	$osTicket = $mh->moduleIsEnabled('osTicket');
-	
 	$log_user = (isset($_SESSION['user']) ? $_SESSION['user'] : '');
 	
 	if (strlen($log_user) > 0) {
@@ -72,12 +68,6 @@
 <script language="JavaScript" type="text/javascript" src="/js/jquery.min.js"></script>
 <script>
    $(document).ready(function() {
-	<?php
-	if ($osTicket) {
-		$ostMH = $mh->getInstanceOfModuleNamed('osTicket');
-		echo $ostMH->logoutFromOsTicket();
-	}
-	?>
 	$('<iframe>', {
                                    src: '<?php echo ROCKETCHAT_URL;?>?layout=embedded',
                                    id:  'rc_frame',
