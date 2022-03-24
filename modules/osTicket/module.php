@@ -81,6 +81,11 @@ class osTicket extends Module {
 						$("#osticket_tab").on('click', function() {
 							$("#osTicketContent").attr('src', '{$osticket_url}');
 						});
+						
+						$("#btnLogMeOut").on('click', function() {
+							$("#osticket_tab").removeClass('active');
+							$("#osticket").removeClass('active');
+						});
 					});
 					</script>
 					
