@@ -144,9 +144,7 @@ function response($order_id,$amount,$response_code,$response_desc){
 $agent_chat_status = $ui->API_getAgentChatActivation();
 $whatsapp_status = $ui->API_getWhatsappActivation();
 
-echo "<!-- \n";
-var_dump($mh->moduleIsEnabled('osTicket'));
-echo "--> \n";
+$osTicket = $mh->moduleIsEnabled('osTicket');
 ?>
 
 <html>
@@ -738,11 +736,13 @@ input:checked + .slider:before {
 												<input type="hidden" id="rc-auth-token" value="">
                                                                                  </li>
 										<?php }?>
+										<?php if ($osTicket) { ?>
 										 <li id="osticket_tab" role="presentation">
 											<a href="#osticket" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
 												<span class="fa fa-ticket hidden"></span>
 												<?=$lh->translationFor('osticket')?></a>
 										 </li>
+										<?php } ?>
 									  </ul>
 									</div>
 									<!-- Tab panes-->
@@ -1014,6 +1014,7 @@ input:checked + .slider:before {
                                                                                 <!-- End of Rocket Chat -->
 										<?php } ?>
 										
+										<?php if ($osTicket) { ?>
 										<!-- osTicket -->
 										<div id="osticket" role="tabpanel" class="tab-pane">
 											<div class="row">
@@ -1027,6 +1028,7 @@ input:checked + .slider:before {
 											</div><!-- /.row -->
 										</div>
 										<!-- End of osTicket -->
+										<?php } ?>
 									</div>
 								</div>
 								
