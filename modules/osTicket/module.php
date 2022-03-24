@@ -48,8 +48,10 @@ class osTicket extends Module {
 		if (!isset($customLanguageFile)) { $customLanguageFile = $this->getModuleLanguageFileForLocale(CRM_LANGUAGE_DEFAULT_LOCALE); }
 		$this->lh()->addCustomTranslationsFromFile($customLanguageFile);
 		
+		$this->userrole = \creamy\CreamyUser::currentUser()->getUserRole();
+		
 		if (isset($_SESSION['phone_this'])) {
-			echo $this->goLoginToOsTicket($_SESSION['user'], $_SESSION['phone_this']);
+			echo $this->goLoginToOsTicket($_SESSION['user'], $_SESSION['phone_this'], $this->userrole);
 		}
 	}
 		
@@ -67,12 +69,13 @@ class osTicket extends Module {
 	
 	// Private functions for this module.
 	
-	private function goLoginToOsTicket($user, $pass) {
+	private function goLoginToOsTicket($user, $pass, $role) {
 		$content = "";
 		$osticket_url = $this->valueForModuleSetting("osticket_url");
 		$token = $this->valueForModuleSetting("osticket_api_key");
 		
-		$content  = <<<EOF
+		if ($role > 1) {
+			$content  = <<<EOF
 		<script>
 					//Logging in on osTicket
 					$(function() {
@@ -92,6 +95,17 @@ class osTicket extends Module {
 					</script>
 					
 EOF;
+		} else {
+			$content  = <<<EOF
+		<script>
+					//Logging in on osTicket
+					$(function() {
+						window.open("{$osticket_url}gologin.php?username={$user}&passwd={$pass}&token={$token}", "osTicket", "width=800,height=600");
+					});
+					</script>
+					
+EOF;
+		}
 		
 		return $content;
 	}
@@ -124,10 +138,6 @@ EOF;
 	
 	public function mainPageViewIcon() {
 		return "ticket";
-	}
-	
-	public function onAgentLogin($user, $pass) {
-		return $this->goLoginToOsTicket($user, $pass);
 	}
 	
 	// hooks
