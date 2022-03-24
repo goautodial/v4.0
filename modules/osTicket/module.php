@@ -29,6 +29,7 @@ include(CRM_MODULE_INCLUDE_DIRECTORY.'Session.php');
 require_once(CRM_MODULE_INCLUDE_DIRECTORY.'goCRMAPISettings.php');
 
 class osTicket extends Module {
+	protected $userrole;
 
 	// module meta-data (ModuleData interface implementation).
 	
@@ -50,7 +51,7 @@ class osTicket extends Module {
 		
 		$this->userrole = \creamy\CreamyUser::currentUser()->getUserRole();
 		
-		if (isset($_SESSION['phone_this'])) {
+		if (isset($_SESSION['phone_this']) && $this->userrole > 1) {
 			echo $this->goLoginToOsTicket($_SESSION['user'], $_SESSION['phone_this'], $this->userrole);
 		}
 	}
@@ -143,7 +144,11 @@ EOF;
 	// hooks
 	
 	public function dashboardHook($wantsFullRow = true) {
-		return false;
+		$content = '';
+		if (isset($_SESSION['phone_this']) && $this->userrole == 1) {
+			$content = $this->goLoginToOsTicket($_SESSION['user'], $_SESSION['phone_this'], $this->userrole);
+		}
+		return $content;
 	}
 	
 	// settings
