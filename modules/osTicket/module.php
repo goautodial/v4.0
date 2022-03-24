@@ -145,6 +145,18 @@ EOF;
 		return "ticket";
 	}
 	
+	public function logoutFromOsTicket() {
+		$content = "";
+		$osticket_url = $this->valueForModuleSetting("osticket_url");
+		
+		$content  = <<<EOF
+					//Logging in on osTicket
+					$.get('{$osticket_url}gologout.php');
+					
+EOF;
+		return $content;
+	}
+	
 	// hooks
 	
 	public function dashboardHook($wantsFullRow = true) {
