@@ -94,7 +94,7 @@ class osTicket extends Module {
 						});
 						
 						$("#cream-agent-logout").on('click', function() {
-							$.get('{$osticket_url}logout.php');
+							$.get('{$osticket_url}gologout.php');
 						});
 					});
 					</script>
