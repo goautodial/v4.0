@@ -83,6 +83,8 @@ class osTicket extends Module {
 						});
 						
 						$("#btnLogMeOut").on('click', function() {
+							$("#agent_tablist li").first().addClass('active');
+							$("#agent_tabs div[id='contact_info']").first().addClass('active');
 							$("#osticket_tab").removeClass('active');
 							$("#osticket").removeClass('active');
 						});
