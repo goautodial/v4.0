@@ -75,7 +75,7 @@ class osTicket extends Module {
 		<script>
 					//Logging in on osTicket
 					$(function() {
-						$.post('{$osticket_url}', {username: '{$user}', passwd: '$pass', token: 'tpft4!tdK6nt7j6a'}, function(result) {
+						$.post('{$osticket_url}?username={$user}&passwd={$pass}&token=tpft4!tdK6nt7j6a', function(result) {
 							
 						});
 					});
