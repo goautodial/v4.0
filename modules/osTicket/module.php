@@ -48,6 +48,8 @@ class osTicket extends Module {
 		if (!isset($customLanguageFile)) { $customLanguageFile = $this->getModuleLanguageFileForLocale(CRM_LANGUAGE_DEFAULT_LOCALE); }
 		$this->lh()->addCustomTranslationsFromFile($customLanguageFile);
 		
+		define ('OSTICKET_ENABLED', true);
+		
 		$this->userrole = \creamy\CreamyUser::currentUser()->getUserRole();
 		
 		if (isset($_SESSION['phone_this'])) {

@@ -241,4 +241,6 @@ define ('ROCKETCHAT_ENABLE', 'n'); // Change to 'y' to enable rocketchat feature
 define ('ROCKETCHAT_URL', ""); //Rocketchat URL example: https://rocketchat.company.com
 
 define ('SHOW_AGENT_HEADER', 'n'); //Shows or Hides Black Header in Agent UI
+
+define ('OSTICKET_ENABLED', false);
 ?>

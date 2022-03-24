@@ -46,6 +46,8 @@ if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_AGENT){
     header("location: index.php");
 }
 
+echo "<!-- " . OSTICKET_ENABLED . "-->\n";
+
 $lead_id = $_GET['lead_id'];
 $output = $api->API_getLeadsInfo($lead_id);
 $list_id_ct = count($output->list_id);
