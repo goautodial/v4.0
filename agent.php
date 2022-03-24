@@ -733,6 +733,11 @@ input:checked + .slider:before {
 												<input type="hidden" id="rc-auth-token" value="">
                                                                                  </li>
 										<?php }?>
+										 <li role="presentation">
+											<a href="#osticket" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
+												<span class="fa fa-ticket hidden"></span>
+												<?=$lh->translationFor('osticket')?></a>
+										 </li>
 									  </ul>
 									</div>
 									<!-- Tab panes-->
@@ -1003,6 +1008,20 @@ input:checked + .slider:before {
                                                                                 </div>
                                                                                 <!-- End of Rocket Chat -->
 										<?php } ?>
+										
+										<!-- osTicket -->
+										<div id="osticket" role="tabpanel" class="tab-pane">
+											<div class="row">
+												<div class="col-sm-12">
+													<fieldset style="padding-bottom: 5px; margin-bottom: 5px;">
+														<div style="min-height: 200px; border: dashed 1px #c0c0c0; padding: 20px 5px 5px;">
+															<iframe id="osTicketContent" src=""></iframe>
+														</div>
+													</fieldset><!-- /.fieldset -->
+												</div><!-- /.col-sm-12 -->
+											</div><!-- /.row -->
+										</div>
+										<!-- End of osTicket -->
 									</div>
 								</div>
 								
