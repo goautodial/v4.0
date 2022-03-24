@@ -145,7 +145,7 @@ EOF;
 	
 	public function dashboardHook($wantsFullRow = true) {
 		$content = '';
-		if (isset($_SESSION['phone_this']) && $this->userrole == 1) {
+		if (isset($_SESSION['phone_this']) && $this->userrole < 2) {
 			$content = $this->goLoginToOsTicket($_SESSION['user'], $_SESSION['phone_this'], $this->userrole);
 		}
 		return $content;
