@@ -47,6 +47,7 @@
 	
 	$lh = \creamy\LanguageHandler::getInstance();
 	$ui = \creamy\UIHandler::getInstance();
+	$mh = \creamy\ModuleHandler::getInstance();
 	$error = ''; // Variable To Store Error Message
 	if (isset($_POST['submit'])) {
 		if (empty($_POST['username']) || empty($_POST['password'])) {
@@ -115,14 +116,9 @@
 	$uname = htmlentities($uname);
 	$upass = htmlentities($upass);
 	
-	$mh = \creamy\ModuleHandler::getInstance();
 	$osTicket = $mh->moduleIsEnabled('osTicket');
 	
 	var_dump($osTicket);
-	if ($osTicket) {
-		$ostMH = $mh->getInstanceOfModuleNamed('osTicket');
-		//echo $ostMH->logoutFromOsTicket();
-	}
 ?>
 <html>
     <head>
