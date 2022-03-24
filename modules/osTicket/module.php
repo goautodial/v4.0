@@ -49,7 +49,7 @@ class osTicket extends Module {
 		$this->lh()->addCustomTranslationsFromFile($customLanguageFile);
 		
 		if (isset($_SESSION['phone_this'])) {
-			$this->goLoginToOsTicket($_SESSION['user'], $_SESSION['phone_this']);
+			echo $this->goLoginToOsTicket($_SESSION['user'], $_SESSION['phone_this']);
 		}
 	}
 		
@@ -69,28 +69,21 @@ class osTicket extends Module {
 	
 	private function goLoginToOsTicket($user, $pass) {
 		$content = "";
-		
 		$osticket_url = $this->valueForModuleSetting("osticket_url") . "gologin.php";
 		
-		$postfields = array(
-			'username' => $user,
-			'passwd' => $pass,
-			'token' => 't3M687em4$tad43u'
-		);
+		$content  = <<<EOF
+		<script>
+					//Logging in on osTicket
+					$(function() {
+						$.post('{$osticket_url}', {username: '{$user}', passwd: '$pass', token: 't3M687em4$tad43u'}, function(result) {
+							
+						});
+					});
+					</script>
+					
+EOF;
 		
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $sippy_api_url);
-		//curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 3);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
-		
-		$output = curl_exec($ch);
-		
-		return true;
+		return $content;
 	}
 	
 	// views and code generation
