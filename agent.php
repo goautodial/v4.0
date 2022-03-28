@@ -145,6 +145,7 @@ $agent_chat_status = $ui->API_getAgentChatActivation();
 $whatsapp_status = $ui->API_getWhatsappActivation();
 
 $osTicket = $mh->moduleIsEnabled('osTicket');
+
 ?>
 
 <html>
