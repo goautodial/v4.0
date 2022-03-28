@@ -740,7 +740,7 @@ input:checked + .slider:before {
 										 <li id="osticket_tab" role="presentation">
 											<a href="#osticket" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
 												<span class="fa fa-ticket hidden"></span>
-												<?=$lh->translationFor('osticket')?></a>
+												<?=$lh->translationFor('ticket')?></a>
 										 </li>
 										<?php } ?>
 									  </ul>
