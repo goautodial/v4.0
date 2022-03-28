@@ -1,0 +1,5 @@
+osticket = "osTicket"
+a_simple_module = "A simple module that enables osTicket integration."
+osticket_url = "osTicket URL"
+osticket_api_key = "osTicket API Key"
+ticket = "Ticket"

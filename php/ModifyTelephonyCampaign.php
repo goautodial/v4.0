@@ -571,6 +571,13 @@
 			$survey_no_response_action 				= $_POST["survey_no_response_action"]; 
 			$survey_no_response_action 				= stripslashes($survey_no_response_action);
 		}
+
+		//nat: added survey_response_digit_map
+		$survey_response_digit_map 					= NULL; 
+		if (isset($_POST["survey_response_digit_map"])) { 
+			$survey_response_digit_map 				= $_POST["survey_response_digit_map"]; 
+			$survey_response_digit_map 				= stripslashes($survey_response_digit_map);
+		}
 		
 		if (is_array($_POST["closer_campaigns"])) {
 			$closerCampaigns 						= "";
@@ -687,6 +694,7 @@
 			"survey_fourth_audio_file"	 				=> $survey_fourth_audio_file,
 			"survey_fourth_status" 						=> $survey_fourth_status,
 			"survey_fourth_exten" 						=> $survey_fourth_exten,
+			"survey_response_digit_map"					=> $survey_response_digit_map, 			//nat: added this line of code
 			"no_channels" 								=> $no_channels,
 			"disable_alter_custdata" 					=> $disable_alter_custdata,
 			"disable_alter_custphone" 					=> $disable_alter_custphone,
