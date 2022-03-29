@@ -81,7 +81,7 @@
 	);
 
 	$output = $api->API_getReports($postfields);
-
+//var_dump($output);
 	if ($output->result == "success") {
 /*		echo '<div class="animated slideInLeft">';
 			echo '<div>'.$output->TOPsorted_output.'</div>';
@@ -94,7 +94,7 @@
 
                 $inbound_report .= '
                         <div>
-                                <legend><small><em class="fa fa-arrow-right"></em><i> INBOUND </i></small></legend>
+                                <legend><small><i> INBOUND </i></small></legend>
                                         <table class="display responsive no-wrap table table-striped table-bordered table-hover"  id="inbound_report">
                                                 <thead>
                                                         <tr>
@@ -110,9 +110,9 @@
                                                 <tbody>
                         ';
                 if ($output->TOPsorted_output != NULL) {
-			foreach($output->TOPsorted_output as $row){
-		                $inbound_report .= $row;
-			}
+		//	foreach($output->TOPsorted_output as $row){
+		                $inbound_report .= $output->TOPsorted_output;
+		//	}
                 }else{
  	               $inbound_report .= "";
                 }

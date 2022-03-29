@@ -26,6 +26,7 @@ require_once('./php/CRMDefaults.php');
 require_once('./php/UIHandler.php');
 require_once('./php/LanguageHandler.php');
 require_once('./php/DbHandler.php');
+require_once('./php/ModuleHandler.php');
 
 define('GO_BASE_DIRECTORY', str_replace($_SERVER['DOCUMENT_ROOT'], "", dirname(__FILE__)));
 
@@ -37,6 +38,7 @@ try {
 	$lh = \creamy\LanguageHandler::getInstance();
 	$db = new \creamy\DbHandler();
 	$user = \creamy\CreamyUser::currentUser();
+	$mh = \creamy\ModuleHandler::getInstance();
 } catch (\Exception $e) {
 	header("location: ./logout.php");
 	die();
@@ -141,6 +143,8 @@ function response($order_id,$amount,$response_code,$response_desc){
 
 $agent_chat_status = $ui->API_getAgentChatActivation();
 $whatsapp_status = $ui->API_getWhatsappActivation();
+
+$osTicket = $mh->moduleIsEnabled('osTicket');
 
 ?>
 
@@ -660,50 +664,50 @@ input:checked + .slider:before {
 					<!-- standard custom edition form -->
 					<div class="container-custom ng-scope">
 						<div id="cust_info" class="card">
-						<?php /* card-header?>
+							<?php if(SHOW_AGENT_HEADER === 'y'){?>
 								<!-- ECCS Customization -->
 								<?php // if(ECCS_BLIND_MODE === 'y'){?>
-								<!-- <div style="background-image:;" class="card-heading bg-inverse">
+								 <div style="background-image:;" class="card-heading bg-inverse">
 								<?php //}//end if?>
 									<div class="row">
 										<div id="cust_avatar" class="col-lg-1 col-md-1 col-sm-2 text-center hidden-xs" style="height: 64px;">
-											<avatar username="Dialed Client" src="<?php //echo CRM_DEFAULTS_USER_AVATAR;?>" :size="64"></avatar>
+											<avatar username="Dialed Client" src="<?php echo CRM_DEFAULTS_USER_AVATAR;?>" :size="64"></avatar>
 										</div>
-										<div class="<?php //if (ECCS_BLIND_MODE === 'n') { echo "col-lg-9 col-md-9 col-sm-7"; } else { echo "col-lg-11 col-md-11 col-sm-10"; } ?>">
+										<div class="<?php if (ECCS_BLIND_MODE === 'n') { echo "col-lg-9 col-md-9 col-sm-7"; } else { echo "col-lg-11 col-md-11 col-sm-10"; } ?>">
 								<!-- ECCS Customization-->
-						  <!-- <h4 id="cust_full_name" class="isDisabled">
-									<?php //if(ECCS_BLIND_MODE === 'n'){ ?>
-									<span id="first_name_label" class="hidden"><?//=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name">Firstname</a> <span id="middle_initial_label" class="hidden"><?//=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial">M.I.</a> <span id="last_name_label" class="hidden"><?//=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name">Lastname</a>
-									<?php //} ?>
+						   <h4 id="cust_full_name" class="isDisabled">
+									<?php if(ECCS_BLIND_MODE === 'n'){ ?>
+									<span id="first_name_label" class="hidden"><?=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name">Firstname</a> <span id="middle_initial_label" class="hidden"><?=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial">M.I.</a> <span id="last_name_label" class="hidden"><?=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name">Lastname</a>
+									<?php } ?>
 									<!-- ECCS Customization -->
-									<?php //if(ECCS_BLIND_MODE === 'y'){ ?>
-									<!-- <span id="cust_campaign_name"></span>
-									<span id="first_name_label" class="hidden"><?//=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name"></a> <span id="middle_initial_label" class="hidden"><?//=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial"></a> <span id="last_name_label" class="hidden"><?//=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name"></a>
+									<?php if(ECCS_BLIND_MODE === 'y'){ ?>
+									 <span id="cust_campaign_name"></span>
+									<span id="first_name_label" class="hidden"><?=$lh->translationFor('first_name')?>: </span><a href="#" id="first_name"></a> <span id="middle_initial_label" class="hidden"><?=$lh->translationFor('middle_initial')?>: </span><a href="#" id="middle_initial"></a> <span id="last_name_label" class="hidden"><?=$lh->translationFor('last_name')?>: </span><a href="#" id="last_name"></a>
 									<span id="cust_call_type"></span>
-									<?php //}//end if ?>
+									<?php }//end if ?>
          <!-- /.ECCS Customization -->
-								<!-- </h4>
+								</h4>
 						                <p class="ng-binding animated fadeInUpShort">
 									 <!-- ECCS Customization -->
-                                                                        <?php //if(ECCS_BLIND_MODE === 'y'){ ?> 
-										<!-- <span id="span-cust-number" class="hidden"><label for="cust_number"> Client Number[#CN]: </label> <input type="text" id="cust_number" style="background-color:; border:; color:black; margin-top: 5px; padding-left: 5px; font-size: 14pt; font-weight: 600;" onclick="this.setSelectionRange(0, this.value.length)" readonly/>"Ctrl+C" to Copy Number.</span>
+                                                                        <?php if(ECCS_BLIND_MODE === 'y'){ ?> 
+										<span id="span-cust-number" class="hidden"><label for="cust_number"> Client Number[#CN]: </label> <input type="text" id="cust_number" style="background-color:; border:; color:black; margin-top: 5px; padding-left: 5px; font-size: 14pt; font-weight: 600;" onclick="this.setSelectionRange(0, this.value.length)" readonly/>"Ctrl+C" to Copy Number.</span>
 
-									<?php //} else { ?>
+									<?php } else { ?>
                                                                         <!-- /.ECCS Customization -->
-									<!-- <span id="cust_number"></span>
-									<?php //} ?>
+									<span id="cust_number"></span>
+									<?php } ?>
 								</p>
 						    </div>
-										<?php //if (ECCS_BLIND_MODE === 'n') { ?>
-										<div id="agent_stats" class="col-lg-2 col-md-2 col-sm-3 hidden-xs" style="font-size: 18px; display: none;">
+										<?php if (STATEWIDE_SALES_REPORT === 'y') { ?>
+										<div id="agent_stats" class="col-lg-2 col-md-2 col-sm-3 hidden-xs" style="font-size: 18px; display: none; float:right;">
 											<p style="margin: 0;">Sales: <span id="agent_sales_count" style="float: right;">0</span></p>
 											<p id="amount_container" style="margin: 0; display: none;">Amount: <span id="agent_total_amount" style="float: right;">0</span></p>
 										</div>
-										<?php //} ?>
+										<?php } ?>
 									</div>
 								</div>
 							<!-- /.card heading -->
-						<?php */?>				
+						<?php } //-- show agent header ?>				
 							<!-- Card body -->
 						        <div class="card-body custom-tabpanel">
 				                	<div role="tabpanel" class="panel panel-transparent">
@@ -733,6 +737,13 @@ input:checked + .slider:before {
 												<input type="hidden" id="rc-auth-token" value="">
                                                                                  </li>
 										<?php }?>
+										<?php if ($osTicket) { ?>
+										 <li id="osticket_tab" role="presentation">
+											<a href="#osticket" aria-controls="home" role="tab" data-toggle="tab" class="bb0">
+												<span class="fa fa-ticket hidden"></span>
+												<?=$lh->translationFor('ticket')?></a>
+										 </li>
+										<?php } ?>
 									  </ul>
 									</div>
 									<!-- Tab panes-->
@@ -942,18 +953,18 @@ input:checked + .slider:before {
 							                </div>
 							               </fieldset>
 
-								<div id="custom_fields_content" class="card-body" style="border: 1px solid rgb(221, 230, 233); margin: 0 32px 0 22px; display: none;">
-                                                                        <h4 style="font-weight: 600;">
-                                                                                <?=$lh->translationFor('custom_forms')?>
-                                                                        </h4>
-                                                                        <br>
-                                                                        <form role="form" id="custom_form" class="formMain">
-                                                                                <div id="custom_fields">
+											<div id="custom_fields_content" class="card-body" style="border: 1px solid rgb(221, 230, 233); margin: 0 32px 0 22px; display: none;">
+													<h4 style="font-weight: 600;">
+														<?=$lh->translationFor('custom_forms')?>
+													</h4>
+													<br>
+													<form role="form" id="custom_form" class="formMain">
+														<div id="custom_fields">
 
-                                                                                </div>
-                                                                        </form>
-                                                                </div>
-                                                                <br id="custom_br" style="display: none;">
+														</div>
+													</form>
+											</div>
+											<br id="custom_br" style="display: none;">
 										</div><!--End of Profile-->
 										
 										<div id="comments_tab" role="tabpanel" class="tab-pane">
@@ -986,7 +997,7 @@ input:checked + .slider:before {
 															<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="reload-script" style="padding: 5px;"><?=$lh->translationFor('reload_script')?></a>
 														</h4>
 														<div id="ScriptContents" style="min-height: 200px; border: dashed 1px #c0c0c0; padding: 20px 5px 5px;">
-															<?php echo $output_script;?>
+															<?php //echo $output_script;?>
 														</div>
 													</fieldset><!-- /.fieldset -->
 												</div><!-- /.col-sm-12 -->
@@ -1002,6 +1013,22 @@ input:checked + .slider:before {
 											</div><!-- /.row -->
                                                                                 </div>
                                                                                 <!-- End of Rocket Chat -->
+										<?php } ?>
+										
+										<?php if ($osTicket) { ?>
+										<!-- osTicket -->
+										<div id="osticket" role="tabpanel" class="tab-pane">
+											<div class="row">
+												<div class="col-sm-12">
+													<fieldset style="padding-bottom: 5px; margin-bottom: 5px;">
+														<div style="min-height: 600px; border: dashed 1px #c0c0c0; margin-top: 20px;">
+															<iframe id="osTicketContent" src="" width="100%" frameborder=0 style="height: 600px;"></iframe>
+														</div>
+													</fieldset><!-- /.fieldset -->
+												</div><!-- /.col-sm-12 -->
+											</div><!-- /.row -->
+										</div>
+										<!-- End of osTicket -->
 										<?php } ?>
 									</div>
 								</div>

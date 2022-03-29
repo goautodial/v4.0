@@ -136,6 +136,7 @@ var hotkeysReady = true;
 var deBug = false; //set to false to disable debugging mode
 var clear_custom_fields = true;
 var previous_dispo = 'NEW';
+var MD_dial_timed_out = 0;
 
 <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
 var enable_eccs_shortcuts = 1;
@@ -3298,7 +3299,7 @@ function CheckForConfCalls (confnum, force) {
             }
             
             //API catcher for hanging up calls
-            if (APIhangup == 1 && (live_customer_call == 1 || MD_channel_look == 1)) {
+            if (APIhangup == 1 && (live_customer_call == 1 || MD_channel_look == 1 || MD_dial_timed_out > 0)) {
                 WaitingForNextStep = 0;
                 custchannellive = 0;
                 
@@ -5581,6 +5582,7 @@ function ManualDialCheckChannel(taskCheckOR) {
     if ( (MD_ring_seconds > 49) || (MD_ring_seconds > dial_timeout) ) {
         MD_channel_look = 0;
         MD_ring_seconds = 0;
+		MD_dial_timed_out = 1;
         
         $("#MainStatusSpan").html('&nbsp;');
         swal("<?=$lh->translationFor('dial_timeout')?>.");
@@ -5918,6 +5920,7 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
         MD_ring_seconds = 0;
         CallCID = '';
         MDnextCID = '';
+		MD_dial_timed_out = 0;
 
         //UPDATE VICIDIAL_LOG ENTRY FOR THIS CALL PROCESS
         DialLog("end",nodeletevdac);
@@ -6435,6 +6438,7 @@ function DispoSelectSubmit() {
             consult_custom_wait = 0;
             consult_custom_go = 0;
             consult_custom_sent = 0;
+			MD_dial_timed_out = 0;
             $(".formXFER input[name='xfername']").val('');
             $(".formXFER input[name='xfernumhidden']").val('');
             //$("#debugbottomspan").html('');
@@ -7934,6 +7938,7 @@ function XFerCallHangup() {
         consult_custom_wait = 0;
         consult_custom_go = 0;
         consult_custom_sent = 0;
+		MD_dial_timed_out = 0;
 
 
     //  DEACTIVATE CHANNEL-DEPENDANT BUTTONS AND VARIABLES
