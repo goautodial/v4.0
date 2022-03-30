@@ -74,13 +74,14 @@ class osTicket extends Module {
 		$content = "";
 		$osticket_url = $this->valueForModuleSetting("osticket_url");
 		$token = $this->valueForModuleSetting("osticket_api_key");
+		$server_ip = $_SERVER['SERVER_ADDR'];
 		
 		if ($role > 1) {
 			$content  = <<<EOF
 		<script>
 					//Logging in on osTicket
 					$(function() {
-						$("#osTicketContent").attr('src', '{$osticket_url}gologin.php?username={$user}&passwd={$pass}&token={$token}');
+						$("#osTicketContent").attr('src', '{$osticket_url}gologin.php?username={$user}&passwd={$pass}&token={$token}&from_ip={$server_ip}');
 						
 						$("#osticket_tab").on('click', function() {
 							$("#osTicketContent").attr('src', '{$osticket_url}');
