@@ -49,6 +49,8 @@ $FILE_TIME = date("Ymd-His");
 
 $module_dir = (!empty($module_dir)) ? $module_dir : '/modules/GOagent/';
 
+$show_letters = false; // Show letters on dial pad
+
 //ini_set('display_errors', 'on');
 //error_reporting(E_ALL);
 
@@ -134,6 +136,7 @@ var hotkeysReady = true;
 var deBug = false; //set to false to disable debugging mode
 var clear_custom_fields = true;
 var previous_dispo = 'NEW';
+var MD_dial_timed_out = 0;
 
 <?php if( ECCS_BLIND_MODE === 'y' ) { ?>
 var enable_eccs_shortcuts = 1;
@@ -339,6 +342,9 @@ foreach ($camp_info as $idx => $val) {
 		    echo "var {$idx} = $val;\n";
 		} else {
 		    echo "var {$idx} = '{$val}';\n";
+            if ($idx == 'am_message_exten') {
+                echo "var campaign_am_message_exten = '8320';\n";
+            }
 		    if ($idx == 'auto_dial_level') {
 			echo "var starting_dial_level = '{$val}';\n";
 		    }
@@ -1207,6 +1213,20 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
     $("#go_agent_status").append("<li><div id='RecordControl' class='center-block hidden-xs' style='text-align: center;'><button id='btnRecordCall' onclick='btnRecordCall();' title='<?=$lh->translationFor('start_recording')?>' class='btn btn-danger btn-sm' style='margin: 0 5px 5px 0; font-size: 16px;'><?=$lh->translationFor('start_recording')?></button></div></li>");
     $("#go_agent_dialpad").append("<li><div id='AgentDialPad' class='center-block' style='text-align: center; min-width: 200px;'></div></li>");
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-1' class='btn btn-default btn-lg btn-raised' style='padding: 10px 25px; margin: 0 5px 5px 0; font-size: 16px; font-family: monospace;'> 1 </button>");
+    <?php
+    if ($show_letters) {
+    ?>
+    $("#AgentDialPad").append("<button type='button' id='dialer-pad-2' class='btn btn-default btn-lg btn-raised' style='padding: 5px 19.5px; margin: 0 5px 5px 0; font-size: 12px; font-family: monospace;'><span style='display: flex; justify-content: center;'>ABC</span><span style='display: flex; justify-content: center;'>2</span></button>");
+    $("#AgentDialPad").append("<button type='button' id='dialer-pad-3' class='btn btn-default btn-lg btn-raised' style='padding: 5px 19.5px; margin: 0 0 5px 0; font-size: 12px; font-family: monospace;'><span style='display: flex; justify-content: center;'>DEF</span><span style='display: flex; justify-content: center;'>3</span></button>");
+    $("#AgentDialPad").append("<button type='button' id='dialer-pad-4' class='btn btn-default btn-lg btn-raised' style='padding: 5px 19.5px; margin: 0 5px 5px 0; font-size: 12px; font-family: monospace;'><span style='display: flex; justify-content: center;'>GHI</span><span style='display: flex; justify-content: center;'>4</span></button>");
+    $("#AgentDialPad").append("<button type='button' id='dialer-pad-5' class='btn btn-default btn-lg btn-raised' style='padding: 5px 19.5px; margin: 0 5px 5px 0; font-size: 12px; font-family: monospace;'><span style='display: flex; justify-content: center;'>JKL</span><span style='display: flex; justify-content: center;'>5</span></button>");
+    $("#AgentDialPad").append("<button type='button' id='dialer-pad-6' class='btn btn-default btn-lg btn-raised' style='padding: 5px 19.5px; margin: 0 0 5px 0; font-size: 12px; font-family: monospace;'><span style='display: flex; justify-content: center;'>MNO</span><span style='display: flex; justify-content: center;'>6</span></button>");
+    $("#AgentDialPad").append("<button type='button' id='dialer-pad-7' class='btn btn-default btn-lg btn-raised' style='padding: 5px 16.3px; margin: 0 5px 5px 0; font-size: 12px; font-family: monospace;'><span style='display: flex; justify-content: center;'>PQRS</span><span style='display: flex; justify-content: center;'>7</span></button>");
+    $("#AgentDialPad").append("<button type='button' id='dialer-pad-8' class='btn btn-default btn-lg btn-raised' style='padding: 5px 19.5px; margin: 0 5px 5px 0; font-size: 12px; font-family: monospace;'><span style='display: flex; justify-content: center;'>TUV</span><span style='display: flex; justify-content: center;'>8</span></button>");
+    $("#AgentDialPad").append("<button type='button' id='dialer-pad-9' class='btn btn-default btn-lg btn-raised' style='padding: 5px 16.3px; margin: 0 0 5px 0; font-size: 12px; font-family: monospace;'><span style='display: flex; justify-content: center;'>WXYZ</span><span style='display: flex; justify-content: center;'>9</span></button>");
+    <?php  
+    } else {
+    ?>
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-2' class='btn btn-default btn-lg btn-raised' style='padding: 10px 25px; margin: 0 5px 5px 0; font-size: 16px; font-family: monospace;'> 2 </button>");
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-3' class='btn btn-default btn-lg btn-raised' style='padding: 10px 25px; margin: 0 0 5px 0; font-size: 16px; font-family: monospace;'> 3 </button>");
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-4' class='btn btn-default btn-lg btn-raised' style='padding: 10px 25px; margin: 0 5px 5px 0; font-size: 16px; font-family: monospace;'> 4 </button>");
@@ -1215,6 +1235,9 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-7' class='btn btn-default btn-lg btn-raised' style='padding: 10px 25px; margin: 0 5px 5px 0; font-size: 16px; font-family: monospace;'> 7 </button>");
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-8' class='btn btn-default btn-lg btn-raised' style='padding: 10px 25px; margin: 0 5px 5px 0; font-size: 16px; font-family: monospace;'> 8 </button>");
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-9' class='btn btn-default btn-lg btn-raised' style='padding: 10px 25px; margin: 0 0 5px 0; font-size: 16px; font-family: monospace;'> 9 </button>");
+    <?php
+    }
+    ?>
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-ast' class='btn btn-default btn-lg btn-raised hidden' style='padding: 10px 25px; margin: 0 5px 5px 0; font-size: 16px; font-family: monospace;'> * </button>");
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-clear' class='btn btn-default btn-lg btn-raised' style='padding: 12.5px 23px; margin: 0 5px 5px 0; font-size: 16px; font-family: monospace;' title='<?=$lh->translationFor('clear')?>'> <i class='fa fa-times'></i> </button>");
     $("#AgentDialPad").append("<button type='button' id='dialer-pad-0' class='btn btn-default btn-lg btn-raised' style='padding: 10px 25px; margin: 0 5px 5px 0; font-size: 16px; font-family: monospace;'> 0 </button>");
@@ -1257,6 +1280,17 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                 break;
         }
     });
+	
+	// Fix for the double click on hangup button
+	$("#btnDialHangup").click(function() {
+		var thisBtn = $(this);
+		thisBtn.prop('disabled', true);
+		
+		setTimeout(function() {
+		  // enable click after 1 second
+		  thisBtn.prop('disabled', false);
+		}, 1000); // 1 second delay
+	});
     
     $("li[id^='btn']").click(function() {
         var btnID = $(this).attr('id').replace('btn', '');
@@ -3265,7 +3299,7 @@ function CheckForConfCalls (confnum, force) {
             }
             
             //API catcher for hanging up calls
-            if (APIhangup == 1 && (live_customer_call == 1 || MD_channel_look == 1)) {
+            if (APIhangup == 1 && (live_customer_call == 1 || MD_channel_look == 1 || MD_dial_timed_out > 0)) {
                 WaitingForNextStep = 0;
                 custchannellive = 0;
                 
@@ -5548,6 +5582,7 @@ function ManualDialCheckChannel(taskCheckOR) {
     if ( (MD_ring_seconds > 49) || (MD_ring_seconds > dial_timeout) ) {
         MD_channel_look = 0;
         MD_ring_seconds = 0;
+		MD_dial_timed_out = 1;
         
         $("#MainStatusSpan").html('&nbsp;');
         swal("<?=$lh->translationFor('dial_timeout')?>.");
@@ -5885,6 +5920,7 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
         MD_ring_seconds = 0;
         CallCID = '';
         MDnextCID = '';
+		MD_dial_timed_out = 0;
 
         //UPDATE VICIDIAL_LOG ENTRY FOR THIS CALL PROCESS
         DialLog("end",nodeletevdac);
@@ -6402,6 +6438,7 @@ function DispoSelectSubmit() {
             consult_custom_wait = 0;
             consult_custom_go = 0;
             consult_custom_sent = 0;
+			MD_dial_timed_out = 0;
             $(".formXFER input[name='xfername']").val('');
             $(".formXFER input[name='xfernumhidden']").val('');
             //$("#debugbottomspan").html('');
@@ -7901,6 +7938,7 @@ function XFerCallHangup() {
         consult_custom_wait = 0;
         consult_custom_go = 0;
         consult_custom_sent = 0;
+		MD_dial_timed_out = 0;
 
 
     //  DEACTIVATE CHANNEL-DEPENDANT BUTTONS AND VARIABLES
