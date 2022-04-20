@@ -137,9 +137,10 @@
 	<?php if(ECCS_BLIND_MODE === 'y'){ ?>
 	<link href="./css/customizations/eccs_admin.css" rel="stylesheet" type="text/css" />
 	<?php }?>
- 
+
 	<?php
-		if (CUSTOM_LOGIN_PAGE == 'y') {
+		//customized login page
+		if (CUSTOMIZED_LOGIN_PAGE == 'y') {
 	?>
 	<style>
 		.login-page {
@@ -210,7 +211,7 @@
 	<?php
 		}
 	?>
-
+ 
 	</head>
   <body class="login-page" style="overflow: hidden;">
     <div class="login-box" id="login-box">
@@ -251,7 +252,7 @@
     </div><!-- /.login-box -->
 	</center>
 	<footer>
-		<div style="text-align: center; font-weight: 600; margin-top: -40px;">Copyright &copy; <?=date("Y")?> <a href="https://goautodial.com" target="_blank">GOautodial Inc.</a> All rights reserved.</div>
+		<div id="login-footer" style="text-align: center; font-weight: 600; margin-top: -40px;">Copyright &copy; <?=date("Y")?> <a href="https://goautodial.com" target="_blank">GOautodial Inc.</a> All rights reserved.</div>
 	</footer>
    <!--<div class="margin text-center">
         <span><?php $lh->translateText("never_heard_of_creamy"); ?></span>
