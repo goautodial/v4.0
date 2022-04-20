@@ -137,6 +137,80 @@
 	<?php if(ECCS_BLIND_MODE === 'y'){ ?>
 	<link href="./css/customizations/eccs_admin.css" rel="stylesheet" type="text/css" />
 	<?php }?>
+
+	<?php
+		//customized login page
+		if (CUSTOMIZED_LOGIN_PAGE == 'y') {
+	?>
+	<style>
+		.login-page {
+			background-image: url('./img/custom-login-bg.jpg');
+			background-size: cover;
+			background-repeat: no-repeat;
+			height: 100vh;
+		}
+		.login-box-body {
+			border: 3px solid #3C9111;
+			border-radius: 18px;
+			background: none;
+		}
+		.login-box-msg {
+			color: #4e4e4e;
+		}
+		#div1 {
+			color: #4e4e4e;
+		}
+		#btn1 {
+			background-color: #3C9111;
+			border: 2px solid #3C9111;
+			border-radius: 10px;
+		}
+		#input1, #input2 {
+			background: none;
+			color: #4e4e4e;
+			border: 2px solid #3C9111;
+			border-radius: 5px;
+		}
+		#input1:focus, #input2:focus {
+			border: 2px solid #5cc926 !important;
+			background: none;
+		}
+		#input1::-webkit-input-placeholder, #input2::-webkit-input-placeholder {
+			color: #4e4e4e;
+		}
+		#input1:-moz-placeholder, #input2:-moz-placeholder {
+			color: #4e4e4e;
+		}
+		#input1::-moz-placeholder, #input2::-moz-placeholder {
+			color: #4e4e4e;
+		}
+		#input1:-ms-input-placeholder, #input2:-ms-input-placeholder {
+			color: #4e4e4e;
+		}
+		#login-footer {
+			text-align: center; 
+			font-weight: 600; 
+			margin-top: -40px; 
+			color: black;
+		}
+		#login-footer a{
+			color: #3C9111;
+		}
+		/* for mobile devices */
+		@media screen and (max-width: 400px) {
+			#login-footer {
+				margin-top: 20px !important;
+			}
+		}
+		@media screen and (max-width: 600px) {
+			#login-footer {
+				margin-top: 20px !important;
+			}
+		}
+	</style>
+	<?php
+		}
+	?>
  
 	</head>
   <body class="login-page" style="overflow: hidden;">
@@ -178,7 +252,7 @@
     </div><!-- /.login-box -->
 	</center>
 	<footer>
-		<div style="text-align: center; font-weight: 600; margin-top: -40px;">Copyright &copy; <?=date("Y")?> <a href="https://goautodial.com" target="_blank">GOautodial Inc.</a> All rights reserved.</div>
+		<div id="login-footer" style="text-align: center; font-weight: 600; margin-top: -40px;">Copyright &copy; <?=date("Y")?> <a href="https://goautodial.com" target="_blank">GOautodial Inc.</a> All rights reserved.</div>
 	</footer>
    <!--<div class="margin text-center">
         <span><?php $lh->translateText("never_heard_of_creamy"); ?></span>
