@@ -244,5 +244,5 @@ define ('SHOW_AGENT_HEADER', 'n'); //Shows or Hides Black Header in Agent UI
 
 define ('OSTICKET_ENABLED', 'n');
 
-define('CUSTOMIZED_LOGIN_PAGE', 'y');
+define ('CUSTOMIZED_LOGIN_PAGE', 'n'); // Change to 'y' to enable customized login page
 ?>
