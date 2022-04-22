@@ -237,8 +237,8 @@ define ('EXPORTCALLREPORT_ALLCAMPAIGNS', 'n');
 define ('REALTIME_CALLS_MONITORING', 'n'); //Change to 'y' to enable realtime calls monitoring in Dashboard (not advisable for heavy systems)
 define ('REALTIME_INBOUND_MONITORING', 'n'); //Change to 'y' to enable realtime inbound monitoring in Dashboard (not advisable for heavy systems)
 
-define ('ROCKETCHAT_ENABLE', 'y'); // Change to 'y' to enable rocketchat feature
-define ('ROCKETCHAT_URL', "https://rcwits.justgocloud.com"); //Rocketchat URL example: https://rocketchat.company.com
+define ('ROCKETCHAT_ENABLE', 'n'); // Change to 'y' to enable rocketchat feature
+define ('ROCKETCHAT_URL', ""); //Rocketchat URL example: https://rocketchat.company.com
 
 define ('SHOW_AGENT_HEADER', 'n'); //Shows or Hides Black Header in Agent UI
 
