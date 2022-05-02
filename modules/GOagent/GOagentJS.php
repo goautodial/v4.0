@@ -49,6 +49,8 @@ $FILE_TIME = date("Ymd-His");
 
 $module_dir = (!empty($module_dir)) ? $module_dir : '/modules/GOagent/';
 
+$osTicket = $mh->moduleIsEnabled('osTicket'); // Check if osTicket module exists/enabled.
+
 //ini_set('display_errors', 'on');
 //error_reporting(E_ALL);
 
@@ -1019,9 +1021,9 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
             }, function(sureToLogout){
                 if (sureToLogout) {
                     swal.close();
-		    //Whatsapp
-		    /*var userid = $('#wa-userid').val();
-		    $.ajax({
+					//Whatsapp
+					/*var userid = $('#wa-userid').val();
+					$.ajax({
                         url:"php/WhatsappLogout.php",
                         method:"POST",
                         data:{userid:userid, action:'0'},
@@ -1029,35 +1031,42 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                             console.log("Whatsapp Logged Out...");
                         }
                     });*/
-		    // ./Whatsapp
+					// ./Whatsapp
 
-		<?php if(ROCKETCHAT_ENABLE === 'y'){?>
-            // Rocket Chat
-                var rcWin = document.getElementById('rc_frame').contentWindow;
-                var rcUserID = $("#rc-user-id").val();
-                var rcAuthToken = $("#rc-auth-token").val();
-                $.ajax({
-                    url: "./php/LogoutRocketChat.php",
-                    type: 'POST',
-                    dataType: "json",
-                    data: {userID: rcUserID, authToken: rcAuthToken},
-                    success: function(data) {
-                    console.log(data);
-		    $("#rc_row").fadeOut();
-                      	rcWin.postMessage({
-                            event: 'log-me-out-iframe'
-                        }, '<?php echo ROCKETCHAT_URL;?>');
-			delayLogoutforRocketchat();
-                    }
-                });
-            // Rocket Chat
-        	<?php } ?>
+					<?php if(ROCKETCHAT_ENABLE === 'y'){?>
+					// Rocket Chat
+					var rcWin = document.getElementById('rc_frame').contentWindow;
+					var rcUserID = $("#rc-user-id").val();
+					var rcAuthToken = $("#rc-auth-token").val();
+					$.ajax({
+						url: "./php/LogoutRocketChat.php",
+						type: 'POST',
+						dataType: "json",
+						data: {userID: rcUserID, authToken: rcAuthToken},
+						success: function(data) {
+							console.log(data);
+							$("#rc_row").fadeOut();
+							rcWin.postMessage({
+								event: 'log-me-out-iframe'
+							}, '<?php echo ROCKETCHAT_URL;?>');
+							delayLogoutforRocketchat();
+						}
+					});
+					// Rocket Chat
+					<?php } ?>
 
-		function delayLogoutforRocketchat(){
-			setTimeout(function() {
-				console.log("Logging out of Rocketchat...");
-                        }, 3000);
-		}
+					function delayLogoutforRocketchat(){
+						setTimeout(function() {
+							console.log("Logging out of Rocketchat...");
+						}, 3000);
+					}
+					
+					<?php if($osTicket) {?>
+					$.get('https://ost.justgocloud.com/scp/gologin.php?get_token=1', function(data) {
+						console.log("Logging out of osTicket...", data);
+						$("#osTicketContent").attr('src', 'https://ost.justgocloud.com/scp/logout.php?auth='+data);
+					});
+					<?php } ?>
 
                     if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
                         logoutWarn = false;
