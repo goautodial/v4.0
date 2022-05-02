@@ -32,6 +32,7 @@ require_once(GO_BASE_DIRECTORY.'/php/CRMDefaults.php');
 require_once(GO_BASE_DIRECTORY.'/php/UIHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/LanguageHandler.php');
 require_once(GO_BASE_DIRECTORY.'/php/DbHandler.php');
+require_once(GO_BASE_DIRECTORY.'/php/ModuleHandler.php');
 include(GO_BASE_DIRECTORY.'/php/Session.php');
 require_once(GO_BASE_DIRECTORY.'/php/goCRMAPISettings.php');
 $goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
@@ -40,6 +41,7 @@ $api = \creamy\APIHandler::getInstance();
 $ui = \creamy\UIHandler::getInstance();
 $lh = \creamy\LanguageHandler::getInstance();
 $lh->addCustomTranslationsFromFile(GO_LANG_DIRECTORY . $lh->getLanguageHandlerLocale());
+$mh = \creamy\ModuleHandler::getInstance();
 
 $US = '_';
 $NOW_TIME = date("Y-m-d H:i:s");
@@ -50,6 +52,8 @@ $FILE_TIME = date("Ymd-His");
 $module_dir = (!empty($module_dir)) ? $module_dir : '/modules/GOagent/';
 
 $show_letters = false; // Show letters on dial pad
+
+$osTicket = $mh->moduleIsEnabled('osTicket'); // Check if osTicket module exists/enabled.
 
 //ini_set('display_errors', 'on');
 //error_reporting(E_ALL);
@@ -1024,9 +1028,9 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
             }, function(sureToLogout){
                 if (sureToLogout) {
                     swal.close();
-		    //Whatsapp
-		    /*var userid = $('#wa-userid').val();
-		    $.ajax({
+					//Whatsapp
+					/*var userid = $('#wa-userid').val();
+					$.ajax({
                         url:"php/WhatsappLogout.php",
                         method:"POST",
                         data:{userid:userid, action:'0'},
@@ -1034,35 +1038,42 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                             console.log("Whatsapp Logged Out...");
                         }
                     });*/
-		    // ./Whatsapp
+					// ./Whatsapp
 
-		<?php if(ROCKETCHAT_ENABLE === 'y'){?>
-            // Rocket Chat
-                var rcWin = document.getElementById('rc_frame').contentWindow;
-                var rcUserID = $("#rc-user-id").val();
-                var rcAuthToken = $("#rc-auth-token").val();
-                $.ajax({
-                    url: "./php/LogoutRocketChat.php",
-                    type: 'POST',
-                    dataType: "json",
-                    data: {userID: rcUserID, authToken: rcAuthToken},
-                    success: function(data) {
-                    console.log(data);
-		    $("#rc_row").fadeOut();
-                      	rcWin.postMessage({
-                            event: 'log-me-out-iframe'
-                        }, '<?php echo ROCKETCHAT_URL;?>');
-			delayLogoutforRocketchat();
-                    }
-                });
-            // Rocket Chat
-        	<?php } ?>
+					<?php if(ROCKETCHAT_ENABLE === 'y'){?>
+					// Rocket Chat
+					var rcWin = document.getElementById('rc_frame').contentWindow;
+					var rcUserID = $("#rc-user-id").val();
+					var rcAuthToken = $("#rc-auth-token").val();
+					$.ajax({
+						url: "./php/LogoutRocketChat.php",
+						type: 'POST',
+						dataType: "json",
+						data: {userID: rcUserID, authToken: rcAuthToken},
+						success: function(data) {
+							console.log(data);
+							$("#rc_row").fadeOut();
+							rcWin.postMessage({
+								event: 'log-me-out-iframe'
+							}, '<?php echo ROCKETCHAT_URL;?>');
+							delayLogoutforRocketchat();
+						}
+					});
+					// Rocket Chat
+					<?php } ?>
 
-		function delayLogoutforRocketchat(){
-			setTimeout(function() {
-				console.log("Logging out of Rocketchat...");
-                        }, 3000);
-		}
+					function delayLogoutforRocketchat(){
+						setTimeout(function() {
+							console.log("Logging out of Rocketchat...");
+						}, 3000);
+					}
+					
+					<?php if($osTicket) {?>
+					$.get('https://ost.justgocloud.com/scp/gologin.php?get_token=1', function(data) {
+						console.log("Logging out of osTicket...", data);
+						$("#osTicketContent").attr('src', 'https://ost.justgocloud.com/scp/logout.php?auth='+data);
+					});
+					<?php } ?>
 
                     if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
                         logoutWarn = false;
@@ -1079,12 +1090,9 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
                         console.log('<?=$lh->translationFor('logging_out_phones')?>...');
                         $("div.preloader center").append('<br><br><span style="font-size: 24px; color: white;"><?=$lh->translationFor('logging_out_phones')?>...</span>');
                         $("div.preloader").fadeIn("slow");
-                        setTimeout(
-                            function() {
-                                window.location.href = hRef;
-                            },
-                            2500
-                        );
+                        setTimeout(function() {
+							window.location.href = hRef;
+						},2500);
                     }
                 } else {
                     refresh_interval = 1000;
