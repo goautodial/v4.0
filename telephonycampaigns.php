@@ -180,7 +180,7 @@
 								$users = $api->API_getAllUsers();
 								$carriers = $api->API_getAllCarriers();
 								$checkbox_all = $ui->getCheckAll("campaign");
-								$areacode = $api->API_getAllAreacodes();
+								//$areacode = $api->API_getAllAreacodes();
 
 								//echo "<pre>";
 								//var_dump($areacodes);
@@ -437,33 +437,6 @@
 												 <th class='action_areacode'><?php $lh->translateText("action"); ?></th>											 
 											  </tr>
 										   </thead>
-										   <tbody>
-											   <?php
-												if($areacode->result == "success"){
-											   		for($i=0;$i < count($areacode->campaign_id);$i++){
-
-														if($areacode->active[$i] == "Y"){
-															$areacode->active[$i] = $lh->translationFor("active");
-														}else{
-															$areacode->active[$i] = $lh->translationFor("inactive");
-														}
-
-													$action_CAMPAIGN = $ui->ActionMenuForAreacodes($areacode->areacode[$i], $areacode->campaign_id[$i], $perm);
-											   ?>
-													<tr>
-														<td><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="view_areacode" data-toggle="modal" data-target="#modal_edit_areacode" data-camp="'.$areacode->campaign_id[$i].'" data-ac="'.$areacode->areacode[$i].'">'; } ?><avatar username='<?php echo $areacode->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></td>
-														<td><strong><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="view_areacode" data-toggle="modal" data-target="#modal_edit_areacode"  data-camp="'.$areacode->campaign_id[$i].'" data-ac="'.$areacode->areacode[$i].'">'; } ?><?php echo $areacode->campaign_id[$i];?><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></strong></td>
-														<td><?php echo $areacode->campaign_name[$i];?></td>
-														<td><?php echo $areacode->areacode[$i];?></td>
-														<td><?php echo $areacode->outbound_cid[$i];?></td>
-														<td><?php echo $areacode->active[$i];?></td>
-														<td><?php echo $action_CAMPAIGN;?></td>													
-													</tr>
-											   <?php
-													}
-												} 
-											   ?>
-										   </tbody>
 										</table>
 								 </div>
 
@@ -1763,7 +1736,7 @@
 				]
 			});
 
-			$('#table_areacode').dataTable();
+			//$('#table_areacode').dataTable();
 			
 			$('#table_leadfilter').dataTable();
 			
@@ -3434,7 +3407,7 @@
 												$(".preloader").fadeIn();
 											});
 									} else {
-										sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+data, "error");
+										sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?> "+data, "error");
 										$('#finish').val("Submit");
 										$('#finish').prop("disabled", false);
 										areacode_form.children("div").steps("previous");
@@ -3941,6 +3914,54 @@
 						$('.auto-dial-level-adv').addClass('hide');
 					}
 				});
+			
+			$('#table_areacode').DataTable( {
+				"processing": true,
+				"serverSide": true,
+				"ajax": {
+					"url": './php/GetAreaCodes.php',
+					"type": 'POST'
+				},
+				"order": [[ 1, "asc" ]],
+				"columnDefs": [{
+					"targets": [0, 6],
+					"searchable": false,
+					"orderable": false
+				}, {
+					"targets": 5,
+					"render": function (data, type, row) {
+						//console.log(data, type, row);
+						return (data === 'Y' ? 'Active' : 'Inactive');
+					}
+				}, {
+					"targets": 6,
+					"render": function (data, type, row) {
+						return '<div class="btn-group">\
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><?php echo $lh->translationFor("choose_action") ?>\
+							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">\
+								<span class="caret"></span>\
+								<span class="sr-only">Toggle Dropdown</span>\
+							</button>\
+							<ul class="dropdown-menu" role="menu">\
+								<li><a class="view_areacode" href="#" data-toggle="modal" data-target="#modal_edit_areacode" data-type="update" data-ac="'+row[3]+'" data-camp="'+row[1]+'"><?php echo $lh->translationFor("modify") ?></a></li>\
+								<li><a class="delete-areacode" href="#" data-type="delete" data-ac="'+row[3]+'" data-camp="'+row[1]+'"><?php echo $lh->translationFor("delete") ?></a></li>\
+							</ul>\
+						</div>';
+					}
+				}],
+				"columns": [
+					{ "data": "avatar" },
+					{ "data": "campaign_id" },
+					{ "data": "campaign_name" },
+					{ "data": "areacode" },
+					{ "data": "outbound_cid" },
+					{ "data": "active" },
+					{ "data": "action" }
+				],
+				"drawCallback": function() {
+					goAvatar._init(goOptions);
+				}
+			});
 				
 		}); // end of document ready
 

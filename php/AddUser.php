@@ -22,7 +22,13 @@
 */
 	require_once('APIHandler.php');
 	require_once('Session.php');
+	require_once('ModuleHandler.php');
+
 	$api 										= \creamy\APIHandler::getInstance();
+	$mh 										= \creamy\ModuleHandler::getInstance();
+
+	//osTicket
+	$osTicketEnabled 							= $mh->moduleIsEnabled('osTicket');
 
 	$email = $_POST["email"];
 	$full_name = $_POST["fullname"];
@@ -40,7 +46,8 @@
 		'seats' 	=> $_POST["seats"],
 		'phone_login' 	=> $_POST["phone_logins"],
 		'phone_pass' 	=> $_POST["phone_pass"],
-		'server_ip' 	=> $_POST["ip"]
+		'server_ip' 	=> $_POST["ip"],
+		'osTicketEn'    => $osTicketEnabled
 	);
 
     	$output = $api->API_addUser($postfields);

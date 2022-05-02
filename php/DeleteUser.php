@@ -21,18 +21,25 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');	
+	require_once('APIHandler.php');
+	require_once('ModuleHandler.php');
+
 	$api 									= \creamy\APIHandler::getInstance();
+	$mh 									= \creamy\ModuleHandler::getInstance();
 	
 	if (isset($_POST["userid"])) {
 		// sanity checks	
 		$userid 							= $_POST["userid"];
 		$action 							= $_POST["action"];
+
+		//osTicket
+		$osTicketEnabled 							= $mh->moduleIsEnabled('osTicket');
 		
 		$postfields 						= array(
 			'goAction' 							=> 'goDeleteUser',
 			'user_id' 							=> $userid,
-			'action' 							=> $action
+			'action' 							=> $action,
+			'osTicketEn'						=> $osTicketEnabled
 		);
 
 		$output 							= $api->API_Request("goUsers", $postfields);
