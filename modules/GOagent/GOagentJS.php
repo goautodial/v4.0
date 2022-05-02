@@ -1062,9 +1062,9 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
 					}
 					
 					<?php if($osTicket) {?>
-					$.get('https://ost.justgocloud.com/scp/gologin.php?get_token=1', function(data) {
+					$.get('<?php echo $_SESSION['osticket_url']; ?>gologin.php?get_token=1', function(data) {
 						console.log("Logging out of osTicket...", data);
-						$("#osTicketContent").attr('src', 'https://ost.justgocloud.com/scp/logout.php?auth='+data);
+						$("#osTicketContent").attr('src', '<?php echo $_SESSION['osticket_url']; ?>logout.php?auth='+data);
 					});
 					<?php } ?>
 
