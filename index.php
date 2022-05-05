@@ -134,7 +134,7 @@
         <?php print $ui->creamyThemeCSS(); ?>
 		
         <!-- dashboard status boxes -->
-        <script src="js/bootstrap-editable.js" type="text/javascript"></script> 
+        <!-- <script src="js/bootstrap-editable.js" type="text/javascript"></script> -->
         <script src="js/dashboard/moment/min/moment-with-locales.min.js" type="text/javascript"></script>
         <script src="js/modules/now.js" type="text/javascript"></script>         
 	    <!-- ChartJS 1.0.1 -->
