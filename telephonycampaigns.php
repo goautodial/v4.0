@@ -448,7 +448,7 @@
 															$areacode->active[$i] = $lh->translationFor("inactive");
 														}
 
-													$action_CAMPAIGN = $ui->ActionMenuForAreacodes($areacode->areacode[$i], $areacode->campaign_id[$i], $perm);
+													$action_CAMPAIGN = $ui->ActionMenuForAreacodes($areacode->areacode[$i], $areacode->campaign_id[$i]);
 											   ?>
 													<tr>
 														<td><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="view_areacode" data-toggle="modal" data-target="#modal_edit_areacode" data-camp="'.$areacode->campaign_id[$i].'" data-ac="'.$areacode->areacode[$i].'">'; } ?><avatar username='<?php echo $areacode->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></td>
@@ -3451,7 +3451,7 @@
 			    });
 
 				//Edit Areacode
-				$('.view_areacode').on('click', function() {
+				$(document).on('click','.view_areacode',function() {
 					$(".preloader").fadeIn();
 					var campaign_id = $(this).attr("data-camp");
 					var areacode = $(this).attr("data-ac");
