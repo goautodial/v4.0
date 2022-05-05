@@ -4939,7 +4939,7 @@ error_reporting(E_ERROR | E_PARSE);
 		}
 //--------- ACCID ---------
 
-        public function ActionMenuForAreacodes($areacode, $camp_id) {
+        public function ActionMenuForAreacodes($id, $code) {
                  return '<div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
@@ -4947,8 +4947,8 @@ error_reporting(E_ERROR | E_PARSE);
                                             <span class="sr-only">Toggle Dropdown</span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a class="view_areacode" href="#" data-toggle="modal" data-target="#modal_edit_areacode" data-type="update" data-ac="'.$areacode.'" data-camp="'.$camp_id.'">'.$this->lh->translationFor("modify").'</a></li>
-                        <li><a class="delete-areacode" href="#" data-type="delete" data-ac="'.$areacode.'" data-camp="'.$camp_id.'">'.$this->lh->translationFor("delete").'</a></li>
+                        <li><a class="view_areacode" href="#" data-toggle="modal" data-target="#modal_edit_areacode" data-type="update" data-ac="'.$code.'" data-camp="'.$id.'">'.$this->lh->translationFor("modify").'</a></li>
+                        <li><a class="delete-areacode" href="#" data-type="delete" data-ac="'.$code.'" data-camp="'.$id.'">'.$this->lh->translationFor("delete").'</a></li>
                     </ul>
                 </div>';
         }
