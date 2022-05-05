@@ -1089,10 +1089,11 @@
 			return $this->API_Request("goCampaigns", $postfields);
 		}
 
-		public function API_getAllAreacodes(){
+		public function API_getAllAreacodes($options){
 			$postfields = array(
-				'goAction' => 'goGetAllAreacodes'
+				'goAction' => 'goGetAllAreacodes',
 			);
+			$postfields = array_merge($postfields, $options);
 			return $this->API_Request("goAreacodes", $postfields);
 		}
 
