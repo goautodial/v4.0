@@ -75,7 +75,6 @@ class osTicket extends Module {
 		$osticket_url = $this->valueForModuleSetting("osticket_url");
 		$token = $this->valueForModuleSetting("osticket_api_key");
 		$server_ip = $_SERVER['SERVER_ADDR'];
-		$_SESSION['osticket_url'] = $osticket_url;
 		
 		if ($role > 1) {
 			$content  = <<<EOF
