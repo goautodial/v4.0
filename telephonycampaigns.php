@@ -1841,6 +1841,13 @@
 					}
 				});
 				$( "#did-tfn-extension" ).autocomplete( "option", "appendTo", "#campaign_form" );
+
+			//campaign id
+				$('#campaign-id-edit-btn').click(function(){
+					$('#campaign-id').prop('readonly',function(i,r){
+						return !r;
+					});
+				});
 			});
 			//#did-tfn-extension
 			//$(document).on('keypress', '#did-tfn-extension', function(){
