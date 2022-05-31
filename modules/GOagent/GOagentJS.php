@@ -3307,12 +3307,12 @@ function CheckForConfCalls (confnum, force) {
             }
             
             //API catcher for hanging up calls
-            if (APIhangup == 1 && (live_customer_call == 1 || MD_channel_look == 1 || MD_dial_timed_out > 0)) {
+            if ((APIhangup == 1 && (live_customer_call == 1 || MD_channel_look == 1 || MD_dial_timed_out > 0)) || (APIhangup != 1 && MD_dial_timed_out > 0)) {
                 WaitingForNextStep = 0;
                 custchannellive = 0;
                 
                 DialedCallHangup();
-            }
+			}
             
             //API catcher for Call Dispositions
             if ( (APIstatus.length < 1000) && (APIstatus.length > 0) && (AgentDispoing > 1) && (APIstatus != '::::::::::') ) {
