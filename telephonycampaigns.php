@@ -437,6 +437,33 @@
 												 <th class='action_areacode'><?php $lh->translateText("action"); ?></th>											 
 											  </tr>
 										   </thead>
+										   <tbody>
+											   <?php
+												if($areacode->result == "success"){
+											   		for($i=0;$i < count($areacode->campaign_id);$i++){
+
+														if($areacode->active[$i] == "Y"){
+															$areacode->active[$i] = $lh->translationFor("active");
+														}else{
+															$areacode->active[$i] = $lh->translationFor("inactive");
+														}
+
+													$action_CAMPAIGN = $ui->ActionMenuForAreacodes($areacode->areacode[$i], $areacode->campaign_id[$i]);
+											   ?>
+													<tr>
+														<td><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="view_areacode" data-toggle="modal" data-target="#modal_edit_areacode" data-camp="'.$areacode->campaign_id[$i].'" data-ac="'.$areacode->areacode[$i].'">'; } ?><avatar username='<?php echo $areacode->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></td>
+														<td><strong><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="view_areacode" data-toggle="modal" data-target="#modal_edit_areacode"  data-camp="'.$areacode->campaign_id[$i].'" data-ac="'.$areacode->areacode[$i].'">'; } ?><?php echo $areacode->campaign_id[$i];?><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></strong></td>
+														<td><?php echo $areacode->campaign_name[$i];?></td>
+														<td><?php echo $areacode->areacode[$i];?></td>
+														<td><?php echo $areacode->outbound_cid[$i];?></td>
+														<td><?php echo $areacode->active[$i];?></td>
+														<td><?php echo $action_CAMPAIGN;?></td>													
+													</tr>
+											   <?php
+													}
+												} 
+											   ?>
+										   </tbody>
 										</table>
 								 </div>
 
@@ -1814,6 +1841,13 @@
 					}
 				});
 				$( "#did-tfn-extension" ).autocomplete( "option", "appendTo", "#campaign_form" );
+
+			//campaign id
+				$('#campaign-id-edit-btn').click(function(){
+					$('#campaign-id').prop('readonly',function(i,r){
+						return !r;
+					});
+				});
 			});
 			//#did-tfn-extension
 			//$(document).on('keypress', '#did-tfn-extension', function(){
@@ -3424,7 +3458,7 @@
 			    });
 
 				//Edit Areacode
-				$('.view_areacode').on('click', function() {
+				$(document).on('click','.view_areacode',function() {
 					$(".preloader").fadeIn();
 					var campaign_id = $(this).attr("data-camp");
 					var areacode = $(this).attr("data-ac");
@@ -3936,6 +3970,7 @@
 				}, {
 					"targets": 6,
 					"render": function (data, type, row) {
+						var camp_id = $(row['campaign_id']).text().trim();
 						return '<div class="btn-group">\
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><?php echo $lh->translationFor("choose_action") ?>\
 							<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">\
@@ -3943,8 +3978,8 @@
 								<span class="sr-only">Toggle Dropdown</span>\
 							</button>\
 							<ul class="dropdown-menu" role="menu">\
-								<li><a class="view_areacode" href="#" data-toggle="modal" data-target="#modal_edit_areacode" data-type="update" data-ac="'+row[3]+'" data-camp="'+row[1]+'"><?php echo $lh->translationFor("modify") ?></a></li>\
-								<li><a class="delete-areacode" href="#" data-type="delete" data-ac="'+row[3]+'" data-camp="'+row[1]+'"><?php echo $lh->translationFor("delete") ?></a></li>\
+								<li><a class="view_areacode" href="#" data-toggle="modal" data-target="#modal_edit_areacode" data-type="update" data-ac="'+row['areacode']+'" data-camp="'+camp_id+'"><?php echo $lh->translationFor("modify") ?></a></li>\
+								<li><a class="delete-areacode" href="#" data-type="delete" data-ac="'+row['areacode']+'" data-camp="'+camp_id+'"><?php echo $lh->translationFor("delete") ?></a></li>\
 							</ul>\
 						</div>';
 					}
