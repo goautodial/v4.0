@@ -659,7 +659,25 @@
 																<input type="number" min="3" max="60" class="form-control" value="<?php if(!empty($campaign->data->nextdial_seconds)){echo $campaign->data->nextdial_seconds;}?>" id="nextdial_seconds" name="nextdial_seconds">
 															</div>
 														</div>
-														<?php } ?>
+														<?php } 
+														if ($campaign->campaign_type == "SURVEY") { ?>
+															<div class="form-group">
+																<label class="col-sm-3 control-label"><?php $lh->translateText("launch_custom_fields"); ?>:</label>
+																<div class="col-sm-9 mb">
+																	<select class="form-control" id="custom_fields_launch" name="custom_fields_launch">
+																		<option value="ONCALL" <?php if($campaign->custom_fields_launch == "ONCALL") echo "selected";?>>ONCALL</option>
+																		<option value="LOGIN" <?php if($campaign->custom_fields_launch == "LOGIN") echo "selected";?>>LOGIN</option>
+																	</select>
+																</div>
+															</div>
+															<div class="form-group">
+																<label class="col-sm-3 control-label"><?php $lh->translateText("custom_fields_list_id"); ?>:</label>
+																<div class="col-sm-9 mb">
+																	<input type="text" class="form-control" value="<?php if(!empty($campaign->custom_fields_list_id)){echo $campaign->custom_fields_list_id;}?>" id="custom_fields_list_id" name="custom_fields_list_id">
+																</div>
+															</div>
+														<?php
+														} ?>
 														<?php if($campaign->campaign_type == "OUTBOUND") { ?>
 															<div class="form-group" style="margin-bottom: 10px;">
 																<?php $dial_statuses = explode(" ", rtrim($campaign->data->dial_statuses, " -")); $i=1;?>
