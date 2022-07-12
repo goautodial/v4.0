@@ -29,7 +29,7 @@ $pass = $_POST['pass'];
 //$pass = "hayopka2021";
 //Logs In Rocketchat User
 	$curl = curl_init();
-       	curl_setopt_array($curl, array(
+	curl_setopt_array($curl, array(
         CURLOPT_URL => ROCKETCHAT_URL."/api/v1/login",
         CURLOPT_RETURNTRANSFER => true,
        	CURLOPT_ENCODING => "",
@@ -38,19 +38,38 @@ $pass = $_POST['pass'];
         CURLOPT_FOLLOWLOCATION => true,
        	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => "POST",
+		CURLOPT_SSL_VERIFYHOST => false,
+		CURLOPT_SSL_VERIFYPEER => false,
        	CURLOPT_POSTFIELDS =>"{\r\n  \"user\": \"$user\",\r\n  \"password\": \"$pass\"}",
         CURLOPT_HTTPHEADER => array(
        	        "Content-Type:application/json"
        	    )
-        ));
-       	$response = curl_exec($curl);
-        curl_close($curl);
-	$output = json_decode($response, TRUE);
-	//$_SESSION['gad_authToken'] = $response->data['authToken'];
+	));
+	$response = curl_exec($curl);
+	curl_close($curl);
+	// $output = json_decode($response, TRUE);
+	$_SESSION['gad_authToken'] = $response->data['authToken'];
 	if(!isset($_SESSION['gad_userID'])){
 	$_SESSION["gad_userID"] = $output["data"]["userId"];
 	$_SESSION["gad_authToken"] = $output["data"]["authToken"];
 	}
 	echo $data = $response;	
+
+	// $ch = curl_init();
+    // curl_setopt($ch, CURLOPT_URL, ROCKETCHAT_URL."/api/v1/info");
+    // curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+	// //for debug only!
+	// curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+	// curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	// if(curl_exec($ch) === false)
+	// {
+	// 	echo 'Curl error: ' . curl_error($ch);
+	// }
+	// else
+	// {
+	// 	echo 'Operation completed without any errors';
+	// }
+    // $curlresult=curl_exec ($ch);
+	// curl_close ($ch);
 	//var_dump($response);
 ?>
