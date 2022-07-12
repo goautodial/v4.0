@@ -1938,6 +1938,19 @@
 																</div>
 															</div>
 															<div class="form-group">
+																<label class="col-sm-3 control-label"><?php $lh->translateText("lead_filter"); ?>:</label>
+																<div class="col-sm-9 mb">
+																	<select class="form-control" id="lead_filter" name="lead_filter">
+																		<option value="" <?php if($campaign->data->lead_filter_id == "") echo "selected";?>>NONE</option>
+																		<?php for($i=0;$i<=count($leadfilter->lead_filter_id);$i++) { ?>
+																			<?php if(!empty($leadfilter->lead_filter_id[$i])) { ?>
+																				<option value="<?php echo $leadfilter->lead_filter_id[$i]; ?>" <?php if($campaign->data->lead_filter_id == $leadfilter->lead_filter_id[$i]) echo "selected";?>><?php echo $leadfilter->lead_filter_name[$i]; ?></option>
+																			<?php } ?>
+																		<?php } ?>
+																	</select>
+																</div>
+															</div>
+															<div class="form-group">
 																<label class="col-sm-3 control-label"><?php $lh->translateText("force_reset_of_hopper"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<select class="form-control" id="force_reset_hopper" name="force_reset_hopper">
