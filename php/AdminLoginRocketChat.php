@@ -47,29 +47,12 @@ $pass = $_POST['pass'];
 	));
 	$response = curl_exec($curl);
 	curl_close($curl);
-	// $output = json_decode($response, TRUE);
-	$_SESSION['gad_authToken'] = $response->data['authToken'];
+	$output = json_decode($response, TRUE);
+	//$_SESSION['gad_authToken'] = $response->data['authToken'];
 	if(!isset($_SESSION['gad_userID'])){
 	$_SESSION["gad_userID"] = $output["data"]["userId"];
 	$_SESSION["gad_authToken"] = $output["data"]["authToken"];
 	}
 	echo $data = $response;	
-
-	// $ch = curl_init();
-    // curl_setopt($ch, CURLOPT_URL, ROCKETCHAT_URL."/api/v1/info");
-    // curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-	// //for debug only!
-	// curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-	// curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	// if(curl_exec($ch) === false)
-	// {
-	// 	echo 'Curl error: ' . curl_error($ch);
-	// }
-	// else
-	// {
-	// 	echo 'Operation completed without any errors';
-	// }
-    // $curlresult=curl_exec ($ch);
-	// curl_close ($ch);
 	//var_dump($response);
 ?>
