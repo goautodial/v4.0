@@ -3576,6 +3576,7 @@
                                 $(document).on('click','.delete-areacode',function() {
                                         var campId = $(this).attr('data-camp');
 					var areacode = $(this).attr('data-ac');
+                                        var outbound_cid = $(this).attr('data-cid');
                                         console.log(campId + " " + areacode);
                                         swal({
                                                 title: "<?php $lh->translateText("are_you_sure"); ?>",
@@ -3596,6 +3597,7 @@
                                                                         data: {
                                                                                 campaign_id: campId,
 										areacode: areacode,
+                                                                                outbound_cid: outbound_cid,
                                                                                 action: "delete_selected"
                                                                         },
                                                                         success: function(data) {
@@ -3979,7 +3981,7 @@
 							</button>\
 							<ul class="dropdown-menu" role="menu">\
 								<li><a class="view_areacode" href="#" data-toggle="modal" data-target="#modal_edit_areacode" data-type="update" data-ac="'+row['areacode']+'" data-camp="'+camp_id+'"><?php echo $lh->translationFor("modify") ?></a></li>\
-								<li><a class="delete-areacode" href="#" data-type="delete" data-ac="'+row['areacode']+'" data-camp="'+camp_id+'"><?php echo $lh->translationFor("delete") ?></a></li>\
+								<li><a class="delete-areacode" href="#" data-type="delete" data-ac="'+row['areacode']+'" data-camp="'+camp_id+'" data-cid="'+row['outbound_cid']+'"><?php echo $lh->translationFor("delete") ?></a></li>\
 							</ul>\
 						</div>';
 					}

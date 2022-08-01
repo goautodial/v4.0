@@ -27,7 +27,8 @@
 	$postfields 								= array(
         'goAction' 									=> 'goDeleteAreacode',
         'campaign_id' 									=> $_POST['campaign_id'],
-	'areacode'									=> $_POST['areacode']
+	'areacode'									=> $_POST['areacode'],
+	'outbound_cid'                                  => $_POST['outbound_cid']
     );
 
     $output 									= $api->API_deleteAreacode($postfields);
