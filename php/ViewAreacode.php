@@ -24,13 +24,15 @@
 
 	$campaign_id = $_POST['campaign_id'];
 	$areacode = $_POST['areacode'];
+	$outbound_cid = $_POST['outbound_cid'];
 
 	$api 										= \creamy\APIHandler::getInstance();
 
 	$postfields = array(
 		'goAction' => 'goGetAreacodeInfo',
 		'campaign_id' => $campaign_id,
-		'areacode' => $areacode
+		'areacode' => $areacode,
+        'outbound_cid' => $outbound_cid
 	);
 
 	$output 									= $api->API_getAreacodeInfo($postfields);
