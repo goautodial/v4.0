@@ -388,6 +388,7 @@
 				$(".address_filter_div").fadeIn("slow")[ $.inArray('filter_address', $(this).val()) >= 0 ? 'show' : 'hide' ]();
 				$(".city_filter_div").fadeIn("slow")[ $.inArray('filter_city', $(this).val()) >= 0 ? 'show' : 'hide' ]();
 				$(".state_filter_div").fadeIn("slow")[ $.inArray('filter_state', $(this).val()) >= 0 ? 'show' : 'hide' ]();
+                clearFilters();
 			}).change();
 				
 			// search filters
@@ -576,7 +577,24 @@
 				$('#search_button').attr("disabled", false);								
 			}
 		}
-			
+        
+        function clearFilters() {
+            if ($('.disposition_filter_div').is(':hidden')) {
+                $('#disposition_filter').val("").change();
+            }
+            if ($('.list_filter_div').is(':hidden')) {
+                $('#list_filter').val("");
+            }
+            if ($('.address_filter_div').is(':hidden')) {
+                $('#address_filter').val("");
+            }
+            if ($('.city_filter_div').is(':hidden')) {
+                $('#city_filter').val("");
+            }
+            if ($('.state_filter_div').is(':hidden')) {
+                $('#state_filter').val("");
+            }
+        }
 		</script>
 		<?php print $ui->creamyFooter();?>
     </body>
