@@ -427,7 +427,7 @@
 		                	var end_filterdate_val = $('#end_filterdate').val();
 
 		            		$.ajax({
-							    url: "filter_callrecs.php",
+							    url: "search.php",
 							    type: 'POST',
 							    data: {
 							    	search_recordings : $('#search').val(),
@@ -474,7 +474,7 @@
 		                	var end_filterdate_val = $('#end_filterdate').val();
 
 		            		$.ajax({
-							    url: "filter_callrecs.php",
+							    url: "search.php",
 							    type: 'POST',
 							    data: {
 							    	search_recordings : $('#search').val(),
@@ -523,7 +523,7 @@
 		                	var end_filterdate_val = $('#end_filterdate').val();
 
 		            		$.ajax({
-							    url: "filter_callrecs.php",
+							    url: "search.php",
 							    type: 'POST',
 							    data: {
 							    	search_recordings : $('#search').val(),
