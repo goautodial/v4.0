@@ -64,10 +64,10 @@
 				$inbound 					.= '"'.date('M. d, Y h:i A', strtotime($output->data->call_date[$i])).'",';
 				$inbound 					.= '"'.$output->data->status[$i].'",';
 				$inbound 					.= '"'.$output->data->phone_number[$i].'",';
-				$inbound 					.= '"'.$output->data->length_in_sec[$i].'",';
-				$inbound 					.= '"'.$output->data->queue_seconds[$i].'",';		
 				$inbound 					.= '"'.$output->data->campaign_id[$i].'",';
-				$inbound 					.= '"'.$output->data->user_group[$i].'",';
+				$inbound 					.= '"'.$output->data->user_group[$i].'",';		
+				$inbound 					.= '"'.$output->data->list_id[$i].'",';
+				$inbound 					.= '"'.$output->data->lead_id[$i].'",';
 				$inbound 					.= '"'.$output->data->term_reason[$i].'"';
 				$inbound 					.= '],';			
 			}			
