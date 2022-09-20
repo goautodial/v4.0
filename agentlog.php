@@ -58,7 +58,7 @@
 	} elseif ($agentlog == "inbound") {
 		$inbound 							= '[';
 		
-		for($i=0;$i<=count($output->data->user);$i++) {
+		for($i=0;$i<count($output->data->call_date);$i++) {
 			if (!empty($output->data->phone_number[$i])) {
 				$inbound 					.= '[';
 				$inbound 					.= '"'.date('M. d, Y h:i A', strtotime($output->data->call_date[$i])).'",';
