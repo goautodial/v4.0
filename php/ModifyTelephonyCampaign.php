@@ -616,6 +616,12 @@
             $conf_exten                             = $_POST["conf_exten"];
             $conf_exten                             = stripslashes($conf_exten);
         }
+
+        $vra_status                                 = NULL;
+        if (isset($_POST["vra_status"])) {
+            $vra_status                             = $_POST["vra_status"];
+            $vra_status                             = stripslashes($vra_status);
+        }
 		
 		$postfields 								= array(
 			"goAction" 									=> "goEditCampaign", #action performed by the [[API:Functions]]
@@ -711,7 +717,8 @@
 			"survey_wait_sec"							=> $survey_wait_sec,
 			"survey_no_response_action"					=> $survey_no_response_action,
 			"default_country_code"						=> $default_country_code,
-            "conf_exten"                                => $conf_exten
+            "conf_exten"                                => $conf_exten,
+            "vra_status"                                => $vra_status
 		);
 		
 		$output 									= $api->API_Request("goCampaigns", $postfields);

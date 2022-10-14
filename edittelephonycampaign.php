@@ -2187,7 +2187,7 @@
 																		<input type="number" class="form-control" id="survey_xfer_exten" name="survey_xfer_exten" min="0" value="<?php echo $campaign->data->survey_xfer_exten; ?>">
 																	</div>
 																</div>
-																<div class="form-group survey_method_callmenu_view">
+																<div class="form-group survey_method_did_view">
 																	<label class="col-sm-3 control-label"><?php $lh->translateText("did"); ?>:</label>
 																	<div class="col-sm-9 mb">
 																		<input type="number" class="form-control" id="conf_exten" name="conf_exten" min="0" value="<?php echo $campaign->conf_exten; ?>">
@@ -2200,6 +2200,15 @@
                                                                             <input type="text" class="form-control" id="campaign_rec_filename" name="campaign_rec_filename" value="<?php echo $campaign->data->campaign_rec_filename; ?>">
                                                                     </div>
 																</div>
+                                                                <div class="form-group survey_method_vra_status_view">
+                                                                    <label class="col-sm-3 control-label">Remote Agent:</label>
+                                                                    <div class="col-sm-9 mb">
+                                                                        <select class="form-control" name="vra_status">
+                                                                            <option value="ACTIVE" <?php if($campaign->vra_status == 'ACTIVE') echo "selected";?>>ACTIVE</option>
+                                                                            <option value="INACTIVE" <?php if($campaign->vra_status == "INACTIVE") echo "selected";?>>INACTIVE</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
 																<?php //} ?>
 																<br /><br />
 																<div class="form-group">
@@ -3022,6 +3031,8 @@
 					$("#survey_auto_dial_level").prop("disabled", false);
 					$("#no-channels").prop("disabled", true);
 					$(".survey_method_agent_xfer_view").removeClass('hide');
+					$(".survey_method_did_view").removeClass('hide');
+					$(".survey_method_vra_status_view").removeClass('hide');
 				}else{
 					$("#survey_dial_method").val("RATIO").trigger('change');
 					$("#survey_auto_dial_level").val("SLOW").trigger('change');
@@ -3030,12 +3041,12 @@
 					$("#survey_auto_dial_level_adv").addClass('hide');
 					$("#no-channels").prop("disabled", false);
 					$(".survey_method_agent_xfer_view").addClass('hide');
+					$(".survey_method_did_view").addClass('hide');
+					$(".survey_method_vra_status_view").addClass('hide');
 				}
 				
                 if (value == "EXTENSION") {
-                    $(".survey_method_callmenu_view").removeClass('hide');
-                } else {
-                    $(".survey_method_callmenu_view").addClass('hide');
+                    $(".survey_method_vra_status_view").removeClass('hide');
                 }
             }
 			
