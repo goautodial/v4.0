@@ -2182,17 +2182,23 @@
 																	</div>
 																</div>
 																<div class="form-group">
-																	<label class="col-sm-3 control-label"><?php $lh->translateText("did"); ?>:</label>
+																	<label class="col-sm-3 control-label"><?php $lh->translateText("extension"); ?>:</label>
 																	<div class="col-sm-9 mb">
 																		<input type="number" class="form-control" id="survey_xfer_exten" name="survey_xfer_exten" min="0" value="<?php echo $campaign->data->survey_xfer_exten; ?>">
 																	</div>
 																</div>
+																<div class="form-group survey_method_callmenu_view">
+																	<label class="col-sm-3 control-label"><?php $lh->translateText("did"); ?>:</label>
+																	<div class="col-sm-9 mb">
+																		<input type="number" class="form-control" id="conf_exten" name="conf_exten" min="0" value="<?php echo $campaign->conf_exten; ?>">
+																	</div>
+																</div>
 																<?php //if($campaign->campaign_type == "SURVEY" && $campaign->data->survey_method == "AGENT_XFER"){ ?>
 																<div class="form-group survey_method_agent_xfer_view">
-                        	                                                                                                        <label class="col-sm-3 control-label"><?php $lh->translateText("campaign_recording_filename"); ?>:</label>
-                	                                                                                                                <div class="col-sm-9 mb">
-        	                                                                                                                                <input type="text" class="form-control" id="campaign_rec_filename" name="campaign_rec_filename" value="<?php echo $campaign->data->campaign_rec_filename; ?>">
-	                                                                                                                                </div>
+                                                                    <label class="col-sm-3 control-label"><?php $lh->translateText("campaign_recording_filename"); ?>:</label>
+                                                                    <div class="col-sm-9 mb">
+                                                                            <input type="text" class="form-control" id="campaign_rec_filename" name="campaign_rec_filename" value="<?php echo $campaign->data->campaign_rec_filename; ?>">
+                                                                    </div>
 																</div>
 																<?php //} ?>
 																<br /><br />
@@ -3026,6 +3032,11 @@
 					$(".survey_method_agent_xfer_view").addClass('hide');
 				}
 				
+                if (value == "EXTENSION") {
+                    $(".survey_method_callmenu_view").removeClass('hide');
+                } else {
+                    $(".survey_method_callmenu_view").addClass('hide');
+                }
             }
 			
 			$(document).ready(function() {
