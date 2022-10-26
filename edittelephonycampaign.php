@@ -347,7 +347,7 @@
 																	<option value="CUSTOM" <?php if($campaign->data->dial_prefix == "CUSTOM"){echo "selected";}?>>CUSTOM DIAL PREFIX</option>
 																	<?php for($i=0;$i<=count($carriers->carrier_id);$i++) { ?>
 																		<?php
-																		if(!empty($carriers->carrier_id[$i])  && $carriers->active[$i] == 'Y') {
+																		if(!empty($carriers->carrier_id[$i])) {
 																			$prefixes = explode("\n", $carriers->dialplan_entry[$i]);
 																			$prefix = explode(",", $prefixes[0]);
 																			$dial_prefix = substr(ltrim($prefix[0], "exten => _ "), 0, (strpos(".",$prefix[0]) - 1));
