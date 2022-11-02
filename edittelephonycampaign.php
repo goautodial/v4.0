@@ -3029,7 +3029,7 @@
 				if (value == "AGENT_XFER") {
 					$("#survey_dial_method").prop("disabled", false);
 					$("#survey_auto_dial_level").prop("disabled", false);
-					$("#no-channels").prop("disabled", true);
+					// $("#no-channels").prop("disabled", true);
 					$(".survey_method_agent_xfer_view").removeClass('hide');
 					$(".survey_method_did_view").removeClass('hide');
 					$(".survey_method_vra_status_view").removeClass('hide');
@@ -3039,7 +3039,7 @@
 					$("#survey_dial_method").prop("disabled", true);
 					$("#survey_auto_dial_level").prop("disabled", true);
 					$("#survey_auto_dial_level_adv").addClass('hide');
-					$("#no-channels").prop("disabled", false);
+					// $("#no-channels").prop("disabled", false);
 					$(".survey_method_agent_xfer_view").addClass('hide');
 					$(".survey_method_did_view").addClass('hide');
 					$(".survey_method_vra_status_view").addClass('hide');
