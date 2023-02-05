@@ -2024,6 +2024,10 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
             var cbComment = $("#callback-comments").val();
             ReschedCallback(reschedule_cb_id, cbDate, cbComment, cbOnly);
         }
+        
+        if (ECCS_BLIND_MODE == 'y' && ECCS_DIAL_TIMEOUT > 0) {
+            btnDialHangup();
+        }
     });
     
     $("#openWebForm").click(function() {
@@ -2533,6 +2537,9 @@ function btnDialHangup (is_true) {
             check_inbound_call = true;
             toggleButton('DialHangup', 'hangup', false);
             DialedCallHangup();
+            
+            $("#DispoSelection").val('A');
+            DispoSelectSubmit();
         }
     } else {
         if (!is_call_cb) {
@@ -2735,16 +2742,19 @@ function hotKeysAvailable(e) {
         var HKstatus = hotkeys_content[HKdispo];
         if (HKdispo) {
             CustomerData_update();
+            console.log('0', 'NO', 'YES', HKdispo);
 	
             if ( (HKdispo == 'ALTPH2') || (HKdispo == 'ADDR3') ) {
                 if ($("#DiaLALTPhone").prop('checked')) {
                     DialedCallHangup('NO', 'YES', HKdispo);
                 }
             } else {
+                //console.log('1', 'NO', 'YES', HKdispo);
                 // transfer call to answering maching message with hotkey
                 if ( (HKdispo == 'LTMG') || (HKdispo == 'XFTAMM') ) {
                     mainxfer_send_redirect('XfeRVMAIL', lastcustchannel, lastcustserverip);
                 } else {
+                    //console.log('2', 'NO', 'YES', HKdispo);
                     HKdispo_display = 4;
                     HKfinish = 1;
                     $("#HotKeyDispo").html(HKdispo + " - " + HKstatus);
@@ -2754,6 +2764,7 @@ function hotKeysAvailable(e) {
                     alt_phone_dialing = starting_alt_phone_dialing;
                     alt_dial_active = 0;
                     alt_dial_status_display = 0;
+                    dialingINprogress = 0;
                     DialedCallHangup('NO', 'YES', HKdispo);
                     
                     console.log("dial_method", dial_method);
