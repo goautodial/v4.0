@@ -2538,8 +2538,8 @@ function btnDialHangup (is_true) {
             toggleButton('DialHangup', 'hangup', false);
             DialedCallHangup();
             
-            $("#DispoSelection").val('A');
-            DispoSelectSubmit();
+            //$("#DispoSelection").val('A');
+            //DispoSelectSubmit();
         }
     } else {
         if (!is_call_cb) {
