@@ -235,20 +235,7 @@ class DbHandler {
      * @return object an associative array containing the user's data if credentials are valid and login succeed, NULL otherwise.
      */
     public function checkLoginByName($name, $password, $ip_address) {
-        // fetching user by name and password
-        //$this->dbConnector->where("name", $name);
-        //$userobj = $this->dbConnector->getOne(CRM_USERS_TABLE_NAME);
-		// $this->dbConnectorAsterisk->where("user", $name);
-        // $userobj = $this->dbConnectorAsterisk->getOne(CRM_USERS_TABLE_NAME_ASTERISK);
-        $url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
-		//$postfields["goUser"] = goUser; #Username goes here. (required)
-		//$postfields["goPass"] = goPass; #Password goes here. (required)
-		//$postfields["goAction"] = "goUserLogin"; #action performed by the [[API:Functions]]. (required)
-		//$postfields["responsetype"] = responsetype; #json. (required)
-		//$postfields["user_name"] = $name;
-		//$postfields["user_pass"] = $password;
-
-		$postfields_string = '';
+		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields = array(
 			'goUser' => goUser,
 			'goPass' => goPass,
@@ -259,27 +246,18 @@ class DbHandler {
 			'ip_address' => $ip_address
 		);
 
-
-
-		foreach($postfields as $key=>$value) { $postfields_string .= $key.'='.$value.'&'; }
-		$postfields_string = rtrim($postfields_string, '&');
-
+		// Call the API
 		$ch = curl_init();
-		//curl_setopt($ch, CURLOPT_URL, $url);
-		//curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-		//curl_setopt($ch, CURLOPT_POST, count($postfields));
-		//curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		//curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		//curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields_string);
-		
-		curl_setopt($ch,CURLOPT_URL, $url);
-		curl_setopt($ch,CURLOPT_POST, count($postfields));
-		curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch,CURLOPT_POSTFIELDS, $postfields_string);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, 1);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 0);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
 		$data = curl_exec($ch);
-		$userobj = json_decode($data);
 		curl_close($ch);
+		$userobj = json_decode($data);
 
 		if ($userobj->result === "success") { // first match valid?
 			//$password_hash = $userobj["password_hash"];
