@@ -147,7 +147,7 @@
 			curl_setopt($ch, CURLOPT_TIMEOUT, 0);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postdata));
 			$data = curl_exec($ch);
 			curl_close($ch);
@@ -189,10 +189,10 @@
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			//curl_setopt($ch, CURLOPT_CONNECTTIMEOUT , 0); //gg
 			curl_setopt($ch, CURLOPT_TIMEOUT  , 0); //gg
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 			$data = curl_exec($ch);
 			curl_close($ch);
 			$output = json_decode($data);
