@@ -469,18 +469,18 @@
 			}
 		}
 		
-		$items 									= "";
+		// $items 									= "";
 		
-		for ($i=0;$i < count($route_option);$i++) {
-			if($route_option[$i] == "A") $route_option[$i] = '#';
-			if($route_option[$i] == "B") $route_option[$i] = '*';
-			if($route_option[$i] == "C") $route_option[$i] = 'TIMECHECK';
-			if($route_option[$i] == "D") $route_option[$i] = 'TIMEOUT';
-			if($route_option[$i] == "E") $route_option[$i] = 'INVALID';
+		// for ($i=0;$i < count($route_option);$i++) {
+		// 	if($route_option[$i] == "A") $route_option[$i] = '#';
+		// 	if($route_option[$i] == "B") $route_option[$i] = '*';
+		// 	if($route_option[$i] == "C") $route_option[$i] = 'TIMECHECK';
+		// 	if($route_option[$i] == "D") $route_option[$i] = 'TIMEOUT';
+		// 	if($route_option[$i] == "E") $route_option[$i] = 'INVALID';
 			
-			$items 								.= $route_option[$i]."+".$route_desc[$i]."+".$route_menu[$i]."+".$option_route_value[$i]."+".$option_route_context[$i];
-			$items 								.= "|";
-		}
+		// 	$items 								.= $route_option[$i]."+".$route_desc[$i]."+".$route_menu[$i]."+".$option_route_value[$i]."+".$option_route_context[$i];
+		// 	$items 								.= "|";
+		// }
 
 		$postfields 							= array(
 			'goAction' 								=> 'goEditIVR',
@@ -496,7 +496,11 @@
 			'track_in_vdac' 						=> $track_in_vdac, 
 			'tracking_group' 						=> $tracking_group, 
 			'user_group' 							=> $user_group,
-			'items' 								=> $items
+			'route_option' 							=> $route_option,
+			'route_desc' 							=> $route_desc,
+			'route_menu' 							=> $route_menu,
+			'option_route_value'                    => $option_route_value,
+			'option_route_context'                  => $option_route_context
 		);
 
 		$output 								= $api->API_modifyIVR($postfields);

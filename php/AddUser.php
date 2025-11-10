@@ -65,6 +65,8 @@
 	        CURLOPT_FOLLOWLOCATION => true,
 	        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 	        CURLOPT_CUSTOMREQUEST => "POST",
+			CURLOPT_SSL_VERIFYHOST => false,
+			CURLOPT_SSL_VERIFYPEER => false,
 	        CURLOPT_POSTFIELDS =>"{\r\n  \"email\": \"$email\",\r\n  \"name\": \"$full_name\",\r\n  \"password\": \"$password\",\r\n  \"username\": \"$username\",\r\n  \"roles\": [\"$roles\"]}",
 	        CURLOPT_HTTPHEADER => array(
         	        "Content-Type:application/json", "X-Auth-Token:$authToken", "X-User-Id:$userID"

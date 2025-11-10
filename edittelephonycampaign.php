@@ -347,7 +347,7 @@
 																	<option value="CUSTOM" <?php if($campaign->data->dial_prefix == "CUSTOM"){echo "selected";}?>>CUSTOM DIAL PREFIX</option>
 																	<?php for($i=0;$i<=count($carriers->carrier_id);$i++) { ?>
 																		<?php
-																		if(!empty($carriers->carrier_id[$i])  && $carriers->active[$i] == 'Y') {
+																		if(!empty($carriers->carrier_id[$i])) {
 																			$prefixes = explode("\n", $carriers->dialplan_entry[$i]);
 																			$prefix = explode(",", $prefixes[0]);
 																			$dial_prefix = substr(ltrim($prefix[0], "exten => _ "), 0, (strpos(".",$prefix[0]) - 1));
@@ -659,7 +659,25 @@
 																<input type="number" min="3" max="60" class="form-control" value="<?php if(!empty($campaign->data->nextdial_seconds)){echo $campaign->data->nextdial_seconds;}?>" id="nextdial_seconds" name="nextdial_seconds">
 															</div>
 														</div>
-														<?php } ?>
+														<?php } 
+														if ($campaign->campaign_type == "SURVEY") { ?>
+															<div class="form-group">
+																<label class="col-sm-3 control-label"><?php $lh->translateText("launch_custom_fields"); ?>:</label>
+																<div class="col-sm-9 mb">
+																	<select class="form-control" id="custom_fields_launch" name="custom_fields_launch">
+																		<option value="ONCALL" <?php if($campaign->custom_fields_launch == "ONCALL") echo "selected";?>>ONCALL</option>
+																		<option value="LOGIN" <?php if($campaign->custom_fields_launch == "LOGIN") echo "selected";?>>LOGIN</option>
+																	</select>
+																</div>
+															</div>
+															<div class="form-group">
+																<label class="col-sm-3 control-label"><?php $lh->translateText("custom_fields_list_id"); ?>:</label>
+																<div class="col-sm-9 mb">
+																	<input type="text" class="form-control" value="<?php if(!empty($campaign->custom_fields_list_id)){echo $campaign->custom_fields_list_id;}?>" id="custom_fields_list_id" name="custom_fields_list_id">
+																</div>
+															</div>
+														<?php
+														} ?>
 														<?php if($campaign->campaign_type == "OUTBOUND") { ?>
 															<div class="form-group" style="margin-bottom: 10px;">
 																<?php $dial_statuses = explode(" ", rtrim($campaign->data->dial_statuses, " -")); $i=1;?>
@@ -1920,6 +1938,19 @@
 																</div>
 															</div>
 															<div class="form-group">
+																<label class="col-sm-3 control-label"><?php $lh->translateText("lead_filter"); ?>:</label>
+																<div class="col-sm-9 mb">
+																	<select class="form-control" id="lead_filter" name="lead_filter">
+																		<option value="" <?php if($campaign->data->lead_filter_id == "") echo "selected";?>>NONE</option>
+																		<?php for($i=0;$i<=count($leadfilter->lead_filter_id);$i++) { ?>
+																			<?php if(!empty($leadfilter->lead_filter_id[$i])) { ?>
+																				<option value="<?php echo $leadfilter->lead_filter_id[$i]; ?>" <?php if($campaign->data->lead_filter_id == $leadfilter->lead_filter_id[$i]) echo "selected";?>><?php echo $leadfilter->lead_filter_name[$i]; ?></option>
+																			<?php } ?>
+																		<?php } ?>
+																	</select>
+																</div>
+															</div>
+															<div class="form-group">
 																<label class="col-sm-3 control-label"><?php $lh->translateText("force_reset_of_hopper"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<select class="form-control" id="force_reset_hopper" name="force_reset_hopper">
@@ -2151,18 +2182,33 @@
 																	</div>
 																</div>
 																<div class="form-group">
-																	<label class="col-sm-3 control-label"><?php $lh->translateText("did"); ?>:</label>
+																	<label class="col-sm-3 control-label"><?php $lh->translateText("extension"); ?>:</label>
 																	<div class="col-sm-9 mb">
 																		<input type="number" class="form-control" id="survey_xfer_exten" name="survey_xfer_exten" min="0" value="<?php echo $campaign->data->survey_xfer_exten; ?>">
 																	</div>
 																</div>
+																<div class="form-group survey_method_did_view">
+																	<label class="col-sm-3 control-label"><?php $lh->translateText("did"); ?>:</label>
+																	<div class="col-sm-9 mb">
+																		<input type="number" class="form-control" id="conf_exten" name="conf_exten" min="0" value="<?php echo $campaign->conf_exten; ?>">
+																	</div>
+																</div>
 																<?php //if($campaign->campaign_type == "SURVEY" && $campaign->data->survey_method == "AGENT_XFER"){ ?>
 																<div class="form-group survey_method_agent_xfer_view">
-                        	                                                                                                        <label class="col-sm-3 control-label"><?php $lh->translateText("campaign_recording_filename"); ?>:</label>
-                	                                                                                                                <div class="col-sm-9 mb">
-        	                                                                                                                                <input type="text" class="form-control" id="campaign_rec_filename" name="campaign_rec_filename" value="<?php echo $campaign->data->campaign_rec_filename; ?>">
-	                                                                                                                                </div>
+                                                                    <label class="col-sm-3 control-label"><?php $lh->translateText("campaign_recording_filename"); ?>:</label>
+                                                                    <div class="col-sm-9 mb">
+                                                                            <input type="text" class="form-control" id="campaign_rec_filename" name="campaign_rec_filename" value="<?php echo $campaign->data->campaign_rec_filename; ?>">
+                                                                    </div>
 																</div>
+                                                                <div class="form-group survey_method_vra_status_view">
+                                                                    <label class="col-sm-3 control-label">Remote Agent:</label>
+                                                                    <div class="col-sm-9 mb">
+                                                                        <select class="form-control" name="vra_status">
+                                                                            <option value="ACTIVE" <?php if($campaign->vra_status == 'ACTIVE') echo "selected";?>>ACTIVE</option>
+                                                                            <option value="INACTIVE" <?php if($campaign->vra_status == "INACTIVE") echo "selected";?>>INACTIVE</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
 																<?php //} ?>
 																<br /><br />
 																<div class="form-group">
@@ -2983,18 +3029,25 @@
 				if (value == "AGENT_XFER") {
 					$("#survey_dial_method").prop("disabled", false);
 					$("#survey_auto_dial_level").prop("disabled", false);
-					$("#no-channels").prop("disabled", true);
+					// $("#no-channels").prop("disabled", true);
 					$(".survey_method_agent_xfer_view").removeClass('hide');
+					$(".survey_method_did_view").removeClass('hide');
+					$(".survey_method_vra_status_view").removeClass('hide');
 				}else{
 					$("#survey_dial_method").val("RATIO").trigger('change');
 					$("#survey_auto_dial_level").val("SLOW").trigger('change');
 					$("#survey_dial_method").prop("disabled", true);
 					$("#survey_auto_dial_level").prop("disabled", true);
 					$("#survey_auto_dial_level_adv").addClass('hide');
-					$("#no-channels").prop("disabled", false);
+					// $("#no-channels").prop("disabled", false);
 					$(".survey_method_agent_xfer_view").addClass('hide');
+					$(".survey_method_did_view").addClass('hide');
+					$(".survey_method_vra_status_view").addClass('hide');
 				}
 				
+                if (value == "EXTENSION") {
+                    $(".survey_method_vra_status_view").removeClass('hide');
+                }
             }
 			
 			$(document).ready(function() {
