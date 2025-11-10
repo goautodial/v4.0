@@ -29,7 +29,7 @@ $pass = $_POST['pass'];
 //$pass = "hayopka2021";
 //Logs In Rocketchat User
 	$curl = curl_init();
-       	curl_setopt_array($curl, array(
+	curl_setopt_array($curl, array(
         CURLOPT_URL => ROCKETCHAT_URL."/api/v1/login",
         CURLOPT_RETURNTRANSFER => true,
        	CURLOPT_ENCODING => "",
@@ -38,13 +38,15 @@ $pass = $_POST['pass'];
         CURLOPT_FOLLOWLOCATION => true,
        	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => "POST",
+		CURLOPT_SSL_VERIFYHOST => false,
+		CURLOPT_SSL_VERIFYPEER => false,
        	CURLOPT_POSTFIELDS =>"{\r\n  \"user\": \"$user\",\r\n  \"password\": \"$pass\"}",
         CURLOPT_HTTPHEADER => array(
        	        "Content-Type:application/json"
        	    )
-        ));
-       	$response = curl_exec($curl);
-        curl_close($curl);
+	));
+	$response = curl_exec($curl);
+	curl_close($curl);
 	$output = json_decode($response, TRUE);
 	//$_SESSION['gad_authToken'] = $response->data['authToken'];
 	if(!isset($_SESSION['gad_userID'])){

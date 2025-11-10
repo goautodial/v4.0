@@ -26,6 +26,7 @@
 	// collect new user data.       
 	$campaign_id					= $_POST["areacode_campaign"];
 	$areacode 					= $_POST["areacode"];
+	$outbound_cid_old               = $_POST["areacode_outbound_cid_old"];
 
 	$outbound_cid = NULL; if (isset($_POST["areacode_outbound_cid"])) { 
 		$outbound_cid 				= $_POST["areacode_outbound_cid"]; 
@@ -45,6 +46,7 @@
 		'campaign_id' 					=> $campaign_id,
 		'areacode' 					=> $areacode,
 		'outbound_cid' 					=> $outbound_cid,
+		'outbound_cid_old' 					=> $outbound_cid_old,
 		'cid_description' 				=> $cid_description,
 		'active'					=> $active
 	);	

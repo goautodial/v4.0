@@ -116,7 +116,7 @@
 	$scripts = $api->API_getAllScripts();
 
 ?>
-	<div class="modal fade" id="scripts-modal" tabindex="-1" aria-labelledby="scripts">
+	<div class="modal fade" id="scripts-modal" aria-labelledby="scripts">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
 				<div class="modal-header">
@@ -287,6 +287,18 @@
             	}
 	        );
 	    });
+
+		// $.fn.modal.Constructor.prototype._enforceFocus = function() {
+        //         var $modalElement = this.$element;
+        //         $(document).on('focusin.modal',function(e) {
+        //             if ($modalElement.length > 0 && $modalElement[0] !== e.target
+        //                 && !$modalElement.has(e.target).length
+        //                 && $(e.target).parentsUntil('*[role="dialog"]').length === 0) {
+        //                 $modalElement.focus();
+        //             }
+        //         });
+        //     };
+
 		/*******************
 		** INITIALIZATIONS
 		*******************/

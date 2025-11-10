@@ -451,8 +451,8 @@
 													$action_CAMPAIGN = $ui->ActionMenuForAreacodes($areacode->areacode[$i], $areacode->campaign_id[$i]);
 											   ?>
 													<tr>
-														<td><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="view_areacode" data-toggle="modal" data-target="#modal_edit_areacode" data-camp="'.$areacode->campaign_id[$i].'" data-ac="'.$areacode->areacode[$i].'">'; } ?><avatar username='<?php echo $areacode->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></td>
-														<td><strong><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="view_areacode" data-toggle="modal" data-target="#modal_edit_areacode"  data-camp="'.$areacode->campaign_id[$i].'" data-ac="'.$areacode->areacode[$i].'">'; } ?><?php echo $areacode->campaign_id[$i];?><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></strong></td>
+														<td><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="view_areacode" data-toggle="modal" data-target="#modal_edit_areacode" data-camp="'.$areacode->campaign_id[$i].'" data-ac="'.$areacode->areacode[$i].'" data-cid="'.$areacode->outbound_cid[$i].'">'; } ?><avatar username='<?php echo $areacode->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></td>
+														<td><strong><?php if ($perm->campaign->campaign_update !== 'N') { echo '<a class="view_areacode" data-toggle="modal" data-target="#modal_edit_areacode"  data-camp="'.$areacode->campaign_id[$i].'" data-ac="'.$areacode->areacode[$i].'" data-cid="'.$areacode->outbound_cid[$i].'">'; } ?><?php echo $areacode->campaign_id[$i];?><?php if ($perm->campaign->campaign_update !== 'N') { echo '</a>'; } ?></strong></td>
 														<td><?php echo $areacode->campaign_name[$i];?></td>
 														<td><?php echo $areacode->areacode[$i];?></td>
 														<td><?php echo $areacode->outbound_cid[$i];?></td>
@@ -1357,6 +1357,7 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="edit_areacode_outbound_cid"><?php $lh->translateText("outbound_cid"); ?></label>
 									<div class="col-sm-9 mb">
+                                        <input type="hidden" name="areacode_outbound_cid_old" id="areacode_outbound_cid_old">
 										<input type="text" name="areacode_outbound_cid" id="edit_areacode_outbound_cid" class="form-control" placeholder="<?php $lh->translateText("outbound_cid"); ?>" maxlength="20" required>
 									</div>
 								</div>
@@ -3462,13 +3463,15 @@
 					$(".preloader").fadeIn();
 					var campaign_id = $(this).attr("data-camp");
 					var areacode = $(this).attr("data-ac");
+					var outbound_cid = $(this).attr("data-cid");
 					$.ajax({
                                                 url: "./php/ViewAreacode.php",
                                                 type: 'POST',
                                                 data:
                                                 {
                                                         campaign_id : campaign_id,
-                                                        areacode : areacode
+                                                        areacode : areacode,
+                                                        outbound_cid: outbound_cid
                                                 },
                                                 dataType: 'json',
                                                 success: function(data) {
@@ -3476,7 +3479,8 @@
                                                                 console.log(data);
 								$('#edit_areacode_campaign_select option[value="'+data.campaign_id+'"').attr('selected', 'selected');
 								$('#edit_areacode_campaign').val(data.campaign_id);
-                                                                $('#edit_areacode').val(data.areacode);
+                                                                $('#edit_areacode').val(data.areacode);areacode_outbound_cid_old
+                                                                $('#areacode_outbound_cid_old').val(data.outbound_cid);
                                                                 $('#edit_areacode_outbound_cid').val(data.outbound_cid);
                                                                 $('#edit_areacode_description').val(data.cid_description);
                                                                 $('#edit_areacode_status option[value="'+data.active+'"').attr('selected', 'selected');
@@ -3576,6 +3580,7 @@
                                 $(document).on('click','.delete-areacode',function() {
                                         var campId = $(this).attr('data-camp');
 					var areacode = $(this).attr('data-ac');
+                                        var outbound_cid = $(this).attr('data-cid');
                                         console.log(campId + " " + areacode);
                                         swal({
                                                 title: "<?php $lh->translateText("are_you_sure"); ?>",
@@ -3596,6 +3601,7 @@
                                                                         data: {
                                                                                 campaign_id: campId,
 										areacode: areacode,
+                                                                                outbound_cid: outbound_cid,
                                                                                 action: "delete_selected"
                                                                         },
                                                                         success: function(data) {
@@ -3978,8 +3984,8 @@
 								<span class="sr-only">Toggle Dropdown</span>\
 							</button>\
 							<ul class="dropdown-menu" role="menu">\
-								<li><a class="view_areacode" href="#" data-toggle="modal" data-target="#modal_edit_areacode" data-type="update" data-ac="'+row['areacode']+'" data-camp="'+camp_id+'"><?php echo $lh->translationFor("modify") ?></a></li>\
-								<li><a class="delete-areacode" href="#" data-type="delete" data-ac="'+row['areacode']+'" data-camp="'+camp_id+'"><?php echo $lh->translationFor("delete") ?></a></li>\
+								<li><a class="view_areacode" href="#" data-toggle="modal" data-target="#modal_edit_areacode" data-type="update" data-ac="'+row['areacode']+'" data-camp="'+camp_id+'" data-cid="'+row['outbound_cid']+'"><?php echo $lh->translationFor("modify") ?></a></li>\
+								<li><a class="delete-areacode" href="#" data-type="delete" data-ac="'+row['areacode']+'" data-camp="'+camp_id+'" data-cid="'+row['outbound_cid']+'"><?php echo $lh->translationFor("delete") ?></a></li>\
 							</ul>\
 						</div>';
 					}
