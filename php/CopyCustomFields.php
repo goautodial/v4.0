@@ -1,48 +1,45 @@
 <?php
+/**
+ * @file        CopyCustomFields.php
+ * @brief       Modify custom field entries
+ * @copyright   Copyright (c) 2025 GOautodial Inc.
+ * @author		Demian Lizandro A, Biscocho <demian@goautodial.com>
+ * @author      Alexander Jim H. Abenoja <dev@goautodial.com>
+ * @author		Noel Umandap <dev@goautodial.com>*
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-	/** Campaigns API - Add a new Campaign */
-	/**
-	 * Generates action circle buttons for different pages/module
-	 * @param goUser
-	 * @param goPass
-	 * @param goAction
-	 * @param responsetype
-	 * @param hostname
-	 * @param campaign_id
-	 */
-  require_once('goCRMAPISettings.php');
+	require_once('APIHandler.php');
+	$api = \creamy\APIHandler::getInstance();
 
-  $url = gourl."/goCustomFields/goAPI.php"; #URL to GoAutoDial API. (required)
-  $postfields["goUser"] = goUser; #Username goes here. (required)
-  $postfields["goPass"] = goPass; #Password goes here. (required)
-  $postfields["goAction"] = "goCopyCustomFields"; #action performed by the [[API:Functions]]. (required)
-  $postfields["responsetype"] = responsetype; #json. (required)
-	$postfields["list_to"]	= $_POST['list_to'];
-	$postfields["list_from"]	= $_POST['list_from'];
-	$postfields["copy_option"]	= $_POST['copy_option'];
-	
-	$postfields["log_user"] = $_POST['log_user'];
-	$postfields["log_group"] = $_POST['log_group'];
-	$postfields["hostname"] = $_SERVER['REMOTE_ADDR'];
+	$list_to = $_POST['list_to'];
+	$list_from = $_POST['list_from'];
+	$copy_option = $_POST['copy_option'];
 
-  $ch = curl_init();
-  curl_setopt($ch, CURLOPT_URL, $url);
-  curl_setopt($ch, CURLOPT_POST, 1);
-  curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-  curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-  $data = curl_exec($ch);
-  curl_close($ch);
-  $output = json_decode($data);
+	$postfields = array(
+		"goAction" => "goCopyCustomFields", #action performed by the [[API:Functions]]
+		"list_to" => $list_to,
+		"list_from" => $list_from,
+		"copy_option" => $copy_option
+	);
 
-	if ($output->result=="success") {
-		# Result was OK!
-		$status = "success";
-	} else {
-		# An error occured
-		$status = "error";
-	}
+	$output = $api->API_Request("goCustomFields", $postfields);
 
-	echo $status;
+	if ($output->result=="success") { $status = 1; }
+		else { $status = $output->result; }
+
+	echo json_encode($status);
 ?>

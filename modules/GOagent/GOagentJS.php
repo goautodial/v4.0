@@ -10755,7 +10755,7 @@ Number.prototype.between = function (a, b, inclusive) {
                 break;
             case "CustoMFielD":
                 $list_id = $_REQUEST['list_id'];
-                $result = $ui->API_goGetAllCustomFields($list_id);
+                $result = $api->API_getAllCustomFields($list_id);
                 $result = json_encode($result);
                 break;
             case "UpdateMessages":

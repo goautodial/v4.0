@@ -6028,45 +6028,23 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 	
 	/**
-         * Returns an Avatar
-         */
-        public function getWhatsAppAvatar($username, $avatar, $size, $rounded = true) {
-                $showAvatar = '';
-                $initials = '';
-                if (isset($avatar)) {
-                        if (preg_match("/(agent|goautodial)/i", $username) && preg_match("/defaultAvatar/i", $avatar)) {
-                                $showAvatar = '';
-                                $initials = 'initials="GO"';
-                        } else {
-                                $showAvatar = 'src="'.$avatar.'"';
-                                $initials = '';
-                        }
-                }
-                $roundedImg = (!$rounded) ? ':rounded="false"' : '';
+		* Returns an Avatar
+		*/
+	public function getWhatsAppAvatar($username, $avatar, $size, $rounded = true) {
+			$showAvatar = '';
+			$initials = '';
+			if (isset($avatar)) {
+					if (preg_match("/(agent|goautodial)/i", $username) && preg_match("/defaultAvatar/i", $avatar)) {
+							$showAvatar = '';
+							$initials = 'initials="GO"';
+					} else {
+							$showAvatar = 'src="'.$avatar.'"';
+							$initials = '';
+					}
+			}
+			$roundedImg = (!$rounded) ? ':rounded="false"' : '';
 
-                return '<avatar username="'.$username.'" '.$showAvatar.' '.$initials.' '.$roundedImg.' :size="'.$size.'"></avatar>';
-        }
-
-	public function API_goGetAllCustomFields($list_id) {
-		$url = gourl."/goCustomFields/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = goUser; #Username goes here. (required)
-		$postfields["goPass"] = goPass; #Password goes here. (required)
-		$postfields["goAction"] = "goGetAllCustomFields"; #action performed by the [[API:Functions]]. (required)
-		$postfields["responsetype"] = responsetype; #json. (required)
-		$postfields["list_id"] = $list_id;
-
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
-
-		return $output;
+			return '<avatar username="'.$username.'" '.$showAvatar.' '.$initials.' '.$roundedImg.' :size="'.$size.'"></avatar>';
 	}
 
 	public function API_EmergencyLogout($username) {
