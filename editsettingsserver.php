@@ -238,6 +238,15 @@
 									</select>
 								</div>
                             </div>
+							<div class="row form-group mt">
+                                <label class="col-sm-2 control-label" for="conf_engine">Conferencing Engine</label>
+                                <div class="col-sm-10 mb">
+									<select name="conf_engine" id="conf_engine" class="form-control">
+										<option value="MEETME" <?php if($output->data->conf_engine == "MEETME")echo "selected"; ?> >Meetme</option>
+										<option value="CONFBRIDGE" <?php if($output->data->conf_engine == "CONFBRIDGE")echo "selected"; ?> >Confbridge</option>
+									</select>
+								</div>
+                            </div>
 							<div class="row form-group mt">        
                                 <label class="col-sm-2 control-label" for="generate_vicidial_conf"><?php $lh->translateText("generate_conf_files"); ?></label>
                                 <div class="col-sm-10 mb">
