@@ -1,42 +1,54 @@
 <?php
+/**
+ * @file        addcustomfield.php
+ * @brief       Handles Add Custom Field Request
+ * @copyright 	Copyright (c) 2025 GOautodial Inc.
+ * @author		Demian Lizandro A. Biscocho <demian@goautodial.com>*
+ * @author      Alexander Jim Abenoja  <alex@goautodial.com>
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-	###################################################
-	### Name: edittelephonylist.php 				###
-	### Functions: Edit List Details 		  		###
-	### Copyright: GOAutoDial Ltd. (c) 2011-2016	###
-	### Version: 4.0 								###
-	### Written by: Alexander Jim H. Abenoja		###
-	### License: AGPLv2								###
-	###################################################
-
-	require_once('./php/CRMDefaults.php');
 	require_once('./php/UIHandler.php');
-	//require_once('./php/DbHandler.php');
-	require_once('./php/LanguageHandler.php');
-	require('./php/Session.php');
-	require_once('./php/goCRMAPISettings.php');
+	require_once('./php/APIHandler.php');
+	require_once('./php/CRMDefaults.php');
+    require_once('./php/LanguageHandler.php');
+    include('./php/Session.php');
 
 	// initialize structures
+	$api = \creamy\APIHandler::getInstance();
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 
-$modifyid = NULL;
-if (isset($_POST["modifyid"])) {
-	$modifyid = $_POST["modifyid"];
-}
+	$modifyid = NULL;
+	if (isset($_POST["modifyid"])) {
+		$modifyid = $_POST["modifyid"];
+	}
 
-$customFields = $ui->API_goGetAllCustomFields($modifyid);
-$customs = $customFields->data;
+	$customFields = $api->API_getAllCustomFields($modifyid);
+	$customs = $customFields->data;
 
-// echo "<pre>";
-// print_r($customs);
-// die;
+	//echo "<pre>";
+	//print_r($customs);
+	// die;
 
-$perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
-if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $perm->customfields_delete === 'N') {
-	header("location: telephonylist.php");
-}
+	$perm = $ui->goGetPermissions('customfields', $_SESSION['usergroup']);
+	if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $perm->customfields_delete === 'N') {
+		header("location: telephonylist.php");
+	}
 ?>
 <html>
     <head>
@@ -988,8 +1000,8 @@ if ($perm->customfields_read === 'N' && $perm->customfields_update === 'N' && $p
 								contentType: false,
 								processData: false,
 								success: function(data) {
-									// console.log(data);
-									if(data == "success"){
+									console.log(data);
+									if(data == 1){
 										$('#wizard-form input[name="field_label"]').removeAttr('readonly');
 										swal({
 											title: "Success",

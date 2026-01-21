@@ -604,7 +604,7 @@
 				*****/
 				$(document).on('click','.play_audio',function() {
 					var audioFile = $(this).attr('data-location');
-					//audioFile = audioFile.replace("http", "https");
+					audioFile = audioFile.replace("http", "https");
 					//console.log(audioFile);
 					var voicedetails = "";
 					var sourceFile = '<audio class="audio_file" controls style="width:100%">';

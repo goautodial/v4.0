@@ -910,7 +910,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 									processData: false,
 									success: function(data) {
 										// console.log(data);
-										if(data == "success"){
+										if(data == 1){
 											swal({
 													title: "<?php $lh->translateText("success"); ?>",
 													text: "<?php $lh->translateText("custom_fields_copied"); ?>",

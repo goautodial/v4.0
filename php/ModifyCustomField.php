@@ -1,62 +1,80 @@
 <?php
+/**
+ * @file        ModifyCustomField.php
+ * @brief       Modify custom field entries
+ * @copyright   Copyright (c) 2025 GOautodial Inc.
+ * @author		Demian Lizandro A, Biscocho <demian@goautodial.com>
+ * @author      Alexander Jim H. Abenoja <dev@goautodial.com>
+ * @author		Noel Umandap <dev@goautodial.com>
+ *
+ * @par <b>License</b>:
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Affero General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Affero General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Affero General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
-	/** Campaigns API - Add a new Campaign */
-	/**
-	 * Generates action circle buttons for different pages/module
-	 * @param goUser
-	 * @param goPass
-	 * @param goAction
-	 * @param responsetype
-	 * @param hostname
-	 * @param campaign_id
-	 */
-  require_once('goCRMAPISettings.php');
+	require_once('APIHandler.php');
+	$api = \creamy\APIHandler::getInstance();
 
-  $url = gourl."/goCustomFields/goAPI.php"; #URL to GoAutoDial API. (required)
-  $postfields["goUser"] = goUser; #Username goes here. (required)
-  $postfields["goPass"] = goPass; #Password goes here. (required)
-  $postfields["goAction"] = "goModifyCustomField"; #action performed by the [[API:Functions]]. (required)
-  $postfields["responsetype"] = responsetype; #json. (required)
-	$postfields["hostname"] = $_SERVER['REMOTE_ADDR'];
-	$postfields["list_id"] 								= $_POST['list_id'];
-	$postfields["field_id"] 							= $_POST['field_id'];
-	$postfields["field_name"] 						= $_POST['field_name'];
-	$postfields["field_rank"] 						= $_POST['field_rank'];
-	$postfields["field_order"] 						= $_POST['field_order'];
-	$postfields["field_label"] 						= $_POST['field_label'];
-	$postfields["field_label_old"] 				= $_POST['field_label_old'];
-	$postfields["field_position"] 				= $_POST['field_position'];
-	$postfields["field_description"] 			= $_POST['field_description'];
-	$postfields["field_type"] 						= $_POST['field_type'];
-	$postfields["field_options"] 					= $_POST['field_options'];
-	$postfields["field_option_position"] 	= $_POST['field_option_position'];
-	$postfields["field_size"] 						= $_POST['field_size'];
-	$postfields["field_max"] 							= $_POST['field_max'];
-	$postfields["field_default"] 					= $_POST['field_default'];
-	$postfields["field_required"] 				= $_POST['field_required'];
-	
-	$postfields["log_user"]								= $_POST['log_user'];
-	$postfields["log_group"]							= $_POST['log_group'];
-
-  $ch = curl_init();
-  curl_setopt($ch, CURLOPT_URL, $url);
-  curl_setopt($ch, CURLOPT_POST, 1);
-  curl_setopt($ch, CURLOPT_TIMEOUT, 100);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-  curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-  $data = curl_exec($ch);
-  curl_close($ch);
-  $output = json_decode($data);
-
-	if ($output->result=="success") {
-		# Result was OK!
-		$status = "success";
-	} else {
-		# An error occured
-		$status = "\n\n".$output->result;
+	// check required fields
+	$reason = "Unable to Modify Custom Fields";
+	$validated = 1;
+	if (!isset($_POST["list_id"])) {
+		$validated = 0;
 	}
 
-	echo $status;
-#var_dump($output);
+	if ($validated == 1) {
+		$list_id = $_POST['list_id'];
+		$field_id = $_POST['field_id'];
+		$field_name = $_POST['field_name'];
+		$field_rank = $_POST['field_rank'];
+		$field_order = $_POST['field_order'];
+		$field_label = $_POST['field_label'];
+		$field_label_old = $_POST['field_label_old'];
+		$field_position = $_POST['field_position'];
+		$field_description = $_POST['field_description'];
+		$field_type = $_POST['field_type'];
+		$field_options = $_POST['field_options'];
+		$field_option_position = $_POST['field_option_position'];
+		$field_size = $_POST['field_size'];
+		$field_max = $_POST['field_max'];
+		$field_default = $_POST['field_default'];
+		$field_required = $_POST['field_required'];
+
+		$postfields = array(
+			"goAction" => "goModifyCustomField", #action performed by the [[API:Functions]]
+			"list_id" => $list_id,
+			"field_id" => $field_id,
+			"field_name" => $field_name,
+			"field_rank" => $field_rank,
+			"field_order" => $field_order,
+			"field_label" => $field_label,
+			"field_label_old" => $field_label_old,
+			"field_position" => $field_position,
+			"field_description" => $field_description,
+			"field_type" => $field_type,
+			"field_options" => $field_options,
+			"field_option_position" => $field_option_position,
+			"field_size" => $field_size,
+			"field_max" => $field_max,
+			"field_default" => $field_default,
+			"field_required" => $field_required
+		);
+
+		$output = $api->API_Request("goCustomFields", $postfields);
+
+		if ($output->result=="success") { $status = 1; }
+			else { $status = $output->result; }
+
+		echo json_encode($status);
+	}
 ?>
