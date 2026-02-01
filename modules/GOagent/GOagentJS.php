@@ -5768,12 +5768,10 @@ function SendManualDial(taskFromConf) {
         agent_dialed_number = '1';
         agent_dialed_type = 'XFER_3WAY';
 
+        toggleButton('DialBlindTransfer', 'off');
         toggleButton('DialWithCustomer', 'off');
-
         toggleButton('ParkCustomerDial', 'off');
-        
         toggleButton('Leave3WayCall', 'on');
-
         toggleButton('HangupBothLines', 'on');
 
         var manual_number = $(".formXFER input[name='xfernumber']").val();
@@ -8521,13 +8519,17 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                 }
             }
 
-            /*if  ( (auto_dial_level > 0) && (taskvar != '3WAY') ) {
-                // hangup call and pop-up disposition modal on auto-dial 3way blind-transfer
-                $("#callchannel").html('');
-                $("#callserverip").val('');
-                console.log('auto_dial_level: ' + auto_dial_level);
-                DialedCallHangup(taskdispowindow, '', '', no_delete_VDAC);
-            }*/
+            // for auto-dial 3way-calls hangup with disposition modal on blind-transfer, local and voicemail transfers
+            if  ( (auto_dial_level > 0) && (taskvar != '3WAY') ) {
+                if ( (taskvar == 'XfeRLOCAL') || (taskvar == 'XfeRBLIND') || (taskvar == 'XfeRVMAIL') ) {
+                    $("#callchannel").html('');
+                    $("#callserverip").val('');
+                    console.log('auto-dial level: ' + auto_dial_level);
+                    console.log(taskvar);
+                    DialedCallHangup(taskdispowindow, '', '', no_delete_VDAC);
+                }
+            }
+
         }// END ELSE FOR EMAIL CHECK
     }
 }
