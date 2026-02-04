@@ -823,7 +823,7 @@ EOF;
 							</div>
 						</div>
 						<div class="row" style="margin-bottom: 5px;">
-							<div class="col-md-3"><button id="btnHangupXferLine" class="btn btn-default btn-sm disabled" style="text-transform: uppercase;">$hangupXferLine</button></div>
+							<div class="col-md-3"><button id="btnHangupXferLine" onclick="XFerCallHangup();" class="btn btn-default btn-sm disabled" style="text-transform: uppercase;">$hangupXferLine</button></div>
 							<div class="col-md-3"><button id="btnHangupBothLines" onclick="BothCallHangup();" class="btn btn-danger btn-sm disabled" style="text-transform: uppercase;">&nbsp; $hangupBothLine &nbsp;</button></div>
 							<div class="col-md-3" style="padding-left: 30px;"><button id="btnLeave3WayCall" onclick="Leave3WayCall('FIRST');" class="btn btn-primary btn-sm disabled" style="text-transform: uppercase;">&nbsp; &nbsp;$leave3wayCall&nbsp; &nbsp;&nbsp;</button></div>
 							<div class="col-md-3" style="text-align: center;"><button class="btn btn-default btn-sm" style="margin-right: 2px;" onclick="DTMF_Preset_a();">D1</button><button class="btn btn-default btn-sm" onclick="DTMF_Preset_b();">D2</button></div>

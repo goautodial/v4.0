@@ -622,7 +622,7 @@ var refreshId = setInterval(function() {
                 CheckForIncoming();
             }
     
-            if (MD_channel_look == 1 && has_inbound_call < 1) {
+            if (MD_channel_look == 1) {
                 ManualDialCheckChannel(XDcheck);
             }
             
@@ -5403,14 +5403,9 @@ function ManualDialCheckChannel(taskCheckOR) {
                     $("#MainStatuSSpan").html("<?=$lh->translationFor('called_3rd_party')?>: " + called3rdparty + " " + status_display_content);
 
                     toggleButton('Leave3WayCall', 'on');
-
                     toggleButton('DialWithCustomer', 'off');
-
                     toggleButton('ParkCustomerDial', 'off');
-
                     toggleButton('HangupXferLine', 'on');
-                    $("#btnHangupXferLine").attr('onclick', "XFerCallHangup(); return false;");
-
                     toggleButton('HangupBothLines', 'on');
 
                     xferchannellive = 1;
@@ -7176,7 +7171,7 @@ function BasicOriginateCall(tasknum, taskprefix, taskreverse, taskdialvalue, tas
 
             //document.getElementById("HangupXferLine").innerHTML ="<a href=\"#\" onclick=\"xfercall_send_hangup();return false;\"><img src=\"./images/vdc_XB_hangupxferline.gif\" border=\"0\" alt=\"Hangup Xfer Line\" /></a>";
             toggleButton('HangupXferLine', 'on');
-            $("#btnHangupXferLine").attr('onclick', "XFerCallHangup(); return false;");
+            //$("#btnHangupXferLine").attr('onclick', "XFerCallHangup(); return false;");
         }
         
         active_group_alias = '';
@@ -7952,16 +7947,14 @@ function XFerCallHangup() {
 
     //  DEACTIVATE CHANNEL-DEPENDANT BUTTONS AND VARIABLES
         $(".formXFER input[name='xferchannel']").val('');
+        $(".formXFER input[name='xferlength']").val('');
+
         lastxferchannel = '';
 
         toggleButton('Leave3WayCall', 'off');
-
         toggleButton('DialWithCustomer', 'on');
-
         toggleButton('ParkCustomerDial', 'on');
-
         toggleButton('HangupXferLine', 'off');
-
         toggleButton('HangupBothLines', 'on');
         
         activateLinks();
@@ -8477,6 +8470,7 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                         DialedCallHangup();
     
                         $(".formXFER input[name='xferchannel']").val('');
+                        $(".formXFER input[name='xferlength']").val('');
                         XFerCallHangup();
     
                         session_id = result.new_session;
@@ -8507,27 +8501,16 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                 .done(function (result) {
                 //	alert(RedirecTxFEr + "|" + result.message);
                 });
-    
-                if ( (taskvar == 'XfeRLOCAL') || (taskvar == 'XfeRBLIND') || (taskvar == 'XfeRVMAIL') ) {
-                    if (auto_dial_level == 0) {RedirecTxFEr = 1;}
-                    $("#callchannel").html('');
-                    $("#callserverip").val('');
-                    //if( document.images ) { document.images['livecall'].src = image_livecall_OFF.src;}
-                //	alert(RedirecTxFEr + "|" + auto_dial_level);
-                    console.log(taskvar);
-                    DialedCallHangup(taskdispowindow, '', '', no_delete_VDAC);
-                }
             }
 
-            // for auto-dial 3way-calls hangup with disposition modal on blind-transfer, local and voicemail transfers
-            if  ( (auto_dial_level > 0) && (taskvar != '3WAY') ) {
-                if ( (taskvar == 'XfeRLOCAL') || (taskvar == 'XfeRBLIND') || (taskvar == 'XfeRVMAIL') ) {
-                    $("#callchannel").html('');
-                    $("#callserverip").val('');
-                    console.log('auto-dial level: ' + auto_dial_level);
-                    console.log(taskvar);
-                    DialedCallHangup(taskdispowindow, '', '', no_delete_VDAC);
-                }
+            if ( (taskvar == 'XfeRLOCAL') || (taskvar == 'XfeRBLIND') || (taskvar == 'XfeRVMAIL') ) {
+                if (auto_dial_level == 0) {RedirecTxFEr = 1;}
+                $("#callchannel").html('');
+                $("#callserverip").val('');
+                //if( document.images ) { document.images['livecall'].src = image_livecall_OFF.src;}
+            //	alert(RedirecTxFEr + "|" + auto_dial_level);
+                console.log(taskvar);
+                DialedCallHangup(taskdispowindow, '', '', no_delete_VDAC);
             }
 
         }// END ELSE FOR EMAIL CHECK
