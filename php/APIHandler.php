@@ -580,7 +580,21 @@
 			}
 			return $output;
 		}
-			
+		public function API_getCallsPerHour() {
+			$postfields = array(
+				'goAction' => 'goGetCallsPerHour'
+			);
+			return $this->API_Request("goDashboard", $postfields);
+		}
+
+		public function API_getDroppedPercentage() {
+			$postfields = array(
+				'goAction' => 'goGetDroppedPercentage'
+			);
+			return $this->API_Request("goDashboard", $postfields);
+		}
+
+
 		public function API_getRealtimeAgentsMonitoring(){
 			$postfields = array(
 				'goAction' => 'goGetRealtimeAgentsMonitoring'
@@ -609,13 +623,6 @@
 			);		
 			return $this->API_Request("goDashboard", $postfields);
 		}
-
-			public function API_getDroppedPercentage(){
-					$postfields = array(
-							'goAction' => 'goGetDroppedPercentage'
-					);
-					return $this->API_Request("goDashboard", $postfields);
-			}
 		
 		public function API_getCampaignsResources(){
 			$postfields = array(

@@ -62,24 +62,20 @@
 	$checkWebRTC = $api->CheckWebrtc($user->getUserId());
 	$use_webrtc = $_SESSION['use_webrtc'];
 	if (is_numeric($checkWebRTC)) {
-			$use_webrtc = $checkWebRTC;
+		$use_webrtc = $checkWebRTC;
 	}
 	
 	$goAPI = (empty($_SERVER['HTTPS'])) ? str_replace('https:', 'http:', gourl) : str_replace('http:', 'https:', gourl);
-	
-	// APIs FOR FILTER LIST
-		//$campaign = $api->API_getAllCampaigns($_SESSION['usergroup']);
-		//$ingroup = $api->API_getAllInGroups($_SESSION['usergroup']);
+
 	/*
-	 * API for call statistics - Demian
+	 * API for call statistics
 	*/
-	$dropped_calls_today = $ui->API_goGetTotalDroppedCalls($_SESSION['user']);
-	$calls_incoming_queue = $ui->API_goGetIncomingQueue($_SESSION['user']);
-	$callsperhour = $ui->API_goGetCallsPerHour($_SESSION['user'], 'json');
+	$dropped_calls_today = $api->API_getTotalDroppedCalls();
+	$calls_incoming_queue = $api->API_getIncomingQueue();
+	$callsperhour = $api->API_getCallsPerHour();
 	$ingroup_list = $api->API_getAllInGroups();
 	$max = 0;
-	//$callsperhour = explode(";",trim($callsperhour, ';'));
-	$callsperhour = json_decode($callsperhour);
+	//var_dump($callsperhour); die();
 	
 	foreach ($callsperhour AS $idx => $temp){
 		//$temp = explode("=",$temp);
@@ -92,8 +88,8 @@
 		}
 	}
 	
-	$outbound_calls = max($results["Hour8o"],$results["Hour9o"], $results["Hour10o"], $results["Hour11o"], $results["Hour12o"], $results["Hour13o"], $results["Hour14o"], $results["Hour15o"], $results["Hour16o"], $results["Hour17o"], $results["Hour18o"], $results["Hour19o"], $results["Hour20o"], $results["Hour21o"]);	
-	$inbound_calls = max($results["Hour8"],$results["Hour9"], $results["Hour10"], $results["Hour11"], $results["Hour12"], $results["Hour13"], $results["Hour14"], $results["Hour15"], $results["Hour16"], $results["Hour17"], $results["Hour18"], $results["Hour19"], $results["Hour20"], $results["Hour21"]);	
+	$outbound_calls = max($results["Hour8o"],$results["Hour9o"], $results["Hour10o"], $results["Hour11o"], $results["Hour12o"], $results["Hour13o"], $results["Hour14o"], $results["Hour15o"], $results["Hour16o"], $results["Hour17o"], $results["Hour18o"], $results["Hour19o"], $results["Hour20o"], $results["Hour21o"]);
+	$inbound_calls = max($results["Hour8"],$results["Hour9"], $results["Hour10"], $results["Hour11"], $results["Hour12"], $results["Hour13"], $results["Hour14"], $results["Hour15"], $results["Hour16"], $results["Hour17"], $results["Hour18"], $results["Hour19"], $results["Hour20"], $results["Hour21"]);
 	$dropped_calls = max($results["Hour8d"],$results["Hour9d"], $results["Hour10d"], $results["Hour11d"], $results["Hour12d"], $results["Hour13d"], $results["Hour14d"], $results["Hour15d"], $results["Hour16d"], $results["Hour17d"], $results["Hour18d"], $results["Hour19d"], $results["Hour20d"], $results["Hour21d"]);
 	$max = max($inbound_calls, $outbound_calls, $dropped_calls);
 	
@@ -116,9 +112,6 @@
 	$whatsapp_status = $ui->API_getWhatsappActivation();
 	$callWhatsAppWebHookURL = $api->API_WhatsAppWebHookURL();
 	
-	//echo "\n\n<!--";
-	//var_dump($ingroup_list);
-	//echo "-->\n";
 ?>
 <html>
     <head>
@@ -520,9 +513,9 @@
 							<div class="panel panel-default">
 								<?php
 									// Fix on bug #8671
-									$droppedpercentage = $ui->API_goGetDroppedPercentage($_SESSION['user']);
+									$droppedpercentage = $api->API_getDroppedPercentage();
 									$dropped_percentage = $droppedpercentage->data->getDroppedPercentage;
-									
+
 									if ($dropped_percentage == NULL)
 										$dropped_percentage = "0";
 									if ($dropped_percentage < "10")
@@ -1462,7 +1455,7 @@
 						}
 						?>]
 					},{
-					"label": "Dropped Calls",
+					"label": "Dropped Calls (O)",
 					"color": "#512e90",
 					"data": [
 					<?php
