@@ -49,7 +49,6 @@
 		}
 	}
 
-
 	$perms = $api->goGetPermissions('dashboard,servers', $_SESSION['usergroup']);
 	if ($perms->dashboard->dashboard_display === 'N') {
 		header("location: crm.php");
@@ -72,10 +71,17 @@
 	*/
 	$dropped_calls_today = $api->API_getTotalDroppedCalls();
 	$calls_incoming_queue = $api->API_getIncomingQueue();
-	$callsperhour = $api->API_getCallsPerHour();
 	$ingroup_list = $api->API_getAllInGroups();
 	$max = 0;
-	//var_dump($callsperhour); die();
+
+	// Load CPH only between 9am to 11:59pm
+    $now = time();
+    $startTime = strtotime("today 9:00 AM");
+    $endTime = strtotime("today 11:59 PM");
+
+    if ($now >= $startTime && $now <= $endTime) {
+        $callsperhour = $api->API_getCallsPerHour();
+    }
 	
 	foreach ($callsperhour AS $idx => $temp){
 		//$temp = explode("=",$temp);
@@ -314,7 +320,8 @@
 						</div> -->
 						<div class="col-lg-9 col-sm-12">
 							<div class="row">
-								<div class="col-lg-4 col-sm-6">
+								<span id="refresh_agents_statistics"></span>
+								<!--<div class="col-lg-4 col-sm-6">
 									<a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" data-status="ACTIVE" data-id="" style="text-decoration : none">
 										<div class="panel widget bg-purple" style="height: 95px;">
 											<div class="row status-box">
@@ -358,7 +365,7 @@
 											</div>
 										</div>
 									</a>
-								</div>
+								</div>-->
 							</div>
 							<?php /*if($whatsapp_status) { ?>	
 							<!-- WHATSAPP AGENT CHAT BOXES -->
@@ -493,20 +500,20 @@
 				
 						<?php //if($whatsapp_status) { ?>
 						<div class="col-lg-9" id="row_for_rest">
-                                                        <!-- CALLS PER HOUR CHART -->
-                                                        <div class="row">
-                                                          <div id="panelChart9" ng-controller="FlotChartController" class="panel panel-default">
-                                                                 <div class="panel-heading">
-                                                                        <div class="panel-title"><?=$lh->translateText("calls_per_hour")?></div>
-                                                                 </div>
-                                                                 <div collapse="panelChart9" class="panel-wrapper">
-                                                                        <div class="panel-body">
-                                                                           <div class="chart-splinev3 flot-chart"></div> <!-- data is in JS -> demo-flot.js -> search (Overall/Home/Pagkain)-->
-                                                                        </div>
-                                                                 </div>
-                                                          </div>
-                                                        </div>
-                                                        <!-- END widget-->
+							<!-- CALLS PER HOUR CHART -->
+							<div class="row">
+								<div id="panelChart9" ng-controller="FlotChartController" class="panel panel-default">
+										<div class="panel-heading">
+											<div class="panel-title"><?=$lh->translateText("calls_per_hour")?></div>
+										</div>
+										<div collapse="panelChart9" class="panel-wrapper">
+											<div class="panel-body">
+												<div class="chart-splinev3 flot-chart"></div> <!-- data is in JS -> demo-flot.js -> search (Overall/Home/Pagkain)-->
+											</div>
+										</div>
+								</div>
+							</div>
+							<!-- END widget-->
 						</div>
 						<div class="col-lg-3 col-md-6 col-sm-12">	
 							<!-- DROPPED PERCENTAGE -->
@@ -578,20 +585,20 @@
 								<div class="col-lg-12" style="padding: 0px;">
 									<!-- demian -->
 									<a href="#" data-toggle="modal" data-target="#<?php if(REALTIME_CALLS_MONITORING === 'y') echo 'realtime_calls_monitoring'?>">
-										<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center bg-info info_sun_boxes">
-											<em class="fa fa-sun-o fa-3x"></em><div class="h2 m0"><span class="text-lg"></span></div>
-											<div class="text-white"><?=$lh->translateText("realtime_calls_monitor")?></div>                                 
-										</div>
+									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center bg-info info_sun_boxes">
+										<em class="fa fa-sun-o fa-3x"></em><div class="h2 m0"><span class="text-lg"></span></div>
+										<div class="text-white"><?=$lh->translateText("realtime_calls_monitor")?></div>
+									</div>
 									</a>
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
 										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_RingingCalls">0</span></div>
 										<div class="text"><?=$lh->translateText("ringing_calls")?></div>
 									</div>
 									<a href="#" data-toggle="modal" data-target="#<?php if(REALTIME_INBOUND_MONITORING === 'y') echo 'realtime_inbound_monitoring'?>" style="text-decoration : none; color: rgba(0, 0, 0, 0.8);">
-										<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
-											<div class="h2 m0"><span class="text-lg text-muted" id="refresh_IncomingQueue">0</span></div>
-											<div class="text"><?=$lh->translateText("incoming_calls")?></div>
-										</div>
+									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
+										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_IncomingQueue">0</span></div>
+										<div class="text"><?=$lh->translateText("incoming_calls")?></div>
+									</div>
 									</a>
 									<div class="panel widget col-md-2 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
 										<div class="h2 m0"><span class="text-lg text-muted" id="refresh_AnsweredCalls">0</span></div>
@@ -1865,9 +1872,10 @@ function goGetInSession(type) {
 				
 			// ---- status boxes
 				// ---- agents
-					load_totalagentscall(); 
-					load_totalagentspaused();
-					load_totalagentswaitingcall();
+					//load_totalagentscall();
+					//load_totalagentspaused();
+					//load_totalagentswaitingcall();
+					load_totalAgentsStatistics();
 				// ---- sales
 					load_totalSales();
 					load_totalOutSales();
@@ -1919,19 +1927,16 @@ function goGetInSession(type) {
 		
 		//Refresh functions() after 5000 milliseconds
 			// ... status boxes ...
-				var int_1 = setInterval(load_totalagentscall,5000);
-				var int_2 = setInterval(load_totalagentspaused,5000);
-				var int_3 = setInterval(load_totalagentswaitingcall,5000);
-				
-				//setInterval(load_TotalActiveLeads,5000);
-				//setInterval(load_LeadsinHopper,5000);
-				//setInterval(load_TotalDialableLeads,5000);
-				
-				var int_4 = setInterval(load_RingingCalls,15000);
-				var int_5 = setInterval(load_IncomingQueue,15000);
-				var int_6 = setInterval(load_AnsweredCalls,15000);
-				var int_7 = setInterval(load_DroppedCalls,15000);
-				var int_24 = setInterval(load_DroppedCallsPercentage,15000);
+				//var int_1 = setInterval(load_totalagentscall,5000);
+				//var int_2 = setInterval(load_totalagentspaused,5000);
+				//var int_3 = setInterval(load_totalagentswaitingcall,5000);
+				var int_3 = setInterval(load_totalAgentsStatistics,5000);
+
+				var int_4 = setInterval(load_RingingCalls,20000);
+				var int_5 = setInterval(load_IncomingQueue,20000);
+				var int_6 = setInterval(load_AnsweredCalls,20000);
+				var int_7 = setInterval(load_DroppedCalls,20000);
+				var int_24 = setInterval(load_DroppedCallsPercentage,60000);
 				//setInterval(load_TotalCalls,5000);
 				var int_8 = setInterval(load_TotalInboundCalls,30000);
 				var int_9 = setInterval(load_TotalOutboundCalls,30000);
@@ -1942,13 +1947,13 @@ function goGetInSession(type) {
 				
 			// ... agent and campaign resources ...
 				var int_12 = setInterval(load_campaigns_resources,30000);
-				var int_13 = setInterval(load_campaigns_monitoring,20000);
+				var int_13 = setInterval(load_campaigns_monitoring,30000);
 				var int_14 = setInterval(load_agents_monitoring_summary,15000);
 			
 			// ... realtime monitoring ...
-				var int_15 = setInterval(load_realtime_agents_monitoring,3000);
+				var int_15 = setInterval(load_realtime_agents_monitoring,5000);
 				<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
-				var int_16 = setInterval(load_realtime_calls_monitoring,3000);
+				var int_16 = setInterval(load_realtime_calls_monitoring,5000);
 				<?php } ?>
 				<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
 				var int_17;
@@ -1957,7 +1962,7 @@ function goGetInSession(type) {
 				//var int_17 = setInterval(load_realtime_sla_monitoring,10000);
 			
 			// ... view agent information modal  ...
-				var int_18 = setInterval(load_view_agent_information,3000);
+				var int_18 = setInterval(load_view_agent_information,6000);
 				
 			// ... sales
 				var int_19 = setInterval(load_totalSales,30000);
@@ -1981,8 +1986,8 @@ function goGetInSession(type) {
 			<?php }*/ ?>
 		
 		$('#modal_view_agent_information').on('show.bs.modal', function () {
-			clearInterval(int_1);
-			clearInterval(int_2);
+			//clearInterval(int_1);
+			//clearInterval(int_2);
 			clearInterval(int_3);
 			clearInterval(int_4);
 			clearInterval(int_5);
@@ -2023,14 +2028,15 @@ function goGetInSession(type) {
 		});
 		
 		$('#modal_view_agent_information').on('hidden.bs.modal', function () {
-			int_1 = setInterval(load_totalagentscall,5000);
-			int_2 = setInterval(load_totalagentspaused,5000);
-			int_3 = setInterval(load_totalagentswaitingcall,5000);
-			int_4 = setInterval(load_RingingCalls,15000);
-			int_5 = setInterval(load_IncomingQueue,15000);
-			int_6 = setInterval(load_AnsweredCalls,15000);
-			int_7 = setInterval(load_DroppedCalls,15000);
-			int_24 = setInterval(load_DroppedCallsPercentage,15000);
+			//int_1 = setInterval(load_totalagentscall,5000);
+			//int_2 = setInterval(load_totalagentspaused,5000);
+			//int_3 = setInterval(load_totalagentswaitingcall,5000);
+			int_3 = setInterval(load_totalAgentsStatistics,5000);
+			int_4 = setInterval(load_RingingCalls,20000);
+			int_5 = setInterval(load_IncomingQueue,20000);
+			int_6 = setInterval(load_AnsweredCalls,20000);
+			int_7 = setInterval(load_DroppedCalls,20000);
+			int_24 = setInterval(load_DroppedCallsPercentage,60000);
 			int_8 = setInterval(load_TotalInboundCalls,30000);
 			int_9 = setInterval(load_TotalOutboundCalls,30000);
 			int_10 = setInterval(load_LiveOutbound,30000);
@@ -2040,19 +2046,19 @@ function goGetInSession(type) {
 			int_14 = setInterval(load_agents_monitoring_summary,15000);
 			int_15 = setInterval(load_realtime_agents_monitoring,3000);
 			<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
-			int_16 = setInterval(load_realtime_calls_monitoring,3000);
+			int_16 = setInterval(load_realtime_calls_monitoring,5000);
 			<?php } ?>
 			<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
 			//int_17 = setInterval(load_realtime_inbound_monitoring,3000,inbTable);
 			<?php } ?>
 			//int_17 = setInterval(load_realtime_sla_monitoring,10000);
-			int_18 = setInterval(load_view_agent_information,3000);
+			int_18 = setInterval(load_view_agent_information,5000);
 			int_19 = setInterval(load_totalSales,30000);
 			int_20 = setInterval(load_totalOutSales,30000);
 			int_21 = setInterval(load_totalInSales,30000);
 			int_22 = setInterval(load_INSalesHour,60000);
 			int_23 = setInterval(load_OUTSalesPerHour,60000);
-			int_24 = setInterval(load_DroppedCallsPercentage,15000);
+			int_24 = setInterval(load_DroppedCallsPercentage,60000);
 			<?php if(STATEWIDE_SALES_REPORT === 'y'){ ?>
                         // ---- Statewide Customization
                         int_25 = setInterval(load_agent_sales,15000);
@@ -2526,8 +2532,8 @@ function goGetInSession(type) {
 				});
 
 				$('#realtime_inbound_monitoring').on('show.bs.modal', function () {
-					clearInterval(int_1);
-					clearInterval(int_2);
+					//clearInterval(int_1);
+					//clearInterval(int_2);
 					clearInterval(int_3);
 					clearInterval(int_4);
 					clearInterval(int_5);
@@ -2561,13 +2567,14 @@ function goGetInSession(type) {
 				});
 				
 				$('#realtime_inbound_monitoring').on('hidden.bs.modal', function () {
-					int_1 = setInterval(load_totalagentscall,5000);
-					int_2 = setInterval(load_totalagentspaused,5000);
-					int_3 = setInterval(load_totalagentswaitingcall,5000);
-					int_4 = setInterval(load_RingingCalls,15000);
-					int_5 = setInterval(load_IncomingQueue,15000);
-					int_6 = setInterval(load_AnsweredCalls,15000);
-					int_7 = setInterval(load_DroppedCalls,15000);
+					//int_1 = setInterval(load_totalagentscall,5000);
+					//int_2 = setInterval(load_totalagentspaused,5000);
+					//int_3 = setInterval(load_totalagentswaitingcall,5000);
+					int_3 = setInterval(load_totalAgentsStatistics,5000);
+					int_4 = setInterval(load_RingingCalls,20000);
+					int_5 = setInterval(load_IncomingQueue,20000);
+					int_6 = setInterval(load_AnsweredCalls,20000);
+					int_7 = setInterval(load_DroppedCalls,20000);
 					int_8 = setInterval(load_TotalInboundCalls,30000);
 					int_9 = setInterval(load_TotalOutboundCalls,30000);
 					int_10 = setInterval(load_LiveOutbound,30000);
@@ -2575,21 +2582,21 @@ function goGetInSession(type) {
 					int_12 = setInterval(load_campaigns_resources,30000);
 					int_13 = setInterval(load_campaigns_monitoring,20000);
 					int_14 = setInterval(load_agents_monitoring_summary,15000);
-					int_15 = setInterval(load_realtime_agents_monitoring,3000);
+					int_15 = setInterval(load_realtime_agents_monitoring,5000);
 					<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
-					int_16 = setInterval(load_realtime_calls_monitoring,3000);
+					int_16 = setInterval(load_realtime_calls_monitoring,5000);
 					<?php } ?>
 					<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
 					clearInterval(int_17);
 					<?php } ?>
 					//int_17 = setInterval(load_realtime_sla_monitoring,10000);
-					int_18 = setInterval(load_view_agent_information,3000);
+					int_18 = setInterval(load_view_agent_information,6000);
 					int_19 = setInterval(load_totalSales,30000);
 					int_20 = setInterval(load_totalOutSales,30000);
 					int_21 = setInterval(load_totalInSales,30000);
 					int_22 = setInterval(load_INSalesHour,60000);
 					int_23 = setInterval(load_OUTSalesPerHour,60000);
-					int_24 = setInterval(load_DroppedCallsPercentage,15000);
+					int_24 = setInterval(load_DroppedCallsPercentage,60000);
 				});
             }
 				if ($("#change-password-dialog-modal").length > 0) {
@@ -2598,8 +2605,8 @@ function goGetInSession(type) {
 					 var new_password_again_placeholder = '<?=$lh->translationFor("insert_new_password_again")?>';
 						
 						$('#change-password-dialog-modal').on('show.bs.modal', function () {
-							clearInterval(int_1);
-							clearInterval(int_2);
+							//clearInterval(int_1);
+							//clearInterval(int_2);
 							clearInterval(int_3);
 							clearInterval(int_4);
 							clearInterval(int_5);
@@ -2669,13 +2676,14 @@ function goGetInSession(type) {
 						});
 						
 						$('#change-password-dialog-modal').on('hidden.bs.modal', function () {
-							int_1 = setInterval(load_totalagentscall,5000);
-							int_2 = setInterval(load_totalagentspaused,5000);
-							int_3 = setInterval(load_totalagentswaitingcall,5000);
-							int_4 = setInterval(load_RingingCalls,15000);
-							int_5 = setInterval(load_IncomingQueue,15000);
-							int_6 = setInterval(load_AnsweredCalls,15000);
-							int_7 = setInterval(load_DroppedCalls,15000);
+							//int_1 = setInterval(load_totalagentscall,5000);
+							//int_2 = setInterval(load_totalagentspaused,5000);
+							//int_3 = setInterval(load_totalagentswaitingcall,5000);
+							int_3 = setInterval(load_totalAgentsStatistics,5000);
+							int_4 = setInterval(load_RingingCalls,20000);
+							int_5 = setInterval(load_IncomingQueue,20000);
+							int_6 = setInterval(load_AnsweredCalls,20000);
+							int_7 = setInterval(load_DroppedCalls,20000);
 							int_8 = setInterval(load_TotalInboundCalls,30000);
 							int_9 = setInterval(load_TotalOutboundCalls,30000);
 							int_10 = setInterval(load_LiveOutbound,30000);
@@ -2683,21 +2691,21 @@ function goGetInSession(type) {
 							int_12 = setInterval(load_campaigns_resources,30000);
 							int_13 = setInterval(load_campaigns_monitoring,20000);
 							int_14 = setInterval(load_agents_monitoring_summary,15000);
-							int_15 = setInterval(load_realtime_agents_monitoring,3000);
+							int_15 = setInterval(load_realtime_agents_monitoring,5000);
 							<?php if(REALTIME_CALLS_MONITORING === 'y'){ ?>
-							int_16 = setInterval(load_realtime_calls_monitoring,3000);
+							int_16 = setInterval(load_realtime_calls_monitoring,5000);
 							<?php } ?>
 							<?php if(REALTIME_INBOUND_MONITORING === 'y'){ ?>
 							//int_17 = setInterval(load_realtime_inbound_monitoring,3000,inbTable);
 							<?php } ?>
 							//int_17 = setInterval(load_realtime_sla_monitoring,10000);
-							int_18 = setInterval(load_view_agent_information,3000);
+							int_18 = setInterval(load_view_agent_information,6000);
 							int_19 = setInterval(load_totalSales,30000);
 							int_20 = setInterval(load_totalOutSales,30000);
 							int_21 = setInterval(load_totalInSales,30000);
 							int_22 = setInterval(load_INSalesHour,60000);
 							int_23 = setInterval(load_OUTSalesPerHour,60000);
-							int_24 = setInterval(load_DroppedCallsPercentage,15000);
+							int_24 = setInterval(load_DroppedCallsPercentage,60000);
 						});
 				}
 		});

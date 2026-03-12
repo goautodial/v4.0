@@ -580,6 +580,7 @@
 			}
 			return $output;
 		}
+
 		public function API_getCallsPerHour() {
 			$postfields = array(
 				'goAction' => 'goGetCallsPerHour'
@@ -594,11 +595,17 @@
 			return $this->API_Request("goDashboard", $postfields);
 		}
 
+		public function API_getTotalAgentsStatistics(){
+			$postfields = array(
+				'goAction' => 'goGetTotalAgentsStatistics'
+			);		
+			return $this->API_Request("goDashboard", $postfields);
+		}
 
 		public function API_getRealtimeAgentsMonitoring(){
 			$postfields = array(
 				'goAction' => 'goGetRealtimeAgentsMonitoring'
-			);		
+			);
 			return $this->API_Request("goDashboard", $postfields);
 		}
 		
