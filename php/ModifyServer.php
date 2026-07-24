@@ -43,6 +43,7 @@
 	$alt_server_ip 								= NULL;
 	$external_server_ip 						= NULL;
 	$vicidial_balance_rank 						= NULL;
+	$conf_engine								= NULL;
 	
 	if ( isset($_POST["server_description"]) ) { 
 		$server_description 					= $_POST["server_description"]; 
@@ -122,6 +123,10 @@
 		$vicidial_balance_rank 					= $_POST["vicidial_balance_rank"]; 
 		$vicidial_balance_rank 					= stripslashes($vicidial_balance_rank);
 	}
+	if ( isset($_POST["conf_engine"]) ) {
+		$conf_engine 							= $_POST["conf_engine"];
+		$conf_engine 							= stripslashes($conf_engine);
+	}
 
 	$postfields 								= array(
 		'goAction' 									=> 'goEditServers',		
@@ -141,7 +146,8 @@
 		'rebuild_music_on_hold' 					=> $rebuild_music_on_hold,
 		'recording_web_link' 						=> $recording_web_link,
 		'alt_server_ip' 							=> $alt_server_ip,
-		'external_server_ip' 						=> $external_server_ip
+		'external_server_ip' 						=> $external_server_ip,
+		'conf_engine'								=> $conf_engine
 	);	
 			
 	$output 									= $api->API_editServer($postfields);

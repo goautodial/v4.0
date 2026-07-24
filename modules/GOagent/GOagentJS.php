@@ -4611,7 +4611,7 @@ function DialLog(taskMDstage, nodeletevdac) {
                 }
             }
         }
-        RedirectXFER = 0;
+        RedirecTxFEr = 0;
         conf_dialed = 0;
     });
 }
@@ -5768,12 +5768,10 @@ function SendManualDial(taskFromConf) {
         agent_dialed_number = '1';
         agent_dialed_type = 'XFER_3WAY';
 
+        toggleButton('DialBlindTransfer', 'off');
         toggleButton('DialWithCustomer', 'off');
-
         toggleButton('ParkCustomerDial', 'off');
-        
         toggleButton('Leave3WayCall', 'on');
-
         toggleButton('HangupBothLines', 'on');
 
         var manual_number = $(".formXFER input[name='xfernumber']").val();
@@ -5879,7 +5877,7 @@ function DialedCallHangup(dispowindow, hotkeysused, altdispo, nodeletevdac) {
     AgainCallSeconds = live_call_seconds;
     AgainCallCID = CallCID;
     var process_post_hangup = 0;
-    if ( (RedirectXFER < 1) && ( (MD_channel_look == 1) || (auto_dial_level == 0) ) ) {
+    if ( (RedirecTxFEr < 1) && ( (MD_channel_look == 1) || (auto_dial_level == 0) ) ) {
         MD_channel_look = 0;
         //DialTimeHangup('MAIN');
     }
@@ -7974,7 +7972,7 @@ function XFerCallHangup() {
 // ################################################################################
 // Send Hangup command for any Local call that is not in the quiet(7) entry - used to stop manual dials even if no connect
 function DialTimeHangup(tasktypecall) {
-    if ( (RedirectXFER < 1) && (leaving_threeway < 1) ) {
+    if ( (RedirecTxFEr < 1) && (leaving_threeway < 1) ) {
         //alert("RedirecTxFEr|" + RedirecTxFEr);
         var queryCID = "HTvdcW" + epoch_sec + user_abb;
         var postData = {
@@ -8119,7 +8117,7 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
             //transfer_email(taskvar, document.vicidial_form.lead_id.value, document.vicidial_form.uniqueid.value, email_row_id);
         } else {
         //	conf_dialed = 1;
-            if (auto_dial_level == 0) {RedirectXFER = 1;}
+            if (auto_dial_level == 0) {RedirecTxFEr = 1;}
             var redirectvalue = MDchannel;
             var redirectserverip = lastcustserverip;
             var postData = {
@@ -8493,7 +8491,7 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
 
             // used to send second Redirect for manual dial calls
             if ( (auto_dial_level == 0) && (taskvar != '3WAY') ) {
-                RedirectXFER = 1;
+                RedirecTxFEr = 1;
                 postData['goStage'] = '2NDXfeR';
                 
                 $.ajax({
@@ -8516,10 +8514,23 @@ function mainxfer_send_redirect(taskvar, taskxferconf, taskserverip, taskdebugno
                     $("#callserverip").val('');
                     //if( document.images ) { document.images['livecall'].src = image_livecall_OFF.src;}
                 //	alert(RedirecTxFEr + "|" + auto_dial_level);
+                    console.log(taskvar);
                     DialedCallHangup(taskdispowindow, '', '', no_delete_VDAC);
                 }
-            } // END ELSE FOR EMAIL CHECK
-        }
+            }
+
+            // for auto-dial 3way-calls hangup with disposition modal on blind-transfer, local and voicemail transfers
+            if  ( (auto_dial_level > 0) && (taskvar != '3WAY') ) {
+                if ( (taskvar == 'XfeRLOCAL') || (taskvar == 'XfeRBLIND') || (taskvar == 'XfeRVMAIL') ) {
+                    $("#callchannel").html('');
+                    $("#callserverip").val('');
+                    console.log('auto-dial level: ' + auto_dial_level);
+                    console.log(taskvar);
+                    DialedCallHangup(taskdispowindow, '', '', no_delete_VDAC);
+                }
+            }
+
+        }// END ELSE FOR EMAIL CHECK
     }
 }
 

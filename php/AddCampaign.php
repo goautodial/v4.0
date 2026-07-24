@@ -20,21 +20,21 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 	require_once('APIHandler.php');
-	
+
 	$api 										= \creamy\APIHandler::getInstance();
 	$call_route									= $_POST['call_route'];
 	$dial_prefix								= ( !isset($_POST['dial_prefix']) ) ? 9 : $_POST['dial_prefix'];
 	$auto_dial_level							= ( !isset($_POST['auto_dial_level']) ) ? 'OFF': $_POST['auto_dial_level'];
-	
+
 	//$lead_file									= "";
 	//$leads										= "";
-	//$uploaded_wav								= "";		
+	//$uploaded_wav								= "";
 	$custom_dial_prefix							= 0;
-	
+
 	if ( $dial_prefix == "CUSTOM") {
 		$custom_dial_prefix						= $_POST['custom_prefix'];
 	}
-	
+
     switch ($call_route){
         case "INGROUP":
             $call_route_text			 		= $_POST['ingroup_text'];
@@ -52,19 +52,19 @@
             $call_route_text		 			= $_POST['voicemail_text'];
         break;
     }
-    
-	if ( !empty($_FILES["lead_file"]["name"]) ) {	
-		$lead_file								= curl_file_create( $_FILES['lead_file']['tmp_name'], $_FILES['lead_file']['type'], $_FILES["lead_file"]["name"] ); 
-	}  
-	
+
+	if ( !empty($_FILES["lead_file"]["name"]) ) {
+		$lead_file								= curl_file_create( $_FILES['lead_file']['tmp_name'], $_FILES['lead_file']['type'], $_FILES["lead_file"]["name"] );
+	}
+
 	if ( !empty($_FILES["leads"]["name"]) ) {
 		$leads 									= curl_file_create( $_FILES['leads']['tmp_name'], $_FILES['leads']['type'], $_FILES["leads"]["name"] );
 	}
-	
-    if ( !empty($_FILES["uploaded_wav"]["name"]) ) { 
+
+    if ( !empty($_FILES["uploaded_wav"]["name"]) ) {
 		$uploaded_wav 							= curl_file_create( $_FILES['uploaded_wav']['tmp_name'], $_FILES['uploaded_wav']['type'], $_FILES["uploaded_wav"]["name"] );
 	}
-	
+
 	$postfields 								= array(
 		'goAction' 									=> 'goAddCampaign',
 		'campaign_id'								=> $_POST['campaign_id'],
@@ -91,28 +91,31 @@
 		'answering_machine_detection' 				=> $_POST['answering_machine_detection'],
 		'caller_id'									=> $_POST['caller_id'],
 		'force_reset_hopper' 						=> $_POST['force_reset_hopper'],
-		'campaign_recording' 						=> $_POST['campaign_recording'],		
+		'campaign_recording' 						=> $_POST['campaign_recording'],
 		'lead_file' 								=> $lead_file,
 		'leads' 									=> $leads,
 		'uploaded_wav'								=> $uploaded_wav
 	);
-	
+
 	$output 									= $api->API_addCampaign($postfields);
 	$home 										= $_SERVER['HTTP_REFERER'];
-	
+
+	header('Content-Type: application/json');
+
 	if ($output->result=="success") {
-		$status 								= 1;				
-		// $return['msg'] = "New Campaign has been successfully saved.";
-		$url 									= str_replace("?message=Success", "", $home);
-		header("Location: ".$url."?message=Success");
+		$response 							= array(
+			'status' 	=> 1,
+			'result' 	=> 'success',
+			'message' 	=> 'Success'
+		);
 	} else {
-		// $status = 0;
-		// $return['msg'] = "Something went wrong please see input data on form.";
-		$url 									= str_replace("?message=Error", "", $home);
-		header("Location: ".$url."?message=Error");
-		$status 								= $output->result;
+		$response 							= array(
+			'status' 	=> 0,
+			'result' 	=> $output->result,
+			'message' 	=> $output->result
+		);
 	}
 
-	echo json_encode($status);
-	
+	echo json_encode($response);
+
 ?>
