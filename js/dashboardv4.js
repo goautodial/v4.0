@@ -48,34 +48,45 @@
 		});
     }
 
+    function load_totalAgentsStatistics(){
+		$.ajax({
+			url: "./php/dashboard/API_getTotalAgentsStatistics.php",
+			cache: false,
+			success: function(data){
+				//console.log(data);
+				$("#refresh_agents_statistics").html(data);
+			}
+		});
+    }
+
     function load_agent_sales(){
 		 $.ajax({
-                        url: "./php/dashboard/API_getSalesAgent.php",
-                        //cache: false,
-                        dataType: 'json',
-                        success: function(data){
+			url: "./php/dashboard/API_getSalesAgent.php",
+			//cache: false,
+			dataType: 'json',
+			success: function(data){
 				var JSONStringSalesAgent = data;
-                                var JSONObjectSalesAgent = JSON.parse(JSONStringSalesAgent);
-                                $('#agent-sales').DataTable({
-                                        destroy: true,
-                                        responsive: true,
-                                        data: JSONObjectSalesAgent,
-                                        searching: false,
-                                        filter: false,
-                                        info: false,
-                                        paging: false,
-                                        paginate: false,
-                                        stateSave: true,
-                                        drawCallback: function() {
-                                                var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
-                                                pagination.toggle(this.api().page.info().pages > 1);
-                                        },
-                                        columnDefs:[
-                                                { searchable: false, targets: 0 },
-                                                { sortable: false, targets: 0 }
-                                        ]
-                                });
-                                goAvatar._init(goOptions);
+				var JSONObjectSalesAgent = JSON.parse(JSONStringSalesAgent);
+				$('#agent-sales').DataTable({
+						destroy: true,
+						responsive: true,
+						data: JSONObjectSalesAgent,
+						searching: false,
+						filter: false,
+						info: false,
+						paging: false,
+						paginate: false,
+						stateSave: true,
+						drawCallback: function() {
+								var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+								pagination.toggle(this.api().page.info().pages > 1);
+						},
+						columnDefs:[
+								{ searchable: false, targets: 0 },
+								{ sortable: false, targets: 0 }
+						]
+				});
+				goAvatar._init(goOptions);
 			}
 		});
     }

@@ -144,7 +144,7 @@
                                     <label for="filter_type"><?php $lh->translateText("type"); ?></label>
                                     <select class="form-control select2" id="filter_type" style="width:100%;">
 									<?php
-										if ($perm->reportsanalytics_display == 'Y' && $user->getUserRole() == CRM_DEFAULTS_USER_ROLE_ADMIN) {
+										if (($perm->reportsanalytics_display == 'Y') && ($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_ADMIN || $user->getUserRole() == CRM_DEFAULTS_USER_ROLE_SUPERVISOR)) {
 									?>
 											<option value="stats" selected><?php echo $lh->translationFor("stats"); ?></option>
 											<option value="agent_detail"><?php echo $lh->translationFor("agent_detail"); ?></option>
