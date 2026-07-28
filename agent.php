@@ -2,8 +2,8 @@
 /**
  * @file 		agent.php
  * @brief 		Agent application
- * @copyright 	Copyright (c) 2018 GOautodial Inc. 
- * @author     	Chris Lomuntad 
+ * @copyright 	Copyright (c) 2018 GOautodial Inc.
+ * @author     	Chris Lomuntad
  * @author		Demian Lizandro A. Biscocho
  *
  * @par <b>License</b>:
@@ -57,7 +57,7 @@ if ($list_id_ct > 0) {
 		$first_name 	= $output->first_name[$i];
 		$middle_initial = $output->middle_initial[$i];
 		$last_name 		= $output->last_name[$i];
-		
+
 		$email 			= $output->email[$i];
 		$phone_number 	= $output->phone_number[$i];
 		$alt_phone 		= $output->alt_phone[$i];
@@ -78,7 +78,7 @@ if ($list_id_ct > 0) {
 $fullname = $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
 $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 //var_dump($output);
- $output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, 
+ $output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email,
  									  $phone_number, $alt_phone, $address1, $address2, $address3, $city, $province, $state, $postal_code, $country);
 
 
@@ -122,7 +122,7 @@ function response($order_id,$amount,$response_code,$response_desc){
 	$response['id'] = $_id;
 	$response['setting'] = $setting;
 	$response['value'] = $value;
-	
+
 	$json_response = json_encode($response);
 	echo $json_response;
 }
@@ -131,9 +131,9 @@ function response($order_id,$amount,$response_code,$response_desc){
 	$client = curl_init($id);
 	curl_setopt($client,CURLOPT_RETURNTRANSFER,true);
 	$response = curl_exec($client);
-	
+
 	$result = json_decode($response);
-	
+
 	echo "<table>";
 	echo "<tr><td>ID:</td><td>$result->id</td></tr>";
 	echo "<tr><td>Setting:</td><td>$result->setting</td></tr>";
@@ -163,11 +163,11 @@ $osTicket = $mh->moduleIsEnabled('osTicket');
 		<link href="css/multiple-emails/multiple-emails.css" rel="stylesheet" type="text/css" />
         <!-- Customized Style -->
         <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
-        <?php 
-			print $ui->standardizedThemeCSS(); 
+        <?php
+			print $ui->standardizedThemeCSS();
 			print $ui->creamyThemeCSS();
 			print $ui->dataTablesTheme();
-		?>      
+		?>
 
 		<!-- ECCS JS -->
 		<!--script src="eccs.js" type="text/javascript"></script-->
@@ -184,7 +184,7 @@ $osTicket = $mh->moduleIsEnabled('osTicket');
 		<!-- =============== PAGE VENDOR STYLES ===============-->
 		<!-- WEATHER ICONS-->
 		<link rel="stylesheet" src="js/dashboard/weather-icons/css/weather-icons.min.css">
-		<!-- Datetime picker --> 
+		<!-- Datetime picker -->
         <link rel="stylesheet" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
 		<!-- iCheck for checkboxes and radio inputs -->
 		<link href="css/iCheck/minimal/blue.css" rel="stylesheet" type="text/css" />
@@ -196,34 +196,34 @@ $osTicket = $mh->moduleIsEnabled('osTicket');
 		<script src="js/jquery.md5.js" type="text/javascript"></script>
         <!-- Date Picker -->
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
-        <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>		
+        <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
         <!-- X-Editable -->
         <!--<link rel="stylesheet" src="js/dashboard/x-editable/dist/css/bootstrap-editable.css">-->
         <!--<script type="text/javascript" src="js/dashboard/x-editable/dist/js/bootstrap-editable.min.js"></script>-->
 
         <!-- preloader -->
         <link rel="stylesheet" href="css/customizedLoader.css">
-		
+
 		<!-- flag sprites -->
 		<link rel="stylesheet" href="css/flags/flags.min.css">
 
-		<!-- CHAT -->	
+		<!-- CHAT -->
 	        <!-- <script src="modules/GoChat/js/chat.js"></script> -->
 
         <script type="text/javascript">
 			history.pushState('', document.title, window.location.pathname);
-			
+
 			$(window).load(function() {
 				$(".preloader").fadeOut("slow", function() {
 					if (use_webrtc && (!!$.prototype.snackbar) && phone.isConnected()) {
 						$.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; Please wait while we register your phone extension to the dialer...", timeout: 3000, htmlAllowed: true});
 					}
 				});
-				
+
 				$('#callback-list')
 					.removeClass( 'display' )
 					.addClass('table table-striped table-bordered');
-				
+
 				if (typeof country_codes !== 'undefined') {
 					$("#country_code").append('<option value="1">United States of America</option>');
 					$("#country_code").append('<option value="1">Canada</option>');
@@ -237,7 +237,7 @@ $osTicket = $mh->moduleIsEnabled('osTicket');
 					});
 				}
 			});
-			
+
 			$(function() {
 				//turn to inline mode
 				//$.fn.editable.defaults.mode = 'inline';    //buttons
@@ -249,7 +249,7 @@ $osTicket = $mh->moduleIsEnabled('osTicket');
 				//	'<button type="button" class="btn btn-default btn-sm editable-cancel" style="padding: 8px 10px;">'+
 				//		'<i class="fa fa-remove"></i>'+
 				//	'</button>';
-				
+
 				//$("a[id='first_name'], a[id='middle_initial'], a[id='last_name']").on('hidden', function() {
 				//	var thisID = $(this).attr('id');
 				//	//$('#'+thisID+'_label').addClass('hidden');
@@ -267,7 +267,7 @@ $osTicket = $mh->moduleIsEnabled('osTicket');
 				//	}
 				//	//$('#'+thisID+'_label').removeClass('hidden');
 				//});
-				
+
 				//$("a[id='first_name']").editable({
 				//	type: 'text',
 				//	title: '<?=$lh->translationFor('enter_first_name')?>',
@@ -302,7 +302,7 @@ $osTicket = $mh->moduleIsEnabled('osTicket');
 				//	placement: 'bottom',
 				//	onblur: 'submit'
 				//});
-				
+
 				//$("#callback-list").DataTable({"bDestroy": true, "aoColumnDefs": [{ "bSortable": false, "aTargets": [ 5 ] }, { "bSearchable": false, "aTargets": [ 2, 5 ] }] });
 			});
 		</script>
@@ -475,7 +475,7 @@ $osTicket = $mh->moduleIsEnabled('osTicket');
 	</style>
 
 	<!-- ECCS Customiztion -->
-	<?php 
+	<?php
 		if(ECCS_BLIND_MODE === 'y'){
 	?>
 		<style>
@@ -559,15 +559,15 @@ input:checked + .slider:before {
 		<!-- ECCS CSS -->
 	<!--	<link href="./css/bootstrap-toggle.min.css" type="text/css" /> -->
 		<link href="./css/eccs4.css" rel="stylesheet" type="text/css"/>
-		
+
 	<!--	<script src="./js/bootstrap-toggle.min.js" type="text/javascript"></script> -->
 	<?php }// end if ?>
 	<!-- /. ECCS Customization -->
-    
+
     </head>
-    
+
     <?php print $ui->creamyAgentBody(); ?>
-    
+
     <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyAgentHeader($user); ?>
@@ -579,9 +579,9 @@ input:checked + .slider:before {
                 <!-- Content Header (Page header) -->
   			<!-- ECCS Customization -->
                 	<?php if(ECCS_BLIND_MODE !== 'y')
-			{ ?> 
-				
-                <!-- Content Header (Page header) 
+			{ ?>
+
+                <!-- Content Header (Page header)
                 <section id="contact_info_crumbs" class="content-heading">
                 <span id="contact_info_bar"><?php $lh->translateText("contact_information"); ?></span>
                     <ol class="breadcrumb hidden-xs pull-right">
@@ -590,7 +590,7 @@ input:checked + .slider:before {
                 </section> -->
 			<?php }//end if ?>
                         <!-- /.ECCS Customization -->
-		
+
                 <!-- Main content -->
 <!-- <ul class="nav nav-tabs nav-justified content-tabs" style="position: absolute; top: 120px; width: 84%; left: 55px;"> -->
     <!-- <li id="dialer-tab" class="active"><a href="#control-dialer-tab" data-toggle="tab">Dialer</a></li>
@@ -656,9 +656,9 @@ input:checked + .slider:before {
 			<?php if(ECCS_BLIND_MODE === 'y'){ ?>
                         <div class="row">
 				<input type="text" id="freeTestField" class="hidden">
-			</div> 
 			</div>
-			
+			</div>
+
                          <div class="col-lg-9">
 			<?php } ?>
 					<!-- standard custom edition form -->
@@ -689,7 +689,7 @@ input:checked + .slider:before {
 								</h4>
 						                <p class="ng-binding animated fadeInUpShort">
 									 <!-- ECCS Customization -->
-                                                                        <?php if(ECCS_BLIND_MODE === 'y'){ ?> 
+                                                                        <?php if(ECCS_BLIND_MODE === 'y'){ ?>
 										<span id="span-cust-number" class="hidden"><label for="cust_number"> Client Number[#CN]: </label> <input type="text" id="cust_number" style="background-color:; border:; color:black; margin-top: 5px; padding-left: 5px; font-size: 14pt; font-weight: 600;" onclick="this.setSelectionRange(0, this.value.length)" readonly/>"Ctrl+C" to Copy Number.</span>
 
 									<?php } else { ?>
@@ -707,7 +707,7 @@ input:checked + .slider:before {
 									</div>
 								</div>
 							<!-- /.card heading -->
-						<?php } //-- show agent header ?>				
+						<?php } //-- show agent header ?>
 							<!-- Card body -->
 						        <div class="card-body custom-tabpanel">
 				                	<div role="tabpanel" class="panel panel-transparent">
@@ -756,7 +756,7 @@ input:checked + .slider:before {
 												</h4>
 												<!-- <br/> -->
 												<form role="form" id="name_form" class="formMain form-inline" >
-												
+
 												<!--LEAD ID-->
 												<input type="hidden" value="<?php echo $lead_id;?>" name="lead_id">
 												<!--LIST ID-->
@@ -781,7 +781,7 @@ input:checked + .slider:before {
 												<input type="hidden" value="0" name="FORM_LOADED">
 												<!--ADDRESS3-->
 												<input type="hidden" value="<?php echo $address3;?>" name="address3">
-												
+
 												<div class="row">
 													<div class="col-sm-4">
 														<div class="mda-form-group label-floating">
@@ -806,7 +806,7 @@ input:checked + .slider:before {
 													</div>
 												</div>
 												</form>
-												
+
 												<form id="contact_details_form" class="formMain">
 													<!-- phone number & alternative phone number -->
 													<div class="row">
@@ -870,7 +870,7 @@ input:checked + .slider:before {
 														</div>
 													</div>
 													<!-- /.city,state,postalcode -->
-												
+
 	 												<!-- country_code & email -->
                                                                                                         <div class="row">
                                                                                                                 <div class="col-xl-12 col-lg-6">
@@ -892,7 +892,7 @@ input:checked + .slider:before {
 														</div>
 													</div>
 													<!-- /.country_code & email -->
-												</form> 
+												</form>
 												<form role="form" id="gender_form" class="formMain form-inline" >
 													<div class="row">
 														<div class="col-sm-3">
@@ -928,7 +928,7 @@ input:checked + .slider:before {
 														</div>
 													</div>
 												</form>
-											
+
 							                <!-- NOTIFICATIONS -->
 											<!--<div id="notifications_list">
 												<div class="output-message-success" style="display:none;">
@@ -966,17 +966,17 @@ input:checked + .slider:before {
 											</div>
 											<br id="custom_br" style="display: none;">
 										</div><!--End of Profile-->
-										
+
 										<div id="comments_tab" role="tabpanel" class="tab-pane">
 											<div class="row">
 												<div class="col-sm-12">
 													<h4><!--Comments-->
 														<!--<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">Edit Information</a>-->
 													</h4>
-												
+
 													<form role="form" id="comment_form" class="formMain form-inline" >
 														<div class="mda-form-group hidden">
-															<p style="padding-right:0px;padding-top: 20px;"><?=$lh->translationFor('comments')?>:</p> 
+															<p style="padding-right:0px;padding-top: 20px;"><?=$lh->translationFor('comments')?>:</p>
 															<button id="ViewCommentButton" onClick="ViewComments('ON');" value="-History-" class="hidden"></button>
 														</div>
 														<div class="form-group" style="float: left; width:100%;">
@@ -987,7 +987,7 @@ input:checked + .slider:before {
 												</div>
 											</div>
 										</div>
-										
+
 										<!-- Scripts -->
 										<div id="scripts" role="tabpanel" class="tab-pane">
 											<div class="row">
@@ -1004,7 +1004,7 @@ input:checked + .slider:before {
 											</div><!-- /.row -->
 										</div>
 										<!-- End of Scripts -->
-										
+
 										<?php if(ROCKETCHAT_ENABLE === 'y'){?>
 										<!-- Rocket Chat -->
                                                                                 <div id="rc" role="tabpanel" class="tab-pane">
@@ -1014,7 +1014,7 @@ input:checked + .slider:before {
                                                                                 </div>
                                                                                 <!-- End of Rocket Chat -->
 										<?php } ?>
-										
+
 										<?php if ($osTicket) { ?>
 										<!-- osTicket -->
 										<div id="osticket" role="tabpanel" class="tab-pane">
@@ -1032,21 +1032,21 @@ input:checked + .slider:before {
 										<?php } ?>
 									</div>
 								</div>
-								
+
 					<!-- SCRIPT MODAL -->
 							<div class="modal fade" id="script" name="script" tabindex="-1" role="dialog" aria-hidden="true">
 						        <div class="modal-dialog">
 						            <div class="modal-content">
-									
+
 						                <div class="modal-header">
 						                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						                    <h4 class="modal-title"><i class="fa fa-edit"></i> <b><?php $lh->translationFor("script"); ?></b></h4>
 						                </div>
 
 						                    <div class="modal-body">
-						                        
+
 											</div>
-										
+
 						            </div><!-- /.modal-content -->
 						        </div><!-- /.modal-dialog -->
 						    </div><!-- /.modal -->
@@ -1057,7 +1057,7 @@ input:checked + .slider:before {
 						<!--span id="shortcut-key-reminder" style="position: absolute; bottom: 12px; right: 5px; font-family: calibri, arial, verdana, roboto; font-size: 14pt; font-weight: 600;" class="hidden-xs">Shortcut keys to exit [Shift + End]</span-->
 					</div>
 					<?php } ?>
-					
+
 					<div id="loaded-contents" class="container-custom ng-scope" style="display: none;">
 						<div id="contents-messages" class="row" style="display: none;">
 							<!-- left side folder list column -->
@@ -1072,7 +1072,7 @@ input:checked + .slider:before {
 									</div><!-- /.box-body -->
 								</div><!-- /. box -->
 							</div><!-- /.col -->
-							
+
 							<!-- main content right side column -->
 							<div id="mail-messages" class="col-md-9">
 								<div class="box box-default">
@@ -1086,7 +1086,7 @@ input:checked + .slider:before {
 										<div class="table-responsive mailbox-messages">
 											<?php print $ui->getMessagesFromFolderAsTable($user->getUserId(), $folder); ?>
 										</div><!-- /.mail-box-messages -->
-										
+
 										<div class="mail-preloader" style="margin: 30px 0 10px; text-align: center; display: none;">
 											<span class="dots">
 												<div class="circ1"></div><div class="circ2"></div><div class="circ3"></div><div class="circ4"></div>
@@ -1100,7 +1100,7 @@ input:checked + .slider:before {
 									</div>
 								</div><!-- /. box -->
 							</div><!-- /.col -->
-							
+
 							<div id="mail-composemail" class="col-md-9" style="display: none;">
 								<div class="box box-default">
 									<form method="POST" id="send-message-form" enctype="multipart/form-data">
@@ -1149,7 +1149,7 @@ input:checked + .slider:before {
 									</form> <!-- /.form -->
 								</div><!-- /. box -->
 							</div><!-- /.col -->
-							
+
 							<div id="mail-readmail" class="col-md-9" style="display: none;">
 								<div class="box box-default" id="message-full-box">
 									<div class="box-header with-border non-printable">
@@ -1193,8 +1193,8 @@ input:checked + .slider:before {
 								</div><!-- /. box -->
 							</div><!-- /.col -->
 						</div><!-- /.row -->
-						
-						
+
+
 						<div id="contents-callbacks" class="row" style="display: none;">
 							<div class="card col-md-12" style="padding: 15px;">
 								<table id="callback-list" class="display" style="border: 1px solid #f4f4f4">
@@ -1224,12 +1224,12 @@ input:checked + .slider:before {
 										</tr>
 									</thead>
 									<tbody>
-										
+
 									</tbody>
 								</table>
 							</div>
 						</div><!-- /.row -->
-						
+
 						<!-- Profile -->
 						<div class="unwrap" style="display: none;">
 							<div style="background-image: url(img/profile-bg.jpg)" class="bg-cover">
@@ -1248,7 +1248,7 @@ input:checked + .slider:before {
 										<span class="hidden-xs"><?=$lh->translationFor('calls_today')?></span>
 										<!-- <span>Views</span> -->
 									 </p>
-								  </div>                    
+								  </div>
 								  <div class="col-xs-4 br">
 									 <h3 class="m0"><?php echo $totalsalestoday; ?></h3>
 									 <p class="m0"><?=$lh->translationFor('sales_today')?></p>
@@ -1676,7 +1676,7 @@ input:checked + .slider:before {
 							</div>
 						</div>
 						<!-- End Profile -->
-						
+
 						<!-- Contacts -->
 						<div id="contents-contacts" class="row" style="display: none;">
 							<div class="card col-md-12" style="padding: 15px;">
@@ -1710,7 +1710,7 @@ input:checked + .slider:before {
 										</tr>
 									</thead>
 									<tbody>
-										
+
 									</tbody>
 								</table>
 							</div>
@@ -1720,7 +1720,7 @@ input:checked + .slider:before {
 						</div><!-- /.row -->
 						<!-- End Contacts -->
 					</div>
-					<!-- popup-hotkeys -->	
+					<!-- popup-hotkeys -->
 					<!--div id="popup-hotkeys" class="panel clearfix">
 						<div class="panel-heading"><b><?=$lh->translationFor('available_hotkeys')?></b></div>
 						<div class="panel-body"><?=$lh->translationFor('no_available_hotkeys')?></div>
@@ -1730,12 +1730,12 @@ input:checked + .slider:before {
 							</div>
 						</div>
 					</div-->
-			
+
 			<!-- AGENT CHAT -->
 			<?php if($agent_chat_status) include("includes/chatapp.php");?>
                 </section><!-- /.content -->
 	</div>
-</div>	
+</div>
             </aside><!-- /.right-side -->
 
             <?php //print $ui->creamyFooter(); ?>
@@ -1745,7 +1745,7 @@ input:checked + .slider:before {
     <!-- Create the tabs -->
     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
       <li id="dialer-tab" class="active"><a href="#control-sidebar-dialer-tab" data-toggle="tab"><i class="fa fa-phone"></i></a></li>
-      <?php if($agent_chat_status) echo '<li id="chat-tab"><a href="#control-sidebar-chat-tab" data-toggle="tab"><i class="fa fa-comments-o"></i></a></li>'; ?> 
+      <?php if($agent_chat_status) echo '<li id="chat-tab"><a href="#control-sidebar-chat-tab" data-toggle="tab"><i class="fa fa-comments-o"></i></a></li>'; ?>
       <li id="agents-tab" class="hidden"><a href="#control-sidebar-users-tab" data-toggle="tab"><i class="fa fa-users"></i></a></li>
       <li id="settings-tab"><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-user"></i></a></li>
     </ul>
@@ -1754,20 +1754,20 @@ input:checked + .slider:before {
       <!-- Home tab content -->
       <div class="tab-pane active" id="control-sidebar-dialer-tab">
         <ul class="control-sidebar-menu" id="go_agent_dialer">
-			
+
         </ul>
         <!-- /.control-sidebar-menu -->
 
         <ul class="control-sidebar-menu" id="go_agent_status" style="margin: 0 0 15px;padding: 0 0 10px;">
-			
+
         </ul>
-		
+
         <ul class="control-sidebar-menu" id="go_agent_manualdial" style="margin-top: -10px;padding: 0 15px;">
-			
+
         </ul>
 
         <ul class="control-sidebar-menu" id="go_agent_dialpad" style="margin-top: 15px;padding: 0 15px;">
-			
+
         </ul>
 
         <ul class="control-sidebar-menu" id="go_agent_other_buttons" style="margin-top: 15px;padding: 0 15px;">
@@ -1822,11 +1822,11 @@ input:checked + .slider:before {
 				<button type="button" id="show-callbacks-today" class="btn btn-link btn-block btn-raised"><?=$lh->translateText('Callbacks For Today')?> <span id="callbacks-today" class='badge pull-right bg-red'>0</span></button>
 			</li>
         </ul>
-		
+
         <ul class="control-sidebar-menu" id="go_agent_login" style="width: 100%; margin: 15px auto 15px; text-align: center;">
-			
+
         </ul>
-		
+
         <ul class="control-sidebar-menu" id="go_agent_logout" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 5px; text-align: center; max-width: 100%; padding-bottom: 5px; background-color: #222d32;">
 			<li style="margin-bottom: -5px;">
 				<p><strong><?=$lh->translateText("Call Duration")?>:</strong> <span id="SecondsDISP">0</span> <?=$lh->translationFor('second')?></p>
@@ -1835,7 +1835,7 @@ input:checked + .slider:before {
 				<input type="hidden" id="callserverip" value="" />
 				<span id="custdatetime" class="hidden"></span>
 			</li>
-			
+
         </ul>
         <!-- /.control-sidebar-menu -->
 
@@ -1884,12 +1884,12 @@ input:checked + .slider:before {
 				<a onclick="PauseCodeSelectBox();"><i class="fa fa-"></i> <span><?=$lh->translationFor('enter_pause_code')?></span></a>
 			</li>
 		</ul>
-		
+
         <ul class="control-sidebar-menu" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px; max-width: 100%; padding-bottom: 5px; background-color: #222d32;">
 			<li>
 				<div class="center-block" style="text-align: center">
 					<a href="#profile" class="btn btn-warning"><i class='fa fa-user'></i> <?=$lh->translationFor("my_profile")?></a>
-					 &nbsp; 
+					 &nbsp;
 					<a href="./logout.php" id="cream-agent-logout" class="btn btn-warning"><i class='fa fa-sign-out'></i> <?=$lh->translationFor("exit")?></a>
 				</div>
 			</li>
@@ -1914,12 +1914,12 @@ dding-top: 10px;">
 	Contact List
            <!--<div>&nbsp;</div>-->
        </li>
-	
-	
+
+
 	<?php
 	   include('includes/chat-tab.php');
 	?>
-	</ul>	
+	</ul>
       </div>
       <!-- /. tab-pane -->
 	<?php } ?>
@@ -1937,10 +1937,10 @@ dding-top: 10px;">
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 
 		<?php print $ui->standardizedThemeJS();?>
-		<script type="text/javascript">	
-			var rcToken = "";								
+		<script type="text/javascript">
+			var rcToken = "";
 			$(document).ready(function() {
-		               <?php if(ROCKETCHAT_ENABLE === 'y'){?> 
+		               <?php if(ROCKETCHAT_ENABLE === 'y'){?>
 				//Initialize RocketChat
 				$('<iframe>', {
 		                   src: '<?php echo ROCKETCHAT_URL;?>?layout=embedded',
@@ -1953,7 +1953,7 @@ dding-top: 10px;">
 		                   }).appendTo('#rc_div');
 
 				var rcUser = '<?php echo $_SESSION['user']?>';
-				var rcHandshake = '<?php echo $_SESSION['phone_this'];?>';	
+				var rcHandshake = '<?php echo $_SESSION['phone_this'];?>';
 				$.ajax({
 					url: "./php/LoginRocketChat.php",
 					type: 'POST',
@@ -2010,28 +2010,28 @@ dding-top: 10px;">
                                 	});
 				});*/
 				//./rocketchat
-				<?php } ?>				
+				<?php } ?>
 
 				var folder = <?php print $folder; ?>;
 				var selectedAll = false;
 				var selectedMessages = [];
-				
+
 				$("#contacts-list").DataTable();
-				
+
 				$("#compose-textarea").wysihtml5();
-				
+
 				$('.select2').select2({theme: 'bootstrap'});
 				$.fn.select2.defaults.set("theme", "bootstrap");
-				
+
 			    //iCheck for checkbox and radio inputs
 		        $('input[type="checkbox"].message-selection-checkbox').iCheck({
 					checkboxClass: 'icheckbox_minimal-blue',
 					radioClass: 'iradio_minimal-blue'
 		        });
-		        
+
 			    // check individual message
 				$('input[type=checkbox].message-selection-checkbox').on("ifUnchecked", ifUnchecked);
-			    
+
 			    // uncheck individual message
 				$('input[type=checkbox].message-selection-checkbox').on("ifChecked", ifChecked);
 
@@ -2051,32 +2051,32 @@ dding-top: 10px;">
 			    // de-star a starred video / star a de-stared video.
 			    $("td .fa-star, td .fa-star-o").click(function(e) {
 			        e.preventDefault();
-			        
+
 			        // Detect type: e.currentTarget.id contains the message id.
 					var starred = $(this).hasClass("fa-star");
 					var favorite = 1;
 					var selectedItem = this;
-					
+
 					if (starred) { // unmark message as favorite
-						favorite = 0;   
+						favorite = 0;
 					} // else mark message as favorite
-					
+
 					$("#messages-message-box").hide();
 					$.post("./php/MarkMessagesAsFavorite.php", { "favorite": favorite, "messageids": [e.currentTarget.id], "folder": folder }, function(data) {
-						if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
+						if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") {
 							// toggle visual change.
 				            $(selectedItem).toggleClass("fa-star");
 				            $(selectedItem).toggleClass("fa-star-o");
 							updateMessages(<?=$user->getUserId()?>, folder);
 						} else {
 							<?php
-								$msg = $ui->calloutErrorMessage($lh->translationFor("message")); 
+								$msg = $ui->calloutErrorMessage($lh->translationFor("message"));
 								print $ui->fadingInMessageJS($msg, "messages-message-box");
 							?>
 						}
 					});
 			    });
-				
+
 				$("li a[href^='messages.php?']").click(function(e) {
 					if (typeof e.target.search !== 'undefined') {
 						var thisFolder = e.target.search.replace("?", "");
@@ -2084,7 +2084,7 @@ dding-top: 10px;">
 						updateMessages(<?=$user->getUserId()?>, thisFolder[1]);
 					}
 				});
-				
+
 				$("td a[href^='readmail.php?']").click(function(e) {
 					if (typeof e.target.search !== 'undefined') {
 						var thisURI = e.target.search.replace("?", "").split("&");
@@ -2093,8 +2093,8 @@ dding-top: 10px;">
 						readMessage(thisMessage[1], thisFolder[1]);
 					}
 				});
-				
-				
+
+
 				<?php
 				// mark messages as favorite.
 				$unableFavoriteCode = $ui->calloutErrorMessage($lh->translationFor("unable_set_favorites"));
@@ -2105,7 +2105,7 @@ dding-top: 10px;">
 					$ui->fadingInMessageJS($unableFavoriteCode, "messages-message-box"),	// failure js
 					array("favorite" => 1));												// custom parameters
 				?>
-				
+
 				<?php
 				// mark messages as read
 				$unableReadCode = $ui->calloutErrorMessage($lh->translationFor("unable_set_read"));
@@ -2115,7 +2115,7 @@ dding-top: 10px;">
 					'updateMessages('.$user->getUserId().', folder); for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).parents("tr").removeClass("unread"); }', 												// success js
 					$ui->fadingInMessageJS($unableReadCode, "messages-message-box")); 		// failure js
 				?>
-				
+
 				<?php
 				// mark messages as unread
 				$unableUnreadCode = $ui->calloutErrorMessage($lh->translationFor("unable_set_unread"));
@@ -2125,7 +2125,7 @@ dding-top: 10px;">
 					'updateMessages('.$user->getUserId().', folder); for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).parents("tr").addClass("unread"); }', // success js
 					$ui->fadingInMessageJS($unableUnreadCode, "messages-message-box")); 	// failure js
 				?>
-				
+
 				<?php
 				// send to junk mail
 				$junkText = 'data+" '.$lh->translationFor("out_of").' "+selectedMessages.length+" '.
@@ -2135,7 +2135,7 @@ dding-top: 10px;">
 					"php/JunkMessages.php",						// php to request
 					"updateMessages(".$user->getUserId().", folder); swal($junkText);");		// result js
 				?>
-				
+
 				<?php
 				// restore mail from junk
 				$unjunkText = 'data+" '.$lh->translationFor("out_of").' "+selectedMessages.length+" '.
@@ -2145,7 +2145,7 @@ dding-top: 10px;">
 					"php/UnjunkMessages.php",					// php to request
 					"updateMessages(".$user->getUserId().", folder); swal($unjunkText);");		// result js
 				?>
-				
+
 				<?php
 				// delete messages.
 				$unableDeleteCode = $ui->calloutErrorMessage($lh->translationFor("unable_delete_messages"));
@@ -2155,7 +2155,7 @@ dding-top: 10px;">
 					"updateMessages(".$user->getUserId().", folder);", 												// success js
 					$ui->fadingInMessageJS($unableDeleteCode, "messages-message-box")); 	// failure js
 				?>
-				
+
 				$("#edit-profile").click(function(){
 				    $('.input-disabled').prop('disabled', false);
 								if (typeof disable_alter_custphone !== 'undefined') {
@@ -2170,7 +2170,7 @@ dding-top: 10px;">
 				    //$('.hide_div').show();
 				    $("input:required, select:required").addClass("required_div");
 				    $('#edit-profile').addClass('hidden');
-								
+
 								//$('#cust_full_name .editable').each(function() {
 								//	var thisXvalue = $(this).html();
 								//	if (thisXvalue.length < 1) {
@@ -2179,7 +2179,7 @@ dding-top: 10px;">
 								//		$(this).css('text-decoration', 'none');
 								//	}
 								//});
-				    
+
 				    var txtBox=document.getElementById("first_name" );
 								txtBox.focus();
 				    //$("#submit_div").focus(function() { $(this).select(); } );
@@ -2195,7 +2195,7 @@ dding-top: 10px;">
 					if($('#name_form')[0].checkValidity()) {
 					    if($('#gender_form')[0].checkValidity()) {
 					    	if($('#contact_details_form')[0].checkValidity()) {
-								
+
 								//alert("Form Submitted!");
 								var log_user = '<?=$_SESSION['user']?>';
 								var log_group = '<?=$_SESSION['usergroup']?>';
@@ -2228,13 +2228,13 @@ dding-top: 10px;">
 						$('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 						validate = 0;
 					}
-				
+
 				});
-				
+
 				// Start Mail Composer
 				// external recipients
 				$('#external_recipients').multiple_emails();
-	
+
 				// attachments
 				$('.attachment').MultiFile({
 					max: 5,
@@ -2244,7 +2244,7 @@ dding-top: 10px;">
 						remove: '<i class="fa fa-times"></i>'
 					}
 				});
-				
+
 				// send a message
 				$("#send-message-form").validate({
 					errorElement: "small",
@@ -2288,7 +2288,7 @@ dding-top: 10px;">
 									$("#compose-mail-results").fadeIn(); //show confirmation message
 									$("#send-message-form")[0].reset();
 									$(".MultiFile-label").remove();
-									
+
 									setTimeout(function() {
 										$("#compose-mail-results").fadeOut();
 									}, 3000);
@@ -2301,11 +2301,11 @@ dding-top: 10px;">
 								$("#compose-mail-results").fadeIn(); //show confirmation message
 							}
 						});
-	
+
 						return false; //don't let the form refresh the page...
-					}					
+					}
 				});
-				
+
 				// discard message
 				$('#compose-mail-discard').click(function(e) {
 					e.preventDefault();
@@ -2314,7 +2314,7 @@ dding-top: 10px;">
 					updateMessages(<?=$user->getUserId()?>, 0);
 				});
 				// End Mail Composer
-				
+
 				// Start Read Messages
 				// print.
 				$('.mail-print').click(function() {
@@ -2324,30 +2324,30 @@ dding-top: 10px;">
 							"<?php print GO_BASE_DIRECTORY; ?>/css/printpage.css"
 						],
 						importCSS: false,
-						pageTitle: $("#read-message-subject").html(),
+						pageTitle: $("#read-message-subject").text(),
 						header: '<div class="print-logo"><img src="'+headerLogo+'" height="32"></div>'
 					});
 				});
-				
-				<?php 
+
+				<?php
 				// delete
 				print $ui->mailboxAction(
 					"mail-delete", 																		// class name
 					"php/DeleteMessages.php", 															// POST Request URL
-					"$('#mail-readmail').hide(); $('#mail-messages').show(); updateMessages(".$user->getUserId().", folder); swal('".$lh->translationFor("message_successfully_deleted")."');", 													// Success JS				
+					"$('#mail-readmail').hide(); $('#mail-messages').show(); updateMessages(".$user->getUserId().", folder); swal('".$lh->translationFor("message_successfully_deleted")."');", 													// Success JS
 					$ui->showCustomErrorMessageAlertJS($lh->translationFor("unable_delete_messages")),  // Failure JS
-					null,																				// custom params 
+					null,																				// custom params
 					true,																				// confirmation ?
 					true);																				// check selected messages?
 				?>
-				
+
 				// reply
 				$('.mail-reply').click(function () {
 					var text = $('#mailbox-message-text').html();
-					var reply_text = responseEncodedMessageText(text, $("#read-message-from-name").html());
-					var reply_subject = "Re: " + $("#read-message-subject").html();
-					var reply_user = $("#read-message-from-id").html();
-					
+					var reply_text = responseEncodedMessageText(text, $("#read-message-from-name").text());
+					var reply_subject = "Re: " + $("#read-message-subject").text();
+					var reply_user = $("#read-message-from-id").text();
+
 					$("#touserid").val(reply_user);
 					$("#subject").val(reply_subject);
 					$("#compose-textarea").val(reply_text);
@@ -2356,19 +2356,19 @@ dding-top: 10px;">
 					$(".wysihtml5-toolbar").remove();
 					$("input[name='_wysihtml5_mode']").remove();
 					$("#compose-textarea").wysihtml5();
-					
+
 					setTimeout(function() {
 						$("#mail-composemail").show();
 						$("#mail-readmail").hide();
 					}, 1000);
 				});
-				
+
 				// forward
 				$('.mail-forward').click(function () {
 					var text = $('#mailbox-message-text').html();
-					var forward_text = responseEncodedMessageText(text, $("#read-message-from-name").html());
-					var forward_subject = "Fwd: " + $("#read-message-subject").html();
-					
+					var forward_text = responseEncodedMessageText(text, $("#read-message-from-name").text());
+					var forward_subject = "Fwd: " + $("#read-message-subject").text();
+
 					$("#touserid").val(0);
 					$("#subject").val(forward_subject);
 					$("#compose-textarea").val(forward_text);
@@ -2377,13 +2377,13 @@ dding-top: 10px;">
 					$(".wysihtml5-toolbar").remove();
 					$("input[name='_wysihtml5_mode']").remove();
 					$("#compose-textarea").wysihtml5();
-					
+
 					setTimeout(function() {
 						$("#mail-composemail").show();
 						$("#mail-readmail").hide();
 					}, 1000);
 				});
-				
+
 				$("div a[href='composemail.php']").click(function() {
 					$("#touserid").val(0);
 					$("#subject").val('');
@@ -2393,14 +2393,14 @@ dding-top: 10px;">
 					$(".wysihtml5-toolbar").remove();
 					$("input[name='_wysihtml5_mode']").remove();
 					$("#compose-textarea").wysihtml5();
-					
+
 					setTimeout(function() {
 						$("#mail-composemail").show();
 						$("#mail-readmail").hide();
 						$("#mail-messages").hide();
 					}, 1000);
 				});
-				
+
 				/**
 				 * Deletes a customer
 				 */
@@ -2410,7 +2410,7 @@ dding-top: 10px;">
 					if (r === true) {
 						//var customerid = $(this).attr('href');
 						$.post("./php/DeleteContact.php", $("#modifycustomerform").serialize() ,function(data){
-							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
+							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") {
 								alert("<?php $lh->translateText("Contact Successfully Deleted"); ?>");
 								window.location = "index.php";
 							}
@@ -2418,28 +2418,28 @@ dding-top: 10px;">
 						});
 					}
 				});
-				
+
 				$('.form-control').on('focus blur', function (e) {
 					$(this).parents('.label-floating').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
 				}).trigger('blur');
-				
+
 				$('.label-floating .form-control').change(function() {
 					var thisVal = $(this).val();
 					$(this).parents('.label-floating').toggleClass('focused', (thisVal.length > 0));
 				});
-				
+
 				setInterval(function() {
 					if (!$("#contents-messages").is(':visible') && (typeof refresh_interval !== 'undefined' && refresh_interval < 5000) && (typeof window_focus !== 'undefined' && window_focus)) {
 						updateMessages(<?=$user->getUserId()?>, 0);
 					}
 				}, 5000);
-				
+
 			});
-			
+
 			// generates the reply-to or forward message text. This text will be suitable for placing in the reply-to/forward content
 			// of a message. It will be:
 			// 1. stripped of all html entities
-			// 2. Added --- Original message from "replyUser" --- 
+			// 2. Added --- Original message from "replyUser" ---
 			// 3. cut down to 512 characters (added ...)
 			// 4. wrapped in <pre>...</pre>
 			// 5. encoded to be passed as URI
@@ -2448,21 +2448,57 @@ dding-top: 10px;">
 				result = "-------- <?php $lh->translateText("original_message_from"); ?> "+replyUser+" --------\n"+result;
 				result = "<br/><br/><pre>"+result+"</pre>";
 				//result = encodeURI(result);
-				return result;				
+				return result;
+			}
+
+			function sanitizeMessageHtml(html) {
+				var template = document.createElement('template');
+				var allowedTags = {
+					B: true, STRONG: true, I: true, EM: true, U: true, BR: true,
+					P: true, DIV: true, SPAN: true, UL: true, OL: true, LI: true
+				};
+
+				template.innerHTML = html || '';
+
+				function cleanNode(node) {
+					var children = Array.prototype.slice.call(node.childNodes);
+					children.forEach(function(child) {
+						if (child.nodeType === Node.ELEMENT_NODE) {
+							if (child.tagName === 'SCRIPT' || child.tagName === 'STYLE') {
+								child.parentNode.removeChild(child);
+							} else if (!allowedTags[child.tagName]) {
+								while (child.firstChild) {
+									child.parentNode.insertBefore(child.firstChild, child);
+								}
+								child.parentNode.removeChild(child);
+							} else {
+								while (child.attributes.length > 0) {
+									child.removeAttribute(child.attributes[0].name);
+								}
+								cleanNode(child);
+							}
+						} else if (child.nodeType !== Node.TEXT_NODE) {
+							child.parentNode.removeChild(child);
+						}
+					});
+				}
+
+				cleanNode(template.content);
+				return template.innerHTML;
 			}
 			// End Read Messages
-			
+
 			function updateMessages(user_id, folder_id) {
 				$("#mail-messages div.mailbox-messages").hide();
 				$(".mail-preloader").show();
-				
+
 				var postData = {
 					module_name: 'GOagent',
 					action: 'UpdateMessages',
 					user_id: user_id,
 					folder: folder_id
 				};
-				
+
 				$.ajax({
 					type: 'POST',
 					url: 'modules/GOagent/GOagentJS.php',
@@ -2478,7 +2514,7 @@ dding-top: 10px;">
 						selectedMessages = [];
 						selectedAll = false;
 						folder = folder_id;
-						
+
 						$("#mail-messages div.mailbox-controls").html(result.controls);
 						$("#folders-list").html(result.folders);
 						var thisTopBar = result.topbar;
@@ -2495,31 +2531,31 @@ dding-top: 10px;">
 						<?php } //end if ECCS_BLIND_MODE?>
 						//./
 
-						$("div.mailbox-messages").html(result.messages);						
+						$("div.mailbox-messages").html(result.messages);
 
 						$(".mail-preloader").hide();
 						$("#mail-messages div.mailbox-messages").slideDown();
-						
+
 						//iCheck for checkbox and radio inputs
 						$('input[type="checkbox"].message-selection-checkbox').iCheck({
 							checkboxClass: 'icheckbox_minimal-blue',
 							radioClass: 'iradio_minimal-blue'
 						});
-						
+
 						// check individual message
 						$('input[type=checkbox].message-selection-checkbox').off("ifUnchecked", ifUnchecked).on("ifUnchecked", ifUnchecked);
-						
+
 						// uncheck individual message
 						$('input[type=checkbox].message-selection-checkbox').off("ifChecked", ifChecked).on("ifChecked", ifChecked);
-						
+
 						// next button for table.
 						$(".mailbox-next").off('click');
 						$(".mailbox-next").click(function() { datatable.fnPageChange('next'); });
-						
+
 						// previous button for table
 						$(".mailbox-prev").off('click');
 						$(".mailbox-prev").click(function() { datatable.fnPageChange('previous'); });
-						
+
 						// uncheck/check all messages
 						$("button.messages-mark-as-read").off('click');
 						$(".checkbox-toggle").click(function() {
@@ -2527,37 +2563,37 @@ dding-top: 10px;">
 							else { $("input[type='checkbox'].message-selection-checkbox", ".mailbox").iCheck("check"); }
 							selectedAll = !selectedAll;
 						});
-						
+
 						// de-star a starred video / star a de-stared video.
 						$("td .fa-star, td .fa-star-o").off('click');
 						$("td .fa-star, td .fa-star-o").click(function(e) {
 							e.preventDefault();
-							
+
 							// Detect type: e.currentTarget.id contains the message id.
 							var starred = $(this).hasClass("fa-star");
 							var favorite = 1;
 							var selectedItem = this;
-							
+
 							if (starred) { // unmark message as favorite
-								favorite = 0;   
+								favorite = 0;
 							} // else mark message as favorite
-							
+
 							$("#messages-message-box").hide();
 							$.post("./php/MarkMessagesAsFavorite.php", { "favorite": favorite, "messageids": [e.currentTarget.id], "folder": folder_id }, function(data) {
-								if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
+								if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") {
 									// toggle visual change.
 									$(selectedItem).toggleClass("fa-star");
 									$(selectedItem).toggleClass("fa-star-o");
 									updateMessages(user_id, folder);
 								} else {
 									<?php
-										$msg = $ui->calloutErrorMessage($lh->translationFor("message")); 
+										$msg = $ui->calloutErrorMessage($lh->translationFor("message"));
 										print $ui->fadingInMessageJS($msg, "messages-message-box");
 									?>
 								}
 							});
 						});
-						
+
 						$("li a[href^='messages.php?']").off('click');
 						$("li a[href^='messages.php?']").click(function(e) {
 							if (typeof e.target.search !== 'undefined') {
@@ -2566,7 +2602,7 @@ dding-top: 10px;">
 								updateMessages(<?=$user->getUserId()?>, thisFolder[1]);
 							}
 						});
-						
+
 						$("td a[href^='readmail.php?']").off('click');
 						$("td a[href^='readmail.php?']").click(function(e) {
 							if (typeof e.target.search !== 'undefined') {
@@ -2576,7 +2612,7 @@ dding-top: 10px;">
 								readMessage(thisMessage[1], thisFolder[1]);
 							}
 						});
-						
+
 						$("button.messages-mark-as-favorite").off('click');
 						<?php
 						// mark messages as favorite.
@@ -2588,7 +2624,7 @@ dding-top: 10px;">
 							$ui->fadingInMessageJS($unableFavoriteCode, "messages-message-box"),	// failure js
 							array("favorite" => 1));												// custom parameters
 						?>
-						
+
 						$("button.messages-mark-as-read").off('click');
 						<?php
 						// mark messages as read
@@ -2599,7 +2635,7 @@ dding-top: 10px;">
 							'updateMessages('.$user->getUserId().', folder); for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).parents("tr").removeClass("unread"); }', 												// success js
 							$ui->fadingInMessageJS($unableReadCode, "messages-message-box")); 		// failure js
 						?>
-						
+
 						$("button.messages-mark-as-unread").off('click');
 						<?php
 						// mark messages as unread
@@ -2610,7 +2646,7 @@ dding-top: 10px;">
 							'updateMessages('.$user->getUserId().', folder); for (i=0; i<selectedMessages.length; i++) { $("td.mailbox-star i#"+selectedMessages[i]).parents("tr").addClass("unread"); }', // success js
 							$ui->fadingInMessageJS($unableUnreadCode, "messages-message-box")); 	// failure js
 						?>
-						
+
 						$("button.messages-send-to-junk").off('click');
 						<?php
 						// send to junk mail
@@ -2621,7 +2657,7 @@ dding-top: 10px;">
 							"php/JunkMessages.php",						// php to request
 							"updateMessages(".$user->getUserId().", folder); swal($junkText);");		// result js
 						?>
-						
+
 						$("button.messages-restore-message").off('click');
 						<?php
 						// restore mail from junk
@@ -2632,7 +2668,7 @@ dding-top: 10px;">
 							"php/UnjunkMessages.php",					// php to request
 							"updateMessages(".$user->getUserId().", folder); swal($unjunkText);");		// result js
 						?>
-						
+
 						$("button.messages-delete-permanently").off('click');
 						<?php
 						// delete messages.
@@ -2643,17 +2679,17 @@ dding-top: 10px;">
 							"updateMessages(".$user->getUserId().", folder);", 												// success js
 							$ui->fadingInMessageJS($unableDeleteCode, "messages-message-box")); 	// failure js
 						?>
-						
+
 						// Hijack links on left menu
 						$("a:regex(href, messages|composemail|readmail)").off('click', hijackThisLink).on('click', hijackThisLink);
 					}
 				});
 			}
-			
+
 			function readMessage(message_id, folder_id) {
 				$("#mailbox-message-text, #read-message-attachment, #mail-readmail div.mailbox-read-info, #mail-readmail div.mailbox-controls").hide();
 				$(".mail-preloader").show();
-				
+
 				var postData = {
 					module_name: 'GOagent',
 					action: 'ReadMessage',
@@ -2661,7 +2697,7 @@ dding-top: 10px;">
 					messageid: message_id,
 					folder: folder_id
 				};
-				
+
 				$.ajax({
 					type: 'POST',
 					url: 'modules/GOagent/GOagentJS.php',
@@ -2675,24 +2711,24 @@ dding-top: 10px;">
 				.done(function (result) {
 					if (result.result == 'success') {
 						selectedMessages = [message_id];
-						$("#read-message-subject").html(result.message.subject);
-						$("#read-message-from").html(result.from.user);
-						$("#read-message-from-id").html(result.from.id);
-						$("#read-message-from-name").html(result.from.name);
-						$("#read-message-date").html(result.message.date);
-						$("#mailbox-message-text").html(result.message.message);
+						$("#read-message-subject").text(result.message.subject);
+						$("#read-message-from").text(result.from.user);
+						$("#read-message-from-id").text(result.from.id);
+						$("#read-message-from-name").text(result.from.name);
+						$("#read-message-date").text(result.message.date);
+						$("#mailbox-message-text").html(sanitizeMessageHtml(result.message.message));
 						$("#read-message-attachment").html(result.attachments);
-						
+
 						$(".mail-preloader").hide();
 						$("#mailbox-message-text, #read-message-attachment, #mail-readmail div.mailbox-read-info, #mail-readmail div.mailbox-controls").slideDown();
-						
+
 						if (result.from.user != '' || result.from.user != 'Unknown') {
 							$("button.mail-reply, button.mail-forward").removeClass('hidden');
 						}
 					}
 				});
 			}
-			
+
 			function ifUnchecked(e) {
 				var index = selectedMessages.indexOf(e.currentTarget.value);
 				if (index >= 0) selectedMessages.splice(index, 1);
@@ -2700,7 +2736,7 @@ dding-top: 10px;">
 			function ifChecked(e) {
 				if (e.currentTarget.value != 'on') selectedMessages.push(e.currentTarget.value);
 			}
-			
+
 			//Clickable Hotkeys
                         function triggerHotkey(numkey){
 	                var e = $.Event('keypress');
@@ -2710,7 +2746,7 @@ dding-top: 10px;">
 
 
 		</script>
-		
+
 		<!-- SnackbarJS -->
         <script src="js/snackbar.js" type="text/javascript"></script>
 		<!-- Vue Avatar -->
@@ -2729,11 +2765,11 @@ dding-top: 10px;">
 							'</ul>'
 					}
 				},
-		
+
 				data: {
 					items: []
 				},
-		
+
 				methods: {
 					initials: function(username, initials) {
 						this.items.push({username: username, initials: initials});
@@ -2741,7 +2777,7 @@ dding-top: 10px;">
 				}
 			};
 			var goAvatar = new Vue(goOptions);
-			
+
 			goAvatar._init();*/
 		</script>
 		<!-- ECCS Customization -->
@@ -2752,12 +2788,12 @@ dding-top: 10px;">
 		<script type="text/javascript">
 			//tooltips
 			$(document).ready(function(){
-				
+
 				$('[data-tooltip="tooltip"]').tooltip();
 			//	$('#muteMicrophone').bootstrapToggle();
 
 				$('header.main-header a.logo').attr("title", "<?=$lh->translationFor('home')?>");
-				
+
 				$('#edit-profile').attr("title", "Enable Edit Contact Information");
                                 $('label[for="phone_number"]').attr("title", "<?=$lh->translationFor('phone_number')?>");
                                 $('label[for="alt_phone"]').attr("title", "<?=$lh->translationFor('alternative_phone_number')?>");
@@ -2783,7 +2819,7 @@ dding-top: 10px;">
                                 $('input#title').attr("title", "<?=$lh->translationFor('title')?>");
                                 $('select#gender').attr("title", "<?=$lh->translationFor('gender')?>");
                                 $('input#date_of_birth').attr("title", "<?=$lh->translationFor('date_of_birth')?>");
-				
+
 				$('button#btnLogMeIn').attr("data-tooltip", "tooltip");
                                 $('button#btnLogMeIn').attr("title", "<?=$lh->translationFor('Login to Dialer')?>");
 
@@ -2854,16 +2890,16 @@ dding-top: 10px;">
 					$('button#dialer-pad-' + a).attr("data-tooltip", "tooltip");
         	                        $('button#dialer-pad-' + a).attr("title", a);
 				}
-			
+
 				$('li#toggleWebForm').attr("data-tooltip", "tooltip");
                                 $('li#toggleWebForm').attr("title", "<?=$lh->translationFor('Web Form')?>");
-				
+
 				$('li#toggleWebFormTwo').attr("data-tooltip", "tooltip");
                                 $('li#toggleWebFormTwo').attr("title", "<?=$lh->translationFor('Web Form')?>");
 
 				$('ul#go_agent_other_buttons li:nth-of-type(4)').attr("data-tooltip", "tooltip");
                                 $('ul#go_agent_other_buttons li:nth-of-type(4)').attr("title", "<?=$lh->translationFor('Lead Preview')?>");
-	
+
 				$('li#DialALTPhoneMenu').attr("data-tooltip", "tooltip");
                                 $('li#DialALTPhoneMenu').attr("title", "<?=$lh->translationFor('ALT Phone Dial')?>");
 
@@ -2873,7 +2909,7 @@ dding-top: 10px;">
 				$('li#toggleMute').attr("data-tooltip", "tooltip");
                                 $('li#toggleMute').attr("title", "<?=$lh->translationFor('Toggle Mute')?>");
 
-				
+
 				// Content Tabs
 				$('#agent_tablist li:nth-of-type(1)>a.bb0').attr("data-tooltip", "tooltip");
 				$('#agent_tablist li:nth-of-type(1)>a.bb0').attr("title", "<?=$lh->translationFor('contact_information')?>");
@@ -2888,7 +2924,7 @@ dding-top: 10px;">
 				$('header.main-header a.logo').append("<label for='logo-home' id='hash-home'>#HOME</label>");
 				$('button#btnLogMeIn').append(" [#LI] ");
 				$('button#btnLogMeOut').append(" [#LP] ");
-				
+
 				$('#agent_tablist li:nth-of-type(1)>a.bb0').html(" Contact Info [#CI] ");
 	                        $('#agent_tablist li:nth-of-type(2)>a.bb0').append(" [#CM] ");
                         	$('#agent_tablist li:nth-of-type(3)>a.bb0').append(" [#SC] ");
@@ -2939,7 +2975,7 @@ dding-top: 10px;">
 					}
 					event.stopPropagation();
 				});
-			
+
 				//Remove Class Absolute Logout Button Dialer
 				$('ul#go_agent_logout').css("position", "static");
 				$('li#toggleHotkeys').css("display", "block!important");
@@ -2957,7 +2993,7 @@ dding-top: 10px;">
                         	        $(document).off('keydown', 'body', hotKeysAvailable);
                                 	$("#popup-hotkeys").fadeOut("fast");
                                 }
-			
+
 				// Enable Dial Pad on Mobile
 				$('ul#go_agent_dialpad').removeClass('hidden-xs');
 
