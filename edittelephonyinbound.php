@@ -1286,7 +1286,7 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 												<div class="form-group">
 													<label class="col-sm-3 control-label" for="menu_timeout_prompt"><?php $lh->translateText("menu_timeout_greeting"); ?>: </label>
 													<div class="col-sm-9">
-														<select name="menut_timeout_prompt" id="menu_timeout_prompt" class="form-control select2" style="width:100%;">
+														<select name="menu_timeout_prompt" id="menu_timeout_prompt" class="form-control select2" style="width:100%;">
 															<option value=""><?php $lh->translateText("default_value"); ?></option>
 															<?php
 																for($i=0;$i<count($voicefiles->file_name);$i++) {
