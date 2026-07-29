@@ -1,19 +1,19 @@
 <?php
 /**
 	The MIT License (MIT)
-	
+
 	Copyright (c) 2015 Ignacio Nieto Carvajal
-	
+
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the "Software"), to deal
 	in the Software without restriction, including without limitation the rights
 	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 	copies of the Software, and to permit persons to whom the Software is
 	furnished to do so, subject to the following conditions:
-	
+
 	The above copyright notice and this permission notice shall be included in
 	all copies or substantial portions of the Software.
-	
+
 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -34,6 +34,14 @@ $lh = \creamy\LanguageHandler::getInstance();
 $db = new \creamy\DbHandler();
 $user = \creamy\CreamyUser::currentUser();
 
+function sanitizeMessageHtml($html) {
+	$clean = preg_replace('/<(script|style)\b[^>]*>.*?<\/\1\s*>/is', '', $html);
+	$clean = preg_replace('/<(script|style)\b[^>]*>/is', '', $clean);
+	$clean = strip_tags($clean, '<b><strong><i><em><u><br><p><div><span><ul><ol><li>');
+	$clean = preg_replace('/<\s*([a-z][a-z0-9]*)\b[^>]*>/i', '<$1>', $clean);
+	return $clean;
+}
+
 // get parameters
 if (isset($_GET["folder"])) {
 	$folder = $_GET["folder"];
@@ -51,7 +59,7 @@ if (isset($folder) && isset($messageid)) {
 	$message = $db->getSpecificMessage($user->getUserId(), $messageid, $folder);
 	$fromUser = $db->getDataForUser($message["user_from"]);
 	// mark the message as read
-	$db->markMessagesAsRead($user->getUserId(), array($messageid), $folder);	
+	$db->markMessagesAsRead($user->getUserId(), array($messageid), $folder);
 }
 ?>
 <html>
@@ -63,7 +71,7 @@ if (isset($folder) && isset($messageid)) {
     <link href="./css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <!-- Creamy style -->
     <link href="./css/creamycrm.css" rel="stylesheet" type="text/css" />
-	
+
 	<?php print $ui->standardizedThemeCSS(); ?>
     <?php print $ui->creamyThemeCSS(); ?>
 
@@ -130,11 +138,11 @@ if (isset($folder) && isset($messageid)) {
                   <h3 class="box-title"><?php print $lh->translationFor("read_message"); ?></h3>
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
-                  <div class="mailbox-read-info">
-                    <h3><?php print $message["subject"]; ?></h3>
-                    <h5><?php print $lh->translationFor("from")." ".(isset($fromUser["user"]) ? $fromUser["user"] : $lh->translationFor("unknown")); ?> 
-                    <span class="mailbox-read-time pull-right"><?php print $ui->relativeTime($message["date"]) ?></span></h5>
-                  </div><!-- /.mailbox-read-info -->
+	                  <div class="mailbox-read-info">
+	                    <h3><?php print htmlspecialchars($message["subject"], ENT_QUOTES, 'UTF-8'); ?></h3>
+	                    <h5><?php print htmlspecialchars($lh->translationFor("from")." ".(isset($fromUser["user"]) ? $fromUser["user"] : $lh->translationFor("unknown")), ENT_QUOTES, 'UTF-8'); ?>
+	                    <span class="mailbox-read-time pull-right"><?php print htmlspecialchars($ui->relativeTime($message["date"]), ENT_QUOTES, 'UTF-8'); ?></span></h5>
+	                  </div><!-- /.mailbox-read-info -->
                   <div class="mailbox-controls with-border text-center non-printable">
                     <div class="btn-group">
                       <button class="btn btn-default btn-sm mail-delete" data-toggle="tooltip" title="Delete"><i class="fa fa-trash-o"></i></button>
@@ -146,7 +154,7 @@ if (isset($folder) && isset($messageid)) {
                     <button class="btn btn-default btn-sm mail-print" data-toggle="tooltip" title="Print"><i class="fa fa-print"></i></button>
                   </div><!-- /.mailbox-controls -->
                   <div class="mailbox-read-message" id="mailbox-message-text">
-	                <?php print $message["message"]; ?>
+	                <?php print sanitizeMessageHtml($message["message"]); ?>
                   </div><!-- /.mailbox-read-message -->
                 </div><!-- /.box-body -->
                 <!-- Attachments (if any) -->
@@ -174,51 +182,51 @@ if (isset($folder) && isset($messageid)) {
 			// this message variables
 			var selectedMessages = [<?php print $messageid; ?>];
 			var folder = <?php print $folder; ?>;
-			
+
 			// print.
 			$('.mail-print').click(function(e) {
-				$('#message-full-box').printThis({ 
+				$('#message-full-box').printThis({
 					loadCSS: [
 						"<?php print \creamy\CRMUtils::creamyBaseURL(); ?>/css/creamycrm.css",
 						"<?php print \creamy\CRMUtils::creamyBaseURL(); ?>/css/printpage.css"
-					], 
-					pageTitle: "<?php print $message["subject"]; ?>",
+					],
+					pageTitle: <?php print json_encode($message["subject"]); ?>,
 					header: '<div class="print-logo"><img src="http://creamycrm.com/img/logo.png" width="32" height="32"> Creamy</div>'
 					});
 			});
 
-			<?php 
+			<?php
 			    // delete
 			    $successURL = "messages.php?folder=$folder&message=".urlencode($lh->translationFor("message_successfully_deleted"));
 				print $ui->mailboxAction(
 				    "mail-delete", 																		// class name
 				    "php/DeleteMessages.php", 															// POST Request URL
-				    $ui->newLocationJS($successURL), 													// Success JS				
+				    $ui->newLocationJS($successURL), 													// Success JS
 				    $ui->showCustomErrorMessageAlertJS($lh->translationFor("unable_delete_messages")),  // Failure JS
-				    null,																				// custom params 
+				    null,																				// custom params
 				    true,																				// confirmation ?
 				    true);																				// check selected messages?
-			
+
 			?>
-			
+
 			// reply
 			$('.mail-reply').click(function (e) {
 				var text = $('#mailbox-message-text').html();
 				<?php $replySubject = urlencode("Re: ".$message["subject"]); ?>
-				window.location.href = "composemail.php?reply_text="+responseEncodedMessageText(text, "<?php print $fromUser["name"]; ?>")+"&reply_subject=<?php print $replySubject; ?>&reply_user=<?php print $fromUser["id"]; ?>";
+				window.location.href = "composemail.php?reply_text="+responseEncodedMessageText(text, <?php print json_encode($fromUser["name"]); ?>)+"&reply_subject=<?php print $replySubject; ?>&reply_user=<?php print urlencode($fromUser["id"]); ?>";
 			});
-			
+
 			// forward
 			$('.mail-forward').click(function (e) {
 				var text = $('#mailbox-message-text').html();
 				<?php $fwdSubject = urlencode("Fwd: ".$message["subject"]); ?>
-				window.location.href = "composemail.php?reply_subject=<?php print $fwdSubject; ?>&reply_text="+responseEncodedMessageText(text, "<?php print $fromUser["name"]; ?>");
+				window.location.href = "composemail.php?reply_subject=<?php print $fwdSubject; ?>&reply_text="+responseEncodedMessageText(text, <?php print json_encode($fromUser["name"]); ?>);
 			});
-			
+
 			// generates the reply-to or forward message text. This text will be suitable for placing in the reply-to/forward content
 			// of a message. It will be:
 			// 1. stripped of all html entities
-			// 2. Added --- Original message from "replyUser" --- 
+			// 2. Added --- Original message from "replyUser" ---
 			// 3. cut down to 512 characters (added ...)
 			// 4. wrapped in <pre>...</pre>
 			// 5. encoded to be passed as URI
@@ -227,9 +235,9 @@ if (isset($folder) && isset($messageid)) {
 				result = "-------- <?php $lh->translateText("original_message_from"); ?> "+replyUser+" --------\n"+result;
 				result = "<br/><br/><pre>"+result+"</pre>";
 				result = encodeURI(result);
-				return result;				
+				return result;
 			}
-			
+
 			// hook actions
 			<?php print $ui->getMessageDetailActionJS($messageid, $folder); ?>
 
