@@ -23,10 +23,10 @@
 	THE SOFTWARE.
 */
 
-require_once('DbHandler.php');
-require_once('CRMDefaults.php');
-require_once('LanguageHandler.php');
-require_once('Session.php');
+require_once(__DIR__ . '/DbHandler.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/LanguageHandler.php');
+require_once(__DIR__ . '/Session.php');
 
 // utility functions
 function get_timezone_offset($remote_tz, $origin_tz = null) {
@@ -39,8 +39,7 @@ function get_timezone_offset($remote_tz, $origin_tz = null) {
     $remote_dtz = new DateTimeZone($remote_tz);
     $origin_dt = new DateTime("now", $origin_dtz);
     $remote_dt = new DateTime("now", $remote_dtz);
-    $offset = $origin_dtz->getOffset($origin_dt) - $remote_dtz->getOffset($remote_dt);
-    return $offset;
+    return $origin_dtz->getOffset($origin_dt) - $remote_dtz->getOffset($remote_dt);
 }
 
 error_log("Modifying event. Data: ".var_export($_POST, true));
@@ -54,7 +53,7 @@ if (!isset($_POST["event_id"])) { // do we have a title?
 	$validated = 0;
 }
 
-if ($validated == 1) {
+if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// retrieve data for the event.

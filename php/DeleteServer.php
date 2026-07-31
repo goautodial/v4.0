@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        DeleteServer.php
  * @brief       Handles Delete Server Requests
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -21,13 +23,13 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 
-    $postfields = array(
+    $postfields = [
         'goAction' => 'goDeleteServers',
         'server_id' => $_POST['server_id']
-    );
+    ];
 
     $output = $api->API_Request("goServers", $postfields);
 

@@ -1,6 +1,6 @@
 <?php
-require_once('../goCRMAPISettings.php');
-require_once('../Session.php');
+require_once(__DIR__ . '/../goCRMAPISettings.php');
+require_once(__DIR__ . '/../Session.php');
 /*
 * Displaying Total Active Leads
 * [[API: Function]] - goGetTotalActiveLeads
@@ -21,7 +21,6 @@ require_once('../Session.php');
     curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     $data = curl_exec($ch);
-    curl_close($ch);
    
    //var_dump($data);
     $data = explode(";",$data);

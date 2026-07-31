@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        DeleteInbound.php
  * @brief       Handles Delete Ingroup, IVR & DID Requests
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -21,23 +23,23 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('CRMDefaults.php');
-	require_once('APIHandler.php');
-	
+	require_once(__DIR__ . '/CRMDefaults.php');
+	require_once(__DIR__ . '/APIHandler.php');
+
 	$api 										= \creamy\APIHandler::getInstance();	
 	$id 										= NULL;
 
-	
+
 	if (isset($_POST["groupid"])) {
 		$id 									= $_POST["groupid"];
 		$type									= "ingroup";
 	}
-	
+
 	if (isset($_POST["ivr"])) {
 		$id 									= $_POST["ivr"];
 		$type									= "ivr";
 	}
-	
+
 	if (isset($_POST["modify_did"])) {
 		$id 									= $_POST["modify_did"];
 		$type									= "did";
@@ -45,12 +47,12 @@
 
 	// IF INGROUP IS DELETED
 	if ($id != NULL) {
-	
-		$postfields 							= array(
+
+		$postfields 							= [
 			'goAction' 								=> 'goDeleteInbound',
 			'inbound_id' 							=> $id,
 			'type'									=> $type
-		);
+		];
 
 		$output	 								= $api->API_Request("goInbound", $postfields);
 

@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        DeleteUserGroup.php
  * @brief       
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -22,7 +24,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 							= \creamy\APIHandler::getInstance();
 
 	// check required fields
@@ -31,21 +33,21 @@
 		$validated 					= 0;
 	}
 
-	if ($validated == 1) {
-		$postfields 				= array(
+	if ($validated === 1) {
+		$postfields 				= [
 			'goAction' 					=> 'goDeleteUserGroup',
 			'user_group' 				=> $_POST['usergroup_id']
-		);
+		];
 
 		$output 					= $api->API_Request("goUserGroups", $postfields);
-		
+
 		if ($output->result=="success") { 
 			$status 				= 1; 
 		} else { 
 			$status 				= $output->result; 
 		}
-		
+
 		echo json_encode($status);
-		
+
 	}
 ?>

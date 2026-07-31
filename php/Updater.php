@@ -25,9 +25,9 @@
 
 namespace creamy;
 
-require_once("CRMDefaults.php");
-require_once("DbHandler.php");
-require_once("Config.php");
+require_once(__DIR__ . "/CRMDefaults.php");
+require_once(__DIR__ . "/DbHandler.php");
+require_once(__DIR__ . "/Config.php");
 
 define ('CRM_NO_VERSION', '0.1');
 define ('CRM_OLD_CONFIG_VERSION_FILE', 'Config.php');
@@ -68,7 +68,7 @@ class Updater {
 	 */
     function __construct($dbConnectorType = CRM_DB_CONNECTOR_TYPE_MYSQL) {
 		// database
-		require_once('DatabaseConnectorFactory.php');
+		require_once(__DIR__ . '/DatabaseConnectorFactory.php');
 		$this->dbConnector = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType($dbConnectorType);
     
 		// system versions
@@ -79,8 +79,6 @@ class Updater {
     /**
      * Private clone method to prevent cloning of the instance of the
      * *Singleton* instance.
-     *
-     * @return void
      */
     private function __clone()
     {
@@ -89,11 +87,14 @@ class Updater {
     /**
      * Private unserialize method to prevent unserializing of the *Singleton*
      * instance.
-     *
-     * @return void
      */
-    private function __wakeup()
+    private function __unserialize(array $data): void
     {
+        foreach ($data as $property => $value) {
+            if (property_exists($this, $property)) {
+                $this->{$property} = $value;
+            }
+        }
     }
     
     /** Check versions */
@@ -113,13 +114,8 @@ class Updater {
 			
 			// check settings table (if found)
 			$this->dbConnector->where("setting", "crm_version");
-			$versionFromSettings = $this->dbConnector->getValue(CRM_SETTINGS_TABLE_NAME, "value");
-			return $versionFromSettings;
+			return $this->dbConnector->getValue(CRM_SETTINGS_TABLE_NAME, "value");
 		} 
-	}
-	
-	private function checkRemoteVersion() {
-		return file_get_contents(CRM_REMOTE_VERSION_URL);
 	}
 	
 	public function CRMIsUpToDate() {
@@ -128,11 +124,11 @@ class Updater {
 	
 	public function getCurrentVersion() {
 		// first try to get the version from database.
-		if (isset($this->currendDatabaseVersion)) {
+		if ($this->currendDatabaseVersion !== null) {
 			return floatval($this->currendDatabaseVersion);
 		}
 		// if not found, check file system version.
-		if (isset($this->currentFilesystemVersion)) {
+		if ($this->currentFilesystemVersion !== null) {
 			return floatval($this->currentFilesystemVersion);
 		}
 		// else return no version (0.1).
@@ -220,7 +216,7 @@ class Updater {
 			
 			return true;
 		} else {
-			require_once('./LanguageHandler.php');
+			require_once(__DIR__ . '/LanguageHandler.php');
 			$lh = \creamy\LanguageHandler::getInstance();
 			$this->updateLog .= $lh->translationFor("crm_update_impossible");
 			return false;
@@ -229,18 +225,18 @@ class Updater {
 	
 	private function removeCRMVersionAndObsoleteFieldsFromConfigFile() {
 		$newContents = "";
-		$filename = dirname(__FILE__).DIRECTORY_SEPARATOR.CRM_OLD_CONFIG_VERSION_FILE;
+		$filename = __DIR__.DIRECTORY_SEPARATOR.CRM_OLD_CONFIG_VERSION_FILE;
 		foreach(file($filename) as $line) {
-			if (strpos($line, 'CRM_VERSION') === false && strpos($line, 'CRM_TIMEZONE') === false && 
-				strpos($line, 'CRM_LOCALE') === false && strpos($line, 'CRM_SECURITY_TOKEN') === false &&
-				strpos($line, 'Creamy version') === false && strpos($line, 'CRM_ADMIN_EMAIL') === false) { $newContents .= $line; }
+			if (!str_contains($line, 'CRM_VERSION') && !str_contains($line, 'CRM_TIMEZONE') && 
+				!str_contains($line, 'CRM_LOCALE') && !str_contains($line, 'CRM_SECURITY_TOKEN') &&
+				!str_contains($line, 'Creamy version') && !str_contains($line, 'CRM_ADMIN_EMAIL')) { $newContents .= $line; }
 		}
 		file_put_contents($filename, $newContents);
 	}
 	
 	/** Version 1.0 adds the settings table */
 	private function addSettingsTable() {
-		$fields = array("setting" => "VARCHAR(255) NOT NULL", "context" => "VARCHAR(255) NOT NULL" , "value" => "LONGTEXT");
+		$fields = ["setting" => "VARCHAR(255) NOT NULL", "context" => "VARCHAR(255) NOT NULL" , "value" => "LONGTEXT"];
 		return $this->dbConnector->createTable(CRM_SETTINGS_TABLE_NAME, $fields, ["setting", "context"]);
 	}
 	
@@ -252,7 +248,7 @@ class Updater {
 			$this->dbConnector->where("email", CRM_ADMIN_EMAIL);
 			$currentAdmin = $this->dbConnector->getOne("users");
 			if (isset($currentAdmin)) {
-				$adminIdData = array("setting" => CRM_SETTING_ADMIN_USER, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => $currentAdmin["id"]);
+				$adminIdData = ["setting" => CRM_SETTING_ADMIN_USER, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => $currentAdmin["id"]];
 				$adminEmailFound = $this->dbConnector->insert(CRM_SETTINGS_TABLE_NAME, $adminIdData);
 			}
 		}
@@ -262,7 +258,7 @@ class Updater {
 			$this->dbConnector->orderBy("id","asc");
 			$mainAdmin = $this->dbConnector->getOne("users");
 			if (is_array($mainAdmin) && (array_key_exists("id", $mainAdmin))) {
-				$adminName = array("setting" => CRM_SETTING_ADMIN_USER, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => $mainAdmin["id"]);
+				$adminName = ["setting" => CRM_SETTING_ADMIN_USER, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => $mainAdmin["id"]];
 				$adminEmailFound = $this->dbConnector->insert(CRM_SETTINGS_TABLE_NAME, $adminName);
 			}
 		}
@@ -271,23 +267,20 @@ class Updater {
 
 	/** Version 1.0 adds the attachments table for message attachments */
 	private function addAttachmentsTables() {
-		$fields = array(
+		$fields = [
 		  	"message_id" => "INT(11) NOT NULL",
 		  	"folder_id" => "INT(11) NOT NULL",
 		  	"filepath" => "VARCHAR(255) NOT NULL",
 		  	"filetype" => "VARCHAR(255) NOT NULL",
 		  	"filesize" => "INT(11) NOT NULL"
-		);
-		// inbox
-		if (!$this->dbConnector->createTable(CRM_ATTACHMENTS_TABLE_NAME, $fields, null)) {
-			return false;
-		}
-		return true;
+		];
+        // inbox
+        return (bool) $this->dbConnector->createTable(CRM_ATTACHMENTS_TABLE_NAME, $fields, null);
 	}
 
 	/** Version 1.0 adds the events table for calendar events */
 	private function addEventsTable() {
-		$fields = array(
+		$fields = [
 			"user_id" => "INT(11) NOT NULL",
 			"title" => "VARCHAR(512) NOT NULL",
 			"all_day" => "INT(1) NOT NULL",
@@ -297,11 +290,8 @@ class Updater {
 			"alarm" => "VARCHAR(80) NULL",
 			"notification_sent" => "INT(1) NOT NULL DEFAULT 0",
 			"color" => "VARCHAR(80) NOT NULL" 
-		);
-		if (!$this->dbConnector->createTable(CRM_EVENTS_TABLE_NAME, $fields, null)) {
-			return false;
-		}
-		return true;
+		];
+        return (bool) $this->dbConnector->createTable(CRM_EVENTS_TABLE_NAME, $fields, null);
 	}
 
 	/** Version 1.0 changes the event system, so it no longer relies on MySQL events. */
@@ -312,61 +302,61 @@ class Updater {
 	/** Sets general settings parameters of the CRM */
 	private function setGeneralParametersInSettings() {
 		// crm version
-		$data = array("setting" => CRM_SETTING_CRM_VERSION, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => CRM_INSTALL_VERSION);
+		$data = ["setting" => CRM_SETTING_CRM_VERSION, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => CRM_INSTALL_VERSION];
 		if (!$this->dbConnector->insert(CRM_SETTINGS_TABLE_NAME, $data)) return false;
 		
 		// base dir. We suppose here we have been called from updater.php or other root file.
 		$currentURL = \creamy\CRMUtils::getCurrentURLPath(); // i.e: http://localhost:8080/creamy/updater.php
 		$baseurl = \creamy\CRMUtils::getBasedirFromURL($currentURL); // => http://localhost:8080/creamy
-		$data = array("setting" => CRM_SETTING_CRM_BASE_URL, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => $baseurl);
+		$data = ["setting" => CRM_SETTING_CRM_BASE_URL, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => $baseurl];
 		if (!$this->dbConnector->insert(CRM_SETTINGS_TABLE_NAME, $data)) return false;
 		
 		// installation date. We try to get it from the Config.php file first
-		if ($timestamp = filemtime(dirname(__FILE__) . '/Config.php')) {
+		if ($timestamp = filemtime(__DIR__ . '/Config.php')) {
 			$dbDate = date("Y-m-d H:i:s", $timestamp);
 		} else { $dbDate = $this->dbConnector->now(); }
-		$data = array("setting" => CRM_SETTING_INSTALLATION_DATE, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => $dbDate);
+		$data = ["setting" => CRM_SETTING_INSTALLATION_DATE, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => $dbDate];
 		if (!$this->dbConnector->insert(CRM_SETTINGS_TABLE_NAME, $data)) return false;
 		
 		// module system enabled (1 by default)
-		$data = array("setting" => CRM_SETTING_MODULE_SYSTEM_ENABLED, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => true);
+		$data = ["setting" => CRM_SETTING_MODULE_SYSTEM_ENABLED, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => true];
 		if (!$this->dbConnector->insert(CRM_SETTINGS_TABLE_NAME, $data)) return false;
 		
 		// statistics system enabled (1 by default)
-		$data = array("setting" => CRM_SETTING_STATISTICS_SYSTEM_ENABLED, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => true);
+		$data = ["setting" => CRM_SETTING_STATISTICS_SYSTEM_ENABLED, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => true];
 		if (!$this->dbConnector->insert(CRM_SETTINGS_TABLE_NAME, $data)) return false;
 
 		// email notifications of events.
-		$data = array("setting" => CRM_SETTING_EVENTS_EMAIL, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => true);
+		$data = ["setting" => CRM_SETTING_EVENTS_EMAIL, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => true];
 		if (!$this->dbConnector->insert(CRM_SETTINGS_TABLE_NAME, $data)) return false;
 
 		// job scheduling frequency
-		$data = array("setting" => CRM_SETTING_JOB_SCHEDULING_MIN_FREQ, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => CRM_JOB_SCHEDULING_HOURLY);
+		$data = ["setting" => CRM_SETTING_JOB_SCHEDULING_MIN_FREQ, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => CRM_JOB_SCHEDULING_HOURLY];
 		if (!$this->dbConnector->insert(CRM_SETTINGS_TABLE_NAME, $data)) return false;
 
 		// active modules (empty by default)
-		$data = array("setting" => CRM_SETTING_ACTIVE_MODULES, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => "");
+		$data = ["setting" => CRM_SETTING_ACTIVE_MODULES, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => ""];
 		if (!$this->dbConnector->insert(CRM_SETTINGS_TABLE_NAME, $data)) return false;
 
 		// customer list fields
-		$data = array("setting" => CRM_SETTING_CUSTOMER_LIST_FIELDS, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => CRM_SETTING_DEFAULT_CUSTOMER_LIST_FIELDS);
+		$data = ["setting" => CRM_SETTING_CUSTOMER_LIST_FIELDS, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => CRM_SETTING_DEFAULT_CUSTOMER_LIST_FIELDS];
 		if (!$this->dbConnector->insert(CRM_SETTINGS_TABLE_NAME, $data)) return false;
 
 		// timezone
 		if (defined('CRM_TIMEZONE')) {
-			$data = array("setting" => CRM_SETTING_TIMEZONE, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => CRM_TIMEZONE);
+			$data = ["setting" => CRM_SETTING_TIMEZONE, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => CRM_TIMEZONE];
 			if (!$this->dbConnector->insert(CRM_SETTINGS_TABLE_NAME, $data)) return false;
 		}
 		
 		// locale
 		if (defined('CRM_LOCALE')) {
-			$data = array("setting" => CRM_SETTING_LOCALE, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => CRM_LOCALE);
+			$data = ["setting" => CRM_SETTING_LOCALE, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => CRM_LOCALE];
 			if (!$this->dbConnector->insert(CRM_SETTINGS_TABLE_NAME, $data)) return false;
 		}
 		
 		// security token
 		if (defined('CRM_SECURITY_TOKEN')) {
-			$data = array("setting" => CRM_SETTING_SECURITY_TOKEN, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => CRM_SECURITY_TOKEN);
+			$data = ["setting" => CRM_SETTING_SECURITY_TOKEN, "context" => CRM_SETTING_CONTEXT_CREAMY, "value" => CRM_SECURITY_TOKEN];
 			if (!$this->dbConnector->insert(CRM_SETTINGS_TABLE_NAME, $data)) return false;
 		}
 		return true;
@@ -390,13 +380,8 @@ class Updater {
 	
 	/** Version 1.0 allows for LONGTEXT in message field of message tables. */
 	private function extendMessageFields() {
-		$tableNames = array(CRM_MESSAGES_INBOX_TABLE_NAME, CRM_MESSAGES_OUTBOX_TABLE_NAME, CRM_MESSAGES_JUNK_TABLE_NAME);
-		foreach ($tableNames as $tableName) {
-			if (!$this->dbConnector->alterColumnFromTable($tableName, "message", "LONGTEXT")) {
-				return false;
-			}
-		}
-		return true;
+		$tableNames = [CRM_MESSAGES_INBOX_TABLE_NAME, CRM_MESSAGES_OUTBOX_TABLE_NAME, CRM_MESSAGES_JUNK_TABLE_NAME];
+        return array_all($tableNames, fn($tableName) => $this->dbConnector->alterColumnFromTable($tableName, "message", "LONGTEXT"));
 	}
 	
 	/** Version 1.0 requires the email field of users to be unique */
@@ -414,7 +399,7 @@ class Updater {
 	 * Returns true if table $table contains column $column, false otherwise.	
 	 */
 	private function tableContainsColum($table, $column) {
-		$columns = $this->dbConnector->rawQuery("SHOW COLUMNS FROM $table LIKE '$column'");
+		$this->dbConnector->rawQuery("SHOW COLUMNS FROM $table LIKE '$column'");
 		if ($this->dbConnector->getRowCount() > 0) return true;
 		else return false;
 	}

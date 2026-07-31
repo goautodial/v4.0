@@ -25,21 +25,18 @@
 
 namespace creamy;
 
-require_once('CRMDefaults.php');
-require_once('CRMUtils.php');
-require_once('RandomStringGenerator.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/CRMUtils.php');
+require_once(__DIR__ . '/RandomStringGenerator.php');
 
 /**
  * Class to handle all image manipulation.
  */
 class ImageHandler {
 	
-    function __construct() {
-    }
-
-	private function generateThumbnailForImage($imgSrc, $imageFileType) {
+    private function generateThumbnailForImage($imgSrc, $imageFileType) {
 		//getting the image dimensions
-		list($width, $height) = getimagesize($imgSrc);
+		[$width, $height] = getimagesize($imgSrc);
 		
 		//saving the image into memory (for manipulation with GD Library)
 		if ($imageFileType == "jpg" || $imageFileType == "jpeg") $myImage = imagecreatefromjpeg($imgSrc);
@@ -95,8 +92,8 @@ class ImageHandler {
 		$thumb = $this->generateThumbnailForImage($imgSrc, $imageFileType);
 		// if successful, write the image to the generated path and return it.
 		if ($thumb) {
-			if (imagejpeg($thumb, $basedir.AVATAR_IMAGE_FILEDIR.$filename)) { imagedestroy($thumb); return AVATAR_IMAGE_FILEDIR.$filename; }
-			else { imagedestroy($thumb); return null; }
+			if (imagejpeg($thumb, $basedir.AVATAR_IMAGE_FILEDIR.$filename)) { return AVATAR_IMAGE_FILEDIR.$filename; }
+			else { return null; }
 		} else { return NULL; }
 	}
 	
@@ -119,14 +116,14 @@ class ImageHandler {
 		imagealphablending($myImage, false);
 		imagesavealpha($myImage, true);
 		
-		if (imagepng($myImage, $basedir.$filename)) { imagedestroy($myImage); return $filename; }
-		else { imagedestroy($myImage); return null; }
+		if (imagepng($myImage, $basedir.$filename)) { return $filename; }
+		else { return null; }
 	}
 	
 	
 	public function removeUserAvatar($avatarpath) {
 		$basedir = \creamy\CRMUtils::creamyBaseDirectoryPath();
-		if (strpos($basedir.$avatarpath, CRM_DEFAULTS_USER_AVATAR_IMAGE_NAME) === false) { // don't remove default avatars.
+		if (!str_contains($basedir.$avatarpath, CRM_DEFAULTS_USER_AVATAR_IMAGE_NAME)) { // don't remove default avatars.
 			return unlink($basedir.$avatarpath);
 		}
 		else return true;

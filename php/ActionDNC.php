@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 
 	$api 											= \creamy\APIHandler::getInstance();
 
@@ -27,12 +27,12 @@
 	$phone_numbers 									= $_POST['phone_numbers'];
 	$stage 											= $_POST['stageDNC'];
 	
-    $postfields 									= array(
+    $postfields 									= [
 		'goAction' 										=> 'goActionDNC',
 		'campaign_id' 									=> $campaign_id,
 		'phone_numbers'									=> $phone_numbers,
 		'stage'											=> $stage
-	);	
+	];	
     
 	$output 										= $api->API_actionDNC($postfields);
 

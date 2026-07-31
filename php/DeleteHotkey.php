@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        DeleteHotkey.php
  * @brief       Handles Delete Hotkey Request
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -21,14 +23,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 								= \creamy\APIHandler::getInstance();
 
-	$postfields 						= array(
+	$postfields 						= [
         'goAction' 							=> 'goDeleteHotkey',
         'campaign_id' 						=> $_POST["campaign_id"],
         'hotkey' 							=> $_POST["hotkey"]
-    );
+    ];
 
     $output 							= $api->API_Request("goHotkeys", $postfields);
 
@@ -37,6 +39,6 @@
 	} else { 
 		$status 						= $output->result; 
 	}
-	
+
 	echo json_encode($status);
 ?>

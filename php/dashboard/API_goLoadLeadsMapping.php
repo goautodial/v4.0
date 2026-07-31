@@ -9,13 +9,13 @@
 #### License: AGPLv2                            ####
 ####################################################
 
-require_once('../goCRMAPISettings.php');
+require_once(__DIR__ . '/../goCRMAPISettings.php');
 
 $goCSVvalues = $_REQUEST['goCSVvalues'];
 
 $defaultFields = '|lead_id|vendor_lead_code|source_id|list_id|gmt_offset_now|called_since_last_reset|phone_code|phone_number|title|first_name|middle_initial|last_name|address1|address2|address3|city|state|province|postal_code|country_code|gender|date_of_birth|alt_phone|email|security_phrase|comments|called_count|last_local_call_time|rank|owner|entry_list_id|';
 
-$standard_SQL = array("defFields" => "vendor_lead_code, source_id, list_id, phone_code, phone_number, title, first_name, middle_initial, last_name, address1, address2, address3, city, state, province, postal_code, country_code, gender, date_of_birth, alt_phone, email, security_phrase, comments, rank, owner");
+$standard_SQL = ["defFields" => "vendor_lead_code, source_id, list_id, phone_code, phone_number, title, first_name, middle_initial, last_name, address1, address2, address3, city, state, province, postal_code, country_code, gender, date_of_birth, alt_phone, email, security_phrase, comments, rank, owner"];
 
 $yo = json_encode($standard_SQL);
 $yo = json_decode($yo);
@@ -42,7 +42,8 @@ for($jj=0;$jj<$cntSplitVals;$jj++) {
 //echo 
 
 }
-for ($i=0;$i<count($cell_val[0]);$i++)
+$counter = count($cell_val[0]);
+for ($i=0;$i<$counter;$i++)
                                 {
                                         $columnHTML .= "<option value=\"$i\">".$cell_val[0][$i]."</option>\n";
                                 }

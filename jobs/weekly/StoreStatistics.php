@@ -23,10 +23,10 @@
 	THE SOFTWARE.
 */
 
-require_once(dirname(dirname(dirname(__FILE__))).'/php/CRMDefaults.php');
-require_once(dirname(dirname(dirname(__FILE__))).'/php/LanguageHandler.php');
-require_once(dirname(dirname(dirname(__FILE__))).'/php/Config.php');
-require_once(dirname(dirname(dirname(__FILE__))).'/php/DbHandler.php');
+require_once(dirname(__FILE__, 3).'/php/CRMDefaults.php');
+require_once(dirname(__FILE__, 3).'/php/LanguageHandler.php');
+require_once(dirname(__FILE__, 3).'/php/Config.php');
+require_once(dirname(__FILE__, 3).'/php/DbHandler.php');
 
 if (!isset($db)) { $db = new \creamy\DbHandler(); }
 if (!isset($lh)) { $lh = \creamy\LanguageHandler::getInstance(); }

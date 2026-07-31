@@ -22,8 +22,8 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
 */
-require_once('DbHandler.php');
-require('Session.php');
+require_once(__DIR__ . '/DbHandler.php');
+require(__DIR__ . '/Session.php');
 $user = \creamy\CreamyUser::currentUser();
 
 // check required fields
@@ -32,7 +32,7 @@ if (!isset($_POST["messageids"])) {
 	$validated = 0;
 }
 
-if ($validated == 1) {
+if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// retrieve data and parameters	

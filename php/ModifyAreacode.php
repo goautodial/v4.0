@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        ModifyAreacode.php
  * @brief       Handles modifying areacode requests
  * @copyright   Copyright (c) 2019 GOautodial Inc.
@@ -20,7 +22,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 							= \creamy\APIHandler::getInstance();
 
 	// collect new user data.       
@@ -30,18 +32,18 @@
 
 	$outbound_cid = NULL; if (isset($_POST["areacode_outbound_cid"])) { 
 		$outbound_cid 				= $_POST["areacode_outbound_cid"]; 
-		$outbound_cid				= stripslashes($outbound_cid);
+		$outbound_cid				= stripslashes((string) $outbound_cid);
 	}
 	$cid_description = NULL; if (isset($_POST["areacode_description"])) { 
 		$cid_description			= $_POST["areacode_description"];
-		$cid_description 			= stripslashes($cid_description);
+		$cid_description 			= stripslashes((string) $cid_description);
 	}
 	$active = NULL; if (isset($_POST["areacode_status"])) { 
 		$active 					= $_POST["areacode_status"]; 
-		$active 					= stripslashes($active);
+		$active 					= stripslashes((string) $active);
 	}
 
-	$postfields 					= array(
+	$postfields 					= [
 		'goAction' 					=> 'goEditAreacode',		
 		'campaign_id' 					=> $campaign_id,
 		'areacode' 					=> $areacode,
@@ -49,10 +51,10 @@
 		'outbound_cid_old' 					=> $outbound_cid_old,
 		'cid_description' 				=> $cid_description,
 		'active'					=> $active
-	);	
-			
+	];	
+
 	$output 						= $api->API_modifyAreacode($postfields);
-	
+
 	if ($output->result=="success") { $status = 1; } 
 		else { $status = $output->result; }
 

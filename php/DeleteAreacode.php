@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        DeleteAreacode.php
  * @brief       Handles Delete Areacode CID Requests
  * @copyright   Copyright (c) 2019 GOautodial Inc.
@@ -20,16 +22,16 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();
 
-	$postfields 								= array(
+	$postfields 								= [
         'goAction' 									=> 'goDeleteAreacode',
         'campaign_id' 									=> $_POST['campaign_id'],
 	'areacode'									=> $_POST['areacode'],
 	'outbound_cid'                                  => $_POST['outbound_cid']
-    );
+    ];
 
     $output 									= $api->API_deleteAreacode($postfields);
 

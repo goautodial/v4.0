@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * @file        EmergencyLogout.php
  * @brief       Handles Emergency Logout Request
@@ -22,8 +24,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('APIHandler.php');
-require_once('CRMDefaults.php');
+require_once(__DIR__ . '/APIHandler.php');
+require_once(__DIR__ . '/CRMDefaults.php');
 
 $api = \creamy\APIHandler::getInstance();
 
@@ -40,10 +42,10 @@ require_once('goCRMAPISettings.php');
 	$postfields["log_group"] = $_POST['log_group'];
 	$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 */
-	$postfields = array(
+	$postfields = [
         'goAction' => 'goEmergencyLogout',
         'goUserAgent' => $_POST['goUserAgent']
-    );
+    ];
 
     $output = $api->API_Request("goDashboard", $postfields);
 

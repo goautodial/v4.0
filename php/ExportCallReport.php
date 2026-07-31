@@ -20,8 +20,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('APIHandler.php');
-require_once('CRMDefaults.php');
+require_once(__DIR__ . '/APIHandler.php');
+require_once(__DIR__ . '/CRMDefaults.php');
 
 $api = \creamy\APIHandler::getInstance();
 ini_set('memory_limit', '2048M');
@@ -103,14 +103,14 @@ if($row_output->result == "success"){
 
 			if($output->result == "success"){
 
-				if($offset == 0){
+				if($offset === 0){
 					$data_header = $output->header;
 				}
                 //$data_row[] = json_decode(json_encode($output->rows), true);
                 $data_row .= $output->rows;
 			}
 			$last_row_offset = $offset;
-			$offset = $offset + $limit;
+			$offset += $limit;
 			// $data_row = array_merge($data_row);
 		}
 		$i = 0;

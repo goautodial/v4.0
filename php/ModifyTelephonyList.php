@@ -22,7 +22,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 									= \creamy\APIHandler::getInstance();
 
 	// check required fields
@@ -33,7 +33,7 @@
 		$validated 							= 0;
 	}
 
-	if ($validated == 1) {
+	if ($validated === 1) {
 
 		// collect new user data.	
 		$modifyid 							= $_POST["modifyid"];		
@@ -41,19 +41,19 @@
 		
 		if (isset($_POST["name"])) { 
 			$name 							= $_POST["name"]; 
-			$name 							= stripslashes($name);
+			$name 							= stripslashes((string) $name);
 		}
 		
 		$desc 								= NULL; 
 		if (isset($_POST["desc"])) { 
 			$desc 							= $_POST["desc"]; 
-			$desc 							= stripslashes($desc);
+			$desc 							= stripslashes((string) $desc);
 		}
 		
 		$campaign 							= NULL; 
 		if (isset($_POST["campaign"])) { 
 			$campaign 						= $_POST["campaign"]; 
-			$campaign 						= stripslashes($campaign);
+			$campaign 						= stripslashes((string) $campaign);
 		}
 		
 		$status 							= NULL; 
@@ -64,70 +64,70 @@
 		$reset_list 						= NULL; 
 		if (isset($_POST["reset_list"])) { 
 			$reset_list 					= $_POST["reset_list"]; 
-			$reset_list 					= stripslashes($reset_list);
+			$reset_list 					= stripslashes((string) $reset_list);
 		}
 
 		$reset_time 						= NULL; 
 		if (isset($_POST["reset_time"])) { 
 			$reset_time 					= $_POST["reset_time"]; 
-			$reset_time 					= stripslashes($reset_time);
+			$reset_time 					= stripslashes((string) $reset_time);
 		}
 
 		$xferconf_a_number 					= NULL; 
 		if (isset($_POST["xferconf_a_number"])) { 
 			$xferconf_a_number 				= $_POST["xferconf_a_number"]; 
-			$xferconf_a_number 				= stripslashes($xferconf_a_number);
+			$xferconf_a_number 				= stripslashes((string) $xferconf_a_number);
 		}
 
 		$xferconf_b_number 					= NULL; 
 		if (isset($_POST["xferconf_b_number"])) { 
 			$xferconf_b_number 				= $_POST["xferconf_b_number"]; 
-			$xferconf_b_number 				= stripslashes($xferconf_b_number);
+			$xferconf_b_number 				= stripslashes((string) $xferconf_b_number);
 		}
 
 		$xferconf_c_number 					= NULL; 
 		if (isset($_POST["xferconf_c_number"])) { 
 			$xferconf_c_number 				= $_POST["xferconf_c_number"]; 
-			$xferconf_c_number 				= stripslashes($xferconf_c_number);
+			$xferconf_c_number 				= stripslashes((string) $xferconf_c_number);
 		}
 
 		$xferconf_d_number 					= NULL; 
 		if (isset($_POST["xferconf_d_number"])) { 
 			$xferconf_d_number 				= $_POST["xferconf_d_number"]; 
-			$xferconf_d_number 				= stripslashes($xferconf_d_number);
+			$xferconf_d_number 				= stripslashes((string) $xferconf_d_number);
 		}
 
 		$xferconf_e_number 					= NULL; 
 		if (isset($_POST["xferconf_e_number"])) { 
 			$xferconf_e_number 				= $_POST["xferconf_e_number"]; 
-			$xferconf_e_number 				= stripslashes($xferconf_e_number);
+			$xferconf_e_number 				= stripslashes((string) $xferconf_e_number);
 		}
 
 		$agent_script_override 				= NULL; 
 		if (isset($_POST["agent_script_override"])) { 
 			$agent_script_override 			= $_POST["agent_script_override"]; 
-			$agent_script_override 			= stripslashes($agent_script_override);
+			$agent_script_override 			= stripslashes((string) $agent_script_override);
 		}
 
 		$drop_inbound_group_override 		= NULL; 
 		if (isset($_POST["drop_inbound_group_override"])) { 
 			$drop_inbound_group_override 	= $_POST["drop_inbound_group_override"]; 
-			$drop_inbound_group_override 	= stripslashes($drop_inbound_group_override);
+			$drop_inbound_group_override 	= stripslashes((string) $drop_inbound_group_override);
 		}
 
 		$campaign_cid_override 				= NULL; 
 		if (isset($_POST["campaign_cid_override"])) { 
 			$campaign_cid_override 			= $_POST["campaign_cid_override"]; 
-			$campaign_cid_override 			= stripslashes($campaign_cid_override);
+			$campaign_cid_override 			= stripslashes((string) $campaign_cid_override);
 		}
 
 		$web_form 							= NULL; 
 		if (isset($_POST["web_form"])) { 
 			$web_form 						= $_POST["web_form"]; 
-			$web_form 						= stripslashes($web_form);
+			$web_form 						= stripslashes((string) $web_form);
 		}
 
-		$postfields 						= array(
+		$postfields 						= [
 			"goAction" 							=> "goEditList",
 			"list_id" 							=> $modifyid,
 			"list_name" 						=> $name,
@@ -145,7 +145,7 @@
 			"drop_inbound_group_override" 		=> $drop_inbound_group_override,
 			"campaign_cid_override" 			=> $campaign_cid_override,
 			"web_form_address" 					=> $web_form
-		);
+		];
 
 		$output 							= $api->API_Request("goLists", $postfields);
 

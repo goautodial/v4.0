@@ -21,11 +21,11 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once("APIHandler.php");
+	require_once(__DIR__ . "/APIHandler.php");
 	
 	$api 										= \creamy\APIHandler::getInstance();
 
-	$postfields 								= array(
+	$postfields 								= [
 		"goAction" 									=> "goAddScript",
 		"script_id"									=> $_POST["script_id"], 
 		"script_name" 								=> $_POST["script_name"], 
@@ -33,7 +33,7 @@
 		"script_text" 								=> urldecode($_POST["script_text_value"]),
 		"user_group"								=> $_POST["script_user_group"],
 		"active" 									=> $_POST["active"]
-	);
+	];
 	
 	$output 									= $api->API_addScript($postfields);
 

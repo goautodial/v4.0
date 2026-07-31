@@ -1,7 +1,7 @@
 <?php
 
-require_once('../goCRMAPISettings.php');
-require_once('../Session.php');
+require_once(__DIR__ . '/../goCRMAPISettings.php');
+require_once(__DIR__ . '/../Session.php');
 $url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 $postfields["goUser"] = goUser; #Username goes here. (required)
 $postfields["goPass"] = goPass;
@@ -17,7 +17,6 @@ $ch = curl_init();
      curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 	 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
      $data = curl_exec($ch);
-     curl_close($ch);
 
      $output = json_decode($data);
      
@@ -30,7 +29,8 @@ $ch = curl_init();
     */
 
     if($output->result=="success"){
-        for($i=0;$i < count($output->campaign_id);$i++){
+        $counter = count($output->campaign_id);
+        for($i=0;$i < $counter;$i++){
                 if(isset($_POST['api1'])){
                         echo $output->campaign_id[$i];
                 }        

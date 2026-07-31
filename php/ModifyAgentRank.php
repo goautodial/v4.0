@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        ModifyAgentRank.php
  * @brief       Handles Modify Requests for Agent Ranks
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -21,37 +23,37 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 
 	$api 										= \creamy\APIHandler::getInstance();
 	$reason 									= "Unable to Modify Agent Rank";
 	$validated 									= 1;
-	
+
 	if (!isset($_POST["idgroup"])) {
 		$validated 								= 0;
 	}
 
-	if ($validated == 1) {		
+	if ($validated === 1) {		
 		// collect new user data.	
 		$modifyid 								= $_POST['idgroup'];
 		$itemrank 								= $_POST['itemrank'];
 
-		$postfields 							= array(
+		$postfields 							= [
 			'goAction' 								=> 'goEditAgentRank',
 			'idgroup' 								=> $modifyid, 
 			'itemrank' 								=> $itemrank
-		);				
+		];				
 
 		$output 								= $api->API_modifyAgentRank($postfields);
-		
+
 		if ($output->result=="success") { 
 			$status 							= 1; 
 		} else { 
 			$status 							= $output->result; 
 		}		
-		
+
 		echo json_encode($status);
-		
+
 	} else { 
 		//ob_clean(); 
 		print $reason; 

@@ -22,7 +22,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once("APIHandler.php");
+	require_once(__DIR__ . "/APIHandler.php");
 	$api 								= \creamy\APIHandler::getInstance();;
 
 	// check required fields
@@ -31,7 +31,7 @@
 		$validated 						= 0;
 	}
 
-	if ($validated == 1) {		
+	if ($validated === 1) {		
 		// collect new user data.	
 		$modifyid 						= $_POST["modifyid"];
 		
@@ -42,30 +42,30 @@
 		
 		$fullname = NULL; if (isset($_POST["fullname"])) { 
 			$fullname 					= $_POST["fullname"];
-			$fullname 					= stripslashes($fullname);
+			$fullname 					= stripslashes((string) $fullname);
 		}
 
 		$email = NULL; if (isset($_POST["email"])) { 
 			$email 						= $_POST["email"]; 
-			$email 						= stripslashes($email);
+			$email 						= stripslashes((string) $email);
 		}
 		
 		$active = NULL; if (isset($_POST["active"])) { 
 			$active 					= $_POST["active"]; 
-			$active 					= stripslashes($active);
+			$active 					= stripslashes((string) $active);
 		}
 		
 		$delete_vm_after_email = NULL; if (isset($_POST["delete_vm_after_email"])) { 
 			$delete_vm_after_email	 	= $_POST["delete_vm_after_email"]; 
-			$delete_vm_after_email		= stripslashes($delete_vm_after_email);
+			$delete_vm_after_email		= stripslashes((string) $delete_vm_after_email);
 		} 
 
 		$voicemail_greeting = NULL; if (isset($_POST["voicemail_greeting"])) {
                         $voicemail_greeting                                         = $_POST["voicemail_greeting"];
-                        $voicemail_greeting                                         = stripslashes($voicemail_greeting);
+                        $voicemail_greeting                                         = stripslashes((string) $voicemail_greeting);
                 }
 		
-		$postfields 					= array(
+		$postfields 					= [
 			"goAction" 					=> "goEditVoicemail",		
 			"voicemail_id" 					=> $modifyid,
 			"pass" 						=> $pass,
@@ -74,7 +74,7 @@
 			"active" 					=> $active,
 			"delete_vm_after_email" 			=> $delete_vm_after_email,
 			"voicemail_greeting"				=> $voicemail_greeting
-		);				
+		];				
 
 		$output 						= $api->API_editVoicemail($postfields);
 		

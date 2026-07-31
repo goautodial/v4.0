@@ -46,7 +46,8 @@ class MessageOfTheDay extends Module {
 
 	// lifecycle and respond to interactions.
 
-	public function uponInit() {
+	#[\Override]
+    public function uponInit() {
 		error_log("Module \"Message of the day\" initializing...");
 		
 		// add the message of the day translation files to our language handler.
@@ -55,33 +56,36 @@ class MessageOfTheDay extends Module {
 		$this->lh()->addCustomTranslationsFromFile($customLanguageFile);
 	}
 		
-	public function uponActivation() {
+	#[\Override]
+    public function uponActivation() {
 		error_log("Module \"Message of the day\" activating...");
 	}
 		
-	public function uponDeactivation() {
+	#[\Override]
+    public function uponDeactivation() {
 		error_log("Module \"Message of the day\" deactivating...");
 	}
 
-	public function uponUninstall() {
+	#[\Override]
+    public function uponUninstall() {
 		error_log("Module \"Message of the day\" uninstalling...");
 	}
 	
 	// Private functions for this module.
 	
 	private function searchQuoteURL($text) {
-		return $url = "https://duckduckgo.com/?q=".urlencode($text)."&ia=quotations";
+		return $url = "https://duckduckgo.com/?q=".urlencode((string) $text)."&ia=quotations";
 	}
 	
 	private function randomQuotes($number) {
 		require_once(CRM_MODULE_INCLUDE_DIRECTORY.'RandomStringGenerator.php');
 		$random = new \creamy\RandomStringGenerator();
-		$quotes = array();
+		$quotes = [];
 		for ($i = 0; $i < $number; $i++) {
 			$rnd = $random->getRandomInteger(1, 10);
 			$author = $this->lh()->translationFor("author_".$rnd);
 			$quote = $this->lh()->translationFor("quote_".$rnd);
-			$quotes[] = array("quote" => $quote, "author" => $author, "author_number" => $rnd);
+			$quotes[] = ["quote" => $quote, "author" => $author, "author_number" => $rnd];
 		}
 		return $quotes;
 	}
@@ -101,8 +105,7 @@ class MessageOfTheDay extends Module {
 	private function sectionWithCustomQuote($customQuote, $author) {
 		// quote box
 		$quoteBox = $this->ui()->boxWithQuote($this->lh()->translationFor("message_of_the_day"), $customQuote, $author);
-		$result = $this->ui()->fullRowWithContent($quoteBox);
-		return $result;
+		return $this->ui()->fullRowWithContent($quoteBox);
 	}
 
 	private function dateIsToday($date) {
@@ -110,26 +113,27 @@ class MessageOfTheDay extends Module {
 		
 		 $datediff = $date - $current;
 		 $differance = floor($datediff/(60*60*24));
-		 if ($differance == 0) return true;
-		 return false;
+         return $differance == 0;
 	}
 	
 	// views and code generation
 
 	/** We return true here to indicate that we want access to the database */
-	public function needsDatabaseFunctionality() { return true; }
+	#[\Override]
+    public function needsDatabaseFunctionality() { return true; }
 
 	/** Our table will contain a favorite quote for our customers */
 	public function databaseTableFields() {
-		return array(
+		return [
 			"customer_id" => "INT(11) NOT NULL",
 			"customer_type" => "VARCHAR(255) NOT NULL",
 			"favorite_quote" => "TEXT DEFAULT NULL"
-		);
+		];
 	}
 
 	/** We return true here to indicate that we want our main content view to be accessed by means of the sidebar */
-	public function needsSidebarDisplay() { return true; }
+	#[\Override]
+    public function needsSidebarDisplay() { return true; }
 
 	public function mainPageViewContent($args) {
 		// check if we have some arguments (desired quote).
@@ -148,7 +152,7 @@ class MessageOfTheDay extends Module {
 			$customDate = $this->valueForModuleSetting("custom_quote_day");
 			$customQuote = $this->valueForModuleSetting("custom_quote");
 			if (!empty($customDate) && !empty($customQuote)) {
-				if ($this->dateIsToday(strtotime($customDate))) {
+				if ($this->dateIsToday(strtotime((string) $customDate))) {
 					return $this->sectionWithCustomQuote($customQuote, \creamy\CreamyUser::currentUser()->getUserName());
 				}
 			}
@@ -182,7 +186,7 @@ class MessageOfTheDay extends Module {
 		$customDate = $this->valueForModuleSetting("custom_quote_day");
 		$customQuote = $this->valueForModuleSetting("custom_quote");
 		if (!empty($customDate) && !empty($customQuote)) {
-			if ($this->dateIsToday(strtotime($customDate))) {
+			if ($this->dateIsToday(strtotime((string) $customDate))) {
 				return $this->sectionWithCustomQuote($customQuote, \creamy\CreamyUser::currentUser()->getUserName());
 			}
 		}
@@ -197,8 +201,8 @@ class MessageOfTheDay extends Module {
 			foreach ($authorNumbers as $authorNumber) {
 				$author = "author_$authorNumber";
 				$authorName = $this->lh()->translationFor($author);
-				if (stripos($fields["name"], $authorName)) {
-					$href = $this->mainPageViewURL(array("author_number" => $authorNumber));
+				if (stripos($fields["name"], (string) $authorName)) {
+					$href = $this->mainPageViewURL(["author_number" => $authorNumber]);
 					$link = "<a style='color: red;' href='$href'> [".$this->lh()->translationFor("quote_author")."]</a>";
 					$fields["name"] = str_ireplace($authorName, $authorName.$link, $fields["name"]);
 				}
@@ -215,7 +219,7 @@ class MessageOfTheDay extends Module {
 	}
 	
 	public function customerListFooterHook($customertype) {
-		$url = $this->mainPageViewURL(null);
+		$url = $this->mainPageViewURL();
 		return $this->ui()->simpleLinkButton("motd", $this->lh()->translationFor("message_of_the_day"), $url, $icon = "quote-left");
 	}
 	
@@ -268,10 +272,10 @@ class MessageOfTheDay extends Module {
 			// try to update current value
 			$this->db()->where("customer_id", $customerid);
 			$this->db()->where("customer_type", $customertype);
-			$data = array("favorite_quote" => $quote);
+			$data = ["favorite_quote" => $quote];
 			$success = $this->db()->update($this->databaseTableName(), $data);
 		} else {
-			$data = array("customer_id" => $customerid, "customer_type" => $customertype, "favorite_quote" => $quote);
+			$data = ["customer_id" => $customerid, "customer_type" => $customertype, "favorite_quote" => $quote];
 			$success = $this->db()->insert($this->databaseTableName(), $data);
 		}
 		
@@ -298,18 +302,18 @@ class MessageOfTheDay extends Module {
 		$elements = "";
 		$quotes = $this->randomQuotes($numberOfQuotes);
 		foreach ($quotes as $quote) {
-			$elements .= $this->ui()->getTopbarSimpleElement($quote["quote"]." -- ".$quote["author"], "quote-right", $this->mainPageViewURL(array("author_number" => $quote["author_number"])));
+			$elements .= $this->ui()->getTopbarSimpleElement($quote["quote"]." -- ".$quote["author"], "quote-right", $this->mainPageViewURL(["author_number" => $quote["author_number"]]));
 		}
-		$footer = $this->ui()->getTopbarMenuFooter($this->lh()->translationFor("see_more_quotes"), $this->mainPageViewURL(null));
+		$footer = $this->ui()->getTopbarMenuFooter($this->lh()->translationFor("see_more_quotes"), $this->mainPageViewURL());
 		return $this->ui()->getTopbarCustomMenu($header, $elements, $footer);
 	}
 	
 	// settings
 	
 	public function moduleSettings() {
-		$authors = array();
+		$authors = [];
 		for ($i = 1; $i <= 10; $i++) { $authors["author_$i"] = $this->lh()->translationFor("author_$i"); }
-		return array("show_quote_author" => CRM_SETTING_TYPE_BOOL, "custom_quote" => CRM_SETTING_TYPE_STRING, "custom_quote_day" => CRM_SETTING_TYPE_DATE, "favorite_author" => $authors, "number_of_quotes" => CRM_SETTING_TYPE_INT); 
+		return ["show_quote_author" => CRM_SETTING_TYPE_BOOL, "custom_quote" => CRM_SETTING_TYPE_STRING, "custom_quote_day" => CRM_SETTING_TYPE_DATE, "favorite_author" => $authors, "number_of_quotes" => CRM_SETTING_TYPE_INT]; 
 	}
 	
 }

@@ -1,6 +1,8 @@
 <?php
 
-	/** Campaigns API - Add a new Campaign */
+	declare(strict_types=1);
+
+        /** Campaigns API - Add a new Campaign */
 	/**
 	 * Generates action circle buttons for different pages/module
 	 * @param goUser 
@@ -9,7 +11,7 @@
 	 * @param responsetype
 	 * @param leadid
 	 */
-        require_once('goCRMAPISettings.php');
+        require_once(__DIR__ . '/goCRMAPISettings.php');
         
         $url = gourl."/goCallRecordings/goAPI.php"; #URL to GoAutoDial API. (required)
 
@@ -29,7 +31,6 @@
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $data = curl_exec($ch);
-        curl_close($ch);
         
         echo $data;
 ?>

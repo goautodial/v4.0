@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        AddList.php
  * @brief       Handles Add List Request
  * @copyright   Copyright (C) GOautodial Inc.
@@ -20,26 +22,26 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 											= \creamy\APIHandler::getInstance();
 
-	$postfields 									= array(
+	$postfields 									= [
 		'goAction' 										=> 'goAddList',
 		'list_id' 										=> $_POST['add_list_id'], 
 		'list_name' 									=> $_POST['list_name'], 
 		'list_description' 								=> $_POST['list_desc'],
 		'campaign_id' 									=> $_POST['campaign_select'],
 		'active' 										=> $_POST['status']
-	);
+	];
 
     $output 										= $api->API_addList($postfields);
-	
+
 	if ($output->result=="success") { 
 		$status 									= 1; 
 	} else { 
 		$status 									= $output->result; 
 	}
-	
+
 	echo json_encode($status);
 
 ?>

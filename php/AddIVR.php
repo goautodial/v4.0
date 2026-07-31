@@ -21,7 +21,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 											= \creamy\APIHandler::getInstance();
 	$route_option 									= $_POST['option'];
@@ -88,7 +88,8 @@
 	}
 	
 	$items 											= "";
-	for ($i=0;$i < count($route_option);$i++) {
+    $counter = count($route_option);
+	for ($i=0;$i < $counter;$i++) {
 		if ($route_option[$i] == "A") $route_option[$i] = '#';
 		if ($route_option[$i] == "B") $route_option[$i] = '*';
 		if ($route_option[$i] == "C") $route_option[$i] = 'TIMECHECK';
@@ -98,7 +99,7 @@
 		$items 										.= "|";
 	}
 
-	$postfields 									= array(
+	$postfields 									= [
 		'goAction' 										=> 'goAddIVR',
 		'menu_id' 										=> $_POST['menu_id'],
 		'menu_name' 									=> $_POST['menu_name'],
@@ -114,7 +115,7 @@
 		'custom_dialplan_entry' 						=> $_POST['custom_dialplan_entry'],
 		'tracking_group' 								=> $_POST['tracking_group'],
 		'items' 										=> $items
-	);
+	];
 
 	$output 										= $api->API_addIVR($postfields);
 	

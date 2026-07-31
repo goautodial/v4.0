@@ -22,9 +22,9 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
 */
-require_once(dirname(dirname(dirname(__FILE__))).'/php/CRMDefaults.php');
-require_once(dirname(dirname(dirname(__FILE__))).'/php/Config.php');
-require_once(dirname(dirname(dirname(__FILE__))).'/php/DbHandler.php');
+require_once(dirname(__FILE__, 3).'/php/CRMDefaults.php');
+require_once(dirname(__FILE__, 3).'/php/Config.php');
+require_once(dirname(__FILE__, 3).'/php/DbHandler.php');
 
 /** 
  * Checks the events for today and sends an email to users with pending events for
@@ -37,7 +37,7 @@ if (!isset($db)) { $db = new \creamy\DbHandler(); }
 $enabled = $db->getNotificationsForEventsSetting();
 
 if (filter_var($enabled, FILTER_VALIDATE_BOOLEAN)) { // if email notifications for events is enabled...
-	require_once(dirname(dirname(dirname(__FILE__))).'/php/MailHandler.php');
+	require_once(dirname(__FILE__, 3).'/php/MailHandler.php');
 	if (!isset($mh)) { $mh = \creamy\MailHandler::getInstance(); }
 	$events = $db->getEventsForTodayForAllUsers(true);
 	// error_log("Events: ".var_export($events, true));

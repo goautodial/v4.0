@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        AddVoicemail.php
  * @brief       Handles add voicemail variables
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -22,10 +24,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-	require_once('APIHandler.php');
-	
+	require_once(__DIR__ . '/APIHandler.php');
+
 	$api 							= \creamy\APIHandler::getInstance();
-	$postfields 					= array(
+	$postfields 					= [
 		'goAction' 						=> 'goAddVoicemail',
 		'voicemail_id' 					=> $_POST['voicemail_id'], 
 		'pass' 							=> $_POST['password'], 
@@ -33,16 +35,16 @@
 		'email' 						=> $_POST['email'], 
 		'user_group' 					=> $_POST['user_group'], 
 		'active' 						=> $_POST['active']
-	);
+	];
 
    $output 							= $api->API_addVoicemail($postfields);
-	
+
 	if ($output->result=="success") { 
 		$status 					= 1; 
 	} else { 
 		$status 					= $output->result; 
 	}
-	
+
 	echo json_encode($status);
 
 ?>

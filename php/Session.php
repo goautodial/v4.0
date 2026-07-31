@@ -27,8 +27,8 @@ namespace creamy;
 
 
 // Start session if not already started.
-require_once('CRMDefaults.php');
-require_once('SessionHandler.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/SessionHandler.php');
 $session_class = new \creamy\SessionHandler();
 /*if (version_compare(phpversion(), '5.4.0', '<')) {
      if(session_id() == '') {
@@ -71,5 +71,5 @@ if (!isset($_SESSION["avatar"])) {
 	$_SESSION["avatar"] = CRM_DEFAULTS_USER_AVATAR;
 }
 
-include_once('CreamyUser.php');
+include_once(__DIR__ . '/CreamyUser.php');
 ?>

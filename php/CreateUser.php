@@ -23,10 +23,10 @@
 	THE SOFTWARE.
 */
 
-require_once('CRMDefaults.php');
-require_once('DbHandler.php');
-require_once('ImageHandler.php');
-require_once('LanguageHandler.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/DbHandler.php');
+require_once(__DIR__ . '/ImageHandler.php');
+require_once(__DIR__ . '/LanguageHandler.php');
 
 $lh = \creamy\LanguageHandler::getInstance();
 
@@ -54,7 +54,7 @@ if ((!empty($_FILES["avatar"])) && (!empty($_FILES["avatar"]["name"]))) {
 			$validated = 0;
 		} else { // check file type
 			$imageFileType = strtolower(pathinfo($_FILES["avatar"]["name"], PATHINFO_EXTENSION));
-			if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
+			if(!in_array($imageFileType, ["jpg", "png", "jpeg", "gif"]) ) {
 			    $reason = $lh->translationFor("image_file_wrong_type");
 			    $validated = 0;
 			} else {
@@ -68,12 +68,12 @@ if ((!empty($_FILES["avatar"])) && (!empty($_FILES["avatar"]["name"]))) {
 	
 }
 
-if ($validated == 1) {
+if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// check password	
 	$name = $_POST["name"];
-	$name = stripslashes($name);
+	$name = stripslashes((string) $name);
 	$name = $db->escape_string($name);
 	
 	$password1 = $_POST["password1"];
@@ -85,12 +85,12 @@ if ($validated == 1) {
 	
 	$email = NULL; if (isset($_POST["email"])) { 
 		$email = $_POST["email"]; 
-		$email = stripslashes($email);
+		$email = stripslashes((string) $email);
 		$email = $db->escape_string($email);
 	}
 	$phone = NULL; if (isset($_POST["phone"])) { 
 		$phone = $_POST["phone"];
-		$phone = stripslashes($phone);
+		$phone = stripslashes((string) $phone);
 		$phone = $db->escape_string($phone); 
 	}
 	$avatar = NULL;

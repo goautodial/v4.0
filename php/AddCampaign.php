@@ -19,12 +19,12 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 
 	$api 										= \creamy\APIHandler::getInstance();
 	$call_route									= $_POST['call_route'];
-	$dial_prefix								= ( !isset($_POST['dial_prefix']) ) ? 9 : $_POST['dial_prefix'];
-	$auto_dial_level							= ( !isset($_POST['auto_dial_level']) ) ? 'OFF': $_POST['auto_dial_level'];
+	$dial_prefix								= $_POST['dial_prefix'] ?? 9;
+	$auto_dial_level							= $_POST['auto_dial_level'] ?? 'OFF';
 
 	//$lead_file									= "";
 	//$leads										= "";
@@ -65,7 +65,7 @@
 		$uploaded_wav 							= curl_file_create( $_FILES['uploaded_wav']['tmp_name'], $_FILES['uploaded_wav']['type'], $_FILES["uploaded_wav"]["name"] );
 	}
 
-	$postfields 								= array(
+	$postfields 								= [
 		'goAction' 									=> 'goAddCampaign',
 		'campaign_id'								=> $_POST['campaign_id'],
 		'campaign_name' 							=> $_POST['campaign_name'],
@@ -95,7 +95,7 @@
 		'lead_file' 								=> $lead_file,
 		'leads' 									=> $leads,
 		'uploaded_wav'								=> $uploaded_wav
-	);
+	];
 
 	$output 									= $api->API_addCampaign($postfields);
 	$home 										= $_SERVER['HTTP_REFERER'];
@@ -103,17 +103,17 @@
 	header('Content-Type: application/json');
 
 	if ($output->result=="success") {
-		$response 							= array(
+		$response 							= [
 			'status' 	=> 1,
 			'result' 	=> 'success',
 			'message' 	=> 'Success'
-		);
+		];
 	} else {
-		$response 							= array(
+		$response 							= [
 			'status' 	=> 0,
 			'result' 	=> $output->result,
 			'message' 	=> $output->result
-		);
+		];
 	}
 
 	echo json_encode($response);

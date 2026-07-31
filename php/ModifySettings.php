@@ -22,12 +22,12 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
 */
-require_once('CRMDefaults.php');
-require_once('LanguageHandler.php');
-require_once('DbHandler.php');
-require_once('ImageHandler.php');
-require_once('APIHandler.php');
-require('Session.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/LanguageHandler.php');
+require_once(__DIR__ . '/DbHandler.php');
+require_once(__DIR__ . '/ImageHandler.php');
+require_once(__DIR__ . '/APIHandler.php');
+require(__DIR__ . '/Session.php');
 
 $lh = \creamy\LanguageHandler::getInstance();
 $user = \creamy\CreamyUser::currentUser();
@@ -54,7 +54,7 @@ if ((!empty($_FILES["company_logo"])) && (!empty($_FILES["company_logo"]["name"]
 			$validated = 0;
 		} else { // check file type
 			$imageFileType = strtolower(pathinfo($_FILES["company_logo"]["name"], PATHINFO_EXTENSION));
-			if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
+			if(!in_array($imageFileType, ["jpg", "png", "jpeg", "gif"]) ) {
 			    $reason = $lh->translationFor("image_file_wrong_type");
 			    $validated = 0;
 			} else {
@@ -68,7 +68,7 @@ if ((!empty($_FILES["company_logo"])) && (!empty($_FILES["company_logo"]["name"]
 	
 }
 
-if ($validated == 1) {
+if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// check permissions
@@ -80,8 +80,8 @@ if ($validated == 1) {
 	// build data for setting.	
 	$timezone = $_POST["timezone"];
 	$locale = $_POST["locale"];
-	$confirmationEmail = isset($_POST["confirmationEmail"]) ? true : false;
-	$eventEmail = isset($_POST["eventEmail"]) ? true : false;
+	$confirmationEmail = isset($_POST["confirmationEmail"]);
+	$eventEmail = isset($_POST["eventEmail"]);
 	$theme = $_POST["theme"];
 	$baseURL = htmlentities($_POST["base_url"]);
 	$minFreq = $_POST["jobScheduling"];
@@ -90,7 +90,7 @@ if ($validated == 1) {
 	$slave_db_ip = htmlentities($_POST["slave_db_ip"]);
 	$voicemail_greeting = $_POST["voicemail_greeting"];
 	// generate settings array
-	$data = array(
+	$data = [
 		CRM_SETTING_CONFIRMATION_EMAIL => $confirmationEmail, 
 		CRM_SETTING_THEME => $theme, 
 		CRM_SETTING_TIMEZONE => $timezone, 
@@ -100,8 +100,8 @@ if ($validated == 1) {
 		CRM_SETTING_JOB_SCHEDULING_MIN_FREQ => $minFreq,
 		CRM_SETTING_GOOGLE_API_KEY => $googleAPIKey,
 		CRM_SETTING_SLAVE_DB_IP => $slave_db_ip
-	);
-	if (!empty($baseURL)) { $data[CRM_SETTING_CRM_BASE_URL] = $baseURL; }
+	];
+	if ($baseURL !== '' && $baseURL !== '0') { $data[CRM_SETTING_CRM_BASE_URL] = $baseURL; }
 	
 	// if we have a company custom logo, try to generate if first.
 	if (isset($customLogoOrigin)) {

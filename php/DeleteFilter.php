@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        DeleteFilter.php
  * @brief       Handles Delete Filter Requests
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -21,14 +23,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once("APIHandler.php");
+	require_once(__DIR__ . "/APIHandler.php");
 
 	$api 										= \creamy\APIHandler::getInstance();
 
-    $postfields 								= array(
+    $postfields 								= [
         "goAction" 									=> "goDeleteFilter",
         "filter_id" 								=> $_POST["filter_id"]
-    );
+    ];
 
     $output 									= $api->API_Request("goFilters", $postfields);
 
@@ -37,7 +39,7 @@
 	} else { 
 		$status 								= $output->result; 
 	}
-	
+
 	echo json_encode($status);
 	
 ?>

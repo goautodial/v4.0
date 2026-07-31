@@ -1,6 +1,8 @@
 <?php
 
-    require_once('goCRMAPISettings.php');
+    declare(strict_types=1);
+
+    require_once(__DIR__ . '/goCRMAPISettings.php');
 	
     $url = gourl."/goBarging/goAPI.php"; #URL to GoAutoDial API. (required)
 	$postfields["goUser"] = goUser; #Username goes here. (required)
@@ -25,7 +27,6 @@
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	$data = curl_exec($ch);
-	curl_close($ch);
 	
 	echo $data;
 ?>

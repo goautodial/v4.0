@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        AddLeadRecycling.php
  * @brief       Handles Add Lead Recycling Request
  * @copyright   Copyright (C) GOautodial Inc.
@@ -20,20 +22,20 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 	
 	$campaign_id = $_POST['leadrecycling_campaign'];
 	$leadrecycling_status	= $_POST['leadrecycling_status'];
 	
-	$postfields = array(
+	$postfields = [
 		'goAction' => 'goAddLeadRecycling',
 		'campaign_id' => $campaign_id,
 		'status' => $leadrecycling_status, 
 		'attempt_delay' => $_POST['attempt_delay'],
 		'active' => $_POST['active'],
 		'attempt_maximum' => $_POST['attempt_maximum']
-	);
+	];
 
 	$output = $api->API_addLeadRecycling($postfields);
 

@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        API_getTotalSales.php
  * @brief       Displays total inbound and outbound calls
  * @copyright   Copyright (c) 2020 GOautodial Inc.
@@ -20,7 +22,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();
 	$type										= "all-daily";

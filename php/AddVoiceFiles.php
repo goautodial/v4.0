@@ -22,15 +22,15 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 											= \creamy\APIHandler::getInstance();
 
-	$postfields 									= array(
+	$postfields 									= [
 		'goAction' 										=> 'goAddVoiceFiles',
 		'files' 										=> curl_file_create($_FILES['voice_file']['tmp_name'], $_FILES['voice_file']['type'], $_FILES["voice_file"]["name"]),
 		'stage' 										=> "upload"
-	);
+	];
 
 	$output 										= $api->API_addVoiceFiles($postfields);
 

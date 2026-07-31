@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        AddFilter.php
  * @brief       Handles Add Filter Request
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -20,19 +22,19 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once("APIHandler.php");
-	
+	require_once(__DIR__ . "/APIHandler.php");
+
 	$api 										= \creamy\APIHandler::getInstance();
 
-	$postfields 								= array(
+	$postfields 								= [
 		"goAction" 									=> "goAddFilter",
 		"lead_filter_id"							=> $_POST["filter_id"], 
 		"lead_filter_name" 							=> $_POST["filter_name"], 
 		"lead_filter_comments" 						=> $_POST["filter_comments"],
 		"lead_filter_sql" 							=> $_POST["filter_sql"],
 		"user_group"								=> $_POST["filter_user_group"]
-	);
-	
+	];
+
 	$output 									= $api->API_addFilter($postfields);
 
 	if ($output->result == "success") { 
@@ -40,6 +42,6 @@
 	} else { 
 		$status 								= $output->result; 
 	}
-	
+
 	echo json_encode($status);
 ?>

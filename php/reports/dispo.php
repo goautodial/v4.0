@@ -20,7 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();
 	$fromDate 									= date('Y-m-d 00:00:01');
@@ -33,7 +33,7 @@
 	
 	if (isset($_POST['pageTitle']) && $pageTitle != "call_export_report") {
 		$pageTitle = $_POST['pageTitle'];
-		$pageTitle = stripslashes($pageTitle);
+		$pageTitle = stripslashes((string) $pageTitle);
 	}
 			
 	if (isset($_POST["fromDate"])) {
@@ -47,22 +47,22 @@
 			
 	if (isset($_POST["campaignID"])) { 
 		$campaign_id = $_POST["campaignID"]; 
-		$campaign_id = stripslashes($campaign_id);
+		$campaign_id = stripslashes((string) $campaign_id);
 	}
 		
 	if (isset($_POST["request"])) {
 		$request = $_POST["request"];
-		$request = stripslashes($request);
+		$request = stripslashes((string) $request);
 	}
 			
 	if (isset($_POST["userID"])) {
 		$userID = $_POST["userID"];
-		$userID = stripslashes($userID);
+		$userID = stripslashes((string) $userID);
 	}
 	
 	if (isset($_POST["userGroup"])) {
 		$userGroup = $_POST["userGroup"];
-		$userGroup = stripslashes($userGroup);
+		$userGroup = stripslashes((string) $userGroup);
 	}
 		
 	if (isset($_POST["statuses"])) {
@@ -70,7 +70,7 @@
 		$statuses = stripslashes($statuses);
 	}
 		
-	$postfields = array(
+	$postfields = [
 		'goAction' => 'goGetDispoStats',		
 		'pageTitle' => 'dispo',
 		'fromDate' => $fromDate,
@@ -78,7 +78,7 @@
 		'campaignID' => $campaign_id,
 		'request' => $request,
 		'statuses' => $statuses
-	);
+	];
 
 	$output = $api->API_getReports($postfields);
 	//var_dump($output);

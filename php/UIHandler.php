@@ -26,11 +26,11 @@
 namespace creamy;
 
 // dependencies
-require_once('CRMDefaults.php');
-require_once('LanguageHandler.php');
-require_once('CRMUtils.php');
-require_once('ModuleHandler.php');
-require_once('goCRMAPISettings.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/LanguageHandler.php');
+require_once(__DIR__ . '/CRMUtils.php');
+require_once(__DIR__ . '/ModuleHandler.php');
+require_once(__DIR__ . '/goCRMAPISettings.php');
 //require_once('Session.php');
 
 // constants
@@ -76,7 +76,7 @@ error_reporting(E_ERROR | E_PARSE);
      */
     protected function __construct()
     {
-        require_once dirname(__FILE__) . '/DbHandler.php';
+        require_once __DIR__ . '/DbHandler.php';
         // opening db connection
         $this->db = new \creamy\DbHandler();
         $this->api = \creamy\APIHandler::getInstance();
@@ -86,8 +86,6 @@ error_reporting(E_ERROR | E_PARSE);
     /**
      * Private clone method to prevent cloning of the instance of the
      * *Singleton* instance.
-     *
-     * @return void
      */
     private function __clone()
     {
@@ -96,11 +94,14 @@ error_reporting(E_ERROR | E_PARSE);
     /**
      * Private unserialize method to prevent unserializing of the *Singleton*
      * instance.
-     *
-     * @return void
      */
-    private function __wakeup()
+    public function __unserialize(array $data): void
     {
+        foreach ($data as $property => $value) {
+            if (property_exists($this, $property)) {
+                $this->{$property} = $value;
+            }
+        }
     }
 
     /** Generic HTML structure */
@@ -112,14 +113,14 @@ error_reporting(E_ERROR | E_PARSE);
 	public function rowWithVariableContents($spans, $columns, $columnsStyle = "lg") {
 		// safety checks
 		if ((!is_array($spans)) || (!is_array($columns))) { return ""; }
-		if (count($spans) != count($columns)) { return ""; }
+		if (count($spans) !== count($columns)) { return ""; }
 		// build the structure
 		$result = '<div class="row">';
-		for ($i = 0; $i < count($spans); $i++) {
+        $counter = count($spans);
+		for ($i = 0; $i < $counter; $i++) {
 			$result .= '<div class="col-'.$columnsStyle.'-'.$spans[$i].'">'.$columns[$i].'</div>';
 		}
-		$result .= '</div>';
-		return $result;
+		return $result . '</div>';
 	}
 
     public function boxWithContent($header_title, $body_content, $footer_content = NULL, $icon = NULL, $style = CRM_UI_STYLE_DEFAULT, $body_id = NULL, $additional_body_classes = "") {
@@ -223,8 +224,10 @@ error_reporting(E_ERROR | E_PARSE);
 
     /** Tables */
 
-    public function generateTableHeaderWithItems($items, $id, $styles = "", $needsTranslation = true, $hideHeading = false, $hideOnMedium = array(), $hideOnLow = array(), $idTbody) {
-		$theadStyle = $hideHeading ? 'style="display: none!important;"' : '';
+    public function generateTableHeaderWithItems($items, $id, $styles = "", $needsTranslation = true, $hideHeading = false, $hideOnMedium = [], $hideOnLow = [], $idTbody = null) {
+		    $hideOnMedium = is_array($hideOnMedium) ? $hideOnMedium : [];
+		    $hideOnLow = is_array($hideOnLow) ? $hideOnLow : [];
+		    $theadStyle = $hideHeading ? 'style="display: none!important;"' : '';
 	    $table = "<table id=\"$id\" class=\"table $styles\" width=\"100%\"><thead $theadStyle><tr>";
 	    if (is_array($items)) {
 			foreach ($items as $item) {
@@ -240,8 +243,7 @@ error_reporting(E_ERROR | E_PARSE);
 			    $table .= "<th $classModifiers>".($needsTranslation ? $this->lh->translationFor($item) : $item)."</th>";
 		    }
 	    }
-		$table .= "</tr></thead><tbody id=\"$idTbody\">";
-		return $table;
+		return $table . "</tr></thead><tbody id=\"$idTbody\">";
     }
 
     public function generateTableHeaderWithItemsResponsive($items, $id, $needsTranslation = true, $hideHeading = false) {
@@ -256,13 +258,12 @@ error_reporting(E_ERROR | E_PARSE);
 			    $table .= "<th>".($needsTranslation ? $this->lh->translationFor($item) : $item)."</th>";
 		    }
 	    }
-		$table .= "</tr></thead><tbody>";
-		return $table;
+		return $table . "</tr></thead><tbody>";
     }
-    
-    public function generateTableFooterWithItems($items, $needsTranslation = true, $hideHeading = false, $hideOnMedium = array(), $hideOnLow = array()) {
-	    $hideOnMedium = array("email", "Phone");
-		$hideOnLow = array("email", "Phone");
+
+    public function generateTableFooterWithItems($items, $needsTranslation = true, $hideHeading = false, $hideOnMedium = [], $hideOnLow = []) {
+	    $hideOnMedium = ["email", "Phone"];
+		$hideOnLow = ["email", "Phone"];
 		$theadStyle = $hideHeading ? 'style="display: none!important;"' : '';
 	    $table = "</tbody><tfoot $theadStyle><tr>";
 	    if (is_array($items)) {
@@ -276,8 +277,7 @@ error_reporting(E_ERROR | E_PARSE);
 			    $table .= "<th $classModifiers>".($needsTranslation ? $this->lh->translationFor($item) : $item)."</th>";
 		    }
 	    }
-		$table .= "</tr></tfoot></table>";
-		return $table;
+		return $table . "</tr></tfoot></table>";
 	}
 
     /** Style and color */
@@ -294,7 +294,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * Values are their #rrggbb representation.
 	 */
     public function creamyColors() {
-	    return array(
+	    return [
 		    "aqua" => "#00c0ef",
 		    "blue" => "#0073b7",
 		    "light-blue" => "#3c8dbc",
@@ -308,7 +308,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    "fuchsia" => "#f012be",
 		    "navy" => "#001f3f",
 		    "muted" => "#777"
-	    );
+	    ];
     }
 
     /**
@@ -317,7 +317,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
     public function hexValueForCreamyColor($color) {
 		$colors = $this->creamyColors();
-		if (array_key_exists($color, $colors)) { return $colors[$color]; }
+		if (array_key_exists((string) $color, $colors)) { return $colors[$color]; }
 		else return CRM_UI_COLOR_DEFAULT_HEX;
     }
 
@@ -335,11 +335,11 @@ error_reporting(E_ERROR | E_PARSE);
 	 * Returns a random UI style to use for a notification, button, background element or such.
 	 */
 	public function getRandomUIStyle() {
-		$number = rand(1,5);
-		if ($number == 1) return CRM_UI_STYLE_INFO;
-		else if ($number == 2) return CRM_UI_STYLE_DANGER;
-		else if ($number == 3) return CRM_UI_STYLE_WARNING;
-		else if ($number == 4) return CRM_UI_STYLE_SUCCESS;
+		$number = random_int(1,5);
+		if ($number === 1) return CRM_UI_STYLE_INFO;
+		else if ($number === 2) return CRM_UI_STYLE_DANGER;
+		else if ($number === 3) return CRM_UI_STYLE_WARNING;
+		else if ($number === 4) return CRM_UI_STYLE_SUCCESS;
 		else return CRM_UI_STYLE_DEFAULT;
 	}
 
@@ -409,10 +409,9 @@ error_reporting(E_ERROR | E_PARSE);
 		                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 		                <h4 class="modal-title"><i class="fa fa-envelope-o"></i> '.$header.'</h4>
 		            </div><div class="modal-body">';
-		$result = $result.$this->calloutErrorMessage($message);
-		$result = $result.'</div><div class="modal-footer clearfix"><button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> '.
+		$result .= $this->calloutErrorMessage($message);
+		return $result.'</div><div class="modal-footer clearfix"><button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> '.
 		$this->lh->translationFor("exit").'</button></div></div></div>';
-		return $result;
 	}
 
 	/** Forms */
@@ -428,7 +427,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return $this->formWithContent($id, $hiddenFields.$content, $submit_text, CRM_UI_STYLE_DEFAULT, $messagetag, $action);
 	}
 
-	public function modalFormStructure($modalid, $formid, $title, $subtitle, $body, $footer, $icon = null, $messagetag = CRM_UI_DEFAULT_RESULT_MESSAGE_TAG, $divClass) {
+	public function modalFormStructure($modalid, $formid, $title, $subtitle, $body, $footer, $icon = null, $messagetag = CRM_UI_DEFAULT_RESULT_MESSAGE_TAG, $divClass = null) {
 		$iconCode = empty($icon) ? '' : '<i class="fa fa-'.$icon.'"></i> ';
 		$subtitleCode = empty($subtitle) ? '' : '<p>'.$subtitle.'</p>';
 
@@ -451,7 +450,7 @@ error_reporting(E_ERROR | E_PARSE);
 				</div></div>
 				</div>';
 	}
-	
+
 	public function modalFormStructureAgentLog($modalid, $title, $subtitle, $body, $footer, $icon = null, $messagetag = CRM_UI_DEFAULT_RESULT_MESSAGE_TAG) {
 		$iconCode = empty($icon) ? '' : '<i class="fa fa-'.$icon.'"></i> ';
 		$subtitleCode = empty($subtitle) ? '' : '<p>'.$subtitle.'</p>';
@@ -461,7 +460,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                <div class="modal-header">
 					<h4 class="modal-title animated bounceInRight">
 						<div class="col-sm-12 col-md-8">
-							'.$iconCode.$title.' 
+							'.$iconCode.$title.'
 							<b>'.$subtitleCode.'</b>
 						</div>
 						<div class="col-sm-12 col-md-4 row" id="daterange-'.$title.'">
@@ -517,22 +516,20 @@ error_reporting(E_ERROR | E_PARSE);
 		    $result .= '<div class="radio"><label><input type="radio" name="'.$name.'" '.$idCode.' value="'.$value.'" '.$checkedCode.'>'.$labels[$i].'</label></div>';
 			$i++;
 	    }
-	    $result .= '</div>';
-	    return $result;
+	    return $result . '</div>';
     }
 
-    public function singleFormGroupWithSelect($label, $id, $name, $options, $selectedOption, $needsTranslation = false, $labelClass, $divClass, $selectClass) {
+    public function singleFormGroupWithSelect($label, $id, $name, $options, $selectedOption, $needsTranslation = false, $labelClass = null, $divClass = null, $selectClass = null) {
 	    $labelCode = empty($label) ? '<div class="'.$divClass.'">' : '<label class="control-label '.$labelClass.'">'.$label.'</label><div class="'.$divClass.'">';
 	    $selectCode = '<div class="form-group">'.$labelCode.'<select id="'.$id.'" name="'.$name.'" class="form-control '.$selectClass.'">';
 	    foreach ($options as $key => $value) {
 		    $isSelected = ($selectedOption == $key) ? " selected" : "";
 		    $selectCode .= '<option value="'.$key.'" '.$isSelected.'>'.($needsTranslation ? $this->lh->translationFor($value) : $value).'</option>';
 	    }
-		$selectCode .= '</select></div></div>';
-		return $selectCode;
+		return $selectCode . '</select></div></div>';
     }
-    
-    public function singleFormGroupWithSelectHiddenInput($label, $id, $name, $options, $selectedOption, $needsTranslation = false, $labelClass, $divClass, $selectClass, $hiddeninput) {
+
+    public function singleFormGroupWithSelectHiddenInput($label, $id, $name, $options, $selectedOption, $needsTranslation = false, $labelClass = null, $divClass = null, $selectClass = null, $hiddeninput = null) {
 	    $labelCode = empty($label) ? '<div class="'.$divClass.'">' : '<label class="control-label '.$labelClass.'">'.$label.'</label><div class="'.$divClass.'">';
 	    if (!empty($hiddeninput)) {
 			//foreach ($hiddeninput as $values) {
@@ -540,7 +537,7 @@ error_reporting(E_ERROR | E_PARSE);
 				$inputname = $hiddeninput["name"];
 				$inputvalue = $hiddeninput["value"];
 			//}
-			$hiddenInputCode = '<input type="hidden" id="'.$inputid.'" name="'.$inputname.'" value="'.$inputvalue.'">';	    
+			$hiddenInputCode = '<input type="hidden" id="'.$inputid.'" name="'.$inputname.'" value="'.$inputvalue.'">';
 	    } else {
 			$hiddenInputCode = "";
 	    }
@@ -549,19 +546,17 @@ error_reporting(E_ERROR | E_PARSE);
 		    $isSelected = ($selectedOption == $key) ? " selected" : "";
 		    $selectCode .= '<option value="'.$key.'" '.$isSelected.'>'.($needsTranslation ? $this->lh->translationFor($value) : $value).'</option>';
 	    }
-		$selectCode .= '</select></div></div>';
-		return $selectCode;
-    }    
+		return $selectCode . '</select></div></div>';
+    }
 
     public function singleFormGroupWithSelectInputGroup($label, $id, $name, $options, $selectedOption, $needsTranslation = false) {
 	    $labelCode = empty($label) ? "" : '<label>'.$label.'</label>';
 	    $selectCode = '<div class="form-group">'.$labelCode.'<div class="input-group"><select id="'.$id.'" name="'.$name.'" class="form-control">';
-	    foreach ($options as $key => $value) {
+	    foreach ($options as $value) {
 		    $isSelected = ($selectedOption == $value) ? " selected" : "";
 		    $selectCode .= '<option value="'.$value.'" '.$isSelected.'>'.($needsTranslation ? $this->lh->translationFor($value) : $value).'</option>';
 	    }
-		$selectCode .= '</select></div></div>';
-		return $selectCode;
+		return $selectCode . '</select></div></div>';
     }
 
     public function singleFormInputElement($id, $name, $type, $placeholder = "", $value = null, $icon = null, $required = false, $disabled = false, $readonly = false, $inputClass = "", $divClass = "") {
@@ -620,7 +615,7 @@ error_reporting(E_ERROR | E_PARSE);
 		return '<div class="input-group">'.$content.'</div>';
 	}
 
-	public function singleFormGroupWrapper($content, $label = null, $labelClass) {
+	public function singleFormGroupWrapper($content, $label = null, $labelClass = null) {
 		$labelCode = isset($label) ? '<label class="control-label '.$labelClass.'">'.$label.'</label>' : '';
 		return '<div class="form-group">'.$labelCode.$content.'</div>';
 	}
@@ -876,8 +871,7 @@ error_reporting(E_ERROR | E_PARSE);
 		if (is_array($customParameters) && count($customParameters)) {
 			foreach ($customParameters as $key => $value) { $paramCode .= ", \"$key\": \"$value\" "; }
 		}
-
-		$result = '$("button.'.$classname.'").click(function (e) {
+		return '$("button.'.$classname.'").click(function (e) {
 				    '.$checkSelectedMessagesCode.'
 					e.preventDefault();
 					'.$confirmPrefix.'
@@ -887,7 +881,6 @@ error_reporting(E_ERROR | E_PARSE);
 					});
 					'.$confirmSuffix.'
 			    });';
-		return $result;
 	}
 
     // Assignment to variables from one place to a form destination.
@@ -941,8 +934,8 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function getCustomerListFooter($customer_type) {
 		$mh = \creamy\ModuleHandler::getInstance();
-		$footer = $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_CUSTOMER_LIST_FOOTER, array(CRM_MODULE_HOOK_PARAMETER_CUSTOMER_LIST_TYPE => $customer_type), CRM_MODULE_MERGING_STRATEGY_APPEND);
-		$js = $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_CUSTOMER_LIST_ACTION, array(CRM_MODULE_HOOK_PARAMETER_CUSTOMER_LIST_TYPE => $customer_type), CRM_MODULE_MERGING_STRATEGY_APPEND);
+		$footer = $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_CUSTOMER_LIST_FOOTER, [CRM_MODULE_HOOK_PARAMETER_CUSTOMER_LIST_TYPE => $customer_type], CRM_MODULE_MERGING_STRATEGY_APPEND);
+		$js = $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_CUSTOMER_LIST_ACTION, [CRM_MODULE_HOOK_PARAMETER_CUSTOMER_LIST_TYPE => $customer_type], CRM_MODULE_MERGING_STRATEGY_APPEND);
 		return $footer.$js;
 	}
 
@@ -952,7 +945,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function getMessagesListActionJS($folder) {
 		$mh = \creamy\ModuleHandler::getInstance();
-		return $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_MESSAGE_LIST_ACTION, array(CRM_MODULE_HOOK_PARAMETER_MESSAGES_FOLDER => $folder), CRM_MODULE_MERGING_STRATEGY_APPEND);
+		return $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_MESSAGE_LIST_ACTION, [CRM_MODULE_HOOK_PARAMETER_MESSAGES_FOLDER => $folder], CRM_MODULE_MERGING_STRATEGY_APPEND);
 	}
 
 	public function getComposeMessageFooter() {
@@ -967,12 +960,12 @@ error_reporting(E_ERROR | E_PARSE);
 
 	public function getMessageDetailFooter($messageid, $folder) {
 		$mh = \creamy\ModuleHandler::getInstance();
-		return $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_MESSAGE_DETAIL_FOOTER, array(CRM_MODULE_HOOK_PARAMETER_MESSAGE_ID => $messageid, CRM_MODULE_HOOK_PARAMETER_MESSAGES_FOLDER => $folder), CRM_MODULE_MERGING_STRATEGY_APPEND);
+		return $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_MESSAGE_DETAIL_FOOTER, [CRM_MODULE_HOOK_PARAMETER_MESSAGE_ID => $messageid, CRM_MODULE_HOOK_PARAMETER_MESSAGES_FOLDER => $folder], CRM_MODULE_MERGING_STRATEGY_APPEND);
 	}
 
 	public function getMessageDetailActionJS($messageid, $folder) {
 		$mh = \creamy\ModuleHandler::getInstance();
-		return $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_MESSAGE_DETAIL_ACTION, array(CRM_MODULE_HOOK_PARAMETER_MESSAGE_ID => $messageid, CRM_MODULE_HOOK_PARAMETER_MESSAGES_FOLDER => $folder), CRM_MODULE_MERGING_STRATEGY_APPEND);
+		return $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_MESSAGE_DETAIL_ACTION, [CRM_MODULE_HOOK_PARAMETER_MESSAGE_ID => $messageid, CRM_MODULE_HOOK_PARAMETER_MESSAGES_FOLDER => $folder], CRM_MODULE_MERGING_STRATEGY_APPEND);
 	}
 
     /**
@@ -980,7 +973,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function customerDetailModuleHooks($customerid, $customerType) {
 		$mh = \creamy\ModuleHandler::getInstance();
-		return $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_CUSTOMER_DETAIL, array(CRM_MODULE_HOOK_PARAMETER_CUSTOMER_LIST_ID => $customerid, CRM_MODULE_HOOK_PARAMETER_CUSTOMER_LIST_TYPE => $customerType),
+		return $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_CUSTOMER_DETAIL, [CRM_MODULE_HOOK_PARAMETER_CUSTOMER_LIST_ID => $customerid, CRM_MODULE_HOOK_PARAMETER_CUSTOMER_LIST_TYPE => $customerType],
 		 CRM_MODULE_MERGING_STRATEGY_APPEND);
 	}
 
@@ -1001,12 +994,12 @@ error_reporting(E_ERROR | E_PARSE);
 	    $go = $this->db->getSettingValueForKey(CRM_SETTING_GOOGLE_API_KEY);
 	    $slaveDB = $this->db->getSettingValueForKey(CRM_SETTING_SLAVE_DB_IP);
 	    if (isset($cl)) { $cl = $this->imageWithData($cl, "", null); }
-	    $tOpts = array("black" => "black", "blue" => "blue", "green" => "green", "minimalist" => "minimalist", "purple" => "purple", "red" => "red", "yellow" => "yellow");
+	    $tOpts = ["black" => "black", "blue" => "blue", "green" => "green", "minimalist" => "minimalist", "purple" => "purple", "red" => "red", "yellow" => "yellow"];
 	    // Voicemail Greeting
 	    $vg_result = $this->api->API_getSystemSettingInfo();
 	    $vg = $vg_result->data->allow_voicemail_greeting;
 	    $vg_text = $this->lh->translationFor("voicemail_greeting");
-	    $vgOpts = array("0" => "Disabled", "1" => "Enabled");
+	    $vgOpts = ["0" => "Disabled", "1" => "Enabled"];
 
 	    // translation.
 	    $em_text = $this->lh->translationFor("require_confirmation_email");
@@ -1014,7 +1007,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $es_text = $this->lh->translationFor("choose_theme");
 	    $tz_text = $this->lh->translationFor("detected_timezone");
 	    $lo_text = $this->lh->translationFor("choose_language");
-	    $ok_text = $this->lh->translationFor("settings_successfully_changed");
+	    $this->lh->translationFor("settings_successfully_changed");
 	    $bu_text = $this->lh->translationFor("base_url");
 	    $cn_text = $this->lh->translationFor("company_name");
 	    $cl_text = $this->lh->translationFor("custom_company_logo");
@@ -1050,27 +1043,20 @@ error_reporting(E_ERROR | E_PARSE);
 		   switch ($type) {
 			   case CRM_SETTING_TYPE_STRING:
 				   return $this->singleFormGroupWithInputGroup($this->singleFormInputElement($setting, $setting, "text", $this->lh->translationFor($setting), $currentValue), $this->lh->translationFor($setting));
-					break;
 				case CRM_SETTING_TYPE_INT:
 				case CRM_SETTING_TYPE_FLOAT:
 				    return $this->singleFormGroupWithInputGroup($this->singleFormInputElement($setting, $setting, "number", $this->lh->translationFor($setting), $currentValue), $this->lh->translationFor($setting));
-					break;
 				case CRM_SETTING_TYPE_BOOL:
 					return $this->singleFormGroupWithInputGroup($this->checkboxInputWithLabel($this->lh->translationFor($setting), $setting, $setting, (bool) $currentValue));
-					break;
 				case CRM_SETTING_TYPE_DATE:
 					$dateFormat = $this->lh->getDateFormatForCurrentLocale();
 				   return $this->singleFormGroupWithInputGroup($this->maskedDateInputElement($setting, $setting, $dateFormat, $currentValue), $this->lh->translationFor($setting));
-					break;
 				case CRM_SETTING_TYPE_LABEL:
 					return $this->singleFormGroupWithInputGroup($this->lh->translationFor($setting));
-					break;
 				case CRM_SETTING_TYPE_SELECT:
 					return $this->singleFormGroupWithInputGroup($this->dropdownFormInputElement($setting[0], $setting[0], $setting[1], $currentValue), $this->lh->translationFor($setting[0]));
-					break;
 				case CRM_SETTING_TYPE_PASS:
 					return $this->singleFormGroupWithInputGroup($this->singleFormInputElement($setting, $setting, "password", $this->lh->translationFor($setting), $currentValue), $this->lh->translationFor($setting));
-					break;
 		    }
 	    }
     }
@@ -1123,7 +1109,7 @@ error_reporting(E_ERROR | E_PARSE);
 	                </ul>
 	            </div>';
 	}
-	private function getUserActionMenuForUser($userid, $username, $status) {
+	private function getUserActionMenuForUser($userid, $status) {
 		$textForStatus = $status == "Y" ? $this->lh->translationFor("disable") : $this->lh->translationFor("enable");
 		$actionForStatus = $status == "Y" ? "deactivate-user-action" : "activate-user-action";
 		return '<div class="btn-group">
@@ -1172,11 +1158,11 @@ error_reporting(E_ERROR | E_PARSE);
 					    <span class="sr-only">Toggle Dropdown</span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-			<li'.(($perm->list->list_update === 'N' || preg_match("/^(998|999)$/", $listid)) ? ' class="hidden"' : '').'><a class="edit-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">'.$this->lh->translationFor("modify").'</a></li>
-			<li'.(($perm->customfields->customfields_create === 'N' || preg_match("/^(998|999)$/", $listid)) ? ' class="hidden"' : '').'><a class="copy-custom-fields" href="#" data-id="'.$listid.'" data-name="'.$listname.'">'.$this->lh->translationFor("copy_list_custom_fields").'</a></li>
+			<li'.(($perm->list->list_update === 'N' || preg_match("/^(998|999)$/", (string) $listid)) ? ' class="hidden"' : '').'><a class="edit-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">'.$this->lh->translationFor("modify").'</a></li>
+			<li'.(($perm->customfields->customfields_create === 'N' || preg_match("/^(998|999)$/", (string) $listid)) ? ' class="hidden"' : '').'><a class="copy-custom-fields" href="#" data-id="'.$listid.'" data-name="'.$listname.'">'.$this->lh->translationFor("copy_list_custom_fields").'</a></li>
 			<li'.($perm->list->list_download === 'N' ? ' class="hidden"' : '').'><a class="download-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">'.$this->lh->translationFor("download").'</a></li>
-			<li class="divider'.(($perm->list->list_delete === 'N' || preg_match("/^(998|999)$/", $listid)) ? ' hidden' : '').'"></li>
-			<li'.(($perm->list->list_delete === 'N' || preg_match("/^(998|999)$/", $listid)) ? ' class="hidden"' : '').'><a class="delete-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">'.$this->lh->translationFor("delete").'</a></li>
+			<li class="divider'.(($perm->list->list_delete === 'N' || preg_match("/^(998|999)$/", (string) $listid)) ? ' hidden' : '').'"></li>
+			<li'.(($perm->list->list_delete === 'N' || preg_match("/^(998|999)$/", (string) $listid)) ? ' class="hidden"' : '').'><a class="delete-list" href="#" data-id="'.$listid.'" data-name="'.$listname.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
 			//<li><a class="info-T_user" href="'.$userid.'">'.$this->lh->translationFor("info").'</a></li>
@@ -1267,9 +1253,9 @@ error_reporting(E_ERROR | E_PARSE);
        } else {
 	       // we have some users, show a table
 	       // $columns = array("id", "name", "email", "creation_date", "role", "status", "action");
-       	   $columns = array("id", "name", "email", "role", "status", "action");
-	       $hideOnMedium = array("email", "creation_date", "role");
-	       $hideOnLow = array("email", "creation_date", "role", "status");
+       	   $columns = ["id", "name", "email", "role", "status", "action"];
+	       $hideOnMedium = ["email", "creation_date", "role"];
+	       $hideOnLow = ["email", "creation_date", "role", "status"];
 		   $result = $this->generateTableHeaderWithItems($columns, "users", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 
 	       // iterate through all contacts
@@ -1280,7 +1266,7 @@ error_reporting(E_ERROR | E_PARSE);
 	       	   $userRole = $this->lh->translationFor($this->getRoleNameForRole($userData["user_level"]));
 
 	       	   // $action = $this->getUserActionMenuForUser($userData["id"], $userData["name"], $userData["status"]);
-	       	   $action = $this->getUserActionMenuForUser($userData["user_id"], $userData["user"], $userData["active"]);
+	       	   $action = $this->getUserActionMenuForUser($userData["user_id"], $userData["active"]);
 		       // $result = $result."<tr>
 	        //             <td>".$userData["id"]."</td>
 	        //             <td><a class=\"edit-action\" href=\"".$userData["id"]."\">".$userData["name"]."</a></td>
@@ -1312,23 +1298,14 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @return Human friendly descriptive name for the role.
 	 */
 	private function getRoleNameForRole($roleNumber) {
-		switch ($roleNumber) {
-			case CRM_DEFAULTS_USER_ROLE_ADMIN:
-				return "administrator";
-				break;
-			case CRM_DEFAULTS_USER_ROLE_MANAGER:
-				return "manager";
-				break;
-			case CRM_DEFAULTS_USER_ROLE_WRITER:
-				return "writer";
-				break;
-			case CRM_DEFAULTS_USER_ROLE_READER:
-				return "reader";
-				break;
-			case CRM_DEFAULTS_USER_ROLE_GUEST:
-				return "guest";
-				break;
-		}
+		return match ($roleNumber) {
+            CRM_DEFAULTS_USER_ROLE_ADMIN => "administrator",
+            CRM_DEFAULTS_USER_ROLE_MANAGER => "manager",
+            CRM_DEFAULTS_USER_ROLE_WRITER => "writer",
+            CRM_DEFAULTS_USER_ROLE_READER => "reader",
+            CRM_DEFAULTS_USER_ROLE_GUEST => "guest",
+            default => null,
+        };
 	}
 
 	/**
@@ -1356,8 +1333,8 @@ error_reporting(E_ERROR | E_PARSE);
 		$allModules = $mh->listOfAllModules();
 
 		// generate a table with all elements.
-		$items = array("name", "version", "enabled", "action");
-		$table = $this->generateTableHeaderWithItems($items, "moduleslist", "table-striped", true, false, array(), array("version", "action"), '');
+		$items = ["name", "version", "enabled", "action"];
+		$table = $this->generateTableHeaderWithItems($items, "moduleslist", "table-striped", true, false, [], ["version", "action"], '');
 		// fill table
 		foreach ($allModules as $moduleClass => $moduleDefinition) {
 			// module data
@@ -1414,15 +1391,14 @@ error_reporting(E_ERROR | E_PARSE);
 		$table .= "<tr><td><b>$moduleName</b><br/><div class='small hide-on-low'>$moduleDescription</div></td><td class='small hide-on-low'>$moduleVersion</td><td class='small hide-on-low'>$status</td><td>$action</td></tr>";
 
 		// close table
-		$table .= $this->generateTableFooterWithItems($items, true, false, array(), array("version", "action"));
+		$table .= $this->generateTableFooterWithItems($items, true, false, [], ["version", "action"]);
 
 		// add javascript code.
-		$enableJS = $this->clickableClassActionJS("enable_module", "module_name", "href", "./php/ModifyModule.php", $this->reloadLocationJS(), $this->showRetrievedErrorMessageAlertJS(), false, CRM_DEFAULT_SUCCESS_RESPONSE, array("enabled"=>"1"), null);
-		$disableJS = $this->clickableClassActionJS("disable_module", "module_name", "href", "./php/ModifyModule.php", $this->reloadLocationJS(), $this->showRetrievedErrorMessageAlertJS(), false, CRM_DEFAULT_SUCCESS_RESPONSE, array("enabled"=>"0"), null);
+		$enableJS = $this->clickableClassActionJS("enable_module", "module_name", "href", "./php/ModifyModule.php", $this->reloadLocationJS(), $this->showRetrievedErrorMessageAlertJS(), false, CRM_DEFAULT_SUCCESS_RESPONSE, ["enabled"=>"1"]);
+		$disableJS = $this->clickableClassActionJS("disable_module", "module_name", "href", "./php/ModifyModule.php", $this->reloadLocationJS(), $this->showRetrievedErrorMessageAlertJS(), false, CRM_DEFAULT_SUCCESS_RESPONSE, ["enabled"=>"0"]);
 		$deleteJS = $this->clickableClassActionJS("uninstall_module", "module_name", "href", "./php/DeleteModule.php", $this->reloadLocationJS(), $this->showRetrievedErrorMessageAlertJS(), true);
-		$table .= $enableJS.$disableJS.$deleteJS;
 
-		return $table;
+		return $table . ($enableJS . $disableJS . $deleteJS);
 	}
 
 	public function getModuleHandlerLog() {
@@ -1435,7 +1411,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$ed_option = $enabled ? $this->actionForPopupButtonWithClass("disable_module", $this->lh->translationFor("disable"), $moduleShortName) : $this->actionForPopupButtonWithClass("enable_module", $this->lh->translationFor("enable"), $moduleShortName);
 		//$up_option = $this->actionForPopupButtonWithClass("update_module", $this->lh->translationFor("update"), $moduleShortName);
 		$un_option = $this->actionForPopupButtonWithClass("uninstall_module", $this->lh->translationFor("uninstall"), $moduleShortName);
-		$options = array($ed_option, $un_option);
+		$options = [$ed_option, $un_option];
 		// build and return the popup action button.
 		return $this->popupActionButton($this->lh->translationFor("choose_action"), $options);
 	}
@@ -1451,7 +1427,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$moduleTopbarElements = $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_TOPBAR, null, CRM_MODULE_MERGING_STRATEGY_APPEND);
 		// header elements
 		$logo = $this->creamyHeaderLogo();
-		$name = $this->creamyHeaderName();
+		$this->creamyHeaderName();
 			//<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="32"> '.$name.'</a>
 		// return header
 		$avatarElement = $this->getVueAvatar($user->getUserName(), $user->getUserAvatar(), 22, true);
@@ -1554,7 +1530,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$moduleTopbarElements = $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_TOPBAR_AGENT, null, CRM_MODULE_MERGING_STRATEGY_APPEND);
 		// header elements
 		$logo = $this->creamyHeaderLogo();
-		$name = $this->creamyHeaderName();
+		$this->creamyHeaderName();
 			//<a href="./index.php" class="logo"><img src="'.$logo.'" width="auto" height="32"> '.$name.'</a>
 		// return header
 		// old img element : <img src="'.$user->getUserAvatar().'" width="12" height="auto"  class="user-image img-circle" alt="User Image" style="padding-bottom: 3px;" />
@@ -1603,7 +1579,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function creamyHeaderLogo() {
 		$customLogo = $this->db->getSettingValueForKey(CRM_SETTING_COMPANY_LOGO);
-		return (!empty($customLogo) ? $customLogo : CRM_DEFAULT_HEADER_LOGO);
+		return (empty($customLogo) ? CRM_DEFAULT_HEADER_LOGO : $customLogo);
 	}
 
 	/**
@@ -1613,7 +1589,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function creamyHeaderName() {
 		$customName = $this->db->getSettingValueForKey(CRM_SETTING_COMPANY_NAME);
-		return (!empty($customName) ? $customName : "GOautodial Inc.");
+		return (empty($customName) ? "GOautodial Inc." : $customName);
 	}
 
 	/**
@@ -1637,9 +1613,8 @@ error_reporting(E_ERROR | E_PARSE);
 	public function creamyThemeCSS() {
 		$theme = $this->db->getSettingValueForKey(CRM_SETTING_THEME);
 		if (empty($theme)) { $theme = CRM_SETTING_DEFAULT_THEME; }
-		$return  = '<link href="css/skins/skin-'.$theme.'.min.css" rel="stylesheet" type="text/css" />';
 		//$return .= "//{$_SERVER['SCRIPT_FILENAME']}\n";
-		return $return;
+		return '<link href="css/skins/skin-'.$theme.'.min.css" rel="stylesheet" type="text/css" />';
 	}
 
 	/**
@@ -1650,9 +1625,9 @@ error_reporting(E_ERROR | E_PARSE);
 		$company_name = $this->creamyHeaderName();
 		if (empty($version)) { $version = "unknown"; }
 		$version = "4.0";
-  
+
   ob_start();
-  include_once ("ModalPasswordDialogs.php");
+  include_once (__DIR__ . "/ModalPasswordDialogs.php");
   $modalPasswds = ob_get_contents();
 
 		$footer = '<footer class="main-footer">
@@ -1660,8 +1635,7 @@ error_reporting(E_ERROR | E_PARSE);
 				<b>Version</b> '.$version.'</div><strong>'.$this->lh->translationFor("copyright").' &copy; '.date("Y").' <a href="'.$this->lh->translationFor("company_url").'">'.$company_name.'</a> '.$this->lh->translationFor("all_rights_reserved").'.
 			</div>
 			</footer>';
-  
-		$footer .= '			<!-- Modal -->
+		return $footer . '			<!-- Modal -->
 			<!-- View Campaign -->
 			<div id="view-campaign-modal" class="modal fade" role="dialog">
 			  <div class="modal-dialog">
@@ -1785,7 +1759,6 @@ error_reporting(E_ERROR | E_PARSE);
 			<!-- End of View Agent -->
 			<!-- End of modal -->
                 ';
-		return $footer;
 	}
 
 	/** Topbar Menu elements */
@@ -1819,8 +1792,7 @@ error_reporting(E_ERROR | E_PARSE);
 	      }
 	      $result .= $this->getTopbarComplexElement($remoteuser, $message["message"], $message["date"], $remoteavatar, "messages.php");
       }
-		$result .= $this->getTopbarMenuFooter($this->lh->translationFor("see_all_messages"), "messages.php");
-		return $result;
+		return $result . $this->getTopbarMenuFooter($this->lh->translationFor("see_all_messages"), "messages.php");
 	}
 
 	/**
@@ -1829,7 +1801,6 @@ error_reporting(E_ERROR | E_PARSE);
 	public function dashboardInfoBoxes($userid) {
 		$boxes = "";
 		$firstCustomerType = $this->db->getFirstCustomerGroupTableName();
-		$columnSize = isset($firstCustomerType) ? 3 : 4;
 
 		// new contacts
 		$contactsUrl = "./customerslist.php?customer_type=vicidial_list&customer_name=".urlencode($this->lh->translationFor("contacts"));
@@ -1894,9 +1865,7 @@ error_reporting(E_ERROR | E_PARSE);
         foreach ($list as $task) {
 	        $result .= $this->getTopbarSimpleElementWithDate($task["description"], $task["creation_date"], "clock-o", "tasks.php", CRM_UI_STYLE_WARNING);
         }
-
-        $result .= $this->getTopbarMenuFooter($this->lh->translationFor("see_all_tasks"), "tasks.php");
-        return $result;
+        return $result . $this->getTopbarMenuFooter($this->lh->translationFor("see_all_tasks"), "tasks.php");
     }
 
 	/**
@@ -1960,20 +1929,20 @@ error_reporting(E_ERROR | E_PARSE);
 
 	public function getTopbarSimpleElement($text, $icon, $link, $tint = "aqua") {
 		//$shortText = $this->substringUpTo($text, 40);
-		$shortText = strlen($text) > 40 ? substr($text,0,40)."..." : $text;
+		$shortText = strlen((string) $text) > 40 ? substr((string) $text,0,40)."..." : $text;
 		return '<li style="text-align: left; !important;"><a href="'.$link.'"><i class="fa fa-'.$icon.' text-'.$tint.'"></i><b>'.$shortText.'</b></a></li>';
 	}
 
 	public function getTopbarSimpleElementWithDate($text, $date, $icon, $link, $tint = CRM_UI_STYLE_DEFAULT) {
 		//$shortText = $this->substringUpTo($text, 30);
-	    $shortText = strlen($text) > 25 ? substr($text,0,25)."..." : $text;
+	    $shortText = strlen((string) $text) > 25 ? substr((string) $text,0,25)."..." : $text;
 		$relativeTime = $this->relativeTime($date, 1);
 		return '<li><a href="'.$link.'"><h3><p class="pull-left"><b>'.$shortText.'</b></p><small class="label label-'.$tint.' pull-right"><i class="fa fa-'.$icon.'"></i> '.$relativeTime.'</small></h3></a></li>';
 	}
 
 	public function getTopbarComplexElement($title, $text, $date, $image, $link) {
-		$shortTitle = $this->substringUpTo($title, 20);
-		$shortText = $this->substringUpTo($text, 40);
+		$this->substringUpTo(20);
+		$shortText = $this->substringUpTo(40);
 	    $relativeTime = $this->relativeTime($date, 1);
 		return '<li><a href="'.$link.'">
                     <div class="pull-left">
@@ -1996,23 +1965,22 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param $userid the id of the user.
 	 */
 	public function getSidebar($userid, $username, $userrole, $avatar, $usergroup = NULL) {
-		$numMessages = $this->db->getUnreadMessagesNumber($userid);
+		$this->db->getUnreadMessagesNumber($userid);
 		$numTasks = $this->db->getUnfinishedTasksNumber($userid);
 		$numNotifications = $this->db->getNumberOfTodayNotifications($userid) + $this->db->getNumberOfTodayEvents($userid);
 		$mh = \creamy\ModuleHandler::getInstance();
 		$smtp_status = $this->API_getSMTPActivation(); // smtp_status
 		$gopackage = $this->api->API_getGOPackage(); // smtp_status
-		$agent_chat_status = $this->API_getAgentChatActivation(); //agent_chat_status
+		$this->API_getAgentChatActivation(); //agent_chat_status
 		$whatsapp_status = $this->API_getWhatsappActivation(); //whatsapp_status
-		$usergroup = (!isset($usergroup) ? $_SESSION['usergroup'] : $usergroup);
-		$perms = $this->api->goGetPermissions('sidebar', $usergroup);
-		$perms = json_decode(stripslashes($perms->data->permissions));
+		$usergroup ??= $_SESSION['usergroup'];
+		$perms = $this->api->goGetPermissions('sidebar');
+		$perms = json_decode(stripslashes((string) $perms->data->permissions));
 
 		$adminArea = "";
 		$telephonyArea = "";
 		$settings = "";
 		$callreports = "";
-		$loadleads = "";
 		$crm = "";
 		$eventsArea = "";
 		if ($userrole != CRM_DEFAULTS_USER_ROLE_AGENT) {
@@ -2020,16 +1988,16 @@ error_reporting(E_ERROR | E_PARSE);
 			$modulesWithSettings = $mh->modulesWithSettings();
 			$adminArea = '<li class="treeview"><a href="#"><i class="fa fa-dashboard"></i> <span>'.$this->lh->translationFor("administration").'</span><i class="fa fa-angle-left pull-right"></i></a>
 			<ul class="treeview-menu">';
-			
+
 			//if ($_SESSION['user'] === "goautodial" || $_SESSION['user'] === "goAPI")
 			$adminArea .= $this->getSidebarItem("./adminsettings.php", "gears", $this->lh->translationFor("settings")); // admin settings
-			
+
 			//$adminArea .= $this->getSidebarItem("./telephonyusers.php", "user", $this->lh->translationFor("users")); // admin settings
 			$adminArea .= $this->getSidebarItem("./adminmodules.php", "archive", $this->lh->translationFor("modules")); // admin settings
 			//$adminArea .= $this->getSidebarItem("./admincustomers.php", "users", $this->lh->translationFor("customers")); // admin settings
-			foreach ($modulesWithSettings as $k => $m) { $adminArea .= $this->getSidebarItem("./modulesettings.php?module_name=".urlencode($k), $m->mainPageViewIcon(), $m->mainPageViewTitle()); }
+			foreach ($modulesWithSettings as $k => $m) { $adminArea .= $this->getSidebarItem("./modulesettings.php?module_name=".urlencode((string) $k), $m->mainPageViewIcon(), $m->mainPageViewTitle()); }
 			if ($smtp_status == 1) {  // module is enabled.
-				$adminArea .= $this->getSidebarItem("./settingssmtp.php", "envelope-square", $this->lh->translationFor("smtp_settings")); // smtp settings 
+				$adminArea .= $this->getSidebarItem("./settingssmtp.php", "envelope-square", $this->lh->translationFor("smtp_settings")); // smtp settings
 			}
 			/*if ($whatsapp_status == 1) { // module is enabled.
 				$adminArea .= $this->getSidebarItem("./settingswhatsapp.php", "envelope-square", $this->lh->translationFor("whatsapp_settings")); // whatsapp settings
@@ -2055,7 +2023,7 @@ error_reporting(E_ERROR | E_PARSE);
 				//$telephonyArea .= $this-> getSidebarItem("./telephonyvoicefiles.php", "files-o", $this->lh->translationFor("voice_files"));
 			}
 			$telephonyArea .= '</ul></li>';
-			
+
 			$rocketchatAnalytics = "";
 			if(ROCKETCHAT_ENABLE === 'y'){
 				$rocketchatAnalytics .= '<li class="treeview"><a href="#"><i class="fa fa-headphones"></i> <span>'.$this->lh->translationFor("livechat").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
@@ -2066,35 +2034,35 @@ error_reporting(E_ERROR | E_PARSE);
 			}
 
 			if ($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
-				$settings = '<li class="treeview"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("settings").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';				
+				$settings = '<li class="treeview"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("settings").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
 				$settings .= $this-> getSidebarItem("./settingscalltimes.php", "list-ol", $this->lh->translationFor("call_times"));
 				$settings .= $this-> getSidebarItem("./settingsvoicemails.php", "envelope", $this->lh->translationFor("voice_mails"));
 				$settings .= $this-> getSidebarItem("./settingsusergroups.php", "users", $this->lh->translationFor("user_groups"));
-				
+
 				if ($perms->carriers->carriers_read == 'R' || $userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
 					$settings .= $this-> getSidebarItem("./settingscarriers.php", "signal", $this->lh->translationFor("carriers"));
-				
+
 				if ($perms->servers->servers_read == 'R' || $userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
 					$settings .= $this-> getSidebarItem("./settingsservers.php", "server", $this->lh->translationFor("servers"));
-					
+
 				if ($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN)
 					$settings .= $this-> getSidebarItem("./settingsadminlogs.php", "book", $this->lh->translationFor("admin_logs"));
-				
+
 				$settings .= '</ul></li>';
 			}
 
 			$callreports = '<li class="treeview"><a href="#"><i class="fa fa-bar-chart-o"></i> <span>'.$this->lh->translationFor("call_reports").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
 			$callreports .= $this-> getSidebarItem("./callreports.php", "bar-chart", $this->lh->translationFor("reports_and_go_analytics"));
-			
+
 			if ($perms->recordings->recordings_display == 'Y') {
 				$callreports .= $this-> getSidebarItem("./callrecordings.php", "phone-square", $this->lh->translationFor("call_recordings"));
 			}
-			
+
 			$callreports .= '</ul></li>';
-			
+
 			// WhatsApp Settings
    $whatsapp_status = 0; // permanently disabled -- chris
-			if ($whatsapp_status == 1) { // module is enabled.
+			if ($whatsapp_status === 1) { // module is enabled.
 				$whatsapp = '<li class="treeview"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("WhatsApp").'</span><i class=
 "fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
                                 $whatsapp .= $this->getSidebarItem("./settingswhatsapp.php", "envelope-square", $this->lh->translationFor("whatsapp_settings"));
@@ -2118,7 +2086,7 @@ error_reporting(E_ERROR | E_PARSE);
 		}
 
 		// get customer types
-		$customerTypes = $this->db->getCustomerTypes();
+		$this->db->getCustomerTypes();
 
 		// prefix: structure and home link
 		// old img element : <img src="'.$avatar.'" class="img-circle" alt="User Image" />
@@ -2188,32 +2156,29 @@ error_reporting(E_ERROR | E_PARSE);
 				$result .= $this->getSidebarItem($mh->pageLinkForModule($shortName, null), $module->mainPageViewIcon(), $module->mainPageViewTitle(), $module->sidebarBadgeNumber());
 			}
         }
- 
+
   if($userrole != CRM_DEFAULTS_USER_ROLE_AGENT){
         $result .= $this->getSidebarItem("credits.php", "list-alt", $this->lh->translationFor("Credits"));
   }
 
-		$result .= '</ul></section></aside>';
-
-		return $result;
+		return $result . '</ul></section></aside>';
 	}
 
 	 /** Agent Sidebar */
 
         public function getAgentSidebar($userid, $username, $userrole, $avatar, $usergroup = NULL) {
-		$result = '<aside class="main-sidebar" sidebar-offcanvas hide"><section class="sidebar">';
 		$result = '';
 		//$result .= $this->getChat();
 		$result .= '</section></aside>';
-		
+
 		return $result;
 	}
 
 	/**
 	 * Right Sidebar
 	 */
-	public function getRightSidebar($userid, $username, $avatar, $tabs = array()) {
-		$mh = \creamy\ModuleHandler::getInstance();
+	public function getRightSidebar($userid, $username, $avatar, $tabs = []) {
+		\creamy\ModuleHandler::getInstance();
 		$user = \creamy\CreamyUser::currentUser();
 		$agent_chat_status = $this->API_getAgentChatActivation();
 		// prefix: structure and home link
@@ -2224,9 +2189,9 @@ error_reporting(E_ERROR | E_PARSE);
 		if (count($tabs) < 1) {
 			//$tabs = array('commenting-o'=>'messaging', 'phone'=>'dialer', 'user'=>'settings');
 			if($agent_chat_status){
-			    $tabs = array('comments-o' => 'chat', 'user'=>'settings');
+			    $tabs = ['comments-o' => 'chat', 'user'=>'settings'];
 			} else {
-			    $tabs = array('user'=>'settings');
+			    $tabs = ['user'=>'settings'];
 			}
 		}
 		$tabresult = '<ul class="nav nav-tabs nav-justified control-sidebar-tabs">'."\n";
@@ -2234,7 +2199,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$x = 0;
 		foreach ($tabs as $icon => $tabname) {
 			$activeClass = ($x < 1) ? ' class="active"' : '';
-			$isActive = ($x < 1) ? true : false;
+			$isActive = $x < 1;
 			$isHidden = ($tabname == 'dialer') ? ' style="display: none;"' : '';
 			$tabresult .= '<li id="'.$tabname.'-tab"'.$activeClass.$isHidden.'><a href="#control-sidebar-'.$tabname.'-tab" data-toggle="tab"><i class="fa fa-'.$icon.'"></i></a></li>'."\n";
 			$tabpanes .= $this->getRightTabPane($user, $tabname, $isActive);
@@ -2275,7 +2240,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$tabpanes .= '</ul>'."\n";
 		    }
 		}
-		
+
 		if ($tab == 'settings') {
 			$tabpanes .= '<ul class="control-sidebar-menu" id="go_tab_profile">
 				<li>
@@ -2309,9 +2274,7 @@ error_reporting(E_ERROR | E_PARSE);
 				';
 		}
 
-		$tabpanes .= "</div>";
-
-		return $tabpanes;
+		return $tabpanes . "</div>";
 	}
 
 
@@ -2331,7 +2294,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function getCustomerTypesAdminTable() {
 		// generate table
-		$items = array("Id", $this->lh->translationFor("name"));
+		$items = ["Id", $this->lh->translationFor("name")];
 		$table = $this->generateTableHeaderWithItems($items, "customerTypes", "table-bordered table-striped", true, '', '', '', '');
 		if ($customerTypes = $this->db->getCustomerTypes()) {
 			foreach ($customerTypes as $customerType) {
@@ -2354,7 +2317,7 @@ error_reporting(E_ERROR | E_PARSE);
 		// edit customer type
 		$idAssignment = $this->selfValueAssignmentJS("href", "customer-type-id");
 		$textAssignment = $this->classValueFromParentAssignmentJS("text", "td", "newname");
-		$editCustomerJS = $this->clickableFillValuesActionJS("edit-customer", array($idAssignment, $textAssignment));
+		$editCustomerJS = $this->clickableFillValuesActionJS("edit-customer", [$idAssignment, $textAssignment]);
 
 		// edit customer modal form
 		$modalTitle = $this->lh->translationFor("edit_customer_type");
@@ -2402,8 +2365,8 @@ error_reporting(E_ERROR | E_PARSE);
 	   // print prefix
 	   $columns = $this->db->getCustomerColumnsToBeShownInCustomerList($customerType);
 	   $columns[] = $this->lh->translationFor("action");
-	   $hideOnMedium = array("email", "phone_number");
-	   $hideOnLow = array("email", "phone_number");
+	   $hideOnMedium = ["email", "phone_number"];
+	   $hideOnLow = ["email", "phone_number"];
 	   $result = $this->generateTableHeaderWithItems($columns, "contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 
        // print suffix
@@ -2416,10 +2379,10 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function getEmptyT_UsersList($customerType) {
 	   // print prefix
-	   $columns = array("user", "full_name", "user_level", "user_group", "active", "Action");
+	   $columns = ["user", "full_name", "user_level", "user_group", "active", "Action"];
 	   $columns[] = $this->lh->translationFor("action");
-	   $hideOnMedium = array("user_level", "user_group");
-	   $hideOnLow = array("user","user_level", "user_level");
+	   $hideOnMedium = ["user_level", "user_group"];
+	   $hideOnLow = ["user","user_level", "user_level"];
 	   $result = $this->generateTableHeaderWithItems($columns, "T_users", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 
        // print suffix
@@ -2445,7 +2408,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$completeActionCheckbox = $completed == 100 ? '' : '<input type="checkbox" value="" name="">';
 		// modules hovers.
 		$mh = \creamy\ModuleHandler::getInstance();
-		$moduleTaskHoverActions = $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_TASK_LIST_HOVER, array("taskid" => $task["id"]), CRM_MODULE_MERGING_STRATEGY_APPEND);
+		$moduleTaskHoverActions = $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_TASK_LIST_HOVER, ["taskid" => $task["id"]], CRM_MODULE_MERGING_STRATEGY_APPEND);
 
 		return '<li id="'.$task["id"].'" '.$doneOrNot.'>'.$completeActionCheckbox.'<span class="text">'.$task["description"].'</span>
 				  <small class="label label-warning pull-right"><i class="fa fa-clock-o"></i> '.$creationdate.'</small>
@@ -2469,11 +2432,9 @@ error_reporting(E_ERROR | E_PARSE);
 			foreach ($tasks as $task) {
 				// generate row
 				$taskHTML = $this->getTaskAsIndividualRow($task);
-				$list = $list.$taskHTML;
+				$list .= $taskHTML;
 			}
-
-			$list = $list."</ul>";
-	    	return $list;
+	    	return $list."</ul>";
 		}
    	}
 
@@ -2490,11 +2451,9 @@ error_reporting(E_ERROR | E_PARSE);
 			foreach ($tasks as $task) {
 				// generate row
 				$taskHTML = $this->getTaskAsIndividualRow($task);
-				$list = $list.$taskHTML;
+				$list .= $taskHTML;
 			}
-
-			$list = $list."</ul>";
-	    	return $list;
+	    	return $list."</ul>";
 		}
    	}
 
@@ -2517,80 +2476,80 @@ error_reporting(E_ERROR | E_PARSE);
 	public function customerFieldsForForm($customerobj = null, $customerType = null, $customerid = null) {
 		// name
 		$ph = $this->lh->translationFor("First Name").' ('.$this->lh->translationFor("mandatory").')';
-		$vl = isset($customerobj["first_name"]) ? $customerobj["first_name"] : null;
+		$vl = $customerobj["first_name"] ?? null;
 		$fname_f = $this->singleInputGroupWithContent($this->singleFormInputElement("fname", "fname", "text", $ph, $vl, "user", "required"));
 
 		$ph = $this->lh->translationFor("Middle Initial").' ('.$this->lh->translationFor("optional").')';
-		$vl = isset($customerobj["middle_initial"]) ? $customerobj["middle_initial"] : null;
+		$vl = $customerobj["middle_initial"] ?? null;
 		$mi_f = $this->singleInputGroupWithContent($this->singleFormInputElement("mi", "mi", "text", $ph, $vl, "user"));
 
 		$ph = $this->lh->translationFor("Last Name").' ('.$this->lh->translationFor("mandatory").')';
-		$vl = isset($customerobj["last_name"]) ? $customerobj["last_name"] : null;
+		$vl = $customerobj["last_name"] ?? null;
 		$lname_f = $this->singleInputGroupWithContent($this->singleFormInputElement("lname", "lname", "text", $ph, $vl, "user", "required"));
 
-		$name_row = $this->rowWithVariableContents(array("6", "6", "6"), array($fname_f, $mi_f, $lname_f));
+		$name_row = $this->rowWithVariableContents(["6", "6", "6"], [$fname_f, $mi_f, $lname_f]);
 		$name_f = $this->singleFormGroupWrapper($name_row);
 
 		// phone & alt phone
 		$ph = $this->lh->translationFor("Phone Number").' ('.$this->lh->translationFor("mandatory").')';
-		$vl = isset($customerobj["phone_number"]) ? $customerobj["phone_number"]: null;
+		$vl = $customerobj["phone_number"] ?? null;
 		$phone_f = $this->singleInputGroupWithContent($this->singleFormInputElement("phone", "phone", "text", $ph, $vl, "phone", "required"));
 
 		$ph = $this->lh->translationFor("Alternate Phone Number");
-		$vl = isset($customerobj["alt_phone"]) ? $customerobj["alt_phone"]: null;
+		$vl = $customerobj["alt_phone"] ?? null;
 		$altphone_f = $this->singleInputGroupWithContent($this->singleFormInputElement("alt_phone", "alt_phone", "text", $ph, $vl, "alt_phone", "required"));
 
-		$phone_alt_row = $this->rowWithVariableContents(array("6", "6"), array($phone_f, $altphone_f));
+		$phone_alt_row = $this->rowWithVariableContents(["6", "6"], [$phone_f, $altphone_f]);
 		$phone_alt_field = $this->singleFormGroupWrapper($phone_alt_row);
 
 		// email
 		$ph = $this->lh->translationFor("email").' ('.$this->lh->translationFor("mandatory").')';
-		$vl = isset($customerobj["email"]) ? $customerobj["email"] : null;
+		$vl = $customerobj["email"] ?? null;
 		$email_f = $this->singleFormGroupWithInputGroup($this->singleFormInputElement("email", "email", "email", $ph, $vl, "envelope", "required"));
 
 		// address 1 2 3
 		$ph = $this->lh->translationFor("Address 1").' ('.$this->lh->translationFor("mandatory").')';
-		$vl = isset($customerobj["address1"]) ? $customerobj["address1"] : null;
+		$vl = $customerobj["address1"] ?? null;
 		$address1_f = $this->singleFormGroupWithInputGroup($this->singleFormInputElement("address1", "address1", "text", $ph, $vl, "map-marker", "required"));
 
 		$ph = $this->lh->translationFor("Address 2");
-		$vl = isset($customerobj["address2"]) ? $customerobj["address2"] : null;
+		$vl = $customerobj["address2"] ?? null;
 		$address2_f = $this->singleFormGroupWithInputGroup($this->singleFormInputElement("address2", "address2", "text", $ph, $vl, "map-marker"));
 
 		$ph = $this->lh->translationFor("Address 3");
-		$vl = isset($customerobj["address3"]) ? $customerobj["address3"] : null;
+		$vl = $customerobj["address3"] ?? null;
 		$address3_f = $this->singleFormGroupWithInputGroup($this->singleFormInputElement("address3", "address3", "text", $ph, $vl, "map-marker"));
 
 		// city & state & province
 		$ph = $this->lh->translationFor("city");
-		$vl = isset($customerobj["city"]) ? $customerobj["city"] : null;
+		$vl = $customerobj["city"] ?? null;
 		$city_f = $this->singleInputGroupWithContent($this->singleFormInputElement("city", "city", "text", $ph, $vl, "map-marker"));
 
 		$ph = $this->lh->translationFor("state");
-		$vl = isset($customerobj["state"]) ? $customerobj["state"] : null;
+		$vl = $customerobj["state"] ?? null;
 		$state_f = $this->singleInputGroupWithContent($this->singleFormInputElement("state", "state", "text", $ph, $vl, "map-marker"));
 
 		$ph = $this->lh->translationFor("Province");
-		$vl = isset($customerobj["province"]) ? $customerobj["province"] : null;
+		$vl = $customerobj["province"] ?? null;
 		$province_f = $this->singleInputGroupWithContent($this->singleFormInputElement("province", "province", "text", $ph, $vl, "map-marker"));
 
-		$c_s_p_row = $this->rowWithVariableContents(array("6", "6", "6"), array($city_f, $state_f, $province_f));
+		$c_s_p_row = $this->rowWithVariableContents(["6", "6", "6"], [$city_f, $state_f, $province_f]);
 		$c_s_p_field = $this->singleFormGroupWrapper($c_s_p_row);
 
 		// zip code and country
 		$ph = $this->lh->translationFor("Postal Code");
-		$vl = isset($customerobj["postal_code"]) ? $customerobj["postal_code"] : null;
+		$vl = $customerobj["postal_code"] ?? null;
 		$postal_f = $this->singleInputGroupWithContent($this->singleFormInputElement("postal_code", "postal_code", "text", $ph, $vl, "map-marker"));
 		$ph = $this->lh->translationFor("country");
-		$vl = isset($customerobj["country"]) ? $customerobj["country"] : null;
+		$vl = $customerobj["country"] ?? null;
 		$country_f = $this->singleInputGroupWithContent($this->singleFormInputElement("country", "country", "text", $ph, $vl, "map-marker"));
 
-		$c_and_z_row = $this->rowWithVariableContents(array("6", "6"), array($postal_f, $country_f));
+		$c_and_z_row = $this->rowWithVariableContents(["6", "6"], [$postal_f, $country_f]);
 		$c_and_z_field = $this->singleFormGroupWrapper($c_and_z_row);
 
 		// textarea
 		$ph = $this->lh->translationFor("notes");
-		$vl = isset($customerobj["comments"]) ? $customerobj["comments"] : null;
+		$vl = $customerobj["comments"] ?? null;
 		$notes_f = $this->singleFormGroupWithInputGroup($this->singleFormTextareaElement("comments", "comments", $ph, $vl, "file-text-o"));
 
 		// gender
@@ -2599,7 +2558,7 @@ error_reporting(E_ERROR | E_PARSE);
             $currentGender = $customerobj["gender"];
             if ($currentGender < 0 || $currentGender > 1) $currentGender = -1;
         }
-        $genders = array("-1" => "choose_an_option", "0" => "female", "1" => "male");
+        $genders = ["-1" => "choose_an_option", "0" => "female", "1" => "male"];
 		$gender_f = $this->singleFormGroupWithSelect($this->lh->translationFor("gender"), "gender", "gender", $genders, $currentGender, true);
 
 		// birthdate
@@ -2657,8 +2616,7 @@ error_reporting(E_ERROR | E_PARSE);
 				$response .= '<option value="'.$userobj["user_id"].'" '.$selfSelectedCode.'>'.$this->lh->translationFor("myself").'</option>';
 			}
 		}
-		$response .= '</select>';
-		return $response;
+		return $response . '</select>';
 	}
 
 	/**
@@ -2667,7 +2625,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @return the HTML code with the list of messages as a HTML table.
 	 */
 	private function getMessageListAsTable($messages, $folder) {
-		$columns = array("", "favorite", "name", "subject", "attachment", "date");
+		$columns = ["", "favorite", "name", "subject", "attachment", "date"];
 		$table = $this->generateTableHeaderWithItems($columns, "messagestable", "table-hover table-striped mailbox table-mailbox", true, true, '', '', '');
 		$user = \creamy\CreamyUser::currentUser();
 		foreach ($messages as $message) {
@@ -2679,7 +2637,7 @@ error_reporting(E_ERROR | E_PARSE);
 			}
 			if ($message["message_read"] == 0) $table .= '<tr class="unread">';
 			else $table .= '<tr>';
-			
+
 			$attachments = $this->db->getMessageAttachments($message['id'], $folder);
 			$showPaperClip = (!isset($attachments) || count($attachments) < 1) ? '' : '<i class="fa fa-paperclip" title="Has attachment"></i>';
 
@@ -2690,14 +2648,13 @@ error_reporting(E_ERROR | E_PARSE);
 			$table .= '<td style="width: 5%; text-align: center;"><input type="checkbox" class="message-selection-checkbox" value="'.$message["id"].'"/></td>';
 			$table .= '<td style="width: 5%; text-align: center;" class="mailbox-star"><i class="fa fa-star'.$favouriteHTML.'" id="'.$message["id"].'"></i></td>';
 			// $table .= '<td class="mailbox-name">'.$messageLink.(isset($message["remote_user"]) ? $message["remote_user"] : $this->lh->translationFor("unknown")).'</a></td>';
-			$table .= '<td class="mailbox-name" style="width: 20%; white-space: nowrap;">'.$messageLink.(isset($from_user) ? $from_user: $this->lh->translationFor("unknown")).'</a></td>';
+			$table .= '<td class="mailbox-name" style="width: 20%; white-space: nowrap;">'.$messageLink.($from_user ?? $this->lh->translationFor("unknown")).'</a></td>';
 			$table .= '<td class="mailbox-subject">'.$message["subject"].'</td>';
 			$table .= '<td class="mailbox-attachment" style="width: 5%; text-align: center;">'.$showPaperClip.'</td>'; //<i class="fa fa-paperclip"></i></td>';
 			$table .= '<td class="mailbox-date" style="width: 15%; white-space: nowrap; text-align: right; padding-right: 20px;">'.$this->relativeTime($message["date"]).'</td>';
 			$table .= '</tr>';
 		}
-		$table .= $this->generateTableFooterWithItems($columns, true, true);
-		return $table;
+		return $table . $this->generateTableFooterWithItems($columns, true, true);
 	}
 
 	/**
@@ -2705,8 +2662,8 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param Array $calls the list of calls.
 	 * @return the HTML code with the list of calls as a HTML table.
 	 */
-	private function getCallListAsTable($calls, $folder) {
-		$columns = array("", "name", "duration", "date", "playback");
+	private function getCallListAsTable($calls) {
+		$columns = ["", "name", "duration", "date", "playback"];
 		$table = $this->generateTableHeaderWithItems($columns, "callstable", "table-hover table-striped calls table-calls", true, true, '', '', '');
 		foreach ($calls as $call) {
 			//if ($call["message_read"] == 0) $table .= '<tr class="unread">';
@@ -2716,14 +2673,13 @@ error_reporting(E_ERROR | E_PARSE);
 			// variables and html text depending on the message
 
 			$table .= '<td><input type="checkbox" class="message-selection-checkbox" value=""/></td>';
-			$table .= '<td class="mailbox-name">'.$messageLink.(isset($call["user"]) ? $call["user"] : $this->lh->translationFor("unknown")).'</a></td>';
+			$table .= '<td class="mailbox-name">'.$messageLink.($call["user"] ?? $this->lh->translationFor("unknown")).'</a></td>';
 			$table .= '<td class="mailbox-duration">duration here</td>';
 			$table .= '<td class="mailbox-date">'.$this->relativeTime($call["date"]).'</td>'; //<i class="fa fa-paperclip"></i></td>';
 			$table .= '<td class="mailbox-playback "><a href="#"><span class="fa fa-play"></span></a></td>';
 			$table .= '</tr>';
 		}
-		$table .= $this->generateTableFooterWithItems($columns, true, true);
-		return $table;
+		return $table . $this->generateTableFooterWithItems($columns, true, true);
 	}
 
 	/**
@@ -2757,7 +2713,7 @@ error_reporting(E_ERROR | E_PARSE);
 		// module buttons
 		if ($showModuleButtons) {
 			$mh = \creamy\ModuleHandler::getInstance();
-			$buttons .= $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_MESSAGE_LIST_FOOTER, array("folder" => $folder), CRM_MODULE_MERGING_STRATEGY_APPEND);
+			$buttons .= $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_MESSAGE_LIST_FOOTER, ["folder" => $folder], CRM_MODULE_MERGING_STRATEGY_APPEND);
 		}
 		// chevrons
 		$buttons .= '</div><div class="pull-right"><div class="btn-group">
@@ -2866,7 +2822,7 @@ error_reporting(E_ERROR | E_PARSE);
 		// $calls = $this->db->getCallsOfType($userid, $folder);
 		$calls = $this->db->getMessagesOfType($userid, $folder);
 		if ($calls == NULL) return $this->calloutInfoCall($this->lh->translationFor("no_messages_in_list"));
-		else return $this->getCallListAsTable($calls, $folder);
+		else return $this->getCallListAsTable($calls);
 	}
 
 	/**
@@ -2875,9 +2831,9 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @return String the HTML with the list of message folders as <li> items.
 	 */
 	public function getMessageFoldersAsList($activefolder, $canDelete = true) {
-		require_once('Session.php');
+		require_once(__DIR__ . '/Session.php');
 		$user = \creamy\CreamyUser::currentUser();
-		$isHidden = (!$canDelete) ? 'hidden' : '';
+		$isHidden = ($canDelete) ? '' : 'hidden';
 		// info for active folder and unread messages
         $unreadMessages = $this->db->getUnreadMessagesNumber($user->getUserId());
         $aInbox = $activefolder == MESSAGES_GET_INBOX_MESSAGES ? 'class="active"' : '';
@@ -2902,7 +2858,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @return String the HTML with the list of calls folders as <li> items.
 	 */
 	public function getCallFoldersAsList($activefolder) {
-		require_once('Session.php');
+		require_once(__DIR__ . '/Session.php');
 		$user = \creamy\CreamyUser::currentUser();
 		$aInbound = $activefolder == CALLS_GET_INBOUND_CALLS ? 'class="active"' : '';
 		$aOutbound = $activefolder == CALLS_GET_OUTBOUND_CALLS ? 'class="active"' : '';
@@ -2933,7 +2889,7 @@ error_reporting(E_ERROR | E_PARSE);
 			if ($fromAgent) {
 				$uploadPath = "../../";
 			}
-			
+
 			$icon = $this->getFiletypeIconForFile($uploadPath . $attachment["filepath"]);
 			if ($icon != CRM_FILETYPE_IMAGE) {
 				$hasImageCode = "";
@@ -2963,8 +2919,7 @@ error_reporting(E_ERROR | E_PARSE);
                       </div>
                     </li>';
 		}
-		$code .= '</ul></div>';
-		return $code;
+		return $code . '</ul></div>';
 	}
 
 	/**
@@ -2991,7 +2946,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function eventTimeSelect() {
 		// build options
-		$options = array("all_day" => $this->lh->translationFor("all_day"));
+		$options = ["all_day" => $this->lh->translationFor("all_day")];
 		for ($i = 0; $i < 24; $i++) {
 			for ($j = 0; $j < 60; $j += 15) {
 				$hour = sprintf("%02d", $i);
@@ -3020,8 +2975,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$urlCode = empty($event["url"]) ? '' : ' event-url="'.$event["url"].'" ';
 			$result .= "<div event-id='".$event["id"]."' class='external-event bg-".$this->creamyColorForHexValue($event["color"])."' $urlCode>".$event["title"]."</div>";
 		}
-		$result .= "</div>";
-		return $result;
+		return $result . "</div>";
 	}
 
 	//added for editing events
@@ -3038,11 +2992,9 @@ error_reporting(E_ERROR | E_PARSE);
 				  		'.$this->hoverActionButton("edit-events-action", "edit", $event["id"], "edit-events-dialog-modal", null, "events-item").'
 					</div>
 			 	</li>';
-				$list = $list.$eventsHTML;
+				$list .= $eventsHTML;
 			}
-
-			$list = $list."</ul>";
-	    	return $list;
+	    	return $list."</ul>";
 		}
    	}
 
@@ -3080,8 +3032,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$result .= "{ id: $eventId, title: '$title' $startCode $endCode $allDayCode $urlCode $colorCode},";
 		}
 		$result = rtrim($result, ",");
-		$result .= "]";
-		return $result;
+		return $result . "]";
 	}
 
 	public function getTimezoneForCalendar() {
@@ -3165,7 +3116,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 * @param String $badgeColor	Color for the badge notification bubble (default yellow).
 	 * @return The HTML with the code of the timeline notification item to insert in the timeline list.
 	 */
-	public function timelineItemWithData($title, $content, $date, $url = null, $buttonTitle, $icon = "calendar-o", $buttonStyle = CRM_UI_STYLE_DEFAULT, $badgeColor = "yellow") {
+	public function timelineItemWithData($title, $content, $date, $url = null, $buttonTitle = null, $icon = "calendar-o", $buttonStyle = CRM_UI_STYLE_DEFAULT, $badgeColor = "yellow") {
 		// parameters
 		$relativeTime = $this->relativeTime($date, 1);
 		$actionHTML = isset($url) ? $this->timelineItemActionButton($url, $buttonTitle, $buttonStyle) : "";
@@ -3217,7 +3168,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function timelineItemForNotification($notification) {
 		$type = $notification["type"];
-		$action = isset($notification["action"]) ? $notification["action"]: NULL;
+		$action = $notification["action"] ?? NULL;
 		$date = $notification["date"];
 		$content = $notification["text"];
 
@@ -3236,7 +3187,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function timelineItemForEvent($event) {
 		$type = "event";
-		$action = isset($event["url"]) ? $event["url"]: "events.php?initial_date=".urlencode($event["start_date"]);
+		$action = $event["url"] ?? "events.php?initial_date=" . urlencode($event["start_date"]);
 		$date = $event["start_date"];
 		$content = $this->lh->translationFor("event_programmed_today").$event["title"];
 
@@ -3268,7 +3219,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$mh = \creamy\ModuleHandler::getInstance();
 		$modNots = $mh->applyHookOnActiveModules(
 			CRM_MODULE_HOOK_NOTIFICATIONS,
-			array(CRM_NOTIFICATION_PERIOD => CRM_NOTIFICATION_PERIOD_TODAY),
+			[CRM_NOTIFICATION_PERIOD => CRM_NOTIFICATION_PERIOD_TODAY],
 			CRM_MODULE_MERGING_STRATEGY_APPEND);
 
 		// generate timeline items for today.
@@ -3296,7 +3247,7 @@ error_reporting(E_ERROR | E_PARSE);
 		// module notifications for past week
 		$modNots = $mh->applyHookOnActiveModules(
 			CRM_MODULE_HOOK_NOTIFICATIONS,
-			array(CRM_NOTIFICATION_PERIOD => CRM_NOTIFICATION_PERIOD_PASTWEEK),
+			[CRM_NOTIFICATION_PERIOD => CRM_NOTIFICATION_PERIOD_PASTWEEK],
 			CRM_MODULE_MERGING_STRATEGY_APPEND);
 
 		if (empty($notifications) && empty($modNots)) {
@@ -3333,13 +3284,13 @@ error_reporting(E_ERROR | E_PARSE);
 		// initialize values
 		$labels = "labels: [";
 		$datasets = "datasets: [";
-		$data = array();
+		$data = [];
 		$statsArray = $this->db->getLastCustomerStatistics();
 
 		$customerTypes = $this->db->getCustomerTypes();
 
 		// create the empty data fields.
-		foreach ($customerTypes as $customerType) { $data[$customerType["table_name"]] = array(); }
+		foreach ($customerTypes as $customerType) { $data[$customerType["table_name"]] = []; }
 
 		// iterate through all customers
 		foreach ($statsArray as $obj) {
@@ -3354,7 +3305,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$labels = rtrim($labels, ",")."],";
 		$i = 0;
 		foreach ($customerTypes as $customerType) {
-			$color = isset($colors[$i]) ? $colors[$i] : null;
+			$color = $colors[$i] ?? null;
 			$datasets .= $this->datasetWithLabel($customerType["description"], $data[$customerType["table_name"]], $color);
 			$i++;
 		}
@@ -3374,7 +3325,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$i = 0;
 		foreach ($customerTypes as $customerType) {
 			$num = $this->db->getNumberOfClientsFromTable($customerType["table_name"]);
-			$color = isset($colors[$i]) ? $colors[$i] : null;
+			$color = $colors[$i] ?? null;
 			$result .= $this->pieDataWithLabelAndNumber($customerType["description"], $num, $color);
 			$i++;
 		}
@@ -3383,7 +3334,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 	public function generateStatisticsColors() {
 		$num = $this->db->getNumberOfCustomerTypes();
-		$result = array();
+		$result = [];
 		for ($i = 0; $i < $num; $i++) {
 			$result[] = \creamy\CRMUtils::randomRGBAColor(false);
 		}
@@ -3391,7 +3342,7 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	public function rgbaColorFromComponents($components, $alpha = "1.0") {
-		return "rgba(".$components["r"].", ".$components["g"].", ".$components["b"].", ".(isset($components["a"]) ? $components["a"] : $alpha).")";
+		return "rgba(".$components["r"].", ".$components["g"].", ".$components["b"].", ".($components["a"] ?? $alpha).")";
 	}
 
 	/** Utility functions */
@@ -3405,15 +3356,15 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function relativeTime($mysqltime, $maxdepth = 1) {
 		$time = strtotime(str_replace('/','-', $mysqltime));
-	    $d[0] = array(1,$this->lh->translationFor("second"));
-	    $d[1] = array(60,$this->lh->translationFor("minute"));
-	    $d[2] = array(3600,$this->lh->translationFor("hour"));
-	    $d[3] = array(86400,$this->lh->translationFor("day"));
-	    $d[4] = array(604800,$this->lh->translationFor("week"));
-	    $d[5] = array(2592000,$this->lh->translationFor("month"));
-	    $d[6] = array(31104000,$this->lh->translationFor("year"));
+	    $d[0] = [1,$this->lh->translationFor("second")];
+	    $d[1] = [60,$this->lh->translationFor("minute")];
+	    $d[2] = [3600,$this->lh->translationFor("hour")];
+	    $d[3] = [86400,$this->lh->translationFor("day")];
+	    $d[4] = [604800,$this->lh->translationFor("week")];
+	    $d[5] = [2592000,$this->lh->translationFor("month")];
+	    $d[6] = [31104000,$this->lh->translationFor("year")];
 
-	    $w = array();
+	    $w = [];
 
 		$depth = 0;
 	    $return = "";
@@ -3421,7 +3372,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $diff = ($now-$time);
 	    $secondsLeft = $diff;
 
-		if ($secondsLeft == 0) return "now";
+		if ($secondsLeft === 0) return "now";
 
 	    for($i=6;$i>-1;$i--)
 	    {
@@ -3437,11 +3388,10 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 
 	    $verb = ($diff>0)?"":"in ";
-	    $return = $verb.$return;
-	    return $return;
+	    return $verb.$return;
 	}
 
-	private function substringUpTo($string, $maxCharacters) {
+	private function substringUpTo($maxCharacters) {
 		if (empty($maxCharacters)) $maxCharacters = 4;
 		else if ($maxCharacters < 1) $maxCharacters = 4;
 	}
@@ -3467,7 +3417,7 @@ error_reporting(E_ERROR | E_PARSE);
 		if ($filter == "userInfo") {
 			$postfields["filter"] = $filter;
 		}
-		
+
 		$postfields["log_user"] = $_SESSION['user'];
 		$postfields["log_group"] = $_SESSION['usergroup'];
 		$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
@@ -3481,20 +3431,17 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
-		curl_close($ch);
 
-		$output = json_decode($data);
-
-		return $output;
+		return json_decode($data);
 	}
-	
+
 	public function goGetUserInfoNew($userid) {
 		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
 		$postfields["goPass"] = goPass; #Password goes here. (required)
 		$postfields["goAction"] = "goGetUserInfoNew"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
-		$postfields["user_id"] = $userid; #Desired User (required)		
+		$postfields["user_id"] = $userid; #Desired User (required)
 		$postfields["log_user"] = $_SESSION['user'];
 		$postfields["log_group"] = $_SESSION['usergroup'];
 		$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
@@ -3508,40 +3455,38 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
-		curl_close($ch);
 
-		$output = json_decode($data);
-
-		return $output;
-	}	
+		return json_decode($data);
+	}
 
 	// get user list
 	public function goGetAllUserList($output, $perm) {
-		//$output = $this->api->API_getAllUsers();		
+		//$output = $this->api->API_getAllUsers();
 		$checkbox_all = $this->getCheckAll("user");
-		
+
 		if ($perm->user_delete !== 'N') {
 			$checkbox_all = $this->getCheckAll("user");
 		} else {
 			$checkbox_all = "";
 		}
 
-		$columns = array("  ", $this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $checkbox_all, $this->lh->translationFor("action"));
+		$columns = ["  ", $this->lh->translationFor("user_id"), $this->lh->translationFor("full_name"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"), $checkbox_all, $this->lh->translationFor("action")];
 
 		//$hideOnMedium = array($this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
 		//$hideOnLow = array($this->lh->translationFor("agent_id"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
 		$result = $this->generateTableHeaderWithItems($columns, "T_userslist", "responsive display no-wrap table-bordered table-striped", true, false, '', '', '');
-		
+        $counter = count($output->user_id);
+
 		// iterate through all users
-		for($i=0;$i<count($output->user_id);$i++) {
+		for($i=0;$i<$counter;$i++) {
 			$user_id = $output->user_id[$i];
 			$user = $output->user[$i];
 			$full_name = $output->full_name[$i];
 			$user_group = $output->user_group[$i];
-			$user_level = $output->user_level[$i];	
+			$user_level = $output->user_level[$i];
 			$active = $output->active[$i];
    if ($user_level == 4) continue;
-			
+
 			if ($active == "Y") {
 				$active = $this->lh->translationFor("active");
 			}else{
@@ -3550,20 +3495,20 @@ error_reporting(E_ERROR | E_PARSE);
 			$role = $user_level;
 			$action = $this->getUserActionMenuForT_User($user_id, $user, $user_level, $full_name, $_SESSION['user'], $perm);
 			$avatar = NULL;
-			
+
 			if ($this->db->getUserAvatar($user_id)) {
 				$avatar = "./php/ViewImage.php?user_id=" . $user_id;
 			}
-			
-			$sessionAvatar = $this->getVueAvatar($full_name, $avatar, 36);				
-			$preFix = "<a class='edit-T_user' data-id=".$user_id." data-user=".$user." data-role=".$role.">"; 
+
+			$sessionAvatar = $this->getVueAvatar($full_name, $avatar, 36);
+			$preFix = "<a class='edit-T_user' data-id=".$user_id." data-user=".$user." data-role=".$role.">";
 			$sufFix = "</a>";
-			
+
 			if ($perm->user_update === 'N') {
 				$preFix = '';
 				$sufFix = '';
 			}
-			
+
 			if($user === $_SESSION['user'] || $perm->user_delete === 'N'){
 				$checkbox = "";
 			}else{
@@ -3575,7 +3520,7 @@ error_reporting(E_ERROR | E_PARSE);
 							<td>".$full_name."</td>
 							<td>".$user_group."</td>
 							<td>".$active."</td>";
-				//if ($perm->user_delete !== 'N')							
+				//if ($perm->user_delete !== 'N')
 				$result .= "<td style='width:5%;'>".(($perm->user_delete !== 'N') ? $checkbox : '')."</td>";
 				$result .= "<td nowrap style='width:16%;'>".$action."</td>
 						</tr>";
@@ -3585,26 +3530,10 @@ error_reporting(E_ERROR | E_PARSE);
 		return $result.'</table>';
 	}
 
-	private function ActionMenuForLists($id, $name) {
-
-	   return '<div class="btn-group">
-		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
-		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
-					    <span class="caret"></span>
-					    <span class="sr-only">Toggle Dropdown</span>
-		    </button>
-		    <ul class="dropdown-menu" role="menu">
-			<li><a class="edit-list" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("modify").'</a></li>
-			<li class="divider"></li>
-			<li><a class="delete-list" href="#" data-id="'.$id.'" data-name="'.$name.'">'.$this->lh->translationFor("delete").'</a></li>
-		    </ul>
-		</div>';
-	}
-
 
 	// API to get usergroups
 	public function API_goGetUserGroupsList() {
-		require_once('Session.php');
+		require_once(__DIR__ . '/Session.php');
 		$url = gourl."/goUserGroups/goAPI.php"; #URL to GoAutoDial API. (required)
         $postfields["goUser"] = goUser; #Username goes here. (required)
         $postfields["goPass"] = goPass; #Password goes here. (required)
@@ -3621,10 +3550,8 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
 
-         return $output;
+         return json_decode($data);
         /*
         if ($output->result=="success") {
            # Result was OK!
@@ -3647,13 +3574,14 @@ error_reporting(E_ERROR | E_PARSE);
 		if ($output->result=="success") {
 		# Result was OK!
 
-		$columns = array($this->lh->translationFor('user_group'), $this->lh->translationFor('group_name'), $this->lh->translationFor('type'), $this->lh->translationFor('force_timeclock'), $this->lh->translationFor('action'));
-	    $hideOnMedium = array($this->lh->translationFor('type'), $this->lh->translationFor('force_timeclock'));
-	    $hideOnLow = array($this->lh->translationFor('user_group'), $this->lh->translationFor('type'), $this->lh->translationFor('force_timeclock'));
+		$columns = [$this->lh->translationFor('user_group'), $this->lh->translationFor('group_name'), $this->lh->translationFor('type'), $this->lh->translationFor('force_timeclock'), $this->lh->translationFor('action')];
+	    $hideOnMedium = [$this->lh->translationFor('type'), $this->lh->translationFor('force_timeclock')];
+	    $hideOnLow = [$this->lh->translationFor('user_group'), $this->lh->translationFor('type'), $this->lh->translationFor('force_timeclock')];
 		$result = $this->generateTableHeaderWithItems($columns, "usergroups_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
+        $counter = count($output->user_group);
 
 
-			for($i=0;$i < count($output->user_group);$i++) {
+			for($i=0;$i < $counter;$i++) {
 
 				if ($output->forced_timeclock_login[$i] == "Y") {
 					$output->forced_timeclock_login[$i] = $this->lh->translationFor('go_yes');
@@ -3717,10 +3645,8 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
 
-		return $output;
+		return json_decode($data);
 
 	}
 
@@ -3742,10 +3668,8 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
 
-		return $output;
+		return json_decode($data);
 
 	}
 
@@ -3768,10 +3692,8 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
 
-		return $output;
+		return json_decode($data);
 
 	}
 
@@ -3799,10 +3721,8 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
 		//var_dump($output);
-		return $output;
+		return json_decode($data);
 	}
 
 	public function getAdminLogsList() {
@@ -3811,12 +3731,12 @@ error_reporting(E_ERROR | E_PARSE);
 		if ($output->result=="success") {
 		# Result was OK!
 
-			$columns = array($this->lh->translationFor('user'), $this->lh->translationFor('ip_address'), $this->lh->translationFor('date_and_time'), $this->lh->translationFor('action'), $this->lh->translationFor('details'), $this->lh->translationFor('sql_query'));
+			$columns = [$this->lh->translationFor('user'), $this->lh->translationFor('ip_address'), $this->lh->translationFor('date_and_time'), $this->lh->translationFor('action'), $this->lh->translationFor('details'), $this->lh->translationFor('sql_query')];
 			$result = $this->generateTableHeaderWithItems($columns, "adminlogs_table", "table-bordered table-striped", true, false, '', '', '');
-	
+
 			foreach ($output->data as $log) {
-				$details = stripslashes($log->details);
-				$db_query = strip_tags($log->db_query);
+				$details = stripslashes((string) $log->details);
+				$db_query = strip_tags((string) $log->db_query);
 				//$details = (strlen($details) > 30) ? substr($details, 0, 30) . "..." : $details;
 				//$db_query2 = (strlen($db_query) > 30) ? substr($db_query, 0, 30) . "..." : $db_query;
 				$result = $result."<tr>
@@ -3824,13 +3744,13 @@ error_reporting(E_ERROR | E_PARSE);
 					<td><a href='http://www.ip-tracker.org/locator/ip-lookup.php?ip=".$log->ip_address."' target='_new'>".$log->ip_address."</a></td>
 					<td>".$log->event_date."</td>
 					<td>".$log->action."</td>
-					<td title=\"".stripslashes($log->details)."\">".$details."</td>
+					<td title=\"".stripslashes((string) $log->details)."\">".$details."</td>
 					<td title=\""./*stripslashes($log->db_query)*/$db_query."\">".$db_query."</td></tr>";
 			}
 
 			return $result.'</table>';
 
-		} else { 
+		} else {
 			return $output->result;
 		}
 	}
@@ -3843,7 +3763,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["goAction"] = "goGetAllPhones"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
 		$postfields["session_user"] = $_SESSION['user']; #json. (required)
-		
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -3852,22 +3772,21 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
 
-		return $output;
+		return json_decode($data);
 	}
 
 	public function getPhonesList() {
 		$output = $this->api->API_getAllPhones();
-		
+
 		if ($output->result=="success") {
 			# Result was OK!
 			$checkbox_all = $this->getCheckAll("phone");
-			$columns = array($this->lh->translationFor("extension"), $this->lh->translationFor("protocol"),$this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("voicemail"), $checkbox_all, $this->lh->translationFor("action"));
+			$columns = [$this->lh->translationFor("extension"), $this->lh->translationFor("protocol"),$this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("voicemail"), $checkbox_all, $this->lh->translationFor("action")];
 			$result = $this->generateTableHeaderWithItems($columns, "T_phones", "responsive display no-wrap table-bordered table-striped", true, false, '', '', '');
+            $counter = count($output->extension);
 
-			for ($i=0;$i < count($output->extension);$i++) {
+			for ($i=0;$i < $counter;$i++) {
 				if ($output->active[$i] == "Y") {
 					$output->active[$i] = $this->lh->translationFor("active");
 				} else{
@@ -3877,22 +3796,22 @@ error_reporting(E_ERROR | E_PARSE);
 				if ($output->messages[$i] == NULL) {
 					$output->messages[$i] = 0;
 				}
-				
+
 				if ($output->old_messages[$i] == NULL) {
 					$output->old_messages[$i] = 0;
 				}
-				
+
 				$checkbox = '<label for="'.$output->extension[$i].'"><div class="checkbox c-checkbox"><label><input name="" class="check_phone" id="'.$output->extension[$i].'" type="checkbox" value="Y"><span class="fa fa-check"></span> </label></div></label>';
 				$action = $this->getUserActionMenuForPhones($output->extension[$i]);
                 //$sessionAvatar = "<avatar username='".$output->messages[$i]."' :size='36'></avatar><td>".$sessionAvatar."</a></td>";
-				
+
 				$result = $result."<tr>
-	                    <td><a class='edit-phone' data-id='".$output->extension[$i]."'><strong>".$output->extension[$i]."</strong></a></td>				
+	                    <td><a class='edit-phone' data-id='".$output->extension[$i]."'><strong>".$output->extension[$i]."</strong></a></td>
 						<td>".$output->protocol[$i]."</td>
 						<td>".$output->server_ip[$i]."</td>
 	                    <td>".$output->active[$i]."</td>
 						<td>".$output->messages[$i]."&nbsp;<font style='padding-left: 50px;'>".$output->old_messages[$i]."</font></td>";
-				$result .= "<td style='width:5%;'>".$checkbox."</td>						
+				$result .= "<td style='width:5%;'>".$checkbox."</td>
 						<td nowrap style='width:16%;'>".$action."</td>
 	                </tr>";
 			}
@@ -3921,11 +3840,9 @@ error_reporting(E_ERROR | E_PARSE);
          curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
          $data = curl_exec($ch);
-         curl_close($ch);
-         $output = json_decode($data);
 
 		//var_dump($output);
-		return $output;
+		return json_decode($data);
 
 	}
 
@@ -3935,12 +3852,13 @@ error_reporting(E_ERROR | E_PARSE);
 		if ($output->result=="success") {
 		# Result was OK!
 
-		$columns = array($this->lh->translationFor('voicemail_id'), $this->lh->translationFor('name'), $this->lh->translationFor('status'), $this->lh->translationFor('new_message'), $this->lh->translationFor('old_message'), $this->lh->translationFor('delete'), $this->lh->translationFor('user_group'), $this->lh->translationFor('action'));
-	    $hideOnMedium = array($this->lh->translationFor('status'), $this->lh->translationFor('new_message'), $this->lh->translationFor('old_message'), $this->lh->translationFor('delete'), $this->lh->translationFor('user_group'));
-	    $hideOnLow = array($this->lh->translationFor('voicemail_id'), $this->lh->translationFor('status'), $this->lh->translationFor('new_message'), $this->lh->translationFor('old_message'), $this->lh->translationFor('delete'), $this->lh->translationFor('user_group'));
+		$columns = [$this->lh->translationFor('voicemail_id'), $this->lh->translationFor('name'), $this->lh->translationFor('status'), $this->lh->translationFor('new_message'), $this->lh->translationFor('old_message'), $this->lh->translationFor('delete'), $this->lh->translationFor('user_group'), $this->lh->translationFor('action')];
+	    $hideOnMedium = [$this->lh->translationFor('status'), $this->lh->translationFor('new_message'), $this->lh->translationFor('old_message'), $this->lh->translationFor('delete'), $this->lh->translationFor('user_group')];
+	    $hideOnLow = [$this->lh->translationFor('voicemail_id'), $this->lh->translationFor('status'), $this->lh->translationFor('new_message'), $this->lh->translationFor('old_message'), $this->lh->translationFor('delete'), $this->lh->translationFor('user_group')];
 		$result = $this->generateTableHeaderWithItems($columns, "voicemails_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
+        $counter = count($output->voicemail_id);
 
-			for($i=0;$i < count($output->voicemail_id);$i++) {
+			for($i=0;$i < $counter;$i++) {
 
 				if ($output->active[$i] == "Y") {
 					$output->active[$i] = $this->lh->translationFor('active');
@@ -4006,8 +3924,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $button .= '<div class="circle-button skin-'.$theme.'">';
 	    $button .= '<em class="fa fa-'.$icon.' button-area add-'.$page.'"></em>';
 	    $button .= '</div>';
-	    $button .= '</a>';
-	    return $button;
+	    return $button . '</a>';
 	}
 
 	/** Campaigns API - Get all list of campaign */
@@ -4033,10 +3950,8 @@ error_reporting(E_ERROR | E_PARSE);
 	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	    $data = curl_exec($ch);
-	    curl_close($ch);
-	    $output = json_decode($data);
 
-		return $output;
+		return json_decode($data);
 	}
 
 	public function ActionMenuForCampaigns($id, $name, $perm) {
@@ -4071,18 +3986,19 @@ error_reporting(E_ERROR | E_PARSE);
 
 	    if ($output->result=="success") {
 
-	    	$columns = array("Date", "Customer", "Phone Number", "Agent", "Duration", "Action");
-	    	$hideOnMedium = array("Agent", "Duration");
-	    	$hideOnLow = array("Customer", "Phone Number", "Agent", "Duration");
+	    	$columns = ["Date", "Customer", "Phone Number", "Agent", "Duration", "Action"];
+	    	$hideOnMedium = ["Agent", "Duration"];
+	    	$hideOnLow = ["Customer", "Phone Number", "Agent", "Duration"];
 			$result = $this->generateTableHeaderWithItems($columns, "table_callrecordings", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
+            $counter = count($output->uniqueid);
 
 			//$result .= "<tr><td colspan='6'>".$output->query."</tr>";
 
-	    for($i=0; $i < count($output->uniqueid); $i++) {
-			
+	    for($i=0; $i < $counter; $i++) {
+
 			$details = "<strong>Phone</strong>: <i>".$output->phone_number[$i]."</i><br/>";
 			$details .= "<strong>Date</strong>: <i>".date("M.d,Y h:i A", strtotime($output->end_last_local_call_time[$i]))."</i><br/>";
-			
+
 			//$action_Call = $output->query;
 			$action_Call = $this->getUserActionMenuForCallRecording($output->uniqueid[$i], $output->location[$i], $details);
 
@@ -4091,7 +4007,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 			$diff = abs($d2 - $d1);
 			$duration = gmdate('H:i:s', $diff);
-			
+
 			$result .= "<tr>
 				<td>".date("M.d,Y h:i A", strtotime($output->end_last_local_call_time[$i]))."</td>
 				<td class='hide-on-low'>".$output->full_name[$i]."</td>
@@ -4149,7 +4065,6 @@ error_reporting(E_ERROR | E_PARSE);
 	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	    $data = curl_exec($ch);
-	    curl_close($ch);
 	    $output = json_decode($data);
 
 	    if ($output->result=="success") {
@@ -4162,15 +4077,16 @@ error_reporting(E_ERROR | E_PARSE);
 
 	public function getListAllMusicOnHold($user_group) {
 		//require_once('Session.php');
-		$perm = $this->api->goGetPermissions('moh', $user_group);
+		$perm = $this->api->goGetPermissions('moh');
 	    $output = $this->api->API_getAllMusicOnHold();
 
 	    # Result was OK!
-	    $columns = array($this->lh->translationFor('moh_name'), $this->lh->translationFor('status'), $this->lh->translationFor('random_order'), $this->lh->translationFor('group'), $this->lh->translationFor('action'));
-	    $hideOnMedium = array("Random Order", "Group", "Status");
-		$hideOnLow = array( "Random Order", "Group", "Status");
+	    $columns = [$this->lh->translationFor('moh_name'), $this->lh->translationFor('status'), $this->lh->translationFor('random_order'), $this->lh->translationFor('group'), $this->lh->translationFor('action')];
+	    $hideOnMedium = ["Random Order", "Group", "Status"];
+		$hideOnLow = [ "Random Order", "Group", "Status"];
 	    $result = $this->generateTableHeaderWithItems($columns, "music-on-hold_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
-	    for($i=0;$i<count($output->moh_id);$i++) {
+        $counter = count($output->moh_id);
+	    for($i=0;$i<$counter;$i++) {
 			$action = ($user_group === "ADMIN" || ($user_group !== "ADMIN" && $output->moh_id[$i] !== 'default')) ? $this->getUserActionMenuForMusicOnHold($output->moh_id[$i], $output->moh_name[$i], $perm) : "";
 
 			if ($output->active[$i] == "Y") {
@@ -4238,21 +4154,19 @@ error_reporting(E_ERROR | E_PARSE);
 	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	    $data = curl_exec($ch);
-	    curl_close($ch);
-	    $output = json_decode($data);
 
-	    return $output;
+	    return json_decode($data);
 	}
 
 	public function getListAllVoiceFiles($user_group) {
 		//require_once('Session.php');
-		$perm = $this->api->goGetPermissions('voicefiles', $user_group);
+		$perm = $this->api->goGetPermissions('voicefiles');
 		$output = $this->api->API_getAllVoiceFiles();
 	    //if ($output->result=="success") {
 	    # Result was OK!
-	    $columns = array($this->lh->translationFor('file_name'), $this->lh->translationFor('date'), $this->lh->translationFor('size'), $this->lh->translationFor('action'));
-	    $hideOnMedium = array("Date");
-		$hideOnLow = array( "Date");
+	    $columns = [$this->lh->translationFor('file_name'), $this->lh->translationFor('date'), $this->lh->translationFor('size'), $this->lh->translationFor('action')];
+	    $hideOnMedium = ["Date"];
+		$hideOnLow = [ "Date"];
 		$result = $this->generateTableHeaderWithItems($columns, "voicefiles", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
 	    $server_port = getenv("SERVER_PORT");
 		//$web_ip = getenv("SERVER_ADDR");
@@ -4260,7 +4174,8 @@ error_reporting(E_ERROR | E_PARSE);
 		$web_ip = $log_ip;
 		if (preg_match("/443/",$server_port)) {$HTTPprotocol = 'https://';}
 		else {$HTTPprotocol = 'http://';}
-	    for($i=0;$i<count($output->file_name);$i++) {
+        $counter = count($output->file_name);
+	    for($i=0;$i<$counter;$i++) {
 	    $file_link = $HTTPprotocol.$web_ip."/sounds/".$output->file_name[$i];
 		 if (!$this->check_url($file_link)) {
 			 $web_host = getenv("SERVER_NAME");
@@ -4279,7 +4194,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$preFix = '';
 			$sufFix = '';
 		}
-		
+
 		$result .= "<tr>
 			<td>{$preFix}".$output->file_name[$i]."{$sufFix}</td>
 			<td class ='hide-on-medium hide-on-low'>".$output->file_date[$i]."</td>
@@ -4324,17 +4239,18 @@ error_reporting(E_ERROR | E_PARSE);
 	// API Scripts
 
 	public function getListAllScripts($userid, $perm) {
-	    $output = $this->api->API_getAllScripts($userid);
+	    $output = $this->api->API_getAllScripts();
 
 	    if ($output->result=="success") {
 	    # Result was OK!
-	    $columns = array($this->lh->translationFor("script_id"), $this->lh->translationFor("script_name"), $this->lh->translationFor("status"), $this->lh->translationFor("type"), $this->lh->translationFor("user_group"), $this->lh->translationFor("action"));
+	    $columns = [$this->lh->translationFor("script_id"), $this->lh->translationFor("script_name"), $this->lh->translationFor("status"), $this->lh->translationFor("type"), $this->lh->translationFor("user_group"), $this->lh->translationFor("action")];
 	    //$hideOnMedium = array($this->lh->translationFor("type"), $this->lh->translationFor("status"), $this->lh->translationFor("user_group"));
 	    //$hideOnLow = array($this->lh->translationFor("script_id"), $this->lh->translationFor("type"), $this->lh->translationFor("status"), $this->lh->translationFor("user_group"));
 
 		$result = $this->generateTableHeaderWithItems($columns, "scripts_table", "display responsive no-wrap table-bordered table-striped", true, false, '', '', '');
+        $counter = count($output->script_id);
 
-	    for($i=0;$i<count($output->script_id);$i++) {
+	    for($i=0;$i<$counter;$i++) {
 		$action = $this->getUserActionMenuForScripts($output->script_id[$i], $output->script_name[$i], $perm);
 
 			if ($output->active[$i] == "Y") {
@@ -4342,7 +4258,7 @@ error_reporting(E_ERROR | E_PARSE);
 			}else{
 			    $active = $this->lh->translationFor("inactive");
 			}
-			
+
 			$preFix = "<a class='edit_script' data-id='".$output->script_id[$i]."'>";
 			$sufFix = "</a>";
 			if ($perm->script_update === 'N') {
@@ -4394,17 +4310,18 @@ error_reporting(E_ERROR | E_PARSE);
 	// API Filters
 
 	public function getListAllFilters($userid, $perm, $user_group) {
-	    $output = $this->api->API_getAllFilters($userid);
+	    $output = $this->api->API_getAllFilters();
 
 	    if ($output->result=="success") {
 	    # Result was OK!
-	    $columns = array($this->lh->translationFor("filter_id"), $this->lh->translationFor("filter_name"), $this->lh->translationFor("filter_comments"), $this->lh->translationFor("user_group"), $this->lh->translationFor("action"));
+	    $columns = [$this->lh->translationFor("filter_id"), $this->lh->translationFor("filter_name"), $this->lh->translationFor("filter_comments"), $this->lh->translationFor("user_group"), $this->lh->translationFor("action")];
 
 		$result = $this->generateTableHeaderWithItems($columns, "filters_table", "display responsive no-wrap table-bordered table-striped", true, false, '', '', '');
+        $counter = count($output->filter_id);
 
-	    for($i=0;$i<count($output->filter_id);$i++) {
+	    for($i=0;$i<$counter;$i++) {
 		$action = ($user_group === "ADMIN" || ($user_group !== "ADMIN" && $output->filter_id[$i] !== 'FILTEMP')) ? $this->getUserActionMenuForFilters($output->filter_id[$i], $output->filter_name[$i], $perm) : "";
-			
+
 			$preFix = "<a class='edit_filter' data-id='".$output->filter_id[$i]."'>";
 			$sufFix = "</a>";
 			if ($perm->filters_update === 'N') {
@@ -4469,10 +4386,8 @@ error_reporting(E_ERROR | E_PARSE);
 	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	    $data = curl_exec($ch);
-	    curl_close($ch);
-	    $output = json_decode($data);
 
-	    return $output;
+	    return json_decode($data);
 	}
 
 	public function getListAllCallTimes() {
@@ -4482,13 +4397,14 @@ error_reporting(E_ERROR | E_PARSE);
         //$columns = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('call_time_name'), $this->lh->translationFor('default_start'), $this->lh->translationFor('default_stop'), $this->lh->translationFor('user_group'), $this->lh->translationFor('action'));
         //$hideOnMedium = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('default_start'), $this->lh->translationFor('default_stop'), $this->lh->translationFor('user_group'));
 		//$hideOnLow = array( $this->lh->translationFor('call_time_id'), $this->lh->translationFor('default_start'), $this->lh->translationFor('default_stop'), $this->lh->translationFor('user_group'));
-		$columns = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('call_time_name'), $this->lh->translationFor('Schedule'), $this->lh->translationFor('user_group'), $this->lh->translationFor('action'));
-        $hideOnMedium = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('user_group'));
-		$hideOnLow = array( $this->lh->translationFor('call_time_id'), $this->lh->translationFor('Schedule'), $this->lh->translationFor('user_group'));
-		
+		$columns = [$this->lh->translationFor('call_time_id'), $this->lh->translationFor('call_time_name'), $this->lh->translationFor('Schedule'), $this->lh->translationFor('user_group'), $this->lh->translationFor('action')];
+        $hideOnMedium = [$this->lh->translationFor('call_time_id'), $this->lh->translationFor('user_group')];
+		$hideOnLow = [ $this->lh->translationFor('call_time_id'), $this->lh->translationFor('Schedule'), $this->lh->translationFor('user_group')];
+
 		$result = $this->generateTableHeaderWithItems($columns, "calltimes", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
-		
-	    for($i=0;$i<count($output->call_time_id);$i++) {
+        $counter = count($output->call_time_id);
+
+	    for($i=0;$i<$counter;$i++) {
 		    $action = $this->getUserActionMenuForCalltimes($output->call_time_id[$i], $output->call_time_name[$i]);
 			$schedule = "NULL";
 			if ($output->ct_default_start[$i] === NULL  && $output->ct_default_stop[$i] === NULL) {
@@ -4497,7 +4413,7 @@ error_reporting(E_ERROR | E_PARSE);
 				$default_start = date('h:i A', strtotime(sprintf("%04d", $output->ct_default_start[$i])));
 				$default_stop = date('h:i A', strtotime(sprintf("%04d", $output->ct_default_stop[$i])));
 				$def = 'data-def="'.$default_start.' - '.$default_stop.'"';
-				$schedule = $default_start.' - '.$default_stop;	
+				$schedule = $default_start.' - '.$default_stop;
 			}
 			if ($output->ct_sunday_start[$i] === $output->ct_sunday_stop[$i]) {
 				$sun = 'data-sun="NULL"';
@@ -4597,11 +4513,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    </ul>
 		</div>';
 	}
-	
-	private function getCalltimeScheds($id, $name) {
-	    
-	}
-	
+
 	/** Carriers API - Get all list of carriers */
 	/**
 	 * @param goUser
@@ -4625,24 +4537,23 @@ error_reporting(E_ERROR | E_PARSE);
 	    curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	    $data = curl_exec($ch);
-	    curl_close($ch);
-	    $output = json_decode($data);
 
-	    return $output;
+	    return json_decode($data);
 	}
-	
+
 	public function getServerList($perm) {
 		$output = $this->api->API_getAllServers();
 
 	    if ($output->result=="success") {
 	    # Result was OK!
-			$columns = array($this->lh->translationFor('server_id'), $this->lh->translationFor('server_name'), $this->lh->translationFor('server_ip'), $this->lh->translationFor('status'), $this->lh->translationFor('asterisk'), $this->lh->translationFor('trunks'), $this->lh->translationFor('gmt'), $this->lh->translationFor('action'));
-			$hideOnMedium = array($this->lh->translationFor('asterisk'),$this->lh->translationFor('trunks'), $this->lh->translationFor('gmt'));
-			$hideOnLow = array($this->lh->translationFor('server_ip'), $this->lh->translationFor('server_name'), $this->lh->translationFor('status'), $this->lh->translationFor('asterisk'),$this->lh->translationFor('trunks'),$this->lh->translationFor('gmt'));
+			$columns = [$this->lh->translationFor('server_id'), $this->lh->translationFor('server_name'), $this->lh->translationFor('server_ip'), $this->lh->translationFor('status'), $this->lh->translationFor('asterisk'), $this->lh->translationFor('trunks'), $this->lh->translationFor('gmt'), $this->lh->translationFor('action')];
+			$hideOnMedium = [$this->lh->translationFor('asterisk'),$this->lh->translationFor('trunks'), $this->lh->translationFor('gmt')];
+			$hideOnLow = [$this->lh->translationFor('server_ip'), $this->lh->translationFor('server_name'), $this->lh->translationFor('status'), $this->lh->translationFor('asterisk'),$this->lh->translationFor('trunks'),$this->lh->translationFor('gmt')];
 
 			$result = $this->generateTableHeaderWithItems($columns, "servers_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
+            $counter = count($output->server_id);
 
-				for($i=0;$i<count($output->server_id);$i++) {
+				for($i=0;$i<$counter;$i++) {
 
 					$action = '';
 					if ($perm->servers_update != 'N' || $perm->servers_delete != 'N') {
@@ -4673,7 +4584,7 @@ error_reporting(E_ERROR | E_PARSE);
 	       return $output->result;
 	    }
 	}
-	
+
 	public function ActionMenuForServers($id, $perm) {
 
 	    return '<div class="btn-group">
@@ -4688,7 +4599,7 @@ error_reporting(E_ERROR | E_PARSE);
 		    </ul>
 		</div>';
 	}
-	
+
 	/** Carriers API - Get all list of carriers */
 	/**
 	 * @param goUser
@@ -4705,13 +4616,14 @@ error_reporting(E_ERROR | E_PARSE);
 	    if ($output->result=="success") {
 	    # Result was OK!
 
-        $columns = array($this->lh->translationFor('carrier_id'), $this->lh->translationFor('carrier_name'), $this->lh->translationFor('server_ip'), $this->lh->translationFor('protocol'), $this->lh->translationFor('status'), $this->lh->translationFor('action'));
-        $hideOnMedium = array($this->lh->translationFor('server_ip'), $this->lh->translationFor('protocol'));
-		$hideOnLow = array( $this->lh->translationFor('carrier_id'), $this->lh->translationFor('server_ip'), $this->lh->translationFor('protocol'), $this->lh->translationFor('status'));
+        $columns = [$this->lh->translationFor('carrier_id'), $this->lh->translationFor('carrier_name'), $this->lh->translationFor('server_ip'), $this->lh->translationFor('protocol'), $this->lh->translationFor('status'), $this->lh->translationFor('action')];
+        $hideOnMedium = [$this->lh->translationFor('server_ip'), $this->lh->translationFor('protocol')];
+		$hideOnLow = [ $this->lh->translationFor('carrier_id'), $this->lh->translationFor('server_ip'), $this->lh->translationFor('protocol'), $this->lh->translationFor('status')];
 
 		$result = $this->generateTableHeaderWithItems($columns, "carriers", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
+        $counter = count($output->carrier_id);
 
-	      for($i=0;$i<count($output->carrier_id);$i++) {
+	      for($i=0;$i<$counter;$i++) {
 
 				$action = '';
 				if ($perm->carriers_update != 'N' || $perm->carriers_delete != 'N') {
@@ -4920,7 +4832,7 @@ error_reporting(E_ERROR | E_PARSE);
 			<li><a class="delete_leadrecycling" href="#" data-id="'.$id.'" data-campaign="'.$id.'">'.$this->lh->translationFor("delete").'</a></li>
 		    </ul>
 		</div>';
-	}	
+	}
 //--------- Lead Filter ---------
 
 	public function ActionMenuForLeadFilters($id, $name) {
@@ -4972,7 +4884,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalSales"; #action performed by the [[API:Functions]]
 			$postfields["session_user"] = $session_user; #current user
-			
+
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -4981,8 +4893,6 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
-			$output = json_decode($data);
 			//var_dump($data);
 			/*$data = explode(";",$data);
 			foreach ($data AS $temp) {
@@ -4998,7 +4908,7 @@ error_reporting(E_ERROR | E_PARSE);
 				$vars = 0;
 				return $vars;
 			}*/
-			return $output;
+			return json_decode($data);
 		}
 
 		/*
@@ -5012,7 +4922,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetINSalesPerHour"; #action performed by the [[API:Functions]]
 			$postfields["session_user"] = $session_user; #current user
-			
+
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -5021,7 +4931,6 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
 
 			//var_dump($data);
 			$data = explode(";",$data);
@@ -5054,7 +4963,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetOutSalesPerHour"; #action performed by the [[API:Functions]]
 			$postfields["session_user"] = $session_user; #current user
-			
+
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -5063,7 +4972,6 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
 
 			//var_dump($data);
 			 $data = explode(";",$data);
@@ -5082,7 +4990,7 @@ error_reporting(E_ERROR | E_PARSE);
 				return $vars;
 			 }
 		}
-		
+
 		/*
 		 * Displaying inbound Sales
 		 * [[API: Function]] - goGetTotalInboundSales
@@ -5102,7 +5010,6 @@ error_reporting(E_ERROR | E_PARSE);
 			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			 $data = curl_exec($ch);
-			 curl_close($ch);
 
 			//var_dump($data);
 			 $data = explode(";",$data);
@@ -5122,7 +5029,7 @@ error_reporting(E_ERROR | E_PARSE);
 			 }
 
 		}
-		
+
 		/*
 		 * Displaying outbound Sales
 		 * [[API: Function]] - goGetTotalOutboundSales
@@ -5142,8 +5049,7 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
-			
+
 			$data = explode(";",$data);
 			foreach ($data AS $temp) {
 			  $temp = explode("=",$temp);
@@ -5181,8 +5087,7 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
-			$output = json_decode($data);
+            json_decode($data);
             return($data);
 		}
 
@@ -5206,11 +5111,8 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
 
-			$output = json_decode($data);
-
-			return $output;
+			return json_decode($data);
 
 		}
 
@@ -5234,9 +5136,7 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
-
-			$output = json_decode($data);
+            json_decode($data);
 
                         return($data);
 		}
@@ -5262,7 +5162,6 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
 
 			//var_dump($data);
 			 $data = explode(";",$data);
@@ -5301,7 +5200,6 @@ error_reporting(E_ERROR | E_PARSE);
 			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			 $data = curl_exec($ch);
-			 curl_close($ch);
 
 			//var_dump($data);
 			 $data = explode(";",$data);
@@ -5343,7 +5241,6 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
 
 			//var_dump($data);
 			 $data = explode(";",$data);
@@ -5375,7 +5272,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetActiveCampaignsToday"; #action performed by the [[API:Functions]]
             $postfields["responsetype"] = responsetype;
-			
+
             $ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -5384,8 +5281,7 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
-			$output = json_decode($data);
+            json_decode($data);
             return($data);
 		}
 		/*
@@ -5400,7 +5296,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetRingingCalls"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
-			
+
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -5409,9 +5305,7 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
-			$output = json_decode($data);
-			return $output;
+			return json_decode($data);
 		}
 
 		/*
@@ -5425,7 +5319,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetHopperLeadsWarning"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
-			
+
             $ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -5434,9 +5328,7 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
-			$output = json_decode($data);
-			return $output;
+			return json_decode($data);
 		}
 
 		/*
@@ -5451,7 +5343,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetAgentsMonitoringSummary"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
-			
+
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -5460,9 +5352,7 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
-			$output = json_decode($data);
-			return $output;
+			return json_decode($data);
 		}
 
 		/*
@@ -5477,7 +5367,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetRealtimeAgentsMonitoring"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
-			
+
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -5486,9 +5376,7 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
-			$output = json_decode($data);
-			return $output;
+			return json_decode($data);
 		}
 
 		public function API_goGetIncomingQueue($session_user) {
@@ -5498,7 +5386,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goAction"] = "goGetIncomingQueue"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
 			$postfields["session_user"] = $session_user; #current user
-			
+
             $ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -5507,9 +5395,7 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
-			$output = json_decode($data);
-			return $output;
+			return json_decode($data);
 		}
 
 		/*
@@ -5524,7 +5410,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalCalls"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
-            
+
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -5533,9 +5419,7 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
-			$output = json_decode($data);
-			return $output;
+			return json_decode($data);
 		}
 
 		/*
@@ -5550,7 +5434,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalAnsweredCalls"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
-            
+
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -5559,9 +5443,7 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
-			$output = json_decode($data);
-			return $output;
+			return json_decode($data);
 		}
 		/*
 		 * Displaying Total Dropped Calls
@@ -5575,7 +5457,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetTotalDroppedCalls"; #action performed by the [[API:Functions]]
 			$postfields["session_user"] = $session_user; #current user
-			
+
             $ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -5584,9 +5466,7 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
-			$output = json_decode($data);
-			return $output;
+			return json_decode($data);
 		}
 		/*
 		 * Displaying Live Outbound
@@ -5600,7 +5480,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["goPass"] = goPass;
 			$postfields["goAction"] = "goGetLiveOutbound"; #action performed by the [[API:Functions]]
 			$postfields["responsetype"] = responsetype;
-			
+
             $ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -5609,9 +5489,7 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
-			$output = json_decode($data);
-			return $output;
+			return json_decode($data);
 		}
 
 		/*
@@ -5628,7 +5506,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$postfields["session_user"] = $session_user; #action performed by the [[API:Functions]]
    if (!empty($responsetype))
     $postfields["responsetype"] = $responsetype;
-			
+
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -5636,10 +5514,8 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			$data = curl_exec($ch);
-			curl_close($ch);
 
-			return $data;
+			return curl_exec($ch);
 		}
 
 		/*
@@ -5662,10 +5538,8 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			$data = curl_exec($ch);
-			curl_close($ch);
 
-			return $data;
+			return curl_exec($ch);
 		}
 
 
@@ -5690,12 +5564,9 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
-			curl_close($ch);
 
-			$output = json_decode($data);
+			return json_decode($data);
 
-			return $output;
-			
 		}
 
 		/*
@@ -5718,11 +5589,8 @@ error_reporting(E_ERROR | E_PARSE);
 		 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		 $data = curl_exec($ch);
-		 curl_close($ch);
 
-		 $output = json_decode($data);
-
-		 return $output;
+		 return json_decode($data);
 
             }
 
@@ -5746,11 +5614,8 @@ error_reporting(E_ERROR | E_PARSE);
 		 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		 $data = curl_exec($ch);
-		 curl_close($ch);
 
-		 $output = json_decode($data);
-
-		 return $output;
+		 return json_decode($data);
 	}
 
 
@@ -5763,12 +5628,13 @@ error_reporting(E_ERROR | E_PARSE);
 		$output = $this->API_GetLeads($userid, $search, $disposition_filter, $list_filter, $address_filter, $city_filter, $state_filter, $limit, $search_customers);
 	       if ($output->result=="success") {
 
-       	   $columns = array($this->lh->translationFor('lead_id'), $this->lh->translationFor('full_name'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('status'), $this->lh->translationFor('action'));
-	       $hideOnMedium = array($this->lh->translationFor('lead_id'), $this->lh->translationFor('status'));
-	       $hideOnLow = array( $this->lh->translationFor('lead_id'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('status'));
+       	   $columns = [$this->lh->translationFor('lead_id'), $this->lh->translationFor('full_name'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('status'), $this->lh->translationFor('action')];
+	       $hideOnMedium = [$this->lh->translationFor('lead_id'), $this->lh->translationFor('status')];
+	       $hideOnLow = [ $this->lh->translationFor('lead_id'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('status')];
 		   $result = $this->generateTableHeaderWithItems($columns, "table_contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
+           $counter = count($output->list_id);
 
-			for($i=0;$i<=count($output->list_id);$i++) {
+			for($i=0;$i<=$counter;$i++) {
 		   	//for($i=0;$i<=500;$i++) {
 				if ($output->phone_number[$i] != "") {
 
@@ -5787,6 +5653,7 @@ error_reporting(E_ERROR | E_PARSE);
        }else{
        		//display nothing
        }
+           return null;
 	}
 
 	public function getAllowedList($user_id) {
@@ -5805,7 +5672,6 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
-		curl_close($ch);
 		$output = json_decode($data);
 
 		return $output->lists;
@@ -5840,31 +5706,34 @@ error_reporting(E_ERROR | E_PARSE);
 
          $ch = curl_init();
          curl_setopt($ch, CURLOPT_URL, $url);
-         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
          curl_setopt($ch, CURLOPT_POST, 1);
          curl_setopt($ch, CURLOPT_TIMEOUT, 100);
          curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
          curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+				 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+				 curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
          $data = curl_exec($ch);
-         curl_close($ch);
+         if ($data === false) {
+                error_log('getAgentScript API curl error: ' . curl_error($ch));
+                return '';
+         }
          $output = json_decode($data);
         // var_dump($output);
-        if ($output->result=="success") {
+        if (($output->result ?? '') == "success") {
            # Result was OK!
-                return $output->gocampaignScript;
+                return $output->gocampaignScript ?? '';
          } else {
            # An error occured
-                return $output->result;
+                return $output->result ?? '';
         }
 
 	}
 
-	public function dropdownFormInputElement($id, $name, $options = array(), $currentValue, $required = false) {
+	public function dropdownFormInputElement($id, $name, $options = [], $currentValue = null, $required = false) {
 		$requiredCode = $required ? "required" : "";
 		$optionList = "";
 		if (count($options) > 0) {
-			foreach ($options as $k => $opt) {
+			foreach ($options as $opt) {
 				$isSelected = ($currentValue == $opt) ? "selected" : "";
 				$optionList .= '<option value="'.$opt.'" '.$isSelected.'>'.$opt.'</option>';
 			}
@@ -5873,8 +5742,7 @@ error_reporting(E_ERROR | E_PARSE);
 	}
 
 	public function getSessionAvatar() {
-		$sessionAvatar = $_SESSION['avatar'];
-		return $sessionAvatar;
+		return $_SESSION['avatar'];
 	}
 
    public function API_goGetReports($pageTitle) {
@@ -5893,10 +5761,8 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
 
-		return $output;
+		return json_decode($data);
 	}
 
 
@@ -5922,19 +5788,19 @@ error_reporting(E_ERROR | E_PARSE);
    		$css .= '<link href="css/select2/select2.min.css" rel="stylesheet" type="text/css"/>'."\n";
    		$css .= '<link href="css/select2/select2-bootstrap.min.css" rel="stylesheet" type="text/css"/>'."\n";
    		$css .= '<link href="css/calendar.css" rel="stylesheet" type="text/css"/>'."\n";
-		
+
 		//for chat
 		$agent_chat_status = $this->API_getAgentChatActivation();
 		if($agent_chat_status){
    $css .= '<link href="modules/GoChat/css/style.css" rel="stylesheet" type="text/css"/>'."\n";
   }
-	
+
 		/* JS that needs to be declared first */
 		$css .= '<script src="js/jquery.min.js"></script>'."\n"; // required JS
 		$css .= '<script src="js/bootstrap.min.js" type="text/javascript"></script>'."\n"; // required JS
 		$css .= '<script src="js/jquery-ui.min.js" type="text/javascript"></script>'."\n"; // required JS
 		$css .= '<script src="js/calendar_db.js" type="text/javascript" ></script>'."\n";
-		
+
 		if($agent_chat_status){
 		    $css .= '<script src="modules/GoChat/js/chat.js"></script>'."\n";
 		    $css .= '<script>$(document).ready(function() { $(".chatappdiv").load("../includes/chatapp_admin.php"); });</script>'."\n";
@@ -5951,17 +5817,16 @@ error_reporting(E_ERROR | E_PARSE);
 		$css .= '<link href="css/datatables/1.10.19/responsive.dataTables.min.css" rel="stylesheet" type="text/css" />'."\n";
 		$css .= '<link href="css/datatables/1.10.19/responsive.jqueryui.min.css" rel="stylesheet" type="text/css" />'."\n";
 		$css .= '<link href="css/datatables/1.10.19/rowGroup.dataTables.min.css" rel="stylesheet" type="text/css" />'."\n";
-		$css .= '<style rel="stylesheet" type="text/css"> .content { padding-bottom: 75px; } </style>'."\n";		
+		$css .= '<style rel="stylesheet" type="text/css"> .content { padding-bottom: 75px; } </style>'."\n";
 		$css .= '<script src="js/datatables/1.10.19/jquery.dataTables.min.js" type="text/javascript"></script>'."\n";
 		$css .= '<script src="js/datatables/1.10.19/dataTables.jqueryui.min.js" type="text/javascript"></script>'."\n";
 		$css .= '<script src="js/datatables/1.10.19/dataTables.bootstrap.min.js" type="text/javascript"></script>'."\n";
-		$css .= '<script src="js/datatables/1.10.19/dataTables.responsive.min.js" type="text/javascript"></script>'."\n";       
+		$css .= '<script src="js/datatables/1.10.19/dataTables.responsive.min.js" type="text/javascript"></script>'."\n";
 		$css .= '<script src="js/datatables/1.10.19/responsive.jqueryui.min.js" type="text/javascript"></script>'."\n";
 		$css .= '<script src="js/datatables/1.10.19/dataTables.rowGroup.min.js" type="text/javascript"></script>'."\n";
-		$css .= '<script src="js/datatables/1.10.19/sum.js" type="text/javascript"></script>'."\n";
 
-		return $css;
-	}	
+		return $css . ('<script src="js/datatables/1.10.19/sum.js" type="text/javascript"></script>' . "\n");
+	}
 	/**
 	 * Returns the standardized theme js for all pages.
 	 */
@@ -5974,7 +5839,8 @@ error_reporting(E_ERROR | E_PARSE);
 		$js .= '<script src="js/vue-avatar/vue.min.js" type="text/javascript"></script>'."\n";
 		$js .= '<script src="js/vue-avatar/vue-avatar.min.js" type="text/javascript"></script>'."\n";
 		$js .= '<script src="js/select2/select2.full.min.js" type="text/javascript" ></script>'."\n";
-		$js .= "<script type='text/javascript'>
+
+		return $js . "<script type='text/javascript'>
 
 			var goOptions = {
 				el: 'body',
@@ -6001,8 +5867,6 @@ error_reporting(E_ERROR | E_PARSE);
 			};
 			var goAvatar = new Vue(goOptions);
 		</script>\n";
-
-		return $js;
 	}
 
 	/**
@@ -6012,7 +5876,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$showAvatar = '';
 		$initials = '';
 		if (isset($avatar)) {
-			if (preg_match("/(agent|goautodial)/i", $username) && preg_match("/defaultAvatar/i", $avatar)) {
+			if (preg_match("/(agent|goautodial)/i", (string) $username) && preg_match("/defaultAvatar/i", $avatar)) {
 				$showAvatar = '';
 				$initials = 'initials="GO"';
 			} else {
@@ -6022,11 +5886,11 @@ error_reporting(E_ERROR | E_PARSE);
 		}
 		$topBarStyle = ($topBar) ? 'style="float: left; padding-right: 5px;"' : '';
 		$sideBarStyle = ($sideBar) ? 'style="width: 100%; text-align: center;" display="inline-block"' : '';
-		$roundedImg = (!$rounded) ? ':rounded="false"' : '';
+		$roundedImg = ($rounded) ? '' : ':rounded="false"';
 
 		return '<avatar username="'.$username.'" '.$showAvatar.' '.$initials.' '.$topBarStyle.' '.$sideBarStyle.' '.$roundedImg.' :size="'.$size.'"></avatar>';
 	}
-	
+
 	/**
 		* Returns an Avatar
 		*/
@@ -6034,7 +5898,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$showAvatar = '';
 			$initials = '';
 			if (isset($avatar)) {
-					if (preg_match("/(agent|goautodial)/i", $username) && preg_match("/defaultAvatar/i", $avatar)) {
+					if (preg_match("/(agent|goautodial)/i", (string) $username) && preg_match("/defaultAvatar/i", $avatar)) {
 							$showAvatar = '';
 							$initials = 'initials="GO"';
 					} else {
@@ -6042,7 +5906,7 @@ error_reporting(E_ERROR | E_PARSE);
 							$initials = '';
 					}
 			}
-			$roundedImg = (!$rounded) ? ':rounded="false"' : '';
+			$roundedImg = ($rounded) ? '' : ':rounded="false"';
 
 			return '<avatar username="'.$username.'" '.$showAvatar.' '.$initials.' '.$roundedImg.' :size="'.$size.'"></avatar>';
 	}
@@ -6066,7 +5930,6 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
-		curl_close($ch);
 
 		$output = json_decode($data);
 
@@ -6080,7 +5943,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 		return $status;
 	}
-	
+
 	public function API_goGetGroupPermission($group) {
 		$url = gourl."/goUserGroups/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
@@ -6088,8 +5951,8 @@ error_reporting(E_ERROR | E_PARSE);
 		$postfields["goAction"] = "goGetUserGroupInfo"; #action performed by the [[API:Functions]]. (required)
 		$postfields["responsetype"] = responsetype; #json. (required)
 		$postfields["user_group"] = $group; #json. (required)
-		$postfields["session_user"] = $_SESSION['user'];		
-		
+		$postfields["session_user"] = $_SESSION['user'];
+
 		 $ch = curl_init();
 		 curl_setopt($ch, CURLOPT_URL, $url);
 		 curl_setopt($ch, CURLOPT_POST, 1);
@@ -6098,16 +5961,14 @@ error_reporting(E_ERROR | E_PARSE);
 		 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		 $data = curl_exec($ch);
-		 curl_close($ch);
-		 $output = json_decode($data);
 
-		 return $output;
+		 return json_decode($data);
 	}
-	
-	public function goGetPermissions($type = 'dashboard', $group) {
+
+	public function goGetPermissions($type = 'dashboard', $group = null) {
 		$permissions = $this->API_goGetGroupPermission($group);
 		if (!is_null($permissions)) {
-			$types = explode(",", $type);
+			$types = explode(",", (string) $type);
 			if (count($types) > 1) {
 				foreach ($types as $t) {
 					if (array_key_exists($t, $permissions)) {
@@ -6117,7 +5978,7 @@ error_reporting(E_ERROR | E_PARSE);
 			} else {
 				if ($type == 'sidebar') {
 					$return = $permissions;
-				} else if (array_key_exists($type, $permissions)) {
+				} else if (array_key_exists((string) $type, $permissions)) {
 					$return = $permissions->{$type};
 				} else {
 					$return = null;
@@ -6145,11 +6006,8 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
-		curl_close($ch);
 
-		$output = json_decode($data);
-
-		return $output;
+		return json_decode($data);
 	}
 
 	public function API_ListsTimezone($list_id) {
@@ -6168,13 +6026,10 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
-		curl_close($ch);
 
-		$output = json_decode($data);
-
-		return $output;
+		return json_decode($data);
 	}
-	
+
 	// Call Menu Options
 	public function API_getIVROptions($menu_id) {
 
@@ -6184,7 +6039,7 @@ error_reporting(E_ERROR | E_PARSE);
         $postfields["goAction"] = "goGetIVROptions"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
 		$postfields["menu_id"] = $menu_id;
-		
+
          $ch = curl_init();
          curl_setopt($ch, CURLOPT_URL, $url);
          curl_setopt($ch, CURLOPT_POST, 1);
@@ -6193,33 +6048,32 @@ error_reporting(E_ERROR | E_PARSE);
          curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
          $data = curl_exec($ch);
-         curl_close($ch);
-         $output = json_decode($data);
 
 		//var_dump($output);
-		return $output;
+		return json_decode($data);
 
 	}
-	
+
 	private function check_url($url) {
 		$headers = @get_headers( $url);
 		$headers = (is_array($headers)) ? implode( "\n ", $headers) : $headers;
-		
+
 		return (bool)preg_match('#^HTTP/.*\s+[(200|301|302)]+\s#i', $headers);
 	}
-	
+
 
 	// get dnc table
 	public function GetDNC($search) {
 		//$limit = 10;
 		$output = $this->api->API_GetDNC($search);
 	       if ($output->result=="success") {
-			$columns = array($this->lh->translationFor("phone_number"), $this->lh->translationFor("campaign"), $this->lh->translationFor("action"));
-			$hideOnMedium = array();
-			$hideOnLow = array( $this->lh->translationFor("campaign") );
+			$columns = [$this->lh->translationFor("phone_number"), $this->lh->translationFor("campaign"), $this->lh->translationFor("action")];
+			$hideOnMedium = [];
+			$hideOnLow = [ $this->lh->translationFor("campaign") ];
 			$result = $this->generateTableHeaderWithItems($columns, "table_dnc", "display responsive no-wrap table-bordered table-striped", true, false, '', '', '');
+            $counter = count($output->phone_number);
 
-			for($i=0;$i < count($output->phone_number);$i++) {
+			for($i=0;$i < $counter;$i++) {
 				$result .= '<tr>
 								<td>' .$output->phone_number[$i]. '</td>
 								<td>' .$output->campaign[$i].'</td>
@@ -6240,8 +6094,9 @@ error_reporting(E_ERROR | E_PARSE);
        }else{
        		//display nothing
        }
+           return null;
 	}
-	
+
 	public function API_LogActions($action, $user, $ip, $event_date, $details, $user_group, $db_query = '') {
 		$url = gourl."/goAdminLogs/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
@@ -6262,12 +6117,10 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
-		
-		return $output;
+
+		return json_decode($data);
 	}
-	
+
 	public function API_getListAudioFiles() {
 		$url = gourl."/goCampaigns/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
@@ -6283,12 +6136,10 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
-		
-		return $output;
+
+		return json_decode($data);
 	}
-	
+
 	public function API_getSMTPActivation() {
 		$url = gourl."/goSMTP/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields["goUser"] = goUser; #Username goes here. (required)
@@ -6304,14 +6155,13 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
-		curl_close($ch);
 		$output = json_decode($data);
 		if ($output->result == "success")
 			return $output->data->value;
 		else
 			return '0';
 	}
-	
+
 	private function getActionButtonForSMTP($status) {
 	   $return = '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
@@ -6324,9 +6174,8 @@ error_reporting(E_ERROR | E_PARSE);
 			}else{
 				$return .= '<li><a class="activate-smtp" href="#" data-id="1" >'.$this->lh->translationFor("enable").'</a></li>';
 			}
-		$return .= '</ul>
+		return $return . '</ul>
 		</div>';
-		return $return;
 	}
 
 	public function API_getAgentChatActivation() {
@@ -6344,14 +6193,13 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
-		curl_close($ch);
 		$output = json_decode($data);
 		if ($output->result == "success")
 			return $output->data->value;
 		else
 			return '0';
 	}
-	
+
 	private function getActionButtonForAgentChat($status) {
 	   $return = '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
@@ -6364,9 +6212,8 @@ error_reporting(E_ERROR | E_PARSE);
 			}else{
 				$return .= '<li><a class="activate-agent-chat" href="#" data-id="1" >'.$this->lh->translationFor("enable").'</a></li>';
 			}
-		$return .= '</ul>
+		return $return . '</ul>
 		</div>';
-		return $return;
 	}
 
 	public function API_getWhatsappActivation() {
@@ -6384,14 +6231,13 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
-		curl_close($ch);
 		$output = json_decode($data);
 		if ($output->result == "success")
 			return $output->data->value;
 		else
 			return '0';
 	}
-	
+
 	private function getActionButtonForWhatsapp($status) {
 	   $return = '<div class="btn-group"><button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">'.$this->lh->translationFor("choose_action").'
 		    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="height: 34px;">
@@ -6404,11 +6250,10 @@ error_reporting(E_ERROR | E_PARSE);
 			}else{
 				$return .= '<li><a class="activate-whatsapp" href="#" data-id="1" >'.$this->lh->translationFor("enable").'</a></li>';
 			}
-		$return .= '</ul>
+		return $return . '</ul>
 		</div>';
-		return $return;
 	}
-	
+
 	public function getCheckAll($action) {
 		$return = '<div class="btn-group">
 					<div class="checkbox c-checkbox" style="margin-right: 0; margin-left: 0;">
@@ -6423,33 +6268,32 @@ error_reporting(E_ERROR | E_PARSE);
 							</ul>
 						</div>
 					</div>';
-		$return .= '
+		return $return . ('
 		<script>
 			$(document).ready(function() {
-				$(document).on("change",".check-all_'.$action.'",function() {
+				$(document).on("change",".check-all_' . $action . '",function() {
 					var box = $(this);
 					if (box.is(":checked")) {
-						$(".check_'.$action.'").prop("checked", true);
+						$(".check_' . $action . '").prop("checked", true);
 					}else{
-						$(".check_'.$action.'").prop("checked", false);
+						$(".check_' . $action . '").prop("checked", false);
 					}
 				});
 			});
-		</script>';
-		return $return;
+		</script>');
 	}
-	
+
 	public function getAgentLog($user, $sdate, $edate) {
 		$output = $this->api->API_getAgentLog($user, $sdate, $edate);
 		//var_dump($output);
 		if ($output->result=="success") {
-			$columns = array($this->lh->translationFor('event_time'), $this->lh->translationFor('status'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('campaign'), $this->lh->translationFor('group'), $this->lh->translationFor('list_id'), $this->lh->translationFor('lead_id'), $this->lh->translationFor('term_reason'));
-			$hideOnMedium = array();
-			$hideOnLow = array( );
-			$outbound = "";
+			$columns = [$this->lh->translationFor('event_time'), $this->lh->translationFor('status'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('campaign'), $this->lh->translationFor('group'), $this->lh->translationFor('list_id'), $this->lh->translationFor('lead_id'), $this->lh->translationFor('term_reason')];
+			$hideOnMedium = [];
+			$hideOnLow = [ ];
 			$outbound = $this->generateTableHeaderWithItems($columns, "table_outbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
-			
-			for($i=0;$i < count($output->outbound->campaign_id);$i++) {
+            $counter = count($output->outbound->campaign_id);
+
+			for($i=0;$i < $counter;$i++) {
 				$outbound .= '<tr>
 								<td>' .$output->outbound->event_time[$i]. '</a></td>
 								<td>' .$output->outbound->status[$i].'</td>
@@ -6462,14 +6306,14 @@ error_reporting(E_ERROR | E_PARSE);
 							</tr>';
 			}
 			$outbound .= "</table>";
-			
-			$columns = array($this->lh->translationFor('event_time'), $this->lh->translationFor('status'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('campaign'), $this->lh->translationFor('group'), $this->lh->translationFor('list_id'), $this->lh->translationFor('lead_id'), $this->lh->translationFor('term_reason'));
-			$hideOnMedium = array();
-			$hideOnLow = array( );
-			$inbound = "";
+
+			$columns = [$this->lh->translationFor('event_time'), $this->lh->translationFor('status'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('campaign'), $this->lh->translationFor('group'), $this->lh->translationFor('list_id'), $this->lh->translationFor('lead_id'), $this->lh->translationFor('term_reason')];
+			$hideOnMedium = [];
+			$hideOnLow = [ ];
 			$inbound = $this->generateTableHeaderWithItems($columns, "table_inbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
-			
-			for($i=0;$i < count($output->inbound->campaign_id);$i++) {
+            $counter = count($output->inbound->campaign_id);
+
+			for($i=0;$i < $counter;$i++) {
 				$inbound .= '<tr>
 								<td>' .$output->inbound->call_date[$i]. '</a></td>
 								<td>' .$output->inbound->queue_seconds[$i].'</td>
@@ -6482,14 +6326,14 @@ error_reporting(E_ERROR | E_PARSE);
 							</tr>';
 			}
 			$inbound .= "</table>";
-			
-			$columns = array($this->lh->translationFor('event_time'), $this->lh->translationFor('event'), $this->lh->translationFor('campaign'), $this->lh->translationFor('group'));
-			$hideOnMedium = array();
-			$hideOnLow = array( );
-			$userlog = "";
+
+			$columns = [$this->lh->translationFor('event_time'), $this->lh->translationFor('event'), $this->lh->translationFor('campaign'), $this->lh->translationFor('group')];
+			$hideOnMedium = [];
+			$hideOnLow = [ ];
 			$userlog = $this->generateTableHeaderWithItems($columns, "table_userstat", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
-			
-			for($i=0;$i < count($output->userlog->user_log_id);$i++) {
+            $counter = count($output->userlog->user_log_id);
+
+			for($i=0;$i < $counter;$i++) {
 				$userlog .= '<tr>
 								<td>' .$output->userlog->event_date[$i]. '</a></td>
 								<td>' .$output->userlog->event[$i].'</td>
@@ -6498,12 +6342,12 @@ error_reporting(E_ERROR | E_PARSE);
 							</tr>';
 			}
 			$userlog .= "</table>";
-			
-			$result = array($outbound, $inbound, $userlog);
+
+			$result = [$outbound, $inbound, $userlog];
 		}else{
 			$result = "";
 		}
-		
+
 		return json_encode($result);
 	}
 
@@ -6523,7 +6367,6 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
-		curl_close($ch);
 		$output = json_decode($data);
 
 		if ($output->result == "success") {
@@ -6548,33 +6391,25 @@ error_reporting(E_ERROR | E_PARSE);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$data = curl_exec($ch);
-		curl_close($ch);
-		$output = json_decode($data);
-		
-		return $output;
-		
-	}
-	
 
-	
+		return json_decode($data);
+
+	}
+
+
+
 	public function escapeJsonString($value) { # list from www.json.org: (\b backspace, \f formfeed)
-		$escapers = array("\\", "/", "\"", "\n", "\r", "\t", "\x08", "\x0c", "	");
-		$replacements = array("\\\\", "\\/", "\\\"", "\\n", "\\r", "\\t", "\\f", "\\b", " ");
-		$result = str_replace($escapers, $replacements, $value);
+		$escapers = ["\\", "/", "\"", "\n", "\r", "\t", "\x08", "\x0c", "	"];
+		$replacements = ["\\\\", "\\/", "\\\"", "\\n", "\\r", "\\t", "\\f", "\\b", " "];
 
-		return $result;
+		return str_replace($escapers, $replacements, $value);
 	}
-	
+
 	public function getSettingsAPIKey($type) {
-		switch ($type) {
-			case 'google':
-				$return = $this->db->getSettingValueForKey(CRM_SETTING_GOOGLE_API_KEY);
-				break;
-			default:
-				$return = false;
-		}
-		
-		return $return;
+		return match ($type) {
+            'google' => $this->db->getSettingValueForKey(CRM_SETTING_GOOGLE_API_KEY),
+            default => false,
+        };
 	}
 }
 

@@ -27,8 +27,8 @@ namespace creamy;
 
 define ('CRM_NO_REPLY_ADMIN_EMAIL_ADDRESS', 'no-reply@creamycrm.com');
 
-require_once('CRMDefaults.php');
-require_once('LanguageHandler.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/LanguageHandler.php');
 
 // constants
 define ('CRM_MAIL_PARAMETER_TITLE', "{title}");
@@ -70,7 +70,7 @@ class MailHandler {
      */
     protected function __construct()
     {
-        require_once dirname(__FILE__) . '/DbHandler.php';
+        require_once __DIR__ . '/DbHandler.php';
         // opening db connection
         $this->db = new \creamy\DbHandler();
     }
@@ -78,8 +78,6 @@ class MailHandler {
     /**
      * Private clone method to prevent cloning of the instance of the
      * *Singleton* instance.
-     *
-     * @return void
      */
     private function __clone()
     {
@@ -88,11 +86,14 @@ class MailHandler {
     /**
      * Private unserialize method to prevent unserializing of the *Singleton*
      * instance.
-     *
-     * @return void
      */
-    private function __wakeup()
+    private function __unserialize(array $data): void
     {
+        foreach ($data as $property => $value) {
+            if (property_exists($this, $property)) {
+                $this->{$property} = $value;
+            }
+        }
     }
     
 	/** Mailing methods */
@@ -118,7 +119,7 @@ class MailHandler {
 		$title = $lh->translationFor("password_recovery_title");
 		$text = $lh->translationFor("password_recovery_text");
 		$linkTitle = $lh->translationFor("password_recovery_button");
-		$linkURL = "$baseURL/passwordrecovery.php?email=".urlencode($email)."&amp;code=".urlencode($resetCode)."&amp;date=".urlencode($dateAsString)."&amp;nonce=".urlencode($nonce);
+		$linkURL = "$baseURL/passwordrecovery.php?email=".urlencode((string) $email)."&amp;code=".urlencode((string) $resetCode)."&amp;date=".urlencode($dateAsString)."&amp;nonce=".urlencode($nonce);
 		
 		return $this->sendCreamyEmailWithValues($title, $text, $linkURL, $linkTitle, $title, $email);		
 	}
@@ -143,7 +144,7 @@ class MailHandler {
 		$title = $lh->translationFor("activate_account_title");
 		$text = $lh->translationFor("activate_account_text");
 		$linkTitle = $lh->translationFor("activate_account_title");
-		$linkURL = "$baseURL/accountactivation.php?email=".urlencode($email)."&amp;code=".urlencode($securityToken)."&amp;date=".urlencode($dateAsString)."&amp;nonce=".urlencode($nonce);
+		$linkURL = "$baseURL/accountactivation.php?email=".urlencode((string) $email)."&amp;code=".urlencode((string) $securityToken)."&amp;date=".urlencode($dateAsString)."&amp;nonce=".urlencode($nonce);
 		
 		return $this->sendCreamyEmailWithValues($title, $text, $linkURL, $linkTitle, $title, $email);		
 		
@@ -214,8 +215,8 @@ class MailHandler {
 	 */
 	public function sendCreamyEmailWithValues($title, $text, $linkURL, $linkTitle, $emailSubject, $emailRecipients) {
 		// 1. grab email contents.
-		$htmlContent = file_get_contents(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.CRM_SKEL_DIRECTORY.DIRECTORY_SEPARATOR.CRM_RECOVERY_EMAIL_FILE);
-		if (empty($htmlContent)) { return false; }
+		$htmlContent = file_get_contents(dirname(__FILE__, 2).DIRECTORY_SEPARATOR.CRM_SKEL_DIRECTORY.DIRECTORY_SEPARATOR.CRM_RECOVERY_EMAIL_FILE);
+		if (in_array($htmlContent, ['', '0', false], true)) { return false; }
 		// 2. substitute strings
 		$htmlContent = str_replace(CRM_MAIL_PARAMETER_TITLE, $title, $htmlContent);
 		$htmlContent = str_replace(CRM_MAIL_PARAMETER_TEXT, $text, $htmlContent);
@@ -223,7 +224,6 @@ class MailHandler {
 		$htmlContent = str_replace(CRM_MAIL_PARAMETER_LINK_URL, $linkURL, $htmlContent);
 		// 3. create subject and headers
 		$replyEmailAddress = $this->getSystemAdminReplyToEmailAddress();
-		$subject = "Password reset link for your Creamy account.";
 		$headers = "From: ".$replyEmailAddress."\r\n";
 		$headers .= "Reply-To: ".$replyEmailAddress."\r\n";
 		$headers .= "MIME-Version: 1.0\r\n";
@@ -253,19 +253,19 @@ class MailHandler {
 	 */
 	public function sendMailWithAttachments($recipients, $subject, $message, $attachments, $attachmentTag = "attachment") {
 		// safety checks.		
-		require_once('Session.php');
+		require_once(__DIR__ . '/Session.php');
 		if (empty($recipients)) { return false; }
 		// boundary for this email.
 		$boundaryId = md5(uniqid(time()));
 		// get from user data.
 		$user = \creamy\CreamyUser::currentUser(); if (!isset($user)) { return false; }
 		$userData = $this->db->getDataForUser($user->getUserId()); if (!isset($userData)) { return false; }
-		$userEmail = isset($userData["email"]) ? $userData["email"] : null; if (!isset($userEmail)) { return false; }
+		$userEmail = $userData["email"] ?? null; if (!isset($userEmail)) { return false; }
 		// build header
 		$header = $this->generateMultipartHeaderAndMessageContent($userEmail, $message, $boundaryId);
 		$header .= $this->generateAttachmentMultipartFromFiles($attachments, $boundaryId, $attachmentTag);
 		// generate a valid header including the attachments.
-		return mail($recipients, $subject, null, $header);
+		return mail($recipients, $subject, '', $header);
 	}
 	
 	/**
@@ -284,9 +284,8 @@ class MailHandler {
 		$strHeader .= "--".$boundaryId."\n";
 		$strHeader .= 'Content-Type: text/html; charset=UTF-8'.PHP_EOL;
 		$strHeader .= "Content-Transfer-Encoding: 8bit\n\n";
-		$strHeader .= $message."\n\n";
 		
-		return $strHeader;
+		return $strHeader . ($message . "\n\n");
 	}
 	
 	/**
@@ -299,7 +298,8 @@ class MailHandler {
 	
 		// process attachments.
 		$strHeader = "";
-		for($i = 0; $i < count($files[$attachmentTag]["tmp_name"]); $i++) {
+        $counter = count($files[$attachmentTag]["tmp_name"]);
+		for($i = 0; $i < $counter; $i++) {
 	    // Check $files['<nameofinputfile>']['error'] value.
 			if (($files[$attachmentTag]["tmp_name"][$i] != "") && ($files[$attachmentTag]['error'][$i] == UPLOAD_ERR_OK)) {
 				$strFilesName = $files[$attachmentTag]['name'][$i];

@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        AddPhone.php
  * @brief       Handles Add Phone Request
  * @copyright   Copyright (C) GOautodial Inc.
@@ -20,7 +22,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 
 	if($_POST['add_phones'] !== "CUSTOM")
@@ -28,7 +30,7 @@
 	else
 		$seats	= $_POST['custom_seats'];
 
-	$postfields = array(
+	$postfields = [
 		'goAction' => 'goAddPhones',
 		'seats' => $seats,
 		'extension' => $_POST['phone_ext'],
@@ -44,10 +46,10 @@
 		'messages' => "0",
 		'old_messages' => "0",
 		'user_group' => $_POST['user_group']
-	);
-	
+	];
+
 	$output = $api->API_addPhones($postfields);
-	
+
 	if ($output->result=="success") {
 		$status = 1;
 		//$return['msg'] = "New User has been successfully saved.";

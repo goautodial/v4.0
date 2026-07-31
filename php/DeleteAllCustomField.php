@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * @file        DeleteAllCustomField.php
  * @brief       Handles Delete Custom Field Requests
@@ -20,7 +22,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('APIHandler.php');
+require_once(__DIR__ . '/APIHandler.php');
 $api = \creamy\APIHandler::getInstance();
 /*
 require_once('goCRMAPISettings.php');
@@ -32,10 +34,10 @@ require_once('goCRMAPISettings.php');
   $postfields["responsetype"] = responsetype; #json. (required)
   $postfields["list_id"] = $_POST['list_id'];
 */
-	$postfields = array(
+	$postfields = [
 		'goAction' => 'goDeleteAllCustomFields',
 		'list_id' => $_POST['list_id']
-	);
+	];
 
 	$output = $api->API_Request("goCustomFields", $postfields);
 

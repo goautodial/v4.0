@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * @file        AddDID.php
  * @brief       Handles Add List Request
@@ -19,7 +21,7 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-require_once('APIHandler.php');
+require_once(__DIR__ . '/APIHandler.php');
 $api = \creamy\APIHandler::getInstance();
 /*
 	$url = gourl."/goInbound/goAPI.php"; # URL to GoAutoDial API file
@@ -29,7 +31,7 @@ $api = \creamy\APIHandler::getInstance();
 	$postfields["responsetype"] 	= responsetype; #json (required)
 	$postfields["hostname"] 		= $_SERVER['REMOTE_ADDR']; #Default value
 	$postfields["session_user"]			= $_POST['log_user'];
-    
+
 	$postfields["did_pattern"]              = $_POST['did_exten']; #Desired pattern (required)
     $postfields["did_description"]          = $_POST['desc']; #Desired description(required)
     $postfields["did_route"]                = $_POST['route']; #'EXTEN','VOICEMAIL','AGENT','PHONE','IN_GROUP','CALLMENU', or'VMAIL_NO_INST' (required)
@@ -64,7 +66,7 @@ $api = \creamy\APIHandler::getInstance();
 	}
 */
 
-	$postfields = array(
+	$postfields = [
 		'goAction' => 'goAddDID',
 		'did_pattern' => $_POST['did_exten'], //Desired pattern (required)
 	    'did_description' => $_POST['desc'], //Desired description(required)
@@ -80,7 +82,7 @@ $api = \creamy\APIHandler::getInstance();
 	    'voicemail_ext' => $_POST['route_voicemail'], //Desired voicemail (required if did_route is VOICEMAIL)
 	    'extension' => $_POST['route_exten'], //Desired extension (required if did_route is CUSTOM EXTENSION)
 	    'exten_context' => $_POST['route_exten_context'], //Deisred context (required if did_route is CUSTOM EXTENSION)*/
-	);
+	];
 
     $output = $api->API_addDID($postfields);
 

@@ -9,7 +9,7 @@
 #### License: AGPLv2                            ####
 ####################################################
 
-require_once('../goCRMAPISettings.php');
+require_once(__DIR__ . '/../goCRMAPISettings.php');
 	$url = gourl."/goDashboard/goAPI.php"; #URL to GoAutoDial API. (required)
 	$postfields["goUser"] = goUser; #Username goes here. (required)
 	$postfields["goPass"] = goPass;
@@ -27,7 +27,6 @@ require_once('../goCRMAPISettings.php');
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	$data = curl_exec($ch);
-	curl_close($ch);
 
 	$output = json_decode($data);
 

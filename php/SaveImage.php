@@ -8,8 +8,8 @@
 ### License: AGPLv2                                     ###
 ###########################################################
 
-require_once('CRMDefaults.php');
-require_once('DbHandler.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/DbHandler.php');
 
 $db = new \creamy\DbHandler();
 

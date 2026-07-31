@@ -20,8 +20,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('APIHandler.php');
-require_once('CRMDefaults.php');
+require_once(__DIR__ . '/APIHandler.php');
+require_once(__DIR__ . '/CRMDefaults.php');
 
 $api = \creamy\APIHandler::getInstance();
 
@@ -46,14 +46,14 @@ $campaignID = $_POST['campaignID'];
     $postfields["campaignID"]   = $campaignID;
 */
    
-    $postfields = array(
+    $postfields = [
         //'goAction' => 'goGetReports',
 	'goAction' => 'goExportAgentDetails',
         'pageTitle' => $pageTitle,
         'fromDate' => $fromDate,
         'toDate' => $toDate,
         'campaignID' => $campaignID
-    );
+    ];
 
     $output = $api->API_Request('goReports', $postfields);
 	
@@ -82,7 +82,8 @@ $campaignID = $_POST['campaignID'];
 		echo $header."\n";
 		
         $row = "";
-            for($i=0; $i < count($output->getReports->FileExport); $i++){
+        $counter = count($output->getReports->FileExport);
+            for($i=0; $i < $counter; $i++){
                 $name = $output->getReports->FileExport[$i]->name;
                 $user = $output->getReports->FileExport[$i]->user;
                 $number_of_calls = $output->getReports->FileExport[$i]->number_of_calls;
@@ -93,7 +94,7 @@ $campaignID = $_POST['campaignID'];
                 $pause_time = $output->getReports->FileExport[$i]->pause_time;
                 $wrap_up = $output->getReports->FileExport[$i]->wrap_up;
                 $customer_time = $output->getReports->FileExport[$i]->customer_time;
-                $statuses = explode(",", $output->getReports->FileExport[$i]->statuses);
+                $statuses = explode(",", (string) $output->getReports->FileExport[$i]->statuses);
                 
                 $row .= $name.",".$user.",".$number_of_calls.",".$agent_time.",".$wait_time.",".$talk_time.",".$dispo_time.",".$pause_time.",".$wrap_up.",".$customer_time;
 

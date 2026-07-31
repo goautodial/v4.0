@@ -23,9 +23,9 @@
 */
 
 
-	require_once('CRMDefaults.php');
-	require_once('goCRMAPISettings.php');
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/CRMDefaults.php');
+	require_once(__DIR__ . '/goCRMAPISettings.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();	
 
 	// check required fields
@@ -36,29 +36,29 @@
 		$validated = 0;
 	}
 
-	if ($validated == 1) {
+	if ($validated === 1) {
 		
 		// collect new user data.	
 		$modifyid = $_POST["modifyid"];
 		
 		$dialplan = NULL; if (isset($_POST["dialplan"])) { 
 			$dialplan = $_POST["dialplan"]; 
-			$dialplan = stripslashes($dialplan);
+			$dialplan = stripslashes((string) $dialplan);
 		}
 		
 		$vmid = NULL; if (isset($_POST["vmid"])) { 
 			$vmid = $_POST["vmid"];
-			$vmid = stripslashes($vmid);
+			$vmid = stripslashes((string) $vmid);
 		}
 
 		$ip = NULL; if (isset($_POST["ip"])) { 
 			$ip = $_POST["ip"]; 
-			$ip = stripslashes($ip);
+			$ip = stripslashes((string) $ip);
 		}
 		
 		$active = NULL; if (isset($_POST["active"])) { 
 			$active = $_POST["active"]; 
-			$active = stripslashes($active);
+			$active = stripslashes((string) $active);
 		}
 		
 		$status = NULL; if (isset($_POST["status"])) { 
@@ -68,20 +68,20 @@
 		
 		$fullname = NULL; if (isset($_POST["fullname"])) { 
 			$fullname = $_POST["fullname"]; 
-			$fullname = stripslashes($fullname);
+			$fullname = stripslashes((string) $fullname);
 		}
 		
 		$protocol = NULL; if (isset($_POST["protocol"])) { 
 			$protocol = $_POST["protocol"]; 
-			$protocol = stripslashes($protocol);
+			$protocol = stripslashes((string) $protocol);
 		}
 	
 		$password = NULL; if (isset($_POST["password"])) { 
 			$password = $_POST["password"]; 
-			$password = stripslashes($password);
+			$password = stripslashes((string) $password);
 		}
 		
-		$postfields = array(
+		$postfields = [
 			'goAction' 			=> 'goEditPhone',		
 			'extension' 		=> $modifyid,
 			'dialplan_number' 	=> $dialplan,
@@ -92,7 +92,7 @@
 			'fullname' 			=> $fullname,
 			'protocol' 			=> $protocol,
 			'pass' 				=> $password
-		);				
+		];				
 
 		$output = $api->API_editPhone($postfields);
 

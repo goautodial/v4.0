@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        AddCarrier.php
  * @brief       Handles Add Carrier Request
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -21,12 +23,12 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 	
 	$carrier_id = $_POST['carrier_id'];
 
-	$postfields = array(
+	$postfields = [
 			'goAction' 				=> 'goAddCarrier',
 			'carrier_type'			=> $_POST['carrier_type'],
 			'carrier_id' 			=> $carrier_id,
@@ -53,7 +55,7 @@
 			'manual_server_ip'		=> $_POST['server_ip'],
 			'copy_server_ip' 		=> $_POST['copy_server_ip'],
 			'source_carrier' 		=> $_POST['source_carrier']
-		);
+		];
 
 	$output = $api->API_addCarrier($postfields);
 

@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        checkUser.php
  * @brief       Validate user entries
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -21,16 +23,16 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 
-	$postfields = array(
+	$postfields = [
 		'goAction' => 'goCheckUser',
 		'user' => $_POST['user'],
 		'phone_login' => $_POST["phone_login"],
 		'type' => $_POST["type"]
-	);
-	
+	];
+
 	$output = $api->API_checkUser($postfields);
 
 	if($output->result == "success"){

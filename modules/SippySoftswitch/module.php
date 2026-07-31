@@ -40,7 +40,8 @@ class SippySoftswitch extends Module {
 
 	// lifecycle and respond to interactions.
 
-	public function uponInit() {
+	#[\Override]
+    public function uponInit() {
 		error_log("Module \"Sippy Softswitch\" initializing...");
 		
 		// add the Sippy Softswitch translation files to our language handler.
@@ -49,69 +50,67 @@ class SippySoftswitch extends Module {
 		$this->lh()->addCustomTranslationsFromFile($customLanguageFile);
 	}
 		
-	public function uponActivation() {
+	#[\Override]
+    public function uponActivation() {
 		error_log("Module \"Sippy Softswitch\" activating...");
 	}
 		
-	public function uponDeactivation() {
+	#[\Override]
+    public function uponDeactivation() {
 		error_log("Module \"Sippy Softswitch\" deactivating...");
 	}
 
-	public function uponUninstall() {
+	#[\Override]
+    public function uponUninstall() {
 		error_log("Module \"Sippy Softswitch\" uninstalling...");
 	}
 	
 	// Private functions for this module.
 	
 	// https://support.sippysoft.com/support/solutions/articles/107525-simple-api
-	private function sectionWithRandomQuotes($number) {
-		$content = "";
-		
-		$sippy_api_url = $this->valueForModuleSetting("sippy_api_url");
-		$sippy_username = $this->valueForModuleSetting("sippy_username");
-		
-		$postfields = array(
+	private function sectionWithRandomQuotes()
+    {
+        $content = "";
+        $sippy_api_url = $this->valueForModuleSetting("sippy_api_url");
+        $sippy_username = $this->valueForModuleSetting("sippy_username");
+        $postfields = [
 			'username' => $sippy_username,
-		);
-		
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $sippy_api_url);
-		//curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
-		curl_setopt($ch, CURLOPT_POST, 1);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 3);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
-		
-		$output = curl_exec($ch);
-		$output = round($output, 2);
-		
-		$sippy_balance = json_encode($output);		
-		
-		$quoteBox = $this->ui()->boxWithQuote($this->lh()->translationFor("justgovoip_balance"), ($this->lh()->translationFor("remaining_balance")).": $".number_format($sippy_balance), '');
-		$content .= $this->ui()->fullRowWithContent($quoteBox);		
-		
-		return $content;
-	}
+		];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $sippy_api_url);
+        //curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
+        $output = curl_exec($ch);
+        $output = round($output, 2);
+        $sippy_balance = json_encode($output);
+        $quoteBox = $this->ui()->boxWithQuote($this->lh()->translationFor("justgovoip_balance"), ($this->lh()->translationFor("remaining_balance")).": $".number_format($sippy_balance), '');
+        return $content . $this->ui()->fullRowWithContent($quoteBox);
+    }
 	
 	// views and code generation
 
 	/** We return true here to indicate that we want access to the database */
-	public function needsDatabaseFunctionality() { return true; }
+	#[\Override]
+    public function needsDatabaseFunctionality() { return true; }
 
 	public function databaseTableFields() {
-		return array(
+		return [
 			"sippy_api_url" => "VARCHAR(255) NOT NULL",
 			"sippy_username" => "VARCHAR(25) NOT NULL",
 			"sippy_balance" => "INT(11) NOT NULL"
-		);
+		];
 	}
 
-	public function needsSidebarDisplay() { return false; }
+	#[\Override]
+    public function needsSidebarDisplay() { return false; }
 
 	public function mainPageViewContent($args) {
-		return $this->sectionWithRandomQuotes($number);
+		return $this->sectionWithRandomQuotes();
 	}
 
 	public function mainPageViewTitle() {
@@ -129,7 +128,7 @@ class SippySoftswitch extends Module {
 	// hooks
 	
 	public function dashboardHook($wantsFullRow = true) {
-		return $this->sectionWithRandomQuotes(1);
+		return $this->sectionWithRandomQuotes();
 	}
 	
 
@@ -166,7 +165,7 @@ class SippySoftswitch extends Module {
 	// settings
 	
 	public function moduleSettings() {
-		return array("sippy_api_url" => CRM_SETTING_TYPE_STRING, "sippy_username" => CRM_SETTING_TYPE_STRING); 
+		return ["sippy_api_url" => CRM_SETTING_TYPE_STRING, "sippy_username" => CRM_SETTING_TYPE_STRING]; 
 	}
 	
 }

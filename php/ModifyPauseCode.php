@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        ModifyPauseCode.php
  * @brief       Handles modifying pause codes requests
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -21,7 +23,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 							= \creamy\APIHandler::getInstance();
 
 	// collect new user data.       
@@ -29,27 +31,27 @@
 
 	$pause_code = NULL; if (isset($_POST["pause_code"])) { 
 		$pause_code 				= $_POST["pause_code"]; 
-		$pause_code 				= stripslashes($pause_code);
+		$pause_code 				= stripslashes((string) $pause_code);
 	}
 	$pause_code_name = NULL; if (isset($_POST["pause_code_name"])) { 
 		$pause_code_name			= $_POST["pause_code_name"];
-		$pause_code_name 			= stripslashes($pause_code_name);
+		$pause_code_name 			= stripslashes((string) $pause_code_name);
 	}
 	$billable = NULL; if (isset($_POST["billable"])) { 
 		$billable 					= $_POST["billable"]; 
-		$billable 					= stripslashes($billable);
+		$billable 					= stripslashes((string) $billable);
 	}
 
-	$postfields 					= array(
+	$postfields 					= [
 		'goAction' 						=> 'goEditPauseCode',		
 		'pauseCampID' 					=> $campaign_id,
 		'pause_code' 					=> $pause_code,
 		'pause_code_name' 				=> $pause_code_name,
 		'billable' 						=> $billable
-	);	
-			
+	];	
+
 	$output 						= $api->API_modifyPauseCode($postfields);
-	
+
 	if ($output->result=="success") { $status = 1; } 
 		else { $status = $output->result; }
 

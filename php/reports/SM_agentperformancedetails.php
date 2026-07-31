@@ -21,7 +21,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();
 	$pageTitle									= $_POST['pageTitle'];
@@ -34,7 +34,7 @@
 	
 	if (isset($_POST['pageTitle']) && $pageTitle != "call_export_report") {
 		$pageTitle 								= $_POST['pageTitle'];
-		$pageTitle								= stripslashes($pageTitle);
+		$pageTitle								= stripslashes((string) $pageTitle);
 	}
 			
 	if (isset($_POST["fromDate"])) {
@@ -48,17 +48,17 @@
 			
 	if (isset($_POST["campaignID"])) { 
 		$campaign_id 							= $_POST["campaignID"]; 
-		$campaign_id 							= stripslashes($campaign_id);
+		$campaign_id 							= stripslashes((string) $campaign_id);
 	}
 		
 	if (isset($_POST["userID"])) {
 		$userID 								= $_POST["userID"];
-		$userID									= stripslashes($userID);
+		$userID									= stripslashes((string) $userID);
 	}
 	
 	if (isset($_POST["userGroup"])) {
 		$userGroup 								= $_POST["userGroup"];
-		$userGroup								= stripslashes($userGroup);
+		$userGroup								= stripslashes((string) $userGroup);
 	}
 		
 	if (isset($_POST["statuses"])) {
@@ -66,14 +66,14 @@
 		$statuses								= stripslashes($statuses);
 	}
 		
-	$postfields 								= array(
+	$postfields 								= [
 		'goAction'								=> 'goGetAgentPerformanceDetails', //Service Monkey Performance Detail		
 		//'goAction'                                                              => 'goGetPerformanceDetails',
 		'pageTitle' 								=> $pageTitle,
 		'fromDate' 								=> $fromDate,
 		'toDate' 								=> $toDate,
 		'campaignID' 								=> $campaign_id
-	);				
+	];				
 
 	$output = $api->API_Request("goReports",$postfields);
 
@@ -102,7 +102,8 @@
 
 			if(count($output->agent_name) > 0){
 
-				for ($i=0; $i < count($output->agent_name); $i++) {
+				$counter = count($output->agent_name);
+                for ($i=0; $i < $counter; $i++) {
 					$tablehtml .= '<tr>
 						<td>'.$output->agent_name[$i].'</td>
 						<td>'.$output->sid[$i].'</td>
@@ -116,9 +117,9 @@
 						<td>'.$output->cb[$i].'</td>	
 					</tr>';
 				}
-				
+
 				$tablehtml .= '</tbody>';
-			
+
 				if ($output->TOTcalls != NULL) {
 						$tablehtml .= '<tfoot><!-- <tr class="warning"><th> Total </th> -->';
 							$tablehtml .= '<th>'.$output->TOT_AGENTS.'</th>';
@@ -136,7 +137,7 @@
 				$tablehtml .= "";	
 			}
 				$tablehtml .= '</table></div><br/>'; 
-			
+
 			//FORM TO BE PASSED WHEN EXPORT IS CALLED
 			$tablehtml .= '<form action="php/ExportPerformanceDetailsSM.php" id="export_agentPdetailSM_form"  method="POST">
 								<input type="hidden" name="pageTitle" value="'.$pageTitle.'" />

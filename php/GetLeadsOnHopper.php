@@ -21,7 +21,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();
 	$campaign_id 								= $_POST["campaign_id"];
@@ -32,19 +32,20 @@
 		$i										= 0;
 		$count 									= 0;
 		$dial_status 							= explode(" ", $output->camp_dial_status[0]);
-		$statuses 								= array();
-		$availableStats 						= array();
+		$statuses 								= [];
+		$availableStats 						= [];
 		
 		foreach ($dial_status as $status){
-			if(!empty($status)){
-				array_push($statuses, $status);
+			if($status !== '' && $status !== '0'){
+				$statuses[] = $status;
 			}
 		}
+        $counter = count($output->lead_id);
 		
-		for($i=0;$i<=count($output->lead_id);$i++) {
-			array_push($availableStats, $output->status[$i]);
+		for($i=0;$i<=$counter;$i++) {
+			$availableStats[] = $output->status[$i];
 			if(!empty($output->hopper_id[$i]) && in_array($output->status[$i], $statuses)){
-				$count 							= $count + 1;
+				$count += 1;
 				$data 							.= '[';
 				$data 							.= '"'.$output->hopper_id[$i].'",';
 				$data 							.= '"'.$output->priority[$i].'",';

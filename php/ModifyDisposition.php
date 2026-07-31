@@ -21,7 +21,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 									= \creamy\APIHandler::getInstance();
 
 	// check required fields
@@ -87,10 +87,10 @@
 		$status_name 						= NULL; 
 		if (isset($_POST["status_name"])) { 
 			$status_name 					= $_POST["status_name"]; 
-			$status_name 					= stripslashes($status_name);
+			$status_name 					= stripslashes((string) $status_name);
 		}
 		
-		$postfields 						= array(
+		$postfields 						= [
 			'goAction' 							=> 'goEditDisposition',		
 			'campaign_id' 						=> $disposition,
 			'status'							=> $status,
@@ -103,7 +103,7 @@
 			'customer_contact' 					=> $_POST['customer_contact'],
 			'not_interested' 					=> $_POST['not_interested'],
 			'unworkable' 						=> $_POST['unworkable']
-		);				
+		];				
 
 		$output 							= $api->API_editDisposition($postfields);
 

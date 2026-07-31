@@ -1,8 +1,8 @@
 <?php
 
-	require_once('UIHandler.php');
-    require_once('goCRMAPISettings.php');
-	include('Session.php');
+	require_once(__DIR__ . '/UIHandler.php');
+    require_once(__DIR__ . '/goCRMAPISettings.php');
+	include(__DIR__ . '/Session.php');
 	
 	$ui = \creamy\UIHandler::getInstance();
 	//$perm = $ui->goGetPermissions('pausecodes', $_SESSION['usergroup']);
@@ -21,13 +21,13 @@
     curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     $data = curl_exec($ch);
-    curl_close($ch);
     $output = json_decode($data);
 
 		if(!empty($output)){
 			$data = '';
 			$i=0;
-			for($i=0;$i<=count($output->phone_number);$i++) {
+            $counter = count($output->phone_number);
+			for($i=0;$i<=$counter;$i++) {
 				if(!empty($output->phone_number[$i])){
 					$data .= '<tr>';
 					$data .= '<td>'.$output->phone_number[$i].'</td>';

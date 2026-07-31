@@ -26,11 +26,11 @@
 namespace creamy;
 
 // dependencies
-require_once('CRMDefaults.php');
-require_once('DbHandler.php');
-require_once('ModuleHandler.php');
-require_once('UIHandler.php');
-require_once('LanguageHandler.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/DbHandler.php');
+require_once(__DIR__ . '/ModuleHandler.php');
+require_once(__DIR__ . '/UIHandler.php');
+require_once(__DIR__ . '/LanguageHandler.php');
 
 /**
  * Generates the JSON that shows the customer list using server-side processing in DataTables
@@ -62,7 +62,7 @@ define ('CRM_CUSTOMER_COLUMN_NAME', $name);
 /**
  * Error function, used to return a "unable to get data" message.
  */
-function fatal_error($sErrorMessage = '') {
+function fatal_error($sErrorMessage = ''): never {
     header( $_SERVER['SERVER_PROTOCOL'] .' 500 Internal Server Error' );
     die( $sErrorMessage );
 }
@@ -71,7 +71,7 @@ function fatal_error($sErrorMessage = '') {
  * This function applies the module hooks for the list fields to be returned.
  */
 function filteredResultsForCustomerColumn($customer, $customer_type) {
-	$result = array();
+	$result = [];
 	// Module Handler 
 	$mh = \creamy\ModuleHandler::getInstance();
 
@@ -90,9 +90,9 @@ function filteredResultsForCustomerColumn($customer, $customer_type) {
 	//}
 	
 	// Apply hook filters from modules, sequentially.
-	$result = $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_CUSTOMER_LIST_FIELDS, array(CRM_MODULE_HOOK_PARAMETER_CUSTOMER_LIST_FIELDS => $customer), CRM_MODULE_MERGING_STRATEGY_SEQUENCE);
+	$result = $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_CUSTOMER_LIST_FIELDS, [CRM_MODULE_HOOK_PARAMETER_CUSTOMER_LIST_FIELDS => $customer], CRM_MODULE_MERGING_STRATEGY_SEQUENCE);
 
-	return isset($result) ? $result : $customer;
+	return $result ?? $customer;
 }
 
 /**
@@ -110,8 +110,8 @@ function actionButtonToCustomer($customer, $customer_type, $db) {
 	// Build basic button options: modify, delete.
 	$modifyLink = "editcustomer.php?customerid=".$customer[CRM_CUSTOMER_COLUMN_ID]."&customer_type=$customer_type";
 	$modifyOption = $ui->actionForPopupButtonWithLink($modifyLink, $lh->translationFor("modify"));
-	$deleteOption = $ui->actionForPopupButtonWithOnClickCode($lh->translationFor("delete"), "deleteCustomer", array($customer["id"], $customer_type));
-	$eventOption = $ui->actionForPopupButtonWithOnClickCode($lh->translationFor("create_reminder_event"), "createEventForCustomer", array($customer["id"], $customer_type));
+	$deleteOption = $ui->actionForPopupButtonWithOnClickCode($lh->translationFor("delete"), "deleteCustomer", [$customer["id"], $customer_type]);
+	$eventOption = $ui->actionForPopupButtonWithOnClickCode($lh->translationFor("create_reminder_event"), "createEventForCustomer", [$customer["id"], $customer_type]);
 	$separator = $ui->separatorForPopupButton();
 	
 	// change customer type. One for every customer type except current one.
@@ -120,22 +120,22 @@ function actionButtonToCustomer($customer, $customer_type, $db) {
 	foreach ($customerTypes as $otherCustomerType) {
 		if ($otherCustomerType["table_name"] != $customer_type) { // add a change to... button.
 			$changeTypeText = $lh->translationFor("move_to")." ".$otherCustomerType["description"];
-			$typeOptions .= $ui->actionForPopupButtonWithOnClickCode($changeTypeText, "changeCustomerType", array($customer["id"], $customer_type, $otherCustomerType["table_name"]));
+			$typeOptions .= $ui->actionForPopupButtonWithOnClickCode($changeTypeText, "changeCustomerType", [$customer["id"], $customer_type, $otherCustomerType["table_name"]]);
 		}
 	}
 	
 	// add any module action.
-	$args = array(
+	$args = [
 		//edited
 		//CRM_MODULE_HOOK_PARAMETER_CUSTOMER_LIST_ID => $customer["lead_id"], 
 		//CRM_MODULE_HOOK_PARAMETER_CUSTOMER_LIST_NAME => $customer["first_name"],
 		CRM_MODULE_HOOK_PARAMETER_CUSTOMER_LIST_ID => $customer["id"], 
 		CRM_MODULE_HOOK_PARAMETER_CUSTOMER_LIST_NAME => $customer["name"], 
-		CRM_MODULE_HOOK_PARAMETER_CUSTOMER_LIST_TYPE => $customer_type);
+		CRM_MODULE_HOOK_PARAMETER_CUSTOMER_LIST_TYPE => $customer_type];
 	$moduleActions = $mh->applyHookOnActiveModules(CRM_MODULE_HOOK_CUSTOMER_LIST_POPUP, $args, CRM_MODULE_MERGING_STRATEGY_APPEND);
 	
 	// build the pop up action button and return it.
-	$result = $ui->popupActionButton($lh->translationFor("choose_action"), array($modifyOption, $moduleActions, $eventOption, $separator, $typeOptions, $separator, $deleteOption), array("default"));
+	$result = $ui->popupActionButton($lh->translationFor("choose_action"), [$modifyOption, $moduleActions, $eventOption, $separator, $typeOptions, $separator, $deleteOption], ["default"]);
 	return $result;
 }
 
@@ -151,11 +151,11 @@ if($customer_type == "clients_1")$customer_type = "vicidial_list";
 // paging
 $length = isset($_GET[CRM_CUSTOMER_DATATABLE_LIMIT]) ? intval($_GET[CRM_CUSTOMER_DATATABLE_LIMIT]) : 10;
 $offset = isset($_GET[CRM_CUSTOMER_DATATABLE_OFFSET]) ? intval($_GET[CRM_CUSTOMER_DATATABLE_OFFSET]) : null;
-$numRows = isset($offset) ? array($offset, $length) : $length;
+$numRows = isset($offset) ? [$offset, $length] : $length;
  
 // Ordering
 $columns = $db->getCustomerColumnsToBeShownInCustomerList($customer_type);
-$sorting = array();
+$sorting = [];
 if (isset($_GET[CRM_CUSTOMER_DATATABLE_SORT_COLUMN."0"])) {
     for ($i=0 ; $i<intval($_GET[CRM_CUSTOMER_DATATABLE_SORT_COLUMNS]); $i++) {
         if ($_GET[CRM_CUSTOMER_DATATABLE_IS_SORTABLE.intval($_GET[CRM_CUSTOMER_DATATABLE_SORT_COLUMN.$i])] == "true") {
@@ -167,10 +167,11 @@ if (isset($_GET[CRM_CUSTOMER_DATATABLE_SORT_COLUMN."0"])) {
 }
  
 // filtering
-$filtering = array();
+$filtering = [];
 if (isset($_GET[CRM_CUSTOMER_DATATABLE_SEARCH]) && $_GET[CRM_CUSTOMER_DATATABLE_SEARCH] != "") {
 	$wordToSearch = $db->escape_string($_GET[CRM_CUSTOMER_DATATABLE_SEARCH]);
-	for ($i=0; $i < count($columns); $i++) {
+    $counter = count($columns);
+	for ($i=0; $i < $counter; $i++) {
         if (isset($_GET[CRM_CUSTOMER_DATATABLE_SEARCHABLE.$i]) && $_GET[CRM_CUSTOMER_DATATABLE_SEARCHABLE.$i] == "true") {
 			$columnToSearch = $columns[$i];
 			$filtering[$columnToSearch] = $wordToSearch;
@@ -197,12 +198,12 @@ $filteredRows = $db->unlimitedRowCount();
 $totalCustomers = $db->getNumberOfClientsFromTable($customer_type); 
 
 // output
-$output = array(
+$output = [
     "sEcho" => intval($_GET[CRM_CUSTOMER_DATATABLE_ECHO]),
     "iTotalRecords" => $totalCustomers,
     "iTotalDisplayRecords" => $filteredRows,
-    "aaData" => array()
-);
+    "aaData" => []
+];
 
 // build the data array
 foreach ($result as $customer) {

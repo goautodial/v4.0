@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        ModifyLeadRecycling.php
  * @brief       Handles modifying lead recycling requests
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -21,7 +23,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 										= \creamy\APIHandler::getInstance();	
 
 	// check required fields
@@ -33,29 +35,29 @@
 		$attempt_delay 							= NULL; 
 		if (isset($_POST["attempt_delay"])) { 
 			$attempt_delay 						= $_POST["attempt_delay"]; 
-			$attempt_delay 						= stripslashes($attempt_delay);
+			$attempt_delay 						= stripslashes((string) $attempt_delay);
 		}
 		
 		$attempt_maximum 						= NULL; 
 		if (isset($_POST["attempt_maximum"])) { 
 			$attempt_maximum 					= $_POST["attempt_maximum"];
-			$attempt_maximum 					= stripslashes($attempt_maximum);
+			$attempt_maximum 					= stripslashes((string) $attempt_maximum);
 		}
 
 		$active 								= NULL; 
 		if (isset($_POST["active"])) { 
 			$active 							= $_POST["active"]; 
-			$active 							= stripslashes($active);
+			$active 							= stripslashes((string) $active);
 		}
 
-		$postfields 						= array(
+		$postfields 						= [
 			'goAction' 							=> 'goEditLeadRecycling',		
 			'recycle_id' 						=> $modifyid,
 			'campaign_id'						=> $campaign_id,
 			'attempt_delay'						=> $attempt_delay,
 			'attempt_maximum' 					=> $attempt_maximum,
 			'active' 							=> $active
-		);				
+		];				
 
 		$output 							= $api->API_editLeadRecycling($postfields);
 

@@ -1,19 +1,21 @@
 <?php
+declare(strict_types=1);
+
 /**
 	The MIT License (MIT)
-	
+
 	Copyright (c) 2015 Ignacio Nieto Carvajal
-	
+
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the "Software"), to deal
 	in the Software without restriction, including without limitation the rights
 	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 	copies of the Software, and to permit persons to whom the Software is
 	furnished to do so, subject to the following conditions:
-	
+
 	The above copyright notice and this permission notice shall be included in
 	all copies or substantial portions of the Software.
-	
+
 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,9 +25,9 @@
 	THE SOFTWARE.
 */
 
-require_once('DbHandler.php');
-require_once('CRMDefaults.php');
-require_once('LanguageHandler.php');
+require_once(__DIR__ . '/DbHandler.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/LanguageHandler.php');
 
 $lh = \creamy\LanguageHandler::getInstance();
 
@@ -35,14 +37,14 @@ if (!isset($_POST["newdesc"])) {
 	$validated = 0;
 }
 
-if ($validated == 1) {
+if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// check description	
 	$newdescription = $_POST["newdesc"];
-	if (empty($newdescription) || strlen(trim($newdescription)) < 1) { $lh->translateText("some_fields_missing"); return; }
+	if (empty($newdescription) || strlen(trim((string) $newdescription)) < 1) { $lh->translateText("some_fields_missing"); return; }
 	// create customer group
-	$result = $db->addNewCustomerType(trim($newdescription));
+	$result = $db->addNewCustomerType(trim((string) $newdescription));
 	if ($result === true) { ob_clean(); print CRM_DEFAULT_SUCCESS_RESPONSE; }
 	else { ob_clean(); print $lh->translationFor("unable_add_customer_group")." ($result)"; } 
 } else { ob_clean(); $lh->translateText("some_fields_missing"); }

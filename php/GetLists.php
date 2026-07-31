@@ -21,7 +21,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 											= \creamy\APIHandler::getInstance();
 	$campaign_id 									= $_POST["campaign_id"];
 	$output 										= $api->API_getAllListsCampaign($campaign_id);
@@ -32,17 +32,18 @@
 		$count_active 								= 0;
 		$count_inactive 							= 0;
 		$lead_count 								= 0;
+        $counter = count($output->list_id);
 		
-		for ($i=0;$i<=count($output->list_id);$i++) {
+		for ($i=0;$i<=$counter;$i++) {
 			if (!empty($output->list_id[$i])) {
 				if ($output->active[$i] == "Y") {
-					$count_active 					= $count_active + 1;
-					$lead_count 					= $lead_count + $output->tally[$i];
+					$count_active += 1;
+					$lead_count += $output->tally[$i];
 				} else {
-					$count_inactive 				= $count_inactive +1;
+					$count_inactive += 1;
 				}
 
-				$info								= array(
+				$info								= [
 					'list_id' 							=> $output->list_id[$i],
 					'list_name' 						=> $output->list_name[$i],
 					'list_description' 					=> $output->list_description[$i],
@@ -59,17 +60,17 @@
 					'xferconf_c_number' 				=> $output->xferconf_c_number[$i],
 					'xferconf_d_number' 				=> $output->xferconf_d_number[$i],
 					'xferconf_e_number' 				=> $output->xferconf_e_number[$i]
-				);
+				];
 				
 				$info								= json_encode($info);
 				$info								= base64_encode($info);
 				
 				$calldate							= $output->list_lastcalldate[$i];
 				
-				if (is_null($calldate) || empty($calldate) || strstr($calldate, "0000-00-00")) {
+				if (is_null($calldate) || empty($calldate) || strstr((string) $calldate, "0000-00-00")) {
 					$calldate						= "";
 				} else {
-					$calldate						= strtotime($calldate);
+					$calldate						= strtotime((string) $calldate);
 				}
 				
 				$data 								.= '[';

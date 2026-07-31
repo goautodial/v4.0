@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        GetAreaCodes.php
  * @brief       Handles Areacode variables and HTML
  * @copyright   Copyright (c) 2018 GOautodial Inc. 
@@ -20,9 +22,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 							= \creamy\APIHandler::getInstance();
-	
+
 	$draw       					= $_POST["draw"];
 	$start       					= $_POST["start"];
 	$length       					= $_POST["length"];
@@ -30,9 +32,9 @@
     $search                         = $_POST["search"];
 	$order       					= $_POST["order"];
 	$user_group						= $_SESSION["usergroup"];
-	$perm 							= $api->goGetPermissions('campaign', $user_group);
-    
-    $options                        = array(
+	$perm 							= $api->goGetPermissions('campaign');
+
+    $options                        = [
         "draw" => $draw,
         "start" => $start,
         "length" => $length,
@@ -40,14 +42,14 @@
         "dir" => $order[0]["dir"],
         "search" => $search["value"],
         "can_update" => $perm->campaign_update
-    );
+    ];
 
 	$output 						= $api->API_getAllAreacodes($options);
 
 	//$data 							= '[';
 	//$i								= 0;
 
-	
+
 	//for($i=0;$i<=count($output->campaign_id);$i++) {
 	//	if(!empty($output->pause_code[$i])){
 	//		$data 					.= '[';
@@ -58,7 +60,7 @@
 	//		$data 					.= '],';
 	//	}
 	//}
-	
+
 	//$data 							= rtrim($data, ",");    
 	//$data 							.= ']';		
 

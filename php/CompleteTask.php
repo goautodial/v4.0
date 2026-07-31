@@ -23,9 +23,9 @@
 	THE SOFTWARE.
 */
 
-require_once('DbHandler.php');
-require_once('LanguageHandler.php');
-require('Session.php');
+require_once(__DIR__ . '/DbHandler.php');
+require_once(__DIR__ . '/LanguageHandler.php');
+require(__DIR__ . '/Session.php');
 $lh = \creamy\LanguageHandler::getInstance();
 $user = \creamy\CreamyUser::currentUser();
 
@@ -38,7 +38,7 @@ if (!isset($_POST["complete-task-progress"])) {
 	$validated = 0;
 }
 
-if ($validated == 1) {
+if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// check password	

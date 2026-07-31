@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        DeleteUser.php
  * @brief       Handles Delete User/s Requests
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -21,25 +23,25 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');	
+	require_once(__DIR__ . '/APIHandler.php');	
 	$api 									= \creamy\APIHandler::getInstance();
-	
+
 	if (isset($_POST["userid"])) {
 		// sanity checks	
 		$userid 							= $_POST["userid"];
 		$action 							= $_POST["action"];
-		
-		$postfields 						= array(
+
+		$postfields 						= [
 			'goAction' 							=> 'goDeleteUser',
 			'user_id' 							=> $userid,
 			'action' 							=> $action
-		);
+		];
 
 		$output 							= $api->API_Request("goUsers", $postfields);
-			
+
 		if ($output->result=="success") { $status = 1; } 
 			else { $status = $output->result; }
-		
+
 		echo json_encode($status);
 	}
 ?>

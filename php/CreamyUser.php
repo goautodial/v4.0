@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
 	The MIT License (MIT)
 	
@@ -22,7 +25,6 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
 */
-
 namespace creamy;
 
 class CreamyUser {
@@ -66,24 +68,23 @@ class CreamyUser {
 	public function setUserName($name) { $this->username = $name; $_SESSION["username"] = $name; }
 	public function setUserAvatar($avatar) { $this->avatar = $avatar; $_SESSION["avatar"] = $avatar; }
 
-	public function userHasAdminPermission() {
-		if ($this->userrole === CRM_DEFAULTS_USER_ROLE_ADMIN) return true;
-		return false;
-	}
+	public function userHasAdminPermission()
+    {
+        return $this->userrole === CRM_DEFAULTS_USER_ROLE_ADMIN;
+    }
 	
-	public function userHasManagerPermission() {
-		if (($this->userrole === CRM_DEFAULTS_USER_ROLE_ADMIN) || ($this->userrole === CRM_DEFAULTS_USER_ROLE_MANAGER)) return true;
-		return false;
-	}
+	public function userHasManagerPermission()
+    {
+        return ($this->userrole === CRM_DEFAULTS_USER_ROLE_ADMIN) || ($this->userrole === CRM_DEFAULTS_USER_ROLE_MANAGER);
+    }
 	
-	public function userHasWritePermission() {
-		if (($this->userrole === CRM_DEFAULTS_USER_ROLE_ADMIN) || ($this->userrole === CRM_DEFAULTS_USER_ROLE_MANAGER) || ($this->userrole === CRM_DEFAULTS_USER_ROLE_WRITER)) return true;
-		return false;
-	}
+	public function userHasWritePermission()
+    {
+        return in_array($this->userrole, [CRM_DEFAULTS_USER_ROLE_ADMIN, CRM_DEFAULTS_USER_ROLE_MANAGER, CRM_DEFAULTS_USER_ROLE_WRITER], true);
+    }
 	
-	public function userHasBasicPermission() {
-		if (($this->userrole === CRM_DEFAULTS_USER_ROLE_ADMIN) || ($this->userrole === CRM_DEFAULTS_USER_ROLE_MANAGER) || ($this->userrole === CRM_DEFAULTS_USER_ROLE_WRITER) || ($this->userrole === CRM_DEFAULTS_USER_ROLE_READER)) return true;
-		return false;
-	}
+	public function userHasBasicPermission()
+    {
+        return in_array($this->userrole, [CRM_DEFAULTS_USER_ROLE_ADMIN, CRM_DEFAULTS_USER_ROLE_MANAGER, CRM_DEFAULTS_USER_ROLE_WRITER, CRM_DEFAULTS_USER_ROLE_READER], true);
+    }
 }
-?>

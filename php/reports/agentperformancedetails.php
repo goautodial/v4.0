@@ -21,7 +21,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();
 	$pageTitle									= $_POST['pageTitle'];
@@ -34,7 +34,7 @@
 	
 	if (isset($_POST['pageTitle']) && $pageTitle != "call_export_report") {
 		$pageTitle 								= $_POST['pageTitle'];
-		$pageTitle								= stripslashes($pageTitle);
+		$pageTitle								= stripslashes((string) $pageTitle);
 	}
 			
 	if (isset($_POST["fromDate"])) {
@@ -48,17 +48,17 @@
 			
 	if (isset($_POST["campaignID"])) { 
 		$campaign_id 							= $_POST["campaignID"]; 
-		$campaign_id 							= stripslashes($campaign_id);
+		$campaign_id 							= stripslashes((string) $campaign_id);
 	}
 		
 	if (isset($_POST["userID"])) {
 		$userID 								= $_POST["userID"];
-		$userID									= stripslashes($userID);
+		$userID									= stripslashes((string) $userID);
 	}
 	
 	if (isset($_POST["userGroup"])) {
 		$userGroup 								= $_POST["userGroup"];
-		$userGroup								= stripslashes($userGroup);
+		$userGroup								= stripslashes((string) $userGroup);
 	}
 		
 	if (isset($_POST["statuses"])) {
@@ -66,14 +66,14 @@
 		$statuses								= stripslashes($statuses);
 	}
 		
-	$postfields 								= array(
+	$postfields 								= [
 		//'goAction'								=> 'goGetAgentPerformanceDetails', Service Monkey Performance Detail		
 		'goAction'                                                              => 'goGetPerformanceDetails',
 		'pageTitle' 								=> $pageTitle,
 		'fromDate' 								=> $fromDate,
 		'toDate' 								=> $toDate,
 		'campaignID' 								=> $campaign_id
-	);				
+	];				
 
 	$output = $api->API_Request("goReports",$postfields);
 //var_dump($output);
@@ -107,7 +107,8 @@
 			        </thead>
 			        <tbody>';
 						if($output->TOPsorted_output != NULL){
-							for($i=0; $i < count($output->TOPsorted_output); $i++){
+							$counter = count($output->TOPsorted_output);
+                            for($i=0; $i < $counter; $i++){
 						    		$tablehtml .= $output->TOPsorted_output[$i];
 						    	}
 						}else{
@@ -149,10 +150,11 @@
 								if($output->SstatusesTOP != NULL){
 								    $tablehtml .= $output->SstatusesTOP;
 								}
-					        
-					$tablehtml .=  '</tr></thead><tbody>';
 
-						    for($i=0; $i <= count($output->MIDsorted_output); $i++){
+					$tablehtml .=  '</tr></thead><tbody>';
+                    $counter = count($output->MIDsorted_output);
+
+						    for($i=0; $i <= $counter; $i++){
 						        $tablehtml .= $output->MIDsorted_output[$i];
 						    }
 
@@ -171,12 +173,13 @@
 					$tablehtml .= '</table></div><br/>';
 			}
 		//end of middle table
-		
+
 		// start of legend
 				if($output->MIDsorted_output != NULL){
 					$tablehtml .= '<table class="table table-hover">
 					    	<tr class="info"><th colspan="2"><small>LEGEND: </th></tr>';
-					    	for ($i=0; $i < count($output->Legend); $i+=2) { 
+                    $counter = count($output->Legend);
+					    	for ($i=0; $i < $counter; $i+=2) { 
 					    		$tablehtml .= "<tr><td><small>".$output->Legend[$i]."</small></td><td><small>".$output->Legend[$i+1]."</small></td></tr>";
 					    	}
 					$tablehtml .= '</table><br/>';
@@ -200,7 +203,8 @@
 			        </thead>
 			        <tbody>';
 					    if($output->BOTsorted_output != NULL){
-						    for($i=0; $i <= count($output->BOTsorted_output); $i++){
+						    $counter = count($output->BOTsorted_output);
+                            for($i=0; $i <= $counter; $i++){
 						        $tablehtml .= $output->BOTsorted_output[$i];
 						    }
 						}else{
@@ -232,12 +236,13 @@
 				    	<thead>
 							<tr>';
 								$tablehtml .= $output->SstatusesBOT;
-								
+
 				    $tablehtml .='</tr>
 				        </thead>
 				        <tbody>';
 						    if($output->SstatusesBOTR != NULL){
-							    for($i=0; $i <= count($output->SstatusesBOTR); $i++){
+							    $counter = count($output->SstatusesBOTR);
+                                for($i=0; $i <= $counter; $i++){
 							        $tablehtml .= '<tr>'.$output->SstatusesBOTR[$i].'</tr>';
 							    }
 							}else{
@@ -256,7 +261,7 @@
 				$tablehtml .= '</table></div>
 				</div></div>';
 		// -- end of login table
-		
+
 		echo $tablehtml; // return for agent performance detail
 	}
 

@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'DbConnector.php');	
+require_once(__DIR__.DIRECTORY_SEPARATOR.'DbConnector.php');
 
 /**
  * MysqliDb Class
@@ -17,6 +17,7 @@ require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'DbConnector.php');
  **/
 class MysqliDb implements \creamy\DbConnector
 {
+    public $_transaction_in_progress;
     /**
      * Static instance of self
      *
@@ -25,7 +26,7 @@ class MysqliDb implements \creamy\DbConnector
     protected static $_instance;
     /**
      * Table prefix
-     * 
+     *
      * @var string
      */
     protected static $_prefix;
@@ -52,32 +53,32 @@ class MysqliDb implements \creamy\DbConnector
      *
      * @var array
      */
-    protected $_join = array(); 
+    protected $_join = [];
     /**
      * An array that holds where conditions 'fieldname' => 'value'
      *
      * @var array
      */
-    protected $_where = array();
+    protected $_where = [];
     /**
      * Dynamic type list for order by condition value
      */
-    protected $_orderBy = array(); 
+    protected $_orderBy = [];
     /**
      * Dynamic type list for group by condition value
      */
-    protected $_groupBy = array(); 
+    protected $_groupBy = [];
     /**
      * Dynamic array that holds a combination of where condition/table data value types and parameter referances
      *
      * @var array
      */
-    protected $_bindParams = array(''); // Create the empty 0 index
+    protected $_bindParams = ['']; // Create the empty 0 index
     /**
      * Variable which holds an amount of returned rows during get/getOne/select queries
      *
      * @var string
-     */ 
+     */
     public $count = 0;
     /**
      * Variable which holds an amount of filtered rows during get/getOne/select queries, without applying the LIMIT clause.
@@ -96,11 +97,6 @@ class MysqliDb implements \creamy\DbConnector
      * @var string
      */
     protected $host;
-    protected $username;
-    protected $password;
-    protected $db;
-    protected $port;
-    protected $charset;
 
     /**
      * Is Subquery object
@@ -115,26 +111,20 @@ class MysqliDb implements \creamy\DbConnector
      * @param string $db
      * @param int $port
      */
-    public function __construct($host = NULL, $username = NULL, $password = NULL, $db = NULL, $port = NULL, $charset = 'utf8')
+    public function __construct($host = NULL, protected $username = NULL, protected $password = NULL, protected $db = NULL, protected $port = NULL, protected $charset = 'utf8')
     {
         $isSubQuery = false;
 
         // if params were passed as array
         if (is_array ($host)) {
             foreach ($host as $key => $val)
-                $$key = $val;
+                ${$key} = $val;
         }
         // if host were set as mysqli socket
         if (is_object ($host))
             $this->_mysqli = $host;
         else
             $this->host = $host;
-
-        $this->username = $username;
-        $this->password = $password;
-        $this->db = $db;
-        $this->port = $port;
-        $this->charset = $charset;
 
         if ($isSubQuery) {
             $this->isSubQuery = true;
@@ -148,7 +138,7 @@ class MysqliDb implements \creamy\DbConnector
 		}
 		// check connection
 		if ($connected === false) { throw new \Exception("Unable to connect to the database. Access denied or incorrect parameters."); }
-		
+
         $this->setPrefix();
         self::$_instance = $this;
     }
@@ -160,7 +150,7 @@ class MysqliDb implements \creamy\DbConnector
     public function connect()
     {
         if ($this->isSubQuery)
-            return;
+            return null;
 
         if (empty ($this->host))
             die ('Mysql host is not set');
@@ -170,10 +160,10 @@ class MysqliDb implements \creamy\DbConnector
 			if ($this->_mysqli->connect_errno) { return false; }
 			if ($this->charset) $this->_mysqli->set_charset ($this->charset);
 			return true;
-        } catch (\Exception $e) {
+        } catch (\Exception) {
 	        return false;
         }
-		return false;        
+		return false;
     }
     /**
      * A method of returning the static instance to allow access to the
@@ -196,19 +186,19 @@ class MysqliDb implements \creamy\DbConnector
      */
     protected function reset()
     {
-        $this->_where = array();
-        $this->_join = array();
-        $this->_orderBy = array();
-        $this->_groupBy = array(); 
-        $this->_bindParams = array(''); // Create the empty 0 index
+        $this->_where = [];
+        $this->_join = [];
+        $this->_orderBy = [];
+        $this->_groupBy = [];
+        $this->_bindParams = ['']; // Create the empty 0 index
         $this->_query = null;
         $this->count = 0;
         $this->unlimitedCount = 0;
     }
-    
+
     /**
      * Method to set a prefix
-     * 
+     *
      * @param string $prefix     Contains a tableprefix
      */
     public function setPrefix($prefix = '')
@@ -237,7 +227,7 @@ class MysqliDb implements \creamy\DbConnector
 
 		$this->_query = "SELECT FOUND_ROWS() AS total";
 		$stmt = $this->_prepareQuery();
-		if (empty($stmt)) { $this->reset(); return; }
+		if (empty($stmt)) { $this->reset(); }
         $stmt->execute();
         $this->reset();
         $this->_stmtError = $stmt->error;
@@ -245,7 +235,7 @@ class MysqliDb implements \creamy\DbConnector
 		$results = $this->_dynamicBindResults($stmt);
 		$this->unlimitedCount = $results["0"]["total"];
 	}
-	
+
 
     /**
      * Pass in a raw query and an array containing the parameters to bind to the prepaird statement.
@@ -260,18 +250,18 @@ class MysqliDb implements \creamy\DbConnector
     {
         $this->_query = $query;
 	    if ($countFilteredResults) { $this->_query = str_ireplace("SELECT", "SELECT SQL_CALC_FOUND_ROWS", $this->_query); }
-        if ($sanitize) $this->_query = filter_var ($query, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+        if ($sanitize) $this->_query = strip_tags((string) $query);
         $stmt = $this->_prepareQuery();
         if (empty($stmt)) { $this->reset(); return NULL; }
 
-        if (is_array($bindParams) === true) {
-            $params = array(''); // Create the empty 0 index
+        if (is_array($bindParams)) {
+            $params = ['']; // Create the empty 0 index
             foreach ($bindParams as $prop => $val) {
                 $params[0] .= $this->_determineType($val);
-                array_push($params, $bindParams[$prop]);
+                $params[] = $bindParams[$prop];
             }
 
-            call_user_func_array(array($stmt, 'bind_param'), $this->refValues($params));
+            call_user_func_array($stmt->bind_param(...), $this->refValues($params));
 
         }
 
@@ -295,7 +285,7 @@ class MysqliDb implements \creamy\DbConnector
      */
     public function query($query, $numRows = null, $countFilteredResults = false)
     {
-        $this->_query = filter_var($query, FILTER_SANITIZE_STRING);
+        $this->_query = strip_tags((string) $query);
 	    if ($countFilteredResults) { $this->_query = str_ireplace("SELECT", "SELECT SQL_CALC_FOUND_ROWS", $this->_query); }
         $stmt = $this->_buildQuery($numRows);
         if (empty($stmt)) { $this->reset(); return NULL; }
@@ -314,7 +304,7 @@ class MysqliDb implements \creamy\DbConnector
     }
 
     /**
-     * A convenient SELECT * function. If $countFilteredResults is set, once 
+     * A convenient SELECT * function. If $countFilteredResults is set, once
      * the results are obtained, it performs a second mysql query to obtain
      * the total filtered row count (useful for datatables paging).
      *
@@ -329,12 +319,12 @@ class MysqliDb implements \creamy\DbConnector
             $columns = '*';
 
 		$calcFoundRows = $countFilteredResults ? "SQL_CALC_FOUND_ROWS" : "";
-        $column = is_array($columns) ? implode(', ', $columns) : $columns; 
+        $column = is_array($columns) ? implode(', ', $columns) : $columns;
         $this->_query = "SELECT $calcFoundRows $column FROM " . self::$_prefix . $tableName;
         $stmt = $this->_buildQuery($numRows);
-        if (empty($stmt)) { 
-	        $this->reset(); 
-	        return null; 
+        if (empty($stmt)) {
+	        $this->reset();
+	        return null;
 	    }
 
         if ($this->isSubQuery) { return $this; }
@@ -346,7 +336,7 @@ class MysqliDb implements \creamy\DbConnector
         $result = $this->_dynamicBindResults($stmt);
 		// if $countFilteredResults is true, obtain the total filtered row count
 		if ($countFilteredResults) $this->calculateUnlimitedRowCount();
-    
+
 		return $result;
     }
 
@@ -357,15 +347,12 @@ class MysqliDb implements \creamy\DbConnector
      *
      * @return array Contains the returned rows from the select query.
      */
-    public function getOne($tableName, $columns = '*', $countFilteredResults = false) 
+    public function getOne($tableName, $columns = '*', $countFilteredResults = false)
     {
         $res = $this->get ($tableName, 1, $columns, $countFilteredResults);
         if (is_object($res)) return $res;
 
-        if (isset($res[0]))
-            return $res[0];
-
-        return null;
+        return $res[0] ?? null;
     }
 
     /**
@@ -375,14 +362,11 @@ class MysqliDb implements \creamy\DbConnector
      *
      * @return array Contains the returned column from the select query.
      */
-    public function getValue($tableName, $column, $countFilteredResults = false) 
+    public function getValue($tableName, $column, $countFilteredResults = false)
     {
         $res = $this->get ($tableName, 1, "{$column} as retval", $countFilteredResults);
 
-        if (isset($res[0]["retval"]))
-            return $res[0]["retval"];
-
-        return null;
+        return $res[0]["retval"] ?? null;
     }
 
     /**
@@ -524,9 +508,9 @@ class MysqliDb implements \creamy\DbConnector
 
         return $result;
     }
-    
+
     /**
-     * ALTER the column type from a table query. 
+     * ALTER the column type from a table query.
      *
      * @param string  $tableName The name of the database table to alter the column from.
      * @param string  $columnName The name of the column to alter its type.
@@ -547,7 +531,7 @@ class MysqliDb implements \creamy\DbConnector
         $this->reset();
 
         return $result;
-	    
+
     }
 
     /**
@@ -596,13 +580,13 @@ class MysqliDb implements \creamy\DbConnector
 
         return $result;
     }
-	
+
 
 	/**
 	 * CREATE a table.
 	 *
 	 * @param string 	$tableName The name of the table to create.
-	 * @param array		fields an associative array containing the names of the fields as keys and the data types as values. 
+	 * @param array		fields an associative array containing the names of the fields as keys and the data types as values.
 	 *        I.E: ["id" => "INT(11) AUTO_INCREMENT", "phone" => "VARCHAR(80)", "description" => "TEXT"...]
 	 * @param array		$unique_keys an array containing the unique keys for the table as strings. I.E: ["passport_number", "name"]
 	 *
@@ -611,43 +595,43 @@ class MysqliDb implements \creamy\DbConnector
 	public function createTable($tableName, $fields, $unique_keys = null) {
 		// safety checks
 		if ($this->isSubQuery) return false;
-		
+
 		// build query
 		$this->_query = "CREATE TABLE IF NOT EXISTS `$tableName` (";
 		$this->_query .= "`id` int(11) NOT NULL AUTO_INCREMENT,";
-		
+
 		// add fields
 		foreach ($fields as $key => $value) {
 			$fieldName = $this->escape($key);
 			$fieldType = $this->escape($value);
 			$this->_query .= "\n`$fieldName` $fieldType,";
 		}
-		
+
 		// add primary key
 		$this->_query .= "\nPRIMARY KEY (`id`),";
-		
+
 		// add unique keys
 		if (isset($unique_keys) && is_array($unique_keys)) {
 			$unique_string = "";
 			foreach ($unique_keys as $unique_key) { if (!empty($unique_key)) $unique_string .= "`$unique_key`,"; }
 			$unique_string = rtrim($unique_string, " ,");
-			if (!empty($unique_string) && strlen($unique_string) > 0) {
+			if (!in_array($unique_string, ['', '0', ''], true)) {
 				$this->_query .= "\nKEY `Unique unique_name` ($unique_string),";
 			}
 		}
-		
+
 		// remove any final commas.
 		$this->_query = rtrim($this->_query, ",\n");
 		// finish query string.
 		$this->_query .= "\n) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1";
-				
+
 		// execute query and retrn the results.
         $stmt = $this->_prepareQuery();
         if (empty($stmt)) { $this->reset(); return false; }
         $result = $stmt->execute();
         $this->_stmtError = $stmt->error;
         $this->reset();
-        
+
         return $result;
 	}
 
@@ -659,12 +643,12 @@ class MysqliDb implements \creamy\DbConnector
 	public function dropEvent($eventName) {
         if ($this->isSubQuery) return false;
 
-		$sanitizedEventName = filter_var($eventName, FILTER_SANITIZE_STRING);
+		$sanitizedEventName = strip_tags((string) $eventName);
         $this->_query = "DROP EVENT IF EXISTS $sanitizedEventName";
         $result = $this->_mysqli->query($this->_query);
         $this->reset();
 
-        return $result;		
+        return $result;
 	}
 
     /**
@@ -680,9 +664,9 @@ class MysqliDb implements \creamy\DbConnector
     public function where($whereProp, $whereValue = null, $operator = null)
     {
         if ($operator)
-            $whereValue = Array ($operator => $whereValue);
+            $whereValue =  [$operator => $whereValue];
 
-        $this->_where[] = Array ("AND", $whereValue, $whereProp);
+        $this->_where[] =  ["AND", $whereValue, $whereProp];
         return $this;
     }
 
@@ -699,9 +683,9 @@ class MysqliDb implements \creamy\DbConnector
     public function orWhere($whereProp, $whereValue = null, $operator = null)
     {
         if ($operator)
-            $whereValue = Array ($operator => $whereValue);
+            $whereValue =  [$operator => $whereValue];
 
-        $this->_where[] = Array ("OR", $whereValue, $whereProp);
+        $this->_where[] =  ["OR", $whereValue, $whereProp];
         return $this;
     }
     /**
@@ -717,16 +701,16 @@ class MysqliDb implements \creamy\DbConnector
      */
      public function join($joinTable, $joinCondition, $joinType = '')
      {
-        $allowedTypes = array('LEFT', 'RIGHT', 'OUTER', 'INNER', 'LEFT OUTER', 'RIGHT OUTER');
+        $allowedTypes = ['LEFT', 'RIGHT', 'OUTER', 'INNER', 'LEFT OUTER', 'RIGHT OUTER'];
         $joinType = strtoupper (trim ($joinType));
 
         if ($joinType && !in_array ($joinType, $allowedTypes))
             die ('Wrong JOIN type: '.$joinType);
 
         if (!is_object ($joinTable))
-            $joinTable = self::$_prefix . filter_var($joinTable, FILTER_SANITIZE_STRING);
+            $joinTable = self::$_prefix . strip_tags((string) $joinTable);
 
-        $this->_join[] = Array ($joinType,  $joinTable, $joinCondition);
+        $this->_join[] =  [$joinType,  $joinTable, $joinCondition];
 
         return $this;
     }
@@ -742,23 +726,23 @@ class MysqliDb implements \creamy\DbConnector
      */
     public function orderBy($orderByField, $orderbyDirection = "DESC", $customFields = null)
     {
-        $allowedDirection = Array ("ASC", "DESC");
-        $orderbyDirection = strtoupper (trim ($orderbyDirection));
+        $allowedDirection =  ["ASC", "DESC"];
+        $orderbyDirection = strtoupper (trim ((string) $orderbyDirection));
         $orderByField = preg_replace ("/[^-a-z0-9\.\(\),_]+/i",'', $orderByField);
 
-        if (empty($orderbyDirection) || !in_array ($orderbyDirection, $allowedDirection))
+        if ($orderbyDirection === '' || $orderbyDirection === '0' || !in_array ($orderbyDirection, $allowedDirection))
             die ('Wrong order direction: '.$orderbyDirection);
 
         if (is_array ($customFields)) {
             foreach ($customFields as $key => $value)
-                $customFields[$key] = preg_replace ("/[^-a-z0-9\.\(\),_]+/i",'', $value);
+                $customFields[$key] = preg_replace ("/[^-a-z0-9\.\(\),_]+/i",'', (string) $value);
 
             $orderByField = 'FIELD (' . $orderByField . ', "' . implode('","', $customFields) . '")';
         }
 
         $this->_orderBy[$orderByField] = $orderbyDirection;
         return $this;
-    } 
+    }
 
     /**
      * This method allows you to specify multiple (method chaining optional) GROUP BY statements for SQL queries.
@@ -775,7 +759,7 @@ class MysqliDb implements \creamy\DbConnector
 
         $this->_groupBy[] = $groupByField;
         return $this;
-    } 
+    }
 
     /**
      * This methods returns the ID of the last inserted item
@@ -823,26 +807,13 @@ class MysqliDb implements \creamy\DbConnector
      */
     protected function _determineType($item)
     {
-        switch (gettype($item)) {
-            case 'NULL':
-            case 'string':
-                return 's';
-                break;
-
-            case 'boolean':
-            case 'integer':
-                return 'i';
-                break;
-
-            case 'blob':
-                return 'b';
-                break;
-
-            case 'double':
-                return 'd';
-                break;
-        }
-        return '';
+        return match (gettype($item)) {
+            'NULL', 'string' => 's',
+            'boolean', 'integer' => 'i',
+            'blob' => 'b',
+            'double' => 'd',
+            default => '',
+        };
     }
 
     /**
@@ -852,7 +823,7 @@ class MysqliDb implements \creamy\DbConnector
      */
     protected function _bindParam($value) {
         $this->_bindParams[0] .= $this->_determineType ($value);
-        array_push ($this->_bindParams, $value);
+        $this->_bindParams[] = $value;
     }
 
     /**
@@ -914,7 +885,7 @@ class MysqliDb implements \creamy\DbConnector
 
         // Bind parameters to statement if any
         if (count ($this->_bindParams) > 1)
-            call_user_func_array(array($stmt, 'bind_param'), $this->refValues($this->_bindParams));
+            call_user_func_array($stmt->bind_param(...), $this->refValues($this->_bindParams));
 
         return $stmt;
     }
@@ -929,18 +900,18 @@ class MysqliDb implements \creamy\DbConnector
      */
     protected function _dynamicBindResults(mysqli_stmt $stmt)
     {
-        $parameters = array();
-        $results = array();
+        $parameters = [];
+        $results = [];
 
         $meta = $stmt->result_metadata();
 
         // if $meta is false yet sqlstate is true, there's no sql error but the query is
         // most likely an update/insert/delete which doesn't produce any results
-        if(!$meta && $stmt->sqlstate) { 
-            return array();
+        if(!$meta && $stmt->sqlstate) {
+            return [];
         }
 
-        $row = array();
+        $row = [];
         while ($field = $meta->fetch_field()) {
             $row[$field->name] = null;
             $parameters[] = & $row[$field->name];
@@ -951,16 +922,16 @@ class MysqliDb implements \creamy\DbConnector
         // NOTE: Always store results, because it seems that memory bug in php 5.2 and 5.3 has re-surfaced
         $stmt->store_result();
 
-        call_user_func_array(array($stmt, 'bind_result'), $parameters);
+        call_user_func_array($stmt->bind_result(...), $parameters);
 
         $this->count = 0;
         while ($stmt->fetch()) {
-            $x = array();
+            $x = [];
             foreach ($row as $key => $val) {
                 $x[$key] = $val;
             }
             $this->count++;
-            array_push($results, $x);
+            $results[] = $x;
         }
 
         return $results;
@@ -971,11 +942,11 @@ class MysqliDb implements \creamy\DbConnector
      * Abstraction method that will build an JOIN part of the query
      */
     protected function _buildJoin () {
-        if (empty ($this->_join))
+        if ($this->_join === [])
             return;
 
         foreach ($this->_join as $data) {
-            list ($joinType,  $joinTable, $joinCondition) = $data;
+            [$joinType, $joinTable, $joinCondition] = $data;
 
             if (is_object ($joinTable))
                 $joinStr = $this->_buildPair ("", $joinTable);
@@ -997,7 +968,7 @@ class MysqliDb implements \creamy\DbConnector
         $isUpdate = strpos ($this->_query, 'UPDATE');
 
         if ($isInsert !== false) {
-            $this->_query .= '(`' . implode(array_keys($tableData), '`, `') . '`)';
+            $this->_query .= '(`' . implode('`, `', array_keys($tableData)) . '`)';
             $this->_query .= ' VALUES(';
         }
 
@@ -1049,7 +1020,7 @@ class MysqliDb implements \creamy\DbConnector
      * Abstraction method that will build the part of the WHERE conditions
      */
     protected function _buildWhere () {
-        if (empty ($this->_where))
+        if ($this->_where === [])
             return;
 
         //Prepair the where portion of the query
@@ -1058,7 +1029,7 @@ class MysqliDb implements \creamy\DbConnector
         // Remove first AND/OR concatenator
         $this->_where[0][0] = '';
         foreach ($this->_where as $cond) {
-            list ($concat, $wValue, $wKey) = $cond;
+            [$concat, $wValue, $wKey] = $cond;
 
             $this->_query .= " " . $concat ." " . $wKey;
 
@@ -1068,11 +1039,11 @@ class MysqliDb implements \creamy\DbConnector
 
             // Simple = comparison
             if (!is_array ($wValue))
-                $wValue = Array ('=' => $wValue);
+                $wValue =  ['=' => $wValue];
 
             $key = key ($wValue);
             $val = $wValue[$key];
-            switch (strtolower ($key)) {
+            switch (strtolower ((string) $key)) {
                 case '0':
                     $this->_bindParams ($wValue);
                     break;
@@ -1113,7 +1084,7 @@ class MysqliDb implements \creamy\DbConnector
             return;
 
         $this->_query .= " GROUP BY ";
-        foreach ($this->_groupBy as $key => $value)
+        foreach ($this->_groupBy as $value)
             $this->_query .= $value . ", ";
 
         $this->_query = rtrim($this->_query, ', ') . " ";
@@ -1130,7 +1101,7 @@ class MysqliDb implements \creamy\DbConnector
 
         $this->_query .= " ORDER BY ";
         foreach ($this->_orderBy as $prop => $value) {
-            if (strtolower (str_replace (" ", "", $prop)) == 'rand()')
+            if (strtolower (str_replace (" ", "", $prop)) === 'rand()')
                 $this->_query .= "rand(), ";
             else
                 $this->_query .= $prop . " " . $value . ", ";
@@ -1189,7 +1160,7 @@ class MysqliDb implements \creamy\DbConnector
     {
         //Reference is required for PHP 5.3+
         if (strnatcmp(phpversion(), '5.3') >= 0) {
-            $refs = array();
+            $refs = [];
             foreach ($arr as $key => $value) {
                 $refs[$key] = & $arr[$key];
             }
@@ -1216,8 +1187,7 @@ class MysqliDb implements \creamy\DbConnector
             $newStr .= substr ($str, 0, $pos) . $val;
             $str = substr ($str, $pos + 1);
         }
-        $newStr .= $str;
-        return $newStr;
+        return $newStr . $str;
     }
 
     /**
@@ -1231,7 +1201,7 @@ class MysqliDb implements \creamy\DbConnector
 
     /**
      * Method returns mysql error
-     * 
+     *
      * @return string
      */
     public function getLastError () {
@@ -1241,7 +1211,7 @@ class MysqliDb implements \creamy\DbConnector
     /**
      * Mostly internal method to get query and its params out of subquery object
      * after get() and getAll()
-     * 
+     *
      * @return array
      */
     public function getSubQuery () {
@@ -1249,10 +1219,10 @@ class MysqliDb implements \creamy\DbConnector
             return null;
 
         array_shift ($this->_bindParams);
-        $val = Array ('query' => $this->_query,
+        $val =  ['query' => $this->_query,
                       'params' => $this->_bindParams,
                       'alias' => $this->host
-                );
+                ];
         $this->reset();
         return $val;
     }
@@ -1270,15 +1240,15 @@ class MysqliDb implements \creamy\DbConnector
      * @return string
     */
     public function interval ($diff, $func = "NOW()") {
-        $types = Array ("s" => "second", "m" => "minute", "h" => "hour", "d" => "day", "M" => "month", "Y" => "year");
+        $types =  ["s" => "second", "m" => "minute", "h" => "hour", "d" => "day", "M" => "month", "Y" => "year"];
         $incr = '+';
         $items = '';
         $type = 'd';
 
-        if ($diff && preg_match('/([+-]?) ?([0-9]+) ?([a-zA-Z]?)/',$diff, $matches)) {
-            if (!empty ($matches[1])) $incr = $matches[1];
-            if (!empty ($matches[2])) $items = $matches[2];
-            if (!empty ($matches[3])) $type = $matches[3];
+        if ($diff && preg_match('/([+-]?) ?(\d+) ?([a-zA-Z]?)/',(string) $diff, $matches)) {
+            if (isset($matches[1]) && ($matches[1] !== '' && $matches[1] !== '0')) $incr = $matches[1];
+            if (isset($matches[2]) && ($matches[2] !== '' && $matches[2] !== '0')) $items = $matches[2];
+            if (isset($matches[3]) && ($matches[3] !== '' && $matches[3] !== '0')) $type = $matches[3];
             if (!in_array($type, array_keys($types)))
                 trigger_error ("invalid interval type in '{$diff}'");
             $func .= " ".$incr ." interval ". $items ." ".$types[$type] . " ";
@@ -1298,7 +1268,7 @@ class MysqliDb implements \creamy\DbConnector
      * @return array
     */
     public function now ($diff = null, $func = "NOW()") {
-        return Array ("[F]" => Array($this->interval($diff, $func)));
+        return  ["[F]" => [$this->interval($diff, $func)]];
     }
 
     /**
@@ -1306,7 +1276,7 @@ class MysqliDb implements \creamy\DbConnector
      * @param int increment amount. 1 by default
      */
     public function inc($num = 1) {
-        return Array ("[I]" => "+" . (int)$num);
+        return  ["[I]" => "+" . (int)$num];
     }
 
     /**
@@ -1314,15 +1284,15 @@ class MysqliDb implements \creamy\DbConnector
      * @param int increment amount. 1 by default
      */
     public function dec ($num = 1) {
-        return Array ("[I]" => "-" . (int)$num);
+        return  ["[I]" => "-" . (int)$num];
     }
-    
+
     /**
      * Method generates change boolean function call
      * @param string column name. null by default
      */
     public function not ($col = null) {
-        return Array ("[N]" => (string)$col);
+        return  ["[N]" => (string)$col];
     }
 
     /**
@@ -1330,7 +1300,7 @@ class MysqliDb implements \creamy\DbConnector
      * @param string user function body
      */
     public function func ($expr, $bindParams = null) {
-        return Array ("[F]" => Array($expr, $bindParams));
+        return  ["[F]" => [$expr, $bindParams]];
     }
 
     /**
@@ -1338,7 +1308,7 @@ class MysqliDb implements \creamy\DbConnector
      */
     public static function subQuery($subQueryAlias = "")
     {
-        return new MysqliDb (Array('host' => $subQueryAlias, 'isSubQuery' => true));
+        return new MysqliDb (['host' => $subQueryAlias, 'isSubQuery' => true]);
     }
 
     /**
@@ -1362,7 +1332,7 @@ class MysqliDb implements \creamy\DbConnector
     public function startTransaction () {
         $this->_mysqli->autocommit (false);
         $this->_transaction_in_progress = true;
-        register_shutdown_function (array ($this, "_transaction_status_check"));
+        register_shutdown_function ( [$this, "_transaction_status_check"]);
     }
 
     /**

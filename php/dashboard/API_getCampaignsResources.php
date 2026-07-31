@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        API_getCampaignsResources.php
  * @brief       Displays campaigns with < 100 leads in hopper
  * @copyright   Copyright (c) 2020 GOautodial Inc.
@@ -20,7 +22,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();
 	$output 									= $api->API_getCampaignsResources();
@@ -42,7 +44,7 @@
     } else {  
 		$max 									= 0;
                 
-        foreach ($output->data as $key => $value) {        
+        foreach ($output->data as $value) {        
             if(++$max > 6) break; 
             
 			$campname 							= $api->escapeJsonString($value->campaign_name);

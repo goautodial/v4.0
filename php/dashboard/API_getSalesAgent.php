@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        API_getSalesAgent.php
  * @brief       Displays Sales Agent Report on Dashboard Statewide Customization
  * @copyright   Copyright (c) 2020 GOautodial Inc.
@@ -20,13 +22,13 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();
 	$output 									= $api->API_getSalesAgent();    
     	$sales										= '[';
      
-    foreach($output->amount as $key => $value) {
+    foreach($output->amount as $value) {
 	$amount_users[]								= $value->user;
 	$full_name[] 								= $value->full_name;
 	$sale[]									= $value->sale;

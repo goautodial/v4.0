@@ -21,7 +21,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();
 	$pageTitle									= $_POST['pageTitle'];
@@ -35,7 +35,7 @@
 	
 	if (isset($_POST['pageTitle']) && $pageTitle != "call_export_report") {
 		$pageTitle 								= $_POST['pageTitle'];
-		$pageTitle								= stripslashes($pageTitle);
+		$pageTitle								= stripslashes((string) $pageTitle);
 	}
 			
 	if (isset($_POST["fromDate"])) {
@@ -49,22 +49,22 @@
 			
 	if (isset($_POST["campaignID"])) { 
 		$campaign_id 							= $_POST["campaignID"]; 
-		$campaign_id 							= stripslashes($campaign_id);
+		$campaign_id 							= stripslashes((string) $campaign_id);
 	}
 		
 	if (isset($_POST["request"])) {
 		$request 								= $_POST["request"];
-		$request								= stripslashes($request);
+		$request								= stripslashes((string) $request);
 	}
 			
 	if (isset($_POST["userID"])) {
 		$userID 								= $_POST["userID"];
-		$userID									= stripslashes($userID);
+		$userID									= stripslashes((string) $userID);
 	}
 	
 	if (isset($_POST["userGroup"])) {
 		$userGroup 								= $_POST["userGroup"];
-		$userGroup								= stripslashes($userGroup);
+		$userGroup								= stripslashes((string) $userGroup);
 	}
 		
 	if (isset($_POST["statuses"])) {
@@ -72,7 +72,7 @@
 		$statuses								= stripslashes($statuses);
 	}
 		
-	$postfields 								= array(
+	$postfields 								= [
 		'goAction'									=> 'goGetAgentTimeDetails',		
 		'pageTitle' 								=> $pageTitle,
 		'fromDate' 									=> $fromDate,
@@ -80,7 +80,7 @@
 		'campaignID' 								=> $campaign_id,
 		'request' 									=> $request,
 		'statuses' 									=> $statuses
-	);				
+	];				
 
 	$output = $api->API_getAgentTimeDetails($postfields);
 //var_dump($output);
@@ -115,9 +115,10 @@
 				';
 
 				if ($output->TOPsorted_output != NULL) {
-					//echo "<pre>";
+					$counter = count($output->TOPsorted_output->name);
+                    //echo "<pre>";
 					//var_dump($output->TOPsorted_output);
-					for ($i=0; $i < count($output->TOPsorted_output->name); $i++) {
+					for ($i=0; $i < $counter; $i++) {
 						$tablehtml .= '<tr>
 							<td>'.$output->TOPsorted_output->name[$i].'</td>
 							<!-- <td>'.$output->TOPsorted_output->user[$i].'</td> -->
@@ -134,7 +135,7 @@
 				} else {
 					$tablehtml .= "";
 				}
-					
+
 				$tablehtml .= '</tbody>';
 
 				if ($output->TOTcalls != NULL) {
@@ -153,47 +154,47 @@
 
 				$tablehtml .= '</table></div><br/>'; 
 
-				$sub_statuses = array();
-				$full_names = array();
-				
-				foreach ($output->PC_statuses as $key => $value) {
+				$sub_statuses = [];
+				$full_names = [];
+
+				foreach ($output->PC_statuses as $value) {
 					$sub_status = $value->sub_status;
 					$full_name = $value->full_name;
 					$pause_sec = $value->pause_sec;
-					
-					array_push($sub_statuses, $sub_status);
-					array_push($full_names, $full_name);					
+
+					$sub_statuses[] = $sub_status;
+					$full_names[] = $full_name;					
 				}											
-				
+
 				$pause_codes = array_unique($sub_statuses);
 				$agent_names = array_unique($full_names);
-					
+
 				if (!empty($output->PC_statuses)) {
 					$tablehtml .= '<div>';
 					$tablehtml .= '<table class="responsive display compact table table-inverse table-bordered" style="width:100%" id="agent_detail_login">';
 					$tablehtml .= '<thead><tr>';
 					$tablehtml .= '<th> User </th>';
-					
+
 					foreach ($pause_codes as $pause_code) {
 						$tablehtml .= '<th>'.$pause_code.'</th>';
 					}
-						
+
 					$tablehtml .= '</tr>';
 					$tablehtml .= '</thead>';
 					$tablehtml .= '<tbody id="agent_detail_tbody">';
 
-					foreach ($output->PC_statuses as $key => $value) {			
+					foreach ($output->PC_statuses as $value) {			
 						$full_name = $value->full_name;
 						$sub_status = $value->sub_status;
 						$pc_duration = $value->pause_sec;						
-						
+
 						//$pcstatus = "$sub_status-$pc_duration";
 						//$row_array[] = array("agent" => $full_name, "sub_status" => $sub_status, "duration" => $pc_duration);
-						
+
 						//foreach ($agent_names as $agent_name) {																				
 							//if ($full_name == $agent_name) {
 								$tablehtml .= '<tr><td>'.$full_name.'</td>';
-								
+
 								foreach ($pause_codes as $pause_code) {
 									if ($sub_status == $pause_code) {
 										//$tablehtml .= '<td>'.gmdate('H:i:s', $pc_duration).'</td>';
@@ -202,26 +203,26 @@
 										$tablehtml .= '<td>0</td>';
 									}
 								}
-								
+
 								$tablehtml .= '</tr>';						
 							//}							
 						//}					
 					}			
-					
+
 					$tablehtml .= '</tbody>';
-					
+
 					$tablehtml .= '<tfoot><tr>';
 					$tablehtml .= '<th> TOTAL </th>';	
 					foreach ($pause_codes as $pause_code) {
 						$tablehtml .= '<th>'.$pause_code.'</th>';
 					}					
 					$tablehtml .= '</tr></tfoot>';	
-									
+
 					$tablehtml .= '</table></div><br/>';			
 				} else {
 					$tablehtml .= '';
 				}
-	
+
 			 // start of middle table
                                 if ($output->MIDsorted_output != NULL) {
                                         $agent_pdetail .= '<br/><div>
@@ -235,8 +236,9 @@
                                                                         }
 
                                                 $agent_pdetail .=  '</tr></thead><tbody>';
+                                                $counter = count($output->MIDsorted_output);
 
-                                                                for($i=0; $i <= count($output->MIDsorted_output); $i++) {
+                                                                for($i=0; $i <= $counter; $i++) {
                                                                         $agent_pdetail .= $output->MIDsorted_output[$i];
                                                                 }
 
@@ -263,14 +265,15 @@
                                  if ($output->MIDsorted_output != NULL) {
                                         $agent_pdetail .= '<table class="table table-hover">
                                                                 <tr class="info"><th colspan="2"><small>LEGEND: </th></tr>';
-                                                        for ($i=0; $i < count($output->legend); $i+=2) {
+                                        $counter = count($output->legend);
+                                                        for ($i=0; $i < $counter; $i+=2) {
                                                                 $agent_pdetail .= "<tr><td><small>".$output->legend[$i]."</small></td><td><small>".$output->legend[$i+1]."</small></td></tr>";
                                                         }
                                         $agent_pdetail .= '</table><br/>';
 					$tablehtml .= $agent_pdetail;
                                  }
                         // end of legend
-														
+
 			//FORM TO BE PASSED WHEN EXPORT IS CALLED
 			$tablehtml .= '<form action="php/ExportAgentDetails.php" id="export_agentdetail_form"  method="POST">
 								<input type="hidden" name="pageTitle" value="'.$pageTitle.'" />

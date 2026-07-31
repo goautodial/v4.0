@@ -22,9 +22,9 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
 */
-require_once('LanguageHandler.php');
-require_once('ModuleHandler.php');
-require('Session.php');
+require_once(__DIR__ . '/LanguageHandler.php');
+require_once(__DIR__ . '/ModuleHandler.php');
+require(__DIR__ . '/Session.php');
 
 $lh = \creamy\LanguageHandler::getInstance();
 
@@ -37,7 +37,7 @@ if (!isset($_POST["enabled"])) {
 	$validated = 0;
 }
 
-if ($validated == 1) {
+if ($validated === 1) {
 	$mh = \creamy\ModuleHandler::getInstance();
 
 	// get mandatory

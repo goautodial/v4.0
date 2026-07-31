@@ -21,7 +21,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once ( 'APIHandler.php' );
+	require_once ( __DIR__ . '/APIHandler.php' );
 	
 	$api 										= \creamy\APIHandler::getInstance();	
 	$output 									= $api->API_getAllAudioFiles();
@@ -29,7 +29,7 @@
 	if ( $output->result == "success" ) {
 		$data 									= '';
 		foreach ( $output->data as $file ) {
-			if ( strpos($file, "go_") !== false ) {
+			if ( str_contains((string) $file, "go_") ) {
 				$data 							.= '<li><a style="color: #000;" href="#" class="file-list" data-name="'.$file.'">'.$file.'</a></li>';
 			}
 		}

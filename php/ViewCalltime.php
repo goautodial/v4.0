@@ -1,6 +1,8 @@
 <?php
 
-	/** Calltimes API - View calltime */
+	declare(strict_types=1);
+
+        /** Calltimes API - View calltime */
 	/**
 	 * Generates action circle buttons for different pages/module
 	 * @param goUser 
@@ -9,7 +11,7 @@
 	 * @param responsetype
 	 * @param call_time_id
 	 */
-        require_once('goCRMAPISettings.php');
+        require_once(__DIR__ . '/goCRMAPISettings.php');
         
 
         $url = gourl."/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
@@ -32,7 +34,6 @@
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $data = curl_exec($ch);
-        curl_close($ch);
         
         echo $data;
 ?>

@@ -21,7 +21,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once("APIHandler.php");
+	require_once(__DIR__ . "/APIHandler.php");
 	
 	$api 										= \creamy\APIHandler::getInstance();
         
@@ -31,7 +31,7 @@
 	
 	if ( isset($_POST["script_name"]) ) { 
 		$script_name 							= $_POST["script_name"]; 
-		$script_name 							= stripslashes($script_name);
+		$script_name 							= stripslashes((string) $script_name);
 	}
 	
 	$script_comments 							= NULL; 
@@ -45,7 +45,7 @@
 	
 	if ( isset($_POST["script_text"]) ) { 
 		$script_text 							= $_POST["script_text_value"]; 
-		$script_text 							= urldecode($script_text);
+		$script_text 							= urldecode((string) $script_text);
 		//$script_text 							= $_POST["script_text"]; 
 		//$script_text 							= stripslashes($script_text);
 	}
@@ -54,17 +54,17 @@
 	
 	if ( isset($_POST["active"]) ) { 
 		$active 								= $_POST["active"]; 
-		$active 								= stripslashes($active);
+		$active 								= stripslashes((string) $active);
 	}
 
 	$script_user_group 							= NULL; 
 	
 	if ( isset($_POST["script_user_group"]) ) { 
 		$script_user_group 						= $_POST["script_user_group"]; 
-		$script_user_group 						= stripslashes($script_user_group);
+		$script_user_group 						= stripslashes((string) $script_user_group);
 	}
 
-	$postfields 								= array(
+	$postfields 								= [
 		"goAction" 									=> "goEditScript",		
 		"script_id" 								=> $modifyid,
 		"script_name" 								=> $script_name,
@@ -72,7 +72,7 @@
 		"active" 									=> $active,		
 		"script_text" 								=> $script_text,
 		"user_group" 								=> $script_user_group
-	);	
+	];	
 			
 	$output 									= $api->API_editScript($postfields);	
 	

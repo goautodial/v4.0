@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        AddAreacode.php
  * @brief       Handles Add AC CID Request
  * @copyright   Copyright (c) 2019 GOautodial Inc.
@@ -20,19 +22,19 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 								= \creamy\APIHandler::getInstance();
 
 	$campaign_id = NULL;
 	if(isset($_POST['areacode_campaign'])){
 		$campaign_id 			= $_POST['areacode_campaign'];
 	}
-	
+
 	$areacode = NULL;
 	if(isset($_POST['areacode'])){
                 $areacode                  	= $_POST['areacode'];
         }
-	
+
 	$outbound_cid = NULL;
 	if(isset($_POST['areacode_outbound_cid'])){
                 $outbound_cid                   = $_POST['areacode_outbound_cid'];
@@ -44,22 +46,22 @@
         }
 
 
-	$postfields 						= array(
+	$postfields 						= [
 		'goAction' 							=> 'goAddAreacode',
 		'campaign_id' 							=> $campaign_id,
 		'areacode'							=> $areacode,
 		'outbound_cid'							=> $outbound_cid,
 		'cid_description'							=> $cid_description
-	);
+	];
 
 	$output 							= $api->API_addAreacode($postfields);
-	
+
 	if ($output->result=="success") { 
 		$status 						= 1; 
 	} else { 
 		$status 						= $output->result; 
 	}
-	
+
 	echo json_encode($status);
 
 ?>

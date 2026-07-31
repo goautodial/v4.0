@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 /**
 	The MIT License (MIT)
 	
@@ -22,13 +25,12 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
 */
-
 namespace creamy;
 
-require_once('CRMDefaults.php');
-require_once('ModuleHandler.php');
-require_once('Module.php');
-include('Session.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/ModuleHandler.php');
+require_once(__DIR__ . '/Module.php');
+include(__DIR__ . '/Session.php');
 
 $mh = \creamy\ModuleHandler::getInstance();
 
@@ -46,5 +48,4 @@ if (isset($_POST["module_name"]) && isset($_POST["hook_name"])) {
 		if (isset($result)) { ob_clean(); print $result; }
 		else die("Unable to run $hookname on module $modulename");
 	} else { die("Unable to process module action. Module $modulename is not enabled."); }
-} else { die("Unable to process module action. Module name or method not found."); } 
-?>
+} else { die("Unable to process module action. Module name or method not found."); }

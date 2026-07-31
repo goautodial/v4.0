@@ -3,3 +3,6 @@ php/goCRMAPISettings.php
 .gitignore
 astguiclient.conf
 goautodial.conf
+rector.php
+vendor/
+.rector-cache/

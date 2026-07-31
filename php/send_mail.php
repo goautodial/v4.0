@@ -2,9 +2,9 @@
 //ini_set('display_errors', 1);
 //ini_set('display_startup_errors', 1);
 //error_reporting(E_ALL);
-include_once('smtp_settings.php');
-require_once('DbHandler.php');
-require_once('APIHandler.php');
+include_once(__DIR__ . '/smtp_settings.php');
+require_once(__DIR__ . '/DbHandler.php');
+require_once(__DIR__ . '/APIHandler.php');
 
 // check required fields
 $validated = 1;
@@ -22,7 +22,7 @@ if (!isset($_POST["subject"])) {
 	$validated = 0;
 }
 
-if ($validated == 1) {
+if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 	$api = \creamy\APIHandler::getInstance();
 
@@ -62,8 +62,9 @@ if ($validated == 1) {
 	if($external_recipients != NULL){
 		$external_recipients_filter = str_replace('"','',$external_recipients);
 		$external_recipients = explode(",", $external_recipients_filter);
+        $counter = count($external_recipients);
 		
-		for($i=0;$i < count($external_recipients);$i++){
+		for($i=0;$i < $counter;$i++){
 			$mail->addAddress($external_recipients[$i], $external_recipients[$i]);
 			$result = $db->SMTPsendMessage($fromuserid, '0', $subject, $message, $_FILES, $external_recipients, "attachment");
 		}
@@ -87,13 +88,13 @@ if ($validated == 1) {
 	$mail->AltBody = 'This is a message from: '.$fromuserid;
 	
 	//OVERRIDE CONNECTION FAILURE
-	$mail->SMTPOptions = array(
-	   	'ssl' => array(
+	$mail->SMTPOptions = [
+	   	'ssl' => [
         	'verify_peer' => false,
 	        'verify_peer_name' => false,
         	'allow_self_signed' => true
-    		)
-	);
+    		]
+	];
 	
 	//Attach an image file
 	//$mail->addAttachment('../../phpmailer/examples/images/phpmailer_mini.png');

@@ -1,10 +1,10 @@
 <?php
 
-require_once('goCRMAPISettings.php');
+require_once(__DIR__ . '/goCRMAPISettings.php');
 
 	$debug = NULL; if (isset($_POST["debug"])) { 
 		$debug = $_POST["debug"]; 
-		$debug = stripslashes($debug);
+		$debug = stripslashes((string) $debug);
 	}
 	$ipv6_support = NULL;
 	if (isset($_POST["ipv6_support"]))
@@ -14,15 +14,15 @@ require_once('goCRMAPISettings.php');
 	
 	$host = NULL; if (isset($_POST["host"])) { 
 		$host = $_POST["host"]; 
-		$host = stripslashes($host);
+		$host = stripslashes((string) $host);
 	}
 	$port = NULL; if (isset($_POST["port"])) { 
 		$port = $_POST["port"]; 
-		$port = stripslashes($port);
+		$port = stripslashes((string) $port);
 	}
 	$smtp_security = NULL; if (isset($_POST["smtp_security"])) { 
 		$smtp_security = $_POST["smtp_security"]; 
-		$smtp_security = stripslashes($smtp_security);
+		$smtp_security = stripslashes((string) $smtp_security);
 	}
 	$smtp_auth = NULL;
 	if (isset($_POST["smtp_auth"])){
@@ -34,11 +34,11 @@ require_once('goCRMAPISettings.php');
 		
 	$username = NULL; if (isset($_POST["username"])) { 
 		$username = $_POST["username"]; 
-		$username = stripslashes($username);
+		$username = stripslashes((string) $username);
 	}
 	$password = NULL; if (isset($_POST["password"])) { 
 		$password = $_POST["password"]; 
-		$password = stripslashes($password);
+		$password = stripslashes((string) $password);
 	}
 	
 	$url = gourl."/goSMTP/goAPI.php"; #URL to GoAutoDial API. (required)
@@ -69,7 +69,6 @@ require_once('goCRMAPISettings.php');
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	$data = curl_exec($ch);
-	curl_close($ch);
 	$output = json_decode($data);
 //	var_dump($output);
 

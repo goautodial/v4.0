@@ -22,7 +22,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once( "APIHandler.php" );
+	require_once( __DIR__ . "/APIHandler.php" );
 	
 	$api 											= \creamy\APIHandler::getInstance();
 
@@ -41,104 +41,104 @@
 	$state 											= $_POST["state"];
 	$title 											= $_POST["title"];
 	$dispo 											= $_POST["dispo"];
-	$is_customer 									= ( isset($_POST["is_customer"]) ) ? $_POST["is_customer"] : false;
+	$is_customer 									= $_POST["is_customer"] ?? false;
 	$user_id 										= $_POST["user_id"];
 
 	// get name (mandatory), customer id and customer type
 	$first_name 									= $_POST["first_name"];
-	$first_name	 									= stripslashes( $first_name );
+	$first_name	 									= stripslashes( (string) $first_name );
 	
 	$middle_initial 								= $_POST["middle_initial"];
-	$middle_initial 								= stripslashes( $middle_initial );
+	$middle_initial 								= stripslashes( (string) $middle_initial );
 	
 	$last_name 										= $_POST["last_name"];
-	$last_name 										= stripslashes( $last_name );
+	$last_name 										= stripslashes( (string) $last_name );
 	
 	$lead_id 										= $_POST["lead_id"];
-	$lead_id 										= stripslashes( $lead_id );
+	$lead_id 										= stripslashes( (string) $lead_id );
 	
 	$list_id 										= $_POST["list_id"];
-	$list_id 										= stripslashes( $list_id );
+	$list_id 										= stripslashes( (string) $list_id );
 	
 	// email
 	$email 											= NULL; 
 	if ( isset($_POST["email"]) ) { 
 		$email 										= $_POST["email"]; 
-		$email 										= stripslashes( $email );
+		$email 										= stripslashes( (string) $email );
 	}
 	// phone
 	$phone 											= NULL; 
 	if ( isset($_POST["phone_number"]) ) { 
 		$phone 										= $_POST["phone_number"];
-		$phone 										= preg_replace( "/[^0-9]/", "", $phone );
+		$phone 										= preg_replace( "/[^0-9]/", "", (string) $phone );
 		$phone 										= stripslashes( $phone );
 	}
 	// alt phone
 	$alt_phone 										= NULL; 
 	if ( isset($_POST["alt_phone"]) ) { 
 		$alt_phone 									= $_POST["alt_phone"];
-		$alt_phone 									= preg_replace( "/[^0-9]/", "", $alt_phone );
+		$alt_phone 									= preg_replace( "/[^0-9]/", "", (string) $alt_phone );
 		$alt_phone 									= stripslashes( $alt_phone );
 	}
 	// address1
 	$address1 										= NULL; 
 	if ( isset($_POST["address1"]) ) { 
 		$address1 									= $_POST["address1"]; 
-		$address1 									= stripslashes( $address1 );
+		$address1 									= stripslashes( (string) $address1 );
 	}
 	// address2
 	$address2 										= NULL; 
 	if ( isset($_POST["address2"]) ) { 
 		$address2 									= $_POST["address2"]; 
-		$address2 									= stripslashes( $address2 );
+		$address2 									= stripslashes( (string) $address2 );
 	}
 	// address3
 	$address3 										= NULL; 
 	if ( isset($_POST["address3"]) ) { 
 		$address3 									= $_POST["address3"]; 
-		$address3 									= stripslashes( $address3 );
+		$address3 									= stripslashes( (string) $address3 );
 	}
 	
 	// city
 	$city 											= NULL; 
 	if ( isset($_POST["city"]) ) { 
 		$city 										= $_POST["city"]; 
-		$city 										= stripslashes( $city );
+		$city 										= stripslashes( (string) $city );
 	}
 	
 	// state
 	$state 											= NULL;
 	if ( isset($_POST["state"]) ) { 
 		$state 										= $_POST["state"]; 
-		$state 										= stripslashes( $state );
+		$state 										= stripslashes( (string) $state );
 	}
 
 	// province
 	$province 										= NULL; 
 	if ( isset($_POST["province"]) ) { 
 		$province 									= $_POST["province"]; 
-		$province 									= stripslashes( $province );
+		$province 									= stripslashes( (string) $province );
 	}
 	
 	// ZIP code
 	$postal_code 									= NULL; 
 	if ( isset($_POST["postal_code"]) ) { 
 		$postal_code 								= $_POST["postal_code"]; 
-		$postal_code 								= stripslashes( $postal_code) ;
+		$postal_code 								= stripslashes( (string) $postal_code) ;
 	}
 	
 	// country
 	$country 										= NULL; 
 	if ( isset($_POST["country"]) ) { 
 		$country 									= $_POST["country"]; 
-		$country 									= stripslashes( $country );
+		$country 									= stripslashes( (string) $country );
 	}
 	
 	// date_of_birth
 	$date_of_birth 									= NULL; 
 	if ( isset($_POST["date_of_birth"]) ) { 
 		$date_of_birth 								= $_POST["date_of_birth"]; 
-		$date_of_birth 								= date( "Y-m-d h:i:s", strtotime($date_of_birth) );
+		$date_of_birth 								= date( "Y-m-d h:i:s", strtotime((string) $date_of_birth) );
 		$date_of_birth 								= stripslashes( $date_of_birth );
 	}
 
@@ -146,14 +146,14 @@
 	$gender 										= NULL; 
 	if ( isset($_POST["gender"]) ) { 
 		$gender 									= $_POST["gender"]; 
-		$gender 									= stripslashes($gender);
+		$gender 									= stripslashes((string) $gender);
 	}
 	
 	// dispo
 	$dispo 											= NULL; 
 	if ( isset($_POST["dispo"]) ) { 
 		$dispo 										= $_POST["dispo"]; 
-		$dispo 										= stripslashes( $dispo );
+		$dispo 										= stripslashes( (string) $dispo );
 	}
 
 	// comments
@@ -183,7 +183,7 @@
 		}
 	}
 		
-	$postfields 									= array(	
+	$postfields 									= [	
 		"goAction" 										=> "goEditLeads",
 		"list_id"										=> $list_id,
 		"lead_id" 										=> $lead_id, 
@@ -210,7 +210,7 @@
 		"is_customer"									=> $is_customer,
 		"user_id" 										=> $user_id,
 		"custom_fields"									=> $custom_fields
-    );
+    ];
 
 	$output 										= $api->API_editLeads($postfields);
 

@@ -21,7 +21,7 @@
 */
 
 	
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	
 	
 	
@@ -42,7 +42,7 @@
     } else {        
         $max = 0;
 		if (is_array($output->data)) {    
-			foreach ($output->data as $key => $value) {        
+			foreach ($output->data as $value) {        
 				if(++$max > 6) break;
 				
 				$userid 							= $api->escapeJsonString($value->vu_user_id);
@@ -97,7 +97,7 @@
 				$call_time_M 						= round($call_time_M, 2);
 				$call_time_M_int 					= intval("$call_time_M");
 				$call_time_SEC 						= ($call_time_M - $call_time_M_int);
-				$call_time_SEC 						= ($call_time_SEC * 60);
+				$call_time_SEC *= 60;
 				$call_time_SEC 						= round($call_time_SEC, 0);
 				
 				if ($call_time_SEC < 10) {

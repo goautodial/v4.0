@@ -26,11 +26,11 @@
 namespace creamy;
 
 // dependencies.
-require_once('CRMDefaults.php');
-require_once('CRMUtils.php');
-require_once('Config.php');
-require_once('UIHandler.php');
-require_once('DatabaseConnectorFactory.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/CRMUtils.php');
+require_once(__DIR__ . '/Config.php');
+require_once(__DIR__ . '/UIHandler.php');
+require_once(__DIR__ . '/DatabaseConnectorFactory.php');
 
 // constants.
 define('CRM_MODULE_INCLUDE_DIRECTORY', \creamy\CRMUtils::creamyBaseDirectoryPath().'php'.DIRECTORY_SEPARATOR);
@@ -56,13 +56,12 @@ define('CRM_MODULE_TEMPLATE_TAG_CONTENT', '{content}');
  */
 abstract class Module implements ModuleMetadata {
 	// identification variables
-	protected $moduleName = null; 		// FQDN of the module. I.E: com.creamycrm.module.HelloWorld
-	protected $moduleVersion = null;	// Numeric string with the version number. I.E: "1.32".
+	protected $moduleName; 		// FQDN of the module. I.E: com.creamycrm.module.HelloWorld
+	protected $moduleVersion;	// Numeric string with the version number. I.E: "1.32".
 	
 	// private db connectors and data.
 	private   $dbTableName;				// Name of the database table assigned to the module.
-	protected $dbConnector; 			// a DB Connector to use for database methods.
-	protected $dbConnectorType;			// The type of DB Connector used to access the database.
+	protected $dbConnector;			// The type of DB Connector used to access the database.
 	// utility classes for modules.
 	protected $uiHandler; 				// User Interface Handler object.
 	protected $languageHandler;			// Language handler object.
@@ -72,18 +71,15 @@ abstract class Module implements ModuleMetadata {
 	/**
 	 * The construct method of the module.
 	 */
-	final function __construct($dbConnectorType = CRM_DB_CONNECTOR_TYPE_MYSQL) {
+	final function __construct(protected $dbConnectorType = CRM_DB_CONNECTOR_TYPE_MYSQL) {
 		// set module name and module version.
 		$moduleName = $this->getModuleName();
 		$moduleVersion = $this->getModuleVersion();
 		$this->moduleName = trim($moduleName);
 		$this->moduleVersion = trim($moduleVersion);
-		
-		// database
-		$this->dbConnectorType = $dbConnectorType;
 		if ($this->needsDatabaseFunctionality() || $this->moduleSettings() != null) {
 			$this->dbTableName = $this->databaseTableName();
-			$this->dbConnector = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType($dbConnectorType);
+			$this->dbConnector = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType($this->dbConnectorType);
 			if ($this->dbConnector == null) { throw new \Exception("Unable to initialize database connector for $moduleName. Module creation failed."); }
 		}
 
@@ -102,7 +98,7 @@ abstract class Module implements ModuleMetadata {
 	 * @return the module instance of DbConnector.
 	 */
 	public function db($dbConnectorType = CRM_DB_CONNECTOR_TYPE_MYSQL) {
-		if (!isset($this->dbConnector)) {
+		if ($this->dbConnector === null) {
 			$this->dbConnector = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType($dbConnectorType);
 		}
 		return $this->dbConnector;
@@ -114,7 +110,7 @@ abstract class Module implements ModuleMetadata {
 	 * @return an instance of LanguageHandler.
 	 */
 	public function lh() {
-		if (!isset($this->languageHandler)) { $this->languageHandler = \creamy\LanguageHandler::getInstance(); }
+		if ($this->languageHandler === null) { $this->languageHandler = \creamy\LanguageHandler::getInstance(); }
 		return $this->languageHandler;
 	}
 		
@@ -124,7 +120,7 @@ abstract class Module implements ModuleMetadata {
 	 * @return an instance of LanguageHandler.
 	 */
 	public function ui() {
-		if (!isset($this->uiHandler)) { $this->uiHandler = \creamy\UIHandler::getInstance(); }
+		if ($this->uiHandler === null) { $this->uiHandler = \creamy\UIHandler::getInstance(); }
 		return $this->uiHandler;
 	}
 	
@@ -152,7 +148,7 @@ abstract class Module implements ModuleMetadata {
 			if (is_array($tableFields)) {
 				$this->dbConnector->createTable($tableName, $tableFields, null);
 			} else { // dummy table
-				$this->dbConnector->createTable($tableName, array(), null);
+				$this->dbConnector->createTable($tableName, [], null);
 			}
 		}
 
@@ -219,7 +215,7 @@ abstract class Module implements ModuleMetadata {
 
 	/** Gets the base directory of this module */
 	protected function getModuleDirectory() {
-		$rc = new \ReflectionClass(get_class($this));
+		$rc = new \ReflectionClass(static::class);
 		return dirname($rc->getFileName());
 	}
 	
@@ -231,7 +227,7 @@ abstract class Module implements ModuleMetadata {
 	
 	/** Gets the module short name, equivalent to the directory name */
 	public function getModuleShortName() {
-		return basename($this->getModuleDirectory());
+		return basename((string) $this->getModuleDirectory());
 	}	
 	
 	/** Returns the language directory, where custom localization files can be found */	
@@ -377,7 +373,7 @@ abstract class Module implements ModuleMetadata {
 	 */
 	public final function typeOfSetting($setting) {
 		$moduleSettings = $this->moduleSettings();
-		if (is_array($moduleSettings) && array_key_exists($setting, $moduleSettings)) { return $moduleSettings[$setting]; }
+		if (is_array($moduleSettings) && array_key_exists((string) $setting, $moduleSettings)) { return $moduleSettings[$setting]; }
 		else { return null; }
 	}
 	
@@ -433,7 +429,7 @@ abstract class Module implements ModuleMetadata {
 	public final function setSettingValue($setting, $value) {
 		// setting data
 		$context = $this->databaseTableName();
-		$data = array("setting" => $setting, "context" => $context, "value" => $value);
+		$data = ["setting" => $setting, "context" => $context, "value" => $value];
 		// check if there was a previous value stored for this setting.
 		$this->dbConnector->where("setting", $setting)->where("context", $context);
 		if ($this->dbConnector->has(CRM_SETTINGS_TABLE_NAME)) { // Setting was stored previously. Update.
@@ -661,9 +657,9 @@ abstract class Module implements ModuleMetadata {
 	 */
 	public final function databaseTableName() {
 		// already set?
-		if (isset($this->dbTableName)) { return $this->dbTableName; }
+		if ($this->dbTableName !== null) { return $this->dbTableName; }
 		// build the suffix based on name.
-		$suffixFromName = trim(preg_replace('#[^a-zA-Z0-9_]#', '', $this->moduleName));
+		$suffixFromName = trim((string) preg_replace('#[^a-zA-Z0-9_]#', '', (string) $this->moduleName));
 		if (strlen($suffixFromName) < 1) { return null; }
 		else { 
 			$tableName = "module_".$suffixFromName;

@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        AddCustomField.php
  * @brief       Handles Add Custom Field Request
  * @copyright   Copyright (C) GOautodial Inc.
@@ -19,10 +21,10 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 
-	$postfields = array(
+	$postfields = [
 			'goAction' => 'goAddCustomFields',
 			'list_id' => $_POST['list_id'],
 			'field_name' => $_POST['field_name'],
@@ -40,11 +42,11 @@
 			'field_required' => $_POST['field_required'],
 			'log_user' => $_POST['log_user'],
 			'log_group' => $_POST['log_group']
-		);
+		];
 
 	$output = $api->API_addCustomFields($postfields);
 
-	if (!preg_match("/^ERROR/i", $output->result)) {
+	if (!preg_match("/^ERROR/i", (string) $output->result)) {
 		$status = "success";
 	} else {
 		$status = "\n\n".$output->result;

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * @file        AddLeadFilter.php
  * @brief       Handles Add Lead Filter Request
@@ -19,7 +21,7 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-require_once('APIHandler.php');
+require_once(__DIR__ . '/APIHandler.php');
 $api = \creamy\APIHandler::getInstance();
 
 $validate = 0;
@@ -50,7 +52,7 @@ if(isset($_POST['user_group'])){
 	$validate = 1;
 }
 
-if($validate == 0){
+if($validate === 0){
     /*
     $url = gourl."/goLeadFilters/goAPI.php"; # URL to GoAutoDial API file
     $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -68,14 +70,14 @@ if($validate == 0){
     $postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
     */
 
-    $postfields = array(
+    $postfields = [
         'goAction' => 'goAddLeadFilter',
         'lead_filter_id' => $lf_id,
         'lead_filter_name' => $lf_name,
         'lead_filter_comments' => $lf_comments,
         'lead_filter_sql' => $lf_sql,
         'user_group' => $user_group
-    );
+    ];
 
     $output = $api->API_addLeadFilter($postfields);
 
@@ -86,7 +88,7 @@ if($validate == 0){
     }
 
 	echo $status;
-	
+
 }else{
 	echo "incomplete";
 }

@@ -23,9 +23,9 @@
 	THE SOFTWARE.
 */
 
-require_once('DbHandler.php');
-require_once('LanguageHandler.php');
-require('Session.php');
+require_once(__DIR__ . '/DbHandler.php');
+require_once(__DIR__ . '/LanguageHandler.php');
+require(__DIR__ . '/Session.php');
 
 $lh = \creamy\LanguageHandler::getInstance();
 $user = \creamy\CreamyUser::currentUser();
@@ -48,7 +48,7 @@ if (!isset($_POST["new_password_2"])) {
 	$validated = 0;
 }
 
-if ($validated == 1) {
+if ($validated === 1) {
 	// check password	
 	$userid = $_POST["usertochangepasswordid"];
 	$password1 = $_POST["new_password_1"];

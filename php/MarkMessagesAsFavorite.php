@@ -23,10 +23,10 @@
 	THE SOFTWARE.
 */
 
-require_once('CRMDefaults.php');
-require_once('LanguageHandler.php');
-require_once('DbHandler.php');
-require('Session.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/LanguageHandler.php');
+require_once(__DIR__ . '/DbHandler.php');
+require(__DIR__ . '/Session.php');
 
 $lh = \creamy\LanguageHandler::getInstance();
 $user = \creamy\CreamyUser::currentUser();
@@ -43,7 +43,7 @@ if (!isset($_POST["favorite"])) {
 	$validated = 0;
 }
 
-if ($validated == 1) {
+if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// collect data	

@@ -21,7 +21,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 
 	$api 										= \creamy\APIHandler::getInstance();
 
@@ -52,7 +52,7 @@
 		$desc				 					= NULL; 
 		if (isset($_POST["desc"])) { 
 			$desc 								= $_POST["desc"]; 
-			$desc 								= stripslashes($desc);
+			$desc 								= stripslashes((string) $desc);
 		}
 		
 		$color 									= NULL; 
@@ -71,37 +71,37 @@
 		$webform 								= NULL; 
 		if (isset($_POST["webform"])) { 
 			$webform 							= $_POST["webform"]; 
-			$webform 							= stripslashes($webform);
+			$webform 							= stripslashes((string) $webform);
 		}
 		
 		$nextagent 								= NULL; 
 		if (isset($_POST["nextagent"])) { 
 			$nextagent 							= $_POST["nextagent"]; 
-			$nextagent 							= stripslashes($nextagent);
+			$nextagent 							= stripslashes((string) $nextagent);
 		}
 		
 		$prio 									= NULL; 
 		if (isset($_POST["priority"])) { 
 			$prio 								= $_POST["priority"]; 
-			$prio 								= stripslashes($prio);
+			$prio 								= stripslashes((string) $prio);
 		}
 		
 		$display 								= NULL; 
 		if (isset($_POST["display"])) { 
 			$display 							= $_POST["display"]; 
-			$display 							= stripslashes($display);
+			$display 							= stripslashes((string) $display);
 		}
 		
 		$script 								= NULL; 
 		if (isset($_POST["script"])) { 
 			$script 							= $_POST["script"]; 
-			$script 							= stripslashes($script);
+			$script 							= stripslashes((string) $script);
 		}
 		
 		$call_time_id 							= NULL; 
 		if (isset($_POST["call_time_id"])) { 
 			$call_time_id 						= $_POST["call_time_id"]; 
-			$call_time_id 						= stripslashes($call_time_id);
+			$call_time_id 						= stripslashes((string) $call_time_id);
 		}
 	// -------
 
@@ -114,166 +114,166 @@
 		$drop_action 							= NULL; 
 		if (isset($_POST["drop_action"])) { 
 			$drop_action 						= $_POST["drop_action"]; 
-			$drop_action 						= stripslashes($drop_action);
+			$drop_action 						= stripslashes((string) $drop_action);
 		}
 		
 		$drop_exten 							= NULL; 
 		if (isset($_POST["drop_exten"])) { 
 			$drop_exten 						= $_POST["drop_exten"]; 
-			$drop_exten 						= stripslashes($drop_exten);
+			$drop_exten 						= stripslashes((string) $drop_exten);
 		}
 		
 		$voicemail_ext 							= NULL;
 		if (isset($_POST["voicemail_ext"])) { 
 			$voicemail_ext 						= $_POST["voicemail_ext"]; 
-			$voicemail_ext 						= stripslashes($voicemail_ext);
+			$voicemail_ext 						= stripslashes((string) $voicemail_ext);
 		}
 		
 		$drop_inbound_group 					= NULL; 
 		if (isset($_POST["drop_inbound_group"])) { 
 			$drop_inbound_group 				= $_POST["drop_inbound_group"]; 
-			$drop_inbound_group 				= stripslashes($drop_inbound_group);
+			$drop_inbound_group 				= stripslashes((string) $drop_inbound_group);
 		}
 		
 		$drop_callmenu 							= NULL; 
 		if (isset($_POST["drop_callmenu"])) { 
 			$drop_callmenu 						= $_POST["drop_callmenu"]; 
-			$drop_callmenu 						= stripslashes($drop_callmenu);
+			$drop_callmenu 						= stripslashes((string) $drop_callmenu);
 		}
 		
 		$after_hours_action 					= NULL; 
 		if (isset($_POST["after_hours_action"])) { 
 			$after_hours_action 				= $_POST["after_hours_action"]; 
-			$after_hours_action 				= stripslashes($after_hours_action);
+			$after_hours_action 				= stripslashes((string) $after_hours_action);
 		}
 		
 		$after_hours_voicemail 					= NULL; 
 		if (isset($_POST["after_hours_voicemail"])) { 
 			$after_hours_voicemail 				= $_POST["after_hours_voicemail"]; 
-			$after_hours_voicemail 				= stripslashes($after_hours_voicemail);
+			$after_hours_voicemail 				= stripslashes((string) $after_hours_voicemail);
 		}
 		
 		$after_hours_exten 						= NULL; 
 		if (isset($_POST["after_hours_exten"])) { 
 			$after_hours_exten 					= $_POST["after_hours_exten"]; 
-			$after_hours_exten 					= stripslashes($after_hours_exten);
+			$after_hours_exten 					= stripslashes((string) $after_hours_exten);
 		}
 		
 		$after_hours_message_filename 			= NULL; 
 		if (isset($_POST["after_hours_message_filename"])) { 
 			$after_hours_message_filename 		= $_POST["after_hours_message_filename"]; 
-			$after_hours_message_filename 		= stripslashes($after_hours_message_filename);
+			$after_hours_message_filename 		= stripslashes((string) $after_hours_message_filename);
 		}
 		
 		$after_hours_callmenu 					= NULL; 
 		if (isset($_POST["after_hours_callmenu"])) { 
 			$after_hours_callmenu 				= $_POST["after_hours_callmenu"]; 
-			$after_hours_callmenu 				= stripslashes($after_hours_callmenu);
+			$after_hours_callmenu 				= stripslashes((string) $after_hours_callmenu);
 		}
 		
 		$get_call_launch 						= NULL; 
 		if (isset($_POST["call_launch"])) { 
 			$get_call_launch 					= $_POST["call_launch"]; 
-			$get_call_launch 					= stripslashes($get_call_launch);
+			$get_call_launch 					= stripslashes((string) $get_call_launch);
 		}
 		
 		$no_agent_no_queue 						= NULL; 
 		if (isset($_POST["no_agent_no_queue"])) { 
 			$no_agent_no_queue 					= $_POST["no_agent_no_queue"]; 
-			$no_agent_no_queue 					= stripslashes($no_agent_no_queue);
+			$no_agent_no_queue 					= stripslashes((string) $no_agent_no_queue);
 		}
 		
 		$no_agent_action 						= NULL; 
 		if (isset($_POST["no_agent_action"])) { 
 			$no_agent_action 					= $_POST["no_agent_action"]; 
-			$no_agent_action 					= stripslashes($no_agent_action);
+			$no_agent_action 					= stripslashes((string) $no_agent_action);
 		}
 		
 		$no_agent_action_value					= NULL; 
 		if (isset($_POST["no_agent_action_value"])) { 
 			$no_agent_action_value 				= $_POST["no_agent_action_value"]; 
-			$no_agent_action_value 				= stripslashes($no_agent_action_value);
+			$no_agent_action_value 				= stripslashes((string) $no_agent_action_value);
 		}
 		
 		$no_agents_exten 						= NULL; 
 		if (isset($_POST["no_agents_exten"])) { 
 			$no_agents_exten 					= $_POST["no_agents_exten"]; 
-			$no_agents_exten 					= stripslashes($no_agents_exten);
+			$no_agents_exten 					= stripslashes((string) $no_agents_exten);
 		}
 		
 		$no_agents_voicemail 					= NULL; 
 		if (isset($_POST["no_agents_voicemail"])) { 
 			$no_agents_voicemail 				= $_POST["no_agents_voicemail"]; 
-			$no_agents_voicemail 				= stripslashes($no_agents_voicemail);
+			$no_agents_voicemail 				= stripslashes((string) $no_agents_voicemail);
 		}
 		
 		$no_agents_ingroup 						= NULL; 
 		if (isset($_POST["no_agents_ingroup"])) { 
 			$no_agents_ingroup 					= $_POST["no_agents_ingroup"]; 
-			$no_agents_ingroup 					= stripslashes($no_agents_ingroup);
+			$no_agents_ingroup 					= stripslashes((string) $no_agents_ingroup);
 		}
 		
 		$no_agents_callmenu 					= NULL; 
 		if (isset($_POST["no_agents_callmenu"])) { 
 			$no_agents_callmenu 				= $_POST["no_agents_callmenu"]; 
-			$no_agents_callmenu 				= stripslashes($no_agents_callmenu);
+			$no_agents_callmenu 				= stripslashes((string) $no_agents_callmenu);
 		}
 		
 		$no_agents_did	 					= NULL; 
 		if (isset($_POST["no_agents_did"])) { 
 			$no_agents_did 					= $_POST["no_agents_did"]; 
-			$no_agents_did 					= stripslashes($no_agents_did);
+			$no_agents_did 					= stripslashes((string) $no_agents_did);
 		}
 		
 		$no_agents_extension 					= NULL; 
 		if (isset($_POST["no_agents_extension"])) { 
 			$no_agents_extension				= $_POST["no_agents_extension"]; 
-			$no_agents_extension				= stripslashes($no_agents_extension);
+			$no_agents_extension				= stripslashes((string) $no_agents_extension);
 		}
 		
 		$no_agents_extension_context 				= NULL; 
 		if (isset($_POST["no_agents_extension_context"])) { 
 			$no_agents_extension_context			= $_POST["no_agents_extension_context"]; 
-			$no_agents_extension_context			= stripslashes($no_agents_extension_context);
+			$no_agents_extension_context			= stripslashes((string) $no_agents_extension_context);
 		}
 		
 		$welcome_message_filename 				= NULL; 
 		if (isset($_POST["welcome_message_filename"])) { 
 			$welcome_message_filename 			= $_POST["welcome_message_filename"]; 
-			$welcome_message_filename 			= stripslashes($welcome_message_filename);
+			$welcome_message_filename 			= stripslashes((string) $welcome_message_filename);
 		}
 		
 		$play_welcome_message 					= NULL; 
 		if (isset($_POST["play_welcome_message"])) { 
 			$play_welcome_message 				= $_POST["play_welcome_message"]; 
-			$play_welcome_message 				= stripslashes($play_welcome_message);
+			$play_welcome_message 				= stripslashes((string) $play_welcome_message);
 		}
 		
 		$moh_context 							= NULL; 
 		if (isset($_POST["moh_context"])) { 
 			$moh_context 						= $_POST["moh_context"]; 
-			$moh_context 						= stripslashes($moh_context);
+			$moh_context 						= stripslashes((string) $moh_context);
 		}
 		
 		$onhold_prompt_filename 				= NULL; 
 		if (isset($_POST["onhold_prompt_filename"])) { 
 			$onhold_prompt_filename 			= $_POST["onhold_prompt_filename"]; 
-			$onhold_prompt_filename 			= stripslashes($onhold_prompt_filename);
+			$onhold_prompt_filename 			= stripslashes((string) $onhold_prompt_filename);
 		}
 		
 		$no_agents_extension_context					= NULL;
 		if (isset($_POST["no_agents_extension_context"])) {
 			$no_agents_extension_context 				= $_POST["no_agents_extension_context"];
-			$no_agents_extension_context 				= stripslashes($no_agents_extension_context);
+			$no_agents_extension_context 				= stripslashes((string) $no_agents_extension_context);
 		}
 
 		$no_agents_extension							= NULL;
 		if (isset($_POST["no_agents_extension"])) {
 			$no_agents_extension		 				= $_POST["no_agents_extension"];
-			$no_agents_extension		 				= stripslashes($no_agents_extension);
+			$no_agents_extension		 				= stripslashes((string) $no_agents_extension);
 		}
 		
-		$postfields 							= array(
+		$postfields 							= [
 			'goAction' 								=> 'goEditIngroup',
 			'group_id' 								=> $modify_groupid, 
 			'group_name' 							=> $desc, 
@@ -311,7 +311,7 @@
 			'play_welcome_message' 					=> $play_welcome_message, 
 			'moh_context' 							=> $moh_context, 
 			'onhold_prompt_filename' 				=> $onhold_prompt_filename
-		);				
+		];				
 
 		$output 								= $api->API_modifyInGroups($postfields);
 		
@@ -330,67 +330,67 @@
 		$menu_name 								= NULL; 
 		if (isset($_POST["menu_name"])) { 
 			$menu_name 							= $_POST["menu_name"]; 
-			$menu_name 							= stripslashes($menu_name);
+			$menu_name 							= stripslashes((string) $menu_name);
 		}
 		
 		$menu_prompt 							= NULL; 
 		if (isset($_POST["menu_prompt"])) {
 			$menu_prompt 						= $_POST["menu_prompt"]; 
-			$menu_prompt 						= stripslashes($menu_prompt);
+			$menu_prompt 						= stripslashes((string) $menu_prompt);
 		}
 		
 		$menu_timeout	 						= NULL; 
 		if (isset($_POST["menu_timeout"])) {
 			$menu_timeout 						= $_POST["menu_timeout"]; 
-			$menu_timeout 						= stripslashes($menu_timeout);
+			$menu_timeout 						= stripslashes((string) $menu_timeout);
 		}
 
 		$menu_timeout_prompt 					= NULL; 
 		if (isset($_POST["menu_timeout_prompt"])) {
 			$menu_timeout_prompt 				= $_POST["menu_timeout_prompt"]; 
-			$menu_timeout_prompt 				= stripslashes($menu_timeout_prompt);
+			$menu_timeout_prompt 				= stripslashes((string) $menu_timeout_prompt);
 		}
 		
 		$menu_invalid_prompt 					= NULL; 
 		if (isset($_POST["menu_invalid_prompt"])) { 
 			$menu_invalid_prompt 				= $_POST["menu_invalid_prompt"]; 
-			$menu_invalid_prompt 				= stripslashes($menu_invalid_prompt);
+			$menu_invalid_prompt 				= stripslashes((string) $menu_invalid_prompt);
 		}	
 
 		$menu_repeat 							= NULL; 
 		if (isset($_POST["menu_repeat"])) { 
 			$menu_repeat 						= $_POST["menu_repeat"]; 
-			$menu_repeat 						= stripslashes($menu_repeat);
+			$menu_repeat 						= stripslashes((string) $menu_repeat);
 		}
 
 		$menu_time_check 						= NULL; 
 		if (isset($_POST["menu_time_check"])) { 
 			$menu_time_check 					= $_POST["menu_time_check"]; 
-			$menu_time_check 					= stripslashes($menu_time_check);
+			$menu_time_check 					= stripslashes((string) $menu_time_check);
 		}
 
 		$call_time_id 							= NULL; 
 		if (isset($_POST["call_time_id"])) { 
 			$call_time_id 						= $_POST["call_time_id"]; 
-			$call_time_id 						= stripslashes($call_time_id);
+			$call_time_id 						= stripslashes((string) $call_time_id);
 		}
 
 		$track_in_vdac 							= NULL; 
 		if (isset($_POST["track_in_vdac"])) { 
 			$track_in_vdac 						= $_POST["track_in_vdac"]; 
-			$track_in_vdac 						= stripslashes($track_in_vdac);
+			$track_in_vdac 						= stripslashes((string) $track_in_vdac);
 		}
 
 		$tracking_group 						= NULL; 
 		if (isset($_POST["tracking_group"])) { 
 			$tracking_group 					= $_POST["tracking_group"]; 
-			$tracking_group 					= stripslashes($tracking_group);
+			$tracking_group 					= stripslashes((string) $tracking_group);
 		}
 
 		$user_group 							= NULL; 
 		if (isset($_POST["user_group"])) { 
 			$user_group 						= $_POST["user_group"]; 
-			$user_group 						= stripslashes($user_group);
+			$user_group 						= stripslashes((string) $user_group);
 		}
 
 		// options
@@ -482,7 +482,7 @@
 		// 	$items 								.= "|";
 		// }
 
-		$postfields 							= array(
+		$postfields 							= [
 			'goAction' 								=> 'goEditIVR',
 			'menu_id' 								=> $ivr, 
 			'menu_name' 							=> $menu_name, 
@@ -501,7 +501,7 @@
 			'route_menu' 							=> $route_menu,
 			'option_route_value'                    => $option_route_value,
 			'option_route_context'                  => $option_route_context
-		);
+		];
 
 		$output 								= $api->API_modifyIVR($postfields);
 		
@@ -520,7 +520,7 @@
 		$modify_did 							= NULL; 
 		if (isset($_POST["modify_did"])) { 
 			$modify_did 						= $_POST["modify_did"];
-			$modify_did 						= stripslashes($modify_did);
+			$modify_did 						= stripslashes((string) $modify_did);
 		}
 
 		$did_pattern 							= NULL; 
@@ -531,13 +531,13 @@
 		$desc 									= NULL; 
 		if (isset($_POST["desc"])) { 
 			$desc 								= $_POST["desc"]; 
-			$desc 								= stripslashes($desc);
+			$desc 								= stripslashes((string) $desc);
 		}
 
 		$route 									= NULL; 
 		if (isset($_POST["route"])) { 
 			$route 								= $_POST["route"]; 
-			$route 								= stripslashes($route);
+			$route 								= stripslashes((string) $route);
 		}
 		
 		$status 								= NULL; 
@@ -549,13 +549,13 @@
 		$filter_clean_cid_number 				= NULL; 
 		if (isset($_POST["cid_num"])) { 
 			$filter_clean_cid_number 			= $_POST["cid_num"]; 
-			$filter_clean_cid_number 			= stripslashes($filter_clean_cid_number);
+			$filter_clean_cid_number 			= stripslashes((string) $filter_clean_cid_number);
 		}
 		
 		$list_id	 							= NULL; 
 		if (isset($_POST["list_id"])) { 
 			$list_id 							= $_POST["list_id"];
-			$list_id 							= stripslashes($list_id);
+			$list_id 							= stripslashes((string) $list_id);
 		}
 		
 		$voicemail_ext = $_POST['route_voicemail'];
@@ -578,7 +578,7 @@
 		}
 		
 
-		$postfields = array(
+		$postfields = [
 			'goAction' 						=> 'goEditDID',
 			'did_id' 						=> $modify_did,
 			'did_pattern' 						=> $did_pattern,
@@ -599,7 +599,7 @@
 			'list_id'						=> $list_id,
 			'call_handle_method'			=> $call_handle_method,
 			'agent_search_method'			=> $agent_search_method
-		);				
+		];				
 
 		$output 								= $api->API_modifyDID($postfields);
 		

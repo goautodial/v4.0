@@ -21,7 +21,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 							= \creamy\APIHandler::getInstance();
 	
 	$campaign_id 					= $_POST["campaign_id"];
@@ -31,7 +31,7 @@
 	$data 							= '[';
 	$i								= 0;
 	
-	$optionsHKF 					= array(
+	$optionsHKF 					= [
 		"1" 							=> "1", 
 		"2" 							=> "2", 
 		"3" 							=> "3", 
@@ -41,14 +41,15 @@
 		"7" 							=> "7", 
 		"8" 							=> "8", 
 		"9" 							=> "9"
-	);
+	];
 	
-	$optionsYN	 					= array(
+	$optionsYN	 					= [
 		"Y" 							=> "Y", 
 		"N" 							=> "N"
-	);
+	];
+    $counter = count($output->recycle_id);
 	
-	for($i=0;$i<=count($output->recycle_id);$i++) {
+	for($i=0;$i<=$counter;$i++) {
 		if(!empty($output->status[$i])){
 			$data 					.= '[';
 			$data 					.= '"'.$output->recycle_id[$i].'",';
@@ -67,14 +68,12 @@
 	echo json_encode($data);
 	
     function singleFormGroupWithSelect($label, $id, $name, $options, $selectedOption, $needsTranslation = false) {
-	    $labelCode = empty($label) ? '' : '<label class=\"control-label '.$labelClass.'\">'.$label.'</label>';
 	    $selectCode = '<select id=\"'.$id.'\" name=\"'.$name.'\" class=\"form-control select2\" disabled>';
 	    foreach ($options as $key => $value) {
 		    $isSelected = ($selectedOption == $key) ? " selected" : "";
 		    $selectCode .= '<option value=\"'.$key.'\" '.$isSelected.'>'.$value.'</option>';
 	    }
-		$selectCode .= '</select>';
-		return $selectCode;
+		return $selectCode . '</select>';
     }
    function singleFormInputElement($id, $name, $type, $value) {
 	    return '<input name=\"'.$name.'\" id=\"'.$id.'\" type=\"'.$type.'\" class=\"form-control\" maxlength=\"5\" min=\"120\" max=\"32400\" value=\"'.$value.'\" required disabled>';

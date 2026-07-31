@@ -19,34 +19,34 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-require_once('APIHandler.php');
+require_once(__DIR__ . '/APIHandler.php');
 $api = \creamy\APIHandler::getInstance();
 
-$start_default =	(strlen($_POST['start_default']) > 0) ? date('Hi', strtotime($_POST['start_default'])) : "0";
-$stop_default =		(strlen($_POST['stop_default']) > 0) ? date('Hi', strtotime($_POST['stop_default'])) : "0";
+$start_default =	((string) $_POST['start_default'] !== '') ? date('Hi', strtotime($_POST['start_default'])) : "0";
+$stop_default =		((string) $_POST['stop_default'] !== '') ? date('Hi', strtotime($_POST['stop_default'])) : "0";
 
-$start_sunday =		(strlen($_POST['start_sunday']) > 0) ? date('Hi', strtotime($_POST['start_sunday'])) : "0";
-$stop_sunday =		(strlen($_POST['stop_sunday']) > 0) ? date('Hi', strtotime($_POST['stop_sunday'])) : "0";
+$start_sunday =		((string) $_POST['start_sunday'] !== '') ? date('Hi', strtotime($_POST['start_sunday'])) : "0";
+$stop_sunday =		((string) $_POST['stop_sunday'] !== '') ? date('Hi', strtotime($_POST['stop_sunday'])) : "0";
 
-$start_monday =		(strlen($_POST['start_monday']) > 0) ? date('Hi', strtotime($_POST['start_monday'])) : "0";
-$stop_monday =		(strlen($_POST['stop_monday']) > 0) ? date('Hi', strtotime($_POST['stop_monday'])) : "0";
+$start_monday =		((string) $_POST['start_monday'] !== '') ? date('Hi', strtotime($_POST['start_monday'])) : "0";
+$stop_monday =		((string) $_POST['stop_monday'] !== '') ? date('Hi', strtotime($_POST['stop_monday'])) : "0";
 
-$start_tuesday =	(strlen($_POST['start_tuesday']) > 0) ? date('Hi', strtotime($_POST['start_tuesday'])) : "0";
-$stop_tuesday =		(strlen($_POST['stop_tuesday']) > 0) ? date('Hi', strtotime($_POST['stop_tuesday'])) : "0";
+$start_tuesday =	((string) $_POST['start_tuesday'] !== '') ? date('Hi', strtotime($_POST['start_tuesday'])) : "0";
+$stop_tuesday =		((string) $_POST['stop_tuesday'] !== '') ? date('Hi', strtotime($_POST['stop_tuesday'])) : "0";
 
-$start_wednesday =	(strlen($_POST['start_wednesday']) > 0) ? date('Hi', strtotime($_POST['start_wednesday'])) : "0";
-$stop_wednesday =	(strlen($_POST['stop_wednesday']) > 0) ? date('Hi', strtotime($_POST['stop_wednesday'])) : "0";
+$start_wednesday =	((string) $_POST['start_wednesday'] !== '') ? date('Hi', strtotime($_POST['start_wednesday'])) : "0";
+$stop_wednesday =	((string) $_POST['stop_wednesday'] !== '') ? date('Hi', strtotime($_POST['stop_wednesday'])) : "0";
 
-$start_thursday =	(strlen($_POST['start_thursday']) > 0) ? date('Hi', strtotime($_POST['start_thursday'])) : "0";
-$stop_thursday =	(strlen($_POST['stop_thursday']) > 0) ? date('Hi', strtotime($_POST['stop_thursday'])) : "0";
+$start_thursday =	((string) $_POST['start_thursday'] !== '') ? date('Hi', strtotime($_POST['start_thursday'])) : "0";
+$stop_thursday =	((string) $_POST['stop_thursday'] !== '') ? date('Hi', strtotime($_POST['stop_thursday'])) : "0";
 
-$start_friday =		(strlen($_POST['start_friday']) > 0) ? date('Hi', strtotime($_POST['start_friday'])) : "0";
-$stop_friday =		(strlen($_POST['stop_friday']) > 0) ? date('Hi', strtotime($_POST['stop_friday'])) : "0";
+$start_friday =		((string) $_POST['start_friday'] !== '') ? date('Hi', strtotime($_POST['start_friday'])) : "0";
+$stop_friday =		((string) $_POST['stop_friday'] !== '') ? date('Hi', strtotime($_POST['stop_friday'])) : "0";
 
-$start_saturday =	(strlen($_POST['start_saturday']) > 0) ? date('Hi', strtotime($_POST['start_saturday'])) : "0";
-$stop_saturday =	(strlen($_POST['stop_saturday']) > 0) ? date('Hi', strtotime($_POST['stop_saturday'])) : "0";
+$start_saturday =	((string) $_POST['start_saturday'] !== '') ? date('Hi', strtotime($_POST['start_saturday'])) : "0";
+$stop_saturday =	((string) $_POST['stop_saturday'] !== '') ? date('Hi', strtotime($_POST['stop_saturday'])) : "0";
 
-$postfields = array(
+$postfields = [
         'goAction' => "goAddCalltime",
         'call_time_id' => $_POST['call_time_id'],
         'call_time_name' => $_POST['call_time_name'],
@@ -76,7 +76,7 @@ $postfields = array(
         'thursday_audio' => $_POST["audio_thursday"],
         'friday_audio' => $_POST["audio_friday"],
         'saturday_audio' => $_POST["audio_saturday"]
-);
+];
 
     $output = $api->API_addCalltime($postfields);
 

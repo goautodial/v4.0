@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        DeletePauseCode.php
  * @brief       Handles Delete Pause Code Requests
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -20,14 +22,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 
-	$postfields = array(
+	$postfields = [
 		'goAction' => 'goDeletePauseCode',
 		'pauseCampID' => $_POST['campaign_id'],
 		'pause_code' => $_POST['pause_code']
-	);
+	];
 
 	$output = $api->API_Request("goPauseCodes", $postfields);
 

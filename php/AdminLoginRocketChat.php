@@ -20,8 +20,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-include('./CRMDefaults.php');
-require_once('./Session.php');
+include(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/Session.php');
 
 $user = $_POST['user'];
 $pass = $_POST['pass'];
@@ -29,7 +29,7 @@ $pass = $_POST['pass'];
 //$pass = "hayopka2021";
 //Logs In Rocketchat User
 	$curl = curl_init();
-	curl_setopt_array($curl, array(
+	curl_setopt_array($curl, [
         CURLOPT_URL => ROCKETCHAT_URL."/api/v1/login",
         CURLOPT_RETURNTRANSFER => true,
        	CURLOPT_ENCODING => "",
@@ -41,12 +41,11 @@ $pass = $_POST['pass'];
 		CURLOPT_SSL_VERIFYHOST => false,
 		CURLOPT_SSL_VERIFYPEER => false,
        	CURLOPT_POSTFIELDS =>"{\r\n  \"user\": \"$user\",\r\n  \"password\": \"$pass\"}",
-        CURLOPT_HTTPHEADER => array(
+        CURLOPT_HTTPHEADER => [
        	        "Content-Type:application/json"
-       	    )
-	));
+       	    ]
+	]);
 	$response = curl_exec($curl);
-	curl_close($curl);
 	$output = json_decode($response, TRUE);
 	//$_SESSION['gad_authToken'] = $response->data['authToken'];
 	if(!isset($_SESSION['gad_userID'])){

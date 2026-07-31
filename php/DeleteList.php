@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        DeleteList.php
  * @brief       Handles Delete List Requests
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -20,17 +22,17 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once("APIHandler.php");
-	
+	require_once(__DIR__ . "/APIHandler.php");
+
 	$api 										= \creamy\APIHandler::getInstance();
 	$listid 									= $_POST["listid"];
 	//$action 									= $_POST["action"];
-	
-	$postfields 								= array(
+
+	$postfields 								= [
 		"goAction" 									=> "goDeleteList",
 		"list_id" 									=> $listid,
 		"action"									=> "delete_selected"
-	);
+	];
 
 	$output 									= $api->API_Request("goLists", $postfields);
 
@@ -39,7 +41,7 @@
 	} else { 
 		$status 								= $output->result; 
 	}
-	
+
 	echo json_encode($status);
 	
 ?>

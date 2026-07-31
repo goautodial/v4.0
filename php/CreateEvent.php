@@ -23,10 +23,10 @@
 	THE SOFTWARE.
 */
 
-require_once('DbHandler.php');
-require_once('CRMDefaults.php');
-require_once('LanguageHandler.php');
-require_once('Session.php');
+require_once(__DIR__ . '/DbHandler.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/LanguageHandler.php');
+require_once(__DIR__ . '/Session.php');
 
 $lh = \creamy\LanguageHandler::getInstance();
 $user = \creamy\CreamyUser::currentUser();
@@ -39,19 +39,19 @@ if (!isset($_POST["title"])) { // do we have a title?
 	else if (!isset($_POST["customer_type"])) $validated = 0;
 } 
 
-if ($validated == 1) {
+if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// check if this is a new customer type of event.
 	if (isset($_POST["customerid"]) && isset($_POST["customer_type"])) {
 		$customerid = $_POST["customerid"];
 		$customertype = $_POST["customer_type"];
-		$result = $db->createContactEventForCustomer($user->getUserId(), $customerid, $customertype, true, null, null, null);
+		$result = $db->createContactEventForCustomer($user->getUserId(), $customerid, $customertype, true);
 	} else { // normal event
 		$title = $_POST["title"];
-		$color = (isset($_POST["color"])) ? $_POST["color"] : CRM_UI_COLOR_DEFAULT_HEX;
+		$color = $_POST["color"] ?? CRM_UI_COLOR_DEFAULT_HEX;
 		error_log("Creando evento con color $color");
-		$result = $db->createEvent($user->getUserId(), $title, $color, true, null, null, null);
+		$result = $db->createEvent($user->getUserId(), $title, $color, true);
 	}
 	// return result	
 	ob_clean();

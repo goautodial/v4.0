@@ -20,14 +20,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 
 	$old_statuses = explode(" ",$_POST['dial_status']);
-	$oldStats = array();
+	$oldStats = [];
 	foreach($old_statuses as $old){
-		if(!empty($old) && $old != $_POST['selected_status']){
-			array_push($oldStats, $old);
+		if(!in_array($old, ['', '0', $_POST['selected_status']])){
+			$oldStats[] = $old;
 		}
 	}
 	
@@ -38,11 +38,11 @@
 	
 	$new_status = rtrim($new_status, " ");
 
-	$postfields = array(
+	$postfields = [
         'goAction' => 'goUpdateCampaignDialStatus',
         'campaign_id' => $_POST['campaign_id'],
         'dial_statuses' => $new_status
-    );
+    ];
 
 	$output = $api->API_Request("goCampaigns", $postfields);
 

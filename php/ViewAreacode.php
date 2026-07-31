@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        ViewAreacode.php
  * @brief       Displays Areacode information
  * @copyright   Copyright (c) 2019 GOautodial Inc.
@@ -20,7 +22,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 
 	$campaign_id = $_POST['campaign_id'];
 	$areacode = $_POST['areacode'];
@@ -28,12 +30,12 @@
 
 	$api 										= \creamy\APIHandler::getInstance();
 
-	$postfields = array(
+	$postfields = [
 		'goAction' => 'goGetAreacodeInfo',
 		'campaign_id' => $campaign_id,
 		'areacode' => $areacode,
         'outbound_cid' => $outbound_cid
-	);
+	];
 
 	$output 									= $api->API_getAreacodeInfo($postfields);
 

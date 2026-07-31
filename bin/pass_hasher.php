@@ -22,13 +22,13 @@ if (!empty($argv) && count($argv) > 1) {
                 $saltArr = explode("=", $arg);
             }
         }
-        
+
         $pass = (!empty($passArr[1]) ? $passArr[1] : '');
         $cost = (!empty($costArr[1]) ? $costArr[1] : 12);
         $salt = (!empty($saltArr[1]) ? $saltArr[1] : 'DIapgKfF5fQWEYMY');
-        
+
         $encrypted = encrypt_passwd($pass, $cost, $salt);
-        
+
         echo "Pass Hash: " . $encrypted . "\n";
     }
 } else {
@@ -43,10 +43,9 @@ if (!empty($argv) && count($argv) > 1) {
 
 
 function encrypt_passwd($pass, $cost, $salt = null) {
-    $pass_options = [
-        'cost' => $cost,
-        'salt' => base64_encode($salt)
-    ];
-    $pass_hash = password_hash($pass, PASSWORD_BCRYPT, $pass_options);
-    return substr($pass_hash, 29, 31);
+    $options = [];
+    if (!empty($cost)) {
+        $options['cost'] = (int) $cost;
+    }
+    return password_hash((string) $pass, PASSWORD_BCRYPT, $options);
 }

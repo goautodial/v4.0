@@ -22,7 +22,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 									= \creamy\APIHandler::getInstance();
 
 	// check required fields
@@ -33,28 +33,28 @@
 		$validated 							= 0;
 	}
 
-	if ($validated == 1) {    
+	if ($validated === 1) {    
 		// collect new user data.	
 		$modifyid 							= $_POST["modifyid"];
 		
 		$group_name = NULL; if (isset($_POST["group_name"])) { 
 			$group_name 					= $_POST["group_name"]; 
-			$group_name 					= stripslashes($group_name);
+			$group_name 					= stripslashes((string) $group_name);
 		}
 		
 		$group_level = NULL; if (isset($_POST["group_level"])) { 
 			$group_level 					= $_POST["group_level"];
-			$group_level 					= stripslashes($group_level);
+			$group_level 					= stripslashes((string) $group_level);
 		}
 
 		$forced_timeclock_login = NULL; if (isset($_POST["forced_timeclock_login"])) { 
 			$forced_timeclock_login 		= $_POST["forced_timeclock_login"]; 
-			$forced_timeclock_login 		= stripslashes($forced_timeclock_login);
+			$forced_timeclock_login 		= stripslashes((string) $forced_timeclock_login);
 		}
 		
 		$shift_enforcement = NULL; if (isset($_POST["shift_enforcement"])) { 
 			$shift_enforcement 				= $_POST["shift_enforcement"]; 
-			$shift_enforcement 				= stripslashes($shift_enforcement);
+			$shift_enforcement 				= stripslashes((string) $shift_enforcement);
 		}
 		
 		$allowed_usergroups = NULL; if (isset($_POST["admin_viewable_groups"])) { 
@@ -213,7 +213,7 @@
 		
 		$group_permission 					.= '}';
 		
-		$postfields 						= array(
+		$postfields 						= [
 			'goAction'							=> 'goEditUserGroup',		
 			'user_group' 						=> $modifyid,
 			'group_name' 						=> $group_name,
@@ -223,7 +223,7 @@
 			'allowed_campaigns' 				=> $allowed_campaigns,
 			'allowed_usergroups' 				=> $allowed_usergroups,
 			'permissions' 						=> $group_permission
-		);				
+		];				
 
 		$output 							= $api->API_editUserGroup($postfields);
 		

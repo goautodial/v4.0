@@ -25,11 +25,11 @@
 
 namespace creamy;
 
-require_once('CRMDefaults.php');
-require_once('DbHandler.php');
-require_once('CRMUtils.php');
-require_once('Module.php');
-require_once('DatabaseConnectorFactory.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/DbHandler.php');
+require_once(__DIR__ . '/CRMUtils.php');
+require_once(__DIR__ . '/Module.php');
+require_once(__DIR__ . '/DatabaseConnectorFactory.php');
 
 // paths constants
 define ('CRM_MODULES_MAIN_FILENAME', 'module.php');
@@ -82,14 +82,6 @@ define ('CRM_MODULE_JOB_SCHEDULING', 'scheduledJobForModule');
  * ModuleReference. This class contains all data used to identify, instantiate and 
  */
 class ModuleReference {
-	/** Short name for the module. This name is equivalent to the directory name that hosts all the module structure */
-	protected $moduleShortName;
-	/** Module full path in disk (directory) */
-	protected $moduleFullPath;
-	/** The name of the main module class */
-	protected $moduleClassName;
-	/** The namespace this module belongs to */
-	protected $moduleNamespace;
 	/** The ReflectionClass of the module. */
 	protected $reflectClass;
 	/** The instance of the module. */
@@ -100,25 +92,24 @@ class ModuleReference {
 	/** Constructor of the class
 	 * @param $name String name of the module.
 	 */
-	public function __construct($shortName, $fullPath, $classname, $moduleNamespace = null) {
+	public function __construct(/** Short name for the module. This name is equivalent to the directory name that hosts all the module structure */
+    protected $moduleShortName, /** Module full path in disk (directory) */
+    protected $moduleFullPath, /** The name of the main module class */
+    protected $moduleClassName, /** The namespace this module belongs to */
+    protected $moduleNamespace = null) {
 		// register an autoloader
-		spl_autoload_register(array($this, "autoloader"));
-		// module data.
-		$this->moduleShortName = $shortName;
-		$this->moduleFullPath = $fullPath;
-		$this->moduleClassName = $classname;
-		$this->moduleNamespace = $moduleNamespace;
+		spl_autoload_register($this->autoloader(...));
 		// try to instantiate the module.
 		try {
 			// create reflection class
-			$fullclassPath = empty($moduleNamespace) ? $classname : $fullclassPath = $moduleNamespace."\\".$classname;
+			$fullclassPath = empty($this->moduleNamespace) ? $this->moduleClassName : $fullclassPath = $this->moduleNamespace."\\".$this->moduleClassName;
 			$this->reflectClass = new \ReflectionClass($fullclassPath);
 			// check that this is a submodule.
 			if (!$this->reflectClass->isSubclassOf("\creamy\Module")) {
-				throw new \Exception("Class $classname is not a valid Creamy module: $exception");
+				throw new \Exception("Class {$this->moduleClassName} is not a valid Creamy module: $exception");
 			}
 		} catch (\Exception $exception) { // unable to instantiate the class.
-			throw new \Exception("Class $classname not found: $exception");
+			throw new \Exception("Class {$this->moduleClassName} not found: $exception", $exception->getCode(), $exception);
 		}
 	}
 		
@@ -126,7 +117,7 @@ class ModuleReference {
 	 * Tries to automatically load the class from the directory plugin.
 	 */
 	protected function autoloader($classname) {
-		$mPath = realpath(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.CRM_MODULES_BASEDIR.DIRECTORY_SEPARATOR.$this->moduleClassName.DIRECTORY_SEPARATOR.CRM_MODULES_MAIN_FILENAME);
+		$mPath = realpath(dirname(__FILE__, 2).DIRECTORY_SEPARATOR.CRM_MODULES_BASEDIR.DIRECTORY_SEPARATOR.$this->moduleClassName.DIRECTORY_SEPARATOR.CRM_MODULES_MAIN_FILENAME);
 		@include_once($mPath);
 	}
 	
@@ -167,14 +158,14 @@ class ModuleReference {
 			   }
 			   return $result;
 			} else { return null; }			
-		} catch (\Exception $exception) { return null; }	
+		} catch (\Exception) { return null; }	
 	}
 	
 	/**
 	 * Generates the array of parameters for a given method.
 	 */
 	protected function generateParameterArrayForMethod($reflectMethod, $args) {
-		$params = array(); 
+		$params = []; 
         foreach($reflectMethod->getParameters() as $param) { 
           	/* @var $param ReflectionParameter */ 
 		  	if(isset($args[$param->getName()])) { 
@@ -190,7 +181,7 @@ class ModuleReference {
 	 * Returns the instance of this module definition (if created). If not created, it creates a new one and returns it.
 	 */
 	public function getModuleClassInstance() {
-		if (isset($this->instance)) { return $this->instance; }
+		if ($this->instance !== null) { return $this->instance; }
 		else {
 			$this->instance = $this->reflectClass->newInstance();
 			return $this->instance;
@@ -204,7 +195,8 @@ class ModuleReference {
  *  UIHandler uses the Singleton pattern, thus gets instanciated by the ModuleHandler::getInstante().
  */
 class ModuleHandler {
-	// variables.
+	public $activeModuleNames;
+    // variables.
 	
 	/** Module system enabled. */
 	protected $enabled;
@@ -214,10 +206,10 @@ class ModuleHandler {
 	protected $dbConnector;
 
 	/** An array containing the short names of all the modules. */
-	protected $allModules = array();
+	protected $allModules = [];
 	
 	/** Active module names */
-	protected $activeModules = array();
+	protected $activeModules = [];
 	
 	/** Log of module loading */
 	protected $moduleHandlerLog = "";
@@ -260,8 +252,6 @@ class ModuleHandler {
     /**
      * Private clone method to prevent cloning of the instance of the
      * *Singleton* instance.
-     *
-     * @return void
      */
     private function __clone()
     {
@@ -270,11 +260,14 @@ class ModuleHandler {
     /**
      * Private unserialize method to prevent unserializing of the *Singleton*
      * instance.
-     *
-     * @return void
      */
-    private function __wakeup()
+    private function __unserialize(array $data): void
     {
+        foreach ($data as $property => $value) {
+            if (property_exists($this, $property)) {
+                $this->{$property} = $value;
+            }
+        }
     }
 
 	/** Module listing and loading */
@@ -284,7 +277,7 @@ class ModuleHandler {
 	 * @return Array an array of all module names as ModuleReference(s).
 	 */
 	public function listOfAllModules() {
-		if (!$this->enabled) { return array(); }	    
+		if (!$this->enabled) { return []; }	    
 
 		return $this->allModules;
 	}
@@ -294,7 +287,7 @@ class ModuleHandler {
 	 * @return Array an array of active module names as strings.
 	 */
 	public function listOfActiveModules() {
-		if (!$this->enabled) { return array(); }	    
+		if (!$this->enabled) { return []; }	    
 
 		return $this->activeModuleNames;
 	}
@@ -306,7 +299,7 @@ class ModuleHandler {
 	public function getDefinitionOfModuleNamed($name) {
 		if (!$this->enabled) { return null; }	    
 
-		if (array_key_exists($name, $this->allModules)) {
+		if (array_key_exists((string) $name, $this->allModules)) {
 			return $this->allModules[$name];
 		} else { return null; }
 	}
@@ -318,7 +311,7 @@ class ModuleHandler {
 	public function getInstanceOfModuleNamed($name) {
 		if (!$this->enabled) { return null; }	    
 
-		if (array_key_exists($name, $this->allModules)) {
+		if (array_key_exists((string) $name, $this->allModules)) {
 			$moduleDefinition = $this->allModules[$name];
 			return $moduleDefinition->getModuleClassInstance(); 
 		} else { return null; }
@@ -337,28 +330,28 @@ class ModuleHandler {
 
 		// Initialize structures
 		$this->moduleHandlerLog = "Loading modules...\n";
-		$this->allModules = array();
+		$this->allModules = [];
 		$this->activeModules = $this->db->getActiveModules(); // array
-		
+
 		// Iterate through the modules folder and generate the module references for the active modules.
-		$basedir = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.CRM_MODULES_BASEDIR;
+		$basedir = dirname(__FILE__, 2).DIRECTORY_SEPARATOR.CRM_MODULES_BASEDIR;
 		$this->moduleHandlerLog .= "Looking for modules in path $basedir\n";
 		$files = scandir($basedir);
 		foreach ($files as $filename) { // iterate throuhg files/directories.
 			$realpath = $basedir.DIRECTORY_SEPARATOR.$filename;
 			// If it's a directory (except for "." & "..")
-			if (is_dir($realpath) && (substr($filename, 0, 1 ) !== '.' )) { // possible module.
+			if (is_dir($realpath) && (!str_starts_with($filename, '.') )) { // possible module.
 				$this->moduleHandlerLog .= "Analyzing $filename...\n";
 				$mainModuleFilePath = $realpath.DIRECTORY_SEPARATOR.CRM_MODULES_MAIN_FILENAME;
 				$classHierarchy = \creamy\ModuleHandler::getClassHierarchyInFile($mainModuleFilePath);
 				$this->moduleHandlerLog .= "Class hierarchy: ".var_export($classHierarchy, true)."\n";
 				if (is_array($classHierarchy) && count($classHierarchy) > 0) {
-					$classes = isset($classHierarchy["classes"]) ? $classHierarchy["classes"] : array();
-					$namespace = isset($classHierarchy["namespace"]) ? $classHierarchy["namespace"] : null;
-					
+					$classes = $classHierarchy["classes"] ?? [];
+					$namespace = $classHierarchy["namespace"] ?? null;
+
 					// Look for a valid module class.
 					foreach ($classes as $class) {
-						if (strtolower($class["type"]) == "class") { // we have a class here.
+						if (strtolower($class["type"]) === "class") { // we have a class here.
 							try { // try to generate the module definition and add it to the modules.
 								$classname = $class["name"];
 								$this->moduleHandlerLog .= "Instantiating module with short name: $filename, file path: $mainModuleFilePath, class name: $classname, namespace: $namespace\n";
@@ -411,7 +404,7 @@ class ModuleHandler {
 			$methodToCall = "deactivateModule";
 		}
 		// invoke the activate/deactivate module method.
-	    if (array_key_exists($sanitized, $this->allModules)) {
+	    if (array_key_exists((string) $sanitized, $this->allModules)) {
 			$moduleDefinition = $this->allModules[$sanitized];
 			$moduleDefinition->runMethodOnModule($methodToCall, null);
 		}
@@ -433,7 +426,7 @@ class ModuleHandler {
 	if (!$this->enabled) { return false; }	    
 
 		// avoid nasty things here...
-	    $sanitized = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $shortName);
+	    $sanitized = preg_replace("/[^a-zA-Z0-9_\-]+/", "", (string) $shortName);
 
    	    // remove from active modules.
 		if ( ($key = array_search($shortName, $this->activeModules)) !== false) { unset($this->activeModules[$key]); } 
@@ -446,10 +439,10 @@ class ModuleHandler {
 		}
 	    
 	    // delete files and directory structure.
-	    $path = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.CRM_MODULES_BASEDIR.DIRECTORY_SEPARATOR.$sanitized;
+	    $path = dirname(__FILE__, 2).DIRECTORY_SEPARATOR.CRM_MODULES_BASEDIR.DIRECTORY_SEPARATOR.$sanitized;
 		\creamy\CRMUtils::deleteDirectoryRecursively($path);
 
-	    $log_id = $this->db->log_action($this->dbConnector, 'DELETE', $log_user, $log_ip, "Uninstalled Module: ".$shortName, $log_group);	    	    
+	    $this->db->log_action($this->dbConnector, 'DELETE', $log_user, $log_ip, "Uninstalled Module: ".$shortName, $log_group);	    	    
 	    return true;
     }
     
@@ -469,7 +462,7 @@ class ModuleHandler {
 		    if (isset($instance)) {
 			    $moduleSettingDefinitions = $instance->moduleSettings();
 			    foreach ($moduleSettingDefinitions as $setting => $type) {
-				    if (array_key_exists($setting, $settings)) {
+				    if (array_key_exists((string) $setting, $settings)) {
 					    $newValue = $settings[$setting];
 					    switch ($type) {
 						    case CRM_SETTING_TYPE_STRING:
@@ -484,7 +477,7 @@ class ModuleHandler {
 								$newValue = (bool) $newValue;
 								break;
 							case CRM_SETTING_TYPE_DATE:
-								require_once('LanguageHandler.php');
+								require_once(__DIR__ . '/LanguageHandler.php');
 								// transform date in current format to valid MySQL date.
 								$dateFormat = \creamy\LanguageHandler::getInstance()->getDateFormatForCurrentLocale();
 								$dateFormat = str_ireplace("dd", "d", $dateFormat);
@@ -512,11 +505,11 @@ class ModuleHandler {
     /** Module interaction */
     
     public function activeModulesInstances() {
-		if (!$this->enabled) { return array(); }	    
+		if (!$this->enabled) { return []; }	    
 
-	    $result = array();
+	    $result = [];
 	    foreach ($this->activeModules as $activeModule) {
-		    if (array_key_exists($activeModule, $this->allModules)) {
+		    if (array_key_exists((string) $activeModule, $this->allModules)) {
 			    $moduleDefinition = $this->allModules[$activeModule];
 			    $result[$activeModule] = $moduleDefinition->getModuleClassInstance();
 		    }
@@ -525,11 +518,11 @@ class ModuleHandler {
     }
     
     public function modulesWithSettings() {
-		if (!$this->enabled) { return array(); }	    
+		if (!$this->enabled) { return []; }	    
 
-	    $result = array();
+	    $result = [];
 	    foreach ($this->activeModules as $activeModule) {
-		    if (array_key_exists($activeModule, $this->allModules)) {
+		    if (array_key_exists((string) $activeModule, $this->allModules)) {
 			    $moduleDefinition = $this->allModules[$activeModule];
 			    $settings = $moduleDefinition->runMethodOnModule("moduleSettings", null);
 			    if (!empty($settings)) $result[$activeModule] = $moduleDefinition->getModuleClassInstance();
@@ -547,7 +540,7 @@ class ModuleHandler {
 	    if ($mergeStrategy == CRM_MODULE_MERGING_STRATEGY_SEQUENCE) {
 		    return $this->sequenceHookResults($hookname, $args);
 	    } else {
-		    $results = array();
+		    $results = [];
 			foreach ($this->activeModules as $modulename) {
 				$result = $this->applyHookOnModule($modulename, $hookname, $args);
 				if (isset($result)) { $results[] = $result; }
@@ -575,38 +568,31 @@ class ModuleHandler {
 			    	else { $appended .= var_export($result, true); }
 		    	}
 		    	return $appended;
-		    	break;
 		    case CRM_MODULE_MERGING_STRATEGY_SUM:
 		    	$sum = 0.0;
 		    	foreach ($results as $result) { $sum += floatval($result); }
 		    	return $sum;
-		    	break;
 		    case CRM_MODULE_MERGING_STRATEGY_JOIN:
-		    	$joined = array();
+		    	$joined = [];
 		    	foreach ($results as $result) { $joined = array_merge($joined, $result); }
-		    	return $joined;		    	
-		    	break;
+		    	return $joined;
 		    case CRM_MODULE_MERGING_STRATEGY_AND:
 		    	$andResult = true;
-		    	foreach ($results as $result) { $andResult = $andResult and (bool)$result; }		    	
+		    	foreach ($results as $result) { ($andResult = $andResult) && (bool)$result; }		    	
 		    	return $andResult;
-		    	break;
 		    case CRM_MODULE_MERGING_STRATEGY_OR:
 		    	$oredResult = true;
-		    	foreach ($results as $result) { $oredResult = $oredResult or (bool)$result; }		    	
+		    	foreach ($results as $result) { ($oredResult = $oredResult) || (bool)$result; }		    	
 		    	return $oredResult;
-		    	break;
 		    case CRM_MODULE_MERGING_STRATEGY_FIRST:
 				if (is_array($results) && count($results) > 0) { return reset($results); }
 				else { return $results; }
-		    	break;
 		    case CRM_MODULE_MERGING_STRATEGY_LAST:
 				if (is_array($results) && count($results) > 0) { return end($results); }
 				else { return $results; }
-		    	break;
 		    case CRM_MODULE_MERGING_STRATEGY_RANDOM:
 				if (is_array($results) && count($results) > 0) {
-					require_once('RandomStringGenerator.php');
+					require_once(__DIR__ . '/RandomStringGenerator.php');
 					$rnd = new \creamy\RandomStringGenerator();
 					$nmb = $rnd->getRandomInteger(0, count($results)-1);
 					return array_values($results)[$nmb];
@@ -627,7 +613,7 @@ class ModuleHandler {
 		    if (!$this->arraysHaveSameKeys($args, $temp)) {
 			    // in this case we only support wrapping in the first argument.
 			    $key = array_keys($args)[0];
-			    $temp = array($key => $temp);
+			    $temp = [$key => $temp];
 			    $resultWrapped = true;
 		    }
 		    if (isset($temp)) { $result = $temp; }
@@ -647,7 +633,7 @@ class ModuleHandler {
 
 		foreach ($this->activeModules as $modulename) {
 			$md = $this->getDefinitionOfModuleNamed($modulename);
-			if (isset($md)) { return $md->runMethodOnModule(CRM_MODULE_JOB_SCHEDULING, array("period" => $period)); }
+			if (isset($md)) { return $md->runMethodOnModule(CRM_MODULE_JOB_SCHEDULING, ["period" => $period]); }
 		}
     }
     
@@ -665,12 +651,9 @@ class ModuleHandler {
     protected function arraysHaveSameKeys($inputArray, $outputArray) {
 	    $n1 = count($inputArray);
 	    $n2 = count($outputArray);
-	    if ($n1 === $n2) { // same number of keys
-		    foreach (array_keys($inputArray) as $key) {
-			    if (!array_key_exists($key, $outputArray)) { return false; }
-		    }
-		    return true;
-	    } else { return false; }
+	    if ($n1 === $n2) {
+            return array_all(array_keys($inputArray), fn($key) => array_key_exists((string) $key, $outputArray));
+        } else { return false; }
     }
 
     	
@@ -679,7 +662,7 @@ class ModuleHandler {
 	 * @return true if the module system is enabled. False otherwise.
 	 */
 	public static function moduleSystemEnabled($dbConnectorType = CRM_DB_CONNECTOR_TYPE_MYSQL) {
-		require_once('DatabaseConnectorFactory.php');
+		require_once(__DIR__ . '/DatabaseConnectorFactory.php');
 		if ($dbConnector = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType($dbConnectorType)) {
 			$dbConnector->where("setting", CRM_SETTING_MODULE_SYSTEM_ENABLED);
 			$result = $dbConnector->getOne(CRM_SETTINGS_TABLE_NAME);
@@ -714,7 +697,7 @@ class ModuleHandler {
 	 * @return array An array with the decoded parameters for the module contained in the encoded string.
 	 */
 	public static function decodeModuleArguments($encodedString) {
-		if (empty($encodedString)) { return array(); }
+		if (empty($encodedString)) { return []; }
 		return json_decode(urldecode($encodedString), true);
 	}
 	
@@ -742,7 +725,7 @@ class ModuleHandler {
 	          'type' => string 'INTERFACE' (length=9)
      */
     protected static function getClassHierarchyInFile($file) {
-        $classes = $nsPos = $final = array();
+        $classes = $nsPos = $final = [];
         $foundNS = FALSE;
         $ii = 0;
 
@@ -772,22 +755,22 @@ class ModuleHandler {
             {
                 if($i-4 >=0 && $tokens[$i - 4][0] == T_ABSTRACT)
                 {
-                    $classes[$ii][] = array('name' => $tokens[$i][1], 'type' => 'ABSTRACT CLASS');
+                    $classes[$ii][] = ['name' => $tokens[$i][1], 'type' => 'ABSTRACT CLASS'];
                 }
                 else
                 {
-                    $classes[$ii][] = array('name' => $tokens[$i][1], 'type' => 'CLASS');
+                    $classes[$ii][] = ['name' => $tokens[$i][1], 'type' => 'CLASS'];
                 }
             }
             elseif ($i-2 >= 0 && $tokens[$i - 2][0] == T_INTERFACE && $tokens[$i - 1][0] == T_WHITESPACE && $tokens[$i][0] == T_STRING)
             {
-                $classes[$ii][] = array('name' => $tokens[$i][1], 'type' => 'INTERFACE');
+                $classes[$ii][] = ['name' => $tokens[$i][1], 'type' => 'INTERFACE'];
             }
         }
         error_reporting($er);
-        if (empty($classes)) return NULL;
+        if ($classes === []) return NULL;
 
-        if(!empty($nsPos))
+        if($nsPos !== [])
         {
             foreach($nsPos as $k => $p)
             {
@@ -796,7 +779,7 @@ class ModuleHandler {
                     $ns .= $tokens[$i][1];
 
                 $ns = trim($ns);
-                $final[$k] = array('namespace' => $ns, 'classes' => $classes[$k+1]);
+                $final[$k] = ['namespace' => $ns, 'classes' => $classes[$k+1]];
             }
             $classes = $final;
         }

@@ -1,10 +1,10 @@
 <?php
 
-	require_once('goCRMAPISettings.php');
-	require_once('../phpmailer/PHPMailerAutoload.php');
-	require_once('../phpmailer/class.phpmailer.php');
-	require_once('../phpmailer/class.smtp.php');
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/goCRMAPISettings.php');
+	require_once(__DIR__ . '/../phpmailer/PHPMailerAutoload.php');
+	require_once(__DIR__ . '/../phpmailer/class.phpmailer.php');
+	require_once(__DIR__ . '/../phpmailer/class.smtp.php');
+	require_once(__DIR__ . '/APIHandler.php');
 //      include_once('../phpmailer/info.php');
         $api = \creamy\APIHandler::getInstance();
 
@@ -75,7 +75,7 @@
         	    $output = base64_encode($output);
 	        }
         	else if( $action == 'decrypt' ){
-	            $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+	            $output = openssl_decrypt(base64_decode((string) $string), $encrypt_method, $key, 0, $iv);
         	}
         	return $output;
     	}

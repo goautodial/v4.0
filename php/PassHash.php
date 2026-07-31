@@ -43,15 +43,15 @@ class PassHash {
     // this will be used to generate a hash
     public static function hash($password) {
 
-        return crypt($password, self::$algo .
+        return crypt((string) $password, self::$algo .
                 self::$cost .
                 '$' . self::unique_salt());
     }
 
     // this will be used to compare a password against a hash
     public static function check_password($hash, $password) {
-        $full_salt = substr($hash, 0, 29);
-        $new_hash = crypt($password, $full_salt);
+        $full_salt = substr((string) $hash, 0, 29);
+        $new_hash = crypt((string) $password, $full_salt);
         return ($hash == $new_hash);
     }
 

@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        CopyCustomFields.php
  * @brief       Modify custom field entries
  * @copyright   Copyright (c) 2025 GOautodial Inc.
@@ -22,19 +24,19 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 
 	$list_to = $_POST['list_to'];
 	$list_from = $_POST['list_from'];
 	$copy_option = $_POST['copy_option'];
 
-	$postfields = array(
+	$postfields = [
 		"goAction" => "goCopyCustomFields", #action performed by the [[API:Functions]]
 		"list_to" => $list_to,
 		"list_from" => $list_from,
 		"copy_option" => $copy_option
-	);
+	];
 
 	$output = $api->API_Request("goCustomFields", $postfields);
 

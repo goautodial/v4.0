@@ -22,11 +22,11 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
 */
-require_once('LanguageHandler.php');
-require_once('CRMDefaults.php');
-require_once('ModuleHandler.php');
-require_once('DbHandler.php');
-require('Session.php');
+require_once(__DIR__ . '/LanguageHandler.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/ModuleHandler.php');
+require_once(__DIR__ . '/DbHandler.php');
+require(__DIR__ . '/Session.php');
 
 $lh = \creamy\LanguageHandler::getInstance();
 
@@ -36,7 +36,7 @@ if (!isset($_POST["module_name"])) {
 	$validated = 0;
 }
 
-if ($validated == 1) {
+if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// get mandatory

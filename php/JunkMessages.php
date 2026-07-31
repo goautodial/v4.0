@@ -23,9 +23,9 @@
 	THE SOFTWARE.
 */
 
-require_once('CRMDefaults.php');
-require_once('DbHandler.php');
-require('Session.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/DbHandler.php');
+require(__DIR__ . '/Session.php');
 $user = \creamy\CreamyUser::currentUser();
 
 // check required fields
@@ -37,7 +37,7 @@ if (!isset($_POST["folder"])) {
 	$validated = 0;
 }
 
-if ($validated == 1) {
+if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// get userid, message ids and folder	

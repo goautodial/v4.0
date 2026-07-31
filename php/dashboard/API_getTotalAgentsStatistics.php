@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * @file        API_getAgentsStatistics.php
  * @brief       Displays agent statistics (in-call, waiting and paused)
@@ -20,7 +22,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('APIHandler.php');
+require_once(__DIR__ . '/APIHandler.php');
 
 $api 										= \creamy\APIHandler::getInstance();
 $output 									= $api->API_getTotalAgentsStatistics();
@@ -76,11 +78,11 @@ if (empty($output->data)) {
 
 } else {
 	if (is_array($output->data)) {
-		foreach ($output->data as $key => $value) {
+		foreach ($output->data as $value) {
 
-			$totalAgentsCall 					= (isset($value->totalAgentsCall) ? $value->totalAgentsCall : "0");
-			$totalAgentsPaused 					= (isset($value->totalAgentsPaused) ? $value->totalAgentsPaused : "0");
-			$totalAgentsWaitCalls 				= (isset($value->totalAgentsWaitCalls) ? $value->totalAgentsWaitCalls : "0");
+			$totalAgentsCall 					= ($value->totalAgentsCall ?? "0");
+			$totalAgentsPaused 					= ($value->totalAgentsPaused ?? "0");
+			$totalAgentsWaitCalls 				= ($value->totalAgentsWaitCalls ?? "0");
 
 			echo '<div class="col-lg-4 col-sm-6">
 				<a href="#" data-toggle="modal" data-target="#realtime_agents_monitoring" data-status="ACTIVE" data-id="" style="text-decoration : none">

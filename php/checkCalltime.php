@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * @file        checkCalltime.php
  * @brief       Handles Check Calltime Requests
@@ -19,7 +21,7 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-require_once('APIHandler.php');
+require_once(__DIR__ . '/APIHandler.php');
 $api = \creamy\APIHandler::getInstance();
 
 /*
@@ -33,10 +35,10 @@ $api = \creamy\APIHandler::getInstance();
 		
 		$postfields["call_time_id"] = $_POST['id'];
 
-		$postfields = array(
+		$postfields = [
 			'goAction' => 'goCheckCalltimes',
 			'call_time_id' => $_POST['id']
-		);
+		];
 
 	    $output = $api->API_checkCalltimes($postfields);
 

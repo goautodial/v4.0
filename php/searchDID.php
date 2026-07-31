@@ -21,7 +21,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 									= \creamy\APIHandler::getInstance();	
 	$keyword								= trim(strip_tags($_POST['term']));	

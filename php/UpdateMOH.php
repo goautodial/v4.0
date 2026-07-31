@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        UpdateMOH.php
  * @brief       Handles modifying MOH entries
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -21,7 +23,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once("APIHandler.php");
+	require_once(__DIR__ . "/APIHandler.php");
     
     $api = \creamy\APIHandler::getInstance();
 
@@ -32,7 +34,7 @@
     $filename = $_POST['filename'];
     $random = $_POST['random'];
         
-	$postfields = array(
+	$postfields = [
 		'goAction' => 'goEditMOH',		
 		'moh_id' => $moh_id,
 		'moh_name' => $moh_name,
@@ -40,7 +42,7 @@
 		'filename' => $filename,
 		'active' => $active,
 		'random' => $random
-	);				
+	];				
 
 	$output 									= $api->API_editMOH($postfields);
 	

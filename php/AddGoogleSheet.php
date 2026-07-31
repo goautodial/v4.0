@@ -19,7 +19,7 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-require_once('APIHandler.php');
+require_once(__DIR__ . '/APIHandler.php');
 $api = \creamy\APIHandler::getInstance();
 
 	$google_sheet_ids = explode(" ", $_POST['old_google_sheet_ids']);
@@ -42,11 +42,11 @@ $api = \creamy\APIHandler::getInstance();
   $postfields['google_sheet_ids']  			= trim($new_sheet_ids);
 */
 
-  	$postfields = array(
+  	$postfields = [
 		'goAction' => 'goUpdateCampaignGoogleSheet',
 		'campaign_id' => $_POST['campaign_id'],
 		'google_sheet_ids' => trim($new_sheet_ids)
-	);
+	];
 
 	$output = $api->API_updateCampaignGoogleSheet($postfields);
 

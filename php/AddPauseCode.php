@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        AddPauseCode.php
  * @brief       Handles Add Pause Code Request
  * @copyright   Copyright (C) GOautodial Inc.
@@ -21,19 +23,19 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 							= \creamy\APIHandler::getInstance();
 
-	$postfields 					= array(
+	$postfields 					= [
 		'goAction'						=> 'goAddPauseCode',
 		'pauseCampID' 					=> $_POST['campaign_id'],
 		'pause_code' 					=> $_POST['pause_code'],
 		'pause_code_name' 				=> $_POST['pause_code_name'],
 		'billable' 						=> $_POST['billable']
-	);
-	
+	];
+
 	$output 						= $api->API_addPauseCode($postfields);
-	
+
 	if ($output->result=="success") { $status = 1; } 
 		else { $status = $output->result; }
 

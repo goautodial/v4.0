@@ -20,7 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	
 	
 	
@@ -28,7 +28,7 @@
 	$output 									= $api->API_getClusterStatus();    
     $cluster 									= '[';
      
-    foreach ($output->data as $key => $value) {
+    foreach ($output->data as $value) {
     
         $serverid 								= $value->server_id;
         $serverdesc 							= $value->server_description;
@@ -41,7 +41,7 @@
         $stime 									= $value->s_time;
         $utime 									= $value->u_time;
     
-        $disk_ary 								= explode('|', $diskusage);
+        $disk_ary 								= explode('|', (string) $diskusage);
         $disk_ary_ct 							= count($disk_ary);
 
         if ($status == "Y") {
@@ -110,7 +110,7 @@
         $cluster 								.= '"<b class=\"'.$disktextclass.'\">'.$diskusage.'%</b>",';
         //$cluster 								.= '"<div data-label=\"'.$diskusage.'%\" class=\"radial-bar radial-bar-'.$diskusage.' radial-bar-xs\"></div>",';
         //$cluster 								.= '"'.$radial.'",';
-        $cluster 								.= '"'.date('M. d, Y h:i A', strtotime($stime)).'"';
+        $cluster 								.= '"'.date('M. d, Y h:i A', strtotime((string) $stime)).'"';
         $cluster 								.= '],';
     
     }

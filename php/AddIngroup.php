@@ -20,13 +20,13 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();			
 	$color 										= $_POST["color"];
 	$color 										= str_replace("#", '', $color);
 
-	$postfields 								= array(
+	$postfields 								= [
 		'goAction' 									=> 'goAddIngroup',
 		'group_id' 									=> $_POST['groupid'],
 		'group_name' 								=> $_POST['groupname'],
@@ -39,7 +39,7 @@
 		'fronter_display'							=> $_POST['display'], #Y or N (required)
 		'ingroup_script' 							=> $_POST['script'],
 		'get_call_launch' 							=> $_POST['call_launch']
-	);
+	];
 
 	$output 									= $api->API_addIngroup($postfields);
 

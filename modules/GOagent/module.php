@@ -28,7 +28,7 @@ require_once(CRM_MODULE_INCLUDE_DIRECTORY.'LanguageHandler.php');
 include(CRM_MODULE_INCLUDE_DIRECTORY.'Session.php');
 require_once(CRM_MODULE_INCLUDE_DIRECTORY.'goCRMAPISettings.php');
 
-$baseURL = (!empty($_SERVER['HTTPS'])) ? "https://".$_SERVER['SERVER_NAME'] : "http://".$_SERVER['SERVER_NAME'];
+$baseURL = (empty($_SERVER['HTTPS'])) ? "http://".$_SERVER['SERVER_NAME'] : "https://".$_SERVER['SERVER_NAME'];
 $getSlashes = preg_match_all("/\//", $_SERVER['REQUEST_URI']);
 $baseDIR = (!empty($_SERVER['REQUEST_URI']) && $getSlashes > 1) ? dirname($_SERVER['REQUEST_URI'])."/" : "/";
 define(__NAMESPACE__ . '\GO_MODULE_DIR', $baseURL.$baseDIR.'modules'.DIRECTORY_SEPARATOR.'GOagent'.DIRECTORY_SEPARATOR);
@@ -38,27 +38,30 @@ define(__NAMESPACE__ . '\GO_MODULE_DIR', $baseURL.$baseDIR.'modules'.DIRECTORY_S
  * It will show a message of the day (message of the day).
  */
 class GOagent extends Module {
-	protected $userrole;
+	public $goDB;
+    public $userName;
+    protected $userrole;
 	protected $is_logged_in;
 	protected $astDB;
 
 	// module meta-data (ModuleData interface implementation).
 	static function getModuleName() { return "GOautodial Agent Dialer"; }
-	
+
 	static function getModuleVersion() { return "1.0"; }
-	
+
 	static function getModuleDescription() { return "A module for GOautodial Agent Dialer integration."; }
 
 	// lifecycle and respond to interactions.
-	public function uponInit() {
+	#[\Override]
+    public function uponInit() {
 		error_log("Module \"GOautodial Agent Dialer\" initializing...");
-		
+
 		// add the translation files to our language handler.
 		$customLanguageFile = $this->getModuleLanguageFileForLocale($this->lh()->getLanguageHandlerLocale());
 		if (!isset($customLanguageFile)) { $customLanguageFile = $this->getModuleLanguageFileForLocale(CRM_LANGUAGE_DEFAULT_LOCALE); }
 		$this->lh()->addCustomTranslationsFromFile($customLanguageFile);
-		
-		$this->astDB = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType(CRM_DB_CONNECTOR_TYPE_MYSQL, null, DB_NAME_ASTERISK);
+
+		$this->astDB = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfTypeAsterisk(CRM_DB_CONNECTOR_TYPE_MYSQL);
 		$this->goDB = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType(CRM_DB_CONNECTOR_TYPE_MYSQL, null, DB_NAME);
 
 		$this->userrole = \creamy\CreamyUser::currentUser()->getUserRole();
@@ -66,10 +69,10 @@ class GOagent extends Module {
 
 		if ($this->userrole > 1) {
 			$_SESSION['is_logged_in'] = $this->checkIfLoggedOnPhone();
-			
+
 			$this->goDB->where('setting', 'GO_agent_sip_server');
 			$rslt = $this->goDB->getOne('settings', 'value');
-			$_SESSION['SIPserver'] = (strlen($rslt['value']) > 0) ? $rslt['value'] : 'kamailio';
+			$_SESSION['SIPserver'] = ((string) $rslt['value'] !== '') ? $rslt['value'] : 'kamailio';
 
 			echo $this->getGOagentContent();
 		} else {
@@ -78,37 +81,31 @@ class GOagent extends Module {
 			}
 		}
 	}
-		
-	public function uponActivation() {
+
+	#[\Override]
+    public function uponActivation() {
 		error_log("Module \"GOautodial Agent Dialer\" activating...");
 	}
-		
-	public function uponDeactivation() {
+
+	#[\Override]
+    public function uponDeactivation() {
 		error_log("Module \"GOautodial Agent Dialer\" deactivating...");
 	}
 
-	public function uponUninstall() {
+	#[\Override]
+    public function uponUninstall() {
 		error_log("Module \"GOautodial Agent Dialer\" uninstalling...");
-	}
-	
-	// Private functions for this module.
-	private function dateIsToday($date) {
-		 $current = strtotime(date("Y-m-d"));
-		
-		 $datediff = $date - $current;
-		 $differance = floor($datediff/(60*60*24));
-		 if ($differance == 0) return true;
-		 return false;
 	}
 
 	private function checkIfLoggedOnPhone() {
-		$this->is_logged_in = (isset($_SESSION['is_logged_in'])) ? $_SESSION['is_logged_in'] : false;
+		$this->is_logged_in = $_SESSION['is_logged_in'] ?? false;
 		return $this->is_logged_in;
 	}
-	
+
 	// views and code generation
 	/** We return true here to indicate that we want access to the database */
-	public function needsDatabaseFunctionality() { return false; }
+	#[\Override]
+    public function needsDatabaseFunctionality() { return false; }
 
 	public function mainPageViewContent($args) {
 		return false;
@@ -117,11 +114,11 @@ class GOagent extends Module {
 	public function mainPageViewTitle() {
 		return $this->lh()->translationFor("GO_title");
 	}
-	
+
 	public function mainPageViewSubtitle() {
 		return $this->lh()->translationFor("GO_subtitle");
 	}
-	
+
 	public function mainPageViewIcon() {
 		return 'phone-square';
 	}
@@ -131,7 +128,7 @@ class GOagent extends Module {
 		$selectACampaign = $this->lh()->translationFor("select_a_campaign");
 		$dispositionCall = $this->lh()->translationFor("disposition_call");
 		$endOfCallDispositionSelection = $this->lh()->translationFor("end_of_call_disposition_selection");
-		$manualDialLead = $this->lh()->translationFor("manual_dial_lead");
+		$this->lh()->translationFor("manual_dial_lead");
 		$availableCampaigns = $this->lh()->translationFor("available_campaigns");
 		$inboundGroups = $this->lh()->translationFor("inbound_groups");
 		$groupsNotSelected = $this->lh()->translationFor("groups_not_selected");
@@ -141,18 +138,18 @@ class GOagent extends Module {
 		$selectAll = $this->lh()->translationFor("select_all");
 		$submit = $this->lh()->translationFor("submit");
 		$note = $this->lh()->translationFor("note");
-		$phoneNumber = $this->lh()->translationFor("phone_number");
-		$dialCode = $this->lh()->translationFor("dial_code");
-		$dialCodeInfo = $this->lh()->translationFor("dial_code_info");
-		$digitsOnly = $this->lh()->translationFor("digits_only");
-		$searchExistingLeads = $this->lh()->translationFor("search_existing_leads");
-		$searchExistingLeadsInfo = $this->lh()->translationFor("search_existing_leads_info");
-		$dialOverride = $this->lh()->translationFor("dial_override");
-		$dialOverrideInfo = $this->lh()->translationFor("dial_override_info");
-		$digitsOnlyPlease = $this->lh()->translationFor("digits_only_please");
-		$dialNow = $this->lh()->translationFor("dial_now");
-		$previewCall = $this->lh()->translationFor("preview_call");
-		$goBack = $this->lh()->translationFor("go_back");
+		$this->lh()->translationFor("phone_number");
+		$this->lh()->translationFor("dial_code");
+		$this->lh()->translationFor("dial_code_info");
+		$this->lh()->translationFor("digits_only");
+		$this->lh()->translationFor("search_existing_leads");
+		$this->lh()->translationFor("search_existing_leads_info");
+		$this->lh()->translationFor("dial_override");
+		$this->lh()->translationFor("dial_override_info");
+		$this->lh()->translationFor("digits_only_please");
+		$this->lh()->translationFor("dial_now");
+		$this->lh()->translationFor("preview_call");
+		$this->lh()->translationFor("go_back");
 		$pauseAgent = $this->lh()->translationFor("pause_agent");
 		$pauseAgentXS = $this->lh()->translationFor("pause");
 		$transferConference = $this->lh()->translationFor("transfer_conference_functions");
@@ -191,56 +188,55 @@ class GOagent extends Module {
 		$maximize = $this->lh()->translationFor('maximize');
 		$minimize = $this->lh()->translationFor('minimize');
 		$missedCallbacks = $this->lh()->translationFor('missed_callbacks');
-		$selectByDragging = preg_replace('/(\w*'. $selectAll .'\w*)/i', '<b>$1</b>', $this->lh()->translationFor("select_by_dragging"));
+		$selectByDragging = preg_replace('/(\w*'. $selectAll .'\w*)/i', '<b>$1</b>', (string) $this->lh()->translationFor("select_by_dragging"));
 		$goModuleDIR = GO_MODULE_DIR;
-		$userrole = $this->userrole;
 		$_SESSION['module_dir'] = $goModuleDIR;
-		$_SESSION['campaign_id'] = (strlen($_SESSION['campaign_id']) > 0) ? $_SESSION['campaign_id'] : '';
-		
+		$_SESSION['campaign_id'] = ((string) $_SESSION['campaign_id'] !== '') ? $_SESSION['campaign_id'] : '';
+
 		//$webProtocol = (preg_match("/Windows/", $_SERVER['HTTP_USER_AGENT'])) ? "wss" : "ws";
-		$webProtocol = (strlen($_SERVER['HTTPS']) > 0) ? "wss" : "ws";
-		
+		$webProtocol = ((string) $_SERVER['HTTPS'] !== '') ? "wss" : "ws";
+
 		$this->goDB->where('setting', 'GO_agent_use_wss');
 		$rslt = $this->goDB->getOne('settings', 'value');
-		$useWebRTC = (strlen($rslt['value']) > 0) ? $rslt['value'] : 0;
+		$useWebRTC = ((string) $rslt['value'] !== '') ? $rslt['value'] : 0;
 		$_SESSION['use_webrtc'] = $useWebRTC;
-		
+
 		if ($useWebRTC) {
 			$this->goDB->where('setting', 'GO_agent_wss');
 			$rslt = $this->goDB->getOne('settings', 'value');
-			$websocketURL = (strlen($rslt['value']) > 0) ? $rslt['value'] : "webrtc.goautodial.com";
-			
+			$websocketURL = ((string) $rslt['value'] !== '') ? $rslt['value'] : "webrtc.goautodial.com";
+
 			$this->goDB->where('setting', 'GO_agent_wss_port');
 			$rslt = $this->goDB->getOne('settings', 'value');
-			$websocketPORT = (strlen($rslt['value']) > 0) ? $rslt['value'] : "10443";
-			
+			$websocketPORT = ((string) $rslt['value'] !== '') ? $rslt['value'] : "10443";
+
 			$this->goDB->where('setting', 'GO_agent_wss_sip');
 			$rslt = $this->goDB->getOne('settings', 'value');
-			$websocketSIP = (strlen($rslt['value']) > 0) ? "{$rslt['value']}" : "'+server_ip";
-			
+			$websocketSIP = ((string) $rslt['value'] !== '') ? "{$rslt['value']}" : "'+server_ip";
+
 			$this->goDB->where('setting', 'GO_agent_wss_sip_port');
 			$rslt = $this->goDB->getOne('settings', 'value');
 			$websocketSIPPort = "";
 			if (!preg_match("/server_ip/", $websocketSIP)) {
-				if (strlen($rslt['value']) > 0 && $rslt['value'] > 0 && $rslt['value'] != 5060) {
+				if ((string) $rslt['value'] !== '' && $rslt['value'] > 0 && $rslt['value'] != 5060) {
 					$websocketSIPPort = ":{$rslt['value']}'";
 				} else {
 					$websocketSIPPort = "'";
 				}
 			}
-			
+
 			$this->goDB->where('setting', 'GO_agent_domain');
 			$rslt = $this->goDB->getOne('settings', 'value');
-			$domain = (strlen($rslt['value']) > 0) ? $rslt['value'] : "goautodial.com";
+			$domain = ((string) $rslt['value'] !== '') ? $rslt['value'] : "goautodial.com";
 		}
-		
+
 		$labels = $this->getLabels()->labels;
 		$disable_alter_custphone = $this->getLabels()->disable_alter_custphone;
 		$labelHTML = '';
 		foreach ($labels as $key => $value) {
 			$key = str_replace("label_", "", $key);
-			if (!preg_match("/---HIDE---/i", $value)) {
-				if (strlen($value) < 1) {
+			if (!preg_match("/---HIDE---/i", (string) $value)) {
+				if (strlen((string) $value) < 1) {
 					$value = ucwords(str_replace("_", " ", $key));
 				}
 				if ($key == "comments") {
@@ -252,7 +248,7 @@ class GOagent extends Module {
 					$labelHTML .= "<td align='right' width='200' nowrap style='padding-right: 10px;'>$value:</td><td><span id='GENDERhideFORie'><select size='1' name='$key' class='cust_form' id='formMain_$key'><option value='U'>U - Undefined</option><option value='M'>M - Male</option><option value='F'>F - Female</option></select></span></td>\n";
 					$labelHTML .= "</tr>\n";
 				} else if ($key == "phone_number") {
-					if ( preg_match('/Y|HIDE/', $disable_alter_custphone) ) {
+					if ( preg_match('/Y|HIDE/', (string) $disable_alter_custphone) ) {
 						$labelHTML .= "<tr>\n";
 						$labelHTML .= "<td align='right' width='200' nowrap style='padding-right: 10px;'>$value:</td><td><span id='phone_numberDISP' style='line-height: 30px;'> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span>";
 						$labelHTML .= "<input type='hidden' name='$key' id='formMain_$key' value='' /></td>\n";
@@ -301,21 +297,12 @@ class GOagent extends Module {
 							$maxlength = "100";
 							break;
 						case "address1":
-							$size = "50";
-							$maxlength = "100";
-							break;
 						case "address2":
-							$size = "50";
-							$maxlength = "100";
-							break;
 						case "address3":
 							$size = "50";
 							$maxlength = "100";
 							break;
 						case "city":
-							$size = "20";
-							$maxlength = "50";
-							break;
 						case "province":
 							$size = "20";
 							$maxlength = "50";
@@ -324,7 +311,7 @@ class GOagent extends Module {
 							$size = "20";
 							$maxlength = "30";
 					}
-					
+
 					$convert_dial_code = 0;
 					if ($convert_dial_code && $key == "phone_code") {
 						$labelHTML .= "<tr>\n";
@@ -348,17 +335,17 @@ class GOagent extends Module {
 				$labelHTML .= "</tr>\n";
 			}
 		}
-		
+
 		###### Removed the DTMF HotKeys
 		//$(document).on('keydown', function(event) {
 		//	var keys = {
 		//		48: '0', 49: '1', 50: '2', 51: '3', 52: '4', 53: '5', 54: '6', 55: '7', 56: '8', 57: '9'
 		//	};
-		//	
+		//
 		//	if (keys[event.which] === undefined) {
 		//		return;
 		//	}
-		//	
+		//
 		//	console.log('keydown: '+keys[event.which], event);
 		//	var options = {
 		//		'duration': 160,
@@ -371,17 +358,17 @@ class GOagent extends Module {
 		//			},
 		//		}
 		//	};
-		//	
+		//
 		//	if (live_customer_call) {
 		//		session.sendDTMF(keys[event.which], options);
 		//	}
 		//});
-		
+
 		$str  = <<<EOF
 		<link type='text/css' rel='stylesheet' href='{$goModuleDIR}css/style.css'></link>
 					<script type='text/javascript' src='{$goModuleDIR}GOagentJS.php'></script>
 					<script type='text/javascript' src='{$goModuleDIR}js/addons.js'></script>
-					
+
 EOF;
 
 		if ($useWebRTC) {
@@ -402,7 +389,7 @@ EOF;
 	var remoteStream;
 	var globalSession;
 	var phone_login = '$phone_login';
-	
+
 	var socket = new JsSIP.WebSocketInterface('{$webProtocol}://{$websocketURL}:{$websocketPORT}/');
 	var configuration = {
 		sockets : [ socket ],
@@ -413,55 +400,55 @@ EOF;
 		use_preloaded_route: false,
 		register: true
 	};
-	
+
 	//init rtcninja libraries...
-	
+
 	var phone = new JsSIP.UA(configuration);
-	
+
 	phone.on('connected', function(e) {
 		//console.log('connected', e);
-		
+
 		//phone.register();
 	});
-	
+
 	phone.on('disconnected', function(e) {
 		//console.log('disconnected', e);
 	});
-	
+
 	phone.on('newRTCSession', function(e) {
 		//console.log(e);
-		
+
 		var session = e.session;
 		//console.log('newRTCSession: originator', e.originator, 'session', e.session, 'request', e.request);
-	
+
 		session.on('peerconnection', function (data) {
 			//console.log('session::peerconnection', data);
 		});
-	
+
 		session.on('iceconnectionstatechange', function (data) {
 			//console.log('session::iceconnectionstatechange', data);
 		});
-	
+
 		session.on('connecting', function (data) {
 			//console.log('session::connecting', data);
 		});
-	
+
 		session.on('sending', function (data) {
 			//console.log('session::sending', data);
 		});
-	
+
 		session.on('progress', function (data) {
 			//console.log('session::progress', data);
 		});
-	
+
 		session.on('accepted', function (data) {
 			//console.log('session::accepted', data);
 		});
-	
+
 		session.on('confirmed', function (data) {
 			//console.log('session::confirmed', data);
 		});
-	
+
 		session.on('ended', function (data) {
 			//console.log('session::ended', data);
 			if (data.cause !== 'Terminated') {
@@ -474,7 +461,7 @@ EOF;
 				});
 			}
 		});
-	
+
 		session.on('failed', function (data) {
 			//console.log('session::failed', data);
 			alertLogout = false;
@@ -485,86 +472,86 @@ EOF;
 				type: 'error'
 			});
 		});
-	
+
 		//session.on('addstream', function (data) {
 		//	console.log('session::addstream', data);
 		//
 		//	remoteStream = data.stream;
 		//	audioElement = document.querySelector('#remoteStream');
 		//	audioElement.src = window.URL.createObjectURL(remoteStream);
-		//	
+		//
 		//	globalSession = session;
 		//});
-	
+
 		session.on('removestream', function (data) {
 			//console.log('session::removestream', data);
 		});
-	
+
 		session.on('newDTMF', function (data) {
 			//console.log('session::newDTMF', data);
 		});
-	
+
 		session.on('hold', function (data) {
 			//console.log('session::hold', data);
 		});
-	
+
 		session.on('unhold', function (data) {
 			//console.log('session::unhold', data);
 		});
-	
+
 		session.on('muted', function (data) {
 			//console.log('session::muted', data);
             $.snackbar({id: "mutedMic", content: "<i class='fa fa-microphone-slash fa-lg text-danger' aria-hidden='true'></i>&nbsp; $youTurnOffMic", timeout: 0, htmlAllowed: true});
 		});
-	
+
 		session.on('unmuted', function (data) {
 			//console.log('session::unmuted', data);
 			$("#mutedMic").snackbar('hide');
             $.snackbar({content: "<i class='fa fa-microphone fa-lg text-success' aria-hidden='true'></i>&nbsp; $youTurnOnMic", timeout: 5000, htmlAllowed: true});
 		});
-	
+
 		session.on('reinvite', function (data) {
 			//console.log('session::reinvite', data);
 		});
-	
+
 		session.on('update', function (data) {
 			//console.log('session::update', data);
 		});
-	
+
 		session.on('refer', function (data) {
 			//console.log('session::refer', data);
 		});
-	
+
 		session.on('replaces', function (data) {
 			//console.log('session::replaces', data);
 		});
-	
+
 		session.on('sdp', function (data) {
 			//console.log('session::sdp', data);
 		});
-	
+
 		session.answer({
 			mediaConstraints: {
 				audio: true,
 				video: false
 			}
 		});
-		
+
 		session.connection.addEventListener('addstream', (event) => {
 			//console.log("session::addstream", event);
-			
+
 			remoteStream = event.stream;
 			audioElement = document.querySelector('#remoteStream');
 			audioElement.srcObject = remoteStream;
-			
+
 			globalSession = session;
 		});
 	});
-	
+
 	phone.on('newMessage', function(e) {
 		//console.log('newMessage', e);
 	});
-	
+
 	phone.on('registered', function(e) {
 		//console.log('registered', e);
 		phoneRegistered = true;
@@ -573,12 +560,12 @@ EOF;
 			$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; $phoneIsRegistered", timeout: 5000, htmlAllowed: true});
 		}
 	});
-	
+
 	phone.on('unregistered', function(e) {
 		//console.log('unregistered', e);
 		phoneRegistered = false;
 	});
-	
+
 	phone.on('registrationFailed', function(e) {
 		//console.log('registrationFailed', e);
 		phoneRegistered = false;
@@ -589,19 +576,19 @@ EOF;
 			text: "$contactAdmin",
 			type: 'error'
 		});
-		
+
 		if ( !!$.prototype.snackbar ) {
 			$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; $registrationFailed", timeout: 5000, htmlAllowed: true});
 		}
 	});
-	
+
 	navigator.mediaDevices.getUserMedia({
 		audio: true,
 		video: false
 	}).then(function (stream) {
 		localStream = stream;
 		//console.log('getUserMedia', stream);
-	
+
 		//phone.start();
 	}).catch(function (err) {
 		console.error('getUserMedia failed: %s', err.toString());
@@ -622,8 +609,7 @@ EOF;
                                 $eccsTabStopDatePicker .= '<div class="col-md-3"><label for="eccs_day" style="font-size:x-large;">Date</label><input type="number" name="eccs_day" id="eccs_day" class="mda-form-control"  data-tooltip="toolip" title="Callback Day"  /></div>';
                                 $eccsTabStopDatePicker .= '<div class="col-md-3"><label for="eccs_time" style="font-size:x-large;">Time</label><input type="text" name="eccs_time" id="eccs_time" class="mda-form-control" data-tooltip="toolip" title="Callback Time" /></div>';
 		}
-	
-		$str .= <<<EOF
+		return $str . <<<EOF
 <div id="dialog-custinfo" class="modal fade" tabindex="-1">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -707,8 +693,8 @@ EOF;
 			<div class="modal-footer">
 				<input type="hidden" name="DispoSelection" id="DispoSelection" value="" />
 				<span class="pull-right">
-					<button class="btn btn-default btn-raised hidden-xs" id="btn-dispo-reset-lg">Clear Form</button> 
-					<button class="btn btn-default btn-raised visible-xs" id="btn-dispo-reset-xs">Clear</button> 
+					<button class="btn btn-default btn-raised hidden-xs" id="btn-dispo-reset-lg">Clear Form</button>
+					<button class="btn btn-default btn-raised visible-xs" id="btn-dispo-reset-xs">Clear</button>
 					<button class="btn btn-warning btn-raised" id="btn-dispo-submit">Submit</button>
 				</span>
 				<div class="pull-left">
@@ -966,73 +952,71 @@ EOF;
 </div>
 
 EOF;
-		return $str;
 	}
 
 	private function getGOadminContent() {
 		$goModuleDIR = GO_MODULE_DIR;
-		$userrole = $this->userrole;
 		$_SESSION['module_dir'] = $goModuleDIR;
-		$_SESSION['campaign_id'] = (strlen($_SESSION['campaign_id']) > 0) ? $_SESSION['campaign_id'] : '';
-		
+		$_SESSION['campaign_id'] = ((string) $_SESSION['campaign_id'] !== '') ? $_SESSION['campaign_id'] : '';
+
 		$phoneIsRegistered = $this->lh()->translationFor('phone_is_now_registered');
 		$registrationFailed = $this->lh()->translationFor('registration_failed_refresh');
-		
+
 		//$webProtocol = (preg_match("/Windows/", $_SERVER['HTTP_USER_AGENT'])) ? "wss" : "ws";
-		$webProtocol = (strlen($_SERVER['HTTPS']) > 0) ? "wss" : "ws";
-		
+		$webProtocol = ((string) $_SERVER['HTTPS'] !== '') ? "wss" : "ws";
+
 		$this->goDB->where('setting', 'GO_agent_use_wss');
 		$rslt = $this->goDB->getOne('settings', 'value');
-		$useWebRTC = (strlen($rslt['value']) > 0) ? $rslt['value'] : 0;
+		$useWebRTC = ((string) $rslt['value'] !== '') ? $rslt['value'] : 0;
 		$_SESSION['use_webrtc'] = $useWebRTC;
-		
+
 		$this->goDB->where('setting', 'GO_show_phones');
 		$rslt = $this->goDB->getOne('settings', 'value');
-		$showPhones = (strlen($rslt['value']) > 0) ? $rslt['value'] : 0;
+		$showPhones = ((string) $rslt['value'] !== '') ? $rslt['value'] : 0;
 		$_SESSION['show_phones'] = $showPhones;
-		
+
 		//$this->goDB->where('setting', 'GO_modify_phones');
 		//$rslt = $this->goDB->getOne('settings', 'value');
 		//$modifyPhones = (strlen($rslt['value']) > 0) ? $rslt['value'] : 0;
 		//$_SESSION['modify_phones'] = $modifyPhones;
-		
+
 		if ($useWebRTC) {
 			$this->goDB->where('setting', 'GO_agent_wss');
 			$rslt = $this->goDB->getOne('settings', 'value');
-			$websocketURL = (strlen($rslt['value']) > 0) ? $rslt['value'] : "webrtc.goautodial.com";
-			
+			$websocketURL = ((string) $rslt['value'] !== '') ? $rslt['value'] : "webrtc.goautodial.com";
+
 			$this->goDB->where('setting', 'GO_agent_wss_port');
 			$rslt = $this->goDB->getOne('settings', 'value');
-			$websocketPORT = (strlen($rslt['value']) > 0) ? $rslt['value'] : "10443";
-			
+			$websocketPORT = ((string) $rslt['value'] !== '') ? $rslt['value'] : "10443";
+
 			$this->goDB->where('setting', 'GO_agent_wss_sip');
 			$rslt = $this->goDB->getOne('settings', 'value');
-			$websocketSIP = (strlen($rslt['value']) > 0) ? "{$rslt['value']}" : "'+server_ip";
-			
+			$websocketSIP = ((string) $rslt['value'] !== '') ? "{$rslt['value']}" : "'+server_ip";
+
 			$this->goDB->where('setting', 'GO_agent_wss_sip_port');
 			$rslt = $this->goDB->getOne('settings', 'value');
 			$websocketSIPPort = "";
 			if (!preg_match("/server_ip/", $websocketSIP)) {
-				if (strlen($rslt['value']) > 0 && $rslt['value'] > 0 && $rslt['value'] != 5060) {
+				if ((string) $rslt['value'] !== '' && $rslt['value'] > 0 && $rslt['value'] != 5060) {
 					$websocketSIPPort = ":{$rslt['value']}'";
 				} else {
 					$websocketSIPPort = "'";
 				}
 			}
-			
+
 			$this->goDB->where('setting', 'GO_agent_domain');
 			$rslt = $this->goDB->getOne('settings', 'value');
-			$domain = (strlen($rslt['value']) > 0) ? $rslt['value'] : "goautodial.com";
+			$domain = ((string) $rslt['value'] !== '') ? $rslt['value'] : "goautodial.com";
 		}
-		
-		
+
+
 		$phone_login = $_SESSION['phone_login'];
 		$phone_pass = $_SESSION['phone_pass'];
 		$user_id = $_SESSION['user'];
 		$this->astDB->where('user', $user_id);
 		$rslt = $this->astDB->getOne('vicidial_users', 'pass,pass_hash');
-		$user_pass = (strlen($rslt['pass']) > 0) ? $rslt['pass'] : $rslt['pass_hash'];
-		
+		$user_pass = ((string) $rslt['pass'] !== '') ? $rslt['pass'] : $rslt['pass_hash'];
+
 		if ($useWebRTC) {
 			$display_name = $_SESSION['user'];
 			$socketParams = "password: pass,";
@@ -1055,7 +1039,7 @@ EOF;
 	var uName = '$user_id';
 	var uPass = '$user_pass';
 	var configuration;
-	
+
 	function registerPhone(phone_login, pass) {
 		var socket = new JsSIP.WebSocketInterface('{$webProtocol}://{$websocketURL}:{$websocketPORT}/');
 		configuration = {
@@ -1067,166 +1051,166 @@ EOF;
 			use_preloaded_route: false,
 			register: true
 		};
-		
+
 		phone = new JsSIP.UA(configuration);
-		
+
 		phone.on('connecting', function(e) {
 			console.log('connecting', e);
 		});
-		
+
 		phone.on('connected', function(e) {
 			console.log('connected', e);
 		});
-		
+
 		phone.on('disconnected', function(e) {
 			console.log('disconnected', e);
 		});
-		
+
 		phone.on('newRTCSession', function(e) {
 			var session = e.session;
 			console.log('newRTCSession: originator', e.originator, 'session', e.session, 'request', e.request);
-		
+
 			session.on('peerconnection', function (data) {
 				console.log('session::peerconnection', data);
 			});
-		
+
 			session.on('iceconnectionstatechange', function (data) {
 				console.log('session::iceconnectionstatechange', data);
 			});
-		
+
 			session.on('connecting', function (data) {
 				console.log('session::connecting', data);
 			});
-		
+
 			session.on('sending', function (data) {
 				console.log('session::sending', data);
 			});
-		
+
 			session.on('progress', function (data) {
 				console.log('session::progress', data);
 			});
-		
+
 			session.on('accepted', function (data) {
 				console.log('session::accepted', data);
 			});
-		
+
 			session.on('confirmed', function (data) {
 				console.log('session::confirmed', data);
 			});
-		
+
 			session.on('ended', function (data) {
 				console.log('session::ended', data);
 			});
-		
+
 			session.on('failed', function (data) {
 				console.log('session::failed', data);
 			});
-		
+
 			//session.on('addstream', function (data) {
 			//	console.log('session::addstream', data);
 			//
 			//	remoteStream = data.stream;
 			//	audioElement = document.querySelector('#remoteStream');
 			//	audioElement.src = window.URL.createObjectURL(remoteStream);
-			//	
+			//
 			//	globalSession = session;
 			//});
-		
+
 			session.on('removestream', function (data) {
 				console.log('session::removestream', data);
 			});
-		
+
 			session.on('newDTMF', function (data) {
 				console.log('session::newDTMF', data);
 			});
-		
+
 			session.on('hold', function (data) {
 				console.log('session::hold', data);
 			});
-		
+
 			session.on('unhold', function (data) {
 				console.log('session::unhold', data);
 			});
-		
+
 			session.on('muted', function (data) {
 				console.log('session::muted', data);
 			});
-		
+
 			session.on('unmuted', function (data) {
 				console.log('session::unmuted', data);
 			});
-		
+
 			session.on('reinvite', function (data) {
 				console.log('session::reinvite', data);
 			});
-		
+
 			session.on('update', function (data) {
 				console.log('session::update', data);
 			});
-		
+
 			session.on('refer', function (data) {
 				console.log('session::refer', data);
 			});
-		
+
 			session.on('replaces', function (data) {
 				console.log('session::replaces', data);
 			});
-		
+
 			session.on('sdp', function (data) {
 				console.log('session::sdp', data);
 			});
-		
+
 			session.answer({
 				mediaConstraints: {
 					audio: true,
 					video: false
 				}
 			});
-		
+
 			session.connection.addEventListener('addstream', (event) => {
 				console.log("session::addstream", event);
-				
+
 				remoteStream = event.stream;
 				audioElement = document.querySelector('#remoteStream');
 				audioElement.srcObject = remoteStream;
-				
+
 				globalSession = session;
 			});
 		});
-		
+
 		phone.on('newMessage', function(e) {
 			console.log('newMessage', e);
 		});
-		
+
 		phone.on('registered', function(e) {
 			var xmlhttp = new XMLHttpRequest();
 			var query = "";
-			
+
 			phoneRegistered = true;
 			$("#dialer-tab").css('display', 'table-cell');
 			if ( !!$.prototype.snackbar ) {
 				$.snackbar({content: "<i class='fa fa-info-circle fa-lg text-success' aria-hidden='true'></i>&nbsp; $phoneIsRegistered", timeout: 5000, htmlAllowed: true});
 			}
 		});
-		
+
 		phone.on('unregistered', function(e) {
 			console.log('unregistered', e);
 			phoneRegistered = false;
 		});
-		
+
 		phone.on('registrationFailed', function(e) {
 			console.log('registrationFailed', e);
 			if ( !!$.prototype.snackbar ) {
 				$.snackbar({content: "<i class='fa fa-exclamation-triangle fa-lg text-danger' aria-hidden='true'></i>&nbsp; $registrationFailed", timeout: 5000});
 			}
 		});
-		
+
 		navigator.mediaDevices.getUserMedia({
 			audio: true,
 			video: false
 		}).then(function (stream) {
 			localStream = stream;
-		
+
 			//phone.start();
 		}).catch(function (err) {
 			console.error('getUserMedia failed: %s', err.toString());
@@ -1242,13 +1226,13 @@ EOF;
 		}
 		return $str;
 	}
-	
+
 	// hooks
 	private function getLabels($type='system_settings', $label_id=null) {
 		//set variables
-		$camp = (isset($_SESSION['campaign_id'])) ? $_SESSION['campaign_id'] : null;
+		$camp = $_SESSION['campaign_id'] ?? null;
 		$url = gourl.'/goAgent/goAPI.php';
-		$fields = array(
+		$fields = [
 			'goAction' => 'goGetLabels',
 			'goUser' => goUser,
 			'goPass' => goPass,
@@ -1256,65 +1240,62 @@ EOF;
 			'goTableName' => $type,
 			'goLabelID' => $label_id,
 			'goCampaign' => $camp
-		);
-		
+		];
+
 		//url-ify the data for the POST
 		foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
 		rtrim($fields_string, '&');
-		
+
 		//open connection
 		$ch = curl_init();
-		
+
 		//set the url, number of POST vars, POST data
 		curl_setopt($ch,CURLOPT_URL, $url);
 		curl_setopt($ch,CURLOPT_POST, count($fields));
 		curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
-		
+
 		//execute post
 		$result = json_decode(curl_exec($ch));
-		
-		//close connection
-		curl_close($ch);
-		
+
 		return $result->data;
 	}
-	
+
 	//public function taskListHoverHook($taskid) {
 	//	$this->db()->where("id", $taskid);
 	//	$task = $this->db()->getOne(CRM_TASKS_TABLE_NAME);
-	//	if (isset($task)) { 
-	//		$text = $task["description"]; 
+	//	if (isset($task)) {
+	//		$text = $task["description"];
 	//		$url = $this->searchQuoteURL($text);
 	//	} else { $url = "http://duckduckgo.com"; }
 	//	return $this->ui()->hoverActionButton("quote_task_action", "quote-left", $url);
 	//}
-	
+
 	public function topBarHookAgent() {
 		$callbacks = $this->getCallbacks();
 		$numberOfCallbacks = count($callbacks);
 		$header = $this->getTopbarMenuHeader("phone-square", $numberOfCallbacks, CRM_UI_TOPBAR_MENU_STYLE_SIMPLE, "callbacks", $this->lh()->translationFor("callbacks_for_today"), null, "primary", false);
-		
+
 		$elements = "";
-		foreach ($callbacks as $key => $cbinfo) {
+		foreach ($callbacks as $cbinfo) {
 			//$elements .= $this->getTopbarSimpleElement($cbinfo["quote"]." -- ".$quote["author"], "quote-right", $this->mainPageViewURL(array("author_number" => $quote["author_number"])));
 			$elements .= $this->getTopbarSimpleElementWithDate($cbinfo["phone_number"], $cbinfo["callback_time"], "clock-o", "events.php", CRM_UI_STYLE_WARNING, $cbinfo["cust_name"], true);
 		}
 		$footer = $this->getTopbarMenuFooter($this->lh()->translationFor("see_all_callbacks"), "events.php");
 		return $this->ui()->getTopbarCustomMenu($header, $elements, $footer);
 	}
-	
+
 	private function getCallbacks($number = 5, $cb_type = "today_callbacks") {
 		$callbacks_array = $this->getUserInfo($_SESSION['user']);
 		$callbacks = [];
 		foreach ($callbacks_array->$cb_type as $key => $value) {
 			if ($key < $number) {
-				$callbacks[$key] = array("phone_number" => $value->phone_number, "cust_name" => $value->cust_name, "callback_time" => $value->short_callback_time);
+				$callbacks[$key] = ["phone_number" => $value->phone_number, "cust_name" => $value->cust_name, "callback_time" => $value->short_callback_time];
 			} else {
 				break;
 			}
 		}
-		
+
 		return $callbacks;
 	}
 
@@ -1323,17 +1304,12 @@ EOF;
 		$linkSuffix = isset($footerLink) ? '</a>' : '';
 		return '</ul></li><li class="footer">'.$linkPrefix.$footerText.$linkSuffix.'</li></ul></li>';
 	}
-	
-	private function getTopbarSimpleElement($text, $icon, $link, $tint = "aqua") {
-		$shortText = strlen($text) > 40 ? substr($text,0,40)."..." : $text;
-		return '<li style="text-align: left; !important;"><a href="'.$link.'"><i class="fa fa-'.$icon.' text-'.$tint.'"></i><b>'.$shortText.'</b></a></li>';
-	}
-	
-	private function getTopbarSimpleElementWithDate($text, $date, $icon, $link, $tint = CRM_UI_STYLE_DEFAULT, $title, $isPhone = false) {
-	    $shortText = strlen($text) > 25 ? substr($text,0,25)."..." : $text;
+
+	private function getTopbarSimpleElementWithDate($text, $date, $icon, $link, $tint = CRM_UI_STYLE_DEFAULT, $title = null, $isPhone = false) {
+	    $shortText = strlen((string) $text) > 25 ? substr((string) $text,0,25)."..." : $text;
 		//$relativeTime = $this->ui()->relativeTime($date, 1);
 		$relativeTime = $date;
-		$showTitle = strlen($title) > 0 ? " title='$title'" : '';
+		$showTitle = (string) $title !== '' ? " title='$title'" : '';
 		$showIcon = ($isPhone) ? '<i class="fa fa-phone"></i> ' : '';
 		return '<li><a href="'.$link.'"'.$showTitle.' style="padding: 0px 10px;"><h4 style="margin-top: 9.5px;"><p class="pull-left">'.$showIcon.'<b>'.$shortText.'</b></p><small class="label label-'.$tint.' pull-right"><i class="fa fa-'.$icon.'"></i> '.$relativeTime.'</small></h4></a></li>';
 	}
@@ -1348,17 +1324,17 @@ EOF;
 		} else { $headerCode = ""; }
 		$hideCode = $hideForLowResolution? "hide-on-low" : "";
 		$menuName = isset($menuId) ? 'id="topbar-'.$menuId.'" ' : '';
-		
+
 		// return the topbar menu header
 		return '<li '.$menuName.'class="dropdown '.$menuStyle.'-menu '.$hideCode.'"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-'.$icon.'"></i><span class="label label-'.$badgeStyle.'">'.$badge.'</span></a>
 			<ul class="dropdown-menu">'.$headerCode.'<li><ul class="menu">';
 	}
-	
+
 	// settings
 	public function moduleSettings() {
 		//$options = array('', 'asterisk', 'kamailio');
-		$options = array('kamailio');
-		$moduleSettings = array(
+		$options = ['kamailio'];
+		return [
 			"GO_agent_use_wss_info" => CRM_SETTING_TYPE_LABEL,
 			"GO_agent_use_wss" => CRM_SETTING_TYPE_BOOL,
 			"GO_show_phones_info" => CRM_SETTING_TYPE_LABEL,
@@ -1373,38 +1349,37 @@ EOF;
 			"GO_agent_wss_sip_info" => CRM_SETTING_TYPE_LABEL,
 			"GO_agent_wss_sip_port" => CRM_SETTING_TYPE_INT,
 			"GO_agent_wss_sip_port_info" => CRM_SETTING_TYPE_LABEL,
-			"GO_agent_sip_server" => array(
+			"GO_agent_sip_server" => [
 				"type" => CRM_SETTING_TYPE_SELECT,
 				"options" => $options
-			),
+			],
 			"GO_agent_sip_server_info" => CRM_SETTING_TYPE_LABEL,
 			"GO_agent_domain" => CRM_SETTING_TYPE_STRING,
 			"GO_agent_domain_info" => CRM_SETTING_TYPE_LABEL
-		);
-		return $moduleSettings;
+		];
 	}
-	
+
 	public function getUserInfo($user) {
 		//set variables
-		$camp = (isset($_SESSION['campaign_id'])) ? $_SESSION['campaign_id'] : null;
+		$camp = $_SESSION['campaign_id'] ?? null;
 		$url = gourl.'/goAgent/goAPI.php';
-		$fields = array(
+		$fields = [
 			'goAction' => 'goGetCallbackCount',
 			'goUser' => goUser,
 			'goPass' => goPass,
 			'responsetype' => responsetype,
 			'goCampaign' => $camp,
 			'goUserID' => $user
-		);
-		
+		];
+
 		//url-ify the data for the POST
 		$fields_string = "";
 		foreach($fields as $key=>$value) { $fields_string .= $key.'='.$value.'&'; }
 		rtrim($fields_string, '&');
-		
+
 		//open connection
 		$ch = curl_init();
-		
+
 		//set the url, number of POST vars, POST data
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, count($fields));
@@ -1412,14 +1387,11 @@ EOF;
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-		
+
 		//execute post
 		$data = curl_exec($ch);
 		$result = json_decode($data);
-		
-		//close connection
-		curl_close($ch);
-		
+
 		return $result->data;
 	}
 }

@@ -20,7 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 //ini_set('display_errors', 1);
 //ini_set('display_startup_errors', 1);
 //error_reporting(E_ALL);	
@@ -45,38 +45,38 @@
 			
 	if (isset($_POST["campaignID"])) { 
 		$campaign_id = $_POST["campaignID"]; 
-		$campaign_id = stripslashes($campaign_id);
+		$campaign_id = stripslashes((string) $campaign_id);
 	}
 		
 	if (isset($_POST["request"])) {
 		$request = $_POST["request"];
-		$request = stripslashes($request);
+		$request = stripslashes((string) $request);
 	}
 			
 	if (isset($_POST["userID"])) {
 		$userID = $_POST["userID"];
-		$userID = stripslashes($userID);
+		$userID = stripslashes((string) $userID);
 	}
 	
 	if (isset($_POST["userGroup"])) {
 		$userGroup = $_POST["userGroup"];
-		$userGroup = stripslashes($userGroup);
+		$userGroup = stripslashes((string) $userGroup);
 	}
 		
-	$postfields = array(
+	$postfields = [
 		'goAction' => 'goGetSalesTracker',		
 		'fromDate' => $fromDate,
 		'toDate' => $toDate,
 		'campaignID' => $campaign_id,
 		'request' => $request,
 		'statuses' => $statuses
-	);
+	];
 	$sales_tracker = "";
 	$output = $api->API_getReports($postfields);
 	//var_dump($output);
 	if ($output->result == "success") {
 		// SALES TRACKER
-		if (strtolower($request) === "outbound") {
+		if (strtolower((string) $request) === "outbound") {
 			//outbound table
 			$sales_tracker .= '
 			<div>
@@ -116,7 +116,7 @@
 			
 		}
 		
-		if (strtolower($request) == "inbound") {
+		if (strtolower((string) $request) === "inbound") {
 		// inbound table
 			$sales_tracker .= '
 			<div>

@@ -1,5 +1,7 @@
 <?php
 
+    declare(strict_types=1);
+
     /** View Lead Info API - View a specific lead   */
     /**
     * Generates action circle buttons for different pages/module
@@ -9,7 +11,7 @@
     * @param responsetype
     * @param campaign_id
     */
-    require_once('goCRMAPISettings.php');
+    require_once(__DIR__ . '/goCRMAPISettings.php');
 
     $url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -30,7 +32,6 @@
     curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     $data = curl_exec($ch);
-    curl_close($ch);
 
     //var_dump($data);
 

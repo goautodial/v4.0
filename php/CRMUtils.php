@@ -25,7 +25,7 @@
 
 namespace creamy;
 
-require_once('CRMDefaults.php');
+require_once(__DIR__ . '/CRMDefaults.php');
 
 /** General utilities */
 class CRMUtils {
@@ -36,16 +36,16 @@ class CRMUtils {
 	 * i.e: http://localhost:8080/creamy/somedir => http://localhost:8080/creamy/
 	 */
 	static public function getBasedirFromURL($url) {
-	    if ($first_query = strpos($url, '?')) $url = substr($url, 0, $first_query);
-	    if ($first_fragment = strpos($url, '#')) $url = substr($url, 0, $first_fragment);
-	    $last_slash = strrpos($url, '/');
+	    if ($first_query = strpos((string) $url, '?')) $url = substr((string) $url, 0, $first_query);
+	    if ($first_fragment = strpos((string) $url, '#')) $url = substr((string) $url, 0, $first_fragment);
+	    $last_slash = strrpos((string) $url, '/');
 	    if (!$last_slash) {
 	        return '/';
 	    }
-	    if (($first_colon = strpos($url, '://')) !== false && $first_colon + 2 == $last_slash) {
+	    if (($first_colon = strpos((string) $url, '://')) !== false && $first_colon + 2 === $last_slash) {
 	        return $url . '/';
 	    }
-	    return substr($url, 0, $last_slash + 1);
+	    return substr((string) $url, 0, $last_slash + 1);
 	}
 	
 	/** 
@@ -54,15 +54,14 @@ class CRMUtils {
 	 */
 	static public function getCurrentURLPath() {
 		$port = ""; if ($_SERVER["SERVER_PORT"] != 80 && $_SERVER["SERVER_PORT"] != 443) { $port = ":".$_SERVER["SERVER_PORT"]; }
-		$result = (!empty($_SERVER['HTTPS'])) ? "https://".$_SERVER['SERVER_NAME'].":".$port.$_SERVER['REQUEST_URI'] : "http://".$_SERVER['SERVER_NAME'].$port.$_SERVER['REQUEST_URI'];
-		return $result;
+		return (empty($_SERVER['HTTPS'])) ? "http://".$_SERVER['SERVER_NAME'].$port.$_SERVER['REQUEST_URI'] : "https://".$_SERVER['SERVER_NAME'].":".$port.$_SERVER['REQUEST_URI'];
 	}
 	
 	/** Returns an associative array with all the timezones as keys and a friendly description of each of them as values */
 	static public function getTimezonesAsArray() {
         $utc = new \DateTimeZone('UTC');
 		$dt = new \DateTime('now', $utc);
-		$result = array();
+		$result = [];
 		foreach(\DateTimeZone::listIdentifiers() as $tz) {
 		    $current_tz = new \DateTimeZone($tz);
 		    $offset =  $current_tz->getOffset($dt);
@@ -76,17 +75,17 @@ class CRMUtils {
     }
     
 	public static function startsWith($haystack, $needle) {
-	     $length = strlen($needle);
-	     return (substr($haystack, 0, $length) === $needle);
+	     $length = strlen((string) $needle);
+	     return (substr((string) $haystack, 0, $length) === $needle);
 	}
 	
 	public static function endsWith($haystack, $needle) {
-	    $length = strlen($needle);
-	    if ($length == 0) {
+	    $length = strlen((string) $needle);
+	    if ($length === 0) {
 	        return true;
 	    }
 	
-	    return (substr($haystack, -$length) === $needle);
+	    return (substr((string) $haystack, -$length) === $needle);
 	}
 	
 	/** 
@@ -95,7 +94,7 @@ class CRMUtils {
 	 * @return Bool true if directory and all contained files/directories were successfully deleted, false otherwise.
 	 */
 	public static function deleteDirectoryRecursively($dir) { 
-		$files = array_diff(scandir($dir), array('.','..')); 
+		$files = array_diff(scandir($dir), ['.','..']); 
 		foreach ($files as $file) {
 			(is_dir($dir.DIRECTORY_SEPARATOR.$file)) ? \creamy\CRMUtils::deleteDirectoryRecursively($dir.DIRECTORY_SEPARATOR.$file) : unlink($dir.DIRECTORY_SEPARATOR.$file); 
 		} 
@@ -108,7 +107,7 @@ class CRMUtils {
 	 * @param Bool $includeLastSlash if true, adds a final slash (/).
 	 */
 	public static function creamyBaseDirectoryPath($includeLastSlash = true) {
-		$result = dirname(dirname(__FILE__));
+		$result = dirname(__FILE__, 2);
 		if ($includeLastSlash) $result .= DIRECTORY_SEPARATOR;
 		return $result;
 	}
@@ -128,7 +127,7 @@ class CRMUtils {
 	 * directory_separator.
 	 */
 	public static function uploadDirectoryPath() {
-		return realpath(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.CRM_UPLOADS_DIRNAME).DIRECTORY_SEPARATOR;
+		return realpath(dirname(__FILE__, 2).DIRECTORY_SEPARATOR.CRM_UPLOADS_DIRNAME).DIRECTORY_SEPARATOR;
 	}
 
 	/**
@@ -139,7 +138,7 @@ class CRMUtils {
 	 * @param String $lockFile		If true, touches the file to lock it.
 	 */
 	public static function generateUploadRelativePath($filename = null, $lockFile = false) {
-		require_once('RandomStringGenerator.php');
+		require_once(__DIR__ . '/RandomStringGenerator.php');
 		$basedir = CRM_UPLOADS_DIRNAME."/".date('Y')."/".date('m')."/";
 		$baseDirInDisk = \creamy\CRMUtils::creamyBaseDirectoryPath().$basedir;
 		if (!is_dir($baseDirInDisk)) { mkdir($baseDirInDisk, 0775, true); } // create dir if it doesn't exists
@@ -153,8 +152,8 @@ class CRMUtils {
 		$i = 1;
 		$filepath = $baseDirInDisk.$filename;
 		while (file_exists($filepath)) { // add -$i to filename
-			$components = pathinfo($filename, PATHINFO_DIRNAME | PATHINFO_BASENAME | PATHINFO_EXTENSION | PATHINFO_FILENAME);
-			$filename = $components["filename"]."-$i".(isset($components["extension"]) ? $components["extension"] : "");
+			$components = pathinfo((string) $filename, PATHINFO_DIRNAME | PATHINFO_BASENAME | PATHINFO_EXTENSION | PATHINFO_FILENAME);
+			$filename = $components["filename"]."-$i".($components["extension"] ?? "");
 			$filepath = $baseDirInDisk.$filename;
 			$i++;
 		}
@@ -169,13 +168,13 @@ class CRMUtils {
 	 * @returns Array an associative array with a random color. i.e: "r" => 23, "g" => 141, "b" => 88.
 	 */
 	public static function randomRGBAColor($includeAlpha = false) {
-		$r = rand(0, 255);
-		$g = rand(0, 255);
-		$b = rand(0, 255);
+		$r = random_int(0, 255);
+		$g = random_int(0, 255);
+		$b = random_int(0, 255);
 		if ($includeAlpha) {
-			$a = rand(0, 255);
-			return array("r" => $r, "g" => $g, "b" => $b, "a" => $a);
-		} else { return array("r" => $r, "g" => $g, "b" => $b); }
+			$a = random_int(0, 255);
+			return ["r" => $r, "g" => $g, "b" => $b, "a" => $a];
+		} else { return ["r" => $r, "g" => $g, "b" => $b]; }
 	}
 
 	/**
@@ -183,9 +182,9 @@ class CRMUtils {
 	 * @returns String a RGB hex color. i.e: #FA043B
 	 */
 	public static function randomHexColor($minRGB = 1, $maxRGB = 255) {
-		$r = dechex(rand(0, 255)); if (strlen($r) < 2) $r = "0".$r;
-		$g = dechex(rand(0, 255)); if (strlen($g) < 2) $g = "0".$g;
-		$b = dechex(rand(0, 255)); if (strlen($b) < 2) $b = "0".$b;
+		$r = dechex(random_int(0, 255)); if (strlen($r) < 2) $r = "0".$r;
+		$g = dechex(random_int(0, 255)); if (strlen($g) < 2) $g = "0".$g;
+		$b = dechex(random_int(0, 255)); if (strlen($b) < 2) $b = "0".$b;
 		return "#$r$g$b";
 	}
 

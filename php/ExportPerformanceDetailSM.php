@@ -20,8 +20,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('APIHandler.php');
-require_once('CRMDefaults.php');
+require_once(__DIR__ . '/APIHandler.php');
+require_once(__DIR__ . '/CRMDefaults.php');
 
 $api = \creamy\APIHandler::getInstance();
 ini_set('memory_limit', '2048M');

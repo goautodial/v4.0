@@ -3,8 +3,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once('CRMDefaults.php');
-require_once('goCRMAPISettings.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/goCRMAPISettings.php');
 
 // check required fields
 $reason = "Unable to Modify Campaign";
@@ -31,12 +31,12 @@ if ($campaign != NULL) {
 	// collect new user data.	
 	$name = NULL; if (isset($_POST["name"])) { 
 		$name = $_POST["name"]; 
-		$name = stripslashes($name);
+		$name = stripslashes((string) $name);
 	}
 
 	$dial_method = NULL; if (isset($_POST["dial_method"])) { 
 		$dial_method = $_POST["dial_method"]; 
-		$dial_method = stripslashes($dial_method);
+		$dial_method = stripslashes((string) $dial_method);
 	}
 
     $status = NULL; if (isset($_POST["status"])) { 
@@ -62,7 +62,6 @@ if ($campaign != NULL) {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
     $data = curl_exec($ch);
-    curl_close($ch);
     $output = json_decode($data);
 	
     if ($output->result=="success") {
@@ -117,7 +116,7 @@ if ($disposition != NULL) {
 	}
 	$status_name = NULL; if (isset($_POST["status_name"])) { 
 		$status_name = $_POST["status_name"]; 
-		$status_name = stripslashes($status_name);
+		$status_name = stripslashes((string) $status_name);
 	}
     
 	$url = gourl."/goDispositions/goAPI.php"; # URL to GoAutoDial API file
@@ -146,7 +145,6 @@ if ($disposition != NULL) {
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 	$data = curl_exec($ch);
-	curl_close($ch);
 	$output = json_decode($data);
 
     //var_dump($output);
@@ -167,7 +165,7 @@ if ($leadfilter != NULL) {
 	// collect new user data.		
 	$name = NULL; if (isset($_POST["name"])) { 
 		$name = $_POST["name"]; 
-		$name = stripslashes($name);
+		$name = stripslashes((string) $name);
 	}
     
 	$url = gourl."/goLeadFilters/goAPI.php"; # URL to GoAutoDial API file
@@ -188,7 +186,6 @@ if ($leadfilter != NULL) {
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 	$data = curl_exec($ch);
-	curl_close($ch);
 	$output = json_decode($data);
 
     //var_dump($output);

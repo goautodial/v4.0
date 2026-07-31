@@ -22,7 +22,7 @@
 */
 
 	ini_set('memory_limit', '2048M');
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 										= \creamy\APIHandler::getInstance();
 	$list_id									= $_POST["listid"];
     /*$output										= $api->API_listExport($list_id);
@@ -84,13 +84,13 @@
 				$output = $api->API_Request("goLists", $postfields);
 	
 				if($output->result == "success"){
-					if($offset == 0){
+					if($offset === 0){
 						$data_header = $output->header;
 					}
 					$data_row .= $output->row;
 				}
 				$last_row_offset = $offset;
-				$offset = $offset + $limit;
+				$offset += $limit;
 			}
 			$i = 0;        
 			

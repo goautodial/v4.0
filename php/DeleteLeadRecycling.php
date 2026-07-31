@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        DeleteLeadRecycling.php
  * @brief       Handles Delete Lead Recycling Request
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -22,7 +24,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 											= \creamy\APIHandler::getInstance();
 	$campaign_id 									= $_POST["campaign_id"];
@@ -30,11 +32,11 @@
 
     if (!empty($campaign_id) && !empty($recycleid)) {
     
-		$postfields 								= array(
+		$postfields 								= [
 			'goAction' 									=> 'goDeleteLeadRecycling',
 			'campaign_id' 								=> $campaign_id,
 			'recycle_id' 								=> $recycleid
-		);
+		];
 
 		$output 									= $api->API_Request("goLeadRecycling", $postfields);
 
@@ -48,10 +50,10 @@
 		
 	} elseif (!empty($campaign_id) && empty($recycleid)) {
 
-		$postfields 								= array(
+		$postfields 								= [
 			'goAction' 									=> 'goDeleteLeadRecycling',
 			'campaign_id' 								=> $campaign_id
-		);
+		];
 
 		$output 									= $api->API_Request("goLeadRecycling", $postfields);
 

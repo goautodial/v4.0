@@ -22,12 +22,12 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
 */
-require_once('CRMDefaults.php');
-require_once('LanguageHandler.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/LanguageHandler.php');
 if (!isset($lh)) { $lh = \creamy\LanguageHandler::getInstance(); }
-require_once('UIHandler.php');
+require_once(__DIR__ . '/UIHandler.php');
 if (!isset($ui)) { $ui = \creamy\UIHandler::getInstance(); }
-require_once('Session.php');
+require_once(__DIR__ . '/Session.php');
 $user = \creamy\CreamyUser::currentUser();
 ?>
 <script src="js/jquery.validate.min.js" type="text/javascript"></script>

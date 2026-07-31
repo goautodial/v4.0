@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        AddUserGroup.php
  * @brief       Handles add usergroup variables
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -22,15 +24,15 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 							= \creamy\APIHandler::getInstance();
 
-	$postfields 					= array(
+	$postfields 					= [
 		'goAction' 						=> 'goAddUserGroup',
 		'user_group' 					=> $_POST['usergroup_id'],
 		'group_name' 					=> $_POST['groupname'],
 		'group_level' 					=> $_POST['grouplevel']
-	);
+	];
 
 	$output 						= $api->API_addUserGroup($postfields);
 
@@ -39,7 +41,7 @@
 	} else { 
 		$status 					= $output->result; 
 	}
-	
+
 	echo json_encode($status);
 
 ?>

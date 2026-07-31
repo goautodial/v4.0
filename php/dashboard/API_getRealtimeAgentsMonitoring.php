@@ -20,7 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 	
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 											= \creamy\APIHandler::getInstance();
 	$output 										= $api->API_getRealtimeAgentsMonitoring();
@@ -28,7 +28,7 @@
     $barracks 										= '[';   
     
     if (is_array($output->data)) {
-		foreach ($output->data as $key => $value) {
+		foreach ($output->data as $value) {
 	
 			$userid 								= $api->escapeJsonString($value->vu_user_id);
 			$agentid 								= $api->escapeJsonString($value->vla_user);
@@ -45,18 +45,18 @@
 			$last_update_time 						= $api->escapeJsonString($value->last_update_time);
 			$last_call_finish 						= $api->escapeJsonString($value->last_call_finish);
 			$campaign_id 							= $api->escapeJsonString($value->vla_campaign_id);
-			$last_state_change 						= (!isset($value->last_state_change)) ? $last_call_finish : $api->escapeJsonString($value->last_state_change);
+			$last_state_change 						= (isset($value->last_state_change)) ? $api->escapeJsonString($value->last_state_change) : $last_call_finish;
 			$lead_id 								= $api->escapeJsonString($value->vla_lead_id);
 			$agent_log_id 							= $api->escapeJsonString($value->vla_agent_log_id);
 			$vla_callerid 							= $api->escapeJsonString($value->vla_callerid);    
-			$cust_phone 							= (!isset($value->vl_phone_number)) ? "" : $api->escapeJsonString($value->vl_phone_number);
+			$cust_phone 							= (isset($value->vl_phone_number)) ? $api->escapeJsonString($value->vl_phone_number) : "";
 			$pausecode 								= $api->escapeJsonString($value->vla_pausecode);
 			//$vla_conference						= $api->escapeJsonString($value->vla_conf_exten);
 			//$ol_conference							= (!isset($value->ol_conference)) ? "" : $api->escapeJsonString($value->ol_conference);
 			//$ol_callerid							= (!isset($value->ol_callerid)) ? "" : $api->escapeJsonString($value->ol_callerid);
 			
 			if (!empty($output->callerids)) {
-				foreach ($output->callerids as $key => $callerids) {
+				foreach ($output->callerids as $callerids) {
 				
 					$vac_callerid 					= $api->escapeJsonString($callerids->vac_callerid);
 					$vac_lead_id 					= $api->escapeJsonString($callerids->vac_lead_id);
@@ -65,7 +65,7 @@
 			}
 			
 			if (!empty($output->parked)) {
-				foreach ($output->parked as $key => $parked){
+				foreach ($output->parked as $parked){
 				
 					$pc_channel 					= $parked->pc_channel;
 					$pc_channel_group 				= $parked->pc_channel_group;
@@ -84,7 +84,7 @@
 			$call_time_M 							= round($call_time_M, 2);
 			$call_time_M_int 						= intval("$call_time_M");
 			$call_time_SEC 							= ($call_time_M - $call_time_M_int);
-			$call_time_SEC 							= ($call_time_SEC * 60);
+			$call_time_SEC *= 60;
 			$call_time_SEC 							= round($call_time_SEC, 0);
 			
 			if ($status == "INCALL") {
@@ -155,7 +155,7 @@
 					$textclass 						= "text-warning";
 					$nametextclass 					= "text-warning";
 					
-					if (strlen($pausecode) > 0) { 
+					if ((string) $pausecode !== '') { 
 						$CM 						= " [$pausecode]"; 
 					}
 					

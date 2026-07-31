@@ -22,7 +22,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 									= \creamy\APIHandler::getInstance();
 
 	// check required fields
@@ -32,26 +32,26 @@
 		$validated							= 0;
 	}
 
-	if ($validated == 1) {
+	if ($validated === 1) {
 		// collect new user data.	
 		$modifyid 							= $_POST["modifyid"];
 		$user 								= $_POST["user"];		
 		$name								= NULL; 
 		if (isset($_POST["fullname"])) { 
 			$name 							= $_POST["fullname"]; 
-			$name 							= stripslashes($name);
+			$name 							= stripslashes((string) $name);
 		}
 
 		$email 								= NULL; 
 		if (isset($_POST["email"])) { 
 			$email 							= $_POST["email"]; 
-			$email 							= stripslashes($email);
+			$email 							= stripslashes((string) $email);
 		}
 
 		$user_group 						= NULL; 
 		if (isset($_POST["usergroup"])) { 
 			$user_group 					= $_POST["usergroup"]; 
-			$user_group 					= stripslashes($user_group);
+			$user_group 					= stripslashes((string) $user_group);
 		}
 		
 		$status 							= NULL; 
@@ -63,19 +63,19 @@
 		$user_level 						= NULL; 
 		if (isset($_POST["userlevel"])) { 
 			$user_level 					= $_POST["userlevel"]; 
-			$user_level 					= stripslashes($user_level);
+			$user_level 					= stripslashes((string) $user_level);
 		}
 		
 		$voicemail 							= NULL; 
 		if (isset($_POST["voicemail"])) { 
 			$voicemail 						= $_POST["voicemail"]; 
-			$voicemail 						= stripslashes($voicemail);
+			$voicemail 						= stripslashes((string) $voicemail);
 		}
 
 		$hotkeys_active 					= NULL; 
 		if (isset($_POST["hotkeys"])) { 
 			$hotkeys_active 				= $_POST["hotkeys"]; 
-			$hotkeys_active 				= stripslashes($hotkeys_active);
+			$hotkeys_active 				= stripslashes((string) $hotkeys_active);
 		}
 		
 		$pass 								= ""; 
@@ -87,7 +87,7 @@
 		$phone_login 						= NULL; 
 		if (isset($_POST["phone_login"])) { 
 			$phone_login 					= $_POST["phone_login"]; 
-			$phone_login 					= stripslashes($phone_login);
+			$phone_login 					= stripslashes((string) $phone_login);
 		}
 
 		$phone_pass 						= NULL; 
@@ -110,7 +110,7 @@
 		$vicidial_recording_override 		= NULL; 
 		if (isset($_POST["vicidial_recording_override"])) { 
 			$vicidial_recording_override 	= $_POST["vicidial_recording_override"]; 
-			$vicidial_recording_override 	= stripslashes($vicidial_recording_override);
+			$vicidial_recording_override 	= stripslashes((string) $vicidial_recording_override);
 		}
 		
 		$vicidial_transfers 				= NULL; 
@@ -122,13 +122,13 @@
 		$closer_default_blended 			= NULL; 
 		if (isset($_POST["closer_default_blended"])) { 
 			$closer_default_blended 		= $_POST["closer_default_blended"]; 
-			$closer_default_blended 		= stripslashes($closer_default_blended);
+			$closer_default_blended 		= stripslashes((string) $closer_default_blended);
 		}
 		
 		$agentcall_manual 					= NULL; 
 		if (isset($_POST["agentcall_manual"])) { 
 			$agentcall_manual 				= $_POST["agentcall_manual"]; 
-			$agentcall_manual 				= stripslashes($agentcall_manual);
+			$agentcall_manual 				= stripslashes((string) $agentcall_manual);
 		}
 		
 		$scheduled_callbacks 				= NULL; 
@@ -146,7 +146,7 @@
 		$agent_lead_search_override 		= NULL; 
 		if (isset($_POST["agent_lead_search_override"])) { 
 			$agent_lead_search_override 	= $_POST["agent_lead_search_override"]; 
-			$agent_lead_search_override 	= stripslashes($agent_lead_search_override);
+			$agent_lead_search_override 	= stripslashes((string) $agent_lead_search_override);
 		}
 		
 		$avatar 							= NULL; 
@@ -160,7 +160,7 @@
 			$enable_webrtc 					= $_POST["enable_webrtc"];
 		}
 
-		$postfields = array(
+		$postfields = [
 			"goAction" 						=> "goEditUser", #action performed by the [[API:Functions]]
 			"user_id" 						=> $modifyid,
 			"user" 							=> $user,
@@ -185,7 +185,7 @@
 			"scheduled_callbacks"			=> $scheduled_callbacks,
 			"agentonly_callbacks"			=> $agentonly_callbacks,
 			"enable_webrtc"					=> $enable_webrtc
-		);
+		];
 
 		$output = $api->API_Request("goUsers", $postfields);
 

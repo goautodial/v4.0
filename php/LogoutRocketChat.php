@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * @file        LogoutRocketChat.php
  * @brief       Logs out user to rocketchat
@@ -20,14 +22,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-include('./CRMDefaults.php');
+include(__DIR__ . '/CRMDefaults.php');
 
 $userID = $_POST['userID'];
 $authToken = $_POST['authToken'];
 
 //Logs In Rocketchat User
 	$curl = curl_init();
-       	curl_setopt_array($curl, array(
+       	curl_setopt_array($curl, [
         CURLOPT_URL => ROCKETCHAT_URL."/api/v1/logout",
         //CURLOPT_URL => ROCKETCHAT_URL."/api/v1/method.callAnon/logoutCleanUp",
 	CURLOPT_RETURNTRANSFER => true,
@@ -40,12 +42,11 @@ $authToken = $_POST['authToken'];
 		CURLOPT_SSL_VERIFYHOST => false,
 		CURLOPT_SSL_VERIFYPEER => false,
        	CURLOPT_POSTFIELDS =>"{\r\n  \"X-User-Id\": \"$userID\",\r\n  \"X-Auth-Token\": \"$authToken\"}",
-        CURLOPT_HTTPHEADER => array(
+        CURLOPT_HTTPHEADER => [
        	        "Content-Type:application/json", "X-User-Id:$userID",  "X-Auth-Token:$authToken"
-       	    )
-        ));
+       	    ]
+        ]);
        	$response = curl_exec($curl);
-        curl_close($curl);
 	if (isset($_COOKIE['rc_uid']))
 	    unset($_COOKIE['rc_uid']);
 	if (isset($_COOKIE['rc_token']))

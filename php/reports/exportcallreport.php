@@ -20,7 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 		
 	$session_user = $api->GetSessionUser();
@@ -50,9 +50,7 @@
 								<div class="mb">
 									<div class="">
 										<select multiple="multiple" class="select2-3 form-control" id="selected_campaigns" name="campaigns[]" style="width:100%;">';
-											if(EXPORTCALLREPORT_ALLCAMPAIGNS === "y"){
-												$display .= '<option value="ALL" selected>--- ALL CAMPAIGNS ---</option>';
-											}
+											$display .= '<option value="ALL" selected>--- ALL CAMPAIGNS ---</option>';
 											for($i=0; $i < count($campaigns->campaign_id);$i++) {
 												$isSelected = '';
 												if ($i < 1 && EXPORTCALLREPORT_ALLCAMPAIGNS !== "y") {
@@ -71,10 +69,8 @@
 								<div class="mb">
 									<div class="">
 										<select multiple="multiple" class="select2-3 form-control" id="selected_inbounds" name="inbounds[]" style="width:100%;">';
-											if(EXPORTCALLREPORT_ALLCAMPAIGNS === "y"){
-                                                                                                $display .= '<option value="ALL">--- ALL ---</option>
+											$display .= '<option value="ALL">--- ALL ---</option>
 ';
-                                                                                        }
 
 											for($i=0; $i < count($inbound->group_id);$i++) {
 												if ($session_group !== "ADMIN" && preg_match("/^AGENTDIRECT/", $inbound->group_id[$i])) continue;
@@ -219,7 +215,7 @@
 				var custom_statuses = [];
 				<?php
 					foreach ($disposition->custom_dispo as $cCamp => $cDispo){
-						$dispoStatuses = array();
+						$dispoStatuses = [];
 	        	                		foreach ($cDispo as $idx => $val) {
         	                                        	$dispoStatuses[] = $idx . " - " . $val;
                                                         }

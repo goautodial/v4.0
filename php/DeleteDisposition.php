@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        DeleteDisposition.php
  * @brief       Handles Delete Disposition Requests
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -21,19 +23,19 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
-	
+	require_once(__DIR__ . '/APIHandler.php');
+
 	$api 											= \creamy\APIHandler::getInstance();
 	$campaign_id 									= $_POST["disposition_id"];
 	$status 										= $_POST["status"];
 
 	if (!empty($campaign_id) && !empty($status)) {        
 
-		$postfields 								= array(
+		$postfields 								= [
 			'goAction' 									=> 'goDeleteDisposition',
 			'campaign_id' 								=> $campaign_id,
 			'statuses' 									=> $status
-		);
+		];
 
 		$output 									= $api->API_Request("goDispositions", $postfields);
 
@@ -44,13 +46,13 @@
 		}
 
 		echo json_encode($status);
-		
+
 	} elseif (!empty($campaign_id) && empty($status)) {
 
-		$postfields 								= array(
+		$postfields 								= [
 			'goAction' 									=> 'goDeleteDisposition',
 			'campaign_id' 								=> $campaign_id
-		);
+		];
 
 		$output 									= $api->API_Request("goDispositions", $postfields);
 

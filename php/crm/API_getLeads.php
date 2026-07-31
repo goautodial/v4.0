@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        API_getLeads.php
  * @brief       Handles requests for displaying leads in the CRM
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -21,10 +23,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
-			
+	require_once(__DIR__ . '/APIHandler.php');
+
 	$api 										= \creamy\APIHandler::getInstance();
-	
+
 	$search 									= $_POST['search'];
 	$disposition 								= $_POST['disposition_filter'];
 	$list 										= $_POST['list_filter'];
@@ -37,8 +39,8 @@
 	$search_customers							= $_POST['search_customers'];
 	$output 									= $api->API_getLeads($search, $disposition, $list, $address, $city, $state, $limit, $search_customers, $start_date, $end_date);	
 	$table 										= '[';
-	
-	foreach ($output->data as $key => $value) {
+
+	foreach ($output->data as $value) {
 		$lead_id								= $value->lead_id;
 		$phone_number							= $value->phone_number;
 		$first_name								= $value->first_name;
@@ -47,7 +49,7 @@
 		$full_name								= $first_name.' '.$middle_initial.' '.$last_name;
 		$status									= $value->status;
 		$action 								= actionMenu($lead_id);
-		
+
 		if (!empty($phone_number)) {
 			$table 								.= '[';
 			$table 								.= '"<a class=\"edit-contact\" data-id=\"'.$lead_id.'\">'.$lead_id.'</a>",';
@@ -58,15 +60,13 @@
 			$table 								.= '],';
 		}
 	}
-	
+
 	$table 										= rtrim($table, ",");    
 	$table 										.= ']';		
-	
+
 	echo json_encode($table);
 
     function actionMenu($lead_id) {
-		$actionmenu = '<div class=\"btn-group\"><button type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\">Choose Action<button type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" style=\"height: 34px;\"><span class=\"caret\"></span><span class=\"sr-only\">Toggle Dropdown</span></button><ul class=\"dropdown-menu\" role=\"menu\"><li><a class=\"edit-contact\" data-id=\"'.$lead_id.'\">Contact Details</a></li><li class=\"divider\"></li><li><a class=\"delete-contact\" data-id=\"'.$lead_id.'\">Delete</a></li></ul></div>';
-		
-		return $actionmenu;
+		return '<div class=\"btn-group\"><button type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\">Choose Action<button type=\"button\" class=\"btn btn-default dropdown-toggle\" data-toggle=\"dropdown\" style=\"height: 34px;\"><span class=\"caret\"></span><span class=\"sr-only\">Toggle Dropdown</span></button><ul class=\"dropdown-menu\" role=\"menu\"><li><a class=\"edit-contact\" data-id=\"'.$lead_id.'\">Contact Details</a></li><li class=\"divider\"></li><li><a class=\"delete-contact\" data-id=\"'.$lead_id.'\">Delete</a></li></ul></div>';
 	}
 ?>

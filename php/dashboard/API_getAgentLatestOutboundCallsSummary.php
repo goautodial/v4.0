@@ -9,15 +9,15 @@
     ####################################################
 
     // initialize session and DDBB handler
-    include_once('../UIHandler.php');
-    require_once('../LanguageHandler.php');
-    require_once('../DbHandler.php');
+    include_once(__DIR__ . '/../UIHandler.php');
+    require_once(__DIR__ . '/../LanguageHandler.php');
+    require_once(__DIR__ . '/../DbHandler.php');
     $ui = \creamy\UIHandler::getInstance();
     $lh = \creamy\LanguageHandler::getInstance();
     //$colors = $ui->generateStatisticsColors();
 
-    require_once('../Session.php');
-    require_once('../goCRMAPISettings.php');    
+    require_once(__DIR__ . '/../Session.php');
+    require_once(__DIR__ . '/../goCRMAPISettings.php');    
 
     $url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
     $postfields["goUser"] = goUser; #Username goes here. (required)
@@ -35,7 +35,6 @@
     curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     $data = curl_exec($ch);
-    curl_close($ch);
 
     $output = json_decode($data);
     //echo "<pre>";
@@ -70,7 +69,7 @@
         
             $max = 0;
             
-            foreach($output->agentoutcalls as $key => $value){
+            foreach($output->agentoutcalls as $value){
             
                 if(++$max > 6) break;
 

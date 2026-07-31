@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        AddServer.php
  * @brief       Handles Add Server Request
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -21,10 +23,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 
-	$postfields = array(
+	$postfields = [
 		'goAction' 				=> 'goAddServers',
 		'server_id' 			=> $_POST['server_id'], 
 		'server_description' 	=> $_POST['server_description'], 
@@ -32,7 +34,7 @@
 		'active' 				=> $_POST['active'],
 		'asterisk_version' 		=> $_POST['asterisk_version'],
 		'user_group' 			=> $_POST['user_group']
-	);
+	];
 	
 	$output = $api->API_addServer($postfields);
 

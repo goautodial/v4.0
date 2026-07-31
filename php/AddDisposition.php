@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        AddDisposition.php
  * @brief       Handles Add Disposition Request
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -21,7 +23,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 								= \creamy\APIHandler::getInstance();
 
 	if(!isset($_POST['selectable'])){
@@ -72,7 +74,7 @@
 		$_POST['unworkable'] 			= "Y";
 	}
 
-	$postfields 						= array(
+	$postfields 						= [
 		'goAction' 							=> 'goAddDisposition',
 		'userid' 							=> $_POST['userid'],
 		'campaign_id' 						=> $_POST['disposition_campaign'],
@@ -88,16 +90,16 @@
 		'unworkable' 						=> $_POST['unworkable'],
 		'color'								=> $_POST['disposition_status_color'],
 		'priority'							=> $_POST['disposition_priority']
-	);
+	];
 
 	$output 							= $api->API_addDisposition($postfields);
-	
+
 	if ($output->result=="success") { 
 		$status 						= 1; 
 	} else { 
 		$status 						= $output->result; 
 	}
-	
+
 	echo json_encode($status);
 
 ?>

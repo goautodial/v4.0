@@ -21,19 +21,20 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 							= \creamy\APIHandler::getInstance();
 	
 	$campaign_id 					= $_POST["campaign_id"];
 	$user_group						= $_SESSION["usergroup"];
-	$perm 							= $api->goGetPermissions('pausecodes', $user_group);
+	$perm 							= $api->goGetPermissions('pausecodes');
 
 	$output 						= $api->API_getAllPauseCodes($campaign_id);
 
 	$data 							= '[';
 	$i								= 0;
+    $counter = count($output->campaign_id);
 	
-	for($i=0;$i<=count($output->campaign_id);$i++) {
+	for($i=0;$i<=$counter;$i++) {
 		if(!empty($output->pause_code[$i])){
 			$data 					.= '[';
 			$data 					.= '"'.$output->pause_code[$i].'",';

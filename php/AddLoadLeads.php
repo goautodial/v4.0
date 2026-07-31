@@ -24,8 +24,8 @@
 //ini_set('display_errors',1);
 //error_reporting(E_ALL);
 
-	require_once('APIHandler.php');
-	require_once('CRMDefaults.php');
+	require_once(__DIR__ . '/APIHandler.php');
+	require_once(__DIR__ . '/CRMDefaults.php');
 	$api = \creamy\APIHandler::getInstance();
 
 	ini_set('memory_limit','2048M');
@@ -33,12 +33,12 @@
 	ini_set('post_max_size', '600M');
 	ini_set('max_execution_time', 3600);
 	
-	$postfields = array(
+	$postfields = [
 		'goFileMe' => curl_file_create($_FILES['file_upload']['tmp_name'], $_FILES['file_upload']['type'], $_FILES["file_upload"]["name"]),
 		'goListId' => $_REQUEST['list_id'], 
 		'goDupcheck' => $_REQUEST['goDupcheck'],
 		'phone_code_override' => $_REQUEST['phone_code_override']
-	);
+	];
 	
 	//customizations
 	$postfields["custom_delimiter"] = LEADUPLOAD_CUSTOM_DELIMITER;
@@ -61,11 +61,11 @@
                 $map_data = $_POST["map_data"];
 		$map_data = implode(",",$map_data);
 		$postfields["lead_mapping_data"] = $map_data;
-		
+
 		$map_fields = $_POST["map_fields"];
 		$map_fields = implode(",", $map_fields);
 		$postfields["lead_mapping_fields"] = $map_fields;
-		
+
 		$postfields["lead_mapping"] = "y";
 		//$postfields["lead_mapping"] = LEADUPLOAD_LEAD_MAPPING;
 	}
@@ -78,7 +78,7 @@
 	if(isset($_POST["LeadMapSubmit"]) && $_POST["LeadMapSubmit"] === "0"){
 		print_r($data);
 	}else{
-		
+
 		$res["result"] = $output->result;
 		$res["msg"] = $output->message;	
 		$res["dups"] = $output->duplicates;	

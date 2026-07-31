@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        checkCampaign.php
  * @brief       Handles Check Add/Edit Campaign, Disposition & Lead Filter Details Requests
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -21,14 +23,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 										= \creamy\APIHandler::getInstance();
 
-	$postfields 								= array(
+	$postfields 								= [
 		'goAction' 									=> 'goCheckCampaign',
 		'campaign_id' 								=> $_POST['campaign_id'],
 		'status' 									=> $_POST['status']
-	);
+	];
 
     $output 									= $api->API_checkCampaign($postfields);
 

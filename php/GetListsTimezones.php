@@ -21,17 +21,18 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 										= \creamy\APIHandler::getInstance();
 	$list_id 									= $_POST["list_id"];
 	$output										= $api->API_getTZonesWithCountCalledNCalled($list_id);
 	
 	$data 										= '';
 	$t											= 0;
-	$tcalled 									= array();
-	$tncalled 									= array();
+	$tcalled 									= [];
+	$tncalled 									= [];
+    $counter = count($output->gmt_offset_now);
 	
-	for($t=0;$t<count($output->gmt_offset_now);$t++){
+	for($t=0;$t<$counter;$t++){
 		if($output->called_since_last_reset[$t] == 'N'){
 			$counttCalled = 0;
 			$counttNCalled = $output->counttlist[$t];
@@ -40,8 +41,8 @@
 			$counttCalled = $output->counttlist[$t];
 			$counttNCalled = 0;
 		}
-		array_push($tcalled, $counttCalled);
-		array_push($tncalled, $counttNCalled);
+		$tcalled[] = $counttCalled;
+		$tncalled[] = $counttNCalled;
 		$data .= '<tr>';
 		$data .= '<td>'.$output->gmt_offset_now[$t].' ('.gmdate("D M Y H:i", time() + 3600 * $output->gmt_offset_now[$t]).')</td>';
 		$data .= '<td style="text-align: center; width: 15%;">'.$counttCalled.'</td>';

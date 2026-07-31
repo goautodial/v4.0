@@ -21,8 +21,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
-	
+	require_once(__DIR__ . '/APIHandler.php');
+
 	$api 										= \creamy\APIHandler::getInstance();
 	$pageTitle									= $_POST['pageTitle'];
 	$fromDate 									= date('Y-m-d 00:00:01');
@@ -32,47 +32,47 @@
 	$userID										= NULL;
 	$userGroup									= NULL;
 	$statuses									= NULL;
-	
+
 	if (isset($_POST['pageTitle']) && $pageTitle != "call_export_report") {
 		$pageTitle 								= $_POST['pageTitle'];
-		$pageTitle								= stripslashes($pageTitle);
+		$pageTitle								= stripslashes((string) $pageTitle);
 	}
-			
+
 	if (isset($_POST["fromDate"])) {
 		$fromDate 								= date('Y-m-d H:i:s', strtotime($_POST['fromDate']));
 	}
-	
+
 	if ($_POST["toDate"] != "" && $_POST["fromDate"] != "") {
 		$toDate 								= date('Y-m-d H:i:s', strtotime($_POST['toDate']));
 	}
-	
-			
+
+
 	if (isset($_POST["campaignID"])) { 
 		$campaign_id 							= $_POST["campaignID"]; 
-		$campaign_id 							= stripslashes($campaign_id);
+		$campaign_id 							= stripslashes((string) $campaign_id);
 	}
-		
+
 	if (isset($_POST["request"])) {
 		$request 								= $_POST["request"];
-		$request								= stripslashes($request);
+		$request								= stripslashes((string) $request);
 	}
-			
+
 	if (isset($_POST["userID"])) {
 		$userID 								= $_POST["userID"];
-		$userID									= stripslashes($userID);
+		$userID									= stripslashes((string) $userID);
 	}
-	
+
 	if (isset($_POST["userGroup"])) {
 		$userGroup 								= $_POST["userGroup"];
-		$userGroup								= stripslashes($userGroup);
+		$userGroup								= stripslashes((string) $userGroup);
 	}
-		
+
 	if (isset($_POST["statuses"])) {
 		$statuses 								= $_POST["statuses"];
 		$statuses								= stripslashes($statuses);
 	}
-		
-	$postfields 								= array(
+
+	$postfields 								= [
 		'goAction'									=> 'goGetStatisticalReports',		
 		'pageTitle' 								=> $pageTitle,
 		'fromDate' 									=> $fromDate,
@@ -80,7 +80,7 @@
 		'campaignID' 								=> $campaign_id,
 		'request' 									=> $request,
 		'statuses' 									=> $statuses
-	);				
+	];				
 
 	$output 									= $api->API_getStatisticalReports($postfields);
 
@@ -100,7 +100,7 @@
 			if ($_POST["request"] == "monthly") {
 				$max = max($output->data_calls->Month1, $output->data_calls->Month2, $output->data_calls->Month3, $output->data_calls->Month4, $output->data_calls->Month5, $output->data_calls->Month6, $output->data_calls->Month7, $output->data_calls->Month8, $output->data_calls->Month9, $output->data_calls->Month10, $output->data_calls->Month11, $output->data_calls->Month12);
 			}
-			
+
 			if ($max != NULL) {
 				$max_count = max($max);
 			}else{
@@ -121,7 +121,7 @@
 
 			<br/><br/>
 			<legend><small>Call Statistics</small></legend>
-				
+
 			<div class="row">
 				<div class="col-lg-4">
 					<div class="panel widget bg-gray-light" style="height: 95px;">
@@ -207,7 +207,7 @@
 		<script>
 			$(function() {
 				var datav3 = [
-				
+
 				<?php
 						if ($_POST["request"] == "daily") {
 							if ($output->data_calls->cdate != NULL) { // if data exists
@@ -458,7 +458,7 @@
 							}
 						}
 
-					
+
 				?>
 				];
 
@@ -553,7 +553,7 @@
 
 			});
 		</script>
-		
+
 		<?php
 		}
 	}

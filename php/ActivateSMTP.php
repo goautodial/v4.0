@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        ActivateSMTP.php
  * @brief       Activate/Deactivate SMTP
  * @copyright   Copyright (C) GOautodial Inc.
@@ -19,15 +21,15 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 	
 	$id = $_POST['action_id'];
 	
-	$postfields = array(
+	$postfields = [
 		'goAction' => 'goSMTPActivation',
 		'action_smtp' => $id
-	);	
+	];	
     
 	$output = $api->API_SMTPActivation($postfields);
 

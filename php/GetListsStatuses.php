@@ -21,18 +21,19 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api 										= \creamy\APIHandler::getInstance();
 	$list_id 									= $_POST["list_id"];
 	$output 									= $api->API_getStatusesWithCountCalledNCalled($list_id);
 	$data 										= '';
 	$s											= 0;
-	$called 									= array();
-	$ncalled 									= array();
+	$called 									= [];
+	$ncalled 									= [];
+    $counter = count($output->stats);
 	
-	for($s=0;$s<count($output->stats);$s++){
-		array_push($called, $output->is_called[$s]);
-		array_push($ncalled, $output->not_called[$s]);
+	for($s=0;$s<$counter;$s++){
+		$called[] = $output->is_called[$s];
+		$ncalled[] = $output->not_called[$s];
 		$data 									.= '<tr>';
 		$data 									.= '<td>'.$output->stats[$s].'</td>';
 		$data 									.= '<td>'.$output->status_name[$s].'</td>';

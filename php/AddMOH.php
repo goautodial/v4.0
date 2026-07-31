@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * @file        AddMOH.php
  * @brief       Handles Add MOH Requests
@@ -19,7 +21,7 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-require_once('APIHandler.php');
+require_once(__DIR__ . '/APIHandler.php');
 $api = \creamy\APIHandler::getInstance();
 
 /*
@@ -29,28 +31,28 @@ $api = \creamy\APIHandler::getInstance();
 	$postfields["goAction"] 		= "goAddMOH"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] 	= responsetype; #json (required)
 	$postfields["hostname"] 		= $_SERVER['REMOTE_ADDR']; #Default value
-	
+
 	$postfields["moh_id"] 			= $_POST['moh_id']; 
 	$postfields["moh_name"] 		= $_POST['moh_name']; 
 	$postfields["user_group"] 		= $_POST['user_group'];
 	$postfields["active"] 			= $_POST['active']; 
 	$postfields["random"] 			= $_POST['random'];
-	
+
 	$postfields["log_user"]			= $_POST['log_user'];
 	$postfields["log_group"]		= $_POST['log_group'];
 */
 
-	$postfields = array(
+	$postfields = [
 		'goAction' => 'goAddMOH',
 		'moh_id' => $_POST['moh_id'], 'moh_name' => $_POST['moh_name'],
 		'user_group' => $_POST['user_group'],
 		'active' => $_POST['active'],
                 'filename' => $_POST['filename'], 
 		'random' => $_POST['random']
-	);
+	];
 
 	$output = $api->API_addMOH($postfields);
-	
+
 	if ($output->result=="success") {
 		$status = 1;
 	} else {

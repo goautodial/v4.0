@@ -2,8 +2,8 @@
 /**
  * @file 		edittelephonyusers.php
  * @brief 		Modify user accounts
- * @copyright 	Copyright (c) 2020 GOautodial Inc. 
- * @author     	Alexander Jim H. Abenoja <alex@goautodial.com> 
+ * @copyright 	Copyright (c) 2020 GOautodial Inc.
+ * @author     	Alexander Jim H. Abenoja <alex@goautodial.com>
  * @author		Demian Lizandro A. Biscocho <demian@goautodial.com>
  * @author     	Noel Umandap <noel@goautodial.com>
  *
@@ -32,13 +32,13 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	
+
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
 			header("location: agent.php");
 		}
-	}	
+	}
 
 	$userid = NULL;
 	if (isset($_POST["user_id"])) {
@@ -53,12 +53,12 @@
 	}
 
 	$output = $api->API_getUserInfo($current_user, "userInfo");
-	$voicemails = $api->API_getAllVoiceMails();
+	$voicemails = $api->API_getAllVoiceMails()->result === "Empty" ? NULL : $api->API_getAllVoiceMails();
 	$user_groups = $api->API_getAllUserGroups();
 	$perm = $api->goGetPermissions('user');
 	$use_webrtc = $api->CheckWebrtc();
 	//$modify_phones = $api->CheckPhones();
-	
+
 	$admin_level = $_SESSION['level'];
 	$admin_group = $_SESSION['usergroup'];
 ?>
@@ -67,7 +67,7 @@
         <meta charset="UTF-8">
         <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("edit_user"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        
+
         <?php print $ui->standardizedThemeCSS(); ?>
         <?php print $ui->creamyThemeCSS(); ?>
     </head>
@@ -92,11 +92,11 @@
                         <li> <?php $lh->translateText("telephony"); ?></li>
                         <?php
 							if(isset($_POST["userid"])){
-						?>	
+						?>
 							<li><a href="./telephonyusers.php"><?php $lh->translateText("users"); ?></a></li>
                         <?php
 							}
-                        ?>	                    
+                        ?>
                         <li class="active"><?php $lh->translateText("modify"); ?></li>
                     </ol>
                 </section>
@@ -112,7 +112,7 @@
 					<!-- standard custom edition form -->
 						<?php
 							$userobj = NULL;
-							$errormessage = NULL;	
+							$errormessage = NULL;
 							if(isset($userid)) {
 								if ($output->result=="success") {
 								# Result was OK!
@@ -137,20 +137,20 @@
 										<input type="hidden" name="modifyid" value="<?php echo $userid;?>" />
 											<?php
 												//echo "<pre>";
-												//var_dump($output);											
+												//var_dump($output);
 											?>
 											<fieldset>
 												<div class="form-group mt">
 													<label for="fullname" class="col-sm-2 control-label"><?php $lh->translateText("full_name"); ?></label>
 													<div class="col-sm-10 mb">
-														<input type="text" class="form-control" name="fullname" id="fullname" autocomplete="new-password" 
+														<input type="text" class="form-control" name="fullname" id="fullname" autocomplete="new-password"
 															value="<?php echo $output->data->full_name;?>" maxlength="50" placeholder="<?php $lh->translateText("full_name"); ?>" />
 													</div>
 												</div>
 												<div class="form-group">
 													<label for="email" class="col-sm-2 control-label"><?php $lh->translateText("email"); ?></label>
 													<div class="col-sm-10 mb">
-														<input type="text" class="form-control" name="email" id="email" autocomplete="new-password" 
+														<input type="text" class="form-control" name="email" id="email" autocomplete="new-password"
 															value="<?php echo $output->data->email;?>" maxlength="100" placeholder="<?php $lh->translateText("email"); ?>" />
 														<small><span id="email_check"></span></small>
 													</div>
@@ -162,9 +162,9 @@
 															<?php
 																for($a=0;$a<count($user_groups->user_group);$a++){
 															?>
-																<option value="<?php echo $user_groups->user_group[$a];?>" 
-																		<?php if($output->data->user_group == $user_groups->user_group[$a]){echo "selected";}?> />  
-																	<?php echo $user_groups->user_group[$a].' - '.$user_groups->group_name[$a];?>  
+																<option value="<?php echo $user_groups->user_group[$a];?>"
+																		<?php if($output->data->user_group == $user_groups->user_group[$a]){echo "selected";}?> />
+																	<?php echo $user_groups->user_group[$a].' - '.$user_groups->group_name[$a];?>
 																</option>
 															<?php
 																}
@@ -183,7 +183,7 @@
 															}else{
 																$status .= '<option value="Y" > Active </option>';
 															}
-															
+
 															if($output->data->active == "N" || $output->data->active == NULL){
 																$status .= '<option value="N" selected> Inactive </option>';
 															}else{
@@ -282,10 +282,10 @@
 												<div class="form-group">
 													<label for="phone_password" class="col-sm-2 control-label">Phone Password</label>
 													<div class="col-sm-10 mb">
-														<input type="text" class="form-control" name="phone_password" id="phone_password" 
+														<input type="text" class="form-control" name="phone_password" id="phone_password"
 															value="<?php //echo $output->data->phone_pass;?>" maxlength="20" placeholder="Phone Password" />
 													</div>
-												</div> -->									
+												</div> -->
 												<div class="form-group">
 													<label for="voicemail" class="col-sm-2 control-label"><?php $lh->translateText("voicemail"); ?></label>
 													<div class="col-sm-10 mb">
@@ -303,12 +303,12 @@
 																		if ($voicemails->active[$a] == "Y") {
 																			$voicemail_id = $voicemails->voicemail_id[$a];
 																			$vm_status = $voicemails->active[$a];
-																			$vmname	= $voicemails->fullname[$a];																		
+																			$vmname	= $voicemails->fullname[$a];
 																?>
-																	<option value="<?php echo $voicemail_id;?>" 
+																	<option value="<?php echo $voicemail_id;?>"
 																		<?php if($output->data->voicemail_id == $voicemail_id){echo "selected";}?> />
 																	<?php echo $voicemail_id.' - '.$vmname;?>
-																	</option>									
+																	</option>
 															<?php
 																		}
 																	}
@@ -339,7 +339,7 @@
 													<div class="col-sm-10 mb">
 														<input type="password" class="form-control" id="conf_password" autocomplete="new-password" placeholder="<?php $lh->translateText("confirm_password"); ?>" required />
 														<span id="pass_result"></span></i></small>
-													</div> 
+													</div>
 												</div>
 											</fieldset>
 									   	</div><!-- tab 1 -->
@@ -358,7 +358,7 @@
 									} else {
 										$hotkeys .= '<option value="1" > Active </option>';
 									}
-									
+
 									if ($output->data->hotkeys_active == "0") {
 										$hotkeys .= '<option value="0" selected> Inactive </option>';
 									} else {
@@ -380,7 +380,7 @@
 										}else{
 											$agents_recordings .= '<option value="DISABLED" > DISABLED </option>';
 										}
-										
+
 										if($output->data->vicidial_recording_override == "NEVER"){
 											$agents_recordings .= '<option value="NEVER" selected> NEVER </option>';
 										}else{
@@ -417,7 +417,7 @@
 										}else{
 											$vicidial_transfers .= '<option value="0" > NO </option>';
 										}
-										
+
 										if($output->data->vicidial_transfers == "1"){
 											$vicidial_transfers .= '<option value="1" selected> YES </option>';
 										}else{
@@ -439,7 +439,7 @@
 										}else{
 											$closer_default_blended .= '<option value="0" > NO </option>';
 										}
-										
+
 										if($output->data->closer_default_blended == "1" ){
 											$closer_default_blended .= '<option value="1" selected> YES </option>';
 										}else{
@@ -461,7 +461,7 @@
 										}else{
 											$agentcall_manual .= '<option value="0" > NO </option>';
 										}
-										
+
 										if($output->data->agentcall_manual == "1" ){
 											$agentcall_manual .= '<option value="1" selected> YES </option>';
 										}else{
@@ -483,7 +483,7 @@
 										}else{
 											$scheduled_callbacks .= '<option value="0" > NO </option>';
 										}
-										
+
 										if($output->data->scheduled_callbacks == "1" ){
 											$scheduled_callbacks .= '<option value="1" selected> YES </option>';
 										}else{
@@ -505,7 +505,7 @@
 										}else{
 											$agentonly_callbacks .= '<option value="0" > '.$lh->translationFor("go_no").' </option>';
 										}
-										
+
 										if($output->data->agentonly_callbacks == "1" ){
 											$agentonly_callbacks .= '<option value="1" selected> YES </option>';
 										}else{
@@ -527,7 +527,7 @@
 										}else{
 											$api_access .= '<option value="1" > Enable </option>';
 										}
-										
+
 										if($output->data->vdc_agent_api_access == "0" || $output->data->vdc_agent_api_access == NULL){
 											$api_access .= '<option value="0" selected> Disabled </option>';
 										}else{
@@ -549,7 +549,7 @@
 										}else{
 											$choose_ingroup .= '<option value="1" > YES </option>';
 										}
-										
+
 										if($output->data->agent_choose_ingroups == "0" || $output->data->agent_choose_ingroups == NULL){
 											$choose_ingroup .= '<option value="0" selected> '.$lh->translationFor("go_no").' </option>';
 										}else{
@@ -570,12 +570,12 @@
 								</select>
 							</div>
 						</div>
-						</fieldset>		
+						</fieldset>
 					</div>
-					
+
 					<!-- FOOTER BUTTONS -->
 					<div id="modifyUSERresult"></div>
-					
+
 					<fieldset class="footer-buttons">
 					<div class="box-footer">
 					   <div class="col-sm-4 pull-right">
@@ -584,20 +584,20 @@
 					   </div>
 					</div>
 					</fieldset>
-					
+
 					</div>
 					</div><!-- end of tab content -->
 					</form>
 					</div><!-- tab panel -->
-							
+
 	<?php
-			
+
 		} else {
 		# An error occured
 			echo $output->data->result;
 		}
 	}
-		
+
 	?>
 	</div><!-- body -->
 
@@ -610,7 +610,7 @@
 				</div>
             </aside><!-- /.right-side -->
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
-			
+
         </div><!-- ./wrapper -->
 
         <?php print $ui->standardizedThemeJS(); ?>
@@ -622,7 +622,7 @@
 		/* initialize select2 */
 		$('.select2-1').select2({ theme: 'bootstrap' });
 		$.fn.select2.defaults.set( "theme", "bootstrap" );
-		
+
 		// for cancelling
 		$(document).on('click', '#cancel', function(){
 			swal("Cancelled", "No action has been done :)", "error");
@@ -631,11 +631,11 @@
 		// validations
 		$('#change_pass').on('change', function() {
 		//  alert( this.value ); // or $(this).val()
-			if(this.value == "Y") 
+			if(this.value == "Y")
 				$('.form_password').show();
-			
-			if(this.value == "N") 
-				$('.form_password').hide();			
+
+			if(this.value == "N")
+				$('.form_password').hide();
 		});
 
 		// password
@@ -661,18 +661,18 @@
 			var change_pass = document.getElementById('change_pass').value;
 			var password = document.getElementById('password').value;
 			var conf_password = document.getElementById('conf_password').value;
-			
+
 			// variables for check valid email
 			var validate_email = 0;
 			var email = document.getElementById('email').value;
             var x = document.forms["modifyuser"]["email"].value;
             var atpos = x.indexOf("@");
             var dotpos = x.lastIndexOf(".");
-			
+
 			// variables for checking webrtc
 			var validate_webrtc = 0;
 			//var enable_webrtc = document.getElementById('enable_webrtc').value;
-			
+
 			// conditional statements
 			if (change_pass == "Y") {
 				if (password != conf_password) {
@@ -682,17 +682,17 @@
 					validate_password = 2;
 				}
 			}
-				
+
 			if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length) {
 				validate_email = 1;
 			} else {
 				validate_email = 0;
 			}
-			
+
 			if (email == "") {
 				validate_email = 0;
 			}
-			
+
 			//if (enable_webrtc == "0" && change_pass == "N") {
 			//	validate_webrtc = 1;
 			//}
@@ -706,7 +706,7 @@
 			}
 			if (validate_password == 1) {
 				$('#update_button').html("<i class='fa fa-check'></i> Update");
-				$('#modifyUserOkButton').prop("disabled", false);	
+				$('#modifyUserOkButton').prop("disabled", false);
 			}
 			if (validate_password == 2) {
 				$("#pass_result").html("<font color='red'><i class='fa fa-warning'></i> Input and Confirm Password, otherwise mark Change Password? as NO! </font>");
@@ -753,7 +753,7 @@
 			}
 			return false;
 		});
-		
+
 		$(document).on('change','#userlevel',function() {
 			if($("#userlevel").val() >= 8){
 				$("#password").attr('maxlength','20');
@@ -763,7 +763,7 @@
 				$("#password").val('');
 			}
 		});
-		
+
 		// disable special characters and allow spaces on full name
 		$('#fullname').bind('keypress', function (event) {
 		    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
@@ -784,7 +784,7 @@
 		    }
 		});
 	});
-	
+
 	function validate_user(){
 		var user_form_value = $('#agent_name').text();
 		var phone_logins_value = $('#phone_login').val();
@@ -809,7 +809,7 @@
 						$( "#phone_login" ).addClass( "error" );
 						$( "#phone_login-error" ).text( data ).removeClass("avail").addClass("error");
 						$('#modifyUserOkButton').prop("disabled", true);
-						
+
 						checker = 1;
 					}
 				}
@@ -826,7 +826,7 @@
 		else
 				$("#pass_result").html("<font color='green'>Passwords Match! <font size='5'>✔</font> </font>");
 	}
-	
+
 </script>
 
 		<?php print $ui->creamyFooter(); ?>

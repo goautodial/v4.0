@@ -23,9 +23,9 @@
 	THE SOFTWARE.
 */
 
-require_once('CRMDefaults.php');
-require_once('LanguageHandler.php');
-require_once('DbHandler.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/LanguageHandler.php');
+require_once(__DIR__ . '/DbHandler.php');
 
 $lh = \creamy\LanguageHandler::getInstance();
 
@@ -44,7 +44,7 @@ if (!isset($_POST["subject"])) {
 	$validated = 0;
 }
 
-if ($validated == 1) {
+if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// message parameters	

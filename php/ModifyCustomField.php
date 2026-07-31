@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        ModifyCustomField.php
  * @brief       Modify custom field entries
  * @copyright   Copyright (c) 2025 GOautodial Inc.
@@ -22,7 +24,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 
 	// check required fields
@@ -32,7 +34,7 @@
 		$validated = 0;
 	}
 
-	if ($validated == 1) {
+	if ($validated === 1) {
 		$list_id = $_POST['list_id'];
 		$field_id = $_POST['field_id'];
 		$field_name = $_POST['field_name'];
@@ -50,7 +52,7 @@
 		$field_default = $_POST['field_default'];
 		$field_required = $_POST['field_required'];
 
-		$postfields = array(
+		$postfields = [
 			"goAction" => "goModifyCustomField", #action performed by the [[API:Functions]]
 			"list_id" => $list_id,
 			"field_id" => $field_id,
@@ -68,7 +70,7 @@
 			"field_max" => $field_max,
 			"field_default" => $field_default,
 			"field_required" => $field_required
-		);
+		];
 
 		$output = $api->API_Request("goCustomFields", $postfields);
 

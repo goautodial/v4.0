@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * @file        DeleteCalltime.php
  * @brief       Handles Delete Calltime Requests
@@ -20,7 +22,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once('APIHandler.php');
+require_once(__DIR__ . '/APIHandler.php');
 $api = \creamy\APIHandler::getInstance();
     /*
     require_once('goCRMAPISettings.php');
@@ -37,10 +39,10 @@ $api = \creamy\APIHandler::getInstance();
 	$postfields["log_ip"] = $_POST['log_ip'];
     */
 
-    $postfields = array(
+    $postfields = [
         'goAction' => 'goDeleteCalltime',
         'call_time_id' => $_POST['call_time_id']
-    );
+    ];
 
     $output = $api->API_Request("goCalltimes", $postfields);
  

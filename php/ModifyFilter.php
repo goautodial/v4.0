@@ -20,7 +20,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once("APIHandler.php");
+	require_once(__DIR__ . "/APIHandler.php");
 	
 	$api 										= \creamy\APIHandler::getInstance();
         
@@ -30,7 +30,7 @@
 	
 	if ( isset($_POST["filter_name"]) ) { 
 		$filter_name 							= $_POST["filter_name"]; 
-		$filter_name 							= stripslashes($filter_name);
+		$filter_name 							= stripslashes((string) $filter_name);
 	}
 	
 	$filter_comments 							= NULL; 
@@ -51,17 +51,17 @@
 	
 	if ( isset($_POST["filter_user_group"]) ) { 
 		$filter_user_group 						= $_POST["filter_user_group"]; 
-		$filter_user_group 						= stripslashes($filter_user_group);
+		$filter_user_group 						= stripslashes((string) $filter_user_group);
 	}
 
-	$postfields 								= array(
+	$postfields 								= [
 		"goAction" 									=> "goEditFilter",		
 		"lead_filter_id" 							=> $modifyid,
 		"lead_filter_name" 							=> $filter_name,
 		"lead_filter_comments" 						=> $filter_comments,
 		"lead_filter_sql" 							=> $filter_sql,
 		"user_group" 								=> $filter_user_group
-	);	
+	];	
 			
 	$output 									= $api->API_editFilter($postfields);	
 	

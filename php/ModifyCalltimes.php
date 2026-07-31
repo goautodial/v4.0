@@ -22,7 +22,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 
 	// check required fields
@@ -33,12 +33,12 @@
 		$validated = 0;
 	}
 
-	if ($validated == 1) {		
+	if ($validated === 1) {		
 		// collect new user data.	
 		$modifyid = $_POST["modifyid"];		
 		$calltime_name = NULL; if (isset($_POST["calltime_name"])) { 
 			$calltime_name = $_POST["calltime_name"]; 
-			$calltime_name = stripslashes($calltime_name);
+			$calltime_name = stripslashes((string) $calltime_name);
 		}
 		
 		$calltime_comments = NULL; if (isset($_POST["calltime_comments"])) { 
@@ -48,7 +48,7 @@
 
 		$usergroup = NULL; if (isset($_POST["usergroup"])) { 
 			$usergroup = $_POST["usergroup"]; 
-			$usergroup = stripslashes($usergroup);
+			$usergroup = stripslashes((string) $usergroup);
 		}
 
 		$url = gourl."/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
@@ -125,7 +125,7 @@
 		else
 			$stop_saturday =  "0";
 		
-		$postfields = array(
+		$postfields = [
 			"goAction" => "goEditCalltime",		
 			"call_time_id" => $modifyid,
 			"call_time_name" => $calltime_name,
@@ -155,7 +155,7 @@
 			"thursday_audio" => $_POST["audio_thursday"],
 			"friday_audio" => $_POST["audio_friday"],
 			"saturday_audio" => $_POST["audio_saturday"]		
-		);	
+		];	
 		
 		$output = $api->API_editCalltime($postfields);
 

@@ -1,5 +1,7 @@
 <?php
-/**
+declare(strict_types=1);
+
+    /**
  * @file        DeleteCampaign.php
  * @brief       Handles Delete Campaign Requests
  * @copyright   Copyright (c) 2018 GOautodial Inc.
@@ -20,15 +22,15 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-	require_once('APIHandler.php');
+	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();
 
-	$postfields 								= array(
+	$postfields 								= [
         'goAction' 									=> 'goDeleteCampaign',
         'campaign_id' 								=> $_POST['campaign_id'],
         'action'									=> $_POST['action']
-    );
+    ];
 
     $output 									= $api->API_Request( "goCampaigns", $postfields );
 

@@ -23,9 +23,9 @@
 	THE SOFTWARE.
 */
 
-require_once('DbHandler.php');
-require_once('CRMDefaults.php');
-require_once('LanguageHandler.php');
+require_once(__DIR__ . '/DbHandler.php');
+require_once(__DIR__ . '/CRMDefaults.php');
+require_once(__DIR__ . '/LanguageHandler.php');
 $lh = \creamy\LanguageHandler::getInstance();
 
 // check required fields
@@ -43,7 +43,7 @@ if (!isset($_POST["new_password_2"])) {
 	$validated = 0;
 }
 
-if ($validated == 1) {
+if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// check password	
