@@ -26,41 +26,41 @@
 	$api 										= \creamy\APIHandler::getInstance();
         
 	// collect new user data.       
-	$modifyid 									= $_POST["modifyid"];
+	$modifyid 									= ($_POST["modifyid"] ?? '');
 	$script_name 								= NULL;
 	
 	if ( isset($_POST["script_name"]) ) { 
-		$script_name 							= $_POST["script_name"]; 
+		$script_name 							= ($_POST["script_name"] ?? ''); 
 		$script_name 							= stripslashes((string) $script_name);
 	}
 	
 	$script_comments 							= NULL; 
 	
 	if ( isset($_POST["script_comments"]) ) { 
-		$script_comments 						= $_POST["script_comments"];
+		$script_comments 						= ($_POST["script_comments"] ?? '');
 		$script_comments 						= stripslashes($script_comments);
 	}
 
 	$script_text 								= NULL; 
 	
 	if ( isset($_POST["script_text"]) ) { 
-		$script_text 							= $_POST["script_text_value"]; 
+		$script_text 							= ($_POST["script_text_value"] ?? ''); 
 		$script_text 							= urldecode((string) $script_text);
-		//$script_text 							= $_POST["script_text"]; 
+		//$script_text 							= ($_POST["script_text"] ?? ''); 
 		//$script_text 							= stripslashes($script_text);
 	}
 
 	$active 									= "N"; 
 	
 	if ( isset($_POST["active"]) ) { 
-		$active 								= $_POST["active"]; 
+		$active 								= ($_POST["active"] ?? ''); 
 		$active 								= stripslashes((string) $active);
 	}
 
 	$script_user_group 							= NULL; 
 	
 	if ( isset($_POST["script_user_group"]) ) { 
-		$script_user_group 						= $_POST["script_user_group"]; 
+		$script_user_group 						= ($_POST["script_user_group"] ?? ''); 
 		$script_user_group 						= stripslashes((string) $script_user_group);
 	}
 

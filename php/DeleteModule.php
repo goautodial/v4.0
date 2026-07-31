@@ -40,7 +40,7 @@ if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// get mandatory
-	$moduleName = $_POST["module_name"];
+	$moduleName = ($_POST["module_name"] ?? '');
 
 	// first we disable the module
 	$db->changeModuleStatus($moduleName, "0");

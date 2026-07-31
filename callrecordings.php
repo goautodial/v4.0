@@ -152,7 +152,7 @@
 					   </thead>
 					   <tbody>
 							<?php
-								for($i=0;$i < count($callrecs->uniqueid);$i++){
+								for($i=0;$i < (isset($callrecs->uniqueid) && is_countable($callrecs->uniqueid) ? count($callrecs->uniqueid) : 0);$i++){
 									$details = "<strong>".$lh->translationFor("phone")."</strong>: <i>".$callrecs->phone_number[$i]."</i><br/>";
 									$details .= "<strong>".$lh->translationFor("agent")."</strong>: <i>".$callrecs->users[$i]."</i><br/>";
 									$details .= "<strong>".$lh->translationFor("date")."</strong>: <i>".date("M.d,Y h:i A", strtotime($callrecs->end_last_local_call_time[$i]))."</i><br/>";
@@ -207,7 +207,7 @@
 						<select name="agent_filter" id="agent_filter" class="form-control">
 							<option value=""> <?php $lh->translateText("all_agents"); ?> </option>
 							<?php
-								for($i=0; $i < count($agents->user_id);$i++){
+								for($i=0; $i < (isset($agents->user_id) && is_countable($agents->user_id) ? count($agents->user_id) : 0);$i++){
 									echo '<option value="'.$agents->user[$i].'"> '.$agents->user[$i].' - '.$agents->full_name[$i].' </option>';
 								}
 							?>
@@ -251,7 +251,7 @@
 											<select name="campaign_filter" class="form-control">
 												<?php
 												/*
-													for($i=0; $i < count($campaign->campaign_id);$i++){
+													for($i=0; $i < (isset($campaign->campaign_id) && is_countable($campaign->campaign_id) ? count($campaign->campaign_id) : 0);$i++){
 														echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_name[$i]." </option>";
 													}
 												*/

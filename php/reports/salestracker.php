@@ -35,31 +35,31 @@
 	$statuses					= NULL;
 			
 	if (isset($_POST["fromDate"])) {
-		$fromDate = date('Y-m-d H:i:s', strtotime($_POST['fromDate']));
+		$fromDate = date('Y-m-d H:i:s', strtotime(($_POST['fromDate'] ?? '')));
 	}
 	
-	if ($_POST["toDate"] != "" && $_POST["fromDate"] != "") {
-		$toDate = date('Y-m-d H:i:s', strtotime($_POST['toDate']));
+	if (($_POST["toDate"] ?? '') != "" && ($_POST["fromDate"] ?? '') != "") {
+		$toDate = date('Y-m-d H:i:s', strtotime(($_POST['toDate'] ?? '')));
 	}
 	
 			
 	if (isset($_POST["campaignID"])) { 
-		$campaign_id = $_POST["campaignID"]; 
+		$campaign_id = ($_POST["campaignID"] ?? ''); 
 		$campaign_id = stripslashes((string) $campaign_id);
 	}
 		
 	if (isset($_POST["request"])) {
-		$request = $_POST["request"];
+		$request = ($_POST["request"] ?? '');
 		$request = stripslashes((string) $request);
 	}
 			
 	if (isset($_POST["userID"])) {
-		$userID = $_POST["userID"];
+		$userID = ($_POST["userID"] ?? '');
 		$userID = stripslashes((string) $userID);
 	}
 	
 	if (isset($_POST["userGroup"])) {
-		$userGroup = $_POST["userGroup"];
+		$userGroup = ($_POST["userGroup"] ?? '');
 		$userGroup = stripslashes((string) $userGroup);
 	}
 		
@@ -96,7 +96,7 @@
 				';
 
 			if ($output->outbound_result != NULL) {
-				for($i=0; $i < count($output->sale_num); $i++) {
+				for($i=0; $i < (isset($output->sale_num) && is_countable($output->sale_num) ? count($output->sale_num) : 0); $i++) {
 					$sales_tracker .= '<tr>
 							<td nowrap><a class="edit-contact" data-id="'.$output->lead_id[$i].'">'.$output->lead_id[$i].'</a></td>
 							<td nowrap>'.$output->call_date[$i].'</td>
@@ -135,7 +135,7 @@
 						<tbody>
 			';
 				if ($output->inbound_result != NULL) {
-					for($i=0; $i < count($output->sale_num); $i++) {
+					for($i=0; $i < (isset($output->sale_num) && is_countable($output->sale_num) ? count($output->sale_num) : 0); $i++) {
 						$sales_tracker .= '<tr>
 							<td nowrap><a class="edit-contact" data-id="'.$output->lead_id[$i].'">'.$output->lead_id[$i].'</a></td>
 							<td nowrap>'.$output->call_date[$i].'</td>

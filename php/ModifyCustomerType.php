@@ -44,8 +44,8 @@ if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// get mandatory fields
-	$customerTypeId = $_POST["customer-type-id"];
-	$newDescription = $_POST["newname"];
+	$customerTypeId = ($_POST["customer-type-id"] ?? '');
+	$newDescription = ($_POST["newname"] ?? '');
 	// modify customer type/description
 	$result = $db->modifyCustomerDescription($customerTypeId, $newDescription);
 	// return results.

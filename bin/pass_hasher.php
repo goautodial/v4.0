@@ -2,7 +2,7 @@
 $pass = '';
 $cost = 0;
 $salt = 0;
-if (!empty($argv) && count($argv) > 1) {
+if (!empty($argv) && (is_countable($argv) ? count($argv) : 0) > 1) {
     if (preg_match("/^(-h|--help)$/", $argv[1])) {
         echo "Description: Helps you to encrypt a plain text password to be used on GOautodial system.\n\n";
         echo "Usage: php " . basename(__FILE__) . " --pass=<plain text passwd>\n";
@@ -15,11 +15,11 @@ if (!empty($argv) && count($argv) > 1) {
         foreach ($argv as $idx => $arg) {
             if ($idx < 1) continue;
             if (preg_match("/^(--pass=)/", $arg)) {
-                $passArr = explode("=", $arg);
+                $passArr = explode("=", (string) ($arg ?? ''));
             } else if (preg_match("/^(--cost=)/", $arg)) {
-                $costArr = explode("=", $arg);
+                $costArr = explode("=", (string) ($arg ?? ''));
             } else if (preg_match("/^(--salt=)/", $arg)) {
-                $saltArr = explode("=", $arg);
+                $saltArr = explode("=", (string) ($arg ?? ''));
             }
         }
 

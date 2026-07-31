@@ -27,8 +27,8 @@ declare(strict_types=1);
 	$api = \creamy\APIHandler::getInstance();
 
 	if (isset($_POST["exten_id"])) {
-		$extenid = $_POST["exten_id"];
-		$action = $_POST["action"];
+		$extenid = ($_POST["exten_id"] ?? '');
+		$action = ($_POST["action"] ?? '');
 
 		$postfields = [
 			'goAction' => 'goDeletePhone',

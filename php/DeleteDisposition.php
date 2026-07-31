@@ -26,8 +26,8 @@ declare(strict_types=1);
 	require_once(__DIR__ . '/APIHandler.php');
 
 	$api 											= \creamy\APIHandler::getInstance();
-	$campaign_id 									= $_POST["disposition_id"];
-	$status 										= $_POST["status"];
+	$campaign_id 									= ($_POST["disposition_id"] ?? '');
+	$status 										= ($_POST["status"] ?? '');
 
 	if (!empty($campaign_id) && !empty($status)) {        
 

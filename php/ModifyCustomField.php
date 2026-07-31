@@ -35,22 +35,22 @@ declare(strict_types=1);
 	}
 
 	if ($validated === 1) {
-		$list_id = $_POST['list_id'];
-		$field_id = $_POST['field_id'];
-		$field_name = $_POST['field_name'];
-		$field_rank = $_POST['field_rank'];
-		$field_order = $_POST['field_order'];
-		$field_label = $_POST['field_label'];
-		$field_label_old = $_POST['field_label_old'];
-		$field_position = $_POST['field_position'];
-		$field_description = $_POST['field_description'];
-		$field_type = $_POST['field_type'];
-		$field_options = $_POST['field_options'];
-		$field_option_position = $_POST['field_option_position'];
-		$field_size = $_POST['field_size'];
-		$field_max = $_POST['field_max'];
-		$field_default = $_POST['field_default'];
-		$field_required = $_POST['field_required'];
+		$list_id = ($_POST['list_id'] ?? '');
+		$field_id = ($_POST['field_id'] ?? '');
+		$field_name = ($_POST['field_name'] ?? '');
+		$field_rank = ($_POST['field_rank'] ?? '');
+		$field_order = ($_POST['field_order'] ?? '');
+		$field_label = ($_POST['field_label'] ?? '');
+		$field_label_old = ($_POST['field_label_old'] ?? '');
+		$field_position = ($_POST['field_position'] ?? '');
+		$field_description = ($_POST['field_description'] ?? '');
+		$field_type = ($_POST['field_type'] ?? '');
+		$field_options = ($_POST['field_options'] ?? '');
+		$field_option_position = ($_POST['field_option_position'] ?? '');
+		$field_size = ($_POST['field_size'] ?? '');
+		$field_max = ($_POST['field_max'] ?? '');
+		$field_default = ($_POST['field_default'] ?? '');
+		$field_required = ($_POST['field_required'] ?? '');
 
 		$postfields = [
 			"goAction" => "goModifyCustomField", #action performed by the [[API:Functions]]

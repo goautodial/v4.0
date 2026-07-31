@@ -41,7 +41,7 @@ if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// check customer type	
-	$customerType = $_POST["customertype"];
+	$customerType = ($_POST["customertype"] ?? '');
 	if ($customerType == 1) { // we can't delete the basic client customer type
 		$lh->translateText("unable_delete_contacts_type");
 	} else { // proceed

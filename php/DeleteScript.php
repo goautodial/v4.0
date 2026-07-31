@@ -29,7 +29,7 @@ declare(strict_types=1);
 
     $postfields 								= [
         "goAction" 									=> "goDeleteScript",
-        "script_id" 								=> $_POST["script_id"]
+        "script_id" 								=> ($_POST["script_id"] ?? '')
     ];
 
     $output 									= $api->API_Request("goScripts", $postfields);

@@ -189,7 +189,7 @@
 										<select id="user_group" class="form-control" name="user_group">
 												<option value="---ALL---"><?php $lh->translateText('all_usergroups'); ?>   </option>
 											<?php
-												for($i=0;$i<count($user_groups->user_group);$i++){
+												for($i=0;$i<(isset($user_groups->user_group) && is_countable($user_groups->user_group) ? count($user_groups->user_group) : 0);$i++){
 											?>
 												<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i].' - '.$user_groups->group_name[$i];?>  </option>
 											<?php
@@ -373,7 +373,7 @@ host=</textarea>
 									<div class="col-sm-8 mb">
 										<select name="server_ip" class="form-control">
 											<?php
-												for($i=0;$i<count($servers->server_ip);$i++){
+												for($i=0;$i<(isset($servers->server_ip) && is_countable($servers->server_ip) ? count($servers->server_ip) : 0);$i++){
 													echo "<option value=".$servers->server_ip[$i].">".$servers->server_ip[$i]." - ".$servers->server_description[$i]."</option>";
 												}
 											?>
@@ -390,7 +390,7 @@ host=</textarea>
 									<div class="col-sm-8 mb">
 										<select class="form-control" name="copy_server_ip">
 											<?php
-												for($i=0;$i<count($servers->server_ip);$i++){
+												for($i=0;$i<(isset($servers->server_ip) && is_countable($servers->server_ip) ? count($servers->server_ip) : 0);$i++){
 													echo "<option value=".$servers->server_ip[$i].">".$servers->server_ip[$i]." - ".$servers->server_description[$i]."</option>";
 												}
 											?>
@@ -402,7 +402,7 @@ host=</textarea>
 									<div class="col-sm-8 mb">
 										<select class="form-control" name="source_carrier">
 											<?php
-												for($i=0;$i<count($carriers->carrier_id);$i++){
+												for($i=0;$i<(isset($carriers->carrier_id) && is_countable($carriers->carrier_id) ? count($carriers->carrier_id) : 0);$i++){
 											?>
 												<option value="<?php echo $carriers->carrier_id[$i];?>"><?php echo $carriers->carrier_id[$i].' - '.$carriers->carrier_name[$i].' - '.$carriers->server_ip[$i];?></option>
 											<?php

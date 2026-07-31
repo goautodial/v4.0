@@ -132,6 +132,52 @@
 				max-width:1600px;
 				}
 			}
+
+			#table_campaign th,
+			#table_campaign td {
+				vertical-align: middle;
+				white-space: nowrap;
+			}
+
+			#table_campaign th:first-child,
+			#table_campaign td:first-child,
+			#table_campaign th:nth-child(6),
+			#table_campaign td:nth-child(6) {
+				text-align: center;
+				width: 42px !important;
+				min-width: 42px;
+				max-width: 42px;
+			}
+
+			#table_campaign th:nth-child(2),
+			#table_campaign td:nth-child(2) {
+				width: 120px;
+				min-width: 120px;
+			}
+
+			#table_campaign th:nth-child(3),
+			#table_campaign td:nth-child(3) {
+				width: auto;
+			}
+
+			#table_campaign th:nth-child(4),
+			#table_campaign td:nth-child(4) {
+				width: 125px;
+				min-width: 125px;
+			}
+
+			#table_campaign th:nth-child(5),
+			#table_campaign td:nth-child(5) {
+				width: 90px;
+				min-width: 90px;
+			}
+
+			#table_campaign th:last-child,
+			#table_campaign td:last-child {
+				width: 135px !important;
+				min-width: 135px;
+				max-width: 135px;
+			}
 		</style>
     </head>
      <?php print $ui->creamyBody(); ?>
@@ -240,7 +286,7 @@
 										   <tbody>
 											   	<?php
 												if($campaign->result == 'success') {
-											   		for($i=0;$i < count($campaign->campaign_id);$i++){
+											   		for($i=0;$i < (isset($campaign->campaign_id) && is_countable($campaign->campaign_id) ? count($campaign->campaign_id) : 0);$i++){
 
 														if($campaign->active[$i] == "Y"){
 															$campaign->active[$i] = $lh->translationFor("active");
@@ -305,8 +351,8 @@
 										   </thead>
 										   <tbody>
 											   	<?php
-													if (count($disposition->campaign_id) > 0){
-														for($i=0;$i < count($campaign->campaign_id);$i++){
+													if ((isset($disposition->campaign_id) && is_countable($disposition->campaign_id) ? count($disposition->campaign_id) : 0) > 0){
+														for($i=0;$i < (isset($campaign->campaign_id) && is_countable($campaign->campaign_id) ? count($campaign->campaign_id) : 0);$i++){
 															$dispoStatuses = array();
 															foreach ($disposition->custom_dispo as $cCamp => $cDispo){
 																if($cCamp == $campaign->campaign_id[$i]){
@@ -356,8 +402,8 @@
 									   </thead>
 									   <tbody>
 										   	<?php
-												if (count($leadrecycling->campaign_id) > 0){
-													for($i=0;$i < count($campaign->campaign_id);$i++){
+												if ((isset($leadrecycling->campaign_id) && is_countable($leadrecycling->campaign_id) ? count($leadrecycling->campaign_id) : 0) > 0){
+													for($i=0;$i < (isset($campaign->campaign_id) && is_countable($campaign->campaign_id) ? count($campaign->campaign_id) : 0);$i++){
 										   	?>
 											<tr>
 												<td><?php if ($perm->disposition->disposition_update !== 'N') { echo '<a class="view_leadrecycling" data-toggle="modal" data-target="#modal_view_leadrecycling" data-id="'.$campaign->campaign_id[$i].'" data-name="'.$campaign->campaign_name[$i].'">'; } ?><avatar username='<?php echo $campaign->campaign_name[$i];?>' :size='32'></avatar><?php if ($perm->disposition->disposition_update !== 'N') { echo '</a>'; } ?></td>
@@ -367,7 +413,7 @@
 											<?php
 												$leadrecycle = "";
 												//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){
-												for($a=0; $a<count($leadrecycling->campaign_id); $a++){
+												for($a=0; $a<(isset($leadrecycling->campaign_id) && is_countable($leadrecycling->campaign_id) ? count($leadrecycling->campaign_id) : 0); $a++){
 													$leadrecycles[] = $leadrecycling->status[$a];
 													if($leadrecycling->campaign_id[$a] == $campaign->campaign_id[$i]){
 														//$leadrecycles[] = $leadrecycling->status[$a];
@@ -405,7 +451,7 @@
 										   </thead>
 										   <tbody>
 											   	<?php
-											   		for($i=0;$i < count($leadfilter->lead_filter_id);$i++){
+											   		for($i=0;$i < (isset($leadfilter->lead_filter_id) && is_countable($leadfilter->lead_filter_id) ? count($leadfilter->lead_filter_id) : 0);$i++){
 
 													$action_LEADFILTER = $ui->ActionMenuForLeadFilters($leadfilter->lead_filter_id[$i], $leadfilter->lead_filter_name[$i]);
 
@@ -440,7 +486,7 @@
 										   <tbody>
 											   <?php
 												if($areacode->result == "success"){
-											   		for($i=0;$i < count($areacode->campaign_id);$i++){
+											   		for($i=0;$i < (isset($areacode->campaign_id) && is_countable($areacode->campaign_id) ? count($areacode->campaign_id) : 0);$i++){
 
 														if($areacode->active[$i] == "Y"){
 															$areacode->active[$i] = $lh->translationFor("active");
@@ -664,7 +710,7 @@
 									<div class="ingroup-div col-lg-8 mb">
 										<select id="ingroup-text" name="ingroup_text" class="form-control">
 											<?php
-												for($i=0;$i < count($ingroup->group_id);$i++){
+												for($i=0;$i < (isset($ingroup->group_id) && is_countable($ingroup->group_id) ? count($ingroup->group_id) : 0);$i++){
 													echo '<option value="'.$ingroup->group_id[$i].'">'.$ingroup->group_name[$i].'</option>';
 												}
 											?>
@@ -673,7 +719,7 @@
 									<div class="ivr-div col-lg-8 mb hide">
 										<select id="ivr-text" name="ivr_text" class="form-control">
 											<?php
-												for($i=0;$i < count($ivr->menu_id);$i++){
+												for($i=0;$i < (isset($ivr->menu_id) && is_countable($ivr->menu_id) ? count($ivr->menu_id) : 0);$i++){
 													echo '<option value="'.$ivr->menu_id[$i].'">'.$ivr->menu_name[$i].'</option>';
 												}
 											?>
@@ -682,7 +728,7 @@
 									<div class="agent-div col-lg-8 mb hide">
 										<select id="agent-text" name="agent_text" class="form-control">
 											<?php
-												for($i=0;$i < count($users->user_id);$i++){
+												for($i=0;$i < (isset($users->user_id) && is_countable($users->user_id) ? count($users->user_id) : 0);$i++){
 													echo '<option value="'.$users->user_id[$i].'">'.$users->full_name[$i].'</option>';
 												}
 											?>
@@ -691,7 +737,7 @@
 									<div class="voicemail-div col-lg-8 mb hide">
 										<select id="voicemail-text" name="voicemail_text" class="form-control">
 											<?php
-												for($i=0;$i < count($voicemails->voicemail_id);$i++){
+												for($i=0;$i < (isset($voicemails->voicemail_id) && is_countable($voicemails->voicemail_id) ? count($voicemails->voicemail_id) : 0);$i++){
 													echo '<option value="'.$voicemails->voicemail_id[$i].'">'.$voicemails->fullname[$i].'</option>';
 												}
 											?>
@@ -718,9 +764,9 @@
 									<div class="col-lg-8 mb">
 										<select name="dial_prefix" id="dial_prefix" class="form-control">
 											<option value="CUSTOM" <?php if($campaign->data->dial_prefix == "CUSTOM"){echo "selected";}?>>CUSTOM DIAL PREFIX</option>
-											<?php for($i=0;$i<=count($carriers->carrier_id);$i++) { ?>
+											<?php for($i=0;$i<=(isset($carriers->carrier_id) && is_countable($carriers->carrier_id) ? count($carriers->carrier_id) : 0);$i++) { ?>
 												<?php if(!empty($carriers->carrier_id[$i])  && $carriers->active[$i] == 'Y') {
-													$prefixes = explode("\n", $carriers->dialplan_entry[$i]);
+													$prefixes = explode("\n", (string) ($carriers->dialplan_entry[$i] ?? ''));
 													$prefix = explode(",", $prefixes[0]);
 													$dial_prefix = substr(ltrim($prefix[0], "exten => _ "), 0, (strpos(".",$prefix[0]) - 1));
 													$dial_prefix = str_replace("N", "", str_replace("X", "", $dial_prefix));
@@ -749,7 +795,7 @@
 				    					<!--<input id="copy-from-campaign" name="copy_from_campaign" type="text" class="form-control">-->
 										<select id="copy-from-campaign" name="copy_from_campaign" class="form-control">
 											<?php
-												for($i=0;$i < count($campaign->campaign_id);$i++){
+												for($i=0;$i < (isset($campaign->campaign_id) && is_countable($campaign->campaign_id) ? count($campaign->campaign_id) : 0);$i++){
 													echo '<option value="'.$campaign->campaign_id[$i].'">'.$campaign->campaign_id[$i].' - '.$campaign->campaign_name[$i].'</option>';
 												}
 											?>
@@ -788,7 +834,7 @@
 			    				<label class="control-label col-lg-4">List ID:</label>
 			    				<label class="control-label col-lg-8" style="text-align: left;">
 			    					<?php
-			    						$list_id = end($list->list_id) + 1;
+			    						$list_id = isset($list->list_id) ? end($list->list_id) + 1 : 1;
 			    						echo $list_id." >> List ".$list_id;
 			    					?>
 			    				</label>
@@ -798,7 +844,7 @@
 			    				<div class="col-lg-8">
 			    					<select id="country" name="country" class="form-control select2">
 			    						<?php if ($country_codes->result=="success") { ?>
-											<?php for($i=0;$i < count($country_codes->country);$i++){ ?>
+											<?php for($i=0;$i < (isset($country_codes->country) && is_countable($country_codes->country) ? count($country_codes->country) : 0);$i++){ ?>
 												<option value="<?php echo $country_codes->country_code[$i]?>">
 													<?php echo $country_codes->country_code[$i]?> >> <?php echo $country_codes->country[$i]?>
 												</option>
@@ -1031,7 +1077,7 @@
 											<?php
 											}
 
-		                                   	for($i=0;$i < count($campaign->campaign_id);$i++){
+		                                   	for($i=0;$i < (isset($campaign->campaign_id) && is_countable($campaign->campaign_id) ? count($campaign->campaign_id) : 0);$i++){
 											?>
 		                                   		<option value='<?php echo $campaign->campaign_id[$i];?>'> <?php echo $campaign->campaign_id[$i] . " - " .$campaign->campaign_name[$i];?></option>
 											<?php
@@ -1165,7 +1211,7 @@
 											?>
 											<option value="" selected hidden disabled>PLEASE SELECT A CAMPAIGN</option>
 											<?php
-		                                   		for($i=0;$i < count($campaign->campaign_id);$i++){
+		                                   		for($i=0;$i < (isset($campaign->campaign_id) && is_countable($campaign->campaign_id) ? count($campaign->campaign_id) : 0);$i++){
 		                                   			echo "<option value='".$campaign->campaign_id[$i]."'>".$campaign->campaign_id[$i]." - ".$campaign->campaign_name[$i]." </option>";
 		                                   		}
 											?>
@@ -1182,16 +1228,16 @@
 												<?php
 													//$dialStatus = $api->API_getAllDialStatuses('ALL', 1);
 													 //foreach($output->status as key => $val){
-													for($i=0;$i<=count($dialStatus->status->system);$i++) {
+													for($i=0;$i<=(isset($dialStatus->status->system) && is_countable($dialStatus->status->system) ? count($dialStatus->status->system) : 0);$i++) {
 												?>
-													<?php if( !empty($dialStatus->status->system[$i]) && !in_array($dialStatus->status->system[$i], $dial_statuses) ){ ?>
+													<?php if( !empty($dialStatus->status->system[$i]) && !in_array($dialStatus->status->system[$i], (is_array($dial_statuses) ? $dial_statuses : [])) ){ ?>
 														<option value="<?php echo $dialStatus->status->system[$i]?>" selected>
 															<?php echo $dialStatus->status->system[$i]." - ".$dialStatus->status_name->system[$i]?>
 														</option>
 													<?php } ?>
 												<?php } ?>
 											</optgroup>
-											<?php if(count($disposition) > 0){ ?>
+											<?php if(isset($disposition->custom_dispo) && is_iterable($disposition->custom_dispo)){ ?>
 											<optgroup label="Campaign Statuses">
 											<?php
 											foreach ($disposition->custom_dispo as $cCamp => $cDispo){
@@ -1269,7 +1315,7 @@
 		                                <select id="areacode_campaign" name="areacode_campaign" class="form-control select2" style="width:100%;" required>
 							<option value="" selected disabled> -- Choose Campaign -- </option>
 						<?php
-		                                   	for($i=0;$i < count($campaign->campaign_id);$i++){
+		                                   	for($i=0;$i < (isset($campaign->campaign_id) && is_countable($campaign->campaign_id) ? count($campaign->campaign_id) : 0);$i++){
 								//if($campaign->use_custom_cid[$i] === 'AREACODE'){
 						?>
 		                                   		<option value='<?php echo $campaign->campaign_id[$i];?>'> <?php echo $campaign->campaign_id[$i] . " - " .$campaign->campaign_name[$i];?></option>
@@ -1338,7 +1384,7 @@
 										<input type="hidden" id="edit_areacode_campaign" name="areacode_campaign" required readonly>
 										<select id="edit_areacode_campaign_select" name="areacode_campaign_select" class="form-control select2" style="width:100%;" disabled>
 										<?php
-											for($i=0;$i < count($campaign->campaign_id);$i++){
+											for($i=0;$i < (isset($campaign->campaign_id) && is_countable($campaign->campaign_id) ? count($campaign->campaign_id) : 0);$i++){
 										?>
 												<option value='<?php echo $campaign->campaign_id[$i];?>'> <?php echo $campaign->campaign_id[$i] . " - " .$campaign->campaign_name[$i];?></option>
 										<?php
@@ -1486,7 +1532,7 @@
 										<div class="col-lg-8">
 											<select name="lists_campaign" class="form-control select2 lists-campaign">
 												<?php
-													for($i=0;$i < count($campaign->campaign_id);$i++){
+													for($i=0;$i < (isset($campaign->campaign_id) && is_countable($campaign->campaign_id) ? count($campaign->campaign_id) : 0);$i++){
 														echo '<option value="'.$campaign->campaign_id[$i].'">'.$campaign->campaign_id[$i].' - '.$campaign->campaign_name[$i].'</option>';
 													}
 												?>
@@ -1691,12 +1737,14 @@
 			var tableCampaign = $('#table_campaign').DataTable({
 				destroy:true,
 				responsive:true,
+				autoWidth:false,
 				stateSave:true,
 				drawCallback:function(settings) {
 					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 					pagination.toggle(this.api().page.info().pages > 1);
 				},
 				columnDefs:[
+				    { width: "4%", targets: 0 },
 					{ width: "12%", targets: 6 },
 					{ width: "4%", targets: 5 },
 					//{ visible: false, targets: 1 },
@@ -1736,6 +1784,12 @@
 				]
 			});
 
+			$(document).on('click', '#table_leadrecycling .dropdown-menu li.disabled a', function(e) {
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				return false;
+			});
+
 			var tableLeadRecycling = $('#table_leadrecycling').DataTable({
 				destroy:true,
 				responsive:true,
@@ -1747,11 +1801,19 @@
 				rowCallback: function( row, data ) {
 					//console.log(data[3]);
 					if ( data[3] == "" ) {
-						$(row).addClass('no_leadrecycle_row');
-						//console.log(row);
-						$('.no_leadrecycle_row').find($('li')).addClass('disabled');
-						$('.no_leadrecycle_row').find($('.edit-leadrecycling')).removeClass('edit-leadrecycling').addClass('disabled_edit-leadrecycling');
-						$('.no_leadrecycle_row').find($('.delete-leadrecycling')).removeClass('delete-leadrecycling').addClass('disabled_delete-leadrecycling');
+						var $row = $(row);
+						$row.addClass('no_leadrecycle_row');
+						$row.find('li').addClass('disabled');
+						$row.find('.view_leadrecycling')
+							.removeClass('view_leadrecycling')
+							.addClass('disabled_view_leadrecycling')
+							.removeAttr('href data-toggle data-target')
+							.attr({ 'aria-disabled': 'true', 'tabindex': '-1' });
+						$row.find('.delete_leadrecycling')
+							.removeClass('delete_leadrecycling')
+							.addClass('disabled_delete_leadrecycling')
+							.removeAttr('href')
+							.attr({ 'aria-disabled': 'true', 'tabindex': '-1' });
 					}
 				},
 				columnDefs:[

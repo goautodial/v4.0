@@ -33,35 +33,35 @@
 
 	if ($validated === 1) {		
 		// collect new user data.	
-		$modifyid 						= $_POST["modifyid"];
+		$modifyid 						= ($_POST["modifyid"] ?? '');
 		
 		$pass = NULL; if (isset($_POST["password"])) { 
-			$pass 						= $_POST["password"]; 
+			$pass 						= ($_POST["password"] ?? ''); 
 			$pass 						= stripslashes($pass);
 		}
 		
 		$fullname = NULL; if (isset($_POST["fullname"])) { 
-			$fullname 					= $_POST["fullname"];
+			$fullname 					= ($_POST["fullname"] ?? '');
 			$fullname 					= stripslashes((string) $fullname);
 		}
 
 		$email = NULL; if (isset($_POST["email"])) { 
-			$email 						= $_POST["email"]; 
+			$email 						= ($_POST["email"] ?? ''); 
 			$email 						= stripslashes((string) $email);
 		}
 		
 		$active = NULL; if (isset($_POST["active"])) { 
-			$active 					= $_POST["active"]; 
+			$active 					= ($_POST["active"] ?? ''); 
 			$active 					= stripslashes((string) $active);
 		}
 		
 		$delete_vm_after_email = NULL; if (isset($_POST["delete_vm_after_email"])) { 
-			$delete_vm_after_email	 	= $_POST["delete_vm_after_email"]; 
+			$delete_vm_after_email	 	= ($_POST["delete_vm_after_email"] ?? ''); 
 			$delete_vm_after_email		= stripslashes((string) $delete_vm_after_email);
 		} 
 
 		$voicemail_greeting = NULL; if (isset($_POST["voicemail_greeting"])) {
-                        $voicemail_greeting                                         = $_POST["voicemail_greeting"];
+                        $voicemail_greeting                                         = ($_POST["voicemail_greeting"] ?? '');
                         $voicemail_greeting                                         = stripslashes((string) $voicemail_greeting);
                 }
 		

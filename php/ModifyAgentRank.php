@@ -35,8 +35,8 @@ declare(strict_types=1);
 
 	if ($validated === 1) {		
 		// collect new user data.	
-		$modifyid 								= $_POST['idgroup'];
-		$itemrank 								= $_POST['itemrank'];
+		$modifyid 								= ($_POST['idgroup'] ?? '');
+		$itemrank 								= ($_POST['itemrank'] ?? '');
 
 		$postfields 							= [
 			'goAction' 								=> 'goEditAgentRank',

@@ -26,7 +26,7 @@
 		if(!empty($output)){
 			$data = '';
 			$i=0;
-            $counter = count($output->phone_number);
+            $counter = (isset($output->phone_number) && is_countable($output->phone_number) ? count($output->phone_number) : 0);
 			for($i=0;$i<=$counter;$i++) {
 				if(!empty($output->phone_number[$i])){
 					$data .= '<tr>';

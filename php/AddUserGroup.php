@@ -29,9 +29,9 @@ declare(strict_types=1);
 
 	$postfields 					= [
 		'goAction' 						=> 'goAddUserGroup',
-		'user_group' 					=> $_POST['usergroup_id'],
-		'group_name' 					=> $_POST['groupname'],
-		'group_level' 					=> $_POST['grouplevel']
+		'user_group' 					=> ($_POST['usergroup_id'] ?? ''),
+		'group_name' 					=> ($_POST['groupname'] ?? ''),
+		'group_level' 					=> ($_POST['grouplevel'] ?? '')
 	];
 
 	$output 						= $api->API_addUserGroup($postfields);

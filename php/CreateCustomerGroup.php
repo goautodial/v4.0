@@ -41,7 +41,7 @@ if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// check description	
-	$newdescription = $_POST["newdesc"];
+	$newdescription = ($_POST["newdesc"] ?? '');
 	if (empty($newdescription) || strlen(trim((string) $newdescription)) < 1) { $lh->translateText("some_fields_missing"); return; }
 	// create customer group
 	$result = $db->addNewCustomerType(trim((string) $newdescription));

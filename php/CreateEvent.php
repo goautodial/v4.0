@@ -44,11 +44,11 @@ if ($validated === 1) {
 
 	// check if this is a new customer type of event.
 	if (isset($_POST["customerid"]) && isset($_POST["customer_type"])) {
-		$customerid = $_POST["customerid"];
-		$customertype = $_POST["customer_type"];
+		$customerid = ($_POST["customerid"] ?? '');
+		$customertype = ($_POST["customer_type"] ?? '');
 		$result = $db->createContactEventForCustomer($user->getUserId(), $customerid, $customertype, true);
 	} else { // normal event
-		$title = $_POST["title"];
+		$title = ($_POST["title"] ?? '');
 		$color = $_POST["color"] ?? CRM_UI_COLOR_DEFAULT_HEX;
 		error_log("Creando evento con color $color");
 		$result = $db->createEvent($user->getUserId(), $title, $color, true);

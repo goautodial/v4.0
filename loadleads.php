@@ -86,7 +86,7 @@
                             	<?php 
                             		if(isset($_GET['message'])){
                             			echo '<div class="col-lg-12" style="margin-top: 10px;">';
-                            			if($_GET['message'] == "Success"){
+                            			if(($_GET['message'] ?? '') == "Success"){
                             				echo '<div class="alert alert-success">
 											  <strong>Success!</strong> Upload of leads was successful.
 											</div>';
@@ -115,7 +115,7 @@
 													<select class="form-control" name="list_id">
 													<option value="">-- Select List ID --</option>
 														<?php 
-															for($i=0;$i<count($lists->list_id);$i++){
+															for($i=0;$i<(isset($lists->list_id) && is_countable($lists->list_id) ? count($lists->list_id) : 0);$i++){
 					                                			echo '<option value="'.$lists->list_id[$i].'">'.$lists->list_id[$i].'</option>';
 					                                		}
 														?>

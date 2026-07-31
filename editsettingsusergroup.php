@@ -37,7 +37,7 @@
 
 $usergroup_id = NULL;
 if (isset($_POST["usergroup_id"])) {
-	$usergroup_id = $_POST["usergroup_id"];
+	$usergroup_id = ($_POST["usergroup_id"] ?? '');
 }
 
 ?>
@@ -230,7 +230,7 @@ if (isset($_POST["usergroup_id"])) {
 											</div>
 											<?php
 											$camp_list = $api->API_getAllCampaigns();
-											if (count($camp_list->campaign_id) > 0) {
+											if ((isset($camp_list->campaign_id) && is_countable($camp_list->campaign_id) ? count($camp_list->campaign_id) : 0) > 0) {
 												foreach ($camp_list->campaign_id as $k => $camp) {
 													$checkCamp = (preg_match("/\s{$camp}\s/", $output->data->allowed_campaigns) ? ' checked' : '');
 													echo '<div class="checkbox c-checkbox" style="margin-right: 15px;">';

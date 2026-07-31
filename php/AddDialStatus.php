@@ -25,18 +25,18 @@
 	$api 											= \creamy\APIHandler::getInstance();
 
 	if ( isset($_POST['old_dial_status']) ) {
-		$statuses 									= explode(" ", $_POST['old_dial_status']);
+		$statuses 									= explode(" ", ($_POST['old_dial_status'] ?? ''));
 	}
 	
-	if ( in_array($_POST['dial_status'], $statuses) ) {
-		$new_status 								= $_POST['old_dial_status'];
+	if ( in_array(($_POST['dial_status'] ?? ''), (is_array($statuses) ? $statuses : [])) ) {
+		$new_status 								= ($_POST['old_dial_status'] ?? '');
 	} else {
-		$new_status 								= " ".$_POST['dial_status']." ".$_POST['old_dial_status'];
+		$new_status 								= " ".($_POST['dial_status'] ?? '')." ".($_POST['old_dial_status'] ?? '');
 	}		
 
 	$postfields 									= [
 		'goAction' 										=> 'goUpdateCampaignDialStatus',
-		'campaign_id' 									=> $_POST['campaign_id'],
+		'campaign_id' 									=> ($_POST['campaign_id'] ?? ''),
 		'dial_statuses' 								=> $new_status
 	];
 

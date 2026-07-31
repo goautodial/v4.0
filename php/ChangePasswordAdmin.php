@@ -50,9 +50,9 @@ if (!isset($_POST["new_password_2"])) {
 
 if ($validated === 1) {
 	// check password	
-	$userid = $_POST["usertochangepasswordid"];
-	$password1 = $_POST["new_password_1"];
-	$password2 = $_POST["new_password_2"];
+	$userid = ($_POST["usertochangepasswordid"] ?? '');
+	$password1 = ($_POST["new_password_1"] ?? '');
+	$password2 = ($_POST["new_password_2"] ?? '');
 	if ($password1 !== $password2) {
 		$lh->translateText("passwords_dont_match");
 	} else {

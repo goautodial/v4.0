@@ -25,32 +25,32 @@
 	$api 										= \creamy\APIHandler::getInstance();
         
 	// collect new user data.       
-	$modifyid 									= $_POST["modifyid"];
+	$modifyid 									= ($_POST["modifyid"] ?? '');
 	$filter_name 								= NULL;
 	
 	if ( isset($_POST["filter_name"]) ) { 
-		$filter_name 							= $_POST["filter_name"]; 
+		$filter_name 							= ($_POST["filter_name"] ?? ''); 
 		$filter_name 							= stripslashes((string) $filter_name);
 	}
 	
 	$filter_comments 							= NULL; 
 	
 	if ( isset($_POST["filter_comments"]) ) { 
-		$filter_comments 						= $_POST["filter_comments"];
+		$filter_comments 						= ($_POST["filter_comments"] ?? '');
 		$filter_comments 						= stripslashes($filter_comments);
 	}
 
 	$filter_sql 								= NULL; 
 	
 	if ( isset($_POST["filter_sql"]) ) { 
-		$filter_sql 							= $_POST["filter_sql"]; 
+		$filter_sql 							= ($_POST["filter_sql"] ?? ''); 
 		//$filter_sql 							= urldecode($filter_sql);
 	}
 
 	$filter_user_group 							= NULL; 
 	
 	if ( isset($_POST["filter_user_group"]) ) { 
-		$filter_user_group 						= $_POST["filter_user_group"]; 
+		$filter_user_group 						= ($_POST["filter_user_group"] ?? ''); 
 		$filter_user_group 						= stripslashes((string) $filter_user_group);
 	}
 

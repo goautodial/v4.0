@@ -146,7 +146,7 @@ $db = new \creamy\DbHandler();
 if (!isset($_GET["customer_type"])) {
 	fatal_error("Wrong request. Missing customer_type");
 }
-$customer_type = $_GET["customer_type"];
+$customer_type = ($_GET["customer_type"] ?? '');
 if($customer_type == "clients_1")$customer_type = "vicidial_list";
 // paging
 $length = isset($_GET[CRM_CUSTOMER_DATATABLE_LIMIT]) ? intval($_GET[CRM_CUSTOMER_DATATABLE_LIMIT]) : 10;
@@ -170,7 +170,7 @@ if (isset($_GET[CRM_CUSTOMER_DATATABLE_SORT_COLUMN."0"])) {
 $filtering = [];
 if (isset($_GET[CRM_CUSTOMER_DATATABLE_SEARCH]) && $_GET[CRM_CUSTOMER_DATATABLE_SEARCH] != "") {
 	$wordToSearch = $db->escape_string($_GET[CRM_CUSTOMER_DATATABLE_SEARCH]);
-    $counter = count($columns);
+    $counter = (is_countable($columns) ? count($columns) : 0);
 	for ($i=0; $i < $counter; $i++) {
         if (isset($_GET[CRM_CUSTOMER_DATATABLE_SEARCHABLE.$i]) && $_GET[CRM_CUSTOMER_DATATABLE_SEARCHABLE.$i] == "true") {
 			$columnToSearch = $columns[$i];

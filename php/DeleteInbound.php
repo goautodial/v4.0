@@ -31,17 +31,17 @@ declare(strict_types=1);
 
 
 	if (isset($_POST["groupid"])) {
-		$id 									= $_POST["groupid"];
+		$id 									= ($_POST["groupid"] ?? '');
 		$type									= "ingroup";
 	}
 
 	if (isset($_POST["ivr"])) {
-		$id 									= $_POST["ivr"];
+		$id 									= ($_POST["ivr"] ?? '');
 		$type									= "ivr";
 	}
 
 	if (isset($_POST["modify_did"])) {
-		$id 									= $_POST["modify_did"];
+		$id 									= ($_POST["modify_did"] ?? '');
 		$type									= "did";
 	}
 

@@ -4,7 +4,7 @@
  * @brief       Handles Leads on the hopper variables
  * @copyright   Copyright (c) 2018 GOautoial Inc.
  * @author      Alexander Jim Abenoja
- * @author		Demian Lizandro A, Biscocho 
+ * @author		Demian Lizandro A, Biscocho
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -22,54 +22,57 @@
 */
 
 	require_once(__DIR__ . '/APIHandler.php');
-	
+
 	$api 										= \creamy\APIHandler::getInstance();
-	$campaign_id 								= $_POST["campaign_id"];
+	$campaign_id 								= ($_POST["campaign_id"] ?? '');
 	$output 									= $api->API_getAllLeadsOnHopper($campaign_id);
 
 	if (!empty($output)) {
 		$data 									= '[';
 		$i										= 0;
 		$count 									= 0;
-		$dial_status 							= explode(" ", $output->camp_dial_status[0]);
+		$campDialStatus 						= (isset($output->camp_dial_status) && is_array($output->camp_dial_status)) ? ($output->camp_dial_status[0] ?? '') : '';
+		$dial_status 							= explode(" ", (string) $campDialStatus);
 		$statuses 								= [];
 		$availableStats 						= [];
-		
+
 		foreach ($dial_status as $status){
 			if($status !== '' && $status !== '0'){
 				$statuses[] = $status;
 			}
 		}
-        $counter = count($output->lead_id);
-		
-		for($i=0;$i<=$counter;$i++) {
-			$availableStats[] = $output->status[$i];
-			if(!empty($output->hopper_id[$i]) && in_array($output->status[$i], $statuses)){
+	        $leadIds = (isset($output->lead_id) && is_countable($output->lead_id) ? $output->lead_id : []);
+        $counter = count($leadIds);
+
+		for($i=0;$i<$counter;$i++) {
+			$currentStatus = $output->status[$i] ?? '';
+			$availableStats[] = $currentStatus;
+			if(!empty($output->hopper_id[$i] ?? '') && in_array($currentStatus, (is_array($statuses) ? $statuses : []))){
 				$count += 1;
 				$data 							.= '[';
-				$data 							.= '"'.$output->hopper_id[$i].'",';
-				$data 							.= '"'.$output->priority[$i].'",';
-				$data 							.= '"'.$output->lead_id[$i].'",';
-				$data 							.= '"'.$output->list_id[$i].'",';
-				$data 							.= '"'.$output->phone_number[$i].'",';
-				$data 							.= '"'.$output->state[$i].'",';
-				$data 							.= '"'.$output->status[$i].'",';
-				$data 							.= '"'.$output->called_count[$i].'",';
-				$data 							.= '"'.$output->gmt_offset_now[$i].'",';
-				$data 							.= '"'.$output->alt_dial[$i].'",';
-				$data 							.= '"'.$output->source[$i].'"';
+				$data 							.= '"'.($output->hopper_id[$i] ?? '').'",';
+				$data 							.= '"'.($output->priority[$i] ?? '').'",';
+				$data 							.= '"'.($output->lead_id[$i] ?? '').'",';
+				$data 							.= '"'.($output->list_id[$i] ?? '').'",';
+				$data 							.= '"'.($output->phone_number[$i] ?? '').'",';
+				$data 							.= '"'.($output->state[$i] ?? '').'",';
+				$data 							.= '"'.$currentStatus.'",';
+				$data 							.= '"'.($output->called_count[$i] ?? '').'",';
+				$data 							.= '"'.($output->gmt_offset_now[$i] ?? '').'",';
+				$data 							.= '"'.($output->alt_dial[$i] ?? '').'",';
+				$data 							.= '"'.($output->source[$i] ?? '').'"';
 				$data 							.= '],';
 			}
 		}
 
-		$data 									= rtrim($data, ",");    
+		$data 									= rtrim($data, ",");
 		$data 									.= ']';
-		
+
 		$details['count'] 						= $count;
 		$details['data'] 						= $data;
 		$details['stats'] 						= $statuses;
 		$details['data_stats'] 					= $availableStats;
-		
+
 		echo json_encode($details, true);
 	} else {
 		echo json_encode("empty", true);

@@ -9,14 +9,14 @@
 	$postfields["goPass"] = goPass; #Password goes here. (required)
 	$postfields["goAction"] = "goMonitorAgent"; #action performed by the [[API:Functions]]. (required)
 	$postfields["responsetype"] = responsetype; #json. (required)
-	$postfields["goAgent"] = $_POST['goAgent'];
-	$postfields["goPhoneLogin"] = $_POST['goPhoneLogin'];
-	$postfields["goSource"] = $_POST['goSource'];
-	$postfields["goFunction"] = $_POST['goFunction'];
-	$postfields["goSessionID"] = $_POST['goSessionID'];
-	$postfields["goServerIP"] = $_POST['goServerIP'];
-	$postfields["goStage"] = $_POST['goStage'];
-	$postfields["goUserIP"] = $_POST['goUserIP'];
+	$postfields["goAgent"] = ($_POST['goAgent'] ?? '');
+	$postfields["goPhoneLogin"] = ($_POST['goPhoneLogin'] ?? '');
+	$postfields["goSource"] = ($_POST['goSource'] ?? '');
+	$postfields["goFunction"] = ($_POST['goFunction'] ?? '');
+	$postfields["goSessionID"] = ($_POST['goSessionID'] ?? '');
+	$postfields["goServerIP"] = ($_POST['goServerIP'] ?? '');
+	$postfields["goStage"] = ($_POST['goStage'] ?? '');
+	$postfields["goUserIP"] = ($_POST['goUserIP'] ?? '');
     
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);

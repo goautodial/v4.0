@@ -1,19 +1,19 @@
 <?php
 /**
 	The MIT License (MIT)
-	
+
 	Copyright (c) 2015 Ignacio Nieto Carvajal
-	
+
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the "Software"), to deal
 	in the Software without restriction, including without limitation the rights
 	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 	copies of the Software, and to permit persons to whom the Software is
 	furnished to do so, subject to the following conditions:
-	
+
 	The above copyright notice and this permission notice shall be included in
 	all copies or substantial portions of the Software.
-	
+
 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -79,7 +79,7 @@ define ('CRM_MODULE_MERGING_STRATEGY_RANDOM', 'random');
 define ('CRM_MODULE_JOB_SCHEDULING', 'scheduledJobForModule');
 
 /**
- * ModuleReference. This class contains all data used to identify, instantiate and 
+ * ModuleReference. This class contains all data used to identify, instantiate and
  */
 class ModuleReference {
 	/** The ReflectionClass of the module. */
@@ -112,7 +112,7 @@ class ModuleReference {
 			throw new \Exception("Class {$this->moduleClassName} not found: $exception", $exception->getCode(), $exception);
 		}
 	}
-		
+
 	/**
 	 * Tries to automatically load the class from the directory plugin.
 	 */
@@ -120,18 +120,18 @@ class ModuleReference {
 		$mPath = realpath(dirname(__FILE__, 2).DIRECTORY_SEPARATOR.CRM_MODULES_BASEDIR.DIRECTORY_SEPARATOR.$this->moduleClassName.DIRECTORY_SEPARATOR.CRM_MODULES_MAIN_FILENAME);
 		@include_once($mPath);
 	}
-	
+
 	/** Get and set variables */
-	
+
 	public function getModuleClassName() { return $this->moduleClassName; }
 	public function getModuleNamespace() { return $this->moduleNamespace; }
 	public function getModuleShortName() { return $this->moduleShortName; }
 	public function getModuleName() { return $this->runMethodOnModule("getModuleName", null); }
 	public function getModuleDescription() { return $this->runMethodOnModule("getModuleDescription", null); }
 	public function getModuleVersion() { return $this->runMethodOnModule("getModuleVersion", null); }
-	
+
 	/** Interact with the module instance */
-	
+
 	/**
 	 * Tries to execute the given method on the module.
 	 * @return String a string containing the result if successful, or null if an error happened.
@@ -144,39 +144,39 @@ class ModuleReference {
 			   $reflectMethod = $this->reflectClass->getMethod($methodName);
 			   // if the method is static, we don't need to instantiate the module
 			   if($reflectMethod->isStatic()) {
-				   if (is_array($args)) { 
+				   if (is_array($args)) {
 					   $params = $this->generateParameterArrayForMethod($reflectMethod, $args);
-					   $result = $reflectMethod->invokeArgs($params); 
+					   $result = $reflectMethod->invokeArgs($params);
 				   } else { $result = $reflectMethod->invoke($args); }
 			   }
 			   else { // else we need to create an instance.
 					$instance = $this->getModuleClassInstance();
-					if (is_array($args)) { 
+					if (is_array($args)) {
 					    $params = $this->generateParameterArrayForMethod($reflectMethod, $args);
-						$result = $reflectMethod->invokeArgs($instance, $params); 
+						$result = $reflectMethod->invokeArgs($instance, $params);
 					} else { $result = $reflectMethod->invoke($instance, $args); }
 			   }
 			   return $result;
-			} else { return null; }			
-		} catch (\Exception) { return null; }	
+			} else { return null; }
+		} catch (\Exception) { return null; }
 	}
-	
+
 	/**
 	 * Generates the array of parameters for a given method.
 	 */
 	protected function generateParameterArrayForMethod($reflectMethod, $args) {
-		$params = []; 
-        foreach($reflectMethod->getParameters() as $param) { 
-          	/* @var $param ReflectionParameter */ 
-		  	if(isset($args[$param->getName()])) { 
-			  	$params[$param->getName()] = $args[$param->getName()]; 
-          	} else { 
-            	$params[] = $param->getDefaultValue(); 
-          	} 
-        } 
+		$params = [];
+        foreach($reflectMethod->getParameters() as $param) {
+          	/* @var $param ReflectionParameter */
+		  	if(isset($args[$param->getName()])) {
+			  	$params[$param->getName()] = $args[$param->getName()];
+          	} else {
+            	$params[] = $param->getDefaultValue();
+          	}
+        }
 		return $params;
 	}
-	
+
 	/**
 	 * Returns the instance of this module definition (if created). If not created, it creates a new one and returns it.
 	 */
@@ -191,31 +191,31 @@ class ModuleReference {
 
 /**
  *  ModuleHandler.
- *  This class manages the loading and hooking of plugins. The ModuleHandler is used to load and invoke a module. 
+ *  This class manages the loading and hooking of plugins. The ModuleHandler is used to load and invoke a module.
  *  UIHandler uses the Singleton pattern, thus gets instanciated by the ModuleHandler::getInstante().
  */
 class ModuleHandler {
 	public $activeModuleNames;
     // variables.
-	
+
 	/** Module system enabled. */
 	protected $enabled;
-	
+
 	/** Database handler */
 	protected $db;
 	protected $dbConnector;
 
 	/** An array containing the short names of all the modules. */
 	protected $allModules = [];
-	
+
 	/** Active module names */
 	protected $activeModules = [];
-	
+
 	/** Log of module loading */
 	protected $moduleHandlerLog = "";
-	
+
 	// Lifecycle
-	
+
 	/**
      * Returns the singleton instance of ModuleHandler.
      * @staticvar ModuleHandler $instance The ModuleHandler instance of this class.
@@ -231,7 +231,7 @@ class ModuleHandler {
         return $instance;
     }
 
-	
+
     /**
      * Protected constructor to prevent creating a new instance of the
      * *Singleton* via the `new` operator from outside of this class.
@@ -243,7 +243,7 @@ class ModuleHandler {
 		    // initialize database connector.
 		    $this->db = new \creamy\DbHandler();
 			$this->dbConnector = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType($dbConnectorType);
-		    
+
 			// initialize modules
 			$this->loadModules();
 		}
@@ -261,7 +261,7 @@ class ModuleHandler {
      * Private unserialize method to prevent unserializing of the *Singleton*
      * instance.
      */
-    private function __unserialize(array $data): void
+    public function __unserialize(array $data): void
     {
         foreach ($data as $property => $value) {
             if (property_exists($this, $property)) {
@@ -277,7 +277,7 @@ class ModuleHandler {
 	 * @return Array an array of all module names as ModuleReference(s).
 	 */
 	public function listOfAllModules() {
-		if (!$this->enabled) { return []; }	    
+		if (!$this->enabled) { return []; }
 
 		return $this->allModules;
 	}
@@ -287,7 +287,7 @@ class ModuleHandler {
 	 * @return Array an array of active module names as strings.
 	 */
 	public function listOfActiveModules() {
-		if (!$this->enabled) { return []; }	    
+		if (!$this->enabled) { return []; }
 
 		return $this->activeModuleNames;
 	}
@@ -297,7 +297,7 @@ class ModuleHandler {
 	 * @return Object an instance of a subclass of Module, if the module exists, is active and could be instantiated, null otherwise.
 	 */
 	public function getDefinitionOfModuleNamed($name) {
-		if (!$this->enabled) { return null; }	    
+		if (!$this->enabled) { return null; }
 
 		if (array_key_exists((string) $name, $this->allModules)) {
 			return $this->allModules[$name];
@@ -309,11 +309,11 @@ class ModuleHandler {
 	 * @return Object an instance of a subclass of Module, if the module exists, is active and could be instantiated, null otherwise.
 	 */
 	public function getInstanceOfModuleNamed($name) {
-		if (!$this->enabled) { return null; }	    
+		if (!$this->enabled) { return null; }
 
 		if (array_key_exists((string) $name, $this->allModules)) {
 			$moduleDefinition = $this->allModules[$name];
-			return $moduleDefinition->getModuleClassInstance(); 
+			return $moduleDefinition->getModuleClassInstance();
 		} else { return null; }
 	}
 
@@ -326,7 +326,7 @@ class ModuleHandler {
 	 * Reads all modules and initializes the main ones.
 	 */
 	public function loadModules() {
-		if (!$this->enabled) { return; }	    
+		if (!$this->enabled) { return; }
 
 		// Initialize structures
 		$this->moduleHandlerLog = "Loading modules...\n";
@@ -345,7 +345,7 @@ class ModuleHandler {
 				$mainModuleFilePath = $realpath.DIRECTORY_SEPARATOR.CRM_MODULES_MAIN_FILENAME;
 				$classHierarchy = \creamy\ModuleHandler::getClassHierarchyInFile($mainModuleFilePath);
 				$this->moduleHandlerLog .= "Class hierarchy: ".var_export($classHierarchy, true)."\n";
-				if (is_array($classHierarchy) && count($classHierarchy) > 0) {
+				if (is_array($classHierarchy) && (is_countable($classHierarchy) ? count($classHierarchy) : 0) > 0) {
 					$classes = $classHierarchy["classes"] ?? [];
 					$namespace = $classHierarchy["namespace"] ?? null;
 
@@ -358,7 +358,7 @@ class ModuleHandler {
 								$def = new \creamy\ModuleReference($filename, $mainModuleFilePath, $classname, $namespace);
 								$this->allModules[$classname] = $def;
 								$this->moduleHandlerLog .= "Successfully loaded module $classname from $realpath\n";
-								break;	 // success. We don't need to look any further in this file.					
+								break;	 // success. We don't need to look any further in this file.
 							} catch (\Exception $exception) { // Log module loading failure.
 								$this->moduleHandlerLog .= "Unable to load module ".$class["name"]." from $realpath: ".$exception->getMessage()."\n";
 							}
@@ -369,18 +369,18 @@ class ModuleHandler {
 		}
 		//error_log("Module loading process:\n".$this->moduleHandlerLog);
 	}
-	
+
 	/** Module activation and status */
-	
-	/** 
+
+	/**
 	 * Returns true if a module is active, false otherwise.
 	 *
-	 * @param $moduleClassName name of the module class to check. 
+	 * @param $moduleClassName name of the module class to check.
 	 */
 	public function moduleIsEnabled($moduleName) {
-		if (!$this->enabled) { return false; }	    
+		if (!$this->enabled) { return false; }
 
-		return in_array($moduleName, $this->activeModules, true);
+		return in_array($moduleName, (is_array($this->activeModules) ? $this->activeModules : []), true);
 	}
 
 	/**
@@ -390,14 +390,14 @@ class ModuleHandler {
 	 * @return Bool true if module was successfully enabled/disabled, false otherwise.
 	 */
 	public function enableOrDisableModule($moduleName, $enabled) {
-		if (!$this->enabled) { return false; }	    
+		if (!$this->enabled) { return false; }
 
 		// avoid nasty things here...
 	    $sanitized = preg_replace("/[^a-zA-Z0-9_\-]+/", "", $moduleName);
 
 		// add or remove from active modules
 		if (filter_var($enabled, FILTER_VALIDATE_BOOLEAN)) { // enable module
-			if (!in_array($sanitized, $this->activeModules)) { $this->activeModules[] = $sanitized; }
+			if (!in_array($sanitized, (is_array($this->activeModules) ? $this->activeModules : []))) { $this->activeModules[] = $sanitized; }
 			$methodToCall = "activateModule";
 		} else { // disable module
 			if ($key = array_search($sanitized, $this->activeModules)) { unset($this->activeModules[$key]); }
@@ -412,40 +412,40 @@ class ModuleHandler {
 		return $this->db->changeModuleStatus($sanitized, $enabled);
 
 	}
-	
-	/** Module modification, deletion or update */    
-    
-    /** 
-	 * Deletes a module. 
+
+	/** Module modification, deletion or update */
+
+    /**
+	 * Deletes a module.
      */
     public function deleteModule($shortName) {
 	$log_user = session_user ;
         $log_ip = $_SERVER['REMOTE_ADDR'];
         $log_group = session_usergroup;
 
-	if (!$this->enabled) { return false; }	    
+	if (!$this->enabled) { return false; }
 
 		// avoid nasty things here...
 	    $sanitized = preg_replace("/[^a-zA-Z0-9_\-]+/", "", (string) $shortName);
 
    	    // remove from active modules.
-		if ( ($key = array_search($shortName, $this->activeModules)) !== false) { unset($this->activeModules[$key]); } 
+		if ( ($key = array_search($shortName, $this->activeModules)) !== false) { unset($this->activeModules[$key]); }
 
 	    // remove from current entries.
-	    if (array_key_exists($sanitized, $this->allModules)) { 
+	    if (array_key_exists($sanitized, $this->allModules)) {
 			$moduleDefinition = $this->allModules[$sanitized];
 			$moduleDefinition->runMethodOnModule("uninstallModule", null);
-		    unset($this->allModules[$sanitized]); 
+		    unset($this->allModules[$sanitized]);
 		}
-	    
+
 	    // delete files and directory structure.
 	    $path = dirname(__FILE__, 2).DIRECTORY_SEPARATOR.CRM_MODULES_BASEDIR.DIRECTORY_SEPARATOR.$sanitized;
 		\creamy\CRMUtils::deleteDirectoryRecursively($path);
 
-	    $this->db->log_action($this->dbConnector, 'DELETE', $log_user, $log_ip, "Uninstalled Module: ".$shortName, $log_group);	    	    
+	    $this->db->log_action($this->dbConnector, 'DELETE', $log_user, $log_ip, "Uninstalled Module: ".$shortName, $log_group);
 	    return true;
     }
-    
+
     /**
 	 * Configures a module with a given set of settings.
 	 * Returns true if settings were updated successfully, false otherwise.
@@ -455,8 +455,8 @@ class ModuleHandler {
 	$log_ip = $_SERVER['REMOTE_ADDR'];
 	$log_group = session_usergroup;
 
-	if (!$this->enabled) { return null; }	    
-	
+	if (!$this->enabled) { return null; }
+
 	    if ($this->moduleIsEnabled($moduleName)) {
 		    $instance = $this->getInstanceOfModuleNamed($moduleName);
 		    if (isset($instance)) {
@@ -493,7 +493,7 @@ class ModuleHandler {
 					    if (!$instance->setSettingValue($setting, "0")) { return false; }
 				    }
 			    }
-			    
+
 			    $log_id = $this->db->log_action($this->dbConnector, 'MODIFY', $log_user, $log_ip, "Updated Module: ".$moduleName, $log_group);
 			    return true;
 		    }
@@ -501,11 +501,11 @@ class ModuleHandler {
 	    $log_id = $this->db->log_action($this->dbConnector, 'MODIFY', $log_user, $log_ip, "Module not Modified: ".$moduleName, $log_group);
 	    return false;
     }
-    
+
     /** Module interaction */
-    
+
     public function activeModulesInstances() {
-		if (!$this->enabled) { return []; }	    
+		if (!$this->enabled) { return []; }
 
 	    $result = [];
 	    foreach ($this->activeModules as $activeModule) {
@@ -516,9 +516,9 @@ class ModuleHandler {
 	    }
 	    return $result;
     }
-    
+
     public function modulesWithSettings() {
-		if (!$this->enabled) { return []; }	    
+		if (!$this->enabled) { return []; }
 
 	    $result = [];
 	    foreach ($this->activeModules as $activeModule) {
@@ -530,11 +530,11 @@ class ModuleHandler {
 	    }
 	    return $result;
     }
-    
+
     public function applyHookOnActiveModules($hookname, $args, $mergeStrategy = CRM_MODULE_MERGING_STRATEGY_APPEND) {
 		// safety checks.
-		if (!$this->enabled) 					{ return null; } // module system is not enabled   
-		if (count($this->activeModules) < 1) 	{ return null; } // no active modules, nothing to do.
+		if (!$this->enabled) 					{ return null; } // module system is not enabled
+		if ((isset($this->activeModules) && is_countable($this->activeModules) ? count($this->activeModules) : 0) < 1) 	{ return null; } // no active modules, nothing to do.
 
 	    // depending on the merge strategy we'll generate different results.
 	    if ($mergeStrategy == CRM_MODULE_MERGING_STRATEGY_SEQUENCE) {
@@ -548,17 +548,17 @@ class ModuleHandler {
 			return $this->mergeHookResultsWithStrategy($results, $mergeStrategy);
 		}
     }
-    
+
     public function applyHookOnModule($modulename, $hookname, $args) {
-		if (!$this->enabled) { return null; }	    
-		
+		if (!$this->enabled) { return null; }
+
 		$md = $this->getDefinitionOfModuleNamed($modulename);
 		if (isset($md)) {
 			return $md->runMethodOnModule($hookname, $args);
 		}
 		return null;
     }
-   
+
     protected function mergeHookResultsWithStrategy($results, $mergeStrategy) {
 	    switch ($mergeStrategy) {
 		    case CRM_MODULE_MERGING_STRATEGY_APPEND:
@@ -578,35 +578,35 @@ class ModuleHandler {
 		    	return $joined;
 		    case CRM_MODULE_MERGING_STRATEGY_AND:
 		    	$andResult = true;
-		    	foreach ($results as $result) { ($andResult = $andResult) && (bool)$result; }		    	
+		    	foreach ($results as $result) { ($andResult = $andResult) && (bool)$result; }
 		    	return $andResult;
 		    case CRM_MODULE_MERGING_STRATEGY_OR:
 		    	$oredResult = true;
-		    	foreach ($results as $result) { ($oredResult = $oredResult) || (bool)$result; }		    	
+		    	foreach ($results as $result) { ($oredResult = $oredResult) || (bool)$result; }
 		    	return $oredResult;
 		    case CRM_MODULE_MERGING_STRATEGY_FIRST:
-				if (is_array($results) && count($results) > 0) { return reset($results); }
+				if (is_array($results) && (is_countable($results) ? count($results) : 0) > 0) { return reset($results); }
 				else { return $results; }
 		    case CRM_MODULE_MERGING_STRATEGY_LAST:
-				if (is_array($results) && count($results) > 0) { return end($results); }
+				if (is_array($results) && (is_countable($results) ? count($results) : 0) > 0) { return end($results); }
 				else { return $results; }
 		    case CRM_MODULE_MERGING_STRATEGY_RANDOM:
-				if (is_array($results) && count($results) > 0) {
+				if (is_array($results) && (is_countable($results) ? count($results) : 0) > 0) {
 					require_once(__DIR__ . '/RandomStringGenerator.php');
 					$rnd = new \creamy\RandomStringGenerator();
-					$nmb = $rnd->getRandomInteger(0, count($results)-1);
+					$nmb = $rnd->getRandomInteger(0, (is_countable($results) ? count($results) : 0)-1);
 					return array_values($results)[$nmb];
 				}
 				else { return $results; }
 		    	break;
 	    }
     }
-    
+
     protected function sequenceHookResults($hookname, $args) {
 	    // initialize values
 	    $result = $args;
 	    $resultWrapped = false;
-	    
+
 	    // iterate through all modules.
 	    foreach ($this->activeModules as $modulename) {
 		    $temp = $this->applyHookOnModule($modulename, $hookname, $result);
@@ -622,24 +622,24 @@ class ModuleHandler {
 	    if ($resultWrapped) { reset($result); $result = current($result); }
 	    // return result.
 	    return $result;
-    }    
-    
+    }
+
     /** Job scheduling */
-    
+
     public function scheduleJobsOnActiveModules($period) {
 		// safety checks.
-		if (!$this->enabled) 					{ return null; } // module system is not enabled   
-		if (count($this->activeModules) < 1) 	{ return null; } // no active modules, nothing to do.
+		if (!$this->enabled) 					{ return null; } // module system is not enabled
+		if ((isset($this->activeModules) && is_countable($this->activeModules) ? count($this->activeModules) : 0) < 1) 	{ return null; } // no active modules, nothing to do.
 
 		foreach ($this->activeModules as $modulename) {
 			$md = $this->getDefinitionOfModuleNamed($modulename);
 			if (isset($md)) { return $md->runMethodOnModule(CRM_MODULE_JOB_SCHEDULING, ["period" => $period]); }
 		}
     }
-    
-    
+
+
     /** Custom utils */
-    
+
     /**
 	 * Helper function to decide if the output generated by a module can be
 	 * feeded back as the input for the next module in sequence. This will
@@ -649,16 +649,16 @@ class ModuleHandler {
 	 * @return true if $outputArray has at least the same keys that $inputArray.
 	 */
     protected function arraysHaveSameKeys($inputArray, $outputArray) {
-	    $n1 = count($inputArray);
-	    $n2 = count($outputArray);
+	    $n1 = (is_countable($inputArray) ? count($inputArray) : 0);
+	    $n2 = (is_countable($outputArray) ? count($outputArray) : 0);
 	    if ($n1 === $n2) {
             return array_all(array_keys($inputArray), fn($key) => array_key_exists((string) $key, $outputArray));
         } else { return false; }
     }
 
-    	
-	/** 
-	 * Returns true if the module system is enabled. 
+
+	/**
+	 * Returns true if the module system is enabled.
 	 * @return true if the module system is enabled. False otherwise.
 	 */
 	public static function moduleSystemEnabled($dbConnectorType = CRM_DB_CONNECTOR_TYPE_MYSQL) {
@@ -670,7 +670,7 @@ class ModuleHandler {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Returns the main module page link for a given module with given parameters.
 	 * @param String $module 	name of the module.
@@ -680,7 +680,7 @@ class ModuleHandler {
 	public static function pageLinkForModule($module, $args, $basedir = "") {
 		return $basedir."modulepage.php?module_name=".urlencode($module)."&args=".\creamy\ModuleHandler::encodeModuleArguments($args);
 	}
-	
+
 	/**
 	 * Encodes some parameters for inclusion as arguments in the link for a module's main page.
 	 * @param Array $args The arguments for a module, as an associative array "option" => "value".
@@ -690,7 +690,7 @@ class ModuleHandler {
 		if (empty($args) || !is_array($args)) { return ""; }
 		return urlencode(json_encode($args));
 	}
-	
+
 	/**
 	 * Decodes a url parameter string into module arguments.
 	 * @param String $encodedString encoded string containing a urlencode(json_encode($array)) of an $array.
@@ -700,26 +700,26 @@ class ModuleHandler {
 		if (empty($encodedString)) { return []; }
 		return json_decode(urldecode($encodedString), true);
 	}
-	
+
 	/**
-     * 
+     *
      * Looks what classes and namespaces are defined in that file and returns the first found
      * @param String $file Path to file
      * @author Tivie http://stackoverflow.com/users/295342/tivie
      * @author Ignacio Nieto Carvajal <contact@digitalleaves.com> (modifications)
-     * @return Returns NULL if none is found or an array with namespaces and classes found in file: 
+     * @return Returns NULL if none is found or an array with namespaces and classes found in file:
 	  'namespace' => string 'this\is\a\really\big\namespace\for\testing\dont\you\think' (length=57)
-	  'classes' => 
+	  'classes' =>
 	    array
-	      0 => 
+	      0 =>
 	        array
 	          'name' => string 'yes_it_is' (length=9)
 	          'type' => string 'CLASS' (length=5)
-	      1 => 
+	      1 =>
 	        array
 	          'name' => string 'damn_too_big' (length=12)
 	          'type' => string 'ABSTRACT CLASS' (length=14)
-	      2 => 
+	      2 =>
 	        array
 	          'name' => string 'fodass' (length=6)
 	          'type' => string 'INTERFACE' (length=9)
@@ -736,9 +736,9 @@ class ModuleHandler {
 
         $php_code = file_get_contents($file);
         $tokens = token_get_all($php_code);
-        $count = count($tokens);
+        $count = (is_countable($tokens) ? count($tokens) : 0);
 
-        for ($i = 0; $i < $count; $i++) 
+        for ($i = 0; $i < $count; $i++)
         {
             if(!$foundNS && $tokens[$i][0] == T_NAMESPACE)
             {
@@ -751,7 +751,7 @@ class ModuleHandler {
                 $ii++;
                 $foundNS = FALSE;
             }
-            elseif ($i-2 >= 0 && $tokens[$i - 2][0] == T_CLASS && $tokens[$i - 1][0] == T_WHITESPACE && $tokens[$i][0] == T_STRING) 
+            elseif ($i-2 >= 0 && $tokens[$i - 2][0] == T_CLASS && $tokens[$i - 1][0] == T_WHITESPACE && $tokens[$i][0] == T_STRING)
             {
                 if($i-4 >=0 && $tokens[$i - 4][0] == T_ABSTRACT)
                 {
@@ -784,6 +784,6 @@ class ModuleHandler {
             $classes = $final;
         }
         return $classes[0];
-    }   
+    }
 }
 ?>

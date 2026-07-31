@@ -27,7 +27,7 @@
 	$max 										= 0;
 	$jsonv 										= '['; 	
 
-    if (count($output->data) < 1){
+    if ((isset($output->data) && is_countable($output->data) ? count($output->data) : 0) < 1){
         echo  "No data available";
 
     } elseif (!empty($output->data)) {

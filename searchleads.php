@@ -11,9 +11,9 @@
 
 	require_once('php/goCRMAPISettings.php');
 
-	$lists = $_POST['lists'];
-	$last_name = $_POST['last_name'];
-	$phone_number = $_POST['phone_number'];
+	$lists = ($_POST['lists'] ?? '');
+	$last_name = ($_POST['last_name'] ?? '');
+	$phone_number = ($_POST['phone_number'] ?? '');
 
 	$url = gourl."/goGetLeads/goAPI.php"; #URL to GoAutoDial API. (required)
 	$postfields["goUser"] = goUser; #Username goes here. (required)
@@ -180,7 +180,7 @@
                                                       </tr>
                                                   </thead>
                                                   <tbody>
-                                                    <?php for($i=0;$i<=count($leads->lead_id);$i++){ ?>
+                                                    <?php for($i=0;$i<=(isset($leads->lead_id) && is_countable($leads->lead_id) ? count($leads->lead_id) : 0);$i++){ ?>
                                                       <tr>
                                                         <td><?php echo $leads->lead_id[$i]; ?></td>
                                                         <td><?php echo $leads->list_id[$i]; ?></td>

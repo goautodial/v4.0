@@ -251,7 +251,7 @@ define('CRM_LANGUAGE_BASE_DIR', DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR);
 		$result = [];
 		$ignoreLocales = ["datatables"];
 		foreach ($files as $file) {
-			if (!is_dir($file) && (!\creamy\CRMUtils::startsWith($file, ".")) && (!in_array($file, $ignoreLocales))) {
+			if (!is_dir($file) && (!\creamy\CRMUtils::startsWith($file, ".")) && (!in_array($file, (is_array($ignoreLocales) ? $ignoreLocales : [])))) {
 				$localeCodeForFile = str_replace("_", "-", $file);
 				$languageForLocale = mb_convert_encoding(\Locale::getDisplayLanguage($localeCodeForFile), 'ISO-8859-1');
 				$result[$file] = "$file ($languageForLocale)";

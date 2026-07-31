@@ -26,11 +26,11 @@ declare(strict_types=1);
 	require_once(__DIR__ . '/Session.php');
 	$api 										= \creamy\APIHandler::getInstance();
 
-	$email = $_POST["email"];
-	$full_name = $_POST["fullname"];
-	$password = $_POST["password"];
-	$username = $_POST["user_form"];
-	$usergroup = $_POST["user_group"];
+	$email = ($_POST["email"] ?? '');
+	$full_name = ($_POST["fullname"] ?? '');
+	$password = ($_POST["password"] ?? '');
+	$username = ($_POST["user_form"] ?? '');
+	$usergroup = ($_POST["user_group"] ?? '');
 	$phonePass = $_POST["phone_pass"] ?? $password;
 	$postfields = [
 		'goAction' 	=> 'goAddUser',
@@ -39,11 +39,11 @@ declare(strict_types=1);
 		'full_name' 	=> $full_name,
 		'user_group' 	=> $usergroup,
 		'email' 	=> $email,
-		'active' 	=> $_POST['status'],
-		'seats' 	=> $_POST["seats"],
-		'phone_login' 	=> $_POST["phone_logins"],
+		'active' 	=> ($_POST['status'] ?? ''),
+		'seats' 	=> ($_POST["seats"] ?? ''),
+		'phone_login' 	=> ($_POST["phone_logins"] ?? ''),
 		'phone_pass' 	=> $phonePass,
-		'server_ip' 	=> $_POST["ip"]
+		'server_ip' 	=> ($_POST["ip"] ?? '')
 	];
 
     	$output = $api->API_addUser($postfields);

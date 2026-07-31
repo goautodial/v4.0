@@ -13,9 +13,9 @@ require_once(__DIR__ . '/DbHandler.php');
 
 $db = new \creamy\DbHandler();
 
-$uid  = $_REQUEST['user_id'];
-$type = $_REQUEST['type'];
-$image = $_REQUEST['image'];
+$uid  = ($_REQUEST['user_id'] ?? '');
+$type = ($_REQUEST['type'] ?? '');
+$image = ($_REQUEST['image'] ?? '');
 
 $uploaded = $db->saveUserAvatar($uid, $type, $image);
 

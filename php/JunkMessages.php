@@ -42,8 +42,8 @@ if ($validated === 1) {
 
 	// get userid, message ids and folder	
 	$userid = $user->getUserId();
-	$messageids = $_POST["messageids"];
-	$folder = $_POST["folder"];
+	$messageids = ($_POST["messageids"] ?? '');
+	$folder = ($_POST["folder"] ?? '');
 	// junk messages and return result.
 	$result = $db->junkMessages($userid, $messageids, $folder);
 	ob_clean();

@@ -35,9 +35,9 @@
 	
 	$postfields = [
 		'goFileMe' => curl_file_create($_FILES['file_upload']['tmp_name'], $_FILES['file_upload']['type'], $_FILES["file_upload"]["name"]),
-		'goListId' => $_REQUEST['list_id'], 
-		'goDupcheck' => $_REQUEST['goDupcheck'],
-		'phone_code_override' => $_REQUEST['phone_code_override']
+		'goListId' => ($_REQUEST['list_id'] ?? ''), 
+		'goDupcheck' => ($_REQUEST['goDupcheck'] ?? ''),
+		'phone_code_override' => ($_REQUEST['phone_code_override'] ?? '')
 	];
 	
 	//customizations
@@ -58,11 +58,11 @@
 	
 	//if(LEADUPLOAD_LEAD_MAPPING === "y" && isset($_POST["LeadMapSubmit"]) && $_POST["LeadMapSubmit"] === "1"){
 	if(isset($_POST["LeadMapSubmit"]) && $_POST["LeadMapSubmit"] === "1"){
-                $map_data = $_POST["map_data"];
+                $map_data = ($_POST["map_data"] ?? '');
 		$map_data = implode(",",$map_data);
 		$postfields["lead_mapping_data"] = $map_data;
 
-		$map_fields = $_POST["map_fields"];
+		$map_fields = ($_POST["map_fields"] ?? '');
 		$map_fields = implode(",", $map_fields);
 		$postfields["lead_mapping_fields"] = $map_fields;
 
@@ -74,7 +74,7 @@
 	$output = $return["output"];
 	$data = $return["data"];
 	
-	//if(LEADUPLOAD_LEAD_MAPPING === "y" && $_POST["LeadMapSubmit"] === "0"){
+	//if(LEADUPLOAD_LEAD_MAPPING === "y" && ($_POST["LeadMapSubmit"] ?? '') === "0"){
 	if(isset($_POST["LeadMapSubmit"]) && $_POST["LeadMapSubmit"] === "0"){
 		print_r($data);
 	}else{

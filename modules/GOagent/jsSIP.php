@@ -1,10 +1,10 @@
 <?php
-$display_name = $_REQUEST['display_name'];
-$phone_login = $_REQUEST['phone_login'];
-$phone_pass = $_REQUEST['phone_this'];
-$websocketSIP = $_REQUEST['wsSIP'];
-$websocketURL = $_REQUEST['wsURL'];
-$websocketPORT = $_REQUEST['wsPort'];
+$display_name = ($_REQUEST['display_name'] ?? '');
+$phone_login = ($_REQUEST['phone_login'] ?? '');
+$phone_pass = ($_REQUEST['phone_this'] ?? '');
+$websocketSIP = ($_REQUEST['wsSIP'] ?? '');
+$websocketURL = ($_REQUEST['wsURL'] ?? '');
+$websocketPORT = ($_REQUEST['wsPort'] ?? '');
 $websocketSIP = "sip:{$phone_login}@{$websocketSIP}";
 $websocketURI = "wss://{$websocketURL}:{$websocketPORT}";
 $moduleURL = "https://".$_SERVER['SERVER_NAME']."/";

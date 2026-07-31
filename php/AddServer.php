@@ -28,12 +28,12 @@ declare(strict_types=1);
 
 	$postfields = [
 		'goAction' 				=> 'goAddServers',
-		'server_id' 			=> $_POST['server_id'], 
-		'server_description' 	=> $_POST['server_description'], 
-		'server_ip' 			=> $_POST['server_ip'],
-		'active' 				=> $_POST['active'],
-		'asterisk_version' 		=> $_POST['asterisk_version'],
-		'user_group' 			=> $_POST['user_group']
+		'server_id' 			=> ($_POST['server_id'] ?? ''), 
+		'server_description' 	=> ($_POST['server_description'] ?? ''), 
+		'server_ip' 			=> ($_POST['server_ip'] ?? ''),
+		'active' 				=> ($_POST['active'] ?? ''),
+		'asterisk_version' 		=> ($_POST['asterisk_version'] ?? ''),
+		'user_group' 			=> ($_POST['user_group'] ?? '')
 	];
 	
 	$output = $api->API_addServer($postfields);

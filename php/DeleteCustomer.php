@@ -44,8 +44,8 @@ if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// check customer id and type	
-	$customerid = $_POST["customerid"];
-	$customerType = $_POST["customer_type"];
+	$customerid = ($_POST["customerid"] ?? '');
+	$customerType = ($_POST["customer_type"] ?? '');
 
 	// delete customer
 	$result = $db->deleteCustomer($customerid, $customerType);

@@ -47,10 +47,10 @@ if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// check password	
-	$userid = $_POST["userid"];
-	$oldpassword = $_POST["old_password"];
-	$password1 = $_POST["new_password_1"];
-	$password2 = $_POST["new_password_2"];
+	$userid = ($_POST["userid"] ?? '');
+	$oldpassword = ($_POST["old_password"] ?? '');
+	$password1 = ($_POST["new_password_1"] ?? '');
+	$password2 = ($_POST["new_password_2"] ?? '');
 	if ($password1 !== $password2) {
 		ob_clean();
 		$lh->translateText("passwords_dont_match");

@@ -35,7 +35,7 @@
 
 	$modifyid = NULL;
 	if (isset($_POST["modifyid"])) {
-		$modifyid = $_POST["modifyid"];
+		$modifyid = ($_POST["modifyid"] ?? '');
 	}
 
 	$customFields = $api->API_getAllCustomFields($modifyid);
@@ -165,7 +165,7 @@
 												<h4 style="margin-top: 0px; border-bottom: 1px solid #777;">Form Preview</h4>
 												<?php
 
-													if(count($customs) > 0) {
+													if((is_countable($customs) ? count($customs) : 0) > 0) {
 														$viewall .= "<form id=\"form_custom_{$modifyid}\">\n";
 														$viewall .= "<TABLE class=\"table\" style=\"rgb(208,208,208);\">";
 														$last_field_rank=0;
@@ -232,9 +232,9 @@
 															if ( ($A_field_type=='SELECT') or ($A_field_type=='MULTI') or ($A_field_type=='RADIO') or ($A_field_type=='CHECKBOX') )
 															{
 																$A_field_options = str_replace("\r\n", "\n", $A_field_options);
-																$field_options_array = explode("\n", $A_field_options);
+																$field_options_array = explode("\n", (string) ($A_field_options ?? ''));
 
-																$field_options_count = count($field_options_array);
+																$field_options_count = (is_countable($field_options_array) ? count($field_options_array) : 0);
 																$te=0;
 																while ($te < $field_options_count)
 																{

@@ -23,9 +23,9 @@ require_once(__DIR__ . '/../Session.php');
     $data = curl_exec($ch);
    
    //var_dump($data);
-    $data = explode(";",$data);
+    $data = explode(";", (string) ($data ?? ''));
     foreach ($data AS $temp) {
-      $temp = explode("=",$temp);
+      $temp = explode("=", (string) ($temp ?? ''));
       $results[$temp[0]] = $temp[1];
     }
    

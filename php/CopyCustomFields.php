@@ -27,9 +27,9 @@ declare(strict_types=1);
 	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 
-	$list_to = $_POST['list_to'];
-	$list_from = $_POST['list_from'];
-	$copy_option = $_POST['copy_option'];
+	$list_to = ($_POST['list_to'] ?? '');
+	$list_from = ($_POST['list_from'] ?? '');
+	$copy_option = ($_POST['copy_option'] ?? '');
 
 	$postfields = [
 		"goAction" => "goCopyCustomFields", #action performed by the [[API:Functions]]

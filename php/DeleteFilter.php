@@ -29,7 +29,7 @@ declare(strict_types=1);
 
     $postfields 								= [
         "goAction" 									=> "goDeleteFilter",
-        "filter_id" 								=> $_POST["filter_id"]
+        "filter_id" 								=> ($_POST["filter_id"] ?? '')
     ];
 
     $output 									= $api->API_Request("goFilters", $postfields);

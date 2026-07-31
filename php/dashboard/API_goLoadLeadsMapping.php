@@ -11,7 +11,7 @@
 
 require_once(__DIR__ . '/../goCRMAPISettings.php');
 
-$goCSVvalues = $_REQUEST['goCSVvalues'];
+$goCSVvalues = ($_REQUEST['goCSVvalues'] ?? '');
 
 $defaultFields = '|lead_id|vendor_lead_code|source_id|list_id|gmt_offset_now|called_since_last_reset|phone_code|phone_number|title|first_name|middle_initial|last_name|address1|address2|address3|city|state|province|postal_code|country_code|gender|date_of_birth|alt_phone|email|security_phrase|comments|called_count|last_local_call_time|rank|owner|entry_list_id|';
 
@@ -29,9 +29,9 @@ foreach ($goCSVvalues as $x => $line)
                         }
                 }
 //echo $cell_val[0][1];
-//echo count($yo->defFields);
-$splitVals = explode("|",$defaultFields);
-$cntSplitVals = count($splitVals);
+//echo (isset($yo->defFields) && is_countable($yo->defFields) ? count($yo->defFields) : 0);
+$splitVals = explode("|", (string) ($defaultFields ?? ''));
+$cntSplitVals = (is_countable($splitVals) ? count($splitVals) : 0);
 $o=0;
 foreach ($splitVals as $vx ) {
 echo $vx.'<br>';
@@ -61,7 +61,7 @@ echo "</pre>";*/
                 $postfields["goPass"] = goPass;
                 $postfields["goAction"] = "goEmergencyLogout"; #action performed by the [[API:Functions]]
                 $postfields["responsetype"] = responsetype;
-                $postfields["goUserAgent"] = $_POST['goUserAgent'];
+                $postfields["goUserAgent"] = ($_POST['goUserAgent'] ?? '');
 
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
@@ -76,7 +76,7 @@ echo "</pre>";*/
 
 	        if ($output->result=="success") {
 	           # Result was OK!
-        	        echo "Agent ".$_POST['goUserAgent']." successfully logout.";
+        	        echo "Agent ".($_POST['goUserAgent'] ?? '')." successfully logout.";
 	         } else {
         	   # An error occured
                 	echo $output->result;

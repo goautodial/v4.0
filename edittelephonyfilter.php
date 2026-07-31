@@ -40,7 +40,7 @@
 
 	$filter_id = NULL;
 	if (isset($_POST["filter_id"])) {
-		$filter_id = $_POST["filter_id"];
+		$filter_id = ($_POST["filter_id"] ?? '');
 	}else{
 		header("location: telephonyfilters.php");
 	}

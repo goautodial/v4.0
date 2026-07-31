@@ -27,11 +27,11 @@ $api = \creamy\APIHandler::getInstance();
 
 ini_set('memory_limit', '2048M');
 
-$pageTitle = $_POST['pageTitle'];
-$session_user = $_POST['session_user'];
-$fromDate = $_POST['fromDate'];
-$toDate = $_POST['toDate'];
-$campaignID = $_POST['campaignID'];
+$pageTitle = ($_POST['pageTitle'] ?? '');
+$session_user = ($_POST['session_user'] ?? '');
+$fromDate = ($_POST['fromDate'] ?? '');
+$toDate = ($_POST['toDate'] ?? '');
+$campaignID = ($_POST['campaignID'] ?? '');
 
 /*
     $url = gourl."/goReports/goAPI.php"; //URL to GoAutoDial API. (required)
@@ -66,7 +66,7 @@ $campaignID = $_POST['campaignID'];
             $header .= "Full Name, User Name, Calls, Agent Time, WAIT, Talk, Dispo, Pause, Wrap-Up, Customer";
             /*if(!empty($output->getReports->sub_statusesTOP)){
                 //$header .= ",";
-                for($i=0; $i < count($output->getReports->sub_statusesTOP); $i++){
+                for($i=0; $i < (isset($output->getReports->sub_statusesTOP) && is_countable($output->getReports->sub_statusesTOP) ? count($output->getReports->sub_statusesTOP) : 0); $i++){
                     if(!empty($output->getReports->sub_statusesTOP[$i])){
                         $header .= ",".$output->getReports->sub_statusesTOP[$i];
                     }else{
@@ -82,7 +82,7 @@ $campaignID = $_POST['campaignID'];
 		echo $header."\n";
 		
         $row = "";
-        $counter = count($output->getReports->FileExport);
+        $counter = (isset($output->getReports->FileExport) && is_countable($output->getReports->FileExport) ? count($output->getReports->FileExport) : 0);
             for($i=0; $i < $counter; $i++){
                 $name = $output->getReports->FileExport[$i]->name;
                 $user = $output->getReports->FileExport[$i]->user;
@@ -99,7 +99,7 @@ $campaignID = $_POST['campaignID'];
                 $row .= $name.",".$user.",".$number_of_calls.",".$agent_time.",".$wait_time.",".$talk_time.",".$dispo_time.",".$pause_time.",".$wrap_up.",".$customer_time;
 
                 /*if(!empty($output->getReports->sub_statusesTOP)){
-                    for($a=0; $a < count($output->getReports->sub_statusesTOP); $a++){
+                    for($a=0; $a < (isset($output->getReports->sub_statusesTOP) && is_countable($output->getReports->sub_statusesTOP) ? count($output->getReports->sub_statusesTOP) : 0); $a++){
                         if(!empty($statuses[$a]))
                             $row .= ','.$statuses[$a];
                         else

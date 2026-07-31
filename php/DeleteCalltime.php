@@ -33,15 +33,15 @@ $api = \creamy\APIHandler::getInstance();
     $postfields["goPass"] = goPass; #Password goes here. (required)
     $postfields["goAction"] = "goDeleteCalltime"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["call_time_id"] = $_POST['call_time_id']; #Desired uniqueid. (required)
-	$postfields["log_group"] = $_POST['log_group'];
-	$postfields["log_user"] = $_POST['log_user'];
-	$postfields["log_ip"] = $_POST['log_ip'];
+    $postfields["call_time_id"] = ($_POST['call_time_id'] ?? ''); #Desired uniqueid. (required)
+	$postfields["log_group"] = ($_POST['log_group'] ?? '');
+	$postfields["log_user"] = ($_POST['log_user'] ?? '');
+	$postfields["log_ip"] = ($_POST['log_ip'] ?? '');
     */
 
     $postfields = [
         'goAction' => 'goDeleteCalltime',
-        'call_time_id' => $_POST['call_time_id']
+        'call_time_id' => ($_POST['call_time_id'] ?? '')
     ];
 
     $output = $api->API_Request("goCalltimes", $postfields);

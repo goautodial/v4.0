@@ -27,12 +27,12 @@
 
 	$postfields 								= [
 		"goAction" 									=> "goAddScript",
-		"script_id"									=> $_POST["script_id"], 
-		"script_name" 								=> $_POST["script_name"], 
-		"script_comments" 							=> $_POST["script_comments"],
-		"script_text" 								=> urldecode($_POST["script_text_value"]),
-		"user_group"								=> $_POST["script_user_group"],
-		"active" 									=> $_POST["active"]
+		"script_id"									=> ($_POST["script_id"] ?? ''), 
+		"script_name" 								=> ($_POST["script_name"] ?? ''), 
+		"script_comments" 							=> ($_POST["script_comments"] ?? ''),
+		"script_text" 								=> urldecode(($_POST["script_text_value"] ?? '')),
+		"user_group"								=> ($_POST["script_user_group"] ?? ''),
+		"active" 									=> ($_POST["active"] ?? '')
 	];
 	
 	$output 									= $api->API_addScript($postfields);

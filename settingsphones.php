@@ -154,7 +154,7 @@
 										<select name="user_group" class="form-control select2-1" style="width:100%;" required>
 											<option value="ALL">ALL USER GROUPS</option>
 											<?php
-												for($i=0; $i < count($user_groups->user_group); $i++){
+												for($i=0; $i < (isset($user_groups->user_group) && is_countable($user_groups->user_group) ? count($user_groups->user_group) : 0); $i++){
 											?>
 												<option value="<?php echo $user_groups->user_group[$i];?>"> <?php echo $user_groups->user_group[$i]." - ".$user_groups->group_name[$i]; ?></option>
 											<?php
@@ -168,7 +168,7 @@
 									<div class="col-sm-8 mb">
 										<select name="ip" id="ip" class="form-control" required>
 											<?php
-												for($i=0;$i < count($servers->server_id);$i++){
+												for($i=0;$i < (isset($servers->server_id) && is_countable($servers->server_id) ? count($servers->server_id) : 0);$i++){
 											?>
 											<option value="<?php echo $servers->server_ip[$i];?>">
 												<?php echo $servers->server_ip[$i].' - '.$servers->server_id[$i].' - '.$servers->server_description[$i];?>

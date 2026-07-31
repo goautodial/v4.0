@@ -10719,8 +10719,8 @@ Number.prototype.between = function (a, b, inclusive) {
 
 <?php
 } else {
-    if ($_REQUEST['module_name'] == 'GOagent') {
-        switch ($_REQUEST['action']) {
+    if (($_REQUEST['module_name'] ?? '') == 'GOagent') {
+        switch (($_REQUEST['action'] ?? '')) {
             case "CheckWebRTC":
                 $user = \creamy\CreamyUser::currentUser();
                 //$result = array(
@@ -10731,27 +10731,27 @@ Number.prototype.between = function (a, b, inclusive) {
                 $result = $api->CheckWebrtc($user->getUserId());
                 break;
             case "SessioN":
-                $campaign = $_REQUEST['campaign_id'];
-                $is_logged_in = $_REQUEST['is_logged_in'];
+                $campaign = ($_REQUEST['campaign_id'] ?? '');
+                $is_logged_in = ($_REQUEST['is_logged_in'] ?? '');
                 $_SESSION['campaign_id'] = ((string) $campaign !== '') ? $campaign : $_SESSION['campaign_id'];
                 $_SESSION['is_logged_in'] = ((string) $is_logged_in !== '') ? $is_logged_in : $_SESSION['is_logged_in'];
                 $result = $_SESSION['is_logged_in'];
                 break;
             case "ChecKLogiN":
-                $is_logged_in = $_REQUEST['is_logged_in'];
+                $is_logged_in = ($_REQUEST['is_logged_in'] ?? '');
                 $sess_logged_in = ((string) $_SESSION['is_logged_in'] !== '') ? $_SESSION['is_logged_in'] : 0;
                 $_SESSION['is_logged_in'] = ((string) $is_logged_in !== '') ? $is_logged_in : $sess_logged_in;
                 $result = $_SESSION['is_logged_in'];
                 break;
             case "CustoMFielD":
-                $list_id = $_REQUEST['list_id'];
+                $list_id = ($_REQUEST['list_id'] ?? '');
                 $result = $api->API_getAllCustomFields($list_id);
                 $result = json_encode($result);
                 break;
             case "UpdateMessages":
                 $user = \creamy\CreamyUser::currentUser();
-                $folder = $_REQUEST['folder'];
-                $user_id = $_REQUEST['user_id'];
+                $folder = ($_REQUEST['folder'] ?? '');
+                $user_id = ($_REQUEST['user_id'] ?? '');
                 $updates = [
                     'result' => 'success',
                     'folders' => $ui->getMessageFoldersAsList($folder),
@@ -10764,9 +10764,9 @@ Number.prototype.between = function (a, b, inclusive) {
             case "ReadMessage":
                 $db = new \creamy\DbHandler();
                 $user = \creamy\CreamyUser::currentUser();
-                $folder = $_REQUEST['folder'];
-                $user_id = $_REQUEST['user_id'];
-                $messageid = $_REQUEST['messageid'];
+                $folder = ($_REQUEST['folder'] ?? '');
+                $user_id = ($_REQUEST['user_id'] ?? '');
+                $messageid = ($_REQUEST['messageid'] ?? '');
 
                 // retrieve data about the message and sending user.
                 $message = $db->getSpecificMessage($user_id, $messageid, $folder);
@@ -10790,7 +10790,7 @@ Number.prototype.between = function (a, b, inclusive) {
         }
         print($result);
     } else {
-        echo "ERROR: Module '{$_REQUEST['module_name']}' not found.";
+        echo "ERROR: Module '" . ($_REQUEST['module_name'] ?? '') . "' not found.";
     }
 }
 
@@ -10821,7 +10821,7 @@ Number.prototype.between = function (a, b, inclusive) {
 
     //set the url, number of POST vars, POST data
     curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, count($fields));
+    curl_setopt($ch, CURLOPT_POST, (is_countable($fields) ? count($fields) : 0));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);

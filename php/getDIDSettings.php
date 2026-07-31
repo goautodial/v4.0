@@ -24,7 +24,7 @@
 	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();
-	$did 										= $_POST["did"];
+	$did 										= ($_POST["did"] ?? '');
 	$output 									= $api->API_getDIDSettings($did);
 
     if ($output->result=="success") {

@@ -45,8 +45,8 @@ if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// retrieve parameters.	
-	$userid = $_POST["userid"];
-	$status = $_POST["status"];
+	$userid = ($_POST["userid"] ?? '');
+	$status = ($_POST["status"] ?? '');
 
 	// set status of user.
 	$result = $db->setStatusOfUser($userid, $status);

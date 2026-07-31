@@ -24,7 +24,7 @@
 	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();
-	$pageTitle									= $_POST['pageTitle'];
+	$pageTitle									= ($_POST['pageTitle'] ?? '');
 	$fromDate 									= date('Y-m-d 00:00:01');
 	$toDate 									= date('Y-m-d 23:59:59');
 	$campaign_id 								= NULL;
@@ -33,36 +33,36 @@
 	$statuses									= NULL;
 	
 	if (isset($_POST['pageTitle']) && $pageTitle != "call_export_report") {
-		$pageTitle 								= $_POST['pageTitle'];
+		$pageTitle 								= ($_POST['pageTitle'] ?? '');
 		$pageTitle								= stripslashes((string) $pageTitle);
 	}
 			
 	if (isset($_POST["fromDate"])) {
-		$fromDate 								= date('Y-m-d H:i:s', strtotime($_POST['fromDate']));
+		$fromDate 								= date('Y-m-d H:i:s', strtotime(($_POST['fromDate'] ?? '')));
 	}
 	
-	if ($_POST["toDate"] != "" && $_POST["fromDate"] != "") {
-		$toDate 								= date('Y-m-d H:i:s', strtotime($_POST['toDate']));
+	if (($_POST["toDate"] ?? '') != "" && ($_POST["fromDate"] ?? '') != "") {
+		$toDate 								= date('Y-m-d H:i:s', strtotime(($_POST['toDate'] ?? '')));
 	}
 	
 			
 	if (isset($_POST["campaignID"])) { 
-		$campaign_id 							= $_POST["campaignID"]; 
+		$campaign_id 							= ($_POST["campaignID"] ?? ''); 
 		$campaign_id 							= stripslashes((string) $campaign_id);
 	}
 		
 	if (isset($_POST["userID"])) {
-		$userID 								= $_POST["userID"];
+		$userID 								= ($_POST["userID"] ?? '');
 		$userID									= stripslashes((string) $userID);
 	}
 	
 	if (isset($_POST["userGroup"])) {
-		$userGroup 								= $_POST["userGroup"];
+		$userGroup 								= ($_POST["userGroup"] ?? '');
 		$userGroup								= stripslashes((string) $userGroup);
 	}
 		
 	if (isset($_POST["statuses"])) {
-		$statuses 								= $_POST["statuses"];
+		$statuses 								= ($_POST["statuses"] ?? '');
 		$statuses								= stripslashes($statuses);
 	}
 		
@@ -107,7 +107,7 @@
 			        </thead>
 			        <tbody>';
 						if($output->TOPsorted_output != NULL){
-							$counter = count($output->TOPsorted_output);
+							$counter = (isset($output->TOPsorted_output) && is_countable($output->TOPsorted_output) ? count($output->TOPsorted_output) : 0);
                             for($i=0; $i < $counter; $i++){
 						    		$tablehtml .= $output->TOPsorted_output[$i];
 						    	}
@@ -152,7 +152,7 @@
 								}
 
 					$tablehtml .=  '</tr></thead><tbody>';
-                    $counter = count($output->MIDsorted_output);
+                    $counter = (isset($output->MIDsorted_output) && is_countable($output->MIDsorted_output) ? count($output->MIDsorted_output) : 0);
 
 						    for($i=0; $i <= $counter; $i++){
 						        $tablehtml .= $output->MIDsorted_output[$i];
@@ -178,7 +178,7 @@
 				if($output->MIDsorted_output != NULL){
 					$tablehtml .= '<table class="table table-hover">
 					    	<tr class="info"><th colspan="2"><small>LEGEND: </th></tr>';
-                    $counter = count($output->Legend);
+                    $counter = (isset($output->Legend) && is_countable($output->Legend) ? count($output->Legend) : 0);
 					    	for ($i=0; $i < $counter; $i+=2) { 
 					    		$tablehtml .= "<tr><td><small>".$output->Legend[$i]."</small></td><td><small>".$output->Legend[$i+1]."</small></td></tr>";
 					    	}
@@ -203,7 +203,7 @@
 			        </thead>
 			        <tbody>';
 					    if($output->BOTsorted_output != NULL){
-						    $counter = count($output->BOTsorted_output);
+						    $counter = (isset($output->BOTsorted_output) && is_countable($output->BOTsorted_output) ? count($output->BOTsorted_output) : 0);
                             for($i=0; $i <= $counter; $i++){
 						        $tablehtml .= $output->BOTsorted_output[$i];
 						    }
@@ -241,7 +241,7 @@
 				        </thead>
 				        <tbody>';
 						    if($output->SstatusesBOTR != NULL){
-							    $counter = count($output->SstatusesBOTR);
+							    $counter = (isset($output->SstatusesBOTR) && is_countable($output->SstatusesBOTR) ? count($output->SstatusesBOTR) : 0);
                                 for($i=0; $i <= $counter; $i++){
 							        $tablehtml .= '<tr>'.$output->SstatusesBOTR[$i].'</tr>';
 							    }

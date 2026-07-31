@@ -34,130 +34,130 @@
 
 	if ($validated === 1) {
 		// collect new user data.	
-		$modifyid 							= $_POST["modifyid"];
-		$user 								= $_POST["user"];		
+		$modifyid 							= ($_POST["modifyid"] ?? '');
+		$user 								= ($_POST["user"] ?? '');		
 		$name								= NULL; 
 		if (isset($_POST["fullname"])) { 
-			$name 							= $_POST["fullname"]; 
+			$name 							= ($_POST["fullname"] ?? ''); 
 			$name 							= stripslashes((string) $name);
 		}
 
 		$email 								= NULL; 
 		if (isset($_POST["email"])) { 
-			$email 							= $_POST["email"]; 
+			$email 							= ($_POST["email"] ?? ''); 
 			$email 							= stripslashes((string) $email);
 		}
 
 		$user_group 						= NULL; 
 		if (isset($_POST["usergroup"])) { 
-			$user_group 					= $_POST["usergroup"]; 
+			$user_group 					= ($_POST["usergroup"] ?? ''); 
 			$user_group 					= stripslashes((string) $user_group);
 		}
 		
 		$status 							= NULL; 
 		if (isset($_POST["status"])) { 
-			$status 						= $_POST["status"]; 
+			$status 						= ($_POST["status"] ?? ''); 
 			$status 						= stripslashes($status);
 		}
 		
 		$user_level 						= NULL; 
 		if (isset($_POST["userlevel"])) { 
-			$user_level 					= $_POST["userlevel"]; 
+			$user_level 					= ($_POST["userlevel"] ?? ''); 
 			$user_level 					= stripslashes((string) $user_level);
 		}
 		
 		$voicemail 							= NULL; 
 		if (isset($_POST["voicemail"])) { 
-			$voicemail 						= $_POST["voicemail"]; 
+			$voicemail 						= ($_POST["voicemail"] ?? ''); 
 			$voicemail 						= stripslashes((string) $voicemail);
 		}
 
 		$hotkeys_active 					= NULL; 
 		if (isset($_POST["hotkeys"])) { 
-			$hotkeys_active 				= $_POST["hotkeys"]; 
+			$hotkeys_active 				= ($_POST["hotkeys"] ?? ''); 
 			$hotkeys_active 				= stripslashes((string) $hotkeys_active);
 		}
 		
 		$pass 								= ""; 
 		if (isset($_POST["password"])) { 
-			$pass 							= $_POST["password"]; 
+			$pass 							= ($_POST["password"] ?? ''); 
 			$pass 							= stripslashes($pass);
 		}
 
 		$phone_login 						= NULL; 
 		if (isset($_POST["phone_login"])) { 
-			$phone_login 					= $_POST["phone_login"]; 
+			$phone_login 					= ($_POST["phone_login"] ?? ''); 
 			$phone_login 					= stripslashes((string) $phone_login);
 		}
 
 		$phone_pass 						= NULL; 
 		if (isset($_POST["phone_password"])) { 
-			$phone_pass 					= $_POST["phone_password"]; 
+			$phone_pass 					= ($_POST["phone_password"] ?? ''); 
 			$phone_pass 					= stripslashes($phone_pass);
 		}
 		
 		$vdc_agent_api_access 				= NULL; 
 		if (isset($_POST["api_access"])) { 
-			$vdc_agent_api_access 			= $_POST["api_access"]; 
+			$vdc_agent_api_access 			= ($_POST["api_access"] ?? ''); 
 			$vdc_agent_api_access 			= stripslashes($vdc_agent_api_access);
 		}
 		$agent_choose_ingroups 				= NULL; 
 		if (isset($_POST["choose_ingroup"])) { 
-			$agent_choose_ingroups 			= $_POST["choose_ingroup"]; 
+			$agent_choose_ingroups 			= ($_POST["choose_ingroup"] ?? ''); 
 			$agent_choose_ingroups 			= stripslashes($agent_choose_ingroups);
 		}
 
 		$vicidial_recording_override 		= NULL; 
 		if (isset($_POST["vicidial_recording_override"])) { 
-			$vicidial_recording_override 	= $_POST["vicidial_recording_override"]; 
+			$vicidial_recording_override 	= ($_POST["vicidial_recording_override"] ?? ''); 
 			$vicidial_recording_override 	= stripslashes((string) $vicidial_recording_override);
 		}
 		
 		$vicidial_transfers 				= NULL; 
 		if (isset($_POST["vicidial_transfers"])) { 
-			$vicidial_transfers 			= $_POST["vicidial_transfers"]; 
+			$vicidial_transfers 			= ($_POST["vicidial_transfers"] ?? ''); 
 			$vicidial_transfers 			= stripslashes($vicidial_transfers);
 		}
 		
 		$closer_default_blended 			= NULL; 
 		if (isset($_POST["closer_default_blended"])) { 
-			$closer_default_blended 		= $_POST["closer_default_blended"]; 
+			$closer_default_blended 		= ($_POST["closer_default_blended"] ?? ''); 
 			$closer_default_blended 		= stripslashes((string) $closer_default_blended);
 		}
 		
 		$agentcall_manual 					= NULL; 
 		if (isset($_POST["agentcall_manual"])) { 
-			$agentcall_manual 				= $_POST["agentcall_manual"]; 
+			$agentcall_manual 				= ($_POST["agentcall_manual"] ?? ''); 
 			$agentcall_manual 				= stripslashes((string) $agentcall_manual);
 		}
 		
 		$scheduled_callbacks 				= NULL; 
 		if (isset($_POST["scheduled_callbacks"])) { 
-			$scheduled_callbacks 			= $_POST["scheduled_callbacks"]; 
+			$scheduled_callbacks 			= ($_POST["scheduled_callbacks"] ?? ''); 
 			$scheduled_callbacks 			= stripslashes($scheduled_callbacks);
 		}
 		
 		$agentonly_callbacks 				= NULL; 
 		if (isset($_POST["agentonly_callbacks"])) { 
-			$agentonly_callbacks 			= $_POST["agentonly_callbacks"]; 
+			$agentonly_callbacks 			= ($_POST["agentonly_callbacks"] ?? ''); 
 			$agentonly_callbacks 			= stripslashes($agentonly_callbacks);
 		}
 		
 		$agent_lead_search_override 		= NULL; 
 		if (isset($_POST["agent_lead_search_override"])) { 
-			$agent_lead_search_override 	= $_POST["agent_lead_search_override"]; 
+			$agent_lead_search_override 	= ($_POST["agent_lead_search_override"] ?? ''); 
 			$agent_lead_search_override 	= stripslashes((string) $agent_lead_search_override);
 		}
 		
 		$avatar 							= NULL; 
 		if (isset($_POST["avatar"])) { 
-			$avatar 						= $_POST["avatar"]; 
+			$avatar 						= ($_POST["avatar"] ?? ''); 
 			//$avatar 						= stripslashes($avatar);
 		}	
 		
 		$enable_webrtc 						= NULL; 
 		if (isset($_POST["enable_webrtc"])) { 
-			$enable_webrtc 					= $_POST["enable_webrtc"];
+			$enable_webrtc 					= ($_POST["enable_webrtc"] ?? '');
 		}
 
 		$postfields = [

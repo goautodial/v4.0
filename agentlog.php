@@ -24,10 +24,10 @@
 	require_once('./php/APIHandler.php');
 	$api 									= \creamy\APIHandler::getInstance();
 
-	$user 									= $_POST['user'];
-	$start_date								= $_POST['start_date'];
-	$end_date								= $_POST['end_date'];
-	$agentlog								= $_POST['agentlog'];
+	$user 									= ($_POST['user'] ?? '');
+	$start_date								= ($_POST['start_date'] ?? '');
+	$end_date								= ($_POST['end_date'] ?? '');
+	$agentlog								= ($_POST['agentlog'] ?? '');
 
 	$output 								= $api->API_getAgentLog($user, $start_date, $end_date, $agentlog);
 	$data                                   = (isset($output->data) && is_object($output->data)) ? $output->data : new stdClass();
@@ -37,7 +37,7 @@
 		$outbound 							= '[';
 
 		$outboundUsers                     = (isset($data->user) && is_countable($data->user)) ? $data->user : [];
-		for($i=0;$i<count($outboundUsers);$i++) {
+		for($i=0;$i<(is_countable($outboundUsers) ? count($outboundUsers) : 0);$i++) {
 			if (!empty($data->phone_number[$i] ?? '')) {
 				$outbound 					.= '[';
 				$outbound 					.= '"'.date('M. d, Y h:i A', strtotime($data->call_date[$i] ?? '')).'",';
@@ -61,7 +61,7 @@
 		$inbound 							= '[';
 
 		$inboundDates                      = (isset($data->call_date) && is_countable($data->call_date)) ? $data->call_date : [];
-		for($i=0;$i<count($inboundDates);$i++) {
+		for($i=0;$i<(is_countable($inboundDates) ? count($inboundDates) : 0);$i++) {
 			if (!empty($data->phone_number[$i] ?? '')) {
 				$inbound 					.= '[';
 				$inbound 					.= '"'.date('M. d, Y h:i A', strtotime($data->call_date[$i] ?? '')).'",';
@@ -85,7 +85,7 @@
 		$userlog 							= '[';
 
 		$userlogIds                        = (isset($data->agent_log_id) && is_countable($data->agent_log_id)) ? $data->agent_log_id : [];
-		for($i=0;$i<count($userlogIds);$i++) {
+		for($i=0;$i<(is_countable($userlogIds) ? count($userlogIds) : 0);$i++) {
 			if (!empty($data->agent_log_id[$i] ?? '')) {
 				$userlog 					.= '[';
 				$userlog 					.= '"'.($data->agent_log_id[$i] ?? '').'",';

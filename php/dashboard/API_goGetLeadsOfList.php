@@ -16,7 +16,7 @@ require_once(__DIR__ . '/../goCRMAPISettings.php');
                 $postfields["goPass"] = goPass;
                 $postfields["goAction"] = "goGetLeadsOfList"; #action performed by the [[API:Functions]]
                 $postfields["responsetype"] = responsetype;
-                $postfields["goListId"] = $_REQUEST['goListId'];
+                $postfields["goListId"] = ($_REQUEST['goListId'] ?? '');
 
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
@@ -30,7 +30,7 @@ require_once(__DIR__ . '/../goCRMAPISettings.php');
 				$output = json_decode($data);
 				
 				
-		  if (count($output->data) < 1){
+		  if ((isset($output->data) && is_countable($output->data) ? count($output->data) : 0) < 1){
 			  echo "";  
 		  } else {
 			
@@ -45,7 +45,7 @@ require_once(__DIR__ . '/../goCRMAPISettings.php');
 	        /*if ($output->result=="success") {
 	           # Result was OK!
 	           //var_dump($output);
-        	        //echo "Agent ".$_POST['goUserAgent']." successfully logout.";
+        	        //echo "Agent ".($_POST['goUserAgent'] ?? '')." successfully logout.";
 	         } else {
         	   # An error occured
                 	echo $output->result;

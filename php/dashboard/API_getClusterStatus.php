@@ -42,7 +42,7 @@
         $utime 									= $value->u_time;
     
         $disk_ary 								= explode('|', (string) $diskusage);
-        $disk_ary_ct 							= count($disk_ary);
+        $disk_ary_ct 							= (is_countable($disk_ary) ? count($disk_ary) : 0);
 
         if ($status == "Y") {
             $status 							= "ACTIVE";

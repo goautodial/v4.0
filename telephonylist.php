@@ -187,7 +187,7 @@
 												</thead>
 												<tbody>
 												<?php
-												for($i=0;$i < count($lists->list_id);$i++){
+												for($i=0;$i < (isset($lists->list_id) && is_countable($lists->list_id) ? count($lists->list_id) : 0);$i++){
 												// if no entry in user list
 												
 												if($lists->active[$i] == "Y"){
@@ -271,7 +271,7 @@
 						<select id="list_id" class="form-control select2" name="list_id" required>
 						<option value="" selected disabled></option>
 						<?php
-						for($i=0;$i<count($lists->list_id);$i++){
+						for($i=0;$i<(isset($lists->list_id) && is_countable($lists->list_id) ? count($lists->list_id) : 0);$i++){
 						echo '<option value="'.$lists->list_id[$i].'">'.$lists->list_id[$i].' - '.$lists->list_name[$i].'</option>';
 						}
 						?>
@@ -373,10 +373,10 @@
 	<?php
 	if(isset($_GET['message'])){
 	echo '<div class="col-lg-12" style="margin-top: 10px;">';
-	if($_GET['message'] == "success"){
-	echo '<div class="alert alert-success"> <strong>Succes: </strong>'.$_GET['RetMesg']." leads uploaded</div>";
+	if(($_GET['message'] ?? '') == "success"){
+	echo '<div class="alert alert-success"> <strong>Succes: </strong>'.($_GET['RetMesg'] ?? '')." leads uploaded</div>";
 	}else{
-	echo '<div class="alert alert-success"> <strong>Error: </strong>'.$_GET['RetMesg']."</div>";
+	echo '<div class="alert alert-success"> <strong>Error: </strong>'.($_GET['RetMesg'] ?? '')."</div>";
 	}
 	echo '</div>';
 	}
@@ -479,7 +479,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							<select name="campaign_select" class="form-control">
 								<?php
 								echo '<option value="">'.$lh->translationFor("-none-").'</option>';
-									for($i=0; $i < count($campaign->campaign_id);$i++){
+									for($i=0; $i < (isset($campaign->campaign_id) && is_countable($campaign->campaign_id) ? count($campaign->campaign_id) : 0);$i++){
 										echo "<option value='".$campaign->campaign_id[$i]."'> ".$campaign->campaign_name[$i]." </option>";
 									}
 								?>
@@ -526,7 +526,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							<label class="control-label col-lg-4"><?php $lh->translateText("copy_to_list_id"); ?>:</label>
 							<div class="col-lg-8">
 								<select class="form-control select2" name="list_to">
-									<?php for($i=0;$i < count($lists->list_id);$i++){ ?>
+									<?php for($i=0;$i < (isset($lists->list_id) && is_countable($lists->list_id) ? count($lists->list_id) : 0);$i++){ ?>
 										<option value="<?php echo $lists->list_id[$i]; ?>"><?php echo $lists->list_id[$i].' - '.$lists->list_name[$i];?></option>
 									<?php } ?>
 								</select>
@@ -571,7 +571,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						<select id="campaign_id" class="form-control select2" name="campaign_id" required>
 							<option value="INTERNAL"><?php $lh->translateText("internal_dnc"); ?></option>
 							<?php
-								for($i=0;$i<count($campaign->campaign_id);$i++){
+								for($i=0;$i<(isset($campaign->campaign_id) && is_countable($campaign->campaign_id) ? count($campaign->campaign_id) : 0);$i++){
 									echo '<option value="'.$campaign->campaign_id[$i].'">'.$campaign->campaign_id[$i].' - '.$campaign->campaign_name[$i].'</option>';
 								}
 							?>

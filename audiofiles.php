@@ -225,7 +225,7 @@
 					<select name="user_group" class="form-control moh_user_group select2-1" style="width:100%;" <?=($perm->moh->moh_update === 'N' ? 'disabled' : '')?>/>
 						<option value="---ALL---">  ALL USER GROUPS  </option>
 						<?php
-                            for($i=0;$i<count($user_groups->user_group);$i++){
+                            for($i=0;$i<(isset($user_groups->user_group) && is_countable($user_groups->user_group) ? count($user_groups->user_group) : 0);$i++){
                         ?>
                             <option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i].' - '.$user_groups->group_name[$i];?>  </option>
                         <?php
@@ -249,7 +249,7 @@
 					<select class="form-control moh_filename  select2-1" name="filename" style="width:100%;">
                                                 <option value="conf">  conf  </option>
 						<?php
-						for($i=0;$i<count($audio_files->file_name);$i++){
+						for($i=0;$i<(isset($audio_files->file_name) && is_countable($audio_files->file_name) ? count($audio_files->file_name) : 0);$i++){
 							$file = substr($audio_files->file_name[$i], 0, strrpos($audio_files->file_name[$i], "."));
 						?>
 							<option value="<?php echo $file;?>">  <?php echo $file; ?>  </option>
@@ -335,7 +335,7 @@
 	                                	<option value="---ALL---">  ALL USER GROUPS  </option>
 	                                 <?php
 												}
-	                                    for($i=0;$i<count($user_groups->user_group);$i++){
+	                                    for($i=0;$i<(isset($user_groups->user_group) && is_countable($user_groups->user_group) ? count($user_groups->user_group) : 0);$i++){
 	                                 ?>
 	                                    <option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i].' - '.$user_groups->group_name[$i];?>  </option>
 	                                    <?php
@@ -359,7 +359,7 @@
                                         <select class="form-control select2-1" name="filename" style="width:100%;">
                                                 <option value="conf">  conf  </option>
                                                 <?php
-                                                for($i=0;$i<count($audio_files->file_name);$i++){
+                                                for($i=0;$i<(isset($audio_files->file_name) && is_countable($audio_files->file_name) ? count($audio_files->file_name) : 0);$i++){
 							$file = substr($audio_files->file_name[$i], 0, strrpos($audio_files->file_name[$i], "."));
                                                 ?>
                                                         <option value="<?php echo $file;?>">  <?php echo $file; ?>  </option>
@@ -769,7 +769,7 @@
 
 			// upload result
 				<?php
-					if($_GET['upload_result'] == "success") {
+					if(($_GET['upload_result'] ?? '') == "success") {
 				?>
 						swal(
 							{
@@ -782,7 +782,7 @@
 							}
 						);
 				<?php
-					}elseif($_GET['upload_result'] == "error"){
+					}elseif(($_GET['upload_result'] ?? '') == "error"){
 				?>
 						swal(
 							{
@@ -795,7 +795,7 @@
 							}
 						);
 				<?php
-					}elseif($_GET['upload_result'] == "exists"){
+					}elseif(($_GET['upload_result'] ?? '') == "exists"){
 				?>
 						swal(
 							{

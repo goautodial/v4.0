@@ -178,7 +178,7 @@
 					<option selected disabled></option>
 					<option value="ALL"><?php $lh->translateText("all_campaigns"); ?></option>
                                         <?php
-                                            for($i=0; $i < count($campaigns->campaign_id);$i++) {
+                                            for($i=0; $i < (isset($campaigns->campaign_id) && is_countable($campaigns->campaign_id) ? count($campaigns->campaign_id) : 0);$i++) {
                                         ?>
                                             <option value="<?php echo $campaigns->campaign_id[$i];?>"><?php echo $campaigns->campaign_id[$i]." - ".$campaigns->campaign_name[$i];?></option>
                                         <?php
@@ -190,7 +190,7 @@
                                     <label for="ingroup_id"><?php $lh->translateText("ingroups"); ?></label>
                                     <select class="form-control select2" name="ingroup_id" id="ingroup_id" style="width:100%;">
                                         <?php
-                                            for($i=0; $i < count($ingroups->group_id);$i++) {
+                                            for($i=0; $i < (isset($ingroups->group_id) && is_countable($ingroups->group_id) ? count($ingroups->group_id) : 0);$i++) {
 												if ($_SESSION['usergroup'] !== "ADMIN" && preg_match("/^AGENTDIRECT/", $ingroups->group_id[$i])) continue;
                                         ?>
                                             <option value="<?php echo $ingroups->group_id[$i];?>"><?php echo $ingroups->group_id[$i].' - '.$ingroups->group_name[$i];?></option>
@@ -204,9 +204,9 @@
                                     <select class="form-control select2" name="statuses" id="statuses" style="width:100%;">
 					<option value="">- - - ALL - - -</option>
                                         <?php
-                                                for($a=0; $a<count($disposition->status); $a++) {
+                                                for($a=0; $a<(isset($disposition->status) && is_countable($disposition->status) ? count($disposition->status) : 0); $a++) {
                                                         if($disposition->campaign_id[$a] != NULL){
-                                                                if(in_array($disposition->status[$a], $campaigns->campaign_id)){
+                                                                if(in_array($disposition->status[$a], (is_array($campaigns->campaign_id) ? $campaigns->campaign_id : []))){
 									echo '<option value="'.$disposition->status_name[$a].'">'.$disposition->status[$a].' - '.$disposition->status_name[$a].'</option>';
                                                                 }
                                                         } else {
@@ -216,7 +216,7 @@
                                         ?>
 
 					<?php
-						/*for($a=0; $a<count($disposition->status); $a++) {
+						/*for($a=0; $a<(isset($disposition->status) && is_countable($disposition->status) ? count($disposition->status) : 0); $a++) {
 					?>
 						<option value="<?php echo $disposition->status[$a];?>"><?php echo $disposition->status[$a].' - '.$disposition->status_name[$a];?></option>
 					<?php

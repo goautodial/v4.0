@@ -72,24 +72,24 @@ if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// check password	
-	$name = $_POST["name"];
+	$name = ($_POST["name"] ?? '');
 	$name = stripslashes((string) $name);
 	$name = $db->escape_string($name);
 	
-	$password1 = $_POST["password1"];
-	$password2 = $_POST["password2"];
+	$password1 = ($_POST["password1"] ?? '');
+	$password2 = ($_POST["password2"] ?? '');
 	if ($password1 !== $password2) {
 		$lh->translateText("passwords_dont_match");
 		exit;
 	}
 	
 	$email = NULL; if (isset($_POST["email"])) { 
-		$email = $_POST["email"]; 
+		$email = ($_POST["email"] ?? ''); 
 		$email = stripslashes((string) $email);
 		$email = $db->escape_string($email);
 	}
 	$phone = NULL; if (isset($_POST["phone"])) { 
-		$phone = $_POST["phone"];
+		$phone = ($_POST["phone"] ?? '');
 		$phone = stripslashes((string) $phone);
 		$phone = $db->escape_string($phone); 
 	}

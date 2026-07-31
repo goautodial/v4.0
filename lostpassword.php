@@ -39,10 +39,10 @@
 			$db = new \creamy\DbHandler();
 
 			// Define $username and $password
-			$username=$_POST['email'];
+			$username=($_POST['email'] ?? '');
 			
 			// To protect MySQL injection for Security purpose
-			$email = stripslashes($_POST["email"]);
+			$email = stripslashes(($_POST["email"] ?? ''));
 			
 			// Check password and redirect accordingly
 			$result = false;

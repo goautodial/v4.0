@@ -25,7 +25,7 @@
 	$ui 										= \creamy\UIHandler::getInstance();
 
 	if ( isset($_POST['search_dnc']) ) {
-		$output 								= $ui->GetDNC($_POST['search_dnc']);		
+		$output 								= $ui->GetDNC(($_POST['search_dnc'] ?? ''));		
 	} else {
 		$output									= "";
 	}

@@ -48,15 +48,15 @@ if ($validated === 1) {
 
 //alex
 	// get name (mandatory)
-	$first_name = $_POST["fname"];
+	$first_name = ($_POST["fname"] ?? '');
 	$first_name = stripslashes((string) $first_name);
 	$first_name = $db->escape_string($first_name);
 	
-	$last_name = $_POST["lname"];
+	$last_name = ($_POST["lname"] ?? '');
 	$last_name = stripslashes((string) $last_name);
 	$last_name = $db->escape_string($last_name);
 
-	$customerType = $_POST["customer_type"];
+	$customerType = ($_POST["customer_type"] ?? '');
 	$customerType = stripslashes((string) $customerType);
 	$customerType = $db->escape_string($customerType);
 	
@@ -65,78 +65,78 @@ if ($validated === 1) {
 	// get optional values
 
 	// middle initial
-	$middle_initial = $_POST["mi"];
+	$middle_initial = ($_POST["mi"] ?? '');
 	$middle_initial = stripslashes((string) $middle_initial);
 	$middle_initial = $db->escape_string($middle_initial);
 
 	// email
 	$email = NULL; if (isset($_POST["email"])) { 
-		$email = $_POST["email"]; 
+		$email = ($_POST["email"] ?? ''); 
 		$email = stripslashes((string) $email);
 		$email = $db->escape_string($email);
 	}
 	// phone
 	$phone = NULL; if (isset($_POST["phone"])) { 
-		$phone = $_POST["phone"];
+		$phone = ($_POST["phone"] ?? '');
 		$phone = stripslashes((string) $phone);
 		$phone = $db->escape_string($phone); 
 	}
 	// alt phone
 	$alt_phone = NULL; if (isset($_POST["alt_phone"])) { 
-		$alt_phone = $_POST["alt_phone"];
+		$alt_phone = ($_POST["alt_phone"] ?? '');
 		$alt_phone = stripslashes((string) $alt_phone);
 		$alt_phone = $db->escape_string($alt_phone); 
 	}
 //--
 	// address1
 	$address1 = NULL; if (isset($_POST["address1"])) { 
-		$address1 = $_POST["address1"]; 
+		$address1 = ($_POST["address1"] ?? ''); 
 		$address1 = stripslashes((string) $address1);
 		$address1 = $db->escape_string($address1);
 	}
 	// address2
 	$address2 = NULL; if (isset($_POST["address2"])) { 
-		$address2 = $_POST["address2"]; 
+		$address2 = ($_POST["address2"] ?? ''); 
 		$address2 = stripslashes((string) $address2);
 		$address2 = $db->escape_string($address2);
 	}
 	// address3
 	$address3 = NULL; if (isset($_POST["address3"])) { 
-		$address3 = $_POST["address3"]; 
+		$address3 = ($_POST["address3"] ?? ''); 
 		$address3 = stripslashes((string) $address3);
 		$address3 = $db->escape_string($address3);
 	}
 	// city
 	$city = NULL; if (isset($_POST["city"])) { 
-		$city = $_POST["city"]; 
+		$city = ($_POST["city"] ?? ''); 
 		$city = stripslashes((string) $city);
 		$city = $db->escape_string($city);
 	}
 	
 	// state
 	$state = NULL; if (isset($_POST["state"])) { 
-		$state = $_POST["state"]; 
+		$state = ($_POST["state"] ?? ''); 
 		$state = stripslashes((string) $state);
 		$state = $db->escape_string($state);
 	}
 //--
 	// province
 	$province = NULL; if (isset($_POST["province"])) { 
-		$province = $_POST["province"]; 
+		$province = ($_POST["province"] ?? ''); 
 		$province = stripslashes((string) $province);
 		$province = $db->escape_string($province);
 	}
 
 	// ZIP code
 	$postal_code = NULL; if (isset($_POST["postal_code"])) { 
-		$postal_code = $_POST["postal_code"]; 
+		$postal_code = ($_POST["postal_code"] ?? ''); 
 		$postal_code = stripslashes((string) $postal_code);
 		$postal_code = $db->escape_string($postal_code);
 	}
 	
 	// country code
 	$country_code = NULL; if (isset($_POST["country_code"])) { 
-		$country_code = $_POST["country_code"]; 
+		$country_code = ($_POST["country_code"] ?? ''); 
 		$country_code = stripslashes((string) $country_code);
 		$country_code = $db->escape_string($country_code);
 	}
@@ -144,21 +144,21 @@ if ($validated === 1) {
 			
 	// notes
 	$comments = NULL; if (isset($_POST["comments"])) { 
-		$comments = $_POST["comments"]; 
+		$comments = ($_POST["comments"] ?? ''); 
 		$comments = stripslashes($comments);
 		$comments = $db->escape_string($comments);
 	}
 	
 	// fecha de nacimiento
 	$date_of_birth = NULL; if (isset($_POST["date_of_birth"])) { 
-		$date_of_birth = $_POST["date_of_birth"]; 
+		$date_of_birth = ($_POST["date_of_birth"] ?? ''); 
 		$date_of_birth = stripslashes((string) $date_of_birth);
 		$date_of_birth = $db->escape_string($date_of_birth);
 	}
 
 	// gender
 	$gender = NULL; if (isset($_POST["gender"])) { 
-		$gender = $_POST["gender"]; 
+		$gender = ($_POST["gender"] ?? ''); 
 		$gender = stripslashes((string) $gender);
 		$gender = $db->escape_string($gender);
 	}

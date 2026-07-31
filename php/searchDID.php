@@ -24,7 +24,7 @@
 	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 									= \creamy\APIHandler::getInstance();	
-	$keyword								= trim(strip_tags($_POST['term']));	
+	$keyword								= trim(strip_tags(($_POST['term'] ?? '')));	
 	$output 								= $api->API_getSuggestedDIDs($keyword);
 		
 	if ($output->result=="success") { 

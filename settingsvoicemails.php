@@ -167,7 +167,7 @@
                                     <div class="col-sm-9 mb">
                                         <select id="user_group" class="form-control" name="user_group">
                                             <?php
-                                                for($i=0;$i<count($user_groups->user_group);$i++){
+                                                for($i=0;$i<(isset($user_groups->user_group) && is_countable($user_groups->user_group) ? count($user_groups->user_group) : 0);$i++){
                                             ?>
                                                 <option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->user_group[$i].' - '.$user_groups->group_name[$i];?>  </option>
                                             <?php

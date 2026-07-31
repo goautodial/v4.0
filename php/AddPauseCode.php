@@ -28,10 +28,10 @@ declare(strict_types=1);
 
 	$postfields 					= [
 		'goAction'						=> 'goAddPauseCode',
-		'pauseCampID' 					=> $_POST['campaign_id'],
-		'pause_code' 					=> $_POST['pause_code'],
-		'pause_code_name' 				=> $_POST['pause_code_name'],
-		'billable' 						=> $_POST['billable']
+		'pauseCampID' 					=> ($_POST['campaign_id'] ?? ''),
+		'pause_code' 					=> ($_POST['pause_code'] ?? ''),
+		'pause_code_name' 				=> ($_POST['pause_code_name'] ?? ''),
+		'billable' 						=> ($_POST['billable'] ?? '')
 	];
 
 	$output 						= $api->API_addPauseCode($postfields);

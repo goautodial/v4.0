@@ -27,18 +27,18 @@ declare(strict_types=1);
 	$api 							= \creamy\APIHandler::getInstance();
 
 	// collect new user data.       
-	$campaign_id					= $_POST["campaign_id"];
+	$campaign_id					= ($_POST["campaign_id"] ?? '');
 
 	$pause_code = NULL; if (isset($_POST["pause_code"])) { 
-		$pause_code 				= $_POST["pause_code"]; 
+		$pause_code 				= ($_POST["pause_code"] ?? ''); 
 		$pause_code 				= stripslashes((string) $pause_code);
 	}
 	$pause_code_name = NULL; if (isset($_POST["pause_code_name"])) { 
-		$pause_code_name			= $_POST["pause_code_name"];
+		$pause_code_name			= ($_POST["pause_code_name"] ?? '');
 		$pause_code_name 			= stripslashes((string) $pause_code_name);
 	}
 	$billable = NULL; if (isset($_POST["billable"])) { 
-		$billable 					= $_POST["billable"]; 
+		$billable 					= ($_POST["billable"] ?? ''); 
 		$billable 					= stripslashes((string) $billable);
 	}
 

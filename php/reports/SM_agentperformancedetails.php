@@ -24,7 +24,7 @@
 	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();
-	$pageTitle									= $_POST['pageTitle'];
+	$pageTitle									= ($_POST['pageTitle'] ?? '');
 	$fromDate 									= date('Y-m-d 00:00:01');
 	$toDate 									= date('Y-m-d 23:59:59');
 	$campaign_id 								= NULL;
@@ -33,36 +33,36 @@
 	$statuses									= NULL;
 	
 	if (isset($_POST['pageTitle']) && $pageTitle != "call_export_report") {
-		$pageTitle 								= $_POST['pageTitle'];
+		$pageTitle 								= ($_POST['pageTitle'] ?? '');
 		$pageTitle								= stripslashes((string) $pageTitle);
 	}
 			
 	if (isset($_POST["fromDate"])) {
-		$fromDate 								= date('Y-m-d H:i:s', strtotime($_POST['fromDate']));
+		$fromDate 								= date('Y-m-d H:i:s', strtotime(($_POST['fromDate'] ?? '')));
 	}
 	
-	if ($_POST["toDate"] != "" && $_POST["fromDate"] != "") {
-		$toDate 								= date('Y-m-d H:i:s', strtotime($_POST['toDate']));
+	if (($_POST["toDate"] ?? '') != "" && ($_POST["fromDate"] ?? '') != "") {
+		$toDate 								= date('Y-m-d H:i:s', strtotime(($_POST['toDate'] ?? '')));
 	}
 	
 			
 	if (isset($_POST["campaignID"])) { 
-		$campaign_id 							= $_POST["campaignID"]; 
+		$campaign_id 							= ($_POST["campaignID"] ?? ''); 
 		$campaign_id 							= stripslashes((string) $campaign_id);
 	}
 		
 	if (isset($_POST["userID"])) {
-		$userID 								= $_POST["userID"];
+		$userID 								= ($_POST["userID"] ?? '');
 		$userID									= stripslashes((string) $userID);
 	}
 	
 	if (isset($_POST["userGroup"])) {
-		$userGroup 								= $_POST["userGroup"];
+		$userGroup 								= ($_POST["userGroup"] ?? '');
 		$userGroup								= stripslashes((string) $userGroup);
 	}
 		
 	if (isset($_POST["statuses"])) {
-		$statuses 								= $_POST["statuses"];
+		$statuses 								= ($_POST["statuses"] ?? '');
 		$statuses								= stripslashes($statuses);
 	}
 		
@@ -100,9 +100,9 @@
 					<tbody>
 			';
 
-			if(count($output->agent_name) > 0){
+			if((isset($output->agent_name) && is_countable($output->agent_name) ? count($output->agent_name) : 0) > 0){
 
-				$counter = count($output->agent_name);
+				$counter = (isset($output->agent_name) && is_countable($output->agent_name) ? count($output->agent_name) : 0);
                 for ($i=0; $i < $counter; $i++) {
 					$tablehtml .= '<tr>
 						<td>'.$output->agent_name[$i].'</td>
@@ -143,7 +143,7 @@
 								<input type="hidden" name="pageTitle" value="'.$pageTitle.'" />
 								<input type="hidden" name="fromDate" value="'.$fromDate.'" />
 								<input type="hidden" name="toDate" value="'.$toDate.'" />
-								<input type="hidden" name="campaignID" value="'.$_POST["campaignID"].'" />
+								<input type="hidden" name="campaignID" value="'.($_POST["campaignID"] ?? '').'" />
 								<input type="hidden" name="session_user" value="'.$_SESSION["user"].'" />
 					</form>';
 

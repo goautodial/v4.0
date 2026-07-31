@@ -179,7 +179,7 @@
 	$phones = $api->API_getAllPhones();
 	$max = max($phones->extension);
 	$suggested_extension = $max + 1;
-	$count_users = count($all_users->user);
+	$count_users = (isset($all_users->user) && is_countable($all_users->user) ? count($all_users->user) : 0);
 	$license_seats = intval($all_users->licensedSeats);
 	$avail_seats = $license_seats-$count_users;
 	$servers = $api->API_getAllServers();
@@ -272,7 +272,7 @@
 									<div class="col-sm-8 mb">
 										<select id="user_group" class="form-control select2-1" name="user_group" style="width:100%;">
 											<?php
-												for($i=0;$i<count($user_groups->user_group);$i++){
+												for($i=0;$i<(isset($user_groups->user_group) && is_countable($user_groups->user_group) ? count($user_groups->user_group) : 0);$i++){
 													if (strtoupper($_SESSION['usergroup']) !== 'ADMIN' && strtoupper($_SESSION['usergroup']) !== strtoupper($user_groups->user_group[$i])) {
 														continue;
 													}
@@ -326,7 +326,7 @@
 									<div class="col-sm-8 mb">
 										<select name="ip" id="ip" class="form-control" required>
 											<?php
-												for($i=0;$i < count($servers->server_id);$i++){
+												for($i=0;$i < (isset($servers->server_id) && is_countable($servers->server_id) ? count($servers->server_id) : 0);$i++){
 											?>
 											<option value="<?php echo $servers->server_ip[$i];?>">
 												<?php echo $servers->server_ip[$i].' - '.$servers->server_id[$i].' - '.$servers->server_description[$i];?>
@@ -425,7 +425,7 @@
 											<option value="ALL">ALL USER GROUPS</option>
 											<?php
 											}
-												for($i=0; $i < count($user_groups->user_group); $i++){
+												for($i=0; $i < (isset($user_groups->user_group) && is_countable($user_groups->user_group) ? count($user_groups->user_group) : 0); $i++){
 													if (strtoupper($_SESSION['usergroup']) !== 'ADMIN' && strtoupper($_SESSION['usergroup']) !== strtoupper($user_groups->user_group[$i])) {
 														continue;
 													}
@@ -442,7 +442,7 @@
 									<div class="col-sm-8 mb">
 										<select name="ip" id="ip" class="form-control" required>
 											<?php
-												for($i=0;$i < count($servers->server_id);$i++){
+												for($i=0;$i < (isset($servers->server_id) && is_countable($servers->server_id) ? count($servers->server_id) : 0);$i++){
 											?>
 											<option value="<?php echo $servers->server_ip[$i];?>">
 												<?php echo $servers->server_ip[$i].' - '.$servers->server_id[$i].' - '.$servers->server_description[$i];?>

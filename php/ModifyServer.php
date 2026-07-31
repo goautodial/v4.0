@@ -26,7 +26,7 @@
 	$api 										= \creamy\APIHandler::getInstance();
 
 	// collect new user data.       
-	$modifyid 									= $_POST["modifyid"];
+	$modifyid 									= ($_POST["modifyid"] ?? '');
 	$server_description 						= NULL; 
 	$server_ip 									= NULL;
 	$active 									= NULL;
@@ -46,85 +46,85 @@
 	$conf_engine								= NULL;
 	
 	if ( isset($_POST["server_description"]) ) { 
-		$server_description 					= $_POST["server_description"]; 
+		$server_description 					= ($_POST["server_description"] ?? ''); 
 		$server_description 					= stripslashes((string) $server_description);
 	}
 	 
 	if ( isset($_POST["server_ip"]) ) { 
-		$server_ip 								= $_POST["server_ip"];
+		$server_ip 								= ($_POST["server_ip"] ?? '');
 		$server_ip 								= stripslashes((string) $server_ip);
 	}
 	
 	if (isset($_POST["active"])) { 
-		$active 								= $_POST["active"]; 
+		$active 								= ($_POST["active"] ?? ''); 
 		$active 								= stripslashes((string) $active);
 	}
 	 
 	if ( isset($_POST["user_group"]) ) { 
-		$user_group 							= $_POST["user_group"]; 
+		$user_group 							= ($_POST["user_group"] ?? ''); 
 		$user_group 							= stripslashes((string) $user_group);
 	}
 	
 	if ( isset($_POST["asterisk_version"]) ) { 
-		$asterisk_version 						= $_POST["asterisk_version"]; 
+		$asterisk_version 						= ($_POST["asterisk_version"] ?? ''); 
 		$asterisk_version 						= stripslashes((string) $asterisk_version);
 	}
 	
 	if ( isset($_POST["max_vicidial_trunks"]) ) { 
-		$max_vicidial_trunks 					= $_POST["max_vicidial_trunks"]; 
+		$max_vicidial_trunks 					= ($_POST["max_vicidial_trunks"] ?? ''); 
 		$max_vicidial_trunks 					= stripslashes($max_vicidial_trunks);
 	}
 	
 	if ( isset($_POST["outbound_calls_per_second"]) ) { 
-		$outbound_calls_per_second 				= $_POST["outbound_calls_per_second"]; 
+		$outbound_calls_per_second 				= ($_POST["outbound_calls_per_second"] ?? ''); 
 		$outbound_calls_per_second 				= stripslashes((string) $outbound_calls_per_second);
 	}
 	
 	if ( isset($_POST["vicidial_balance_active"]) ) { 
-		$vicidial_balance_active 				= $_POST["vicidial_balance_active"]; 
+		$vicidial_balance_active 				= ($_POST["vicidial_balance_active"] ?? ''); 
 		$vicidial_balance_active 				= stripslashes((string) $vicidial_balance_active);
 	}
 	
 	if ( isset($_POST["local_gmt"]) ) { 
-		$local_gmt 								= $_POST["local_gmt"]; 
+		$local_gmt 								= ($_POST["local_gmt"] ?? ''); 
 		$local_gmt 								= stripslashes((string) $local_gmt);
 	}
 	
 	if ( isset($_POST["generate_vicidial_conf"]) ) { 
-		$generate_vicidial_conf 				= $_POST["generate_vicidial_conf"]; 
+		$generate_vicidial_conf 				= ($_POST["generate_vicidial_conf"] ?? ''); 
 		$generate_vicidial_conf 				= stripslashes((string) $generate_vicidial_conf);
 	}
 	
 	if ( isset($_POST["rebuild_conf_files"]) ) { 
-		$rebuild_conf_files 					= $_POST["rebuild_conf_files"]; 
+		$rebuild_conf_files 					= ($_POST["rebuild_conf_files"] ?? ''); 
 		$rebuild_conf_files 					= stripslashes($rebuild_conf_files);
 	}
 	
 	if ( isset($_POST["rebuild_music_on_hold"]) ) { 
-		$rebuild_music_on_hold 					= $_POST["rebuild_music_on_hold"]; 
+		$rebuild_music_on_hold 					= ($_POST["rebuild_music_on_hold"] ?? ''); 
 		$rebuild_music_on_hold 					= stripslashes((string) $rebuild_music_on_hold);
 	}
 	if ( isset($_POST["recording_web_link"]) ) { 
-		$recording_web_link 					= $_POST["recording_web_link"]; 
+		$recording_web_link 					= ($_POST["recording_web_link"] ?? ''); 
 		$recording_web_link 					= stripslashes((string) $recording_web_link);
 	}
 	
 	if ( isset($_POST["alt_server_ip"]) ) { 
-		$alt_server_ip 							= $_POST["alt_server_ip"]; 
+		$alt_server_ip 							= ($_POST["alt_server_ip"] ?? ''); 
 		$alt_server_ip 							= stripslashes((string) $alt_server_ip);
 	}
 	
 	if ( isset($_POST["external_server_ip"]) ) { 
-		$external_server_ip 					= $_POST["external_server_ip"]; 
+		$external_server_ip 					= ($_POST["external_server_ip"] ?? ''); 
 		$external_server_ip 					= stripslashes((string) $external_server_ip);
 	}
 	
 	if ( isset($_POST["vicidial_balance_rank"]) ) { 
-		$vicidial_balance_rank 					= $_POST["vicidial_balance_rank"]; 
+		$vicidial_balance_rank 					= ($_POST["vicidial_balance_rank"] ?? ''); 
 		$vicidial_balance_rank 					= stripslashes((string) $vicidial_balance_rank);
 	}
 	if ( isset($_POST["conf_engine"]) ) {
-		$conf_engine 							= $_POST["conf_engine"];
+		$conf_engine 							= ($_POST["conf_engine"] ?? '');
 		$conf_engine 							= stripslashes((string) $conf_engine);
 	}
 

@@ -48,12 +48,12 @@ if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// message parameters	
-	$touserid = $_POST["touserid"];
-	$fromuserid = $_POST["fromuserid"];
-	$subject = $_POST["subject"];
-	$message = $_POST["message"];
+	$touserid = ($_POST["touserid"] ?? '');
+	$fromuserid = ($_POST["fromuserid"] ?? '');
+	$subject = ($_POST["subject"] ?? '');
+	$message = ($_POST["message"] ?? '');
 	if (isset($_POST["external_recipients"])) {
-		$external_recipients = $_POST["external_recipients"];
+		$external_recipients = ($_POST["external_recipients"] ?? '');
 		$external_recipients = ltrim($external_recipients, " [");
 		$external_recipients = rtrim($external_recipients, " ]");
 	} else { $external_recipients = null; }

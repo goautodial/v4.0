@@ -43,8 +43,8 @@ if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// get data for event title & note.	
-	$eventsid = $_POST["edit-events-eventsid"];
-	$title = $_POST["edit-events-title"];
+	$eventsid = ($_POST["edit-events-eventsid"] ?? '');
+	$title = ($_POST["edit-events-title"] ?? '');
 	$userid = $user->getUserId();
 	
 	// edit events notes.

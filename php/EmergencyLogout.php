@@ -37,14 +37,14 @@ require_once('goCRMAPISettings.php');
 	$postfields["goPass"] = goPass;
 	$postfields["goAction"] = "goEmergencyLogout"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] = responsetype;
-	$postfields["goUserAgent"] = $_POST['goUserAgent'];
-	$postfields["log_user"] = $_POST['log_user'];
-	$postfields["log_group"] = $_POST['log_group'];
+	$postfields["goUserAgent"] = ($_POST['goUserAgent'] ?? '');
+	$postfields["log_user"] = ($_POST['log_user'] ?? '');
+	$postfields["log_group"] = ($_POST['log_group'] ?? '');
 	$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 */
 	$postfields = [
         'goAction' => 'goEmergencyLogout',
-        'goUserAgent' => $_POST['goUserAgent']
+        'goUserAgent' => ($_POST['goUserAgent'] ?? '')
     ];
 
     $output = $api->API_Request("goDashboard", $postfields);

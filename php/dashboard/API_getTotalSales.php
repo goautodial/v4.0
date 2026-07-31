@@ -28,7 +28,7 @@ declare(strict_types=1);
 	$type										= "all-daily";
 	
 	if ( isset($_POST['type']) ) {
-		$type									= $_POST['type'];
+		$type									= ($_POST['type'] ?? '');
 	}	
 
 	$output 									= $api->API_getTotalSales($type);	

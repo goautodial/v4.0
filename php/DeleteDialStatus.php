@@ -23,10 +23,10 @@
 	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 
-	$old_statuses = explode(" ",$_POST['dial_status']);
+	$old_statuses = explode(" ",($_POST['dial_status'] ?? ''));
 	$oldStats = [];
 	foreach($old_statuses as $old){
-		if(!in_array($old, ['', '0', $_POST['selected_status']])){
+		if(!in_array($old, ['', '0', ($_POST['selected_status'] ?? '')])){
 			$oldStats[] = $old;
 		}
 	}
@@ -40,7 +40,7 @@
 
 	$postfields = [
         'goAction' => 'goUpdateCampaignDialStatus',
-        'campaign_id' => $_POST['campaign_id'],
+        'campaign_id' => ($_POST['campaign_id'] ?? ''),
         'dial_statuses' => $new_status
     ];
 

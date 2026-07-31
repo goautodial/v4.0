@@ -32,23 +32,23 @@ $api = \creamy\APIHandler::getInstance();
 	$postfields["responsetype"] 	= responsetype; #json (required)
 	$postfields["hostname"] 		= $_SERVER['REMOTE_ADDR']; #Default value
 
-	$postfields["moh_id"] 			= $_POST['moh_id']; 
-	$postfields["moh_name"] 		= $_POST['moh_name']; 
-	$postfields["user_group"] 		= $_POST['user_group'];
-	$postfields["active"] 			= $_POST['active']; 
-	$postfields["random"] 			= $_POST['random'];
+	$postfields["moh_id"] 			= ($_POST['moh_id'] ?? ''); 
+	$postfields["moh_name"] 		= ($_POST['moh_name'] ?? ''); 
+	$postfields["user_group"] 		= ($_POST['user_group'] ?? '');
+	$postfields["active"] 			= ($_POST['active'] ?? ''); 
+	$postfields["random"] 			= ($_POST['random'] ?? '');
 
-	$postfields["log_user"]			= $_POST['log_user'];
-	$postfields["log_group"]		= $_POST['log_group'];
+	$postfields["log_user"]			= ($_POST['log_user'] ?? '');
+	$postfields["log_group"]		= ($_POST['log_group'] ?? '');
 */
 
 	$postfields = [
 		'goAction' => 'goAddMOH',
-		'moh_id' => $_POST['moh_id'], 'moh_name' => $_POST['moh_name'],
-		'user_group' => $_POST['user_group'],
-		'active' => $_POST['active'],
-                'filename' => $_POST['filename'], 
-		'random' => $_POST['random']
+		'moh_id' => ($_POST['moh_id'] ?? ''), 'moh_name' => ($_POST['moh_name'] ?? ''),
+		'user_group' => ($_POST['user_group'] ?? ''),
+		'active' => ($_POST['active'] ?? ''),
+                'filename' => ($_POST['filename'] ?? ''), 
+		'random' => ($_POST['random'] ?? '')
 	];
 
 	$output = $api->API_addMOH($postfields);

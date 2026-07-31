@@ -41,7 +41,7 @@ if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// check eventid	
-	$taskid = $_POST["eventid"];
+	$taskid = ($_POST["eventid"] ?? '');
 	// delete task
 	$result = $db->deleteEvent($taskid);
 	// analyze result

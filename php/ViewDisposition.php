@@ -24,16 +24,16 @@
 	require_once(__DIR__ . '/APIHandler.php');
 	$api 							= \creamy\APIHandler::getInstance();
 	
-	$campaign_id 					= $_POST["campaign_id"];
-	$view_type                      = $_POST["view_type"];
-	$dispo_update                   = $_POST["dispo_update"];
-	$dispo_delete                   = $_POST["dispo_delete"];
+	$campaign_id 					= ($_POST["campaign_id"] ?? '');
+	$view_type                      = ($_POST["view_type"] ?? '');
+	$dispo_update                   = ($_POST["dispo_update"] ?? '');
+	$dispo_delete                   = ($_POST["dispo_delete"] ?? '');
 
 	$output 						= $api->API_getCampaignDispositions($campaign_id);
 	
 	$data 							= '[';
 	$i								= 0;
-    $counter = count($output->campaign_id);
+    $counter = (isset($output->campaign_id) && is_countable($output->campaign_id) ? count($output->campaign_id) : 0);
 	
 	for($i=0;$i<=$counter;$i++) {
 		if(!empty($output->status[$i])){

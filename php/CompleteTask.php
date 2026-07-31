@@ -42,8 +42,8 @@ if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// check password	
-	$taskid = $_POST["complete-task-taskid"];
-	$progress = $_POST["complete-task-progress"];
+	$taskid = ($_POST["complete-task-taskid"] ?? '');
+	$progress = ($_POST["complete-task-progress"] ?? '');
 	$userid = $user->getUserId();
 	
 	$result = $db->setTaskCompletionStatus($taskid, $progress, $userid);

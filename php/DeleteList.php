@@ -25,8 +25,8 @@ declare(strict_types=1);
 	require_once(__DIR__ . "/APIHandler.php");
 
 	$api 										= \creamy\APIHandler::getInstance();
-	$listid 									= $_POST["listid"];
-	//$action 									= $_POST["action"];
+	$listid 									= ($_POST["listid"] ?? '');
+	//$action 									= ($_POST["action"] ?? '');
 
 	$postfields 								= [
 		"goAction" 									=> "goDeleteList",

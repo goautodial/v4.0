@@ -29,12 +29,12 @@ declare(strict_types=1);
 	$api 							= \creamy\APIHandler::getInstance();
 	$postfields 					= [
 		'goAction' 						=> 'goAddVoicemail',
-		'voicemail_id' 					=> $_POST['voicemail_id'], 
-		'pass' 							=> $_POST['password'], 
-		'fullname' 						=> $_POST['name'],
-		'email' 						=> $_POST['email'], 
-		'user_group' 					=> $_POST['user_group'], 
-		'active' 						=> $_POST['active']
+		'voicemail_id' 					=> ($_POST['voicemail_id'] ?? ''), 
+		'pass' 							=> ($_POST['password'] ?? ''), 
+		'fullname' 						=> ($_POST['name'] ?? ''),
+		'email' 						=> ($_POST['email'] ?? ''), 
+		'user_group' 					=> ($_POST['user_group'] ?? ''), 
+		'active' 						=> ($_POST['active'] ?? '')
 	];
 
    $output 							= $api->API_addVoicemail($postfields);

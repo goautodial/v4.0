@@ -22,7 +22,7 @@
 
 	require_once(__DIR__ . '/APIHandler.php');
 	$api 										= \creamy\APIHandler::getInstance();
-	$moh_id 									= $_POST["moh_id"];
+	$moh_id 									= ($_POST["moh_id"] ?? '');
 	
 	$output 									= $api->API_getMOHInfo($moh_id);
     

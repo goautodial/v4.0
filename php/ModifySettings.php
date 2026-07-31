@@ -78,17 +78,17 @@ if ($validated === 1) {
 	}
 	
 	// build data for setting.	
-	$timezone = $_POST["timezone"];
-	$locale = $_POST["locale"];
+	$timezone = ($_POST["timezone"] ?? '');
+	$locale = ($_POST["locale"] ?? '');
 	$confirmationEmail = isset($_POST["confirmationEmail"]);
 	$eventEmail = isset($_POST["eventEmail"]);
-	$theme = $_POST["theme"];
-	$baseURL = htmlentities($_POST["base_url"]);
-	$minFreq = $_POST["jobScheduling"];
+	$theme = ($_POST["theme"] ?? '');
+	$baseURL = htmlentities(($_POST["base_url"] ?? ''));
+	$minFreq = ($_POST["jobScheduling"] ?? '');
 	$customCompanyName = isset($_POST["company_name"]) ? htmlentities($_POST["company_name"]) : null;
-	$googleAPIKey = htmlentities($_POST["google_api_key"]);
-	$slave_db_ip = htmlentities($_POST["slave_db_ip"]);
-	$voicemail_greeting = $_POST["voicemail_greeting"];
+	$googleAPIKey = htmlentities(($_POST["google_api_key"] ?? ''));
+	$slave_db_ip = htmlentities(($_POST["slave_db_ip"] ?? ''));
+	$voicemail_greeting = ($_POST["voicemail_greeting"] ?? '');
 	// generate settings array
 	$data = [
 		CRM_SETTING_CONFIRMATION_EMAIL => $confirmationEmail, 

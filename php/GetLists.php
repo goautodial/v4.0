@@ -23,7 +23,7 @@
 
 	require_once(__DIR__ . '/APIHandler.php');
 	$api 											= \creamy\APIHandler::getInstance();
-	$campaign_id 									= $_POST["campaign_id"];
+	$campaign_id 									= ($_POST["campaign_id"] ?? '');
 	$output 										= $api->API_getAllListsCampaign($campaign_id);
 	
 	if(!empty($output)){
@@ -32,7 +32,7 @@
 		$count_active 								= 0;
 		$count_inactive 							= 0;
 		$lead_count 								= 0;
-        $counter = count($output->list_id);
+        $counter = (isset($output->list_id) && is_countable($output->list_id) ? count($output->list_id) : 0);
 		
 		for ($i=0;$i<=$counter;$i++) {
 			if (!empty($output->list_id[$i])) {

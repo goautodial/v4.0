@@ -25,27 +25,27 @@ declare(strict_types=1);
 	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 
-	if($_POST['add_phones'] !== "CUSTOM")
-		$seats	= $_POST['add_phones'];
+	if(($_POST['add_phones'] ?? '') !== "CUSTOM")
+		$seats	= ($_POST['add_phones'] ?? '');
 	else
-		$seats	= $_POST['custom_seats'];
+		$seats	= ($_POST['custom_seats'] ?? '');
 
 	$postfields = [
 		'goAction' => 'goAddPhones',
 		'seats' => $seats,
-		'extension' => $_POST['phone_ext'],
-		'server_ip' => $_POST['ip'],
-		'pass' => $_POST['phone_pass'],
-		'protocol' => $_POST['protocol'], #SIP, Zap, IAX2, or EXTERNAL. (required)
-		'dialplan_number' => "9999".$_POST['phone_ext'],
-		'voicemail_id' => $_POST['phone_ext'], #Desired voicemail (required)
+		'extension' => ($_POST['phone_ext'] ?? ''),
+		'server_ip' => ($_POST['ip'] ?? ''),
+		'pass' => ($_POST['phone_pass'] ?? ''),
+		'protocol' => ($_POST['protocol'] ?? ''), #SIP, Zap, IAX2, or EXTERNAL. (required)
+		'dialplan_number' => "9999".($_POST['phone_ext'] ?? ''),
+		'voicemail_id' => ($_POST['phone_ext'] ?? ''), #Desired voicemail (required)
 		'status' => "ACTIVE",
 		'active' => "Y",
-		'fullname' => $_POST['pfullname'],
-		'gmt' => $_POST['gmt'],
+		'fullname' => ($_POST['pfullname'] ?? ''),
+		'gmt' => ($_POST['gmt'] ?? ''),
 		'messages' => "0",
 		'old_messages' => "0",
-		'user_group' => $_POST['user_group']
+		'user_group' => ($_POST['user_group'] ?? '')
 	];
 
 	$output = $api->API_addPhones($postfields);

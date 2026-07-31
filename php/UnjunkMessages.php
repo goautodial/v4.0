@@ -37,7 +37,7 @@ if ($validated === 1) {
 
 	// retrieve data and parameters	
 	$userid = $user->getUserId();
-	$messageids = $_POST["messageids"];
+	$messageids = ($_POST["messageids"] ?? '');
 
 	// unjunk messages and return result
 	$result = $db->unjunkMessages($userid, $messageids);

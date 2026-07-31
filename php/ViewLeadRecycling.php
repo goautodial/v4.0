@@ -24,7 +24,7 @@
 	require_once(__DIR__ . '/APIHandler.php');
 	$api 							= \creamy\APIHandler::getInstance();
 	
-	$campaign_id 					= $_POST["campaign_id"];
+	$campaign_id 					= ($_POST["campaign_id"] ?? '');
 
 	$output 						= $api->API_getCampaignLeadRecycling($campaign_id);
 	
@@ -47,7 +47,7 @@
 		"Y" 							=> "Y", 
 		"N" 							=> "N"
 	];
-    $counter = count($output->recycle_id);
+    $counter = (isset($output->recycle_id) && is_countable($output->recycle_id) ? count($output->recycle_id) : 0);
 	
 	for($i=0;$i<=$counter;$i++) {
 		if(!empty($output->status[$i])){

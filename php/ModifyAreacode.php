@@ -26,20 +26,20 @@ declare(strict_types=1);
 	$api 							= \creamy\APIHandler::getInstance();
 
 	// collect new user data.       
-	$campaign_id					= $_POST["areacode_campaign"];
-	$areacode 					= $_POST["areacode"];
-	$outbound_cid_old               = $_POST["areacode_outbound_cid_old"];
+	$campaign_id					= ($_POST["areacode_campaign"] ?? '');
+	$areacode 					= ($_POST["areacode"] ?? '');
+	$outbound_cid_old               = ($_POST["areacode_outbound_cid_old"] ?? '');
 
 	$outbound_cid = NULL; if (isset($_POST["areacode_outbound_cid"])) { 
-		$outbound_cid 				= $_POST["areacode_outbound_cid"]; 
+		$outbound_cid 				= ($_POST["areacode_outbound_cid"] ?? ''); 
 		$outbound_cid				= stripslashes((string) $outbound_cid);
 	}
 	$cid_description = NULL; if (isset($_POST["areacode_description"])) { 
-		$cid_description			= $_POST["areacode_description"];
+		$cid_description			= ($_POST["areacode_description"] ?? '');
 		$cid_description 			= stripslashes((string) $cid_description);
 	}
 	$active = NULL; if (isset($_POST["areacode_status"])) { 
-		$active 					= $_POST["areacode_status"]; 
+		$active 					= ($_POST["areacode_status"] ?? ''); 
 		$active 					= stripslashes((string) $active);
 	}
 

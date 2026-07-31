@@ -76,7 +76,7 @@ class GOagent extends Module {
 
 			echo $this->getGOagentContent();
 		} else {
-			if (count($_POST) < 1) {
+			if ((is_countable($_POST) ? count($_POST) : 0) < 1) {
 				echo $this->getGOadminContent();
 			}
 		}
@@ -1251,7 +1251,7 @@ EOF;
 
 		//set the url, number of POST vars, POST data
 		curl_setopt($ch,CURLOPT_URL, $url);
-		curl_setopt($ch,CURLOPT_POST, count($fields));
+		curl_setopt($ch,CURLOPT_POST, (is_countable($fields) ? count($fields) : 0));
 		curl_setopt($ch,CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
 
@@ -1273,7 +1273,7 @@ EOF;
 
 	public function topBarHookAgent() {
 		$callbacks = $this->getCallbacks();
-		$numberOfCallbacks = count($callbacks);
+		$numberOfCallbacks = (is_countable($callbacks) ? count($callbacks) : 0);
 		$header = $this->getTopbarMenuHeader("phone-square", $numberOfCallbacks, CRM_UI_TOPBAR_MENU_STYLE_SIMPLE, "callbacks", $this->lh()->translationFor("callbacks_for_today"), null, "primary", false);
 
 		$elements = "";
@@ -1382,7 +1382,7 @@ EOF;
 
 		//set the url, number of POST vars, POST data
 		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, count($fields));
+		curl_setopt($ch, CURLOPT_POST, (is_countable($fields) ? count($fields) : 0));
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);

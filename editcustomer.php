@@ -38,9 +38,9 @@ $lh = \creamy\LanguageHandler::getInstance();
 $user = \creamy\CreamyUser::currentUser();
 
 
-$lead_id = $_GET['lead_id'];
+$lead_id = ($_GET['lead_id'] ?? '');
 $output = $ui->API_GetLeadInfo($lead_id);
-$list_id_ct = count($output->list_id);
+$list_id_ct = (isset($output->list_id) && is_countable($output->list_id) ? count($output->list_id) : 0);
 
 if ($list_id_ct > 0) {
 	for($i=0;$i < $list_id_ct;$i++){

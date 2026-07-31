@@ -57,7 +57,7 @@ if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// retrieve data for the event.
-	$eventid = $_POST["event_id"];
+	$eventid = ($_POST["event_id"] ?? '');
 	// calculate proper start and end date, including timezone offset
 	$offset = get_timezone_offset($db->getTimezoneSetting(), "UTC");
 	$startDate = null; $endDate = null; $allDay = null;

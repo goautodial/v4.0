@@ -3,7 +3,7 @@
 require_once(__DIR__ . '/goCRMAPISettings.php');
 
 	$debug = NULL; if (isset($_POST["debug"])) { 
-		$debug = $_POST["debug"]; 
+		$debug = ($_POST["debug"] ?? ''); 
 		$debug = stripslashes((string) $debug);
 	}
 	$ipv6_support = NULL;
@@ -13,15 +13,15 @@ require_once(__DIR__ . '/goCRMAPISettings.php');
 		$ipv6_support = 0;
 	
 	$host = NULL; if (isset($_POST["host"])) { 
-		$host = $_POST["host"]; 
+		$host = ($_POST["host"] ?? ''); 
 		$host = stripslashes((string) $host);
 	}
 	$port = NULL; if (isset($_POST["port"])) { 
-		$port = $_POST["port"]; 
+		$port = ($_POST["port"] ?? ''); 
 		$port = stripslashes((string) $port);
 	}
 	$smtp_security = NULL; if (isset($_POST["smtp_security"])) { 
-		$smtp_security = $_POST["smtp_security"]; 
+		$smtp_security = ($_POST["smtp_security"] ?? ''); 
 		$smtp_security = stripslashes((string) $smtp_security);
 	}
 	$smtp_auth = NULL;
@@ -31,11 +31,11 @@ require_once(__DIR__ . '/goCRMAPISettings.php');
 		$smtp_auth = 0;
 		
 	$username = NULL; if (isset($_POST["username"])) { 
-		$username = $_POST["username"]; 
+		$username = ($_POST["username"] ?? ''); 
 		$username = stripslashes((string) $username);
 	}
 	$password = NULL; if (isset($_POST["password"])) { 
-		$password = $_POST["password"]; 
+		$password = ($_POST["password"] ?? ''); 
 		$password = stripslashes((string) $password);
 	}
 	
@@ -55,8 +55,8 @@ require_once(__DIR__ . '/goCRMAPISettings.php');
 	$postfields["username"]    	= $username;
 	$postfields["password"]           	= $password;
 	
-	$postfields["log_user"]         = $_POST['log_user'];
-	$postfields["log_group"]        = $_POST['log_group'];
+	$postfields["log_user"]         = ($_POST['log_user'] ?? '');
+	$postfields["log_group"]        = ($_POST['log_group'] ?? '');
 
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);

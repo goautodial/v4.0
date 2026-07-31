@@ -28,11 +28,11 @@ declare(strict_types=1);
 
 	$postfields 								= [
 		"goAction" 									=> "goAddFilter",
-		"lead_filter_id"							=> $_POST["filter_id"], 
-		"lead_filter_name" 							=> $_POST["filter_name"], 
-		"lead_filter_comments" 						=> $_POST["filter_comments"],
-		"lead_filter_sql" 							=> $_POST["filter_sql"],
-		"user_group"								=> $_POST["filter_user_group"]
+		"lead_filter_id"							=> ($_POST["filter_id"] ?? ''), 
+		"lead_filter_name" 							=> ($_POST["filter_name"] ?? ''), 
+		"lead_filter_comments" 						=> ($_POST["filter_comments"] ?? ''),
+		"lead_filter_sql" 							=> ($_POST["filter_sql"] ?? ''),
+		"user_group"								=> ($_POST["filter_user_group"] ?? '')
 	];
 
 	$output 									= $api->API_addFilter($postfields);

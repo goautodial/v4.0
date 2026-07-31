@@ -27,8 +27,8 @@ declare(strict_types=1);
 	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 											= \creamy\APIHandler::getInstance();
-	$campaign_id 									= $_POST["campaign_id"];
-	$recycleid 										= $_POST["recycle_id"];
+	$campaign_id 									= ($_POST["campaign_id"] ?? '');
+	$recycleid 										= ($_POST["recycle_id"] ?? '');
 
     if (!empty($campaign_id) && !empty($recycleid)) {
     

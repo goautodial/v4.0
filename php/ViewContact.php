@@ -18,9 +18,9 @@
     $postfields["goPass"] = goPass; #Password goes here. (required)
     $postfields["goAction"] = "goGetLeadsInfo"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["lead_id"] = $_POST['lead_id'];; #Desired exten ID. (required)
-    $postfields["log_user"] = $_POST['log_user'];
-    $postfields["log_group"] = $_POST['log_group'];
+    $postfields["lead_id"] = ($_POST['lead_id'] ?? '');; #Desired exten ID. (required)
+    $postfields["log_user"] = ($_POST['log_user'] ?? '');
+    $postfields["log_group"] = ($_POST['log_group'] ?? '');
     $postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 
     $ch = curl_init();

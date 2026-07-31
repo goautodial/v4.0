@@ -24,7 +24,7 @@ declare(strict_types=1);
 	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 	
-	$id = $_POST['action_id'];
+	$id = ($_POST['action_id'] ?? '');
 	
 	$postfields = [
 		'goAction' => 'goSMTPActivation',

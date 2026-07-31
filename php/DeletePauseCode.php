@@ -27,8 +27,8 @@ declare(strict_types=1);
 
 	$postfields = [
 		'goAction' => 'goDeletePauseCode',
-		'pauseCampID' => $_POST['campaign_id'],
-		'pause_code' => $_POST['pause_code']
+		'pauseCampID' => ($_POST['campaign_id'] ?? ''),
+		'pause_code' => ($_POST['pause_code'] ?? '')
 	];
 
 	$output = $api->API_Request("goPauseCodes", $postfields);

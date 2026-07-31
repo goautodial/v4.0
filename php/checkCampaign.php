@@ -28,8 +28,8 @@ declare(strict_types=1);
 
 	$postfields 								= [
 		'goAction' 									=> 'goCheckCampaign',
-		'campaign_id' 								=> $_POST['campaign_id'],
-		'status' 									=> $_POST['status']
+		'campaign_id' 								=> ($_POST['campaign_id'] ?? ''),
+		'status' 									=> ($_POST['status'] ?? '')
 	];
 
     $output 									= $api->API_checkCampaign($postfields);

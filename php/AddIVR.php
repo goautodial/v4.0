@@ -24,18 +24,18 @@
 	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 											= \creamy\APIHandler::getInstance();
-	$route_option 									= $_POST['option'];
-	$route_desc 									= $_POST['route_desc'];
-	$route_menu 									= $_POST['route_menu'];
-	$option_callmenu_value 							= $_POST['option_callmenu_value'];
-	$option_ingroup_value 							= $_POST['option_ingroup_value'];
-	$option_did_value 								= $_POST['option_did_value'];
-	$option_hangup_value 							= $_POST['option_hangup_value'];
-	$option_extension_value 						= $_POST['option_extension_value'];
-	$option_phone_value 							= $_POST['option_phone_value'];
-	$option_voicemail_value 						= $_POST['option_voicemail_value'];
-	$option_agi_value 								= $_POST['option_agi_value'];
-	$option_route_context 							= $_POST['option_route_value_context'];
+	$route_option 									= ($_POST['option'] ?? '');
+	$route_desc 									= ($_POST['route_desc'] ?? '');
+	$route_menu 									= ($_POST['route_menu'] ?? '');
+	$option_callmenu_value 							= ($_POST['option_callmenu_value'] ?? '');
+	$option_ingroup_value 							= ($_POST['option_ingroup_value'] ?? '');
+	$option_did_value 								= ($_POST['option_did_value'] ?? '');
+	$option_hangup_value 							= ($_POST['option_hangup_value'] ?? '');
+	$option_extension_value 						= ($_POST['option_extension_value'] ?? '');
+	$option_phone_value 							= ($_POST['option_phone_value'] ?? '');
+	$option_voicemail_value 						= ($_POST['option_voicemail_value'] ?? '');
+	$option_agi_value 								= ($_POST['option_agi_value'] ?? '');
+	$option_route_context 							= ($_POST['option_route_value_context'] ?? '');
 	//$option_route_context_post = array_filter($option_route_context_post);
 	
 	$route_value 									= "";
@@ -67,7 +67,7 @@
 		$route_value 								.= "+";
 	}
 	//echo $route_value;
-	$option_route_value 							= explode("+", $route_value);
+	$option_route_value 							= explode("+", (string) ($route_value ?? ''));
 	
 	$ingroup_context 								= "";
 	for ($i=0; $i < 10; $i++) {
@@ -88,7 +88,7 @@
 	}
 	
 	$items 											= "";
-    $counter = count($route_option);
+    $counter = (is_countable($route_option) ? count($route_option) : 0);
 	for ($i=0;$i < $counter;$i++) {
 		if ($route_option[$i] == "A") $route_option[$i] = '#';
 		if ($route_option[$i] == "B") $route_option[$i] = '*';
@@ -101,19 +101,19 @@
 
 	$postfields 									= [
 		'goAction' 										=> 'goAddIVR',
-		'menu_id' 										=> $_POST['menu_id'],
-		'menu_name' 									=> $_POST['menu_name'],
-		'user_group' 									=> $_POST['user_groups'],
-		'menu_prompt' 									=> $_POST['menu_prompt'],
-		'menu_timeout' 									=> $_POST['menu_timeout'],
-		'menu_timeout_prompt' 							=> $_POST['menu_timeout_prompt'],
-		'menu_invalid_prompt' 							=> $_POST['menu_invalid_prompt'],
-		'menu_repeat' 									=> $_POST['menu_repeat'],
-		'postfields' 									=> $_POST['menu_time_check'],
-		'call_time_id' 									=> $_POST['call_time_id'],
-		'track_in_vdac' 								=> $_POST['track_in_vdac'],
-		'custom_dialplan_entry' 						=> $_POST['custom_dialplan_entry'],
-		'tracking_group' 								=> $_POST['tracking_group'],
+		'menu_id' 										=> ($_POST['menu_id'] ?? ''),
+		'menu_name' 									=> ($_POST['menu_name'] ?? ''),
+		'user_group' 									=> ($_POST['user_groups'] ?? ''),
+		'menu_prompt' 									=> ($_POST['menu_prompt'] ?? ''),
+		'menu_timeout' 									=> ($_POST['menu_timeout'] ?? ''),
+		'menu_timeout_prompt' 							=> ($_POST['menu_timeout_prompt'] ?? ''),
+		'menu_invalid_prompt' 							=> ($_POST['menu_invalid_prompt'] ?? ''),
+		'menu_repeat' 									=> ($_POST['menu_repeat'] ?? ''),
+		'postfields' 									=> ($_POST['menu_time_check'] ?? ''),
+		'call_time_id' 									=> ($_POST['call_time_id'] ?? ''),
+		'track_in_vdac' 								=> ($_POST['track_in_vdac'] ?? ''),
+		'custom_dialplan_entry' 						=> ($_POST['custom_dialplan_entry'] ?? ''),
+		'tracking_group' 								=> ($_POST['tracking_group'] ?? ''),
 		'items' 										=> $items
 	];
 

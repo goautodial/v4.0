@@ -23,7 +23,7 @@
 	
 	require_once(__DIR__ . '/APIHandler.php');
 	
-    $ingroup 										= $_REQUEST['ingroup'];
+    $ingroup 										= ($_REQUEST['ingroup'] ?? '');
 	
 	$api 											= \creamy\APIHandler::getInstance();
 	$output 										= $api->API_getRealtimeInboundMonitoring($ingroup);
@@ -156,7 +156,7 @@
 			$statustxt								= $status;
             
             $closer_campaigns                       = trim(substr($closer_campaigns, 0, -1));
-			$closer_campaigns						= explode(" ", $closer_campaigns);
+			$closer_campaigns						= explode(" ", (string) ($closer_campaigns ?? ''));
 			$ingroup_exists							= true;
 			if (isset($ingroup)) {
 				$ingroup_exists						= ((bool) preg_grep ("/$ingroup/i", $closer_campaigns));

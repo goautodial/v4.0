@@ -56,6 +56,10 @@ class SessionHandler implements \SessionHandlerInterface {
 		// Session storage table
 		$this->table = ($table == NULL) ? $this->table : $table;
 
+		if (session_status() === PHP_SESSION_ACTIVE) {
+			return;
+		}
+
 		// Hook up handler
 		session_set_save_handler($this, true);
 

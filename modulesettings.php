@@ -47,7 +47,7 @@
 
 $error = false;
 if (isset($_GET["module_name"])) {
-	$moduleName = urldecode($_GET["module_name"]);
+	$moduleName = urldecode(($_GET["module_name"] ?? ''));
 	$mh = \creamy\ModuleHandler::getInstance();
 	$instance = $mh->getInstanceOfModuleNamed($moduleName);
 	if (isset($instance)) {

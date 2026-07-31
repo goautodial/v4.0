@@ -41,8 +41,8 @@ if ($validated === 1) {
 	$mh = \creamy\ModuleHandler::getInstance();
 
 	// get mandatory
-	$moduleName = $_POST["module_name"];
-	$enabled = $_POST["enabled"];
+	$moduleName = ($_POST["module_name"] ?? '');
+	$enabled = ($_POST["enabled"] ?? '');
 	
 	// enable-disable module
 	$result = $mh->enableOrDisableModule($moduleName, $enabled);

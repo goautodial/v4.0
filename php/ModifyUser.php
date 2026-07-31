@@ -67,22 +67,22 @@ if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// collect new user data.	
-	$modifyid = $_POST["modifyid"];
+	$modifyid = ($_POST["modifyid"] ?? '');
 	$name = NULL; if (isset($_POST["name"])) { 
-		$name = $_POST["name"]; 
+		$name = ($_POST["name"] ?? ''); 
 		$name = stripslashes((string) $name);
 		$name = $db->escape_string($name); 
 
 	}
 	
 	$email = NULL; if (isset($_POST["email"])) { 
-		$email = $_POST["email"]; 
+		$email = ($_POST["email"] ?? ''); 
 		$email = stripslashes((string) $email);
 		$email = $db->escape_string($email);
 	}
 	
 	$phone = NULL; if (isset($_POST["phone"])) { 
-		$phone = $_POST["phone"]; 
+		$phone = ($_POST["phone"] ?? ''); 
 		$phone = stripslashes((string) $phone);
 		$phone = $db->escape_string($phone); 
 	}

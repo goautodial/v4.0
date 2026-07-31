@@ -42,14 +42,14 @@
 
 	$userid = NULL;
 	if (isset($_POST["user_id"])) {
-		$userid = $_POST["user_id"];
+		$userid = ($_POST["user_id"] ?? '');
 	}
 	$current_user = NULL;
 	if (isset($_POST["user"])) {
-		$current_user = $_POST["user"];
+		$current_user = ($_POST["user"] ?? '');
 	}
 	if(isset($_POST["role"])){
-		$userrole = $_POST["role"];
+		$userrole = ($_POST["role"] ?? '');
 	}
 
 	$output = $api->API_getUserInfo($current_user, "userInfo");
@@ -160,7 +160,7 @@
 													<div class="col-sm-10 mb">
 														<select class="form-control select2-1" id="usergroup" name="usergroup">
 															<?php
-																for($a=0;$a<count($user_groups->user_group);$a++){
+																for($a=0;$a<(isset($user_groups->user_group) && is_countable($user_groups->user_group) ? count($user_groups->user_group) : 0);$a++){
 															?>
 																<option value="<?php echo $user_groups->user_group[$a];?>"
 																		<?php if($output->data->user_group == $user_groups->user_group[$a]){echo "selected";}?> />
@@ -299,7 +299,7 @@
 															?>
 																<option value="">- - - NONE - - -</option>
 																<?php
-																	for($a=0;$a<count($voicemails->voicemail_id);$a++){
+																	for($a=0;$a<(isset($voicemails->voicemail_id) && is_countable($voicemails->voicemail_id) ? count($voicemails->voicemail_id) : 0);$a++){
 																		if ($voicemails->active[$a] == "Y") {
 																			$voicemail_id = $voicemails->voicemail_id[$a];
 																			$vm_status = $voicemails->active[$a];

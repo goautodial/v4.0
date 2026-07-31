@@ -25,12 +25,12 @@ declare(strict_types=1);
 	require_once(__DIR__ . '/APIHandler.php');
 	$api 							= \creamy\APIHandler::getInstance();
 
-	$draw       					= $_POST["draw"];
-	$start       					= $_POST["start"];
-	$length       					= $_POST["length"];
-    $columns                        = $_POST["columns"];
-    $search                         = $_POST["search"];
-	$order       					= $_POST["order"];
+	$draw       					= ($_POST["draw"] ?? '');
+	$start       					= ($_POST["start"] ?? '');
+	$length       					= ($_POST["length"] ?? '');
+    $columns                        = ($_POST["columns"] ?? '');
+    $search                         = ($_POST["search"] ?? '');
+	$order       					= ($_POST["order"] ?? '');
 	$user_group						= $_SESSION["usergroup"];
 	$perm 							= $api->goGetPermissions('campaign');
 
@@ -50,7 +50,7 @@ declare(strict_types=1);
 	//$i								= 0;
 
 
-	//for($i=0;$i<=count($output->campaign_id);$i++) {
+	//for($i=0;$i<=(isset($output->campaign_id) && is_countable($output->campaign_id) ? count($output->campaign_id) : 0);$i++) {
 	//	if(!empty($output->pause_code[$i])){
 	//		$data 					.= '[';
 	//		$data 					.= '"'.$output->pause_code[$i].'",';

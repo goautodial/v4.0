@@ -28,10 +28,10 @@ declare(strict_types=1);
 
 	$postfields 						= [
 		'goAction' 							=> 'goAddHotkey',
-		'campaign_id' 						=> $_POST['campaign_id'],
-		'hotkey' 							=> $_POST['hotkey'],
-		'status' 							=> $_POST['status'],
-		'status_name' 						=> $_POST['status_name']	
+		'campaign_id' 						=> ($_POST['campaign_id'] ?? ''),
+		'hotkey' 							=> ($_POST['hotkey'] ?? ''),
+		'status' 							=> ($_POST['status'] ?? ''),
+		'status_name' 						=> ($_POST['status_name'] ?? '')	
 	];
 
 	$output 							= $api->API_addHotkey($postfields);

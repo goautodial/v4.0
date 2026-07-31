@@ -19,7 +19,7 @@
         $postfields["goPass"] = goPass; #Password goes here. (required)
         $postfields["goAction"] = "getScriptInfo"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
-        $postfields["script_id"] = $_POST['script_id']; #Desired uniqueid. (required)
+        $postfields["script_id"] = ($_POST['script_id'] ?? ''); #Desired uniqueid. (required)
         
         
         $ch = curl_init();

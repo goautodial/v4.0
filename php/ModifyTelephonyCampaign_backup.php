@@ -13,34 +13,34 @@ $validated = 0;
 
 $campaign = NULL;
 if (isset($_POST["modify_campaign"])) {
-	$campaign = $_POST["modify_campaign"];
+	$campaign = ($_POST["modify_campaign"] ?? '');
 }
 
 $disposition = NULL;
 if (isset($_POST["disposition"])) {
-	$disposition = $_POST["disposition"];
+	$disposition = ($_POST["disposition"] ?? '');
 }
 
 $leadfilter = NULL;
 if (isset($_POST["modify_leadfilter"])) {
-	$leadfilter = $_POST["modify_leadfilter"];
+	$leadfilter = ($_POST["modify_leadfilter"] ?? '');
 }
 
 // CAMPAIGN
 if ($campaign != NULL) {
 	// collect new user data.	
 	$name = NULL; if (isset($_POST["name"])) { 
-		$name = $_POST["name"]; 
+		$name = ($_POST["name"] ?? ''); 
 		$name = stripslashes((string) $name);
 	}
 
 	$dial_method = NULL; if (isset($_POST["dial_method"])) { 
-		$dial_method = $_POST["dial_method"]; 
+		$dial_method = ($_POST["dial_method"] ?? ''); 
 		$dial_method = stripslashes((string) $dial_method);
 	}
 
     $status = NULL; if (isset($_POST["status"])) { 
-		$status = $_POST["status"]; 
+		$status = ($_POST["status"] ?? ''); 
 		$status = stripslashes($status);
 	}
 
@@ -111,11 +111,11 @@ if ($disposition != NULL) {
 	}
 		
 	$status = NULL; if (isset($_POST["status"])) { 
-		$status = $_POST["status"]; 
+		$status = ($_POST["status"] ?? ''); 
 		$status = stripslashes($status);
 	}
 	$status_name = NULL; if (isset($_POST["status_name"])) { 
-		$status_name = $_POST["status_name"]; 
+		$status_name = ($_POST["status_name"] ?? ''); 
 		$status_name = stripslashes((string) $status_name);
 	}
     
@@ -127,14 +127,14 @@ if ($disposition != NULL) {
 	$postfields["campaign_id"] 			= $disposition;
 	$postfields["status"] 				= $status;
 	$postfields['status_name'] 			= $status_name;
-	$postfields['selectable'] 			= $_POST['selectable'];
-	$postfields['human_answered'] 		= $_POST['human_answered'];
-	$postfields['sale'] 				= $_POST['sale'];
-	$postfields['dnc'] 					= $_POST['dnc'];
-	$postfields['scheduled_callback'] 	= $_POST['scheduled_callback'];
-	$postfields['customer_contact'] 	= $_POST['customer_contact'];
-	$postfields['not_interested'] 		= $_POST['not_interested'];
-	$postfields['unworkable'] 			= $_POST['unworkable'];
+	$postfields['selectable'] 			= ($_POST['selectable'] ?? '');
+	$postfields['human_answered'] 		= ($_POST['human_answered'] ?? '');
+	$postfields['sale'] 				= ($_POST['sale'] ?? '');
+	$postfields['dnc'] 					= ($_POST['dnc'] ?? '');
+	$postfields['scheduled_callback'] 	= ($_POST['scheduled_callback'] ?? '');
+	$postfields['customer_contact'] 	= ($_POST['customer_contact'] ?? '');
+	$postfields['not_interested'] 		= ($_POST['not_interested'] ?? '');
+	$postfields['unworkable'] 			= ($_POST['unworkable'] ?? '');
 
 	$postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
 	$ch = curl_init();
@@ -164,7 +164,7 @@ if ($disposition != NULL) {
 if ($leadfilter != NULL) {
 	// collect new user data.		
 	$name = NULL; if (isset($_POST["name"])) { 
-		$name = $_POST["name"]; 
+		$name = ($_POST["name"] ?? ''); 
 		$name = stripslashes((string) $name);
 	}
     
@@ -176,8 +176,8 @@ if ($leadfilter != NULL) {
 	$postfields["lead_filter_id"] = $leadfilter;
 	$postfields["lead_filter_name"] = $name;
 	$postfields["hostname"] = $_SERVER['REMOTE_ADDR']; #Default value
-	$postfields["log_user"] = $_POST['log_user'];
-	$postfields["log_group"] = $_POST['log_group'];
+	$postfields["log_user"] = ($_POST['log_user'] ?? '');
+	$postfields["log_group"] = ($_POST['log_group'] ?? '');
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, $header);

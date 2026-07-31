@@ -45,8 +45,8 @@ if ($validated === 1) {
 
 	// collect data	
 	$userid = $user->getUserId();
-	$messageids = $_POST["messageids"];
-	$folder = $_POST["folder"];
+	$messageids = ($_POST["messageids"] ?? '');
+	$folder = ($_POST["folder"] ?? '');
 	// mark messages as unread and return result.
 	$result = $db->markMessagesAsUnread($userid, $messageids, $folder);
 	if ($result === false) { // failure

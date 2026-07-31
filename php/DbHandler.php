@@ -837,12 +837,12 @@ class DbHandler {
 		$cols = $this->getCustomerColumnsToBeShownInCustomerList($customerType);
 
 		// sorting
-		if (isset($sorting) && count($sorting) > 0) {
+		if (isset($sorting) && (is_countable($sorting) ? count($sorting) : 0) > 0) {
 			foreach ($sorting as $columnToSort => $sortType) { $this->dbConnector->orderBy($columnToSort, $sortType); }
 		}
 
 		// filtering
-		if (isset($filtering) && count($filtering) > 0) {
+		if (isset($filtering) && (is_countable($filtering) ? count($filtering) : 0) > 0) {
 			$i = 0;
 			foreach ($filtering as $columnToSearch => $wordToSearch) {
 				if ($i === 0) { $this->dbConnector->where($columnToSearch, '%'.$wordToSearch.'%', "LIKE"); }
@@ -863,12 +863,12 @@ class DbHandler {
 		$cols = $this->getCustomerColumnsToBeShownInCustomerList($customerType);
 
 		// sorting
-		if (isset($sorting) && count($sorting) > 0) {
+		if (isset($sorting) && (is_countable($sorting) ? count($sorting) : 0) > 0) {
 			foreach ($sorting as $columnToSort => $sortType) { $this->dbConnectorAsterisk->orderBy($columnToSort, $sortType); }
 		}
 
 		// filtering
-		if (isset($filtering) && count($filtering) > 0) {
+		if (isset($filtering) && (is_countable($filtering) ? count($filtering) : 0) > 0) {
 			$i = 0;
 			foreach ($filtering as $columnToSearch => $wordToSearch) {
 				if ($i === 0) { $this->dbConnectorAsterisk->where($columnToSearch, '%'.$wordToSearch.'%', "LIKE"); }
@@ -889,7 +889,7 @@ class DbHandler {
 		// try to get fields from database.
 		//$setting = $this->getSettingValueForKey(CRM_SETTING_CUSTOMER_LIST_FIELDS);
 		$setting = "lead_id|CONCAT_WS(' ', first_name, middle_initial, last_name)|phone_number|address1";
-        return explode("|", $setting);
+        return explode("|", (string) ($setting ?? ''));
 	}
 
 
@@ -1467,7 +1467,7 @@ class DbHandler {
 		// no files, empty files.
 		if (!isset($attachments)) { return true; }
 		if (!is_array($attachments)) { return true; }
-		if (count($attachments) < 1) { return true; }
+		if ((is_countable($attachments) ? count($attachments) : 0) < 1) { return true; }
 
 		// Assign a new hashed name for files and store them.
 		require_once(__DIR__ . '/CRMUtils.php');
@@ -2177,7 +2177,7 @@ class DbHandler {
 		$modulesChanged = false;
 		// check status
 		if ($status == "1" || $status == true) {
-			if (!in_array($moduleName, $modules, true)) { $modules[] = $moduleName; $modulesChanged = true; $log_message="Enabled Module: "; }
+			if (!in_array($moduleName, (is_array($modules) ? $modules : []), true)) { $modules[] = $moduleName; $modulesChanged = true; $log_message="Enabled Module: "; }
 		} else if ( ($key = array_search($moduleName, $modules)) !== false) { unset($modules[$key]); $modulesChanged = true; $log_message="Disabled Module: ";}
 
 		// change status and return success.

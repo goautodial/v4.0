@@ -48,9 +48,9 @@ if ($validated === 1) {
 
 	// collect data	
 	$userid = $user->getUserId();
-	$messageids = $_POST["messageids"];
-	$folder = $_POST["folder"];
-	$favorite = $_POST["favorite"];
+	$messageids = ($_POST["messageids"] ?? '');
+	$folder = ($_POST["folder"] ?? '');
+	$favorite = ($_POST["favorite"] ?? '');
 	// mark messages as favorite
 	$result = $db->markMessagesAsFavorite($userid, $messageids, $folder, $favorite);
 	if ($result === false) {

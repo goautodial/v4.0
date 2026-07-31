@@ -41,7 +41,7 @@
 
 	$script_id = NULL;
 	if (isset($_POST["script_id"])) {
-		$script_id = $_POST["script_id"];
+		$script_id = ($_POST["script_id"] ?? '');
 	}else{
 		header("location: telephonyscripts.php");
 	}

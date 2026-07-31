@@ -23,22 +23,22 @@
 	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();			
-	$color 										= $_POST["color"];
+	$color 										= ($_POST["color"] ?? '');
 	$color 										= str_replace("#", '', $color);
 
 	$postfields 								= [
 		'goAction' 									=> 'goAddIngroup',
-		'group_id' 									=> $_POST['groupid'],
-		'group_name' 								=> $_POST['groupname'],
+		'group_id' 									=> ($_POST['groupid'] ?? ''),
+		'group_name' 								=> ($_POST['groupname'] ?? ''),
 		'group_color' 								=> $color,
-		'active' 									=> $_POST['active'],
-		'web_form_address' 							=> $_POST['web_form'],
-		'user_group' 								=> $_POST['user_group'],
-		'voicemail_ext' 							=> $_POST['ingroup_voicemail'],
-		'next_agent_call' 							=> $_POST['next_agent_call'], 
-		'fronter_display'							=> $_POST['display'], #Y or N (required)
-		'ingroup_script' 							=> $_POST['script'],
-		'get_call_launch' 							=> $_POST['call_launch']
+		'active' 									=> ($_POST['active'] ?? ''),
+		'web_form_address' 							=> ($_POST['web_form'] ?? ''),
+		'user_group' 								=> ($_POST['user_group'] ?? ''),
+		'voicemail_ext' 							=> ($_POST['ingroup_voicemail'] ?? ''),
+		'next_agent_call' 							=> ($_POST['next_agent_call'] ?? ''), 
+		'fronter_display'							=> ($_POST['display'] ?? ''), #Y or N (required)
+		'ingroup_script' 							=> ($_POST['script'] ?? ''),
+		'get_call_launch' 							=> ($_POST['call_launch'] ?? '')
 	];
 
 	$output 									= $api->API_addIngroup($postfields);

@@ -27,7 +27,7 @@ declare(strict_types=1);
 
 	$postfields = [
         'goAction' => 'goDeleteCarrier',
-        'carrier_id' => $_POST['carrier_id']
+        'carrier_id' => ($_POST['carrier_id'] ?? '')
     ];
 
     $output = $api->API_Request("goCarriers", $postfields);

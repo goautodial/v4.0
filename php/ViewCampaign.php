@@ -25,7 +25,7 @@ declare(strict_types=1);
 	require_once(__DIR__ . '/APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();
-	$output 									= $api->API_getCampaignInfo($_POST['campaign_id']);
+	$output 									= $api->API_getCampaignInfo(($_POST['campaign_id'] ?? ''));
 
     $campaign									= $output->data;
     

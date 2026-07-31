@@ -30,7 +30,7 @@ $postfields["goAction"] = "goExportCallReport";
 $postfields["pageTitle"] = "call_export_report";
 
 if(isset($_POST['campaigns']) && $_POST['campaigns'] != NULL){
-    $campaigns = $_POST['campaigns'];
+    $campaigns = ($_POST['campaigns'] ?? '');
     $campaigns = implode(",", $campaigns);
     $postfields["campaigns"] = $campaigns;
 }else{
@@ -38,7 +38,7 @@ if(isset($_POST['campaigns']) && $_POST['campaigns'] != NULL){
 }
 
 if(isset($_POST['inbounds']) && $_POST['inbounds'] != NULL){
-    $inbounds = $_POST['inbounds'];
+    $inbounds = ($_POST['inbounds'] ?? '');
     $inbounds = implode(",", $inbounds);
     $postfields["inbounds"] = $inbounds;
 }else{
@@ -46,7 +46,7 @@ if(isset($_POST['inbounds']) && $_POST['inbounds'] != NULL){
 }
 
 if(isset($_POST['lists']) && $_POST['lists'] != NULL){
-    $lists = $_POST['lists'];
+    $lists = ($_POST['lists'] ?? '');
     $lists = implode(",", $lists);
     $postfields["lists"] = $lists;
 }else{
@@ -54,19 +54,19 @@ if(isset($_POST['lists']) && $_POST['lists'] != NULL){
 }
 
 if(isset($_POST['statuses']) && $_POST['statuses'] != NULL){
-    $statuses = $_POST['statuses'];
+    $statuses = ($_POST['statuses'] ?? '');
     $statuses = implode(",", $statuses);
     $postfields["statuses"] = $statuses;
 }else{
     $postfields["statuses"] = "";
 }
 
-$custom_fields = $_POST['custom_fields']; 
-$per_call_notes = $_POST['per_call_notes'];
-$rec_location = $_POST['rec_location'];
+$custom_fields = ($_POST['custom_fields'] ?? ''); 
+$per_call_notes = ($_POST['per_call_notes'] ?? '');
+$rec_location = ($_POST['rec_location'] ?? '');
 
-$toDate = date('Y-m-d H:i:s', strtotime($_POST['toDate']));
-$fromDate = date('Y-m-d H:i:s', strtotime($_POST['fromDate']));
+$toDate = date('Y-m-d H:i:s', strtotime(($_POST['toDate'] ?? '')));
+$fromDate = date('Y-m-d H:i:s', strtotime(($_POST['fromDate'] ?? '')));
 
 $postfields["custom_fields"] = $custom_fields;
 $postfields["per_call_notes"] = $per_call_notes;

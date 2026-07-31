@@ -34,12 +34,12 @@
 	$user = \creamy\CreamyUser::currentUser();
     
 	if (isset($_GET["folder"])) {
-		$folder = $_GET["folder"];
+		$folder = ($_GET["folder"] ?? '');
 	} else $folder = MESSAGES_GET_INBOX_MESSAGES;
 	if ($folder < 0 || $folder > MESSAGES_MAX_FOLDER) { $folder = MESSAGES_GET_INBOX_MESSAGES; }
 
 	if (isset($_GET["message"])) {
-		$message = $_GET["message"];
+		$message = ($_GET["message"] ?? '');
 	} else $message = NULL;
 
 ?>

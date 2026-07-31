@@ -180,7 +180,7 @@
 								   </thead>
 								   <tbody>
 									   	<?php
-									   		for($i=0;$i < count($ingroup->group_id);$i++){
+									   		for($i=0;$i < (isset($ingroup->group_id) && is_countable($ingroup->group_id) ? count($ingroup->group_id) : 0);$i++){
 							
 												if($ingroup->active[$i] == "Y"){
 													$ingroup->active[$i] = $lh->translationFor('active');
@@ -222,7 +222,7 @@
 								   </thead>
 								   <tbody>
 									   	<?php
-									   		for($i=0;$i < count($ivr->menu_id);$i++){
+									   		for($i=0;$i < (isset($ivr->menu_id) && is_countable($ivr->menu_id) ? count($ivr->menu_id) : 0);$i++){
 
 											$action_IVR = $ui->ActionMenuForIVR($ivr->menu_id[$i], $ivr->menu_name[$i], $perm);
 
@@ -257,7 +257,7 @@
 								   </thead>
 								   <tbody>
 									   	<?php
-									   		for($i=0;$i < count($phonenumber->did_pattern);$i++){
+									   		for($i=0;$i < (isset($phonenumber->did_pattern) && is_countable($phonenumber->did_pattern) ? count($phonenumber->did_pattern) : 0);$i++){
 
 									   			if($phonenumber->active[$i] == "Y"){
 													$phonenumber->active[$i] = $lh->translationFor('active');
@@ -405,7 +405,7 @@
 								<div class="col-sm-9 mb">
 									<select id="user_group" class="form-control select2-1" name="user_group" style="width:100%;">
 										<?php
-											for($i=0;$i<count($user_groups->user_group);$i++){
+											for($i=0;$i<(isset($user_groups->user_group) && is_countable($user_groups->user_group) ? count($user_groups->user_group) : 0);$i++){
 												if (strtoupper($_SESSION['usergroup']) !== 'ADMIN' && strtoupper($user_groups->user_group[$i]) !== strtoupper($_SESSION['usergroup'])) {
 													continue;
 												}
@@ -436,7 +436,7 @@
 										?>
 											<option value="" selected><?php $lh->translateText('-none-'); ?></option>
 										<?php
-											for($i=0;$i<count($voicemails->voicemail_id);$i++){
+											for($i=0;$i<(isset($voicemails->voicemail_id) && is_countable($voicemails->voicemail_id) ? count($voicemails->voicemail_id) : 0);$i++){
 										?>
 												<option value="<?php echo $voicemails->voicemail_id[$i];?>">
 													<?php echo $voicemails->voicemail_id[$i].' - '.$voicemails->fullname[$i];?>
@@ -480,7 +480,7 @@
 									<select name="script" id="script" class="form-control select2-1" style="width:100%;">
 										<option value="NONE"><?php $lh->translateText("-none-"); ?></option>
 										<?php
-											for($i=0;$i<count($scripts->script_id);$i++){
+											for($i=0;$i<(isset($scripts->script_id) && is_countable($scripts->script_id) ? count($scripts->script_id) : 0);$i++){
 										?>
 											<option value="<?php echo $scripts->script_id[$i];?>">
 												<?php echo $scripts->script_id[$i].' - '.$scripts->script_name[$i];?>
@@ -553,7 +553,7 @@
 								<select name="menu_prompt" id="menu_prompt" class="form-control select2-1" style="width:100%;">
 									<option value="goWelcomeIVR" selected><?php $lh->translateText("default_value"); ?></option>
 									<?php
-										for($i=0;$i<count($voicefiles->file_name);$i++){
+										for($i=0;$i<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$i++){
 											$file = substr($voicefiles->file_name[$i], 0, -4);
 									?>
 										<option value="<?php echo $file;?>"><?php echo $file;?></option>
@@ -575,7 +575,7 @@
 								<select name="menu_timeout_prompt" id="menu_timeout_prompt" class="form-control select2-1" style="width:100%;">
 									<option value="" selected><?php $lh->translateText("default_value"); ?></option>
 									<?php
-										for($i=0;$i<count($voicefiles->file_name);$i++){
+										for($i=0;$i<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$i++){
 											$file = substr($voicefiles->file_name[$i], 0, -4);
 									?>
 										<option value="<?php echo $file;?>"><?php echo $file;?></option>
@@ -591,7 +591,7 @@
 								<select name="menu_invalid_prompt" id="menu_invalid_prompt" class="form-control select2-1" style="width:100%;">
 									<option value="" selected><?php $lh->translateText("default_value"); ?></option>
 									<?php
-										for($i=0;$i<count($voicefiles->file_name);$i++){
+										for($i=0;$i<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$i++){
 											$file = substr($voicefiles->file_name[$i], 0, -4);
 									?>
 										<option value="<?php echo $file;?>"><?php echo $file;?></option>
@@ -622,7 +622,7 @@
 							<div class="col-sm-8 mb">
 								<select name="call_time_id" id="call_time_id" class="form-control select2-1" style="width:100%;">
 									<?php
-										for($x=0; $x<count($calltimes->call_time_id);$x++){
+										for($x=0; $x<(isset($calltimes->call_time_id) && is_countable($calltimes->call_time_id) ? count($calltimes->call_time_id) : 0);$x++){
 									?>
 											<option value="<?php echo $calltimes->call_time_id[$x];?>"> <?php echo $calltimes->call_time_id[$x].' - '.$calltimes->call_time_name[$x]; ?> </option>
 									<?php
@@ -646,7 +646,7 @@
 								<select name="tracking_group" id="tracking_group" class="form-control select2-1" style="width:100%;">
 									<option value="CALLMENU"><?php $lh->translateText("callmenu_default"); ?></option>
 								<?php
-									for($i=0;$i<count($ingroup->group_id);$i++){
+									for($i=0;$i<(isset($ingroup->group_id) && is_countable($ingroup->group_id) ? count($ingroup->group_id) : 0);$i++){
 								?>
 									<option value="<?php echo $ingroup->group_id[$i];?>">
 										<?php echo $ingroup->group_id[$i].' - '.$ingroup->group_name[$i];?>
@@ -667,7 +667,7 @@
 									<option value="---ALL---"><?php $lh->translateText("all_usergroups"); ?></option>
 								<?php
 								}
-								for($i=0;$i<count($user_groups->user_group);$i++){
+								for($i=0;$i<(isset($user_groups->user_group) && is_countable($user_groups->user_group) ? count($user_groups->user_group) : 0);$i++){
 									if (strtoupper($_SESSION['usergroup']) !== 'ADMIN' && strtoupper($user_groups->user_group[$i]) !== strtoupper($_SESSION['usergroup'])) {
 										continue;
 									}
@@ -747,7 +747,7 @@
 													<select class="select2-2 form-control" name="option_callmenu_value[]" style="width:100%;">
 														<option value="" selected><?php $lh->translateText("-none-"); ?></option>
 													<?php
-														for($x=0;$x < count($ivr->menu_id);$x++){
+														for($x=0;$x < (isset($ivr->menu_id) && is_countable($ivr->menu_id) ? count($ivr->menu_id) : 0);$x++){
 															echo "<option value=".$ivr->menu_id[$x].">".$ivr->menu_id[$x]." - ".$ivr->menu_name[$x]."</option>";
 														}
 													?>
@@ -762,7 +762,7 @@
 														<select class="select2-2 form-control" name="option_ingroup_value[]" style="width:100%;">
 															<option value="" selected><?php $lh->translateText("-none-"); ?></option>
 														<?php
-															for($x=0;$x < count($ingroup->group_id);$x++){
+															for($x=0;$x < (isset($ingroup->group_id) && is_countable($ingroup->group_id) ? count($ingroup->group_id) : 0);$x++){
 																echo "<option value=".$ingroup->group_id[$x].">".$ingroup->group_id[$x]." - ".$ingroup->group_name[$x]."</option>";
 															}
 														?>
@@ -800,7 +800,7 @@
 																<select class="form-control" name="campaign_id_<?php echo $i;?>" style="width:100%;">
 																<?php
 																echo '<option value="">'.$lh->translationFor("-none-").'</option>';
-																	for($x=0;$x < count($campaign->campaign_id);$x++){
+																	for($x=0;$x < (isset($campaign->campaign_id) && is_countable($campaign->campaign_id) ? count($campaign->campaign_id) : 0);$x++){
 																		echo "<option value=".$campaign->campaign_id[$x].">".$campaign->campaign_id[$x]." - ".$campaign->campaign_name[$x]."</option>";
 																	}
 																?>
@@ -848,7 +848,7 @@
 																<select class="col-sm-6 form-control" style="width:100%;" id="enter_filename_select_<?php echo $i;?>">
 																	<option value="sip-silence" selected> <?php $lh->translateText("default_value"); ?> </option>
 																<?php
-																	for($x=0;$x<count($voicefiles->file_name);$x++){
+																	for($x=0;$x<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$x++){
 																		$file = substr($voicefiles->file_name[$x], 0, -4);
 																		echo "<option value=".$file.">".$file."</option>";
 																	}
@@ -867,7 +867,7 @@
 																<select class="col-sm-6 form-control" style="width:100%;" id="edit_id_number_filename_select_<?php echo $i;?>">
 																	<option value="sip-silence" selected> <?php $lh->translateText("default_value"); ?> </option>
 																<?php
-																	for($x=0;$x<count($voicefiles->file_name);$x++){
+																	for($x=0;$x<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$x++){
 																		$file = substr($voicefiles->file_name[$x], 0, -4);
 																		echo "<option value=".$file.">".$file."</option>";
 																	}
@@ -886,7 +886,7 @@
 																<select class="col-sm-6 form-control" style="width:100%;" id="edit_confirm_filename_select_<?php echo $i;?>">
 																	<option value="sip-silence" selected> <?php $lh->translateText("default_value"); ?> </option>
 																<?php
-																	for($x=0;$x<count($voicefiles->file_name);$x++){
+																	for($x=0;$x<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$x++){
 																		$file = substr($voicefiles->file_name[$x], 0, -4);
 																		echo "<option value=".$file.">".$file."</option>";
 																	}
@@ -904,7 +904,7 @@
 													<select class="col-sm-6 select2-2 form-control" name="option_did_value[]" style="width:100%;">
 														<option value="" selected> <?php $lh->translateText("-none-"); ?> </option>
 													<?php
-														for($x=0;$x < count($phonenumber->did_pattern);$x++){
+														for($x=0;$x < (isset($phonenumber->did_pattern) && is_countable($phonenumber->did_pattern) ? count($phonenumber->did_pattern) : 0);$x++){
 															echo "<option value=".$phonenumber->did_pattern[$x].">".$phonenumber->did_pattern[$x]." - ".$phonenumber->did_description[$x]."</option>";
 														}
 													?>
@@ -918,7 +918,7 @@
 													<select class="select2-2 form-control" name="option_hangup_value[]" style="width:100%;">
 														<option value="vm-goodbye" selected><?php $lh->translateText("default_value"); ?></option>
 													<?php
-														for($x=0;$x<count($voicefiles->file_name);$x++){
+														for($x=0;$x<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$x++){
 															$file = substr($voicefiles->file_name[$x], 0, -4);
 															echo "<option value=".$file.">".$file."</option>";
 														}
@@ -948,7 +948,7 @@
 													<select class="select2-2 form-control" name="option_phone_value[]" style="width:100%;">
 														<option value="" selected> <?php $lh->translateText("-none-"); ?> </option>
 													<?php
-														for($x=0;$x < count($phones->extension);$x++){
+														for($x=0;$x < (isset($phones->extension) && is_countable($phones->extension) ? count($phones->extension) : 0);$x++){
 															echo "<option value=".$phones->extension[$x].">".$phones->extension[$x]." - ".$phones->server_ip[$x]." - ".$phones->dialplan_number[$x]."</option>";
 														}
 													?>
@@ -966,7 +966,7 @@
 														<select class="col-sm-6 select2-2 form-control" style="width:100%;" id="option_voicemail_select_<?php echo $i;?>">
 															<option value="" selected> <?php $lh->translateText("-none-"); ?> </option>
 														<?php
-															for($x=0;$x < count($voicemails->voicemail_id);$x++){
+															for($x=0;$x < (isset($voicemails->voicemail_id) && is_countable($voicemails->voicemail_id) ? count($voicemails->voicemail_id) : 0);$x++){
 																echo "<option value=".$voicemails->voicemail_id[$x].">".$voicemails->voicemail_id[$x]." - ".$voicemails->fullname[$x]."</option>";
 															}
 														?>
@@ -1062,7 +1062,7 @@
 								<div class="col-sm-8 mb">
 									<select name="user_groups" id="user_groups" class="form-control select2-1" style="width:100%;">
 										<?php
-											for($i=0;$i<count($user_groups->user_group);$i++){
+											for($i=0;$i<(isset($user_groups->user_group) && is_countable($user_groups->user_group) ? count($user_groups->user_group) : 0);$i++){
 												if (strtoupper($_SESSION['usergroup']) !== 'ADMIN' && strtoupper($user_groups->user_group[$i]) !== strtoupper($_SESSION['usergroup'])) {
 													continue;
 												}
@@ -1090,7 +1090,7 @@
 										<select name="route_agentid" id="route_agentid" class="form-control select2-1" style="width:100%;">
 											<option value="" > <?php $lh->translateText("-none-"); ?></option>
 											<?php
-												for($i=0;$i<count($users->user);$i++){
+												for($i=0;$i<(isset($users->user) && is_countable($users->user) ? count($users->user) : 0);$i++){
 											?>
 												<option value="<?php echo $users->user[$i];?>">
 													<?php echo $users->user[$i].' - '.$users->full_name[$i];?>
@@ -1121,7 +1121,7 @@
 								<div class="col-sm-8 mb">
 									<select name="route_ingroupid" id="route_ingroupid" class="form-control select2-1" style="width:100%;">
 										<?php
-											for($i=0;$i<count($ingroup->group_id);$i++){
+											for($i=0;$i<(isset($ingroup->group_id) && is_countable($ingroup->group_id) ? count($ingroup->group_id) : 0);$i++){
 										?>
 											<option value="<?php echo $ingroup->group_id[$i];?>">
 												<?php echo $ingroup->group_id[$i].' - '.$ingroup->group_name[$i];?>
@@ -1141,7 +1141,7 @@
 									<div class="col-sm-8 mb">
 										<select name="route_phone_exten" id="route_phone_exten" class="form-control select2-1" style="width:100%;">
 											<?php
-												for($i=0;$i<count($phones->extension);$i++){
+												for($i=0;$i<(isset($phones->extension) && is_countable($phones->extension) ? count($phones->extension) : 0);$i++){
 											?>
 												<option value="<?php echo $phones->extension[$i];?>">
 													<?php echo $phones->extension[$i].' - '.$phones->server_ip[$i].' - '.$phones->dialplan_number[$i];?>
@@ -1179,8 +1179,8 @@
 									<div class="col-sm-8 mb">
 										<select name="route_ivr" id="route_ivr" class="form-control select2-1" style="width:100%;">
 											<?php
-											if(count($ivr->menu_id) > 0){
-												for($i=0;$i<count($ivr->menu_id);$i++){
+											if((isset($ivr->menu_id) && is_countable($ivr->menu_id) ? count($ivr->menu_id) : 0) > 0){
+												for($i=0;$i<(isset($ivr->menu_id) && is_countable($ivr->menu_id) ? count($ivr->menu_id) : 0);$i++){
 											?>
 												<option value="<?php echo $ivr->menu_id[$i];?>">
 													<?php echo $ivr->menu_id[$i].' - '.$ivr->menu_name[$i];?>
@@ -1207,7 +1207,7 @@
 										<select name="route_voicemail" id="route_voicemail" class="form-control select2-1" style="width:100%;">
 											
 											<?php
-												for($i=0;$i<count($voicemails->voicemail_id);$i++){
+												for($i=0;$i<(isset($voicemails->voicemail_id) && is_countable($voicemails->voicemail_id) ? count($voicemails->voicemail_id) : 0);$i++){
 											?>
 												<option value="<?php echo $voicemails->voicemail_id[$i];?>">
 													<?php echo $voicemails->voicemail_id[$i].' - '.$voicemails->fullname[$i];?>

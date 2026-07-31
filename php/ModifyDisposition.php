@@ -26,67 +26,67 @@
 
 	// check required fields
 	$reason 								= "Unable to Modify Disposition";
-	$disposition 							= $_POST["edit_campaign"];
+	$disposition 							= ($_POST["edit_campaign"] ?? '');
 
 	// DISPOSITION
 	if ($disposition != NULL) {
 		if (!isset($_POST['selectable'])) {
-			$_POST['selectable'] 			= "N";
+			$_POST['selectable'] = "N";
 		} else {
-			$_POST['selectable'] 			= "Y";
+			$_POST['selectable'] = "Y";
 		}
 
 		if (!isset($_POST['human_answered'])) {
-			$_POST['human_answered'] 		= "N";
+			$_POST['human_answered'] = "N";
 		} else {
-			$_POST['human_answered'] 		= "Y";
+			$_POST['human_answered'] = "Y";
 		}
 
 		if (!isset($_POST['sale'])) {
-			$_POST['sale'] 					= "N";
+			$_POST['sale'] = "N";
 		} else {
-			$_POST['sale'] 					= "Y";
+			$_POST['sale'] = "Y";
 		}
 
 		if (!isset($_POST['dnc'])) {
-			$_POST['dnc'] 					= "N";
+			$_POST['dnc'] = "N";
 		} else {
-			$_POST['dnc'] 					= "Y";
+			$_POST['dnc'] = "Y";
 		}
 
 		if (!isset($_POST['scheduled_callback'])) {
-			$_POST['scheduled_callback'] 	= "N";
+			$_POST['scheduled_callback'] = "N";
 		} else {
-			$_POST['scheduled_callback'] 	= "Y";
+			$_POST['scheduled_callback'] = "Y";
 		}
 
 		if (!isset($_POST['customer_contact'])) {
-			$_POST['customer_contact'] 		= "N";
+			$_POST['customer_contact'] = "N";
 		} else {
-			$_POST['customer_contact'] 		= "Y";
+			$_POST['customer_contact'] = "Y";
 		}
 
 		if (!isset($_POST['not_interested'])) {
-			$_POST['not_interested'] 		= "N";
+			$_POST['not_interested'] = "N";
 		} else {
-			$_POST['not_interested'] 		= "Y";
+			$_POST['not_interested'] = "Y";
 		}
 
 		if (!isset($_POST['unworkable'])) {
-			$_POST['unworkable'] 			= "N";
+			$_POST['unworkable'] = "N";
 		} else {
-			$_POST['unworkable'] 			= "Y";
+			$_POST['unworkable'] = "Y";
 		}
 			
 		$status								= NULL; 
 		if (isset($_POST["status"])) { 
-			$status 						= $_POST["status"]; 
+			$status 						= ($_POST["status"] ?? ''); 
 			$status 						= stripslashes($status);
 		}
 		
 		$status_name 						= NULL; 
 		if (isset($_POST["status_name"])) { 
-			$status_name 					= $_POST["status_name"]; 
+			$status_name 					= ($_POST["status_name"] ?? ''); 
 			$status_name 					= stripslashes((string) $status_name);
 		}
 		
@@ -95,14 +95,14 @@
 			'campaign_id' 						=> $disposition,
 			'status'							=> $status,
 			'status_name' 						=> $status_name,
-			'selectable' 						=> $_POST['selectable'],
-			'human_answered' 					=> $_POST['human_answered'],
-			'sale' 								=> $_POST['sale'],
-			'dnc' 								=> $_POST['dnc'],
-			'scheduled_callback' 				=> $_POST['scheduled_callback'],
-			'customer_contact' 					=> $_POST['customer_contact'],
-			'not_interested' 					=> $_POST['not_interested'],
-			'unworkable' 						=> $_POST['unworkable']
+			'selectable' 						=> ($_POST['selectable'] ?? ''),
+			'human_answered' 					=> ($_POST['human_answered'] ?? ''),
+			'sale' 								=> ($_POST['sale'] ?? ''),
+			'dnc' 								=> ($_POST['dnc'] ?? ''),
+			'scheduled_callback' 				=> ($_POST['scheduled_callback'] ?? ''),
+			'customer_contact' 					=> ($_POST['customer_contact'] ?? ''),
+			'not_interested' 					=> ($_POST['not_interested'] ?? ''),
+			'unworkable' 						=> ($_POST['unworkable'] ?? '')
 		];				
 
 		$output 							= $api->API_editDisposition($postfields);

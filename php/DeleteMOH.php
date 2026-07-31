@@ -29,7 +29,7 @@ declare(strict_types=1);
 
 	$postfields = [
 		'goAction' => 'goDeleteMOH',
-		'moh_id' => $_POST['moh_id']
+		'moh_id' => ($_POST['moh_id'] ?? '')
 	];
 
 	$output = $api->API_Request("goMusicOnHold", $postfields);

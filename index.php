@@ -84,7 +84,7 @@
     }
 	
 	foreach ($callsperhour AS $idx => $temp){
-		//$temp = explode("=",$temp);
+		//$temp = explode("=", (string) ($temp ?? ''));
 		if ($idx == 'result') {
 			$results[$idx] = $temp;
 		} else {

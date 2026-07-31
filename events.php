@@ -48,8 +48,8 @@
 
 // create new event with client id?
 if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
-	$customerid = $_GET["customerid"];
-	$customertype = $_GET["customer_type"];
+	$customerid = ($_GET["customerid"] ?? '');
+	$customertype = ($_GET["customer_type"] ?? '');
 	$db->createContactEventForCustomer($user->getUserId(), $customerid, $customertype);
 }
 
@@ -278,7 +278,7 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
 	          },
 	          <?php
 	          if (!empty($_GET["initial_date"])) {
-		          $initialDate = $_GET["initial_date"];
+		          $initialDate = ($_GET["initial_date"] ?? '');
 		          print "defaultDate: moment('$initialDate'), defaultView: 'agendaDay',";
 	          } 
 			  ?>

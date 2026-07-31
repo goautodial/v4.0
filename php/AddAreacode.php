@@ -27,22 +27,22 @@ declare(strict_types=1);
 
 	$campaign_id = NULL;
 	if(isset($_POST['areacode_campaign'])){
-		$campaign_id 			= $_POST['areacode_campaign'];
+		$campaign_id 			= ($_POST['areacode_campaign'] ?? '');
 	}
 
 	$areacode = NULL;
 	if(isset($_POST['areacode'])){
-                $areacode                  	= $_POST['areacode'];
+                $areacode                  	= ($_POST['areacode'] ?? '');
         }
 
 	$outbound_cid = NULL;
 	if(isset($_POST['areacode_outbound_cid'])){
-                $outbound_cid                   = $_POST['areacode_outbound_cid'];
+                $outbound_cid                   = ($_POST['areacode_outbound_cid'] ?? '');
         }
 
 	$cid_description = NULL;
 	if(isset($_POST['areacode_description'])){
-                $cid_description                    = $_POST['areacode_description'];
+                $cid_description                    = ($_POST['areacode_description'] ?? '');
         }
 
 

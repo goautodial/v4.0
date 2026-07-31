@@ -27,12 +27,12 @@ if ($validated === 1) {
 	$api = \creamy\APIHandler::getInstance();
 
 	// message parameters	
-	$touserid = $_POST["touserid"];
-	$fromuserid = $_POST["fromuserid"];
-	$subject = $_POST["subject"];
-	$message = $_POST["message"];
+	$touserid = ($_POST["touserid"] ?? '');
+	$fromuserid = ($_POST["fromuserid"] ?? '');
+	$subject = ($_POST["subject"] ?? '');
+	$message = ($_POST["message"] ?? '');
 	if (isset($_POST["external_recipients"])) {
-		$external_recipients = $_POST["external_recipients"];
+		$external_recipients = ($_POST["external_recipients"] ?? '');
 		$external_recipients = ltrim($external_recipients, " [");
 		$external_recipients = rtrim($external_recipients, " ]");
 	} else { $external_recipients = null; }
@@ -62,7 +62,7 @@ if ($validated === 1) {
 	if($external_recipients != NULL){
 		$external_recipients_filter = str_replace('"','',$external_recipients);
 		$external_recipients = explode(",", $external_recipients_filter);
-        $counter = count($external_recipients);
+        $counter = (is_countable($external_recipients) ? count($external_recipients) : 0);
 		
 		for($i=0;$i < $counter;$i++){
 			$mail->addAddress($external_recipients[$i], $external_recipients[$i]);

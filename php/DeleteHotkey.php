@@ -28,8 +28,8 @@ declare(strict_types=1);
 
 	$postfields 						= [
         'goAction' 							=> 'goDeleteHotkey',
-        'campaign_id' 						=> $_POST["campaign_id"],
-        'hotkey' 							=> $_POST["hotkey"]
+        'campaign_id' 						=> ($_POST["campaign_id"] ?? ''),
+        'hotkey' 							=> ($_POST["hotkey"] ?? '')
     ];
 
     $output 							= $api->API_Request("goHotkeys", $postfields);

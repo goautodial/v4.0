@@ -19,7 +19,7 @@
         $postfields["goPass"] = goPass; #Password goes here. (required)
         $postfields["goAction"] = "goGetViewRecordings"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
-        $postfields["uniqueid"] = $_POST['uniqueid']; #Desired uniqueid. (required)
+        $postfields["uniqueid"] = ($_POST['uniqueid'] ?? ''); #Desired uniqueid. (required)
         
         
         $ch = curl_init();

@@ -28,25 +28,25 @@ declare(strict_types=1);
 
 	// check required fields
 	$reason 									= "Unable to Modify Disposition";	
-	$modifyid 									= $_POST["edit_leadrecycling"];
-	$campaign_id								= $_POST["edit_leadrecycling_campaign"];
+	$modifyid 									= ($_POST["edit_leadrecycling"] ?? '');
+	$campaign_id								= ($_POST["edit_leadrecycling_campaign"] ?? '');
 
 	if ($modifyid != NULL) {		
 		$attempt_delay 							= NULL; 
 		if (isset($_POST["attempt_delay"])) { 
-			$attempt_delay 						= $_POST["attempt_delay"]; 
+			$attempt_delay 						= ($_POST["attempt_delay"] ?? ''); 
 			$attempt_delay 						= stripslashes((string) $attempt_delay);
 		}
 		
 		$attempt_maximum 						= NULL; 
 		if (isset($_POST["attempt_maximum"])) { 
-			$attempt_maximum 					= $_POST["attempt_maximum"];
+			$attempt_maximum 					= ($_POST["attempt_maximum"] ?? '');
 			$attempt_maximum 					= stripslashes((string) $attempt_maximum);
 		}
 
 		$active 								= NULL; 
 		if (isset($_POST["active"])) { 
-			$active 							= $_POST["active"]; 
+			$active 							= ($_POST["active"] ?? ''); 
 			$active 							= stripslashes((string) $active);
 		}
 

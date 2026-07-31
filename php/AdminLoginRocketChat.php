@@ -23,8 +23,8 @@
 include(__DIR__ . '/CRMDefaults.php');
 require_once(__DIR__ . '/Session.php');
 
-$user = $_POST['user'];
-$pass = $_POST['pass'];
+$user = ($_POST['user'] ?? '');
+$pass = ($_POST['pass'] ?? '');
 //$user = "devadmin";
 //$pass = "hayopka2021";
 //Logs In Rocketchat User

@@ -2,7 +2,7 @@
 /**
  * @file 		crm.php
  * @brief 		Manage leads and contacts
- * @copyright 	Copyright (c) 202 GOautodial Inc. 
+ * @copyright 	Copyright (c) 202 GOautodial Inc.
  * @author		Demian Lizandro A. Biscocho
  * @author     	Alexander Jim H. Abenoja
  *
@@ -31,14 +31,14 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	
+
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
 			header("location: agent.php");
 		}
 	}
-	
+
 ?>
 <html>
     <head>
@@ -46,16 +46,16 @@
         <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("crm"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
-        <?php 
-			print $ui->standardizedThemeCSS(); 
+        <?php
+			print $ui->standardizedThemeCSS();
 			print $ui->creamyThemeCSS();
 			print $ui->dataTablesTheme();
 		?>
-		
+
         <!-- Datetime picker -->
 		<link rel="stylesheet" href="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
 
-        <!-- Date Picker -->	
+        <!-- Date Picker -->
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
 		<script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 
@@ -120,7 +120,7 @@
 							<div class="pull-right">
 								<label class="checkbox-inline c-checkbox" for="search_customers">
 									<input id="search_customers" name="search_customers" type="checkbox" value="0">
-									<span class="fa fa-check"></span><?php $lh->translateText("customers"); ?> 
+									<span class="fa fa-check"></span><?php $lh->translateText("customers"); ?>
 								</label>
 								<label class="checkbox-inline c-checkbox" for="search_contacts">
 									<input id="search_contacts" name="search_contacts" type="checkbox" checked value="1">
@@ -147,7 +147,7 @@
 								   </thead>
 								   <tbody>
 									<?php
-										for($i=0;$i<=count($leads->list_id);$i++){
+										for($i=0;$i<=(isset($leads->list_id) && is_countable($leads->list_id) ? count($leads->list_id) : 0);$i++){
 											if($leads->phone_number[$i] != ""){
 											$action_lead = $ui->ActionMenuForContacts($leads->lead_id[$i]);
 									?>
@@ -192,7 +192,7 @@
 						</div>
 					   </div>
 					</div>
-					
+
 					<!-- CONTACT FILTERS -->
 					<div class="all_contact_filters">
 					<div class="disposition_filter_div" style="display:none;">
@@ -202,34 +202,34 @@
 								<select name="disposition_filter" id="disposition_filter" class="form-control select2-3" style="width:100%;">
 										<option value="" selected>- - - <?php $lh->translateText("-none-"); ?> - - -</option>
 										<optgroup label="System Statuses">
-										<?php 
-											for($i=0;$i<=count($dialStatus->status->system);$i++) { 
-												if (!empty($dialStatus->status->system[$i]) && !in_array($dialStatus->status->system[$i], $dial_statuses)) { 
+										<?php
+											for($i=0;$i<=(isset($dialStatus->status->system) && is_countable($dialStatus->status->system) ? count($dialStatus->status->system) : 0);$i++) {
+												if (!empty($dialStatus->status->system[$i]) && !in_array($dialStatus->status->system[$i], (is_array($dial_statuses) ? $dial_statuses : []))) {
 										?>
 												<option value="<?php echo $dialStatus->status->system[$i]?>">
 													<?php echo $dialStatus->status->system[$i]." - ".$dialStatus->status_name->system[$i]?>
 												</option>
-											<?php 
+											<?php
 												}
-											} 
+											}
 										?>
-										</optgroup>										
-										<?php 
-											if (count($disposition) > 0) { 
+										</optgroup>
+										<?php
+											if (isset($disposition->status) && is_countable($disposition->status) && count($disposition->status) > 0) {
 										?>
 											<optgroup label="Campaign Statuses">
-											<?php 
-												for($i=0;$i<count($disposition->status);$i++) { 
+											<?php
+												for($i=0;$i<(isset($disposition->status) && is_countable($disposition->status) ? count($disposition->status) : 0);$i++) {
 											?>
 												<option value="<?php echo $disposition->status[$i];?>">
 													<?php echo $disposition->status[$i]." - ".$disposition->status_name[$i]?>
 												</option>
-											<?php 
-												} 
+											<?php
+												}
 											?>
 											</optgroup>
-										<?php 
-											} 
+										<?php
+											}
 										?>
 								</select>
 							</div>
@@ -242,7 +242,7 @@
 							<select name="list_filter" id="list_filter" class="form-control">
 									<option value="">- - - <?php $lh->translateText("-none-"); ?> - - -</option>
 								<?php
-									for($i=0; $i < count($lists->list_id);$i++){
+									for($i=0; $i < (isset($lists->list_id) && is_countable($lists->list_id) ? count($lists->list_id) : 0);$i++){
 										echo "<option value='".$lists->list_id[$i]."'> ".$lists->list_name[$i]." </option>";
 									}
 								?>
@@ -316,17 +316,17 @@
 	<!-- CHOSEN-->
 	<script src="js/dashboard/chosen_v1.2.0/chosen.jquery.min.js"></script>
 	<script type="text/javascript">
-		$(document).ready(function() {				
+		$(document).ready(function() {
 			$('body').on('keypress', '#search', function(args) {
 				if (args.keyCode == 13) {
 					$("#search_button").click();
 					return false;
 				}
 			});
-			
+
 			// Datatables initialization
 			$('#table_contacts').DataTable({
-				destroy:true,    
+				destroy:true,
 				responsive:true,
 				stateSave:true,
 				lengthMenu: [[10, 25, 50, 500], [10, 25, 50, 500]],
@@ -348,7 +348,7 @@
 
 			$('.select2-3').select2({ theme: 'bootstrap' });
 			$.fn.select2.defaults.set( "theme", "bootstrap" );
-			
+
 			// limits checkboxes to single selecting
 			$("input:checkbox").on('click', function() {
 				var $box = $(this);
@@ -367,10 +367,10 @@
 					if ($(this).is(":checked")) {
 						$("#search_customers").prop('checked', false);
 						$("#search_contacts").attr('value', 1);
-						$("#search_customers").attr('value', 0);						
+						$("#search_customers").attr('value', 0);
 					}
 				}
-				
+
 				if ($(this).prop('id') == 'search_customers') {
 					if ($(this).is(":checked")) {
 						$("#search_contacts").prop('checked', false);
@@ -390,10 +390,10 @@
 				$(".state_filter_div").fadeIn("slow")[ $.inArray('filter_state', $(this).val()) >= 0 ? 'show' : 'hide' ]();
                 clearFilters();
 			}).change();
-				
+
 			// search filters
 			$(document).on('change', '#disposition_filter, #list_filter, #address_filter, #city_filter, #state_filter',function() {
-				//console.log($(this).prop('id'));				
+				//console.log($(this).prop('id'));
 				if ($(this).prop('id') == 'disposition_filter') {
 					var dial_status = $(this).val();
 					var campaign_id = "ALL";
@@ -412,16 +412,16 @@
 							console.log($('#disposition_filter').val());
 							//$('#disposition_filter').val("").trigger("change");
 						}
-					});	
-				}			
-				
+					});
+				}
+
 				$('#address_filter, #city_filter, #state_filter').keyup(function() {
 					clearTimeout($.data(this, 'timer'));
 					var wait = setTimeout(searchCRM, 3000);
 					$(this).data('timer', wait);
 				});
-				
-			});				
+
+			});
 
 			// ---- DATETIME PICKER INITIALIZATION
 			$('#datetimepicker1').datetimepicker({ //start date contacts
@@ -450,11 +450,11 @@
 				}
 			});
 
-		           
+
 			// search function
 			$(document).on('click','#search_button',function() {
 				if ($('#search').val() === "") {
-					$('#search_button').attr("disabled", false); 
+					$('#search_button').attr("disabled", false);
 					$('#search_button').text("<?php print $lh->translationFor("searching"); ?>");
 				} else {
 					$('#search_button').text("<?php print $lh->translationFor("searching"); ?>");
@@ -521,12 +521,12 @@
 					}
 				);
 			});
-			
+
 		});
-			
+
 		function searchCRM() {
 			// need to have at least 1 checked
-			if ($("#search_customers").is(":checked") || $('#search_contacts').is(":checked")) {														
+			if ($("#search_customers").is(":checked") || $('#search_contacts').is(":checked")) {
 				$.ajax({
 					url: "./php/crm/API_getLeads.php",
 					type: 'POST',
@@ -574,10 +574,10 @@
 				});
 				//$("#search_contacts").prop("checked", true);
 				$('#search_button').text("<?php print $lh->translationFor("search"); ?>");
-				$('#search_button').attr("disabled", false);								
+				$('#search_button').attr("disabled", false);
 			}
 		}
-        
+
         function clearFilters() {
             if ($('.disposition_filter_div').is(':hidden')) {
                 $('#disposition_filter').val("").change();

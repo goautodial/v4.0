@@ -39,50 +39,50 @@ declare(strict_types=1);
 
 	if ($validated === 1) {		
 		// collect new user data.	
-		$modifyid = $_POST["modifyid"];
+		$modifyid = ($_POST["modifyid"] ?? '');
 
 		$carrier_name = NULL; if (isset($_POST["carrier_name"])) { 
-			$carrier_name = $_POST["carrier_name"]; 
+			$carrier_name = ($_POST["carrier_name"] ?? ''); 
 			$carrier_name = stripslashes((string) $carrier_name);
 		}
 
 		$carrier_description = NULL; if (isset($_POST["carrier_description"])) { 
-			$carrier_description = $_POST["carrier_description"];
+			$carrier_description = ($_POST["carrier_description"] ?? '');
 			$carrier_description = stripslashes((string) $carrier_description);
 		}
 
 		$protocol = NULL; if (isset($_POST["protocol"])) { 
-			$protocol = $_POST["protocol"]; 
+			$protocol = ($_POST["protocol"] ?? ''); 
 			$protocol = stripslashes((string) $protocol);
 		}
 
 		$server_ip = NULL; if (isset($_POST["server_ip"])) { 
-			$server_ip = $_POST["server_ip"]; 
+			$server_ip = ($_POST["server_ip"] ?? ''); 
 			$server_ip = stripslashes((string) $server_ip);
 		}
 
 		$active = NULL; if (isset($_POST["active"])) { 
-			$active = $_POST["active"]; 
+			$active = ($_POST["active"] ?? ''); 
 			$active = stripslashes((string) $active);
 		}
 
 		$registration_string = NULL; if (isset($_POST["registration_string"])) { 
-			$registration_string = $_POST["registration_string"]; 
+			$registration_string = ($_POST["registration_string"] ?? ''); 
 			$registration_string = stripslashes((string) $registration_string);
 		}
 
 		$account_entry = NULL; if (isset($_POST["account_entry"])) { 
-			$account_entry = $_POST["account_entry"]; 
+			$account_entry = ($_POST["account_entry"] ?? ''); 
 			$account_entry = stripslashes((string) $account_entry);
 		}
 
 		$globals_string = NULL; if (isset($_POST["globals_string"])) { 
-			$globals_string = $_POST["globals_string"]; 
+			$globals_string = ($_POST["globals_string"] ?? ''); 
 			$globals_string = stripslashes((string) $globals_string);
 		}
 
 		$dialplan_entry = NULL; if (isset($_POST["dialplan_entry"])) { 
-			$dialplan_entry = $_POST["dialplan_entry"]; 
+			$dialplan_entry = ($_POST["dialplan_entry"] ?? ''); 
 			$dialplan_entry = stripslashes((string) $dialplan_entry);
 		}
 

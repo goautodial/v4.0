@@ -28,8 +28,8 @@ declare(strict_types=1);
 
 	if (isset($_POST["userid"])) {
 		// sanity checks	
-		$userid 							= $_POST["userid"];
-		$action 							= $_POST["action"];
+		$userid 							= ($_POST["userid"] ?? '');
+		$action 							= ($_POST["action"] ?? '');
 
 		$postfields 						= [
 			'goAction' 							=> 'goDeleteUser',

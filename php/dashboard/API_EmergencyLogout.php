@@ -15,9 +15,9 @@ require_once(__DIR__ . '/../goCRMAPISettings.php');
 	$postfields["goPass"] = goPass;
 	$postfields["goAction"] = "goEmergencyLogout"; #action performed by the [[API:Functions]]
 	$postfields["responsetype"] = responsetype;
-	$postfields["goUserAgent"] = $_POST['goUserAgent'];
-	$postfields["log_user"] = $_POST['log_user'];
-	$postfields["log_group"] = $_POST['log_group'];
+	$postfields["goUserAgent"] = ($_POST['goUserAgent'] ?? '');
+	$postfields["log_user"] = ($_POST['log_user'] ?? '');
+	$postfields["log_group"] = ($_POST['log_group'] ?? '');
 	$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
@@ -32,7 +32,7 @@ require_once(__DIR__ . '/../goCRMAPISettings.php');
 
 	if ($output->result=="success") {
 	   # Result was OK!
-			echo "Agent ".$_POST['goUserAgent']." successfully logout.";
+			echo "Agent ".($_POST['goUserAgent'] ?? '')." successfully logout.";
 	 } else {
 	   # An error occured
 			echo $output->result;

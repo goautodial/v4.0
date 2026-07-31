@@ -20,7 +20,7 @@
         $postfields["goPass"] = goPass; #Password goes here. (required)
         $postfields["goAction"] = "getCalltimesInfo"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
-        $postfields["call_time_id"] = $_POST['call_time_id']; #Desired uniqueid. (required)
+        $postfields["call_time_id"] = ($_POST['call_time_id'] ?? ''); #Desired uniqueid. (required)
 	$postfields["log_user"] = $_SESSION['user'];
 	$postfields["log_group"] = $_SESSION['usergroup'];
 	$postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];

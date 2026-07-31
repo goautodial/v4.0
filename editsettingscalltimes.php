@@ -35,7 +35,7 @@
 
 $cid = NULL;
 if (isset($_POST["cid"])) {
-	$cid = $_POST["cid"];
+	$cid = ($_POST["cid"] ?? '');
 }
 
 ?>
@@ -209,7 +209,7 @@ if (isset($_POST["cid"])) {
 											<select class="form-control" id="usergroup" name="usergroup">
 												<option value="---ALL---"><?php $lh->translateText("all_usergroups"); ?></option>
 												<?php
-													for($a=0;$a<count($user_groups->user_group);$a++){
+													for($a=0;$a<(isset($user_groups->user_group) && is_countable($user_groups->user_group) ? count($user_groups->user_group) : 0);$a++){
 												?>
 													<option value="<?php echo $user_groups->user_group[$a];?>" <?php if($output->user_group == $user_groups->user_group[$a]){echo "selected";}?> >  
 														<?php echo $user_groups->user_group[$a].' - '.$user_groups->group_name[$a];?>  
@@ -247,7 +247,7 @@ if (isset($_POST["cid"])) {
 														<option value="" disabled><?php $lh->translateText("audio_chooser"); ?></option>
 														<option value="" <?php if ($output->default_afterhours_filename_override == "") echo "selected"; ?>> <?php $lh->translateText("-none-"); ?></option>
 														<?php
-															for($a=0;$a<count($voicefiles->file_name);$a++){
+															for($a=0;$a<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$a++){
 																$file = substr($voicefiles->file_name[$a], 0, strrpos($voicefiles->file_name[$a], "."));
 														?>
 															<option value="<?php echo $file;?>" <?php if ($output->default_afterhours_filename_override === $file) echo "selected"; ?>>  <?php echo $file;?>  </option>
@@ -274,7 +274,7 @@ if (isset($_POST["cid"])) {
 														<option value="" disabled><?php $lh->translateText("audio_chooser"); ?> </option>
 														<option value="" <?php if ($output->sunday_afterhours_filename_override == "") echo "selected"; ?>><?php $lh->translateText("-none-"); ?></option>
 														<?php
-															for($a=0;$a<count($voicefiles->file_name);$a++){
+															for($a=0;$a<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$a++){
 																$file = substr($voicefiles->file_name[$a], 0, strrpos($voicefiles->file_name[$a], "."));
 														?>
 															<option value="<?php echo $file;?>" <?php if ($output->sunday_afterhours_filename_override === $file) echo "selected"; ?>>  <?php echo $file;?>  </option>
@@ -301,7 +301,7 @@ if (isset($_POST["cid"])) {
 														<option value="" disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
 														<option value="" <?php if ($output->monday_afterhours_filename_override == "") echo "selected"; ?>> <?php $lh->translateText("-none-"); ?> </option>
 														<?php
-															for($a=0;$a<count($voicefiles->file_name);$a++){
+															for($a=0;$a<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$a++){
 																$file = substr($voicefiles->file_name[$a], 0, strrpos($voicefiles->file_name[$a], "."));
 														?>
 															<option value="<?php echo $file;?>" <?php if ($output->monday_afterhours_filename_override === $file) echo "selected"; ?>>  <?php echo $file;?>  </option>
@@ -328,7 +328,7 @@ if (isset($_POST["cid"])) {
 														<option value="" disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
 														<option value="" <?php if ($output->tuesday_afterhours_filename_override == "") echo "selected"; ?>><?php $lh->translateText("-none-"); ?></option>
 														<?php
-															for($a=0;$a<count($voicefiles->file_name);$a++){
+															for($a=0;$a<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$a++){
 																$file = substr($voicefiles->file_name[$a], 0, strrpos($voicefiles->file_name[$a], "."));
 														?>
 															<option value="<?php echo $file;?>" <?php if ($output->tuesday_afterhours_filename_override === $file) echo "selected"; ?>>  <?php echo $file;?>  </option>
@@ -355,7 +355,7 @@ if (isset($_POST["cid"])) {
 														<option value="" disabled><?php $lh->translateText("audio_chooser"); ?></option>
 														<option value="" <?php if ($output->wednesday_afterhours_filename_override == "") echo "selected"; ?>><?php $lh->translateText("-none-"); ?></option>
 														<?php
-															for($a=0;$a<count($voicefiles->file_name);$a++){
+															for($a=0;$a<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$a++){
 																$file = substr($voicefiles->file_name[$a], 0, strrpos($voicefiles->file_name[$a], "."));
 														?>
 															<option value="<?php echo $file;?>" <?php if ($output->wednesday_afterhours_filename_override === $file) echo "selected"; ?>>  <?php echo $file;?>  </option>
@@ -382,7 +382,7 @@ if (isset($_POST["cid"])) {
 														<option value="" disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
 														<option value="" <?php if ($output->thursday_afterhours_filename_override == "") echo "selected"; ?>> <?php $lh->translateText("-none-"); ?> </option>
 														<?php
-															for($a=0;$a<count($voicefiles->file_name);$a++){
+															for($a=0;$a<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$a++){
 																$file = substr($voicefiles->file_name[$a], 0, strrpos($voicefiles->file_name[$a], "."));
 														?>
 															<option value="<?php echo $file;?>" <?php if ($output->thursday_afterhours_filename_override === $file) echo "selected"; ?>>  <?php echo $file;?>  </option>
@@ -409,7 +409,7 @@ if (isset($_POST["cid"])) {
 														<option value="" disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
 														<option value="" <?php if ($output->friday_afterhours_filename_override == "") echo "selected"; ?>> <?php $lh->translateText("-none-"); ?> </option>
 														<?php
-															for($a=0;$a<count($voicefiles->file_name);$a++){
+															for($a=0;$a<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$a++){
 																$file = substr($voicefiles->file_name[$a], 0, strrpos($voicefiles->file_name[$a], "."));
 														?>
 															<option value="<?php echo $file;?>" <?php if ($output->friday_afterhours_filename_override === $file) echo "selected"; ?>>  <?php echo $file;?>  </option>
@@ -436,7 +436,7 @@ if (isset($_POST["cid"])) {
 														<option value="" disabled> <?php $lh->translateText("audio_chooser"); ?> </option>
 														<option value="" <?php if ($output->saturday_afterhours_filename_override == "") echo "selected"; ?>><?php $lh->translateText("-none-"); ?> </option>
 														<?php
-															for($a=0;$a<count($voicefiles->file_name);$a++){
+															for($a=0;$a<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$a++){
 																$file = substr($voicefiles->file_name[$a], 0, strrpos($voicefiles->file_name[$a], "."));
 														?>
 															<option value="<?php echo $file;?>" <?php if ($output->saturday_afterhours_filename_override === $file) echo "selected"; ?>>  <?php echo $file;?>  </option>

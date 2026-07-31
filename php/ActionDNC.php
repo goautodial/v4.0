@@ -23,9 +23,9 @@
 
 	$api 											= \creamy\APIHandler::getInstance();
 
-	$campaign_id 									= $_POST['campaign_id'];
-	$phone_numbers 									= $_POST['phone_numbers'];
-	$stage 											= $_POST['stageDNC'];
+	$campaign_id 									= ($_POST['campaign_id'] ?? '');
+	$phone_numbers 									= ($_POST['phone_numbers'] ?? '');
+	$stage 											= ($_POST['stageDNC'] ?? '');
 	
     $postfields 									= [
 		'goAction' 										=> 'goActionDNC',

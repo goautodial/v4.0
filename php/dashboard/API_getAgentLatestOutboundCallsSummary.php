@@ -24,7 +24,7 @@
     $postfields["goPass"] = goPass; #Password goes here. (required)
     $postfields["goAction"] = "goGetUserInfo"; #action performed by the [[API:Functions]]. (required)
     $postfields["responsetype"] = responsetype; #json. (required)
-    $postfields["user_id"] = $_REQUEST['user_id']; #User ID (required)
+    $postfields["user_id"] = ($_REQUEST['user_id'] ?? ''); #User ID (required)
 	$postfields["session_user"] = $_SESSION['user']; #current user
 
     $ch = curl_init();
@@ -45,7 +45,7 @@
     
     //function latest_agentoutcalls_summary (){
     
-        if (count($output->agentoutcalls) < 1){
+        if ((isset($output->agentoutcalls) && is_countable($output->agentoutcalls) ? count($output->agentoutcalls) : 0) < 1){
             
             $lead_id = date("Y");
             $phone_number = time();
@@ -112,7 +112,7 @@
     
     //function latest_agentincalls_summary (){    
 
-/*        if (count($output->agentincalls) < 1){
+/*        if ((isset($output->agentincalls) && is_countable($output->agentincalls) ? count($output->agentincalls) : 0) < 1){
                 
                 $lead_id = date("Y");
                 $phone_number = time();

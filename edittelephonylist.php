@@ -41,7 +41,7 @@
 
 	$modifyid = NULL;
 	if (isset($_POST["modifyid"])) {
-		$modifyid = $_POST["modifyid"];
+		$modifyid = ($_POST["modifyid"] ?? '');
 	}else{
 		header("location: telephonylist.php");
 	}
@@ -155,7 +155,7 @@
 											<?php
 												$campaign_option = NULL;
 												$campaign_option .= '<option value="">'.$lh->translationFor("-none-").'</option>';
-												for($a=0; $a < count($campaign->campaign_id);$a++){
+												for($a=0; $a < (isset($campaign->campaign_id) && is_countable($campaign->campaign_id) ? count($campaign->campaign_id) : 0);$a++){
 													if($campaign->campaign_id[$a] == $output->campaign_id[0]){
 														echo "<option value='".$campaign->campaign_id[$a]."' selected> ".$campaign->campaign_name[$a]." </option>";
 													}else{
@@ -273,7 +273,7 @@
 														$called = array();
 														$ncalled = array();
 													?>
-													<?php for($s=0;$s<count($statuses->stats);$s++){ ?>
+													<?php for($s=0;$s<(isset($statuses->stats) && is_countable($statuses->stats) ? count($statuses->stats) : 0);$s++){ ?>
 														<?php 
 															// if($statuses->called_since_last_reset[$s] == 'N'){
 															// 	$countCalled = 0;
@@ -329,7 +329,7 @@
 														$tcalled = array();
 														$tncalled = array();
 													?>
-													<?php for($t=0;$t<count($timezones->gmt_offset_now);$t++){ ?>
+													<?php for($t=0;$t<(isset($timezones->gmt_offset_now) && is_countable($timezones->gmt_offset_now) ? count($timezones->gmt_offset_now) : 0);$t++){ ?>
 														<?php 
 															if($timezones->called_since_last_reset[$t] == 'N'){
 																$counttCalled = 0;

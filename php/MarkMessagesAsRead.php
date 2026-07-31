@@ -45,8 +45,8 @@ if ($validated === 1) {
 
 	// collect data	
 	$userid = $user->getUserId();
-	$messageids = $_POST["messageids"];
-	$folder = $_POST["folder"];
+	$messageids = ($_POST["messageids"] ?? '');
+	$folder = ($_POST["folder"] ?? '');
 	// mark messages as read and return result.
 	$result = $db->markMessagesAsRead($userid, $messageids, $folder);
 	if ($result === false) {

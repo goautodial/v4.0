@@ -34,7 +34,7 @@
 
 $cid = NULL;
 if (isset($_POST["cid"])) {
-	$cid = $_POST["cid"];
+	$cid = ($_POST["cid"] ?? '');
 }
 
 ?>
@@ -185,7 +185,7 @@ if (isset($_POST["cid"])) {
 								<select name="server_ip" class="form-control">
 								<?php
 								$sever_ip = "";
-									for($i=0;$i<count($servers->server_ip);$i++){
+									for($i=0;$i<(isset($servers->server_ip) && is_countable($servers->server_ip) ? count($servers->server_ip) : 0);$i++){
 										if($servers->server_ip[$i] == $output->data->server_ip)
 										$server_ip .= "<option value=".$servers->server_ip[$i]." selected>".$servers->server_ip[$i]." - ".$servers->server_description[$i]."</option>";
 										else

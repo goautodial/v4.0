@@ -54,8 +54,8 @@
 			$db = new \creamy\DbHandler();
 
 			// Define $username and $password
-			$username=$_POST['username'];
-			$password=$_POST['password'];
+			$username=($_POST['username'] ?? '');
+			$password=($_POST['password'] ?? '');
 			
 			// To protect MySQL injection for Security purpose
 			$username = stripslashes($username);

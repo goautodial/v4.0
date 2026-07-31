@@ -19,7 +19,7 @@
         $postfields["goPass"] = goPass; #Password goes here. (required)
         $postfields["goAction"] = "goGetCarrierInfo"; #action performed by the [[API:Functions]]. (required)
         $postfields["responsetype"] = responsetype; #json. (required)
-        $postfields["carrier_id"] = $_POST['carrier_id']; #Desired uniqueid. (required)
+        $postfields["carrier_id"] = ($_POST['carrier_id'] ?? ''); #Desired uniqueid. (required)
         
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

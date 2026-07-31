@@ -39,45 +39,45 @@
 	if ($validated === 1) {
 		
 		// collect new user data.	
-		$modifyid = $_POST["modifyid"];
+		$modifyid = ($_POST["modifyid"] ?? '');
 		
 		$dialplan = NULL; if (isset($_POST["dialplan"])) { 
-			$dialplan = $_POST["dialplan"]; 
+			$dialplan = ($_POST["dialplan"] ?? ''); 
 			$dialplan = stripslashes((string) $dialplan);
 		}
 		
 		$vmid = NULL; if (isset($_POST["vmid"])) { 
-			$vmid = $_POST["vmid"];
+			$vmid = ($_POST["vmid"] ?? '');
 			$vmid = stripslashes((string) $vmid);
 		}
 
 		$ip = NULL; if (isset($_POST["ip"])) { 
-			$ip = $_POST["ip"]; 
+			$ip = ($_POST["ip"] ?? ''); 
 			$ip = stripslashes((string) $ip);
 		}
 		
 		$active = NULL; if (isset($_POST["active"])) { 
-			$active = $_POST["active"]; 
+			$active = ($_POST["active"] ?? ''); 
 			$active = stripslashes((string) $active);
 		}
 		
 		$status = NULL; if (isset($_POST["status"])) { 
-			$status = $_POST["status"]; 
+			$status = ($_POST["status"] ?? ''); 
 			$status = stripslashes($status);
 		}
 		
 		$fullname = NULL; if (isset($_POST["fullname"])) { 
-			$fullname = $_POST["fullname"]; 
+			$fullname = ($_POST["fullname"] ?? ''); 
 			$fullname = stripslashes((string) $fullname);
 		}
 		
 		$protocol = NULL; if (isset($_POST["protocol"])) { 
-			$protocol = $_POST["protocol"]; 
+			$protocol = ($_POST["protocol"] ?? ''); 
 			$protocol = stripslashes((string) $protocol);
 		}
 	
 		$password = NULL; if (isset($_POST["password"])) { 
-			$password = $_POST["password"]; 
+			$password = ($_POST["password"] ?? ''); 
 			$password = stripslashes((string) $password);
 		}
 		

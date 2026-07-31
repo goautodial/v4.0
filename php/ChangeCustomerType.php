@@ -47,9 +47,9 @@ if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// parameters
-	$customerid = $_POST["customerid"];
-	$oldCustomerType = $_POST["old_customer_type"];
-	$newCustomerType = $_POST["new_customer_type"];
+	$customerid = ($_POST["customerid"] ?? '');
+	$oldCustomerType = ($_POST["old_customer_type"] ?? '');
+	$newCustomerType = ($_POST["new_customer_type"] ?? '');
 
 	// create customer and return result.
 	$result = $db->changeCustomerType($customerid, $oldCustomerType, $newCustomerType);

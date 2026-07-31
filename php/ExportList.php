@@ -24,14 +24,14 @@
 	ini_set('memory_limit', '2048M');
 	require_once(__DIR__ . '/APIHandler.php');
 	$api 										= \creamy\APIHandler::getInstance();
-	$list_id									= $_POST["listid"];
+	$list_id									= ($_POST["listid"] ?? '');
     /*$output										= $api->API_listExport($list_id);
 	
     if ($output->result == "success") {
         //$filename = $output->getReports->filename;
         
         $header 								= implode(",", $output->header);        
-        $filename 								= "LIST_.".$_POST["listid"]."_".date("Ymd")."_".date("His").".csv";
+        $filename 								= "LIST_.".($_POST["listid"] ?? '')."_".date("Ymd")."_".date("His").".csv";
         //$fp = fopen($filename, 'w');
         
         header('Content-type: application/csv');
@@ -39,11 +39,11 @@
         
         echo $header."\n";
 		
-        for($i=0; $i < count($output->row); $i++){
+        for($i=0; $i < (isset($output->row) && is_countable($output->row) ? count($output->row) : 0); $i++){
 			$row = $output->row[$i];
 			
 			// filter data replaces comma with |
-			for($x=0; $x < count($row);$x++){
+			for($x=0; $x < (is_countable($row) ? count($row) : 0);$x++){
 				$row_data = str_replace(",","|",$row[$x]);
 				$filtered_row[] = $row_data;
 			}
@@ -104,7 +104,7 @@
 		}
         
 		$header 								= implode(",", $data_header);        
-        	$filename 								= "LIST_.".$_POST["listid"]."_".date("Ymd")."_".date("His").".csv";
+        	$filename 								= "LIST_.".($_POST["listid"] ?? '')."_".date("Ymd")."_".date("His").".csv";
         
 	        header('Content-type: application/csv');
         	header('Content-Disposition: attachment; filename='.$filename);

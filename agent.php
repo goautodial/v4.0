@@ -50,7 +50,7 @@ if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_AGENT){
 
 $lead_id = $_GET['lead_id'] ?? '';
 $output = !empty($lead_id) ? $api->API_getLeadsInfo($lead_id) : null;
-$list_id_ct = (isset($output->list_id) && is_countable($output->list_id)) ? count($output->list_id) : 0;
+$list_id_ct = (isset($output->list_id) && is_countable($output->list_id)) ? (isset($output->list_id) && is_countable($output->list_id) ? count($output->list_id) : 0) : 0;
 
 $first_name = $middle_initial = $last_name = $email = $phone_number = $alt_phone = '';
 $address1 = $address2 = $address3 = $city = $province = $state = $postal_code = $country = '';
@@ -89,12 +89,12 @@ $date_of_birth = !empty($date_of_birth) ? date('Y-m-d', strtotime($date_of_birth
 
 
 if (isset($_GET["folder"])) {
-	$folder = $_GET["folder"];
+	$folder = ($_GET["folder"] ?? '');
 } else $folder = MESSAGES_GET_INBOX_MESSAGES;
 if ($folder < 0 || $folder > MESSAGES_MAX_FOLDER) { $folder = MESSAGES_GET_INBOX_MESSAGES; }
 
 if (isset($_GET["message"])) {
-	$message = $_GET["message"];
+	$message = ($_GET["message"] ?? '');
 } else $message = NULL;
 
 $user_info = $api->API_getUserInfo($_SESSION['user'], "userInfo");
@@ -133,7 +133,7 @@ function response($order_id,$amount,$response_code,$response_desc){
 	echo $json_response;
 }
 
-	$id = $_POST['id'];
+	$id = ($_POST['id'] ?? '');
 	$client = curl_init($id);
 	curl_setopt($client,CURLOPT_RETURNTRANSFER,true);
 	$response = curl_exec($client);

@@ -34,7 +34,7 @@
 
 $vmid = NULL;
 if (isset($_POST["vmid"])) {
-	$vmid = $_POST["vmid"];
+	$vmid = ($_POST["vmid"] ?? '');
 }else{
 	header("location: settingsvoicemails.php");
 }
@@ -206,7 +206,7 @@ if (isset($_POST["vmid"])) {
 														<option value="sip-silence"><?php $lh->translateText("default"); ?></option>
 														<?php
 															$voicemail_greeting = NULL;
-																for($x=0; $x < count($voicefiles->file_name);$x++) {
+																for($x=0; $x < (isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$x++) {
 																	$this_file_name = preg_replace("/\.(wav|mp3)$/", "", $voicefiles->file_name[$x]);
 																	if ($output->data->voicemail_greeting == $this_file_name) {
 																		$voicemail_greeting .= '<option value="'.$this_file_name.'" selected> '.$this_file_name.' </option>';

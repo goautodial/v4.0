@@ -181,7 +181,7 @@ try {
         $updated = 0;
         $missing = 0;
         while (($row = fgetcsv($handle)) !== false) {
-            if (count($row) < 2) {
+            if ((is_countable($row) ? count($row) : 0) < 2) {
                 continue;
             }
             [$user, $password] = $row;

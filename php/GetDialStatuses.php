@@ -23,28 +23,28 @@
 
 	require_once(__DIR__ . '/APIHandler.php');
 	$api 										= \creamy\APIHandler::getInstance();
-	$campaign_id 								= $_POST["campaign_id"];
-	$add_hotkey									= $_POST["add_hotkey"];
-	$is_selectable								= $_POST["is_selectable"];
+	$campaign_id 								= ($_POST["campaign_id"] ?? '');
+	$add_hotkey									= ($_POST["add_hotkey"] ?? '');
+	$is_selectable								= ($_POST["is_selectable"] ?? '');
 	$output 									= $api->API_getAllDialStatuses($campaign_id, $add_hotkey, $is_selectable);
 
 	if(!empty($output)){
 		$data 									= '';
 		// $i=0;
 		
-		if (count($output->status->system) > 0) {
+		if ((isset($output->status->system) && is_countable($output->status->system) ? count($output->status->system) : 0) > 0) {
 			$data								.= '<optgroup label="System Statuses">';
 			foreach($output->status->system as $key => $val){
-			// for($i=0;$i<=count($output->status);$i++) {
+			// for($i=0;$i<=(isset($output->status) && is_countable($output->status) ? count($output->status) : 0);$i++) {
 				$data 							.= '<option value="'.$val.'" data-name="'.$output->status_name->system[$key].'">'.$val.' - '.$output->status_name->system[$key].'</option>';
 			}
 			$data								.= '</optgroup>';
 		}
 		
-		if (count($output->status->campaign) > 0) {
+		if ((isset($output->status->campaign) && is_countable($output->status->campaign) ? count($output->status->campaign) : 0) > 0) {
 			$data								.= '<optgroup label="Campaign Statuses">';
 			foreach($output->status->campaign as $key => $val){
-			// for($i=0;$i<=count($output->status);$i++) {
+			// for($i=0;$i<=(isset($output->status) && is_countable($output->status) ? count($output->status) : 0);$i++) {
 				$data 							.= '<option value="'.$val.'" data-name="'.$output->status_name->campaign[$key].'">'.$val.' - '.$output->status_name->campaign[$key].'</option>';
 			}
 			$data								.= '</optgroup>';

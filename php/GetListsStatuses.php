@@ -23,13 +23,13 @@
 
 	require_once(__DIR__ . '/APIHandler.php');
 	$api 										= \creamy\APIHandler::getInstance();
-	$list_id 									= $_POST["list_id"];
+	$list_id 									= ($_POST["list_id"] ?? '');
 	$output 									= $api->API_getStatusesWithCountCalledNCalled($list_id);
 	$data 										= '';
 	$s											= 0;
 	$called 									= [];
 	$ncalled 									= [];
-    $counter = count($output->stats);
+    $counter = (isset($output->stats) && is_countable($output->stats) ? count($output->stats) : 0);
 	
 	for($s=0;$s<$counter;$s++){
 		$called[] = $output->is_called[$s];

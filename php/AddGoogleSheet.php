@@ -22,12 +22,12 @@
 require_once(__DIR__ . '/APIHandler.php');
 $api = \creamy\APIHandler::getInstance();
 
-	$google_sheet_ids = explode(" ", $_POST['old_google_sheet_ids']);
+	$google_sheet_ids = explode(" ", ($_POST['old_google_sheet_ids'] ?? ''));
 
-	if(in_array($_POST['google_sheet_id'], $google_sheet_ids)){
-		$new_sheet_ids = $_POST['old_google_sheet_ids'];
+	if(in_array(($_POST['google_sheet_id'] ?? ''), (is_array($google_sheet_ids) ? $google_sheet_ids : []))){
+		$new_sheet_ids = ($_POST['old_google_sheet_ids'] ?? '');
 	}else{
-		$new_sheet_ids = $_POST['old_google_sheet_ids']." ".$_POST['google_sheet_id'];
+		$new_sheet_ids = ($_POST['old_google_sheet_ids'] ?? '')." ".($_POST['google_sheet_id'] ?? '');
 	}
 
 /*
@@ -38,13 +38,13 @@ $api = \creamy\APIHandler::getInstance();
 	$postfields["responsetype"] 			= responsetype; #json (required)
 	$postfields["hostname"] 					= $_SERVER['REMOTE_ADDR']; #Default value
 
-	$postfields['campaign_id']  			= $_POST['campaign_id'];
+	$postfields['campaign_id']  			= ($_POST['campaign_id'] ?? '');
   $postfields['google_sheet_ids']  			= trim($new_sheet_ids);
 */
 
   	$postfields = [
 		'goAction' => 'goUpdateCampaignGoogleSheet',
-		'campaign_id' => $_POST['campaign_id'],
+		'campaign_id' => ($_POST['campaign_id'] ?? ''),
 		'google_sheet_ids' => trim($new_sheet_ids)
 	];
 

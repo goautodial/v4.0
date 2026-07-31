@@ -33,11 +33,11 @@ $api = \creamy\APIHandler::getInstance();
 */
 	if(isset($_POST['id'])){
 		
-		$postfields["call_time_id"] = $_POST['id'];
+		$postfields["call_time_id"] = ($_POST['id'] ?? '');
 
 		$postfields = [
 			'goAction' => 'goCheckCalltimes',
-			'call_time_id' => $_POST['id']
+			'call_time_id' => ($_POST['id'] ?? '')
 		];
 
 	    $output = $api->API_checkCalltimes($postfields);

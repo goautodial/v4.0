@@ -24,8 +24,8 @@ declare(strict_types=1);
 
 include(__DIR__ . '/CRMDefaults.php');
 
-$userID = $_POST['userID'];
-$authToken = $_POST['authToken'];
+$userID = ($_POST['userID'] ?? '');
+$authToken = ($_POST['authToken'] ?? '');
 
 //Logs In Rocketchat User
 	$curl = curl_init();

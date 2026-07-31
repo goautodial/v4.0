@@ -39,7 +39,7 @@
 		}
 	}	
 
-	$lead_id = $_POST['modifyid'];
+	$lead_id = ($_POST['modifyid'] ?? '');
 	$output = $api->API_getLeadsInfo($lead_id);
 	$list_id_ct = $output->data->list_id;
 
@@ -237,7 +237,7 @@
 												</thead>
 												<tbody>
 													<?php
-														for($i=0;$i < count($output->calls->call_date);$i++){
+														for($i=0;$i < (isset($output->calls->call_date) && is_countable($output->calls->call_date) ? count($output->calls->call_date) : 0);$i++){
 															echo '
 																<tr>
 																	<td><small>'.date('M. d, Y h:i A', strtotime($output->calls->call_date[$i])).'</small></td>
@@ -277,7 +277,7 @@
 												</thead>
 												<tbody>
 													<?php
-														for($i=0;$i < count($output->closerlog->call_date);$i++){
+														for($i=0;$i < (isset($output->closerlog->call_date) && is_countable($output->closerlog->call_date) ? count($output->closerlog->call_date) : 0);$i++){
 															echo '
 																<tr>
 																	<td><small>'.date('M. d, Y h:i A', strtotime($output->closerlog->call_date[$i])).'</small></td>
@@ -314,7 +314,7 @@
 												</thead>
 												<tbody>
 													<?php
-														for($i=0;$i < count($output->agentlog->campaign_id);$i++){
+														for($i=0;$i < (isset($output->agentlog->campaign_id) && is_countable($output->agentlog->campaign_id) ? count($output->agentlog->campaign_id) : 0);$i++){
 															echo '
 																<tr>
 																	<td><small>'.date('M. d, Y h:i A', strtotime($output->agentlog->event_time[$i])).'</small></td>
@@ -349,7 +349,7 @@
 												</thead>
 												<tbody>
 													<?php																											
-														for($i=0;$i < count($output->record->recording_id);$i++){
+														for($i=0;$i < (isset($output->record->recording_id) && is_countable($output->record->recording_id) ? count($output->record->recording_id) : 0);$i++){
 															$start_epoch = $output->record->start_epoch[$i];
 															$end_epoch = $output->record->end_epoch[$i];
 															$length_in_sec = $end_epoch - $start_epoch;	
@@ -560,7 +560,7 @@
 												<select name="dispo" id="dispo" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select" >
 													<option value=""><?php $lh->translateText("-none-"); ?></option>
 													<?php
-														for($a=0; $a<count($disposition->status); $a++){
+														for($a=0; $a<(isset($disposition->status) && is_countable($disposition->status) ? count($disposition->status) : 0); $a++){
 													?>
 														<option value="<?php echo $disposition->status[$a];?>" <?php if($disposition->status[$a] === $output->data-> status) echo "selected";?>><?php echo $disposition->status[$a].' - '.$disposition->status_name[$a];?></option>
 													<?php
@@ -583,7 +583,7 @@
 											<div id="custom_fields" style="padding-top: 10px;" class="row">
 												<?php
 												$viewall = '';
-												$cf_count = count($custom_fields);
+												$cf_count = (is_countable($custom_fields) ? count($custom_fields) : 0);
 												foreach ($custom_fields as $idx => $fieldsvalues) {
 													$A_field_id 				= $fieldsvalues->field_id;
 													$A_field_label 				= $fieldsvalues->field_label;
@@ -624,9 +624,9 @@
 													if ( ($A_field_type=='SELECT') or ($A_field_type=='MULTI') or ($A_field_type=='RADIO') or ($A_field_type=='CHECKBOX') )
 													{
 														$A_field_options = str_replace("\r\n", "\n", $A_field_options);
-														$field_options_array = explode("\n", $A_field_options);
+														$field_options_array = explode("\n", (string) ($A_field_options ?? ''));
 
-														$field_options_count = count($field_options_array);
+														$field_options_count = (is_countable($field_options_array) ? count($field_options_array) : 0);
 														$te=0;
 														while ($te < $field_options_count)
 														{

@@ -113,10 +113,10 @@ error_reporting(E_ERROR | E_PARSE);
 	public function rowWithVariableContents($spans, $columns, $columnsStyle = "lg") {
 		// safety checks
 		if ((!is_array($spans)) || (!is_array($columns))) { return ""; }
-		if (count($spans) !== count($columns)) { return ""; }
+		if ((is_countable($spans) ? count($spans) : 0) !== (is_countable($columns) ? count($columns) : 0)) { return ""; }
 		// build the structure
 		$result = '<div class="row">';
-        $counter = count($spans);
+        $counter = (is_countable($spans) ? count($spans) : 0);
 		for ($i = 0; $i < $counter; $i++) {
 			$result .= '<div class="col-'.$columnsStyle.'-'.$spans[$i].'">'.$columns[$i].'</div>';
 		}
@@ -236,8 +236,8 @@ error_reporting(E_ERROR | E_PARSE);
 		    	}
 			    // class modifiers for hiding classes in medium or low resolutions.
 			    $classModifiers = "class=\"";
-			    if (in_array($item, $hideOnMedium)) { $classModifiers .= " hide-on-medium "; }
-			    if (in_array($item, $hideOnLow)) { $classModifiers .= " hide-on-low "; }
+			    if (in_array($item, (is_array($hideOnMedium) ? $hideOnMedium : []))) { $classModifiers .= " hide-on-medium "; }
+			    if (in_array($item, (is_array($hideOnLow) ? $hideOnLow : []))) { $classModifiers .= " hide-on-low "; }
 			    $classModifiers .= "\"";
 			    // build header item
 			    $table .= "<th $classModifiers>".($needsTranslation ? $this->lh->translationFor($item) : $item)."</th>";
@@ -270,8 +270,8 @@ error_reporting(E_ERROR | E_PARSE);
 		    foreach ($items as $item) {
 			    // class modifiers for hiding classes in medium or low resolutions.
 			    $classModifiers = "class=\"";
-			    if (in_array($item, $hideOnMedium)) { $classModifiers .= " hide-on-medium "; }
-			    if (in_array($item, $hideOnLow)) { $classModifiers .= " hide-on-low "; }
+			    if (in_array($item, (is_array($hideOnMedium) ? $hideOnMedium : []))) { $classModifiers .= " hide-on-medium "; }
+			    if (in_array($item, (is_array($hideOnLow) ? $hideOnLow : []))) { $classModifiers .= " hide-on-low "; }
 			    $classModifiers .= "\"";
 				// build footer item
 			    $table .= "<th $classModifiers>".($needsTranslation ? $this->lh->translationFor($item) : $item)."</th>";
@@ -732,7 +732,7 @@ error_reporting(E_ERROR | E_PARSE);
 
     public function imageWithData($src, $class, $extraParams, $alt = "") {
 	    $paramsCode = "";
-	    if (is_array($extraParams) && count($extraParams) > 0) {
+	    if (is_array($extraParams) && (is_countable($extraParams) ? count($extraParams) : 0) > 0) {
 		    foreach ($extraParams as $key => $value) { $paramsCode .= " $key=\"$value\""; }
 		}
 	    return "<img src=\"$src\" class=\"$class\" $paramsCode alt=\"$alt\"/>";
@@ -795,7 +795,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    			'var ele = $(this).parents("'.$parentContainer.'").first(); var paramValue = ele.attr("'.$container.'");';
 	    // additional parameters
 	    $additionalString = "";
-	    if (is_array($additionalParameters) && count($additionalParameters) > 0) {
+	    if (is_array($additionalParameters) && (is_countable($additionalParameters) ? count($additionalParameters) : 0) > 0) {
 		    foreach ($additionalParameters as $apKey => $apValue) { $additionalString .= ", \"$apKey\": $apValue ";  }
 	    }
 
@@ -868,7 +868,7 @@ error_reporting(E_ERROR | E_PARSE);
 		else { $content = 'if (data == "'.CRM_DEFAULT_SUCCESS_RESPONSE.'") { '.$resultJS.' } else { '.$failureJS.' }'; }
 		// custom parameters
 		$paramCode = "";
-		if (is_array($customParameters) && count($customParameters)) {
+		if (is_array($customParameters) && (is_countable($customParameters) ? count($customParameters) : 0)) {
 			foreach ($customParameters as $key => $value) { $paramCode .= ", \"$key\": \"$value\" "; }
 		}
 		return '$("button.'.$classname.'").click(function (e) {
@@ -1770,7 +1770,7 @@ error_reporting(E_ERROR | E_PARSE);
 	public function getTopbarMessagesMenu($user) {
 		if (!$user->userHasBasicPermission()) return '';
       $list = $this->db->getMessagesOfType($user->getUserId(), MESSAGES_GET_UNREAD_MESSAGES);
-		$numMessages = count($list);
+		$numMessages = (is_countable($list) ? count($list) : 0);
 
 		$headerText = $this->lh->translationFor("you_have").' '.$numMessages.' '.$this->lh->translationFor("unread_messages");
 		$result = $this->getTopbarMenuHeader("envelope-o", $numMessages, CRM_UI_TOPBAR_MENU_STYLE_COMPLEX, $headerText, null, CRM_UI_STYLE_SUCCESS, false);
@@ -1831,9 +1831,9 @@ error_reporting(E_ERROR | E_PARSE);
 		// get notifications number
 		$notifications = $this->db->getTodayNotifications($user->getUserId());
 		if (empty($notifications)) $notificationNum = 0;
-		else $notificationNum = count($notifications);
+		else $notificationNum = (is_countable($notifications) ? count($notifications) : 0);
 		$eventsForToday = $this->db->getEventsForToday($user->getUserId());
-		if (!empty($eventsForToday)) $notificationNum += count($eventsForToday);
+		if (!empty($eventsForToday)) $notificationNum += (is_countable($eventsForToday) ? count($eventsForToday) : 0);
 		// build header
 		$headerText = $this->lh->translationFor("you_have").' '.$notificationNum.' '.$this->lh->translationFor("notifications");
 		$result = $this->getTopbarMenuHeader("calendar", $notificationNum, CRM_UI_TOPBAR_MENU_STYLE_SIMPLE, $headerText, null, CRM_UI_STYLE_WARNING, false);
@@ -1857,7 +1857,7 @@ error_reporting(E_ERROR | E_PARSE);
 		if (!$user->userHasBasicPermission()) return '';
 
 		$list = $this->db->getUnfinishedTasks($user->getUserId());
-		$numTasks = count($list);
+		$numTasks = (is_countable($list) ? count($list) : 0);
 
 		$headerText = $this->lh->translationFor("you_have").' '.$numTasks.' '.$this->lh->translationFor("pending_tasks");
 		$result = $this->getTopbarMenuHeader("tasks", $numTasks, CRM_UI_TOPBAR_MENU_STYLE_DATE, $headerText, null, CRM_UI_STYLE_DANGER, false);
@@ -2186,7 +2186,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$result = '<aside class="control-sidebar control-sidebar-dark">'."\n";
 
 		// Create Tabs
-		if (count($tabs) < 1) {
+		if ((is_countable($tabs) ? count($tabs) : 0) < 1) {
 			//$tabs = array('commenting-o'=>'messaging', 'phone'=>'dialer', 'user'=>'settings');
 			if($agent_chat_status){
 			    $tabs = ['comments-o' => 'chat', 'user'=>'settings'];
@@ -2639,7 +2639,7 @@ error_reporting(E_ERROR | E_PARSE);
 			else $table .= '<tr>';
 
 			$attachments = $this->db->getMessageAttachments($message['id'], $folder);
-			$showPaperClip = (!isset($attachments) || count($attachments) < 1) ? '' : '<i class="fa fa-paperclip" title="Has attachment"></i>';
+			$showPaperClip = (!isset($attachments) || (is_countable($attachments) ? count($attachments) : 0) < 1) ? '' : '<i class="fa fa-paperclip" title="Has attachment"></i>';
 
 			// variables and html text depending on the message
 			$favouriteHTML = "-o"; if ($message["favorite"] == 1) $favouriteHTML = "";
@@ -2880,7 +2880,7 @@ error_reporting(E_ERROR | E_PARSE);
 	 */
 	public function attachmentsSectionForMessage($messageid, $folderid, $fromAgent = false) {
 		$attachments = $this->db->getMessageAttachments($messageid, $folderid);
-		if (!isset($attachments) || count($attachments) < 1) { return ""; }
+		if (!isset($attachments) || (is_countable($attachments) ? count($attachments) : 0) < 1) { return ""; }
 
 		$code = '<div class="box-footer non-printable"><ul class="mailbox-attachments clearfix">';
 		foreach ($attachments as $attachment) {
@@ -3475,7 +3475,7 @@ error_reporting(E_ERROR | E_PARSE);
 		//$hideOnMedium = array($this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
 		//$hideOnLow = array($this->lh->translationFor("agent_id"), $this->lh->translationFor("user_group"), $this->lh->translationFor("status"));
 		$result = $this->generateTableHeaderWithItems($columns, "T_userslist", "responsive display no-wrap table-bordered table-striped", true, false, '', '', '');
-        $counter = count($output->user_id);
+        $counter = (isset($output->user_id) && is_countable($output->user_id) ? count($output->user_id) : 0);
 
 		// iterate through all users
 		for($i=0;$i<$counter;$i++) {
@@ -3555,7 +3555,7 @@ error_reporting(E_ERROR | E_PARSE);
         /*
         if ($output->result=="success") {
            # Result was OK!
-                        for($i=0;$i<count($output->user_group);$i++) {
+                        for($i=0;$i<(isset($output->user_group) && is_countable($output->user_group) ? count($output->user_group) : 0);$i++) {
                                 echo $output->user_group[$i]."</br>";
                                 echo $output->group_name[$i]."</br>";
                                 echo $output->group_type[$i]."</br>";
@@ -3578,7 +3578,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $hideOnMedium = [$this->lh->translationFor('type'), $this->lh->translationFor('force_timeclock')];
 	    $hideOnLow = [$this->lh->translationFor('user_group'), $this->lh->translationFor('type'), $this->lh->translationFor('force_timeclock')];
 		$result = $this->generateTableHeaderWithItems($columns, "usergroups_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
-        $counter = count($output->user_group);
+        $counter = (isset($output->user_group) && is_countable($output->user_group) ? count($output->user_group) : 0);
 
 
 			for($i=0;$i < $counter;$i++) {
@@ -3784,7 +3784,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$checkbox_all = $this->getCheckAll("phone");
 			$columns = [$this->lh->translationFor("extension"), $this->lh->translationFor("protocol"),$this->lh->translationFor("server_ip"), $this->lh->translationFor("status"), $this->lh->translationFor("voicemail"), $checkbox_all, $this->lh->translationFor("action")];
 			$result = $this->generateTableHeaderWithItems($columns, "T_phones", "responsive display no-wrap table-bordered table-striped", true, false, '', '', '');
-            $counter = count($output->extension);
+            $counter = (isset($output->extension) && is_countable($output->extension) ? count($output->extension) : 0);
 
 			for ($i=0;$i < $counter;$i++) {
 				if ($output->active[$i] == "Y") {
@@ -3856,7 +3856,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $hideOnMedium = [$this->lh->translationFor('status'), $this->lh->translationFor('new_message'), $this->lh->translationFor('old_message'), $this->lh->translationFor('delete'), $this->lh->translationFor('user_group')];
 	    $hideOnLow = [$this->lh->translationFor('voicemail_id'), $this->lh->translationFor('status'), $this->lh->translationFor('new_message'), $this->lh->translationFor('old_message'), $this->lh->translationFor('delete'), $this->lh->translationFor('user_group')];
 		$result = $this->generateTableHeaderWithItems($columns, "voicemails_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
-        $counter = count($output->voicemail_id);
+        $counter = (isset($output->voicemail_id) && is_countable($output->voicemail_id) ? count($output->voicemail_id) : 0);
 
 			for($i=0;$i < $counter;$i++) {
 
@@ -3990,7 +3990,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    	$hideOnMedium = ["Agent", "Duration"];
 	    	$hideOnLow = ["Customer", "Phone Number", "Agent", "Duration"];
 			$result = $this->generateTableHeaderWithItems($columns, "table_callrecordings", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
-            $counter = count($output->uniqueid);
+            $counter = (isset($output->uniqueid) && is_countable($output->uniqueid) ? count($output->uniqueid) : 0);
 
 			//$result .= "<tr><td colspan='6'>".$output->query."</tr>";
 
@@ -4085,7 +4085,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $hideOnMedium = ["Random Order", "Group", "Status"];
 		$hideOnLow = [ "Random Order", "Group", "Status"];
 	    $result = $this->generateTableHeaderWithItems($columns, "music-on-hold_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
-        $counter = count($output->moh_id);
+        $counter = (isset($output->moh_id) && is_countable($output->moh_id) ? count($output->moh_id) : 0);
 	    for($i=0;$i<$counter;$i++) {
 			$action = ($user_group === "ADMIN" || ($user_group !== "ADMIN" && $output->moh_id[$i] !== 'default')) ? $this->getUserActionMenuForMusicOnHold($output->moh_id[$i], $output->moh_name[$i], $perm) : "";
 
@@ -4174,7 +4174,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$web_ip = $log_ip;
 		if (preg_match("/443/",$server_port)) {$HTTPprotocol = 'https://';}
 		else {$HTTPprotocol = 'http://';}
-        $counter = count($output->file_name);
+        $counter = (isset($output->file_name) && is_countable($output->file_name) ? count($output->file_name) : 0);
 	    for($i=0;$i<$counter;$i++) {
 	    $file_link = $HTTPprotocol.$web_ip."/sounds/".$output->file_name[$i];
 		 if (!$this->check_url($file_link)) {
@@ -4248,7 +4248,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    //$hideOnLow = array($this->lh->translationFor("script_id"), $this->lh->translationFor("type"), $this->lh->translationFor("status"), $this->lh->translationFor("user_group"));
 
 		$result = $this->generateTableHeaderWithItems($columns, "scripts_table", "display responsive no-wrap table-bordered table-striped", true, false, '', '', '');
-        $counter = count($output->script_id);
+        $counter = (isset($output->script_id) && is_countable($output->script_id) ? count($output->script_id) : 0);
 
 	    for($i=0;$i<$counter;$i++) {
 		$action = $this->getUserActionMenuForScripts($output->script_id[$i], $output->script_name[$i], $perm);
@@ -4317,7 +4317,7 @@ error_reporting(E_ERROR | E_PARSE);
 	    $columns = [$this->lh->translationFor("filter_id"), $this->lh->translationFor("filter_name"), $this->lh->translationFor("filter_comments"), $this->lh->translationFor("user_group"), $this->lh->translationFor("action")];
 
 		$result = $this->generateTableHeaderWithItems($columns, "filters_table", "display responsive no-wrap table-bordered table-striped", true, false, '', '', '');
-        $counter = count($output->filter_id);
+        $counter = (isset($output->filter_id) && is_countable($output->filter_id) ? count($output->filter_id) : 0);
 
 	    for($i=0;$i<$counter;$i++) {
 		$action = ($user_group === "ADMIN" || ($user_group !== "ADMIN" && $output->filter_id[$i] !== 'FILTEMP')) ? $this->getUserActionMenuForFilters($output->filter_id[$i], $output->filter_name[$i], $perm) : "";
@@ -4402,7 +4402,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$hideOnLow = [ $this->lh->translationFor('call_time_id'), $this->lh->translationFor('Schedule'), $this->lh->translationFor('user_group')];
 
 		$result = $this->generateTableHeaderWithItems($columns, "calltimes", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
-        $counter = count($output->call_time_id);
+        $counter = (isset($output->call_time_id) && is_countable($output->call_time_id) ? count($output->call_time_id) : 0);
 
 	    for($i=0;$i<$counter;$i++) {
 		    $action = $this->getUserActionMenuForCalltimes($output->call_time_id[$i], $output->call_time_name[$i]);
@@ -4551,7 +4551,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$hideOnLow = [$this->lh->translationFor('server_ip'), $this->lh->translationFor('server_name'), $this->lh->translationFor('status'), $this->lh->translationFor('asterisk'),$this->lh->translationFor('trunks'),$this->lh->translationFor('gmt')];
 
 			$result = $this->generateTableHeaderWithItems($columns, "servers_table", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
-            $counter = count($output->server_id);
+            $counter = (isset($output->server_id) && is_countable($output->server_id) ? count($output->server_id) : 0);
 
 				for($i=0;$i<$counter;$i++) {
 
@@ -4621,7 +4621,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$hideOnLow = [ $this->lh->translationFor('carrier_id'), $this->lh->translationFor('server_ip'), $this->lh->translationFor('protocol'), $this->lh->translationFor('status')];
 
 		$result = $this->generateTableHeaderWithItems($columns, "carriers", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
-        $counter = count($output->carrier_id);
+        $counter = (isset($output->carrier_id) && is_countable($output->carrier_id) ? count($output->carrier_id) : 0);
 
 	      for($i=0;$i<$counter;$i++) {
 
@@ -4894,9 +4894,9 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
 			//var_dump($data);
-			/*$data = explode(";",$data);
+			/*$data = explode(";", (string) ($data ?? ''));
 			foreach ($data AS $temp) {
-			  $temp = explode("=",$temp);
+			  $temp = explode("=", (string) ($temp ?? ''));
 			  $results[$temp[0]] = $temp[1];
 			}
 			if ($results["result"]=="success") {
@@ -4933,9 +4933,9 @@ error_reporting(E_ERROR | E_PARSE);
 			$data = curl_exec($ch);
 
 			//var_dump($data);
-			$data = explode(";",$data);
+			$data = explode(";", (string) ($data ?? ''));
 			foreach ($data AS $temp) {
-			  $temp = explode("=",$temp);
+			  $temp = explode("=", (string) ($temp ?? ''));
 			  $results[$temp[0]] = $temp[1];
 			}
 
@@ -4974,9 +4974,9 @@ error_reporting(E_ERROR | E_PARSE);
 			$data = curl_exec($ch);
 
 			//var_dump($data);
-			 $data = explode(";",$data);
+			 $data = explode(";", (string) ($data ?? ''));
 			 foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
+			   $temp = explode("=", (string) ($temp ?? ''));
 			   $results[$temp[0]] = $temp[1];
 			 }
 
@@ -5012,9 +5012,9 @@ error_reporting(E_ERROR | E_PARSE);
 			 $data = curl_exec($ch);
 
 			//var_dump($data);
-			 $data = explode(";",$data);
+			 $data = explode(";", (string) ($data ?? ''));
 			 foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
+			   $temp = explode("=", (string) ($temp ?? ''));
 			   $results[$temp[0]] = $temp[1];
 			 }
 
@@ -5050,9 +5050,9 @@ error_reporting(E_ERROR | E_PARSE);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			$data = curl_exec($ch);
 
-			$data = explode(";",$data);
+			$data = explode(";", (string) ($data ?? ''));
 			foreach ($data AS $temp) {
-			  $temp = explode("=",$temp);
+			  $temp = explode("=", (string) ($temp ?? ''));
 			  $results[$temp[0]] = $temp[1];
 			}
 
@@ -5164,9 +5164,9 @@ error_reporting(E_ERROR | E_PARSE);
 			$data = curl_exec($ch);
 
 			//var_dump($data);
-			 $data = explode(";",$data);
+			 $data = explode(";", (string) ($data ?? ''));
 			 foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
+			   $temp = explode("=", (string) ($temp ?? ''));
 			   $results[$temp[0]] = $temp[1];
 			 }
 
@@ -5202,9 +5202,9 @@ error_reporting(E_ERROR | E_PARSE);
 			 $data = curl_exec($ch);
 
 			//var_dump($data);
-			 $data = explode(";",$data);
+			 $data = explode(";", (string) ($data ?? ''));
 			 foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
+			   $temp = explode("=", (string) ($temp ?? ''));
 			   $results[$temp[0]] = $temp[1];
 			 }
 
@@ -5243,9 +5243,9 @@ error_reporting(E_ERROR | E_PARSE);
 			$data = curl_exec($ch);
 
 			//var_dump($data);
-			 $data = explode(";",$data);
+			 $data = explode(";", (string) ($data ?? ''));
 			 foreach ($data AS $temp) {
-			   $temp = explode("=",$temp);
+			   $temp = explode("=", (string) ($temp ?? ''));
 			   $results[$temp[0]] = $temp[1];
 			 }
 
@@ -5632,7 +5632,7 @@ error_reporting(E_ERROR | E_PARSE);
 	       $hideOnMedium = [$this->lh->translationFor('lead_id'), $this->lh->translationFor('status')];
 	       $hideOnLow = [ $this->lh->translationFor('lead_id'), $this->lh->translationFor('phone_number'), $this->lh->translationFor('status')];
 		   $result = $this->generateTableHeaderWithItems($columns, "table_contacts", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
-           $counter = count($output->list_id);
+           $counter = (isset($output->list_id) && is_countable($output->list_id) ? count($output->list_id) : 0);
 
 			for($i=0;$i<=$counter;$i++) {
 		   	//for($i=0;$i<=500;$i++) {
@@ -5732,7 +5732,7 @@ error_reporting(E_ERROR | E_PARSE);
 	public function dropdownFormInputElement($id, $name, $options = [], $currentValue = null, $required = false) {
 		$requiredCode = $required ? "required" : "";
 		$optionList = "";
-		if (count($options) > 0) {
+		if ((is_countable($options) ? count($options) : 0) > 0) {
 			foreach ($options as $opt) {
 				$isSelected = ($currentValue == $opt) ? "selected" : "";
 				$optionList .= '<option value="'.$opt.'" '.$isSelected.'>'.$opt.'</option>';
@@ -5969,7 +5969,7 @@ error_reporting(E_ERROR | E_PARSE);
 		$permissions = $this->API_goGetGroupPermission($group);
 		if (!is_null($permissions)) {
 			$types = explode(",", (string) $type);
-			if (count($types) > 1) {
+			if ((is_countable($types) ? count($types) : 0) > 1) {
 				foreach ($types as $t) {
 					if (array_key_exists($t, $permissions)) {
 						$return->{$t} = $permissions->{$t};
@@ -6071,7 +6071,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$hideOnMedium = [];
 			$hideOnLow = [ $this->lh->translationFor("campaign") ];
 			$result = $this->generateTableHeaderWithItems($columns, "table_dnc", "display responsive no-wrap table-bordered table-striped", true, false, '', '', '');
-            $counter = count($output->phone_number);
+            $counter = (isset($output->phone_number) && is_countable($output->phone_number) ? count($output->phone_number) : 0);
 
 			for($i=0;$i < $counter;$i++) {
 				$result .= '<tr>
@@ -6291,7 +6291,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$hideOnMedium = [];
 			$hideOnLow = [ ];
 			$outbound = $this->generateTableHeaderWithItems($columns, "table_outbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
-            $counter = count($output->outbound->campaign_id);
+            $counter = (isset($output->outbound->campaign_id) && is_countable($output->outbound->campaign_id) ? count($output->outbound->campaign_id) : 0);
 
 			for($i=0;$i < $counter;$i++) {
 				$outbound .= '<tr>
@@ -6311,7 +6311,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$hideOnMedium = [];
 			$hideOnLow = [ ];
 			$inbound = $this->generateTableHeaderWithItems($columns, "table_inbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
-            $counter = count($output->inbound->campaign_id);
+            $counter = (isset($output->inbound->campaign_id) && is_countable($output->inbound->campaign_id) ? count($output->inbound->campaign_id) : 0);
 
 			for($i=0;$i < $counter;$i++) {
 				$inbound .= '<tr>
@@ -6331,7 +6331,7 @@ error_reporting(E_ERROR | E_PARSE);
 			$hideOnMedium = [];
 			$hideOnLow = [ ];
 			$userlog = $this->generateTableHeaderWithItems($columns, "table_userstat", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
-            $counter = count($output->userlog->user_log_id);
+            $counter = (isset($output->userlog->user_log_id) && is_countable($output->userlog->user_log_id) ? count($output->userlog->user_log_id) : 0);
 
 			for($i=0;$i < $counter;$i++) {
 				$userlog .= '<tr>

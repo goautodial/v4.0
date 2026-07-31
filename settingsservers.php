@@ -167,7 +167,7 @@
 									<select id="user_group" class="form-control select2" name="user_group" style="width:100%;">
 										<option value="---ALL---"><?php $lh->translateText("all_usergroups"); ?></option>
 										<?php
-											for($i=0;$i<count($user_groups->user_group);$i++){
+											for($i=0;$i<(isset($user_groups->user_group) && is_countable($user_groups->user_group) ? count($user_groups->user_group) : 0);$i++){
 										?>
 											<option value="<?php echo $user_groups->user_group[$i];?>" <?php if($user_groups->user_group[$i] == "AGENT"){echo "selected";}?>>  <?php echo $user_groups->group_name[$i];?>  </option>
 										<?php

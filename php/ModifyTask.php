@@ -43,8 +43,8 @@ if ($validated === 1) {
 	$db = new \creamy\DbHandler();
 
 	// get data for task description.	
-	$taskid = $_POST["edit-task-taskid"];
-	$description = $_POST["edit-task-description"];
+	$taskid = ($_POST["edit-task-taskid"] ?? '');
+	$description = ($_POST["edit-task-description"] ?? '');
 	$userid = $user->getUserId();
 	
 	// edit task description.

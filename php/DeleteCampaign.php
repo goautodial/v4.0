@@ -23,21 +23,22 @@ declare(strict_types=1);
 */
 
 	require_once(__DIR__ . '/APIHandler.php');
-	
+
 	$api 										= \creamy\APIHandler::getInstance();
 
 	$postfields 								= [
         'goAction' 									=> 'goDeleteCampaign',
-        'campaign_id' 								=> $_POST['campaign_id'],
-        'action'									=> $_POST['action']
+        'campaign_id' 								=> ($_POST['campaign_id'] ?? ''),
+        'action'									=> ($_POST['action'] ?? '')
     ];
 
     $output 									= $api->API_Request( "goCampaigns", $postfields );
+	$result 									= (is_object($output) && isset($output->result)) ? $output->result : 'Error: Invalid API response.';
 
-	if ( $output->result=="success" ) { 
-		$status 								= 1; 
-	} else { 
-		$status 								= $output->result; 
+	if ( $result=="success" ) {
+		$status 								= 1;
+	} else {
+		$status 								= $result;
 	}
 
 	echo json_encode( $status );

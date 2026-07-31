@@ -44,7 +44,7 @@ if ($validated === 1) {
 
 	// check password	
 	$userid = $_POST["touserid"] ?? $_POST["userid"];
-	$taskDescription = $_POST["taskDescription"];
+	$taskDescription = ($_POST["taskDescription"] ?? '');
 	$taskDescription = stripslashes((string) $taskDescription);
 	$taskDescription = $db->escape_string($taskDescription);
 	$taskInitialProgress = 0;

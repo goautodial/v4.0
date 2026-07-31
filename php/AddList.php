@@ -27,11 +27,11 @@ declare(strict_types=1);
 
 	$postfields 									= [
 		'goAction' 										=> 'goAddList',
-		'list_id' 										=> $_POST['add_list_id'], 
-		'list_name' 									=> $_POST['list_name'], 
-		'list_description' 								=> $_POST['list_desc'],
-		'campaign_id' 									=> $_POST['campaign_select'],
-		'active' 										=> $_POST['status']
+		'list_id' 										=> ($_POST['add_list_id'] ?? ''), 
+		'list_name' 									=> ($_POST['list_name'] ?? ''), 
+		'list_description' 								=> ($_POST['list_desc'] ?? ''),
+		'campaign_id' 									=> ($_POST['campaign_select'] ?? ''),
+		'active' 										=> ($_POST['status'] ?? '')
 	];
 
     $output 										= $api->API_addList($postfields);

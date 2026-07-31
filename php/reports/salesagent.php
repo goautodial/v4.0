@@ -32,31 +32,31 @@
 	$statuses	= NULL;
 			
 	if (isset($_POST["fromDate"])) {
-		$fromDate = date('Y-m-d H:i:s', strtotime($_POST['fromDate']));
+		$fromDate = date('Y-m-d H:i:s', strtotime(($_POST['fromDate'] ?? '')));
 	}
 	
-	if ($_POST["toDate"] != "" && $_POST["fromDate"] != "") {
-		$toDate = date('Y-m-d H:i:s', strtotime($_POST['toDate']));
+	if (($_POST["toDate"] ?? '') != "" && ($_POST["fromDate"] ?? '') != "") {
+		$toDate = date('Y-m-d H:i:s', strtotime(($_POST['toDate'] ?? '')));
 	}
 	
 			
 	if (isset($_POST["campaignID"])) { 
-		$campaign_id = $_POST["campaignID"]; 
+		$campaign_id = ($_POST["campaignID"] ?? ''); 
 		$campaign_id = stripslashes((string) $campaign_id);
 	}
 		
 	if (isset($_POST["request"])) {
-		$request = $_POST["request"];
+		$request = ($_POST["request"] ?? '');
 		$request = stripslashes((string) $request);
 	}
 			
 	if (isset($_POST["userID"])) {
-		$userID = $_POST["userID"];
+		$userID = ($_POST["userID"] ?? '');
 		$userID = stripslashes((string) $userID);
 	}
 	
 	if (isset($_POST["userGroup"])) {
-		$userGroup = $_POST["userGroup"];
+		$userGroup = ($_POST["userGroup"] ?? '');
 		$userGroup = stripslashes((string) $userGroup);
 	}
 
@@ -92,7 +92,7 @@
                 }
                 // ./Statewide Customization
 
-		if (strtolower($_POST['request']) === "outbound") {
+		if (strtolower(($_POST['request'] ?? '')) === "outbound") {
 			$outbound = '';
 			
 			// Outbound table
@@ -113,7 +113,7 @@
 					';
 
 				if ($output->TOPsorted_output != NULL) {
-					//for($i=0; $i <= count($output->TOPsorted_output); $i++) {
+					//for($i=0; $i <= (isset($output->TOPsorted_output) && is_countable($output->TOPsorted_output) ? count($output->TOPsorted_output) : 0); $i++) {
 						$outbound .= $output->TOPsorted_output;
 				 	//}
 				}else{
@@ -139,7 +139,7 @@
 			echo $outbound;
 		}
 
-		if (strtolower($_POST['request']) === "inbound") {
+		if (strtolower(($_POST['request'] ?? '')) === "inbound") {
 			$inbound = '';
 			// inbound table
 				$inbound .= '<div>
@@ -158,7 +158,7 @@
 						<tbody>
 				';
 				if ($output->BOTsorted_output != NULL) {
-					//for($i=0; $i <= count($output->BOTsorted_output); $i++) {
+					//for($i=0; $i <= (isset($output->BOTsorted_output) && is_countable($output->BOTsorted_output) ? count($output->BOTsorted_output) : 0); $i++) {
 						$inbound .= $output->BOTsorted_output;
 					//}
 				}else{
@@ -169,7 +169,7 @@
 
 				if ($output->BOTsorted_output != NULL) {
 					$inbound .= '<tfoot><tr class="warning"><th nowrap colspan="2"> Total Agents: ';
-						$inbound .= count($output->BOTsorted_output).'</th>';
+						$inbound .= (isset($output->BOTsorted_output) && is_countable($output->BOTsorted_output) ? count($output->BOTsorted_output) : 0).'</th>';
 						$inbound .= '<th nowrap>'.$output->TOTinbound.'</th>';
 						// Statewide Customization
 						if(STATEWIDE_SALES_REPORT === 'y' && $output->col_exists == '1'){

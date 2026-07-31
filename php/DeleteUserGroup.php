@@ -36,7 +36,7 @@ declare(strict_types=1);
 	if ($validated === 1) {
 		$postfields 				= [
 			'goAction' 					=> 'goDeleteUserGroup',
-			'user_group' 				=> $_POST['usergroup_id']
+			'user_group' 				=> ($_POST['usergroup_id'] ?? '')
 		];
 
 		$output 					= $api->API_Request("goUserGroups", $postfields);

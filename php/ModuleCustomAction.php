@@ -36,8 +36,8 @@ $mh = \creamy\ModuleHandler::getInstance();
 
 if (isset($_POST["module_name"]) && isset($_POST["hook_name"])) {
 	// get main vars
-	$modulename = $_POST["module_name"];
-	$hookname = $_POST["hook_name"];
+	$modulename = ($_POST["module_name"] ?? '');
+	$hookname = ($_POST["hook_name"] ?? '');
 	
 	// apply hook if module is enabled.
 	if ($mh->moduleIsEnabled($modulename)) {

@@ -98,10 +98,10 @@
             <input type="password" name="password2" id="password2" class="form-control" placeholder="<?php $lh->translateText("insert_new_password_again"); ?>"/>
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
           </div>
-            <input type="hidden" name="code" id="code" value="<?php echo $_GET['code']; ?>">
-			<input type="hidden" name="date" id="date" value="<?php echo $_GET['date']; ?>">
-			<input type="hidden" name="nonce" id="nonce" value="<?php echo $_GET['nonce']; ?>">
-			<input type="hidden" name="email" id="email" value="<?php echo $_GET['email']; ?>">
+            <input type="hidden" name="code" id="code" value="<?php echo ($_GET['code'] ?? ''); ?>">
+			<input type="hidden" name="date" id="date" value="<?php echo ($_GET['date'] ?? ''); ?>">
+			<input type="hidden" name="nonce" id="nonce" value="<?php echo ($_GET['nonce'] ?? ''); ?>">
+			<input type="hidden" name="email" id="email" value="<?php echo ($_GET['email'] ?? ''); ?>">
 	    	<div name="error-message" style="color: red;">
 	    	<?php
 	    		if (isset($error)) { print ("<p>".$error."</p>"); }

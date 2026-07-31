@@ -32,11 +32,11 @@ require_once('goCRMAPISettings.php');
   $postfields["goPass"] = goPass; #Password goes here. (required)
   $postfields["goAction"] = "goDeleteAllCustomFields"; #action performed by the [[API:Functions]]. (required)
   $postfields["responsetype"] = responsetype; #json. (required)
-  $postfields["list_id"] = $_POST['list_id'];
+  $postfields["list_id"] = ($_POST['list_id'] ?? '');
 */
 	$postfields = [
 		'goAction' => 'goDeleteAllCustomFields',
-		'list_id' => $_POST['list_id']
+		'list_id' => ($_POST['list_id'] ?? '')
 	];
 
 	$output = $api->API_Request("goCustomFields", $postfields);

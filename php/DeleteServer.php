@@ -28,7 +28,7 @@ declare(strict_types=1);
 
     $postfields = [
         'goAction' => 'goDeleteServers',
-        'server_id' => $_POST['server_id']
+        'server_id' => ($_POST['server_id'] ?? '')
     ];
 
     $output = $api->API_Request("goServers", $postfields);

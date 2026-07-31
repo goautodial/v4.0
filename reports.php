@@ -24,7 +24,7 @@
 	require_once('./php/APIHandler.php');
 	
 	$api 										= \creamy\APIHandler::getInstance();
-	$pageTitle									= $_POST['pageTitle'];
+	$pageTitle									= ($_POST['pageTitle'] ?? '');
 	$fromDate 									= date('Y-m-d H:i:s');
 	$toDate 									= date('Y-m-d H:i:s');
 	$campaignID 								= NULL;
@@ -34,41 +34,41 @@
 	$statuses									= NULL;
 	
 	if (isset($_POST['pageTitle']) && $pageTitle != "call_export_report") {
-		$pageTitle 								= $_POST['pageTitle'];
+		$pageTitle 								= ($_POST['pageTitle'] ?? '');
 		$pageTitle								= stripslashes($pageTitle);
 	}
 			
 	if (isset($_POST["fromDate"])) {
-		$fromDate 								= date('Y-m-d H:i:s', strtotime($_POST['fromDate']));
+		$fromDate 								= date('Y-m-d H:i:s', strtotime(($_POST['fromDate'] ?? '')));
 	}
 	
-	if ($_POST["toDate"] != "" && $_POST["fromDate"] != "") {
-		$toDate 								= date('Y-m-d H:i:s', strtotime($_POST['toDate']));
+	if (($_POST["toDate"] ?? '') != "" && ($_POST["fromDate"] ?? '') != "") {
+		$toDate 								= date('Y-m-d H:i:s', strtotime(($_POST['toDate'] ?? '')));
 	}
 	
 			
 	if (isset($_POST["campaignID"])) { 
-		$campaignID 							= $_POST["campaignID"]; 
+		$campaignID 							= ($_POST["campaignID"] ?? ''); 
 		$campaignID 							= stripslashes($campaignID);
 	}
 		
 	if (isset($_POST["request"])) {
-		$request 								= $_POST["request"];
+		$request 								= ($_POST["request"] ?? '');
 		$request								= stripslashes($request);
 	}
 			
 	if (isset($_POST["userID"])) {
-		$userID 								= $_POST["userID"];
+		$userID 								= ($_POST["userID"] ?? '');
 		$userID									= stripslashes($userID);
 	}
 	
 	if (isset($_POST["userGroup"])) {
-		$userGroup 								= $_POST["userGroup"];
+		$userGroup 								= ($_POST["userGroup"] ?? '');
 		$userGroup								= stripslashes($userGroup);
 	}
 		
 	if (isset($_POST["statuses"])) {
-		$statuses 								= $_POST["statuses"];
+		$statuses 								= ($_POST["statuses"] ?? '');
 		$statuses								= stripslashes($statuses);
 	}
 		
@@ -113,7 +113,7 @@
 
 				if ($output->getReports->TOPsorted_output != NULL) {
 					//var_dump($output->getReports->TOPsorted_output[$i]->name);
-					for ($i=0; $i < count($output->getReports->TOPsorted_output); $i++) {
+					for ($i=0; $i < (isset($output->getReports->TOPsorted_output) && is_countable($output->getReports->TOPsorted_output) ? count($output->getReports->TOPsorted_output) : 0); $i++) {
 						$agent_detail .= '<tr>
 											<td nowrap>'.$output->getReports->TOPsorted_output[$i]->name.'</td>
 											<td nowrap>'.$output->getReports->TOPsorted_output[$i]->user.'</td>
@@ -157,7 +157,7 @@
 								<tr>
 									<th nowrap> User </th>';
 									//var_dump($output->getReports->sub_statusesTOP);
-							for($i=0; $i < count($output->getReports->sub_statusesTOP); $i++) {
+							for($i=0; $i < (isset($output->getReports->sub_statusesTOP) && is_countable($output->getReports->sub_statusesTOP) ? count($output->getReports->sub_statusesTOP) : 0); $i++) {
 								//$Hstatuses = explode(",", $output->getReports->sub_statusesTOP[$i]);
 								$agent_detail .= '<th nowrap>'.$output->getReports->sub_statusesTOP[$i].'</th>';
 							}
@@ -169,11 +169,11 @@
 					';
 
 					if ($output->getReports->BOTsorted_output != NULL) {
-						for($i=0; $i < count($output->getReports->BOTsorted_output); $i++) {
+						for($i=0; $i < (isset($output->getReports->BOTsorted_output) && is_countable($output->getReports->BOTsorted_output) ? count($output->getReports->BOTsorted_output) : 0); $i++) {
 							$statuses = explode(",", $output->getReports->BOTsorted_output[$i]->statuses);
 							$agent_detail .= '<tr>
 												<td nowrap>'.$output->getReports->BOTsorted_output[$i]->name.'</td>';
-												for($a=0; $a < count($output->getReports->sub_statusesTOP); $a++) {
+												for($a=0; $a < (isset($output->getReports->sub_statusesTOP) && is_countable($output->getReports->sub_statusesTOP) ? count($output->getReports->sub_statusesTOP) : 0); $a++) {
 													if (!empty($statuses[$a]))
 														$agent_detail .= '<td nowrap>'.$statuses[$a].'</td>';
 													else
@@ -191,7 +191,7 @@
 					
 						if ($output->getReports->SUMstatuses != NULL) {
 							$agent_detail .= '<tfoot><tr class="warning"><th nowrap> Total </th>';
-							for($i=0; $i < count($output->getReports->SUMstatuses); $i++) {
+							for($i=0; $i < (isset($output->getReports->SUMstatuses) && is_countable($output->getReports->SUMstatuses) ? count($output->getReports->SUMstatuses) : 0); $i++) {
 								$agent_detail .= '<th nowrap>'.$output->getReports->SUMstatuses[$i].'</th>';
 							}
 							$agent_detail .= '</tr></tfoot>';
@@ -206,7 +206,7 @@
 								<input type="hidden" name="pageTitle" value="'.$pageTitle.'" />
 								<input type="hidden" name="fromDate" value="'.$fromDate.'" />
 								<input type="hidden" name="toDate" value="'.$toDate.'" />
-								<input type="hidden" name="campaignID" value="'.$_POST["campaignID"].'" />
+								<input type="hidden" name="campaignID" value="'.($_POST["campaignID"] ?? '').'" />
 								<input type="hidden" name="session_user" value="'.$_SESSION["user"].'" />
 							</form>';
 
@@ -242,7 +242,7 @@
 						</thead>
 						<tbody>';
 							if ($output->getReports->TOPsorted_output != NULL) {
-								for($i=0; $i <= count($output->getReports->TOPsorted_output); $i++) {
+								for($i=0; $i <= (isset($output->getReports->TOPsorted_output) && is_countable($output->getReports->TOPsorted_output) ? count($output->getReports->TOPsorted_output) : 0); $i++) {
 									$agent_pdetail .= $output->getReports->TOPsorted_output[$i];
 								}
 							}else{
@@ -287,7 +287,7 @@
 								
 						$agent_pdetail .=  '</tr></thead><tbody>';
 
-								for($i=0; $i <= count($output->getReports->MIDsorted_output); $i++) {
+								for($i=0; $i <= (isset($output->getReports->MIDsorted_output) && is_countable($output->getReports->MIDsorted_output) ? count($output->getReports->MIDsorted_output) : 0); $i++) {
 									$agent_pdetail .= $output->getReports->MIDsorted_output[$i];
 								}
 
@@ -311,7 +311,7 @@
 					if ($output->getReports->MIDsorted_output != NULL) {
 						$agent_pdetail .= '<table class="table table-hover">
 								<tr class="info"><th colspan="2"><small>LEGEND: </th></tr>';
-								for ($i=0; $i < count($output->getReports->Legend); $i+=2) { 
+								for ($i=0; $i < (isset($output->getReports->Legend) && is_countable($output->getReports->Legend) ? count($output->getReports->Legend) : 0); $i+=2) { 
 									$agent_pdetail .= "<tr><td><small>".$output->getReports->Legend[$i]."</small></td><td><small>".$output->getReports->Legend[$i+1]."</small></td></tr>";
 								}
 						$agent_pdetail .= '</table><br/>';
@@ -332,7 +332,7 @@
 						</thead>
 						<tbody>';
 							if ($output->getReports->BOTsorted_output != NULL) {
-								for($i=0; $i <= count($output->getReports->BOTsorted_output); $i++) {
+								for($i=0; $i <= (isset($output->getReports->BOTsorted_output) && is_countable($output->getReports->BOTsorted_output) ? count($output->getReports->BOTsorted_output) : 0); $i++) {
 									$agent_pdetail .= $output->getReports->BOTsorted_output[$i];
 								}
 							}else{
@@ -365,7 +365,7 @@
 							</thead>
 							<tbody>';
 								if ($output->getReports->SstatusesBOTR != NULL) {
-									for($i=0; $i <= count($output->getReports->SstatusesBOTR); $i++) {
+									for($i=0; $i <= (isset($output->getReports->SstatusesBOTR) && is_countable($output->getReports->SstatusesBOTR) ? count($output->getReports->SstatusesBOTR) : 0); $i++) {
 										$agent_pdetail .= '<tr>'.$output->getReports->SstatusesBOTR[$i].'</tr>';
 									}
 								}else{
@@ -398,7 +398,7 @@
 		if ($pageTitle == "stats") {
 			//print_r($output->getReports);
 			//$increment_color = "009688";
-			if ($_POST["request"] == "daily") {
+			if (($_POST["request"] ?? '') == "daily") {
 				$max = max(/*$output->getReports->data_calls->hour0, $output->getReports->data_calls->hour1, $output->getReports->data_calls->hour2, $output->getReports->data_calls->hour3, 
 					$output->getReports->data_calls->hour4, $output->getReports->data_calls->hour5, $output->getReports->data_calls->hour6, $output->getReports->data_calls->hour7, */
 					$output->getReports->data_calls->hour8, $output->getReports->data_calls->hour9, $output->getReports->data_calls->hour10, $output->getReports->data_calls->hour11, 
@@ -406,11 +406,11 @@
 					$output->getReports->data_calls->hour16, $output->getReports->data_calls->hour17, $output->getReports->data_calls->hour18, $output->getReports->data_calls->hour19, 
 					$output->getReports->data_calls->hour20, $output->getReports->data_calls->hour21, $output->getReports->data_calls->hour22);/*, $hour23);*/
 			}
-			if ($_POST["request"] == "weekly") {
+			if (($_POST["request"] ?? '') == "weekly") {
 				$max = max($output->getReports->data_calls->Day0, $output->getReports->data_calls->Day1, $output->getReports->data_calls->Day2, $output->getReports->data_calls->Day3, 
 					$output->getReports->data_calls->Day4, $output->getReports->data_calls->Day5, $output->getReports->data_calls->Day6);
 			}
-			if ($_POST["request"] == "monthly") {
+			if (($_POST["request"] ?? '') == "monthly") {
 				$max = max($output->getReports->data_calls->Month1, $output->getReports->data_calls->Month2, $output->getReports->data_calls->Month3, $output->getReports->data_calls->Month4, 
 					$output->getReports->data_calls->Month5, $output->getReports->data_calls->Month6, $output->getReports->data_calls->Month7, $output->getReports->data_calls->Month8, 
 					$output->getReports->data_calls->Month9, $output->getReports->data_calls->Month10, $output->getReports->data_calls->Month11, $output->getReports->data_calls->Month12);
@@ -455,7 +455,7 @@
 					<div class="panel widget bg-gray-light" style="height: 95px;">
 						<div class="row status-box">
 							<div class="col-xs-6 text-center bg-gray-lighter pv-md animated pulse">
-								<h2><?php echo count($output->getReports->data_agents->cuser);?></h2>
+								<h2><?php echo (isset($output->getReports->data_agents->cuser) && is_countable($output->getReports->data_agents->cuser) ? count($output->getReports->data_agents->cuser) : 0);?></h2>
 							</div>
 							<div class="col-xs-6 pv-lg">
 								<div class="text-sm">Total Agents</div>
@@ -486,7 +486,7 @@
 			<div class="row">
 				<div class="col-lg-4">
 						<?php
-							for($i = 0; $i < count($output->getReports->data_status->status); $i++) {
+							for($i = 0; $i < (isset($output->getReports->data_status->status) && is_countable($output->getReports->data_status->status) ? count($output->getReports->data_status->status) : 0); $i++) {
 								$percentage_stats = ($output->getReports->data_status->ccount[$i]/$output->getReports->total_calls)*100;
 								$percentage_stats = number_format($percentage_stats, 2);
 						?>
@@ -525,9 +525,9 @@
 				var datav3 = [
 				
 				<?php
-						if ($_POST["request"] == "daily") {
+						if (($_POST["request"] ?? '') == "daily") {
 							if ($output->getReports->data_calls->cdate != NULL) { // if data exists
-								for($i = 0; $i < count($output->getReports->data_calls->cdate); $i++) {
+								for($i = 0; $i < (isset($output->getReports->data_calls->cdate) && is_countable($output->getReports->data_calls->cdate) ? count($output->getReports->data_calls->cdate) : 0); $i++) {
 									$cdate = $output->getReports->data_calls->cdate[$i];
 									$hour0 = $output->getReports->data_calls->hour0[$i];
 										if ($hour0 == NULL)$hour0 = 0;
@@ -609,7 +609,7 @@
 							echo '["7 AM",'. $hour7 .']';*/
 
 								$a = $i + 1;
-									if (count($output->getReports->data_calls->cdate) > $a)
+									if ((isset($output->getReports->data_calls->cdate) && is_countable($output->getReports->data_calls->cdate) ? count($output->getReports->data_calls->cdate) : 0) > $a)
 									echo ", ";
 								}
 							}else{ //if data is null
@@ -647,9 +647,9 @@
 							}
 						} //end of daily
 
-						else if ($_POST["request"] == "weekly") { // weekly
+						else if (($_POST["request"] ?? '') == "weekly") { // weekly
 							if ($output->getReports->data_calls->weekno != NULL) {
-								for($i = 0; $i < count($output->getReports->data_calls->weekno); $i++) {
+								for($i = 0; $i < (isset($output->getReports->data_calls->weekno) && is_countable($output->getReports->data_calls->weekno) ? count($output->getReports->data_calls->weekno) : 0); $i++) {
 									$weekno = $output->getReports->data_calls->weekno[$i];
 									$day0 = $output->getReports->data_calls->Day0[$i];
 										if ($day0 == NULL)$day0 = 0;
@@ -680,7 +680,7 @@
 							echo ']}';
 
 								$a = $i + 1;
-									if (count($output->getReports->data_calls->weekno) > $a)
+									if ((isset($output->getReports->data_calls->weekno) && is_countable($output->getReports->data_calls->weekno) ? count($output->getReports->data_calls->weekno) : 0) > $a)
 									echo ", ";
 								}
 							}else{ //if data is null
@@ -700,9 +700,9 @@
 									echo ']}';
 							}
 				}
-						else if ($_POST["request"] == "monthly") { // weekly
+						else if (($_POST["request"] ?? '') == "monthly") { // weekly
 							if ($output->getReports->data_calls->monthname != NULL) {
-								for($i = 0; $i < count($output->getReports->data_calls->monthname); $i++) {
+								for($i = 0; $i < (isset($output->getReports->data_calls->monthname) && is_countable($output->getReports->data_calls->monthname) ? count($output->getReports->data_calls->monthname) : 0); $i++) {
 									$monthname = $output->getReports->data_calls->monthname[$i];
 									$month1 = $output->getReports->data_calls->Month1[$i];
 										if ($month1 == NULL)$month1 = 0;
@@ -748,7 +748,7 @@
 							echo ']}';
 
 								$a = $i + 1;
-									if (count($output->getReports->data_calls->monthname) > $a)
+									if ((isset($output->getReports->data_calls->monthname) && is_countable($output->getReports->data_calls->monthname) ? count($output->getReports->data_calls->monthname) : 0) > $a)
 									echo ", ";
 								}
 							}else{ //if data is null
@@ -818,7 +818,7 @@
 				var data = [
 					<?php
 						if ($output->getReports->data_status->status != NULL) {
-							for($i = 0; $i < count($output->getReports->data_status->status); $i++) {
+							for($i = 0; $i < (isset($output->getReports->data_status->status) && is_countable($output->getReports->data_status->status) ? count($output->getReports->data_status->status) : 0); $i++) {
 					?>
 							{ "label": <?php echo '"'.$output->getReports->data_status->status_name[$i].'('.$output->getReports->data_status->status[$i].')"'; ?>,
 							"color": getRandomColor(),
@@ -826,7 +826,7 @@
 							}
 					<?php
 								$a = $i + 1;
-								if (count($output->getReports->data_status->status) > $a)
+								if ((isset($output->getReports->data_status->status) && is_countable($output->getReports->data_status->status) ? count($output->getReports->data_status->status) : 0) > $a)
 								echo ", ";
 							}
 						}else{
@@ -876,7 +876,7 @@
 	// SALES PER AGENT
 		if ($pageTitle == "sales_agent") {
 			//var_dump($output->getReports);
-			if ($_POST['request'] == "outbound") {
+			if (($_POST['request'] ?? '') == "outbound") {
 				$outbound = '';
 				
 				// Outbound table
@@ -894,7 +894,7 @@
 						';
 
 					if ($output->getReports->TOPsorted_output != NULL) {
-						//for($i=0; $i <= count($output->getReports->TOPsorted_output); $i++) {
+						//for($i=0; $i <= (isset($output->getReports->TOPsorted_output) && is_countable($output->getReports->TOPsorted_output) ? count($output->getReports->TOPsorted_output) : 0); $i++) {
 							$outbound .= $output->getReports->TOPsorted_output;
 					// }
 					}else{
@@ -905,7 +905,7 @@
 
 					if ($output->getReports->TOPsorted_output != NULL) {
 							$outbound .= '<tfoot><tr class="warning"><th nowrap colspan="2"> Total Agents: ';
-								$outbound .= count($output->getReports->TOPsorted_output).'</th>';
+								$outbound .= (isset($output->getReports->TOPsorted_output) && is_countable($output->getReports->TOPsorted_output) ? count($output->getReports->TOPsorted_output) : 0).'</th>';
 								$outbound .= '<th nowrap>'.$output->getReports->TOToutbound.'</th>';
 							$outbound .= '</tr></tfoot>';
 						}
@@ -915,7 +915,7 @@
 				echo $outbound;
 			}
 
-			if ($_POST['request'] == "inbound") {
+			if (($_POST['request'] ?? '') == "inbound") {
 				$inbound = '';
 				// inbound table
 					$inbound .= '<div>
@@ -931,7 +931,7 @@
 							<tbody>
 					';
 						if ($output->getReports->BOTsorted_output != NULL) {
-							//for($i=0; $i <= count($output->getReports->BOTsorted_output); $i++) {
+							//for($i=0; $i <= (isset($output->getReports->BOTsorted_output) && is_countable($output->getReports->BOTsorted_output) ? count($output->getReports->BOTsorted_output) : 0); $i++) {
 								$inbound .= $output->getReports->BOTsorted_output;
 							//}
 						}else{
@@ -942,7 +942,7 @@
 						
 						if ($output->getReports->BOTsorted_output != NULL) {
 							$inbound .= '<tfoot><tr class="warning"><th nowrap colspan="2"> Total Agents: ';
-								$inbound .= count($output->getReports->BOTsorted_output).'</th>';
+								$inbound .= (isset($output->getReports->BOTsorted_output) && is_countable($output->getReports->BOTsorted_output) ? count($output->getReports->BOTsorted_output) : 0).'</th>';
 								$inbound .= '<th nowrap>'.$output->getReports->TOTinbound.'</th>';
 							$inbound .= '</tr></tfoot>';
 						}
@@ -956,7 +956,7 @@
 	// SALES TRACKER
 		if ($pageTitle == "sales_tracker") {
 			//var_dump($output->getReports);
-			if ($_POST['request'] == "outbound") {
+			if (($_POST['request'] ?? '') == "outbound") {
 			// Outbound table
 				$sales_tracker .= '
 				<div>
@@ -976,7 +976,7 @@
 					';
 
 				if ($output->getReports->outbound_result != NULL) {
-					for($i=0; $i < count($output->getReports->sale_num); $i++) {
+					for($i=0; $i < (isset($output->getReports->sale_num) && is_countable($output->getReports->sale_num) ? count($output->getReports->sale_num) : 0); $i++) {
 						$sales_tracker .= '<tr>
 								<td nowrap><a class="edit-contact" data-id="'.$output->getReports->lead_id[$i].'">'.$output->getReports->lead_id[$i].'</a></td>
 								<td nowrap>'.$output->getReports->call_date[$i].'</td>
@@ -996,7 +996,7 @@
 				
 			}
 			
-			if ($_POST['request'] == "inbound") {
+			if (($_POST['request'] ?? '') == "inbound") {
 			// inbound table
 				$sales_tracker .= '
 				<div>
@@ -1015,7 +1015,7 @@
 							<tbody>
 				';
 					if ($output->getReports->inbound_result != NULL) {
-						for($i=0; $i < count($output->getReports->sale_num); $i++) {
+						for($i=0; $i < (isset($output->getReports->sale_num) && is_countable($output->getReports->sale_num) ? count($output->getReports->sale_num) : 0); $i++) {
 							$sales_tracker .= '<tr>
 								<td nowrap><a class="edit-contact" data-id="'.$output->getReports->lead_id[$i].'">'.$output->getReports->lead_id[$i].'</a></td>
 								<td nowrap>'.$output->getReports->call_date[$i].'</td>
@@ -1063,7 +1063,7 @@
 			';
 
 			if ($output->getReports->TOPsorted_output != NULL) {
-					for($i=0; $i < count($output->getReports->TOPsorted_output); $i++) {
+					for($i=0; $i < (isset($output->getReports->TOPsorted_output) && is_countable($output->getReports->TOPsorted_output) ? count($output->getReports->TOPsorted_output) : 0); $i++) {
 						$inbound_report .= $output->getReports->TOPsorted_output[$i];
 					}
 				}else{
@@ -1174,7 +1174,7 @@
 									<div class="mb">
 										<div class="">
 											<select multiple="multiple" class="select2-3 form-control" id="selected_campaigns" name="campaigns[]" style="width:100%;">';
-													for($i=0; $i < count($campaigns->campaign_id);$i++) {
+													for($i=0; $i < (isset($campaigns->campaign_id) && is_countable($campaigns->campaign_id) ? count($campaigns->campaign_id) : 0);$i++) {
 														$display .= '<option value="'.$campaigns->campaign_id[$i].'">'.$campaigns->campaign_id[$i].' - '.$campaigns->campaign_name[$i].'</option>';
 													}
 				$display .= '				 </select>
@@ -1188,7 +1188,7 @@
 									<div class="mb">
 										<div class="">
 											<select multiple="multiple" class="select2-3 form-control" id="selected_inbounds" name="inbounds[]" style="width:100%;">';
-													for($i=0; $i < count($inbound->group_id);$i++) {
+													for($i=0; $i < (isset($inbound->group_id) && is_countable($inbound->group_id) ? count($inbound->group_id) : 0);$i++) {
 														$display .= '<option value="'.$inbound->group_id[$i].'">'.$inbound->group_id[$i].' - '.$inbound->group_name[$i].'</option>';
 													}
 				$display .= '				 </select>
@@ -1205,7 +1205,7 @@
 										<div class="">
 											<select multiple="multiple" class="select2-3 form-control" id="selected_lists" name="lists[]" style="width:100%;">';
 											$display .= '<option value="ALL" selected>--- ALL ---</option>';
-													for($i=0; $i < count($list->list_id);$i++) {
+													for($i=0; $i < (isset($list->list_id) && is_countable($list->list_id) ? count($list->list_id) : 0);$i++) {
 														$display .= '<option value="'.$list->list_id[$i].'">'.$list->list_id[$i].' - '.$list->list_name[$i].'</option>';
 													}
 				$display .= '				 </select>
@@ -1220,7 +1220,7 @@
 										<div class="">
 											<select multiple="multiple" class="select2-3 form-control" id="selected_statuses" name="statuses[]" style="width:100%;">';
 											$display .= '<option value="ALL" selected>--- ALL ---</option>';
-													for($i=0; $i < count($disposition->status);$i++) {
+													for($i=0; $i < (isset($disposition->status) && is_countable($disposition->status) ? count($disposition->status) : 0);$i++) {
 														$display .= '<option value="'.$disposition->status[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
 													}
 				$display .= '				 </select>
@@ -1340,7 +1340,7 @@
 				
 				$modal_sales_tracker = "";
 				
-				for($i=0; $i < count($output->getReports->phone_number); $i++) {
+				for($i=0; $i < (isset($output->getReports->phone_number) && is_countable($output->getReports->phone_number) ? count($output->getReports->phone_number) : 0); $i++) {
 					$sale_num = $output->getReports->sale_num[$i];
 					if ($sale_num == NULL)
 						$sale_num = " - - - ";

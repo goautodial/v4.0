@@ -22,35 +22,40 @@
 	require_once(__DIR__ . '/APIHandler.php');
 
 	$api 										= \creamy\APIHandler::getInstance();
-	$call_route									= $_POST['call_route'];
+	$call_route									= $_POST['call_route'] ?? '';
 	$dial_prefix								= $_POST['dial_prefix'] ?? 9;
 	$auto_dial_level							= $_POST['auto_dial_level'] ?? 'OFF';
 
-	//$lead_file									= "";
-	//$leads										= "";
-	//$uploaded_wav								= "";
+	$lead_file									= null;
+	$leads										= null;
+	$uploaded_wav								= null;
 	$custom_dial_prefix							= 0;
+	$postValue                                  = static fn(string $key, mixed $default = '') => $_POST[$key] ?? $default;
 
 	if ( $dial_prefix == "CUSTOM") {
-		$custom_dial_prefix						= $_POST['custom_prefix'];
+		$custom_dial_prefix						= $postValue('custom_prefix', 0);
 	}
 
     switch ($call_route){
-        case "INGROUP":
-            $call_route_text			 		= $_POST['ingroup_text'];
-        break;
+	        case "INGROUP":
+	            $call_route_text			 		= $postValue('ingroup_text');
+	        break;
 
-        case "IVR":
-            $call_route_text			 		= $_POST['ivr_text'];
-        break;
+	        case "IVR":
+	            $call_route_text			 		= $postValue('ivr_text');
+	        break;
 
-        case "AGENT":
-            $call_route_text 					= $_POST['agent_text'];
-        break;
+	        case "AGENT":
+	            $call_route_text 					= $postValue('agent_text');
+	        break;
 
-        case "VOICEMAIL":
-            $call_route_text		 			= $_POST['voicemail_text'];
-        break;
+	        case "VOICEMAIL":
+	            $call_route_text		 			= $postValue('voicemail_text');
+	        break;
+
+			default:
+				$call_route_text					= '';
+			break;
     }
 
 	if ( !empty($_FILES["lead_file"]["name"]) ) {
@@ -67,31 +72,31 @@
 
 	$postfields 								= [
 		'goAction' 									=> 'goAddCampaign',
-		'campaign_id'								=> $_POST['campaign_id'],
-		'campaign_name' 							=> $_POST['campaign_name'],
-		'campaign_type'								=> $_POST['campaign_type'],
-		'did_tfn_extension' 						=> $_POST['did_tfn_extension'],
+		'campaign_id'								=> $postValue('campaign_id'),
+		'campaign_name' 							=> $postValue('campaign_name'),
+		'campaign_type'								=> $postValue('campaign_type'),
+		'did_tfn_extension' 						=> $postValue('did_tfn_extension'),
 		'call_route'								=> $call_route,
 		'call_route_text' 							=> $call_route_text,
-		'group_color' 								=> $_POST['group_color'],
-		'survey_type' 								=> $_POST['survey_type'],
-		'no_channels'								=> $_POST['no_channels'],
-		'copy_from_campaign'						=> $_POST['copy_from_campaign'],
-		'list_id'									=> $_POST['list_id'],
-		'country'									=> $_POST['country'],
-		'check_for_duplicates' 						=> $_POST['check_for_duplicates'],
-		'dial_method' 								=> $_POST['dial_method'],
+		'group_color' 								=> $postValue('group_color'),
+		'survey_type' 								=> $postValue('survey_type'),
+		'no_channels'								=> $postValue('no_channels'),
+		'copy_from_campaign'						=> $postValue('copy_from_campaign'),
+		'list_id'									=> $postValue('list_id'),
+		'country'									=> $postValue('country'),
+		'check_for_duplicates' 						=> $postValue('check_for_duplicates'),
+		'dial_method' 								=> $postValue('dial_method'),
 		'auto_dial_level'							=> $auto_dial_level,
-		'auto_dial_level_adv' 						=> $_POST['auto_dial_level_adv'],
+		'auto_dial_level_adv' 						=> $postValue('auto_dial_level_adv'),
 		'dial_prefix' 								=> $dial_prefix,
 		'custom_dial_prefix' 						=> $custom_dial_prefix,
-		'description' 								=> $_POST['description'],
-		'status' 									=> $_POST['status'],
-		'script' 									=> $_POST['script'],
-		'answering_machine_detection' 				=> $_POST['answering_machine_detection'],
-		'caller_id'									=> $_POST['caller_id'],
-		'force_reset_hopper' 						=> $_POST['force_reset_hopper'],
-		'campaign_recording' 						=> $_POST['campaign_recording'],
+		'description' 								=> $postValue('description'),
+		'status' 									=> $postValue('status'),
+		'script' 									=> $postValue('script'),
+		'answering_machine_detection' 				=> $postValue('answering_machine_detection'),
+		'caller_id'									=> $postValue('caller_id'),
+		'force_reset_hopper' 						=> $postValue('force_reset_hopper'),
+		'campaign_recording' 						=> $postValue('campaign_recording'),
 		'lead_file' 								=> $lead_file,
 		'leads' 									=> $leads,
 		'uploaded_wav'								=> $uploaded_wav

@@ -24,7 +24,7 @@
 	require_once(__DIR__ . '/DbHandler.php');
 
 	$db 										= new \creamy\DbHandler();
-	$uid 										= $_REQUEST['user_id'];
+	$uid 										= ($_REQUEST['user_id'] ?? '');
 	$image 										= $db->getUserAvatar($uid);
 
 	if (is_array($image)) {

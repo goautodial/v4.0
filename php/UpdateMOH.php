@@ -27,12 +27,12 @@ declare(strict_types=1);
     
     $api = \creamy\APIHandler::getInstance();
 
-    $moh_id = $_POST['moh_id'];
-    $moh_name = $_POST['moh_name'];
-    $user_group = $_POST['user_group'];
-    $active = $_POST['active'];
-    $filename = $_POST['filename'];
-    $random = $_POST['random'];
+    $moh_id = ($_POST['moh_id'] ?? '');
+    $moh_name = ($_POST['moh_name'] ?? '');
+    $user_group = ($_POST['user_group'] ?? '');
+    $active = ($_POST['active'] ?? '');
+    $filename = ($_POST['filename'] ?? '');
+    $random = ($_POST['random'] ?? '');
         
 	$postfields = [
 		'goAction' => 'goEditMOH',		

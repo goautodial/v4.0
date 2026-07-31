@@ -24,7 +24,7 @@
 	require_once(__DIR__ . '/APIHandler.php');
 
 	$api 										= \creamy\APIHandler::getInstance();
-	$pageTitle									= $_POST['pageTitle'];
+	$pageTitle									= ($_POST['pageTitle'] ?? '');
 	$fromDate 									= date('Y-m-d 00:00:01');
 	$toDate 									= date('Y-m-d 23:59:59');
 	$campaign_id 								= NULL;
@@ -34,41 +34,41 @@
 	$statuses									= NULL;
 
 	if (isset($_POST['pageTitle']) && $pageTitle != "call_export_report") {
-		$pageTitle 								= $_POST['pageTitle'];
+		$pageTitle 								= ($_POST['pageTitle'] ?? '');
 		$pageTitle								= stripslashes((string) $pageTitle);
 	}
 
 	if (isset($_POST["fromDate"])) {
-		$fromDate 								= date('Y-m-d H:i:s', strtotime($_POST['fromDate']));
+		$fromDate 								= date('Y-m-d H:i:s', strtotime(($_POST['fromDate'] ?? '')));
 	}
 
-	if ($_POST["toDate"] != "" && $_POST["fromDate"] != "") {
-		$toDate 								= date('Y-m-d H:i:s', strtotime($_POST['toDate']));
+	if (($_POST["toDate"] ?? '') != "" && ($_POST["fromDate"] ?? '') != "") {
+		$toDate 								= date('Y-m-d H:i:s', strtotime(($_POST['toDate'] ?? '')));
 	}
 
 
 	if (isset($_POST["campaignID"])) { 
-		$campaign_id 							= $_POST["campaignID"]; 
+		$campaign_id 							= ($_POST["campaignID"] ?? ''); 
 		$campaign_id 							= stripslashes((string) $campaign_id);
 	}
 
 	if (isset($_POST["request"])) {
-		$request 								= $_POST["request"];
+		$request 								= ($_POST["request"] ?? '');
 		$request								= stripslashes((string) $request);
 	}
 
 	if (isset($_POST["userID"])) {
-		$userID 								= $_POST["userID"];
+		$userID 								= ($_POST["userID"] ?? '');
 		$userID									= stripslashes((string) $userID);
 	}
 
 	if (isset($_POST["userGroup"])) {
-		$userGroup 								= $_POST["userGroup"];
+		$userGroup 								= ($_POST["userGroup"] ?? '');
 		$userGroup								= stripslashes((string) $userGroup);
 	}
 
 	if (isset($_POST["statuses"])) {
-		$statuses 								= $_POST["statuses"];
+		$statuses 								= ($_POST["statuses"] ?? '');
 		$statuses								= stripslashes($statuses);
 	}
 
@@ -91,13 +91,13 @@
 		if ($pageTitle == "stats") {
 			//print_r($output->getReports);
 			//$increment_color = "009688";
-			if ($_POST["request"] == "daily") {
+			if (($_POST["request"] ?? '') == "daily") {
 				$max = max($output->data_calls->hour0, $output->data_calls->hour1, $output->data_calls->hour2, $output->data_calls->hour3, $output->data_calls->hour4, $output->data_calls->hour5, $output->data_calls->hour6, $output->data_calls->hour7, $output->data_calls->hour8, $output->data_calls->hour9, $output->data_calls->hour10, $output->data_calls->hour11, $output->data_calls->hour12, $output->data_calls->hour13, $output->data_calls->hour14, $output->data_calls->hour15, $output->data_calls->hour16, $output->data_calls->hour17, $output->data_calls->hour18, $output->data_calls->hour19, $output->data_calls->hour20, $output->data_calls->hour21, $output->data_calls->hour22, $hour23);
 			}
-			if ($_POST["request"] == "weekly") {
+			if (($_POST["request"] ?? '') == "weekly") {
 				$max = max($output->data_calls->Day0, $output->data_calls->Day1, $output->data_calls->Day2, $output->data_calls->Day3, $output->data_calls->Day4, $output->data_calls->Day5, $output->data_calls->Day6);
 			}
-			if ($_POST["request"] == "monthly") {
+			if (($_POST["request"] ?? '') == "monthly") {
 				$max = max($output->data_calls->Month1, $output->data_calls->Month2, $output->data_calls->Month3, $output->data_calls->Month4, $output->data_calls->Month5, $output->data_calls->Month6, $output->data_calls->Month7, $output->data_calls->Month8, $output->data_calls->Month9, $output->data_calls->Month10, $output->data_calls->Month11, $output->data_calls->Month12);
 			}
 
@@ -139,7 +139,7 @@
 					<div class="panel widget bg-gray-light" style="height: 95px;">
 						<div class="row status-box">
 							<div class="col-xs-6 text-center bg-gray-lighter pv-md animated pulse">
-								<h2><?php echo count($output->data_agents->cuser);?></h2>
+								<h2><?php echo (isset($output->data_agents->cuser) && is_countable($output->data_agents->cuser) ? count($output->data_agents->cuser) : 0);?></h2>
 							</div>
 							<div class="col-xs-6 pv-lg">
 								<div class="text-sm">Total Agents</div>
@@ -170,7 +170,7 @@
 			<div class="row">
 				<div class="col-lg-4">
 						<?php
-							for($i = 0; $i < count($output->data_status->status); $i++) {
+							for($i = 0; $i < (isset($output->data_status->status) && is_countable($output->data_status->status) ? count($output->data_status->status) : 0); $i++) {
 								$percentage_stats = ($output->data_status->ccount[$i]/$output->total_calls)*100;
 								$percentage_stats = number_format($percentage_stats, 2);
 						?>
@@ -209,9 +209,9 @@
 				var datav3 = [
 
 				<?php
-						if ($_POST["request"] == "daily") {
+						if (($_POST["request"] ?? '') == "daily") {
 							if ($output->data_calls->cdate != NULL) { // if data exists
-								for($i = 0; $i < count($output->data_calls->cdate); $i++) {
+								for($i = 0; $i < (isset($output->data_calls->cdate) && is_countable($output->data_calls->cdate) ? count($output->data_calls->cdate) : 0); $i++) {
 									$cdate = $output->data_calls->cdate[$i];
 									$hour0 = $output->data_calls->hour0[$i];
 										if ($hour0 == NULL)$hour0 = 0;
@@ -293,7 +293,7 @@
 							echo '["7 AM",'. $hour7 .']';*/
 
 								$a = $i + 1;
-									if (count($output->data_calls->cdate) > $a)
+									if ((isset($output->data_calls->cdate) && is_countable($output->data_calls->cdate) ? count($output->data_calls->cdate) : 0) > $a)
 									echo ", ";
 								}
 							}else{ //if data is null
@@ -331,9 +331,9 @@
 							}
 						} //end of daily
 
-						else if ($_POST["request"] == "weekly") { // weekly
+						else if (($_POST["request"] ?? '') == "weekly") { // weekly
 							if ($output->data_calls->weekno != NULL) {
-								for($i = 0; $i < count($output->data_calls->weekno); $i++) {
+								for($i = 0; $i < (isset($output->data_calls->weekno) && is_countable($output->data_calls->weekno) ? count($output->data_calls->weekno) : 0); $i++) {
 									$weekno = $output->data_calls->weekno[$i];
 									$day0 = $output->data_calls->Day0[$i];
 										if ($day0 == NULL)$day0 = 0;
@@ -364,7 +364,7 @@
 							echo ']}';
 
 								$a = $i + 1;
-									if (count($output->data_calls->weekno) > $a)
+									if ((isset($output->data_calls->weekno) && is_countable($output->data_calls->weekno) ? count($output->data_calls->weekno) : 0) > $a)
 									echo ", ";
 								}
 							}else{ //if data is null
@@ -384,9 +384,9 @@
 									echo ']}';
 							}
 				}
-						else if ($_POST["request"] == "monthly") { // weekly
+						else if (($_POST["request"] ?? '') == "monthly") { // weekly
 							if ($output->data_calls->monthname != NULL) {
-								for($i = 0; $i < count($output->data_calls->monthname); $i++) {
+								for($i = 0; $i < (isset($output->data_calls->monthname) && is_countable($output->data_calls->monthname) ? count($output->data_calls->monthname) : 0); $i++) {
 									$monthname = $output->data_calls->monthname[$i];
 									$month1 = $output->data_calls->Month1[$i];
 										if ($month1 == NULL)$month1 = 0;
@@ -432,7 +432,7 @@
 							echo ']}';
 
 								$a = $i + 1;
-									if (count($output->data_calls->monthname) > $a)
+									if ((isset($output->data_calls->monthname) && is_countable($output->data_calls->monthname) ? count($output->data_calls->monthname) : 0) > $a)
 									echo ", ";
 								}
 							}else{ //if data is null
@@ -502,7 +502,7 @@
 				var data = [
 					<?php
 						if ($output->data_status->status != NULL) {
-							for($i = 0; $i < count($output->data_status->status); $i++) {
+							for($i = 0; $i < (isset($output->data_status->status) && is_countable($output->data_status->status) ? count($output->data_status->status) : 0); $i++) {
 					?>
 							{ "label": <?php echo '"'.$output->data_status->status_name[$i].'('.$output->data_status->status[$i].')"'; ?>,
 							"color": getRandomColor(),
@@ -510,7 +510,7 @@
 							}
 					<?php
 								$a = $i + 1;
-								if (count($output->data_status->status) > $a)
+								if ((isset($output->data_status->status) && is_countable($output->data_status->status) ? count($output->data_status->status) : 0) > $a)
 								echo ", ";
 							}
 						}else{

@@ -35,37 +35,37 @@
 
 	if ($validated === 1) {    
 		// collect new user data.	
-		$modifyid 							= $_POST["modifyid"];
+		$modifyid 							= ($_POST["modifyid"] ?? '');
 		
 		$group_name = NULL; if (isset($_POST["group_name"])) { 
-			$group_name 					= $_POST["group_name"]; 
+			$group_name 					= ($_POST["group_name"] ?? ''); 
 			$group_name 					= stripslashes((string) $group_name);
 		}
 		
 		$group_level = NULL; if (isset($_POST["group_level"])) { 
-			$group_level 					= $_POST["group_level"];
+			$group_level 					= ($_POST["group_level"] ?? '');
 			$group_level 					= stripslashes((string) $group_level);
 		}
 
 		$forced_timeclock_login = NULL; if (isset($_POST["forced_timeclock_login"])) { 
-			$forced_timeclock_login 		= $_POST["forced_timeclock_login"]; 
+			$forced_timeclock_login 		= ($_POST["forced_timeclock_login"] ?? ''); 
 			$forced_timeclock_login 		= stripslashes((string) $forced_timeclock_login);
 		}
 		
 		$shift_enforcement = NULL; if (isset($_POST["shift_enforcement"])) { 
-			$shift_enforcement 				= $_POST["shift_enforcement"]; 
+			$shift_enforcement 				= ($_POST["shift_enforcement"] ?? ''); 
 			$shift_enforcement 				= stripslashes((string) $shift_enforcement);
 		}
 		
 		$allowed_usergroups = NULL; if (isset($_POST["admin_viewable_groups"])) { 
-			$allowed_usergroups 			= $_POST["admin_viewable_groups"]; 
+			$allowed_usergroups 			= ($_POST["admin_viewable_groups"] ?? ''); 
 			$allowed_usergroups 			= stripslashes($allowed_usergroups);
 		}
 		
 		$allowed_campaigns 					= " ";
-		$allowed_camp 						= $_REQUEST['allowed_camp'];
+		$allowed_camp 						= ($_REQUEST['allowed_camp'] ?? '');
 		
-		if (count($allowed_camp) > 0) {
+		if ((is_countable($allowed_camp) ? count($allowed_camp) : 0) > 0) {
 			foreach ($allowed_camp as $camp) {
 				$allowed_campaigns 			.= "{$camp} ";
 			}

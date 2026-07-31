@@ -24,9 +24,9 @@ declare(strict_types=1);
 
 	require_once(__DIR__ . '/APIHandler.php');
 
-	$campaign_id = $_POST['campaign_id'];
-	$areacode = $_POST['areacode'];
-	$outbound_cid = $_POST['outbound_cid'];
+	$campaign_id = ($_POST['campaign_id'] ?? '');
+	$areacode = ($_POST['areacode'] ?? '');
+	$outbound_cid = ($_POST['outbound_cid'] ?? '');
 
 	$api 										= \creamy\APIHandler::getInstance();
 

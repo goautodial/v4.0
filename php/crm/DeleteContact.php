@@ -33,7 +33,7 @@ declare(strict_types=1);
 	if ($validated === 1) {
 		$postfields 							= [
 			"goAction" 								=> "goDeleteLead",
-			"lead_id" 								=> $_POST["leadid"]
+			"lead_id" 								=> ($_POST["leadid"] ?? '')
 		];
 
 		$output 								= $api->API_Request("goGetLeads", $postfields);

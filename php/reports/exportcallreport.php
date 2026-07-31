@@ -51,7 +51,7 @@
 									<div class="">
 										<select multiple="multiple" class="select2-3 form-control" id="selected_campaigns" name="campaigns[]" style="width:100%;">';
 											$display .= '<option value="ALL" selected>--- ALL CAMPAIGNS ---</option>';
-											for($i=0; $i < count($campaigns->campaign_id);$i++) {
+											for($i=0; $i < (isset($campaigns->campaign_id) && is_countable($campaigns->campaign_id) ? count($campaigns->campaign_id) : 0);$i++) {
 												$isSelected = '';
 												if ($i < 1 && EXPORTCALLREPORT_ALLCAMPAIGNS !== "y") {
 													$isSelected = ' selected';
@@ -72,7 +72,7 @@
 											$display .= '<option value="ALL">--- ALL ---</option>
 ';
 
-											for($i=0; $i < count($inbound->group_id);$i++) {
+											for($i=0; $i < (isset($inbound->group_id) && is_countable($inbound->group_id) ? count($inbound->group_id) : 0);$i++) {
 												if ($session_group !== "ADMIN" && preg_match("/^AGENTDIRECT/", $inbound->group_id[$i])) continue;
 												$display .= '<option value="'.$inbound->group_id[$i].'">'.$inbound->group_id[$i].' - '.$inbound->group_name[$i].'</option>';
 											}
@@ -90,7 +90,7 @@
 									<div class="">
 										<select multiple="multiple" class="select2-3 form-control" id="selected_lists" name="lists[]" style="width:100%;">';
 										$display .= '<option value="ALL" selected>--- ALL ---</option>';
-											for($i=0; $i < count($list->list_id);$i++) {
+											for($i=0; $i < (isset($list->list_id) && is_countable($list->list_id) ? count($list->list_id) : 0);$i++) {
 												$display .= '<option value="'.$list->list_id[$i].'">'.$list->list_id[$i].' - '.$list->list_name[$i].'</option>';
 											}
 			$display .= '				 </select>
@@ -105,9 +105,9 @@
 									<div class="">
 										<select multiple="multiple" class="select2-3 form-control" id="selected_statuses" name="statuses[]" style="width:100%;">';
 										$display .= '<option value="ALL" selected>--- ALL ---</option>';
-											for($i=0; $i < count($disposition->status);$i++) {
+											for($i=0; $i < (isset($disposition->status) && is_countable($disposition->status) ? count($disposition->status) : 0);$i++) {
 												if($disposition->campaign_id[$i] != NULL){
-													if(in_array($disposition->status[$i], $campaigns->campaign_id)){
+													if(in_array($disposition->status[$i], (is_array($campaigns->campaign_id) ? $campaigns->campaign_id : []))){
 														$display .= '<option value="'.$disposition->status_name[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
 													}
 												} else {

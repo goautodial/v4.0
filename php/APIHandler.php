@@ -278,7 +278,7 @@
 			$return = NULL;
 			if (!empty($permissions)) {
 				$types = explode(",", (string) $type);
-				if (count($types) > 1) {
+				if ((is_countable($types) ? count($types) : 0) > 1) {
 					$return = new \stdClass();
 					foreach ($types as $t) {
 						$t = trim($t);
@@ -326,7 +326,7 @@
 
 			//set the url, number of POST vars, POST data
 			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_POST, count($fields));
+			curl_setopt($ch, CURLOPT_POST, (is_countable($fields) ? count($fields) : 0));
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
@@ -567,10 +567,13 @@
 
 		public function getAllCampaignStatuses(){
 			$campaign = $this->API_getAllCampaigns();
-            $counter = count($campaign->campaign_id);
+			$status = [];
+			$status_name = [];
+            $counter = (isset($campaign->campaign_id) && is_countable($campaign->campaign_id) ? count($campaign->campaign_id) : 0);
 			for($i=0;$i < $counter;$i++){
 				$campdialStatus = $this->API_getAllCampaignDialStatuses($campaign->campaign_id[$i]);
-				for($x=0;$x<count($campdialStatus->status);$x++){
+				$statusCounter = (isset($campdialStatus->status) && is_countable($campdialStatus->status) ? count($campdialStatus->status) : 0);
+				for($x=0;$x<$statusCounter;$x++){
 					$status[] = $campdialStatus->status[$x];
 					$status_name[] = $campdialStatus->status_name[$x];
 				}

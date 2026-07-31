@@ -45,8 +45,8 @@ if ($validated === 1) {
 
 	// check password	
 	$userid = $user->getUserId();
-	$messageids = $_POST["messageids"];
-	$folder = $_POST["folder"];
+	$messageids = ($_POST["messageids"] ?? '');
+	$folder = ($_POST["folder"] ?? '');
 
 	$result = $db->deleteMessages($userid, $messageids, $folder);
 	if ($result === false) {

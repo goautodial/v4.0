@@ -33,16 +33,16 @@ $api = \creamy\APIHandler::getInstance();
 	$postfields["goPass"] = goPass; #Password goes here. (required)
 	$postfields["goAction"] = "goDeleteCustomField"; #action performed by the [[API:Functions]]. (required)
 	$postfields["responsetype"] = responsetype; #json. (required)
-	$postfields["list_id"] = $_POST['list_id'];
-	$postfields["field_id"] = $_POST['field_id'];
-	$postfields["field_label"] = $_POST['field_label'];
+	$postfields["list_id"] = ($_POST['list_id'] ?? '');
+	$postfields["field_id"] = ($_POST['field_id'] ?? '');
+	$postfields["field_label"] = ($_POST['field_label'] ?? '');
 */
 
 	$postfields = [
         'goAction' => 'goDeleteCustomField',
-        'list_id' => $_POST["list_id"],
-        'field_id' => $_POST["field_id"],
-        'field_label' => $_POST["field_label"]
+        'list_id' => ($_POST["list_id"] ?? ''),
+        'field_id' => ($_POST["field_id"] ?? ''),
+        'field_label' => ($_POST["field_label"] ?? '')
     ];
 
     $output = $api->API_Request("goCustomFields", $postfields);

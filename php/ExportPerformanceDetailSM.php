@@ -29,7 +29,7 @@ ini_set('memory_limit', '2048M');
     $postfields["goAction"] = "goGetAgentPerformanceDetails";
 
     if(isset($_POST['campaigns']) && $_POST['campaigns'] != NULL){
-		$campaigns = $_POST['campaigns'];
+		$campaigns = ($_POST['campaigns'] ?? '');
 		$campaigns = implode(",", $campaigns);
 		$postfields["campaigns"] = $campaigns;
 	}else{
@@ -39,8 +39,8 @@ ini_set('memory_limit', '2048M');
     $request = "EXPORT";
     $postfields["request"] = $request;
     
-    $toDate = date('Y-m-d H:i:s', strtotime($_POST['toDate']));
-    $fromDate = date('Y-m-d H:i:s', strtotime($_POST['fromDate']));
+    $toDate = date('Y-m-d H:i:s', strtotime(($_POST['toDate'] ?? '')));
+    $fromDate = date('Y-m-d H:i:s', strtotime(($_POST['fromDate'] ?? '')));
 
     if($toDate != NULL)
     $postfields["toDate"] = $toDate;

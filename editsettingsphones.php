@@ -34,7 +34,7 @@
 
 $extenid = NULL;
 if (isset($_POST["extenid"])) {
-	$extenid = $_POST["extenid"];
+	$extenid = ($_POST["extenid"] ?? '');
 }
 
 ?>

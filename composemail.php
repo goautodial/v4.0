@@ -38,15 +38,15 @@ $user = \creamy\CreamyUser::currentUser();
 
 // get parameters
 if (isset($_GET["reply_text"])) {
-	$reply_text = $_GET["reply_text"];
+	$reply_text = ($_GET["reply_text"] ?? '');
 } else $reply_text = "";
 
 if (isset($_GET["reply_user"])) {
-	$reply_user = $_GET["reply_user"];
+	$reply_user = ($_GET["reply_user"] ?? '');
 } else $reply_user = null;
 
 if (isset($_GET["reply_subject"])) {
-	$reply_subject = $_GET["reply_subject"];
+	$reply_subject = ($_GET["reply_subject"] ?? '');
 } else $reply_subject = "";
 
 $folder = MESSAGES_GET_INBOX_MESSAGES;

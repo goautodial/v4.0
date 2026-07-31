@@ -21,15 +21,15 @@ $ch = curl_init();
      $output = json_decode($data);
      
      /*
-     $data = explode(";",$data);
+     $data = explode(";", (string) ($data ?? ''));
     foreach ($data AS $temp) {
-      $temp = explode("=",$temp);
+      $temp = explode("=", (string) ($temp ?? ''));
       $cluster[$temp[0]] = $temp[1];
     }
     */
 
     if($output->result=="success"){
-        $counter = count($output->campaign_id);
+        $counter = (isset($output->campaign_id) && is_countable($output->campaign_id) ? count($output->campaign_id) : 0);
         for($i=0;$i < $counter;$i++){
                 if(isset($_POST['api1'])){
                         echo $output->campaign_id[$i];

@@ -24,7 +24,7 @@
 	require_once(__DIR__ . '/APIHandler.php');
 	$api 							= \creamy\APIHandler::getInstance();
 	
-	$campaign_id 					= $_POST["campaign_id"];
+	$campaign_id 					= ($_POST["campaign_id"] ?? '');
 	$user_group						= $_SESSION["usergroup"];
 	$perm 							= $api->goGetPermissions('pausecodes');
 
@@ -32,7 +32,7 @@
 
 	$data 							= '[';
 	$i								= 0;
-    $counter = count($output->campaign_id);
+    $counter = (isset($output->campaign_id) && is_countable($output->campaign_id) ? count($output->campaign_id) : 0);
 	
 	for($i=0;$i<=$counter;$i++) {
 		if(!empty($output->pause_code[$i])){

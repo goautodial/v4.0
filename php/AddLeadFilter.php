@@ -27,27 +27,27 @@ $api = \creamy\APIHandler::getInstance();
 $validate = 0;
 
 if(isset($_POST['lf_id'])){
-	$lf_id = $_POST['lf_id'];
+	$lf_id = ($_POST['lf_id'] ?? '');
 }else{
 	$validate = 1;
 }
 if(isset($_POST['lf_name'])){
-	$lf_name = $_POST['lf_name'];
+	$lf_name = ($_POST['lf_name'] ?? '');
 }else{
 	$validate = 1;
 }
 if(isset($_POST['lf_comments'])){
-	$lf_comments = $_POST['lf_comments'];
+	$lf_comments = ($_POST['lf_comments'] ?? '');
 }else{
 	$validate = 1;
 }
 if(isset($_POST['lf_sql'])){
-	$lf_sql = $_POST['lf_sql'];
+	$lf_sql = ($_POST['lf_sql'] ?? '');
 }else{
 	$validate = 1;
 }
 if(isset($_POST['user_group'])){
-	$user_group = $_POST['user_group'];
+	$user_group = ($_POST['user_group'] ?? '');
 }else{
 	$validate = 1;
 }
@@ -65,8 +65,8 @@ if($validate === 0){
     $postfields["lead_filter_sql"] = $lf_sql; #lead filter SQL. (required)
     $postfields["user_group"] = $user_group; #user group. (required)
 
-    $postfields["log_user"] = $_POST['log_user'];
-    $postfields["log_group"] = $_POST['log_group'];
+    $postfields["log_user"] = ($_POST['log_user'] ?? '');
+    $postfields["log_group"] = ($_POST['log_group'] ?? '');
     $postfields["log_ip"] = $_SERVER['REMOTE_ADDR'];
     */
 
@@ -82,7 +82,7 @@ if($validate === 0){
     $output = $api->API_addLeadFilter($postfields);
 
     if ($output->result=="success") {
-        $status = "Added New Filter ID: ".$_REQUEST['lead_filter_id'];
+        $status = "Added New Filter ID: ".($_REQUEST['lead_filter_id'] ?? '');
      } else {
         $status = $output->result;
     }

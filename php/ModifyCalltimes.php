@@ -35,93 +35,93 @@
 
 	if ($validated === 1) {		
 		// collect new user data.	
-		$modifyid = $_POST["modifyid"];		
+		$modifyid = ($_POST["modifyid"] ?? '');		
 		$calltime_name = NULL; if (isset($_POST["calltime_name"])) { 
-			$calltime_name = $_POST["calltime_name"]; 
+			$calltime_name = ($_POST["calltime_name"] ?? ''); 
 			$calltime_name = stripslashes((string) $calltime_name);
 		}
 		
 		$calltime_comments = NULL; if (isset($_POST["calltime_comments"])) { 
-			$calltime_comments = $_POST["calltime_comments"];
+			$calltime_comments = ($_POST["calltime_comments"] ?? '');
 			$calltime_comments = stripslashes($calltime_comments);
 		}
 
 		$usergroup = NULL; if (isset($_POST["usergroup"])) { 
-			$usergroup = $_POST["usergroup"]; 
+			$usergroup = ($_POST["usergroup"] ?? ''); 
 			$usergroup = stripslashes((string) $usergroup);
 		}
 
 		$url = gourl."/goCalltimes/goAPI.php"; #URL to GoAutoDial API. (required)
 		
-		if($_POST['start_default'] != "")
-			$start_default =  date('Hi', strtotime($_POST['start_default']));
+		if(($_POST['start_default'] ?? '') != "")
+			$start_default =  date('Hi', strtotime(($_POST['start_default'] ?? '')));
 		else
 			$start_default =  "0";
-		if($_POST['stop_default'] != "")
-			$stop_default =  date('Hi', strtotime($_POST['stop_default']));
+		if(($_POST['stop_default'] ?? '') != "")
+			$stop_default =  date('Hi', strtotime(($_POST['stop_default'] ?? '')));
 		else
 			$stop_default =  "0";
 			
-		if($_POST['start_sunday'] != "")
-			$start_sunday =  date('Hi', strtotime($_POST['start_sunday']));
+		if(($_POST['start_sunday'] ?? '') != "")
+			$start_sunday =  date('Hi', strtotime(($_POST['start_sunday'] ?? '')));
 		else
 			$start_sunday =  "0";
-		if($_POST['stop_sunday'] != "")
-			$stop_sunday =  date('Hi', strtotime($_POST['stop_sunday']));
+		if(($_POST['stop_sunday'] ?? '') != "")
+			$stop_sunday =  date('Hi', strtotime(($_POST['stop_sunday'] ?? '')));
 		else
 			$stop_sunday =  "0";
 			
-		if($_POST['start_monday'] != "")
-			$start_monday =  date('Hi', strtotime($_POST['start_monday']));
+		if(($_POST['start_monday'] ?? '') != "")
+			$start_monday =  date('Hi', strtotime(($_POST['start_monday'] ?? '')));
 		else
 			$start_monday =  "0";
-		if($_POST['stop_monday'] != "")
-			$stop_monday =  date('Hi', strtotime($_POST['stop_monday']));
+		if(($_POST['stop_monday'] ?? '') != "")
+			$stop_monday =  date('Hi', strtotime(($_POST['stop_monday'] ?? '')));
 		else
 			$stop_monday =  "0";
 			
-		if($_POST['start_tuesday'] != "")
-			$start_tuesday =  date('Hi', strtotime($_POST['start_tuesday']));
+		if(($_POST['start_tuesday'] ?? '') != "")
+			$start_tuesday =  date('Hi', strtotime(($_POST['start_tuesday'] ?? '')));
 		else
 			$start_tuesday =  "0";
-		if($_POST['stop_tuesday'] != "")
-			$stop_tuesday =  date('Hi', strtotime($_POST['stop_tuesday']));
+		if(($_POST['stop_tuesday'] ?? '') != "")
+			$stop_tuesday =  date('Hi', strtotime(($_POST['stop_tuesday'] ?? '')));
 		else
 			$stop_tuesday =  "0";
 			
-		if($_POST['start_wednesday'] != "")
-			$start_wednesday =  date('Hi', strtotime($_POST['start_wednesday']));
+		if(($_POST['start_wednesday'] ?? '') != "")
+			$start_wednesday =  date('Hi', strtotime(($_POST['start_wednesday'] ?? '')));
 		else
 			$start_wednesday =  "0";
-		if($_POST['stop_wednesday'] != "")
-			$stop_wednesday =  date('Hi', strtotime($_POST['stop_wednesday']));
+		if(($_POST['stop_wednesday'] ?? '') != "")
+			$stop_wednesday =  date('Hi', strtotime(($_POST['stop_wednesday'] ?? '')));
 		else
 			$stop_wednesday =  "0";
 			
-		if($_POST['start_thursday'] != "")
-			$start_thursday =  date('Hi', strtotime($_POST['start_thursday']));
+		if(($_POST['start_thursday'] ?? '') != "")
+			$start_thursday =  date('Hi', strtotime(($_POST['start_thursday'] ?? '')));
 		else
 			$start_thursday =  "0";
-		if($_POST['stop_thursday'] != "")
-			$stop_thursday =  date('Hi', strtotime($_POST['stop_thursday']));
+		if(($_POST['stop_thursday'] ?? '') != "")
+			$stop_thursday =  date('Hi', strtotime(($_POST['stop_thursday'] ?? '')));
 		else
 			$stop_thursday =  "0";
 			
-		if($_POST['start_friday'] != "")
-			$start_friday =  date('Hi', strtotime($_POST['start_friday']));
+		if(($_POST['start_friday'] ?? '') != "")
+			$start_friday =  date('Hi', strtotime(($_POST['start_friday'] ?? '')));
 		else
 			$start_friday =  "0";
-		if($_POST['stop_friday'] != "")
-			$stop_friday =  date('Hi', strtotime($_POST['stop_friday']));
+		if(($_POST['stop_friday'] ?? '') != "")
+			$stop_friday =  date('Hi', strtotime(($_POST['stop_friday'] ?? '')));
 		else
 			$stop_friday =  "0";
 			
-		if($_POST['start_saturday'] != "")
-			$start_saturday =  date('Hi', strtotime($_POST['start_saturday']));
+		if(($_POST['start_saturday'] ?? '') != "")
+			$start_saturday =  date('Hi', strtotime(($_POST['start_saturday'] ?? '')));
 		else
 			$start_saturday =  "0";
-		if($_POST['stop_saturday'] != "")
-			$stop_saturday =  date('Hi', strtotime($_POST['stop_saturday']));
+		if(($_POST['stop_saturday'] ?? '') != "")
+			$stop_saturday =  date('Hi', strtotime(($_POST['stop_saturday'] ?? '')));
 		else
 			$stop_saturday =  "0";
 		
@@ -147,14 +147,14 @@
 			"ct_friday_stop"    => $stop_friday,
 			"ct_saturday_start" => $start_saturday,
 			"ct_saturday_stop"  => $stop_saturday,
-			"default_audio" => $_POST["audio_default"],
-			"sunday_audio" => $_POST["audio_sunday"],
-			"monday_audio" => $_POST["audio_monday"],
-			"tuesday_audio" => $_POST["audio_tuesday"],
-			"wednesday_audio" => $_POST["audio_wednesday"],
-			"thursday_audio" => $_POST["audio_thursday"],
-			"friday_audio" => $_POST["audio_friday"],
-			"saturday_audio" => $_POST["audio_saturday"]		
+			"default_audio" => ($_POST["audio_default"] ?? ''),
+			"sunday_audio" => ($_POST["audio_sunday"] ?? ''),
+			"monday_audio" => ($_POST["audio_monday"] ?? ''),
+			"tuesday_audio" => ($_POST["audio_tuesday"] ?? ''),
+			"wednesday_audio" => ($_POST["audio_wednesday"] ?? ''),
+			"thursday_audio" => ($_POST["audio_thursday"] ?? ''),
+			"friday_audio" => ($_POST["audio_friday"] ?? ''),
+			"saturday_audio" => ($_POST["audio_saturday"] ?? '')		
 		];	
 		
 		$output = $api->API_editCalltime($postfields);

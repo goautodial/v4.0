@@ -37,7 +37,7 @@ declare(strict_types=1);
 	if ($validated === 1) {
 		$postfields 					= [
 			'goAction' 						=> 'goDeleteVoicemail',
-			'voicemail_id' 					=> $_POST['voicemail_id']
+			'voicemail_id' 					=> ($_POST['voicemail_id'] ?? '')
 		];
 
 		$output 						= $api->API_Request("goVoicemails", $postfields);

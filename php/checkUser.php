@@ -28,9 +28,9 @@ declare(strict_types=1);
 
 	$postfields = [
 		'goAction' => 'goCheckUser',
-		'user' => $_POST['user'],
-		'phone_login' => $_POST["phone_login"],
-		'type' => $_POST["type"]
+		'user' => ($_POST['user'] ?? ''),
+		'phone_login' => ($_POST["phone_login"] ?? ''),
+		'type' => ($_POST["type"] ?? '')
 	];
 
 	$output = $api->API_checkUser($postfields);

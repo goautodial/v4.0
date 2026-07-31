@@ -31,245 +31,245 @@
 
 	$groupid 									= NULL;
 	if (isset($_POST["modify_groupid"])) {
-		$groupid 								= $_POST["modify_groupid"];
+		$groupid 								= ($_POST["modify_groupid"] ?? '');
 	}
 
 	$ivr 										= NULL;
 	if (isset($_POST["modify_ivr"])) {
-		$ivr 									= $_POST["modify_ivr"];
+		$ivr 									= ($_POST["modify_ivr"] ?? '');
 	}
 
 	$did 										= NULL;
 	if (isset($_POST["modify_did"])) {
-		$did 									= $_POST["modify_did"];
+		$did 									= ($_POST["modify_did"] ?? '');
 	}
 
 	// INGROUPS
 	if ($groupid != NULL) {
 		// collect new user data.	
-		$modify_groupid 						= $_POST["modify_groupid"];
+		$modify_groupid 						= ($_POST["modify_groupid"] ?? '');
 		
 		$desc				 					= NULL; 
 		if (isset($_POST["desc"])) { 
-			$desc 								= $_POST["desc"]; 
+			$desc 								= ($_POST["desc"] ?? ''); 
 			$desc 								= stripslashes((string) $desc);
 		}
 		
 		$color 									= NULL; 
 		if (isset($_POST["color"])) { 
-			$color 								= $_POST["color"];
+			$color 								= ($_POST["color"] ?? '');
 			$color 								= str_replace("#", '', $color);
 			$color 								= stripslashes($color);
 		}
 
 		$status 								= NULL; 
 		if (isset($_POST["status"])) { 
-			$status 							= $_POST["status"]; 
+			$status 							= ($_POST["status"] ?? ''); 
 			$status 							= stripslashes($status);
 		}
 		
 		$webform 								= NULL; 
 		if (isset($_POST["webform"])) { 
-			$webform 							= $_POST["webform"]; 
+			$webform 							= ($_POST["webform"] ?? ''); 
 			$webform 							= stripslashes((string) $webform);
 		}
 		
 		$nextagent 								= NULL; 
 		if (isset($_POST["nextagent"])) { 
-			$nextagent 							= $_POST["nextagent"]; 
+			$nextagent 							= ($_POST["nextagent"] ?? ''); 
 			$nextagent 							= stripslashes((string) $nextagent);
 		}
 		
 		$prio 									= NULL; 
 		if (isset($_POST["priority"])) { 
-			$prio 								= $_POST["priority"]; 
+			$prio 								= ($_POST["priority"] ?? ''); 
 			$prio 								= stripslashes((string) $prio);
 		}
 		
 		$display 								= NULL; 
 		if (isset($_POST["display"])) { 
-			$display 							= $_POST["display"]; 
+			$display 							= ($_POST["display"] ?? ''); 
 			$display 							= stripslashes((string) $display);
 		}
 		
 		$script 								= NULL; 
 		if (isset($_POST["script"])) { 
-			$script 							= $_POST["script"]; 
+			$script 							= ($_POST["script"] ?? ''); 
 			$script 							= stripslashes((string) $script);
 		}
 		
 		$call_time_id 							= NULL; 
 		if (isset($_POST["call_time_id"])) { 
-			$call_time_id 						= $_POST["call_time_id"]; 
+			$call_time_id 						= ($_POST["call_time_id"] ?? ''); 
 			$call_time_id 						= stripslashes((string) $call_time_id);
 		}
 	// -------
 
 		$drop_call_seconds 						= NULL; 
 		if (isset($_POST["drop_call_seconds"])) { 
-			$drop_call_seconds 					= $_POST["drop_call_seconds"]; 
+			$drop_call_seconds 					= ($_POST["drop_call_seconds"] ?? ''); 
 			$drop_call_seconds 					= stripslashes($drop_call_seconds);
 		}
 		
 		$drop_action 							= NULL; 
 		if (isset($_POST["drop_action"])) { 
-			$drop_action 						= $_POST["drop_action"]; 
+			$drop_action 						= ($_POST["drop_action"] ?? ''); 
 			$drop_action 						= stripslashes((string) $drop_action);
 		}
 		
 		$drop_exten 							= NULL; 
 		if (isset($_POST["drop_exten"])) { 
-			$drop_exten 						= $_POST["drop_exten"]; 
+			$drop_exten 						= ($_POST["drop_exten"] ?? ''); 
 			$drop_exten 						= stripslashes((string) $drop_exten);
 		}
 		
 		$voicemail_ext 							= NULL;
 		if (isset($_POST["voicemail_ext"])) { 
-			$voicemail_ext 						= $_POST["voicemail_ext"]; 
+			$voicemail_ext 						= ($_POST["voicemail_ext"] ?? ''); 
 			$voicemail_ext 						= stripslashes((string) $voicemail_ext);
 		}
 		
 		$drop_inbound_group 					= NULL; 
 		if (isset($_POST["drop_inbound_group"])) { 
-			$drop_inbound_group 				= $_POST["drop_inbound_group"]; 
+			$drop_inbound_group 				= ($_POST["drop_inbound_group"] ?? ''); 
 			$drop_inbound_group 				= stripslashes((string) $drop_inbound_group);
 		}
 		
 		$drop_callmenu 							= NULL; 
 		if (isset($_POST["drop_callmenu"])) { 
-			$drop_callmenu 						= $_POST["drop_callmenu"]; 
+			$drop_callmenu 						= ($_POST["drop_callmenu"] ?? ''); 
 			$drop_callmenu 						= stripslashes((string) $drop_callmenu);
 		}
 		
 		$after_hours_action 					= NULL; 
 		if (isset($_POST["after_hours_action"])) { 
-			$after_hours_action 				= $_POST["after_hours_action"]; 
+			$after_hours_action 				= ($_POST["after_hours_action"] ?? ''); 
 			$after_hours_action 				= stripslashes((string) $after_hours_action);
 		}
 		
 		$after_hours_voicemail 					= NULL; 
 		if (isset($_POST["after_hours_voicemail"])) { 
-			$after_hours_voicemail 				= $_POST["after_hours_voicemail"]; 
+			$after_hours_voicemail 				= ($_POST["after_hours_voicemail"] ?? ''); 
 			$after_hours_voicemail 				= stripslashes((string) $after_hours_voicemail);
 		}
 		
 		$after_hours_exten 						= NULL; 
 		if (isset($_POST["after_hours_exten"])) { 
-			$after_hours_exten 					= $_POST["after_hours_exten"]; 
+			$after_hours_exten 					= ($_POST["after_hours_exten"] ?? ''); 
 			$after_hours_exten 					= stripslashes((string) $after_hours_exten);
 		}
 		
 		$after_hours_message_filename 			= NULL; 
 		if (isset($_POST["after_hours_message_filename"])) { 
-			$after_hours_message_filename 		= $_POST["after_hours_message_filename"]; 
+			$after_hours_message_filename 		= ($_POST["after_hours_message_filename"] ?? ''); 
 			$after_hours_message_filename 		= stripslashes((string) $after_hours_message_filename);
 		}
 		
 		$after_hours_callmenu 					= NULL; 
 		if (isset($_POST["after_hours_callmenu"])) { 
-			$after_hours_callmenu 				= $_POST["after_hours_callmenu"]; 
+			$after_hours_callmenu 				= ($_POST["after_hours_callmenu"] ?? ''); 
 			$after_hours_callmenu 				= stripslashes((string) $after_hours_callmenu);
 		}
 		
 		$get_call_launch 						= NULL; 
 		if (isset($_POST["call_launch"])) { 
-			$get_call_launch 					= $_POST["call_launch"]; 
+			$get_call_launch 					= ($_POST["call_launch"] ?? ''); 
 			$get_call_launch 					= stripslashes((string) $get_call_launch);
 		}
 		
 		$no_agent_no_queue 						= NULL; 
 		if (isset($_POST["no_agent_no_queue"])) { 
-			$no_agent_no_queue 					= $_POST["no_agent_no_queue"]; 
+			$no_agent_no_queue 					= ($_POST["no_agent_no_queue"] ?? ''); 
 			$no_agent_no_queue 					= stripslashes((string) $no_agent_no_queue);
 		}
 		
 		$no_agent_action 						= NULL; 
 		if (isset($_POST["no_agent_action"])) { 
-			$no_agent_action 					= $_POST["no_agent_action"]; 
+			$no_agent_action 					= ($_POST["no_agent_action"] ?? ''); 
 			$no_agent_action 					= stripslashes((string) $no_agent_action);
 		}
 		
 		$no_agent_action_value					= NULL; 
 		if (isset($_POST["no_agent_action_value"])) { 
-			$no_agent_action_value 				= $_POST["no_agent_action_value"]; 
+			$no_agent_action_value 				= ($_POST["no_agent_action_value"] ?? ''); 
 			$no_agent_action_value 				= stripslashes((string) $no_agent_action_value);
 		}
 		
 		$no_agents_exten 						= NULL; 
 		if (isset($_POST["no_agents_exten"])) { 
-			$no_agents_exten 					= $_POST["no_agents_exten"]; 
+			$no_agents_exten 					= ($_POST["no_agents_exten"] ?? ''); 
 			$no_agents_exten 					= stripslashes((string) $no_agents_exten);
 		}
 		
 		$no_agents_voicemail 					= NULL; 
 		if (isset($_POST["no_agents_voicemail"])) { 
-			$no_agents_voicemail 				= $_POST["no_agents_voicemail"]; 
+			$no_agents_voicemail 				= ($_POST["no_agents_voicemail"] ?? ''); 
 			$no_agents_voicemail 				= stripslashes((string) $no_agents_voicemail);
 		}
 		
 		$no_agents_ingroup 						= NULL; 
 		if (isset($_POST["no_agents_ingroup"])) { 
-			$no_agents_ingroup 					= $_POST["no_agents_ingroup"]; 
+			$no_agents_ingroup 					= ($_POST["no_agents_ingroup"] ?? ''); 
 			$no_agents_ingroup 					= stripslashes((string) $no_agents_ingroup);
 		}
 		
 		$no_agents_callmenu 					= NULL; 
 		if (isset($_POST["no_agents_callmenu"])) { 
-			$no_agents_callmenu 				= $_POST["no_agents_callmenu"]; 
+			$no_agents_callmenu 				= ($_POST["no_agents_callmenu"] ?? ''); 
 			$no_agents_callmenu 				= stripslashes((string) $no_agents_callmenu);
 		}
 		
 		$no_agents_did	 					= NULL; 
 		if (isset($_POST["no_agents_did"])) { 
-			$no_agents_did 					= $_POST["no_agents_did"]; 
+			$no_agents_did 					= ($_POST["no_agents_did"] ?? ''); 
 			$no_agents_did 					= stripslashes((string) $no_agents_did);
 		}
 		
 		$no_agents_extension 					= NULL; 
 		if (isset($_POST["no_agents_extension"])) { 
-			$no_agents_extension				= $_POST["no_agents_extension"]; 
+			$no_agents_extension				= ($_POST["no_agents_extension"] ?? ''); 
 			$no_agents_extension				= stripslashes((string) $no_agents_extension);
 		}
 		
 		$no_agents_extension_context 				= NULL; 
 		if (isset($_POST["no_agents_extension_context"])) { 
-			$no_agents_extension_context			= $_POST["no_agents_extension_context"]; 
+			$no_agents_extension_context			= ($_POST["no_agents_extension_context"] ?? ''); 
 			$no_agents_extension_context			= stripslashes((string) $no_agents_extension_context);
 		}
 		
 		$welcome_message_filename 				= NULL; 
 		if (isset($_POST["welcome_message_filename"])) { 
-			$welcome_message_filename 			= $_POST["welcome_message_filename"]; 
+			$welcome_message_filename 			= ($_POST["welcome_message_filename"] ?? ''); 
 			$welcome_message_filename 			= stripslashes((string) $welcome_message_filename);
 		}
 		
 		$play_welcome_message 					= NULL; 
 		if (isset($_POST["play_welcome_message"])) { 
-			$play_welcome_message 				= $_POST["play_welcome_message"]; 
+			$play_welcome_message 				= ($_POST["play_welcome_message"] ?? ''); 
 			$play_welcome_message 				= stripslashes((string) $play_welcome_message);
 		}
 		
 		$moh_context 							= NULL; 
 		if (isset($_POST["moh_context"])) { 
-			$moh_context 						= $_POST["moh_context"]; 
+			$moh_context 						= ($_POST["moh_context"] ?? ''); 
 			$moh_context 						= stripslashes((string) $moh_context);
 		}
 		
 		$onhold_prompt_filename 				= NULL; 
 		if (isset($_POST["onhold_prompt_filename"])) { 
-			$onhold_prompt_filename 			= $_POST["onhold_prompt_filename"]; 
+			$onhold_prompt_filename 			= ($_POST["onhold_prompt_filename"] ?? ''); 
 			$onhold_prompt_filename 			= stripslashes((string) $onhold_prompt_filename);
 		}
 		
 		$no_agents_extension_context					= NULL;
 		if (isset($_POST["no_agents_extension_context"])) {
-			$no_agents_extension_context 				= $_POST["no_agents_extension_context"];
+			$no_agents_extension_context 				= ($_POST["no_agents_extension_context"] ?? '');
 			$no_agents_extension_context 				= stripslashes((string) $no_agents_extension_context);
 		}
 
 		$no_agents_extension							= NULL;
 		if (isset($_POST["no_agents_extension"])) {
-			$no_agents_extension		 				= $_POST["no_agents_extension"];
+			$no_agents_extension		 				= ($_POST["no_agents_extension"] ?? '');
 			$no_agents_extension		 				= stripslashes((string) $no_agents_extension);
 		}
 		
@@ -329,85 +329,85 @@
 		// collect new user data.		
 		$menu_name 								= NULL; 
 		if (isset($_POST["menu_name"])) { 
-			$menu_name 							= $_POST["menu_name"]; 
+			$menu_name 							= ($_POST["menu_name"] ?? ''); 
 			$menu_name 							= stripslashes((string) $menu_name);
 		}
 		
 		$menu_prompt 							= NULL; 
 		if (isset($_POST["menu_prompt"])) {
-			$menu_prompt 						= $_POST["menu_prompt"]; 
+			$menu_prompt 						= ($_POST["menu_prompt"] ?? ''); 
 			$menu_prompt 						= stripslashes((string) $menu_prompt);
 		}
 		
 		$menu_timeout	 						= NULL; 
 		if (isset($_POST["menu_timeout"])) {
-			$menu_timeout 						= $_POST["menu_timeout"]; 
+			$menu_timeout 						= ($_POST["menu_timeout"] ?? ''); 
 			$menu_timeout 						= stripslashes((string) $menu_timeout);
 		}
 
 		$menu_timeout_prompt 					= NULL; 
 		if (isset($_POST["menu_timeout_prompt"])) {
-			$menu_timeout_prompt 				= $_POST["menu_timeout_prompt"]; 
+			$menu_timeout_prompt 				= ($_POST["menu_timeout_prompt"] ?? ''); 
 			$menu_timeout_prompt 				= stripslashes((string) $menu_timeout_prompt);
 		}
 		
 		$menu_invalid_prompt 					= NULL; 
 		if (isset($_POST["menu_invalid_prompt"])) { 
-			$menu_invalid_prompt 				= $_POST["menu_invalid_prompt"]; 
+			$menu_invalid_prompt 				= ($_POST["menu_invalid_prompt"] ?? ''); 
 			$menu_invalid_prompt 				= stripslashes((string) $menu_invalid_prompt);
 		}	
 
 		$menu_repeat 							= NULL; 
 		if (isset($_POST["menu_repeat"])) { 
-			$menu_repeat 						= $_POST["menu_repeat"]; 
+			$menu_repeat 						= ($_POST["menu_repeat"] ?? ''); 
 			$menu_repeat 						= stripslashes((string) $menu_repeat);
 		}
 
 		$menu_time_check 						= NULL; 
 		if (isset($_POST["menu_time_check"])) { 
-			$menu_time_check 					= $_POST["menu_time_check"]; 
+			$menu_time_check 					= ($_POST["menu_time_check"] ?? ''); 
 			$menu_time_check 					= stripslashes((string) $menu_time_check);
 		}
 
 		$call_time_id 							= NULL; 
 		if (isset($_POST["call_time_id"])) { 
-			$call_time_id 						= $_POST["call_time_id"]; 
+			$call_time_id 						= ($_POST["call_time_id"] ?? ''); 
 			$call_time_id 						= stripslashes((string) $call_time_id);
 		}
 
 		$track_in_vdac 							= NULL; 
 		if (isset($_POST["track_in_vdac"])) { 
-			$track_in_vdac 						= $_POST["track_in_vdac"]; 
+			$track_in_vdac 						= ($_POST["track_in_vdac"] ?? ''); 
 			$track_in_vdac 						= stripslashes((string) $track_in_vdac);
 		}
 
 		$tracking_group 						= NULL; 
 		if (isset($_POST["tracking_group"])) { 
-			$tracking_group 					= $_POST["tracking_group"]; 
+			$tracking_group 					= ($_POST["tracking_group"] ?? ''); 
 			$tracking_group 					= stripslashes((string) $tracking_group);
 		}
 
 		$user_group 							= NULL; 
 		if (isset($_POST["user_group"])) { 
-			$user_group 						= $_POST["user_group"]; 
+			$user_group 						= ($_POST["user_group"] ?? ''); 
 			$user_group 						= stripslashes((string) $user_group);
 		}
 
 		// options
-		$route_option 							= $_POST['option'];
-		$route_menu 							= $_POST['route_menu'];
-		$route_desc 							= $_POST['route_desc'];
+		$route_option 							= ($_POST['option'] ?? '');
+		$route_menu 							= ($_POST['route_menu'] ?? '');
+		$route_desc 							= ($_POST['route_desc'] ?? '');
 		
-		$option_callmenu_value 					= $_POST['option_callmenu_value'];
-		$option_ingroup_value 					= $_POST['option_ingroup_value'];
-		$option_did_value 						= $_POST['option_did_value'];
-		$option_hangup_value 					= $_POST['option_hangup_value'];
-		$option_extension_value 				= $_POST['option_extension_value'];
-		$option_phone_value 					= $_POST['option_phone_value'];
-		$option_voicemail_value 				= $_POST['option_voicemail_value'];
-		$option_agi_value 						= $_POST['option_agi_value'];
+		$option_callmenu_value 					= ($_POST['option_callmenu_value'] ?? '');
+		$option_ingroup_value 					= ($_POST['option_ingroup_value'] ?? '');
+		$option_did_value 						= ($_POST['option_did_value'] ?? '');
+		$option_hangup_value 					= ($_POST['option_hangup_value'] ?? '');
+		$option_extension_value 				= ($_POST['option_extension_value'] ?? '');
+		$option_phone_value 					= ($_POST['option_phone_value'] ?? '');
+		$option_voicemail_value 				= ($_POST['option_voicemail_value'] ?? '');
+		$option_agi_value 						= ($_POST['option_agi_value'] ?? '');
 		
-		$option_route_context 					= $_POST['option_route_value_context'];
+		$option_route_context 					= ($_POST['option_route_value_context'] ?? '');
 		
 		$route_value 							= "";
 		
@@ -448,7 +448,7 @@
 			
 		}
 		//echo $route_value;
-		$option_route_value 					= explode("+", $route_value);
+		$option_route_value 					= explode("+", (string) ($route_value ?? ''));
 		
 		$ingroup_context 						= "";
 		
@@ -471,7 +471,7 @@
 		
 		// $items 									= "";
 		
-		// for ($i=0;$i < count($route_option);$i++) {
+		// for ($i=0;$i < (is_countable($route_option) ? count($route_option) : 0);$i++) {
 		// 	if($route_option[$i] == "A") $route_option[$i] = '#';
 		// 	if($route_option[$i] == "B") $route_option[$i] = '*';
 		// 	if($route_option[$i] == "C") $route_option[$i] = 'TIMECHECK';
@@ -519,60 +519,60 @@
 		// collect new user data.	
 		$modify_did 							= NULL; 
 		if (isset($_POST["modify_did"])) { 
-			$modify_did 						= $_POST["modify_did"];
+			$modify_did 						= ($_POST["modify_did"] ?? '');
 			$modify_did 						= stripslashes((string) $modify_did);
 		}
 
 		$did_pattern 							= NULL; 
 		if (isset($_POST["did_pattern"])) { 
-			$did_pattern 						= $_POST["did_pattern"];
+			$did_pattern 						= ($_POST["did_pattern"] ?? '');
 		}
 		
 		$desc 									= NULL; 
 		if (isset($_POST["desc"])) { 
-			$desc 								= $_POST["desc"]; 
+			$desc 								= ($_POST["desc"] ?? ''); 
 			$desc 								= stripslashes((string) $desc);
 		}
 
 		$route 									= NULL; 
 		if (isset($_POST["route"])) { 
-			$route 								= $_POST["route"]; 
+			$route 								= ($_POST["route"] ?? ''); 
 			$route 								= stripslashes((string) $route);
 		}
 		
 		$status 								= NULL; 
 		if (isset($_POST["status"])) { 
-			$status 							= $_POST["status"]; 
+			$status 							= ($_POST["status"] ?? ''); 
 			$status 							= stripslashes($status);
 		}
 
 		$filter_clean_cid_number 				= NULL; 
 		if (isset($_POST["cid_num"])) { 
-			$filter_clean_cid_number 			= $_POST["cid_num"]; 
+			$filter_clean_cid_number 			= ($_POST["cid_num"] ?? ''); 
 			$filter_clean_cid_number 			= stripslashes((string) $filter_clean_cid_number);
 		}
 		
 		$list_id	 							= NULL; 
 		if (isset($_POST["list_id"])) { 
-			$list_id 							= $_POST["list_id"];
+			$list_id 							= ($_POST["list_id"] ?? '');
 			$list_id 							= stripslashes((string) $list_id);
 		}
 		
-		$voicemail_ext = $_POST['route_voicemail'];
-		$ext = $_POST['route_exten'];
-		$ext_cont = $_POST['route_exten_context'];
-		$phone = $_POST['route_phone_exten'];
-		$ingroup = $_POST['route_ingroupid'];
-		$defaultAD = $_POST['user_route_settings_ingroup'];
-		$call_handle_method = $_POST['call_handle_method'];
-		$agent_search_method = $_POST['agent_search_method'];
+		$voicemail_ext = ($_POST['route_voicemail'] ?? '');
+		$ext = ($_POST['route_exten'] ?? '');
+		$ext_cont = ($_POST['route_exten_context'] ?? '');
+		$phone = ($_POST['route_phone_exten'] ?? '');
+		$ingroup = ($_POST['route_ingroupid'] ?? '');
+		$defaultAD = ($_POST['user_route_settings_ingroup'] ?? '');
+		$call_handle_method = ($_POST['call_handle_method'] ?? '');
+		$agent_search_method = ($_POST['agent_search_method'] ?? '');
 
 		if($route == "AGENT"){
-			$voicemail_ext = $_POST['ru_voicemail'];
-			$ext = $_POST['ru_exten'];
-			$ext_cont = $_POST['ru_exten_context'];
-			$phone = $_POST['ru_phone'];
-			$ingroup = $_POST['ru_ingroup'];
+			$voicemail_ext = ($_POST['ru_voicemail'] ?? '');
+			$ext = ($_POST['ru_exten'] ?? '');
+			$ext_cont = ($_POST['ru_exten_context'] ?? '');
+			$phone = ($_POST['ru_phone'] ?? '');
+			$ingroup = ($_POST['ru_ingroup'] ?? '');
 		}else{
 			$defaultAD = "AGENTDIRECT";
 		}
@@ -586,13 +586,13 @@
 			'did_route' 						=> $route,
 			'did_active' 						=> $status,
 			'filter_clean_cid_number' 				=> $filter_clean_cid_number,
-			'user' 							=> $_POST['route_agentid'],
-			'user_unavailable_action' 				=> $_POST['route_unavail'],
+			'user' 							=> ($_POST['route_agentid'] ?? ''),
+			'user_unavailable_action' 				=> ($_POST['route_unavail'] ?? ''),
 			'user_route_settings_ingroup' 				=> $defaultAD,
 			'group_id' 						=> $ingroup,
 			'phone' 						=> $phone,
-			'server_ip' 						=> $_POST['route_phone_server'],
-			'menu_id' 						=> $_POST['route_ivr'],
+			'server_ip' 						=> ($_POST['route_phone_server'] ?? ''),
+			'menu_id' 						=> ($_POST['route_ivr'] ?? ''),
 			'voicemail_ext' 					=> $voicemail_ext,
 			'extension' 						=> $ext,
 			'exten_context' 					=> $ext_cont,

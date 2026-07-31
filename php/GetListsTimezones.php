@@ -23,14 +23,14 @@
 
 	require_once(__DIR__ . '/APIHandler.php');
 	$api 										= \creamy\APIHandler::getInstance();
-	$list_id 									= $_POST["list_id"];
+	$list_id 									= ($_POST["list_id"] ?? '');
 	$output										= $api->API_getTZonesWithCountCalledNCalled($list_id);
 	
 	$data 										= '';
 	$t											= 0;
 	$tcalled 									= [];
 	$tncalled 									= [];
-    $counter = count($output->gmt_offset_now);
+    $counter = (isset($output->gmt_offset_now) && is_countable($output->gmt_offset_now) ? count($output->gmt_offset_now) : 0);
 	
 	for($t=0;$t<$counter;$t++){
 		if($output->called_since_last_reset[$t] == 'N'){

@@ -24,8 +24,8 @@ declare(strict_types=1);
 
 include(__DIR__ . '/CRMDefaults.php');
 
-$user = $_POST['user'];
-$pass = $_POST['pass'];
+$user = ($_POST['user'] ?? '');
+$pass = ($_POST['pass'] ?? '');
 //$user = "devadmin";
 //$pass = "hayopka2021";
 //Logs In Rocketchat User
