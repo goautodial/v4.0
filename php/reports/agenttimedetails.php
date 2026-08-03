@@ -22,7 +22,7 @@
 */
 
 	require_once(__DIR__ . '/APIHandler.php');
-	
+
 	$api 										= \creamy\APIHandler::getInstance();
 	$pageTitle									= ($_POST['pageTitle'] ?? '');
 	$fromDate 									= date('Y-m-d 00:00:01');
@@ -32,55 +32,56 @@
 	$userID										= NULL;
 	$userGroup									= NULL;
 	$statuses									= NULL;
-	
+	$agent_pdetail								= '';
+
 	if (isset($_POST['pageTitle']) && $pageTitle != "call_export_report") {
 		$pageTitle 								= ($_POST['pageTitle'] ?? '');
 		$pageTitle								= stripslashes((string) $pageTitle);
 	}
-			
+
 	if (isset($_POST["fromDate"])) {
 		$fromDate 								= date('Y-m-d H:i:s', strtotime(($_POST['fromDate'] ?? '')));
 	}
-	
+
 	if (($_POST["toDate"] ?? '') != "" && ($_POST["fromDate"] ?? '') != "") {
 		$toDate 								= date('Y-m-d H:i:s', strtotime(($_POST['toDate'] ?? '')));
 	}
-	
-			
-	if (isset($_POST["campaignID"])) { 
-		$campaign_id 							= ($_POST["campaignID"] ?? ''); 
+
+
+	if (isset($_POST["campaignID"])) {
+		$campaign_id 							= ($_POST["campaignID"] ?? '');
 		$campaign_id 							= stripslashes((string) $campaign_id);
 	}
-		
+
 	if (isset($_POST["request"])) {
 		$request 								= ($_POST["request"] ?? '');
 		$request								= stripslashes((string) $request);
 	}
-			
+
 	if (isset($_POST["userID"])) {
 		$userID 								= ($_POST["userID"] ?? '');
 		$userID									= stripslashes((string) $userID);
 	}
-	
+
 	if (isset($_POST["userGroup"])) {
 		$userGroup 								= ($_POST["userGroup"] ?? '');
 		$userGroup								= stripslashes((string) $userGroup);
 	}
-		
+
 	if (isset($_POST["statuses"])) {
 		$statuses 								= ($_POST["statuses"] ?? '');
 		$statuses								= stripslashes($statuses);
 	}
-		
+
 	$postfields 								= [
-		'goAction'									=> 'goGetAgentTimeDetails',		
+		'goAction'									=> 'goGetAgentTimeDetails',
 		'pageTitle' 								=> $pageTitle,
 		'fromDate' 									=> $fromDate,
 		'toDate' 									=> $toDate,
 		'campaignID' 								=> $campaign_id,
 		'request' 									=> $request,
 		'statuses' 									=> $statuses
-	];				
+	];
 
 	$output = $api->API_getAgentTimeDetails($postfields);
 //var_dump($output);
@@ -152,7 +153,7 @@
 						$tablehtml .= '</tr></tfoot>';
 					}
 
-				$tablehtml .= '</table></div><br/>'; 
+				$tablehtml .= '</table></div><br/>';
 
 				$sub_statuses = [];
 				$full_names = [];
@@ -163,8 +164,8 @@
 					$pause_sec = $value->pause_sec;
 
 					$sub_statuses[] = $sub_status;
-					$full_names[] = $full_name;					
-				}											
+					$full_names[] = $full_name;
+				}
 
 				$pause_codes = array_unique($sub_statuses);
 				$agent_names = array_unique($full_names);
@@ -183,15 +184,15 @@
 					$tablehtml .= '</thead>';
 					$tablehtml .= '<tbody id="agent_detail_tbody">';
 
-					foreach ($output->PC_statuses as $value) {			
+					foreach ($output->PC_statuses as $value) {
 						$full_name = $value->full_name;
 						$sub_status = $value->sub_status;
-						$pc_duration = $value->pause_sec;						
+						$pc_duration = $value->pause_sec;
 
 						//$pcstatus = "$sub_status-$pc_duration";
 						//$row_array[] = array("agent" => $full_name, "sub_status" => $sub_status, "duration" => $pc_duration);
 
-						//foreach ($agent_names as $agent_name) {																				
+						//foreach ($agent_names as $agent_name) {
 							//if ($full_name == $agent_name) {
 								$tablehtml .= '<tr><td>'.$full_name.'</td>';
 
@@ -204,52 +205,51 @@
 									}
 								}
 
-								$tablehtml .= '</tr>';						
-							//}							
-						//}					
-					}			
+								$tablehtml .= '</tr>';
+							//}
+						//}
+					}
 
 					$tablehtml .= '</tbody>';
 
 					$tablehtml .= '<tfoot><tr>';
-					$tablehtml .= '<th> TOTAL </th>';	
+					$tablehtml .= '<th> TOTAL </th>';
 					foreach ($pause_codes as $pause_code) {
 						$tablehtml .= '<th>'.$pause_code.'</th>';
-					}					
-					$tablehtml .= '</tr></tfoot>';	
+					}
+					$tablehtml .= '</tr></tfoot>';
 
-					$tablehtml .= '</table></div><br/>';			
+					$tablehtml .= '</table></div><br/>';
 				} else {
 					$tablehtml .= '';
 				}
 
 			 // start of middle table
-                                if ($output->MIDsorted_output != NULL) {
+					$midSortedOutput = isset($output->MIDsorted_output) && is_array($output->MIDsorted_output) ? $output->MIDsorted_output : [];
+	                                if (!empty($midSortedOutput)) {
                                         $agent_pdetail .= '<br/><div>
                                                 <table class="display responsive no-wrap table table-striped table-bordered table-hover" width="100%" id="agent_pdetail_mid">
                                                         <thead>
                                                                 <tr>
                                                                         <th nowrap> Full Name </th>';
 
-                                                                        if ($output->SstatusesTOP != NULL) {
-                                                                                $agent_pdetail .= $output->SstatusesTOP;
-                                                                        }
+                                                                        												if (($output->SstatusesTOP ?? '') != '') {
+                                                                        														$agent_pdetail .= $output->SstatusesTOP;
+                                                                        												}
 
                                                 $agent_pdetail .=  '</tr></thead><tbody>';
-                                                $counter = (isset($output->MIDsorted_output) && is_countable($output->MIDsorted_output) ? count($output->MIDsorted_output) : 0);
-
-                                                                for($i=0; $i <= $counter; $i++) {
-                                                                        $agent_pdetail .= $output->MIDsorted_output[$i];
-                                                                }
+                                                										foreach ($midSortedOutput as $midRow) {
+                                                											$agent_pdetail .= $midRow;
+                                                										}
 
                                                 $agent_pdetail .= '</tbody>';
 
-                                                if ($output->MIDsorted_output != NULL) {
-                                                        $agent_pdetail .= '<tfoot><tr class="warning"><th nowrap> Total </th>';
+                                                										if (!empty($midSortedOutput)) {
+                                                												$agent_pdetail .= '<tfoot><tr class="warning"><th nowrap> Total </th>';
 
-                                                                if ($output->SstatusesSUM != NULL) {
-                                                                        $agent_pdetail .= $output->SstatusesSUM;
-                                                                }
+                                                														if (($output->SstatusesSUM ?? '') != '') {
+                                                																$agent_pdetail .= $output->SstatusesSUM;
+                                                														}
 
                                                         $agent_pdetail .= '</tr></tfoot>';
                                                 }
@@ -261,14 +261,15 @@
 				}
                         //end of middle table
 
-                        // start of legend
-                                 if ($output->MIDsorted_output != NULL) {
+                        						// start of legend
+	                                 if (!empty($midSortedOutput)) {
                                         $agent_pdetail .= '<table class="table table-hover">
                                                                 <tr class="info"><th colspan="2"><small>LEGEND: </th></tr>';
-                                        $counter = (isset($output->legend) && is_countable($output->legend) ? count($output->legend) : 0);
-                                                        for ($i=0; $i < $counter; $i+=2) {
-                                                                $agent_pdetail .= "<tr><td><small>".$output->legend[$i]."</small></td><td><small>".$output->legend[$i+1]."</small></td></tr>";
-                                                        }
+                                        										$legend = isset($output->legend) && is_array($output->legend) ? $output->legend : [];
+                                        										$counter = count($legend);
+                                        														for ($i=0; $i < $counter; $i+=2) {
+                                        																$agent_pdetail .= "<tr><td><small>".($legend[$i] ?? '')."</small></td><td><small>".($legend[$i+1] ?? '')."</small></td></tr>";
+                                        														}
                                         $agent_pdetail .= '</table><br/>';
 					$tablehtml .= $agent_pdetail;
                                  }

@@ -23,7 +23,7 @@
 	require_once(__DIR__ . '/APIHandler.php');
 //ini_set('display_errors', 1);
 //ini_set('display_startup_errors', 1);
-//error_reporting(E_ALL);	
+//error_reporting(E_ALL);
 
 	$api						= \creamy\APIHandler::getInstance();
 	$fromDate 					= date('Y-m-d 00:00:01');
@@ -33,38 +33,38 @@
 	$userID						= NULL;
 	$userGroup					= NULL;
 	$statuses					= NULL;
-			
+
 	if (isset($_POST["fromDate"])) {
 		$fromDate = date('Y-m-d H:i:s', strtotime(($_POST['fromDate'] ?? '')));
 	}
-	
+
 	if (($_POST["toDate"] ?? '') != "" && ($_POST["fromDate"] ?? '') != "") {
 		$toDate = date('Y-m-d H:i:s', strtotime(($_POST['toDate'] ?? '')));
 	}
-	
-			
-	if (isset($_POST["campaignID"])) { 
-		$campaign_id = ($_POST["campaignID"] ?? ''); 
+
+
+	if (isset($_POST["campaignID"])) {
+		$campaign_id = ($_POST["campaignID"] ?? '');
 		$campaign_id = stripslashes((string) $campaign_id);
 	}
-		
+
 	if (isset($_POST["request"])) {
 		$request = ($_POST["request"] ?? '');
 		$request = stripslashes((string) $request);
 	}
-			
+
 	if (isset($_POST["userID"])) {
 		$userID = ($_POST["userID"] ?? '');
 		$userID = stripslashes((string) $userID);
 	}
-	
+
 	if (isset($_POST["userGroup"])) {
 		$userGroup = ($_POST["userGroup"] ?? '');
 		$userGroup = stripslashes((string) $userGroup);
 	}
-		
+
 	$postfields = [
-		'goAction' => 'goGetSalesTracker',		
+		'goAction' => 'goGetSalesTracker',
 		'fromDate' => $fromDate,
 		'toDate' => $toDate,
 		'campaignID' => $campaign_id,
@@ -73,8 +73,25 @@
 	];
 	$sales_tracker = "";
 	$output = $api->API_getReports($postfields);
+	$result = is_object($output) ? ($output->result ?? 'error') : 'error';
+	$renderSaleRows = static function (object $output): string {
+		$html = '';
+		$count = isset($output->sale_num) && is_countable($output->sale_num) ? count($output->sale_num) : 0;
+		for ($i = 0; $i < $count; $i++) {
+			$leadId = $output->lead_id[$i] ?? '';
+			$html .= '<tr>
+				<td nowrap><a class="edit-contact" data-id="'.$leadId.'">'.$leadId.'</a></td>
+				<td nowrap>'.($output->call_date[$i] ?? '').'</td>
+				<td nowrap>'.($output->agent[$i] ?? '').'</td>
+				<td nowrap>'.($output->phone_number[$i] ?? '').'</td>
+				<td nowrap>'.($output->first_name[$i] ?? '').'</td>
+				<td nowrap>'.($output->last_name[$i] ?? '').'</td>
+			</tr>';
+		}
+		return $html;
+	};
 	//var_dump($output);
-	if ($output->result == "success") {
+	if ($result == "success") {
 		// SALES TRACKER
 		if (strtolower((string) $request) === "outbound") {
 			//outbound table
@@ -95,27 +112,18 @@
 						<tbody>
 				';
 
-			if ($output->outbound_result != NULL) {
-				for($i=0; $i < (isset($output->sale_num) && is_countable($output->sale_num) ? count($output->sale_num) : 0); $i++) {
-					$sales_tracker .= '<tr>
-							<td nowrap><a class="edit-contact" data-id="'.$output->lead_id[$i].'">'.$output->lead_id[$i].'</a></td>
-							<td nowrap>'.$output->call_date[$i].'</td>
-							<td nowrap>'.$output->agent[$i].'</td>
-							<td nowrap>'.$output->phone_number[$i].'</td>
-							<td nowrap>'.$output->first_name[$i].'</td>
-							<td nowrap>'.$output->last_name[$i].'</td>
-						</tr>';
-				}
+			if (($output->outbound_result ?? null) != NULL) {
+				$sales_tracker .= $renderSaleRows($output);
 			}else{
 				$sales_tracker .= "";
 			}
-				
+
 			$sales_tracker .= '</tbody>';
 
 			$sales_tracker .= '</table></div>';
-			
+
 		}
-		
+
 		if (strtolower((string) $request) === "inbound") {
 		// inbound table
 			$sales_tracker .= '
@@ -134,29 +142,19 @@
 						</thead>
 						<tbody>
 			';
-				if ($output->inbound_result != NULL) {
-					for($i=0; $i < (isset($output->sale_num) && is_countable($output->sale_num) ? count($output->sale_num) : 0); $i++) {
-						$sales_tracker .= '<tr>
-							<td nowrap><a class="edit-contact" data-id="'.$output->lead_id[$i].'">'.$output->lead_id[$i].'</a></td>
-							<td nowrap>'.$output->call_date[$i].'</td>
-							<td nowrap>'.$output->agent[$i].'</td>
-							<td nowrap>'.$output->phone_number[$i].'</td>
-							<td nowrap>'.$output->first_name[$i].'</td>
-							<td nowrap>'.$output->last_name[$i].'</td>
-						</tr>';
-					}
+				if (($output->inbound_result ?? null) != NULL) {
+					$sales_tracker .= $renderSaleRows($output);
 				}else{
 					$sales_tracker .= "";
 				}
-				
+
 				$sales_tracker .= '</tbody>';
 
 				$sales_tracker .= '</table></div>';
-				
+
 		}
 
 		echo $sales_tracker;
 	}
 
 ?>
-

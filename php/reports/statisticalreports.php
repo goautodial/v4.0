@@ -47,8 +47,8 @@
 	}
 
 
-	if (isset($_POST["campaignID"])) { 
-		$campaign_id 							= ($_POST["campaignID"] ?? ''); 
+	if (isset($_POST["campaignID"])) {
+		$campaign_id 							= ($_POST["campaignID"] ?? '');
 		$campaign_id 							= stripslashes((string) $campaign_id);
 	}
 
@@ -73,39 +73,63 @@
 	}
 
 	$postfields 								= [
-		'goAction'									=> 'goGetStatisticalReports',		
+		'goAction'									=> 'goGetStatisticalReports',
 		'pageTitle' 								=> $pageTitle,
 		'fromDate' 									=> $fromDate,
 		'toDate' 									=> $toDate,
 		'campaignID' 								=> $campaign_id,
 		'request' 									=> $request,
 		'statuses' 									=> $statuses
-	];				
+	];
 
 	$output 									= $api->API_getStatisticalReports($postfields);
+	$result 									= is_object($output) ? ($output->result ?? 'error') : 'error';
 
-	if ($output->result == "success") {
+	if ($result == "success") {
 		echo '<div class="animated bounceInUp">';
 
 	// STATISTICAL REPORT
 		if ($pageTitle == "stats") {
 			//print_r($output->getReports);
 			//$increment_color = "009688";
+			$max_values = [];
 			if (($_POST["request"] ?? '') == "daily") {
-				$max = max($output->data_calls->hour0, $output->data_calls->hour1, $output->data_calls->hour2, $output->data_calls->hour3, $output->data_calls->hour4, $output->data_calls->hour5, $output->data_calls->hour6, $output->data_calls->hour7, $output->data_calls->hour8, $output->data_calls->hour9, $output->data_calls->hour10, $output->data_calls->hour11, $output->data_calls->hour12, $output->data_calls->hour13, $output->data_calls->hour14, $output->data_calls->hour15, $output->data_calls->hour16, $output->data_calls->hour17, $output->data_calls->hour18, $output->data_calls->hour19, $output->data_calls->hour20, $output->data_calls->hour21, $output->data_calls->hour22, $hour23);
+				$max_values = array_merge(
+					(array) ($output->data_calls->hour0 ?? []), (array) ($output->data_calls->hour1 ?? []),
+					(array) ($output->data_calls->hour2 ?? []), (array) ($output->data_calls->hour3 ?? []),
+					(array) ($output->data_calls->hour4 ?? []), (array) ($output->data_calls->hour5 ?? []),
+					(array) ($output->data_calls->hour6 ?? []), (array) ($output->data_calls->hour7 ?? []),
+					(array) ($output->data_calls->hour8 ?? []), (array) ($output->data_calls->hour9 ?? []),
+					(array) ($output->data_calls->hour10 ?? []), (array) ($output->data_calls->hour11 ?? []),
+					(array) ($output->data_calls->hour12 ?? []), (array) ($output->data_calls->hour13 ?? []),
+					(array) ($output->data_calls->hour14 ?? []), (array) ($output->data_calls->hour15 ?? []),
+					(array) ($output->data_calls->hour16 ?? []), (array) ($output->data_calls->hour17 ?? []),
+					(array) ($output->data_calls->hour18 ?? []), (array) ($output->data_calls->hour19 ?? []),
+					(array) ($output->data_calls->hour20 ?? []), (array) ($output->data_calls->hour21 ?? []),
+					(array) ($output->data_calls->hour22 ?? []), (array) ($output->data_calls->hour23 ?? [])
+				);
 			}
 			if (($_POST["request"] ?? '') == "weekly") {
-				$max = max($output->data_calls->Day0, $output->data_calls->Day1, $output->data_calls->Day2, $output->data_calls->Day3, $output->data_calls->Day4, $output->data_calls->Day5, $output->data_calls->Day6);
+				$max_values = array_merge(
+					(array) ($output->data_calls->Day0 ?? []), (array) ($output->data_calls->Day1 ?? []),
+					(array) ($output->data_calls->Day2 ?? []), (array) ($output->data_calls->Day3 ?? []),
+					(array) ($output->data_calls->Day4 ?? []), (array) ($output->data_calls->Day5 ?? []),
+					(array) ($output->data_calls->Day6 ?? [])
+				);
 			}
 			if (($_POST["request"] ?? '') == "monthly") {
-				$max = max($output->data_calls->Month1, $output->data_calls->Month2, $output->data_calls->Month3, $output->data_calls->Month4, $output->data_calls->Month5, $output->data_calls->Month6, $output->data_calls->Month7, $output->data_calls->Month8, $output->data_calls->Month9, $output->data_calls->Month10, $output->data_calls->Month11, $output->data_calls->Month12);
+				$max_values = array_merge(
+					(array) ($output->data_calls->Month1 ?? []), (array) ($output->data_calls->Month2 ?? []),
+					(array) ($output->data_calls->Month3 ?? []), (array) ($output->data_calls->Month4 ?? []),
+					(array) ($output->data_calls->Month5 ?? []), (array) ($output->data_calls->Month6 ?? []),
+					(array) ($output->data_calls->Month7 ?? []), (array) ($output->data_calls->Month8 ?? []),
+					(array) ($output->data_calls->Month9 ?? []), (array) ($output->data_calls->Month10 ?? []),
+					(array) ($output->data_calls->Month11 ?? []), (array) ($output->data_calls->Month12 ?? [])
+				);
 			}
 
-			if ($max != NULL) {
-				$max_count = max($max);
-			}else{
-				$max_count = $max;
-			}			
+			$max_values = array_map('intval', $max_values);
+			$max_count = !empty($max_values) ? max($max_values) : 0;
 
 			if ($max_count <= 4) {
 				$max_count = 4;
@@ -114,7 +138,7 @@
 		?>
 			<div collapse="panelChart9" class="panel-wrapper">
 				<div class="panel-body">
-				<div class="chart-splinev1 flot-chart"></div> <!-- data is in JS -> demo-flot.js -> search (Overall/Home/Pagkain)--> 
+				<div class="chart-splinev1 flot-chart"></div> <!-- data is in JS -> demo-flot.js -> search (Overall/Home/Pagkain)-->
 				</div>
 			</div>
 			<div id="legendBox"></div>
@@ -164,7 +188,7 @@
 			<br/><br/>
 			<legend><small>Disposition Stats</small></legend>
 
-			<?php 
+			<?php
 				if ($output->data_status->status != NULL) {
 			?>
 			<div class="row">
@@ -182,7 +206,7 @@
 									<h5><?php echo $output->data_status->status_name[$i];?> (<?php echo $output->data_status->status[$i];?>)</h5>
 									<span class="label label-purple"><?php echo $output->data_status->ccount[$i];?> calls</span>
 								</div>
-							</div>	
+							</div>
 						<?php
 							}
 						?>
@@ -199,7 +223,7 @@
 			?>
 				<div class="row mb">
 					<center><h3> - - - NO DATA - - - </h3></center>
-				</div>	
+				</div>
 			<?php
 				}
 			?>
@@ -466,7 +490,7 @@
 						splines: {show: true,tension: 0.4,lineWidth: 1,fill: 0.5}
 					},
 					grid: { borderColor: '#eee', borderWidth: 1, hoverable: true, backgroundColor: '#fcfcfc' },
-					tooltip: true, 
+					tooltip: true,
 					tooltipOpts: { content: function (label, x, y) { return y + ' Calls in ' + label; } },
 					xaxis: { tickColor: '#fcfcfc', mode: 'categories' },
 					yaxis: { min: 0, max: <?php echo $max_count;?>, // optional: use it for a clear represetation
@@ -476,8 +500,8 @@
 					},
 					shadowSize: 0,
 					legend: {
-						show:true, 
-						noColumns: 8, 
+						show:true,
+						noColumns: 8,
 						container: $('#legendBox')
 					}
 				};
@@ -496,7 +520,7 @@
 			}
 
 			// CHART PIE
-			// ----------------------------------- 
+			// -----------------------------------
 			$(function() {
 
 				var data = [

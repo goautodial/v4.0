@@ -417,7 +417,7 @@
 			}
 			
 			if ($max != NULL) {
-				$max_count = max($max);
+				$max_count = (!empty($max) ? max($max) : 0);
 			}else{
 				$max_count = $max;
 			}

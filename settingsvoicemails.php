@@ -1,4 +1,4 @@
-<?php	
+<?php
 /**
  * @file        settingsvoicemails.php
  * @brief       Manage Voicemails
@@ -31,27 +31,27 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	
+
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
 			header("location: agent.php");
 		}
-	}	
-	
+	}
+
 ?>
 <html>
     <head>
         <meta charset="UTF-8">
         <title><?php $lh->translateText("portal_title"); ?> - <?php $lh->translateText("voice_mails"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        
-        <?php 
-			print $ui->standardizedThemeCSS(); 
+
+        <?php
+			print $ui->standardizedThemeCSS();
 			print $ui->creamyThemeCSS();
 			print $ui->dataTablesTheme();
 		?>
-        
+
     </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -83,7 +83,7 @@
                             <legend><?php $lh->translateText("voice_mails"); ?></legend>
 							<?php print $ui->getVoiceMails(); ?>
                         </div>
-                    </div> 
+                    </div>
 				<!-- /fila con acciones, formularios y demás -->
 				<?php
 					} else {
@@ -118,7 +118,7 @@
                         </h4>
                     </div>
                     <div class="modal-body">
-                    
+
                     <form action="" method="POST" id="create_voicemail" name="create_voicemail" role="form">
 						<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 						<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
@@ -135,13 +135,13 @@
                                         <input type="number" name="voicemail_id" min="1" id="voicemail_id" class="form-control" placeholder="<?php $lh->translateText("Numbers Only"); ?>" minlength="2" maxlength="10">
                                     </div>
                                 </div>
-                                <div class="form-group">        
+                                <div class="form-group">
                                     <label class="col-sm-3 control-label" for="password"><?php $lh->translateText("password"); ?> </label>
                                     <div class="col-sm-9 mb">
                                         <input type="text" name="password" id="password" class="form-control" placeholder="<?php $lh->translateText("password"); ?>" required>
                                     </div>
                                 </div>
-                                <div class="form-group">        
+                                <div class="form-group">
                                     <label class="col-sm-3 control-label" for="name"><?php $lh->translateText("name"); ?></label>
                                     <div class="col-sm-9 mb">
                                         <input type="text" name="name" id="name" class="form-control" placeholder="<?php $lh->translateText("name"); ?>" required>
@@ -156,7 +156,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group">        
+                                <div class="form-group">
                                     <label class="col-sm-3 control-label" for="email"><?php $lh->translateText("email"); ?> </label>
                                     <div class="col-sm-9 mb">
                                         <input type="email" name="email" id="email" class="form-control" placeholder="<?php $lh->translateText("email"); ?>">
@@ -178,14 +178,14 @@
                                 </div>
                             </fieldset>
                         </div><!-- end of step -->
-                    
+
                     </form>
 
                     </div> <!-- end of modal body -->
                 </div>
             </div>
         </div><!-- end of modal -->
-        
+
     <!-- Forms and actions -->
         <?php print $ui->standardizedThemeJS(); ?>
         <!-- JQUERY STEPS-->
@@ -201,8 +201,8 @@
             // init data table
                 $('#voicemails_table').dataTable();
 
-            // init form wizard 
-                var form = $("#create_voicemail"); 
+            // init form wizard
+                var form = $("#create_voicemail");
                 form.validate({
                     errorPlacement: function errorPlacement(error, element) { element.after(error); }
                 });
@@ -210,8 +210,38 @@
             /*********
             ** Init Wizard
             *********/
-                form.children("div").steps({
-                    headerTag: "h4",
+	                var voicemailSubmitInProgress = false;
+
+	                function setVoicemailSubmitState(isLoading) {
+	                    var $finishButton = form.find('a[href="#finish"]').add($('a[href="#finish"]')).add($('#finish'));
+	                    $finishButton
+	                        .text(isLoading ? "<?php $lh->translateText("loading"); ?>" : "<?php $lh->translateText("submit"); ?>")
+	                        .toggleClass('disabled', isLoading)
+	                        .attr('aria-disabled', isLoading ? 'true' : 'false')
+	                        .css('pointer-events', isLoading ? 'none' : '');
+	                    $('#finish').prop('disabled', isLoading);
+	                }
+
+	                function getVoicemailErrorMessage(data) {
+	                    var message = data;
+
+	                    if (typeof message === 'string') {
+	                        try {
+	                            message = JSON.parse(message);
+	                        } catch (e) {}
+	                    }
+
+	                    if (message && typeof message === 'object') {
+	                        message = message.message || message.error || message.result || JSON.stringify(message);
+	                    }
+
+	                    message = String(message || '').replace(/^Error:\s*/i, '').replace(/^"|"$/g, '').trim();
+
+	                    return message || 'Please review the voicemail details and try again.';
+	                }
+
+	                form.children("div").steps({
+	                    headerTag: "h4",
                     bodyTag: "fieldset",
                     transitionEffect: "slideLeft",
                     onStepChanging: function (event, currentIndex, newIndex)
@@ -237,31 +267,40 @@
                         form.validate().settings.ignore = ":disabled";
                         return form.valid();
                     },
-                    onFinished: function (event, currentIndex)
-                    {
-                        $('#finish').text("<?php $lh->translateText("loading"); ?>");
-                        $('#finish').attr("disabled", true);
+	                    onFinished: function (event, currentIndex)
+	                    {
+	                        if (voicemailSubmitInProgress) {
+	                            return false;
+	                        }
 
-                        // Submit form via ajax
-                            $.ajax({
-                                url: "./php/AddVoicemail.php",
-                                type: 'POST',
-                                data: $("#create_voicemail").serialize(),
-                                success: function(data) {
-									console.log(data);
-									$('#finish').text("<?php $lh->translateText("submit"); ?>");
-									$('#finish').prop("disabled", false);
-									if(data == 1){
-										  swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_voicemail_success"); ?>",type: "success"},function(){window.location.href = 'settingsvoicemails.php';});
-									}
-									else{
-										sweetAlert("<?php $lh->translateText("oups"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>"+data, "error");
-									}
-                                }
-                            });
-                    }
+	                        voicemailSubmitInProgress = true;
+	                        setVoicemailSubmitState(true);
+
+	                        // Submit form via ajax
+	                            $.ajax({
+	                                url: "./php/AddVoicemail.php",
+	                                type: 'POST',
+	                                data: $("#create_voicemail").serialize(),
+	                                success: function(data) {
+										console.log(data);
+										if(data == 1){
+											  swal({title: "<?php $lh->translateText("success"); ?>",text: "<?php $lh->translateText("add_voicemail_success"); ?>",type: "success"},function(){window.location.href = 'settingsvoicemails.php';});
+										}
+										else{
+											sweetAlert("Please check your voicemail details", getVoicemailErrorMessage(data), "error");
+										}
+	                                },
+	                                error: function(xhr) {
+	                                    sweetAlert("Unable to add voicemail", getVoicemailErrorMessage(xhr.responseText), "error");
+	                                },
+	                                complete: function() {
+	                                    voicemailSubmitInProgress = false;
+	                                    setVoicemailSubmitState(false);
+	                                }
+	                            });
+	                    }
                 });
- 
+
         /*********************
         ** EDIT EVENT
         *********************/
@@ -275,26 +314,26 @@
 
         /*********************
         ** DELETE EVENT
-        *********************/  
+        *********************/
             $(document).on('click','.delete-voicemail',function() {
                 var id = $(this).attr('data-id');
-                    swal({   
-                        title: "<?php $lh->translateText("are_you_sure"); ?>",   
-                        text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",   
-                        type: "warning",   
-                        showCancelButton: true,   
-                        confirmButtonColor: "#DD6B55",   
-                        confirmButtonText: "<?php $lh->translateText("confirm_delete_voicemail"); ?>",   
-                        cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",   
-                        closeOnConfirm: false,   
-                        closeOnCancel: false 
-                        }, 
-                        function(isConfirm){   
-                            if (isConfirm) { 
+                    swal({
+                        title: "<?php $lh->translateText("are_you_sure"); ?>",
+                        text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "<?php $lh->translateText("confirm_delete_voicemail"); ?>",
+                        cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                        },
+                        function(isConfirm){
+                            if (isConfirm) {
                                 $.ajax({
                                     url: "./php/DeleteVoicemail.php",
                                     type: 'POST',
-                                    data: { 
+                                    data: {
                                         voicemail_id: id,
 										log_user: '<?=$_SESSION['user']?>',
 										log_group: '<?=$_SESSION['usergroup']?>'
@@ -308,17 +347,17 @@
                                         }
                                     }
                                 });
-                            } else {     
-                                    swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
-                            } 
+                            } else {
+                                    swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+                            }
                         }
                     );
             });
         /*********************
         ** FILTERS
-        *********************/  
+        *********************/
 
-            // disable special characters on Usergroup ID   
+            // disable special characters on Usergroup ID
                 $('#voicemail_id').bind('keypress', function (event) {
                     var regex = new RegExp("^[ A-Za-z0-9]+$");
                     var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
@@ -339,7 +378,7 @@
                 });
     });
 </script>
-        
+
         <?php print $ui->creamyFooter();?>
     </body>
 </html>

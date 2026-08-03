@@ -22,7 +22,7 @@
 */
 
 	require_once(__DIR__ . '/APIHandler.php');
-	
+
 	$api 										= \creamy\APIHandler::getInstance();
 	$pageTitle									= ($_POST['pageTitle'] ?? '');
 	$fromDate 									= date('Y-m-d 00:00:01');
@@ -31,54 +31,55 @@
 	$userID										= NULL;
 	$userGroup									= NULL;
 	$statuses									= NULL;
-	
+
 	if (isset($_POST['pageTitle']) && $pageTitle != "call_export_report") {
 		$pageTitle 								= ($_POST['pageTitle'] ?? '');
 		$pageTitle								= stripslashes((string) $pageTitle);
 	}
-			
+
 	if (isset($_POST["fromDate"])) {
 		$fromDate 								= date('Y-m-d H:i:s', strtotime(($_POST['fromDate'] ?? '')));
 	}
-	
+
 	if (($_POST["toDate"] ?? '') != "" && ($_POST["fromDate"] ?? '') != "") {
 		$toDate 								= date('Y-m-d H:i:s', strtotime(($_POST['toDate'] ?? '')));
 	}
-	
-			
-	if (isset($_POST["campaignID"])) { 
-		$campaign_id 							= ($_POST["campaignID"] ?? ''); 
+
+
+	if (isset($_POST["campaignID"])) {
+		$campaign_id 							= ($_POST["campaignID"] ?? '');
 		$campaign_id 							= stripslashes((string) $campaign_id);
 	}
-		
+
 	if (isset($_POST["userID"])) {
 		$userID 								= ($_POST["userID"] ?? '');
 		$userID									= stripslashes((string) $userID);
 	}
-	
+
 	if (isset($_POST["userGroup"])) {
 		$userGroup 								= ($_POST["userGroup"] ?? '');
 		$userGroup								= stripslashes((string) $userGroup);
 	}
-		
+
 	if (isset($_POST["statuses"])) {
 		$statuses 								= ($_POST["statuses"] ?? '');
 		$statuses								= stripslashes($statuses);
 	}
-		
+
 	$postfields 								= [
-		//'goAction'								=> 'goGetAgentPerformanceDetails', Service Monkey Performance Detail		
+		//'goAction'								=> 'goGetAgentPerformanceDetails', Service Monkey Performance Detail
 		'goAction'                                                              => 'goGetPerformanceDetails',
 		'pageTitle' 								=> $pageTitle,
 		'fromDate' 								=> $fromDate,
 		'toDate' 								=> $toDate,
 		'campaignID' 								=> $campaign_id
-	];				
+	];
 
 	$output = $api->API_Request("goReports",$postfields);
+	$result = is_object($output) ? ($output->result ?? 'error') : 'error';
 //var_dump($output);
 
-	if ($output->result == "success") {
+	if ($result == "success") {
 		echo '<div class="animated bounceInUp">';
 	// AGENT PERFORMANCE DETAILi
 		$tablehtml = '';
@@ -136,34 +137,33 @@
 					$tablehtml .= '</tr></tfoot>';
 				}
 
-				$tablehtml .= '</table></div><br/>'; 
+				$tablehtml .= '</table></div><br/>';
 	    // end of top table
 
 	    // start of middle table
-			if($output->MIDsorted_output != NULL){
+			$midSortedOutput = isset($output->MIDsorted_output) && is_array($output->MIDsorted_output) ? $output->MIDsorted_output : [];
+			if(!empty($midSortedOutput)){
 			    $tablehtml .= '<br/><div class="table-responsive">
 				    <table class="table table-striped table-bordered table-hover" id="agent_pdetail_mid">
 				    	<thead>
 							<tr>
 					            <th nowrap> Full Name </th>';
 
-								if($output->SstatusesTOP != NULL){
+								if(($output->SstatusesTOP ?? '') != ''){
 								    $tablehtml .= $output->SstatusesTOP;
 								}
 
 					$tablehtml .=  '</tr></thead><tbody>';
-                    $counter = (isset($output->MIDsorted_output) && is_countable($output->MIDsorted_output) ? count($output->MIDsorted_output) : 0);
-
-						    for($i=0; $i <= $counter; $i++){
-						        $tablehtml .= $output->MIDsorted_output[$i];
-						    }
+                    						foreach ($midSortedOutput as $midRow) {
+					$tablehtml .= $midRow;
+				}
 
 					$tablehtml .= '</tbody>';
 
-					if($output->MIDsorted_output != NULL){
+					if(!empty($midSortedOutput)){
 						$tablehtml .= '<tfoot><tr class="warning"><th nowrap> Total </th>';
 
-							if($output->SstatusesSUM != NULL){
+							if(($output->SstatusesSUM ?? '') != ''){
 							    $tablehtml .= $output->SstatusesSUM;
 							}
 
@@ -175,12 +175,13 @@
 		//end of middle table
 
 		// start of legend
-				if($output->MIDsorted_output != NULL){
+				if(!empty($midSortedOutput)){
 					$tablehtml .= '<table class="table table-hover">
 					    	<tr class="info"><th colspan="2"><small>LEGEND: </th></tr>';
-                    $counter = (isset($output->Legend) && is_countable($output->Legend) ? count($output->Legend) : 0);
-					    	for ($i=0; $i < $counter; $i+=2) { 
-					    		$tablehtml .= "<tr><td><small>".$output->Legend[$i]."</small></td><td><small>".$output->Legend[$i+1]."</small></td></tr>";
+	                    $legend = isset($output->Legend) && is_array($output->Legend) ? $output->Legend : [];
+                    $counter = count($legend);
+					    	for ($i=0; $i < $counter; $i+=2) {
+					    		$tablehtml .= "<tr><td><small>".($legend[$i] ?? '')."</small></td><td><small>".($legend[$i+1] ?? '')."</small></td></tr>";
 					    	}
 					$tablehtml .= '</table><br/>';
 			    }
@@ -202,17 +203,17 @@
 			            </tr>
 			        </thead>
 			        <tbody>';
-					    if($output->BOTsorted_output != NULL){
-						    $counter = (isset($output->BOTsorted_output) && is_countable($output->BOTsorted_output) ? count($output->BOTsorted_output) : 0);
-                            for($i=0; $i <= $counter; $i++){
-						        $tablehtml .= $output->BOTsorted_output[$i];
+					    $botSortedOutput = isset($output->BOTsorted_output) && is_array($output->BOTsorted_output) ? $output->BOTsorted_output : [];
+					    if(!empty($botSortedOutput)){
+						    foreach ($botSortedOutput as $botRow) {
+						        $tablehtml .= $botRow;
 						    }
 						}else{
 							$tablehtml .= "";
 						}
 				$tablehtml .= '</tbody>';
 
-				if($output->BOTsorted_output != NULL){
+				if(!empty($botSortedOutput)){
 					$tablehtml .= '<tfoot><tr class="warning"><th nowrap> Total </th>';
 							$tablehtml .= $output->TOT_AGENTS;
 							$tablehtml .= $output->TOTtotTOTAL_MS;
@@ -223,7 +224,7 @@
 
 				$tablehtml .= '</table>
 				</div></div>';
-				//</div><br/>'; 
+				//</div><br/>';
 		// end of bottom table
 
 
@@ -240,19 +241,19 @@
 				    $tablehtml .='</tr>
 				        </thead>
 				        <tbody>';
-						    if($output->SstatusesBOTR != NULL){
-							    $counter = (isset($output->SstatusesBOTR) && is_countable($output->SstatusesBOTR) ? count($output->SstatusesBOTR) : 0);
-                                for($i=0; $i <= $counter; $i++){
-							        $tablehtml .= '<tr>'.$output->SstatusesBOTR[$i].'</tr>';
+						    $statusBotRows = isset($output->SstatusesBOTR) && is_array($output->SstatusesBOTR) ? $output->SstatusesBOTR : [];
+						    if(!empty($statusBotRows)){
+							    foreach ($statusBotRows as $statusBotRow) {
+							        $tablehtml .= '<tr>'.$statusBotRow.'</tr>';
 							    }
 							}else{
 								$tablehtml .= "";
 							}
 					$tablehtml .= '</tbody>';
 
-					if($output->SstatusesBOTR != NULL){
+					if(!empty($statusBotRows)){
 						$tablehtml .= '<tfoot><tr class="warning">';
-									if($output->SstatusesBSUM != NULL){
+									if(($output->SstatusesBSUM ?? '') != ''){
 									    $tablehtml .= $output->SstatusesBSUM;
 									}
 						$tablehtml .= '</tr></tfoot>';

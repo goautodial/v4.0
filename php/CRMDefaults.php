@@ -27,7 +27,7 @@ declare(strict_types=1);
 
 /**
  * CRMDefaults.php
- * 
+ *
  * This is the main definitions file for the CRM, it carries all global
  * definitions that must be accessed by the rest of files of the CRM.
  * @author Ignacio Nieto Carvajal
@@ -37,6 +37,13 @@ declare(strict_types=1);
 
 // global constants
 define ('BASE_URL', 'https://vaglxc01.goautodial.com');
+
+// Optional report feature flags.
+// Keep disabled by default unless explicitly enabled by a deployment config.
+if (!defined('REPORTS_SM_AGENT_PERFORMANCE_DETAIL')) {
+	define('REPORTS_SM_AGENT_PERFORMANCE_DETAIL', 'n');
+}
+
 
 define ('CRM_INSTALL_VERSION', '1.0');
 define ('CRM_INSTALLED_FILE', 'installed.txt');
@@ -233,7 +240,9 @@ define ('ECCS_BLIND_MODE', "n"); //Customizations requested by ECCS. Accessibili
 define ('LEADUPLOAD_LEAD_MAPPING', "n"); // Customization requested by Yoothit. Lead Mapping
 define ('LEADUPLOAD_CUSTOM_DELIMITER', ""); //put special characters here, for multiple separate by [space] nat:added pipe symbol
 define ('LEADUPLOAD_CHECK_PHONES_IN_SYSTEM', "y"); //enable or disable Lead Upload Feature: check duplicates
-define ('STATEWIDE_SALES_REPORT', 'n'); //Customization Requested by Statewide. 
+if (!defined('STATEWIDE_SALES_REPORT')) {
+	define('STATEWIDE_SALES_REPORT', 'n'); //Customization Requested by Statewide.
+}
 
 define ('EXPORTCALLREPORT_ALLCAMPAIGNS', 'y');
 define ('REALTIME_CALLS_MONITORING', 'n'); //Change to 'y' to enable realtime calls monitoring in Dashboard (not advisable for heavy systems)

@@ -22,19 +22,19 @@
 
 	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
-		
+
 	$session_user = $api->GetSessionUser();
-	$session_group = $api->GetSessionGroup();	
+	$session_group = $api->GetSessionGroup();
 
 	// GET CAMPAIGNS
 		$campaigns = $api->API_getAllCampaigns();
-		
+
 	// GET INBOUND GROUPS
 		$inbound = $api->API_getAllInGroups();
-		
+
 	// GET LISTS
 		$list = $api->API_getAllLists();
-			
+
 	// GET STATUSES
 		$disposition = $api->API_getAllDispositions();
 
@@ -106,12 +106,18 @@
 										<select multiple="multiple" class="select2-3 form-control" id="selected_statuses" name="statuses[]" style="width:100%;">';
 										$display .= '<option value="ALL" selected>--- ALL ---</option>';
 											for($i=0; $i < (isset($disposition->status) && is_countable($disposition->status) ? count($disposition->status) : 0);$i++) {
-												if($disposition->campaign_id[$i] != NULL){
-													if(in_array($disposition->status[$i], (is_array($campaigns->campaign_id) ? $campaigns->campaign_id : []))){
-														$display .= '<option value="'.$disposition->status_name[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
+												$status = $disposition->status[$i] ?? '';
+												$statusName = $disposition->status_name[$i] ?? $status;
+												$campaignId = $disposition->campaign_id[$i] ?? null;
+												if($status === ''){
+													continue;
+												}
+												if($campaignId != NULL){
+													if(in_array($campaignId, (is_array($campaigns->campaign_id) ? $campaigns->campaign_id : []))){
+														$display .= '<option value="'.$status.'">'.$status.' - '.$statusName.'</option>';
 													}
 												} else {
-													$display .= '<option value="'.$disposition->status[$i].'">'.$disposition->status[$i].' - '.$disposition->status_name[$i].'</option>';
+													$display .= '<option value="'.$status.'">'.$status.' - '.$statusName.'</option>';
 												}
 											}
 			$display .= '				 </select>
@@ -173,31 +179,31 @@
 	?>
 		<script>
 			// initialize multiple selecting
-			$('.select2-3').select2({ theme: 'bootstrap' });	
+			$('.select2-3').select2({ theme: 'bootstrap' });
 			$.fn.select2.defaults.set( "theme", "bootstrap" );
-			
+
 			$(document).on('click','#submit_export',function() {
 				$('#submit_export').html("Downloading.....");
 				$('#submit_export').attr("disabled", true);
-				
+
 				fromDateVal = $('#start_filterdate').val();
 				if ($('#export_callreport_form').find('input[name="fromDate"]').length < 1) {
 					$('#export_callreport_form').append("<input type='hidden' name='fromDate' value='"+fromDateVal+"' />");
 				} else {
 					$('#export_callreport_form').find('input[name="fromDate"]').val(fromDateVal);
 				}
-				
+
 				toDateVal = $('#end_filterdate').val();
 				if ($('#export_callreport_form').find('input[name="toDate"]').length < 1) {
 					$('#export_callreport_form').append("<input type='hidden' name='toDate' value='"+toDateVal+"' />");
 				} else {
 					$('#export_callreport_form').find('input[name="toDate"]').val(toDateVal);
 				}
-				
+
 				//alert($("#toDate").val());
-				
+
 				$( "#export_callreport_form" ).submit();
-				
+
 				$('#submit_export').html('<li class="fa fa-download"> Submit & Download');
 				$('#submit_export').attr("disabled", false);
 			});
@@ -259,18 +265,17 @@
 											statusesContainer.push(statuses[b]);
 											custom_statuses = statuses[b].split(" - ");
 											statOptions += "<option value='" + custom_statuses[0] + "'>" + custom_statuses[0] + " - " + custom_statuses[1] + "</option>";
-										}	
+										}
 									}
 								}
 							}
 							if( !(dispo.status[i] in dispo.custom_dispo) ){ // default dispositions
-								statOptions += "<option value='" + dispo.status[i] + "'>" + dispo.status[i] + " - " + dispo.status_name[i] + "</option>";					
+								statOptions += "<option value='" + dispo.status[i] + "'>" + dispo.status[i] + " - " + dispo.status_name[i] + "</option>";
 							}
 						}
 					}
 				//}
-				
+
 				$('#selected_statuses').html(statOptions);
 			});
 		</script>
-

@@ -1,9 +1,9 @@
-<?php	
+<?php
 /**
  * @file 		callreports.php
  * @brief 		Reports and Analytics
- * @copyright 	Copyright (c) 2018 GOautodial Inc. 
- * @author     	Alexander Jim H. Abenoja 
+ * @copyright 	Copyright (c) 2018 GOautodial Inc.
+ * @author     	Alexander Jim H. Abenoja
  * @author		Demian Lizandro A. Biscocho
  *
  * @par <b>License</b>:
@@ -31,16 +31,16 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	
+
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
 			header("location: agent.php");
 		}
-	}	
-	
+	}
+
 	$perm = $api->goGetPermissions('reportsanalytics');
-	
+
 	$allowed_page = 0;
 	foreach ($perm as $key => $value) {
 		if ($value == 'Y') {
@@ -53,13 +53,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title><?php $lh->translateText("reports_and_go_analytics"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        
-        <?php 
-			print $ui->standardizedThemeCSS(); 
+
+        <?php
+			print $ui->standardizedThemeCSS();
 			print $ui->creamyThemeCSS();
-			print $ui->DataTablesTheme();
+			print $ui->dataTablesTheme();
 		?>
-		
+
 		<!-- FOR EXPORT -->
 		<!--<script src="js/plugins/datatables/bpampuch/pdfmake/vfs_fonts.js" type="text/javascript"></script>
 		<script src="js/plugins/datatables/bpampuch/pdfmake/pdfmake.min.js" type="text/javascript"></script>-->
@@ -69,12 +69,12 @@
 		<script src="js/plugins/datatables/buttons/dataTables.buttons.min.js" type="text/javascript"></script>
 		<script src="js/plugins/datatables/jszip.min.js" type="text/javascript"></script>
 
-        <!-- Datetime picker --> 
+        <!-- Datetime picker -->
         <link rel="stylesheet" href="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
         <!-- Date Picker -->
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-		
+
 		<!-- CHOSEN-->
    		<link rel="stylesheet" src="js/dashboard/chosen_v1.2.0/chosen.min.css">
 
@@ -100,7 +100,7 @@
 						<li class="active"><?php $lh->translateText("reports_and_go_analytics"); ?>
                     </ol>
                 </section>
-            
+
             <?php
                 $campaigns = $api->API_getAllCampaigns();
 				$ingroups = $api->API_getAllInGroups();
@@ -126,7 +126,7 @@
                                     <div class="box-body" id="table">
                                         <div collapse="panelChart9" class="panel-wrapper">
                                             <div class="panel-body">
-                                               <div class="chart-splinev3 flot-chart"></div> <!-- data is in JS -> demo-flot.js -> search (Overall/Home/Pagkain)--> 
+                                               <div class="chart-splinev3 flot-chart"></div> <!-- data is in JS -> demo-flot.js -> search (Overall/Home/Pagkain)-->
                                             </div>
                                         </div>
                                     </div><!-- /.box-body -->
@@ -136,7 +136,7 @@
                         </div>
 						<form id="search_form">
                         <div class="col-lg-3">
-                            <h3 class="m0 pb-lg"><?php $lh->translateText("filters"); ?></h3>                           
+                            <h3 class="m0 pb-lg"><?php $lh->translateText("filters"); ?></h3>
 
                                 <!-- HIDDEN POSTS -->
                                 <!-- <input type="hidden" name="userID" id="userID" value="<?php //echo $user->getUserName();?>"> deprecated -->
@@ -148,7 +148,7 @@
 									?>
 											<option value="stats" selected><?php echo $lh->translationFor("stats"); ?></option>
 											<option value="agent_detail"><?php echo $lh->translationFor("agent_detail"); ?></option>
-											<option value="agent_pdetail"><?php echo $lh->translationFor("agent_pdetail"); ?></option> 
+											<option value="agent_pdetail"><?php echo $lh->translationFor("agent_pdetail"); ?></option>
 											<option value="dispo"><?php echo $lh->translationFor("dispo"); ?></option>
 											<option value="sales_agent"><?php echo $lh->translationFor("sales_agent"); ?></option>
 											<option value="sales_tracker"><?php echo $lh->translationFor("sales_tracker"); ?></option>
@@ -251,7 +251,7 @@
                                                 <span class="fa fa-calendar"></span>
                                             </span>
                                         </div>
-                                        
+
                                     </div>
                                     -->
 
@@ -296,7 +296,7 @@
             </aside><!-- /.right-side -->
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
         </div><!-- ./wrapper -->
-        
+
         <?php print $ui->standardizedThemeJS();?>
 
 	<!-- FLOT CHART-->
@@ -307,9 +307,9 @@
 	<script src="js/dashboard/js/Flot/jquery.flot.time.js"></script>
 	<script src="js/dashboard/js/Flot/jquery.flot.categories.js"></script>
 	<script src="js/dashboard/js/flot-spline/js/jquery.flot.spline.min.js"></script>
-	
+
 	<script type="text/javascript">
-		$(document).ready(function() {	
+		$(document).ready(function() {
 			$(document).on('click','.edit-contact',function() {
 				var url = './editcontacts.php';
 				var id = $(this).attr('data-id');
@@ -321,7 +321,7 @@
 			filterchange();
 			$('#agent_detail_login').DataTable();
 			$('#table_agent_pdetailSM').DataTable();
-	
+
 			$('.select2-3').select2({ theme: 'bootstrap' });
 			$.fn.select2.defaults.set( "theme", "bootstrap" );
 
@@ -338,7 +338,7 @@
 				}
 				//format: 'MM/DD/YYYY'
 			});
-			
+
 			$('#datetimepicker2').datetimepicker({
 				icons: {
 					//time: 'fa fa-clock-o',
@@ -353,22 +353,22 @@
 				//format: 'MM/DD/YYYY',
 				useCurrent: false
 			});
-			
-			$("#datetimepicker1").on("dp.change", function (e) {				
+
+			$("#datetimepicker1").on("dp.change", function (e) {
 				$('#datetimepicker2').data("DateTimePicker").minDate(e.date);
 				filterchange();
 			});
-			
+
 			$("#datetimepicker2").on("dp.change", function (e) {
 				$('#datetimepicker1').data("DateTimePicker").maxDate(e.date);
 				filterchange();
 			});
-			
+
 			/* changing reports */
 			$('#filter_type').on('change', function() {
 				filterchange();
 			});
-			
+
 			/* changing reports */
 			$('#campaign_id').on('change', function() {
 				filterchange();
@@ -377,19 +377,19 @@
 			$('#request1').on('change', function() {
 				filterchange();
 			});
-			
+
 			$('#request2').on('change', function() {
 				filterchange();
 			});
-			
+
 			$('#ingroup_id').on('change', function() {
-				var filter_type = $('#filter_type').val();				
+				var filter_type = $('#filter_type').val();
 				var request = "";
 				var URL = "./php/reports/inboundreport.php";
-				
+
 				$('#table').empty();
 				$(".report-loader").fadeIn("slow");
-				
+
 				$.ajax({
 						url: URL,
 						type: 'POST',
@@ -408,22 +408,22 @@
 							if (data !== "") {
 								$(".report-loader").fadeOut("slow");
 								$('#table').html(data);
-								
+
 								if (filter_type == "inbound_report") {
 									var title = "<?php $lh->translateText("inbound"); ?> Call Report";
-									
+
 									$('#inbound_report').DataTable({
 										destroy: true,
 										responsive: true,
-										dom: 'Bfrtip',  
-										buttons: [ 
-											{ extend: 'copy', title: title }, 
-											{ extend: 'csv', title: title }, 
-											{ extend: 'excel', title: title }, 
-											{ extend: 'print', title: title } 
-										] 
+										dom: 'Bfrtip',
+										buttons: [
+											{ extend: 'copy', title: title },
+											{ extend: 'csv', title: title },
+											{ extend: 'excel', title: title },
+											{ extend: 'print', title: title }
+										]
 									});
-									
+
 									$('.request_div').hide();
 									$('.campaign_div').hide();
 									$('.ingroup_div').show();
@@ -436,15 +436,15 @@
 						}
 					});
 			});
-			
+
 			$('#statuses').on('change', function() {
-				var filter_type = $('#filter_type').val();	
+				var filter_type = $('#filter_type').val();
 				var request = "";
 				var URL = "./php/reports/inboundreport.php";
 
 				$('#table').empty();
 				$(".report-loader").fadeIn("slow");
-				
+
 				$.ajax({
 						url: URL,
 						type: 'POST',
@@ -469,13 +469,13 @@
 									$('#inbound_report').DataTable({
 										destroy: true,
 										responsive: true,
-										dom: 'Bfrtip',  
-										buttons: [ 
-											{ extend: 'copy', title: title }, 
-											{ extend: 'csv', title: title }, 
-											{ extend: 'excel', title: title }, 
-											{ extend: 'print', title: title } 
-										] 
+										dom: 'Bfrtip',
+										buttons: [
+											{ extend: 'copy', title: title },
+											{ extend: 'csv', title: title },
+											{ extend: 'excel', title: title },
+											{ extend: 'print', title: title }
+										]
 									});
 									$('.request_div').hide();
 									$('.campaign_div').hide();
@@ -489,7 +489,7 @@
 						}
 					});
 			});
-				
+
 		/*
 			* <?php $lh->translateText("inbound"); ?> and <?php $lh->translateText("outbound"); ?> Calls Per Hour Data
 		*/
@@ -501,19 +501,19 @@
 						"color": "#009688",
 						"data": [
 						<?php
-						
+
 							echo '["12 MN", 0],';
 							echo '["12 MN", 0],';
 							echo '["1 AM", 0],';
 							echo '["1 AM", 0]';
 						?>]
 						}];
-						
+
 					var options = { series: { lines: {show: false}, points: {show: true,radius: 4},
 							splines: {show: true,tension: 0.4,lineWidth: 1,fill: 0.5}
 						},
 						grid: { borderColor: '#eee', borderWidth: 1, hoverable: true, backgroundColor: '#fcfcfc' },
-						tooltip: true, 
+						tooltip: true,
 						tooltipOpts: { content: function (label, x, y) {  return y + ' Calls / Day';  } },
 						xaxis: { tickColor: '#fcfcfc', mode: 'categories' },
 						yaxis: { min: 0, max: 4, // optional: use it for a clear represetation
@@ -540,23 +540,23 @@
 			});
 			*/
             });
-            
+
             function filterchange() {
-				var filter_type = $('#filter_type').val();				
+				var filter_type = $('#filter_type').val();
 				var request = "";
 				var URL = 'reports.php';
 				var campaign_ID = $("#campaign_id").val();
 
                                 $('.campaign_div').show();
-	
+
 				$('#table').empty();
-				$(".report-loader").fadeIn("slow");				
-				
+				$(".report-loader").fadeIn("slow");
+
 				if (filter_type == "stats") {
 					request = $("#request1").val();
 					URL = './php/reports/statisticalreports.php';
 				}
-				
+
 				if (filter_type == "agent_detail") {
 					URL = './php/reports/agenttimedetails.php';
 				}
@@ -564,7 +564,7 @@
                                 if (filter_type == "agent_pdetail") {
                                         URL = './php/reports/agentperformancedetails.php';
                                 }
-			<?php if(REPORTS_SM_AGENT_PERFORMANCE_DETAIL === 'y'){ ?>	
+			<?php if(REPORTS_SM_AGENT_PERFORMANCE_DETAIL === 'y'){ ?>
 				if (filter_type == "agent_pdetailSM") {
                                         URL = './php/reports/SM_agentperformancedetails.php';
                                 }
@@ -577,7 +577,7 @@
                 		    URL = './php/reports/salesagent.php';
 				    request = $("#request2").val();
 				}
-				
+
 				if (filter_type == "sales_tracker") {
 		                    URL = './php/reports/salestracker.php';
 				    request = $("#request2").val();
@@ -591,7 +591,7 @@
 				if(filter_type === "call_export_report"){
 				     URL = './php/reports/exportcallreport.php';
 				}
-				
+
 				$.ajax({
 					url: URL,
 					type: 'POST',
@@ -617,7 +617,7 @@
 								$('.campaign_div').show();
 								$('.ingroup_div').hide();
 							}
-							
+
 							if (filter_type == "agent_detail") {
 								var title = "<?php $lh->translateText("agent_detail"); ?>";
 								$('#agent_detail_top').DataTable({
@@ -627,7 +627,7 @@
 									drawCallback:function(settings) {
 										var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 										pagination.toggle(this.api().page.info().pages > 1);
-									},										
+									},
 									dom: 'Bfrtip',
 									buttons: [
 										{
@@ -640,9 +640,9 @@
 									]
 								});
 
-								var goTable = $('#agent_detail_login').DataTable({ 
-									destroy: true, 
-									responsive: true, 
+								var goTable = $('#agent_detail_login').DataTable({
+									destroy: true,
+									responsive: true,
 									//stateSave: true,
 									//sort: false,
 									//pagination: false,
@@ -661,115 +661,115 @@
 											}, 0);
 											$(this.footer()).html(sformat(sum));
 											$('#tfoottotal').html('TOTAL');
-											
+
 										});
-										
+
 										var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 										pagination.toggle(this.api().page.info().pages > 1);
-										
+
 										$('#agent_detail_tbody').find('tr.odd, tr.even').hide();
-										
-									},								
+
+									},
 									orderFixed: [[0, 'asc']],
 									rowGroup: {
 										startRender: null,
 										endRender: function ( rows, group ) {
 											var colcount = rows.columns().indexes().length;
-											
+
 											var statuses = new Array();
-											for (var count = 1; count < colcount; count++) {										
+											for (var count = 1; count < colcount; count++) {
 												var status = rows
 													.data()
 													.pluck(count)
 													.reduce( function (a, b) {
 														return a + b*1;
-													}, 0) / 1;	
+													}, 0) / 1;
 												statuses.push('<td>'+sformat(status)+'</td>');
 												//console.log(status);
 											}
-																						
+
 											return $('<tr/>').append('<td>'+group+'</td>'+statuses);
-											
+
 										},
-										
+
 										dataSrc: 0
-									}								
-								});							
-								
+									}
+								});
+
 								// Change the fixed ordering when the data source is updated
 								goTable.on( 'rowgroup-datasrc', function ( e, dt, val ) {
 									goTable.order.fixed( {pre: [[ val, 'asc' ]]} ).draw();
 								} );
-							
+
 								$('a.group-by').on( 'click', function (e) {
 									e.preventDefault();
-							
+
 									goTable.rowGroup().dataSrc( $(this).data('column') );
 								} );
-								
-								$('#agent_detail_tbody').find('tr.odd, tr.even').hide();																				
-		
+
+								$('#agent_detail_tbody').find('tr.odd, tr.even').hide();
+
 								$('.request_div').hide();
 								$('.campaign_div').show();
 								$('.ingroup_div').hide();
 							}
-							
+
 							if (filter_type == "agent_pdetail") {
 								var title = "<?php $lh->translateText("agent_pdetail"); ?>";
-								
+
 								$('#agent_pdetail_top').DataTable({
 									destroy: true,
 									responsive: true,
-									dom: 'Bfrtip',  
-									buttons: [ 
-										{ extend: 'copy', title: title }, 
-										{ extend: 'csv', title: title }, 
-										{ extend: 'excel', title: title }, 
-										{ extend: 'print', title: title } 
-									] 
+									dom: 'Bfrtip',
+									buttons: [
+										{ extend: 'copy', title: title },
+										{ extend: 'csv', title: title },
+										{ extend: 'excel', title: title },
+										{ extend: 'print', title: title }
+									]
 								});
-								
+
 								$('#agent_pdetail_mid').DataTable({
 									destroy: true,
 									responsive: true,
-									dom: 'Bfrtip',  
-									buttons: [ 
-										{ extend: 'copy', title: title }, 
-										{ extend: 'csv', title: title }, 
-										{ extend: 'excel', title: title }, 
-										{ extend: 'print', title: title } 
-									] 
+									dom: 'Bfrtip',
+									buttons: [
+										{ extend: 'copy', title: title },
+										{ extend: 'csv', title: title },
+										{ extend: 'excel', title: title },
+										{ extend: 'print', title: title }
+									]
 								});
-								
+
 								$('#agent_pdetail_bottom').DataTable({
 									destroy: true,
 									responsive: true,
-									dom: 'Bfrtip'  
-									//buttons: [ 
-									//	{ extend: 'copy', title: title }, 
-									//	{ extend: 'csv', title: title }, 
-									//	{ extend: 'excel', title: title }, 
-									//	{ extend: 'print', title: title } 
+									dom: 'Bfrtip'
+									//buttons: [
+									//	{ extend: 'copy', title: title },
+									//	{ extend: 'csv', title: title },
+									//	{ extend: 'excel', title: title },
+									//	{ extend: 'print', title: title }
 									//]
 								});
-								
+
 								$('#agent_pdetail_login').DataTable({
 									destroy: true,
 									responsive: true,
-									dom: 'Bfrtip'  
-									//buttons: [ 
-									//	{ extend: 'copy', title: title }, 
-									//	{ extend: 'csv', title: title }, 
-									//	{ extend: 'excel', title: title }, 
-									//	{ extend: 'print', title: title } 
-									//] 
+									dom: 'Bfrtip'
+									//buttons: [
+									//	{ extend: 'copy', title: title },
+									//	{ extend: 'csv', title: title },
+									//	{ extend: 'excel', title: title },
+									//	{ extend: 'print', title: title }
+									//]
 								});
-								
+
 								$('.request_div').hide();
 								$('.campaign_div').show();
 								$('.ingroup_div').hide();
 							}
-							
+
 							// SERVICE MONKEY AGENT PERFORMANCE DETAIL
 						<?php //if(REPORTS_SM_AGENT_PERFORMANCE_DETAIL === 'y'){ ?>
 							if (filter_type == "agent_detailSM") {
@@ -797,127 +797,127 @@
 						<?php //} ?>
 							if (filter_type == "dispo") {
 								var title = "<?php $lh->translateText("dispo"); ?>";
-								
+
 								$('#dispo').DataTable({
 									destroy: true,
 									responsive: true,
-									dom: 'Bfrtip',  
-									buttons: [ 
-										{ extend: 'copy', title: title }, 
-										{ extend: 'csv', title: title }, 
-										{ extend: 'excel', title: title }, 
-										{ extend: 'print', title: title } 
-									] 
+									dom: 'Bfrtip',
+									buttons: [
+										{ extend: 'copy', title: title },
+										{ extend: 'csv', title: title },
+										{ extend: 'excel', title: title },
+										{ extend: 'print', title: title }
+									]
 								});
-								
+
 								$('.request_div').hide();
 								$('.campaign_div').show();
 								$('.ingroup_div').hide();
 							}
-							
+
 							if (filter_type == "sales_agent") {
 								var title = "<?php $lh->translateText("sales_agent"); ?>";
-								
+
 								if ($("#request2").val() == "outbound") {
 									title = title + " - <?php $lh->translateText("outbound"); ?>";
 								} else {
 									title = title + " - <?php $lh->translateText("inbound"); ?>";
 								}
-								
+
 								$('#outbound').DataTable({
 									destroy: true,
 									responsive: true,
-									dom: 'Bfrtip',  
-									buttons: [ 
-										{ extend: 'copy', title: title }, 
-										{ extend: 'csv', title: title }, 
-										{ extend: 'excel', title: title }, 
-										{ extend: 'print', title: title } 
-									] 
+									dom: 'Bfrtip',
+									buttons: [
+										{ extend: 'copy', title: title },
+										{ extend: 'csv', title: title },
+										{ extend: 'excel', title: title },
+										{ extend: 'print', title: title }
+									]
 								});
-								
+
 								$('#inbound').DataTable({
 									destroy: true,
 									responsive: true,
-									dom: 'Bfrtip',  
-									buttons: [ 
-										{ extend: 'copy', title: title }, 
-										{ extend: 'csv', title: title }, 
-										{ extend: 'excel', title: title }, 
-										{ extend: 'print', title: title } 
-									] 
+									dom: 'Bfrtip',
+									buttons: [
+										{ extend: 'copy', title: title },
+										{ extend: 'csv', title: title },
+										{ extend: 'excel', title: title },
+										{ extend: 'print', title: title }
+									]
 								});
-								
+
 								$('.request_div').show();
 								$('.sales_agent_request').show();
 								$('.stats_request').hide();
 								$('.campaign_div').show();
 								$('.ingroup_div').hide();
 							}
-							
+
 							if (filter_type == "sales_tracker") {
 								var title = "<?php $lh->translateText("sales_tracker"); ?>";
-								
+
 								if ($("#request2").val() == "outbound") {
 									title = title + " - <?php $lh->translateText("outbound"); ?>";
 								} else {
 									title = title + " - <?php $lh->translateText("inbound"); ?>";
 								}
-								
+
 								$('#outbound_table').DataTable({
 									destroy: true,
 									responsive: true,
-									dom: 'Bfrtip',  
-									buttons: [ 
-										{ extend: 'copy', title: title }, 
-										{ extend: 'csv', title: title }, 
-										{ extend: 'excel', title: title }, 
-										{ extend: 'print', title: title } 
-									] 
+									dom: 'Bfrtip',
+									buttons: [
+										{ extend: 'copy', title: title },
+										{ extend: 'csv', title: title },
+										{ extend: 'excel', title: title },
+										{ extend: 'print', title: title }
+									]
 								});
-								
+
 								$('#inbound_table').DataTable({
 									destroy: true,
 									responsive: true,
-									dom: 'Bfrtip',  
-									buttons: [ 
-										{ extend: 'copy', title: title }, 
-										{ extend: 'csv', title: title }, 
-										{ extend: 'excel', title: title }, 
-										{ extend: 'print', title: title } 
-									] 
+									dom: 'Bfrtip',
+									buttons: [
+										{ extend: 'copy', title: title },
+										{ extend: 'csv', title: title },
+										{ extend: 'excel', title: title },
+										{ extend: 'print', title: title }
+									]
 								});
-								
+
 								$('.request_div').show();
 								$('.sales_agent_request').show();
 								$('.stats_request').hide();
 								$('.campaign_div').show();
 								$('.ingroup_div').hide();
 							}
-							
+
 							if (filter_type == "inbound_report") {
 								var title = "<?php $lh->translateText("inbound"); ?> Call Report";
 								$('#inbound_report').DataTable({
 									destroy: true,
 									responsive: true,
-									dom: 'Bfrtip',  
-									buttons: [ 
-										{ extend: 'copy', title: title }, 
-										{ extend: 'csv', title: title }, 
-										{ extend: 'excel', title: title }, 
-										{ extend: 'print', title: title } 
-									] 
+									dom: 'Bfrtip',
+									buttons: [
+										{ extend: 'copy', title: title },
+										{ extend: 'csv', title: title },
+										{ extend: 'excel', title: title },
+										{ extend: 'print', title: title }
+									]
 								});
-								
+
 								$('.request_div').hide();
 								$('.campaign_div').hide();
 								$('.ingroup_div').show();
 							}
-							
+
 							if (filter_type == "call_export_report") {
 								var title = "Export Call Report";
-								$('.campaign_div').hide(); 										
-								$('.ingroup_div').hide();                                        
+								$('.campaign_div').hide();
+								$('.ingroup_div').hide();
 								$('.request_div').hide();
 							}
 						} else {
@@ -925,9 +925,9 @@
 							$('#table').html("<?php $lh->translateText("no_data"); ?>");
 						}
 					}
-				});            
+				});
             }
-            
+
 			function sformat(seconds) {
 				if (seconds >= 86400) {
 					var fm = [
@@ -941,12 +941,12 @@
 							Math.floor(seconds / 60 / 60) % 24, // HOURS
 							Math.floor(seconds / 60) % 60, // MINUTES
 							seconds % 60 // SECONDS
-					];				
-				}				
-				
+					];
+				}
+
 				return $.map(fm, function(v, i) { return ((v < 10) ? '0' : '') + v; }).join(':');
 			}
-            
+
         </script>
         <?php print $ui->creamyFooter(); ?>
     </body>

@@ -42,6 +42,23 @@
 
 	$perm = $api->goGetPermissions('campaign,disposition,pausecodes,hotkeys,list', $_SESSION['usergroup']);
 	$gopackage = $api->API_getGOPackage();
+
+	$emptyApiResult = static function (): stdClass {
+		$result = new stdClass();
+		$result->result = 'empty';
+		return $result;
+	};
+
+	$campaign = $campaign ?? $emptyApiResult();
+	$disposition = $disposition ?? $emptyApiResult();
+	$leadrecycling = $leadrecycling ?? $emptyApiResult();
+	$leadfilter = $leadfilter ?? $emptyApiResult();
+	$areacode = $areacode ?? $emptyApiResult();
+	$list = $list ?? $emptyApiResult();
+	$country_codes = $country_codes ?? $emptyApiResult();
+	$dialStatus = $dialStatus ?? $emptyApiResult();
+	$dial_statuses = isset($dial_statuses) && is_array($dial_statuses) ? $dial_statuses : [];
+	$id = $id ?? '';
 ?>
 <html>
     <head>
@@ -134,30 +151,94 @@
 			}
 
 			#table_campaign th,
-			#table_campaign td {
+			#table_campaign td,
+			#table_disposition th,
+			#table_disposition td,
+			#table_leadrecycling th,
+			#table_leadrecycling td,
+			#table_leadfilter th,
+			#table_leadfilter td,
+			#table_areacode th,
+			#table_areacode td {
 				vertical-align: middle;
 				white-space: nowrap;
 			}
 
 			#table_campaign th:first-child,
 			#table_campaign td:first-child,
-			#table_campaign th:nth-child(6),
-			#table_campaign td:nth-child(6) {
+			#table_disposition th:first-child,
+			#table_disposition td:first-child,
+			#table_leadrecycling th:first-child,
+			#table_leadrecycling td:first-child,
+			#table_leadfilter th:first-child,
+			#table_leadfilter td:first-child,
+			#table_areacode th:first-child,
+			#table_areacode td:first-child {
 				text-align: center;
-				width: 42px !important;
-				min-width: 42px;
-				max-width: 42px;
+				width: 46px !important;
+				min-width: 46px;
+				max-width: 46px;
+				padding-left: 7px;
+				padding-right: 7px;
+			}
+
+			#table_campaign td:first-child > a,
+			#table_campaign td:first-child > avatar,
+			#table_disposition td:first-child > a,
+			#table_disposition td:first-child > avatar,
+			#table_leadrecycling td:first-child > a,
+			#table_leadrecycling td:first-child > avatar,
+			#table_leadfilter td:first-child > a,
+			#table_leadfilter td:first-child > avatar,
+			#table_areacode td:first-child > a,
+			#table_areacode td:first-child > avatar,
+			#table_campaign td:first-child .vue-avatar--wrapper,
+			#table_disposition td:first-child .vue-avatar--wrapper,
+			#table_leadrecycling td:first-child .vue-avatar--wrapper,
+			#table_leadfilter td:first-child .vue-avatar--wrapper,
+			#table_areacode td:first-child .vue-avatar--wrapper {
+				display: flex !important;
+				justify-content: center;
+				align-items: center;
+				margin-left: auto;
+				margin-right: auto;
 			}
 
 			#table_campaign th:nth-child(2),
-			#table_campaign td:nth-child(2) {
+			#table_campaign td:nth-child(2),
+			#table_disposition th:nth-child(2),
+			#table_disposition td:nth-child(2),
+			#table_leadrecycling th:nth-child(2),
+			#table_leadrecycling td:nth-child(2),
+			#table_leadfilter th:nth-child(2),
+			#table_leadfilter td:nth-child(2),
+			#table_areacode th:nth-child(2),
+			#table_areacode td:nth-child(2) {
 				width: 120px;
 				min-width: 120px;
 			}
 
-			#table_campaign th:nth-child(3),
-			#table_campaign td:nth-child(3) {
-				width: auto;
+			#table_campaign th:nth-child(6),
+			#table_campaign td:nth-child(6) {
+				text-align: center;
+				width: 46px !important;
+				min-width: 46px;
+				max-width: 46px;
+			}
+
+			#table_campaign th:last-child,
+			#table_campaign td:last-child,
+			#table_disposition th:last-child,
+			#table_disposition td:last-child,
+			#table_leadrecycling th:last-child,
+			#table_leadrecycling td:last-child,
+			#table_leadfilter th:last-child,
+			#table_leadfilter td:last-child,
+			#table_areacode th:last-child,
+			#table_areacode td:last-child {
+				width: 135px !important;
+				min-width: 135px;
+				max-width: 135px;
 			}
 
 			#table_campaign th:nth-child(4),
@@ -167,16 +248,23 @@
 			}
 
 			#table_campaign th:nth-child(5),
-			#table_campaign td:nth-child(5) {
+			#table_campaign td:nth-child(5),
+			#table_areacode th:nth-child(6),
+			#table_areacode td:nth-child(6) {
 				width: 90px;
 				min-width: 90px;
 			}
 
-			#table_campaign th:last-child,
-			#table_campaign td:last-child {
-				width: 135px !important;
-				min-width: 135px;
-				max-width: 135px;
+			#table_areacode th:nth-child(4),
+			#table_areacode td:nth-child(4) {
+				width: 100px;
+				min-width: 100px;
+			}
+
+			#table_areacode th:nth-child(5),
+			#table_areacode td:nth-child(5) {
+				width: 150px;
+				min-width: 150px;
 			}
 		</style>
     </head>
@@ -412,6 +500,7 @@
 												<td>
 											<?php
 												$leadrecycle = "";
+												$leadrecycles = [];
 												//if($disposition->campaign_id[$i] == $campaign->campaign_id[$i]){
 												for($a=0; $a<(isset($leadrecycling->campaign_id) && is_countable($leadrecycling->campaign_id) ? count($leadrecycling->campaign_id) : 0); $a++){
 													$leadrecycles[] = $leadrecycling->status[$a];
@@ -1744,12 +1833,15 @@
 					pagination.toggle(this.api().page.info().pages > 1);
 				},
 				columnDefs:[
-				    { width: "4%", targets: 0 },
-					{ width: "12%", targets: 6 },
-					{ width: "4%", targets: 5 },
+					{ width: "46px", targets: 0 },
+					{ width: "120px", targets: 1 },
+					{ width: "125px", targets: 3 },
+					{ width: "90px", targets: 4 },
+					{ width: "46px", targets: 5 },
+					{ width: "135px", targets: 6 },
 					//{ visible: false, targets: 1 },
 					{ searchable: false, targets: [ 0, 5, 6 ] },
-					{ sortable: false, targets: [ 0, 5, 6 ] },
+					{ orderable: false, targets: [ 0, 5, 6 ] },
 					{ responsivePriority: 1, targets: 6 },
 					{ responsivePriority: 2, targets: 5 },
 					{ targets: -1, className: "dt-body-right" }
@@ -1759,6 +1851,7 @@
 			var tableDisposition = $('#table_disposition').DataTable({
 				destroy:true,
 				responsive:true,
+				autoWidth:false,
 				stateSave:true,
 				drawCallback:function(settings) {
 					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
@@ -1775,9 +1868,11 @@
 					}
 				},
 				columnDefs:[
-					{ width: "18%", targets: 4 },
+					{ width: "46px", targets: 0 },
+					{ width: "120px", targets: 1 },
+					{ width: "135px", targets: 4 },
 					{ searchable: false, targets: [ 0, 4 ] },
-					{ sortable: false, targets: [ 0, 4 ] },
+					{ orderable: false, targets: [ 0, 4 ] },
 					{ responsivePriority: 1, targets: 4 },
 					{ responsivePriority: 2, targets: 2 },
 					{ targets: -1, className: "dt-body-right" }
@@ -1793,6 +1888,7 @@
 			var tableLeadRecycling = $('#table_leadrecycling').DataTable({
 				destroy:true,
 				responsive:true,
+				autoWidth:false,
 				stateSave:true,
 				drawCallback:function(settings) {
 					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
@@ -1817,9 +1913,11 @@
 					}
 				},
 				columnDefs:[
-					{ width: "18%", targets: 4 },
+					{ width: "46px", targets: 0 },
+					{ width: "120px", targets: 1 },
+					{ width: "135px", targets: 4 },
 					{ searchable: false, targets: [ 0, 4 ] },
-					{ sortable: false, targets: [ 0, 4 ] },
+					{ orderable: false, targets: [ 0, 4 ] },
 					{ responsivePriority: 1, targets: 4 },
 					{ responsivePriority: 2, targets: 3 },
 					{ targets: -1, className: "dt-body-right" }
@@ -1828,7 +1926,19 @@
 
 			//$('#table_areacode').dataTable();
 
-			$('#table_leadfilter').dataTable();
+			$('#table_leadfilter').DataTable({
+				destroy:true,
+				responsive:true,
+				autoWidth:false,
+				columnDefs:[
+					{ width: "46px", targets: 0 },
+					{ width: "120px", targets: 1 },
+					{ width: "135px", targets: 3 },
+					{ searchable: false, targets: [ 0, 3 ] },
+					{ orderable: false, targets: [ 0, 3 ] },
+					{ targets: -1, className: "dt-body-right" }
+				]
+			});
 
 			// FAB HOVER
 			$(".bottom-menu").on('mouseenter mouseleave', function () {
@@ -2221,6 +2331,69 @@
 			  $('body').addClass('modal-open');
 			});
 
+			var pauseCodeSkipAutoReturn = false;
+
+			function cleanupPauseCodeModalFocus() {
+				$('.modal-backdrop').not(':last').remove();
+				if ($('.modal.in').length) {
+					$('body').addClass('modal-open');
+				}
+			}
+
+			function showPauseCodeForm() {
+				cleanupPauseCodeModalFocus();
+				$('#modal_form_pause_codes').modal('show');
+			}
+
+			function reopenPauseCodeList(campaign_id) {
+				window.setTimeout(function(){
+					cleanupPauseCodeModalFocus();
+					get_pause_codes(campaign_id);
+				}, 300);
+			}
+
+			$('#modal_form_pause_codes').on('shown.bs.modal', function () {
+				cleanupPauseCodeModalFocus();
+				window.setTimeout(function(){
+					var $firstField = $('.pause-code:visible:not([readonly])');
+					if (!$firstField.length) {
+						$firstField = $('.pause-code-name:visible');
+					}
+					$firstField.focus();
+				}, 0);
+			});
+
+			$('#modal_view_pause_codes').on('shown.bs.modal', function () {
+				cleanupPauseCodeModalFocus();
+			});
+
+			$('#modal_form_pause_codes').on('keydown', 'input, select, button, a', function(e) {
+				if (e.which !== 9) {
+					return;
+				}
+
+				var $fields = $('#modal_form_pause_codes')
+					.find('input:visible:not(:disabled), select:visible:not(:disabled), button:visible:not(:disabled), a:visible:not(.disabled)')
+					.filter(function(){ return $(this).css('visibility') !== 'hidden' && $(this).attr('tabindex') !== '-1'; });
+				var currentIndex = $fields.index(this);
+
+				if (!$fields.length || currentIndex === -1) {
+					return;
+				}
+
+				e.preventDefault();
+				e.stopPropagation();
+
+				var nextIndex = e.shiftKey ? currentIndex - 1 : currentIndex + 1;
+				if (nextIndex >= $fields.length) {
+					nextIndex = 0;
+				} else if (nextIndex < 0) {
+					nextIndex = $fields.length - 1;
+				}
+
+				$fields.eq(nextIndex).focus();
+			});
+
 			$(document).on('click', '.btn-new-pause-code', function(){
 				var campaign_id = $(this).attr('data-campaign');
 				$('.campaign-id').val(campaign_id);
@@ -2231,9 +2404,12 @@
 				$('.billable').val('YES').trigger('change');
 				$('.btn-save-pause-code').removeClass('hide');
 				$('.btn-update-pause-code').addClass('hide');
-				$('#modal_view_pause_codes').modal('hide');
-				$('#modal_form_pause_codes').modal('show');
-				$('body').addClass('modal-open');
+
+				if ($('#modal_view_pause_codes').hasClass('in')) {
+					$('#modal_view_pause_codes').one('hidden.bs.modal', showPauseCodeForm).modal('hide');
+				} else {
+					showPauseCodeForm();
+				}
 			});
 
 			$(document).on('click', '.btn-new-hotkey', function(){
@@ -2266,10 +2442,12 @@
 			});
 
 			$('#modal_form_pause_codes').on('hidden.bs.modal', function () {
-				// var campaign_id = $('.camapaign-id').val();
-				$('#modal_form_pause_codes').modal('hide');
+				if (pauseCodeSkipAutoReturn) {
+					pauseCodeSkipAutoReturn = false;
+					return;
+				}
+
 				$('#modal_view_pause_codes').modal('show');
-				$('body').addClass('modal-open');
 			});
 
 			$('#modal_form_hotkeys').on('hidden.bs.modal', function () {
@@ -2321,9 +2499,12 @@
 				$('.billable').val(billable).trigger('change');
 				$('.btn-save-pause-code').addClass('hide');
 				$('.btn-update-pause-code').removeClass('hide');
-				$('#modal_view_pause_codes').modal('hide');
-				$('#modal_form_pause_codes').modal('toggle');
-				$('body').addClass('modal-open');
+
+				if ($('#modal_view_pause_codes').hasClass('in')) {
+					$('#modal_view_pause_codes').one('hidden.bs.modal', showPauseCodeForm).modal('hide');
+				} else {
+					showPauseCodeForm();
+				}
 			});
 
 			$(document).on('click', '.btn-delete-pc', function(){
@@ -2452,21 +2633,20 @@
 								contentType: false,
 								processData: false,
 								success: function(data) {
-									console.log(data);
 									if (data == 1) {
-										swal({
-											title: "Success",
-											text: "Pause Code Successfully Created",
-											type: "success"
-											},
-											function(){
-												$('.pause-code').val('');
-												$('.pause-code-name').val('');
-												$('.billable').val('YES').trigger('change');
-												$('#modal_form_pause_codes').modal('hide');
-												get_pause_codes(campaign_id);
-											}
-										);
+										$('.pause-code').val('');
+										$('.pause-code-name').val('');
+										$('.billable').val('YES').trigger('change');
+										pauseCodeSkipAutoReturn = true;
+										$('#modal_form_pause_codes').one('hidden.bs.modal', function(){
+											swal({
+												title: "Success",
+												text: "Pause Code Successfully Created",
+												type: "success"
+											}, function(){
+												reopenPauseCodeList(campaign_id);
+											});
+										}).modal('hide');
 									} else {
 										sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
 									}
@@ -2518,7 +2698,6 @@
 									},
 									dataType: 'json',
 									success: function(data) {
-											console.log(data);
 											if(data == 1){
 												swal({
 														title: "<?php $lh->translateText("success"); ?>",
@@ -2544,7 +2723,6 @@
 
 			$(document).on('change', '.status', function(){
 				var stat_name = $(this).select2().find(":selected").data("name");
-				console.log(stat_name);
 				$('#hotkey_status_name').val(stat_name);
 			});
 
@@ -2572,7 +2750,6 @@
 								contentType: false,
 								processData: false,
 								success: function(data) {
-									console.log(data);
 									if (data == 1) {
 										swal({
 												title: "<?php $lh->translateText("success"); ?>",
@@ -2600,7 +2777,7 @@
 			$(document).on('click', '.btn-update-pause-code', function(){
 				var form_data = new FormData($("#form_pause_codes")[0]);
 				var campaign_id = $('.campaign-id').val();
-				console.log(campaign_id);
+
 				swal({
 					title: "<?php $lh->translateText("are_you_sure"); ?>",
 					text: "<?php $lh->translateText("action_cannot_be_undone"); ?>.",
@@ -2623,21 +2800,20 @@
 								contentType: false,
 								processData: false,
 								success: function(data) {
-									console.log(data);
 									if (data == 1) {
-										swal({
-											title: "Success",
-											text: "<?php $lh->translateText("pause_success"); ?>",
-											type: "success"
-										},
-										function(){
-											$('.pause-code').val('');
-											$('.pause-code-name').val('');
-											$('.billable').val('YES').trigger('change');
-											$('#modal_form_pause_codes').modal('hide');
-											get_pause_codes(campaign_id);
-										}
-										);
+										$('.pause-code').val('');
+										$('.pause-code-name').val('');
+										$('.billable').val('YES').trigger('change');
+										pauseCodeSkipAutoReturn = true;
+										$('#modal_form_pause_codes').one('hidden.bs.modal', function(){
+											swal({
+												title: "Success",
+												text: "<?php $lh->translateText("pause_success"); ?>",
+												type: "success"
+											}, function(){
+												reopenPauseCodeList(campaign_id);
+											});
+										}).modal('hide');
 									}else{
 										sweetAlert("Oops...", "<?php $lh->translateText("something_went_wrong"); ?>! "+ data, "error");
 									}
@@ -4029,12 +4205,31 @@
 			$('#table_areacode').DataTable( {
 				"processing": true,
 				"serverSide": true,
+				"autoWidth": false,
 				"ajax": {
 					"url": './php/GetAreaCodes.php',
 					"type": 'POST'
 				},
 				"order": [[ 1, "asc" ]],
 				"columnDefs": [{
+					"width": "46px",
+					"targets": 0
+				}, {
+					"width": "120px",
+					"targets": 1
+				}, {
+					"width": "100px",
+					"targets": 3
+				}, {
+					"width": "150px",
+					"targets": 4
+				}, {
+					"width": "90px",
+					"targets": 5
+				}, {
+					"width": "135px",
+					"targets": 6
+				}, {
 					"targets": [0, 6],
 					"searchable": false,
 					"orderable": false
