@@ -345,7 +345,7 @@
 															<div class="col-lg-9">
 																<select name="dial_prefix" id="dial_prefix" class="form-control">
 																	<option value="CUSTOM" <?php if($campaign->data->dial_prefix == "CUSTOM"){echo "selected";}?>>CUSTOM DIAL PREFIX</option>
-																	<?php for($i=0;$i<=(isset($carriers->carrier_id) && is_countable($carriers->carrier_id) ? count($carriers->carrier_id) : 0);$i++) { ?>
+																	<?php for($i=0;$i<(isset($carriers->carrier_id) && is_countable($carriers->carrier_id) ? count($carriers->carrier_id) : 0);$i++) { ?>
 																		<?php
 																		if(!empty($carriers->carrier_id[$i])) {
 																			$prefixes = explode("\n", (string) ($carriers->dialplan_entry[$i] ?? ''));
@@ -450,7 +450,7 @@
 													<label class="col-sm-3 control-label"><?php $lh->translateText("local_calltime"); ?>:</label>
 													<div class="col-sm-9 mb">
 														<select class="form-control" id="local_call_time" name="local_call_time">
-															<?php for($i=0;$i<=(isset($calltimes->call_time_id) && is_countable($calltimes->call_time_id) ? count($calltimes->call_time_id) : 0);$i++) { ?>
+															<?php for($i=0;$i<(isset($calltimes->call_time_id) && is_countable($calltimes->call_time_id) ? count($calltimes->call_time_id) : 0);$i++) { ?>
 																<?php if(!empty($calltimes->call_time_id[$i])) { ?>
 																	<option value="<?php echo $calltimes->call_time_id[$i]; ?>"<?php if($campaign->data->local_call_time == $calltimes->call_time_id[$i]) echo "selected"; ?>><?php echo $calltimes->call_time_name[$i]; ?></option>
 																<?php } ?>
@@ -488,7 +488,7 @@
 													<label class="col-sm-3 control-label"><?php $lh->translateText("phone_numbers_did/ftn_on_this_campaign"); ?>:</label>
 													<span class="col-sm-9 control-label" style="text-align: left; vertical-align: top;">
 														<?php if((isset($dids->did_id) && is_countable($dids->did_id) ? count($dids->did_id) : 0) > 0) {?>
-															<?php for($i=0;$i<=(isset($dids->did_id) && is_countable($dids->did_id) ? count($dids->did_id) : 0);$i++) { ?>
+															<?php for($i=0;$i<(isset($dids->did_id) && is_countable($dids->did_id) ? count($dids->did_id) : 0);$i++) { ?>
 																<?php if(!empty($dids->did_id[$i])){ ?>
 																	<p><?php echo $dids->did_pattern[$i]; ?></p>
 																<?php } ?>
@@ -527,7 +527,7 @@
 													<label class="col-sm-3 control-label"><?php $lh->translateText("phone_numbers_did/ftn_on_this_campaign"); ?>:</label>
 													<span class="col-sm-9 control-label" style="text-align: left; vertical-align: top;">
 														<?php if((isset($dids->did_id) && is_countable($dids->did_id) ? count($dids->did_id) : 0) != 0) {?>
-															<?php for($i=0;$i<=(isset($dids->did_id) && is_countable($dids->did_id) ? count($dids->did_id) : 0);$i++) { ?>
+															<?php for($i=0;$i<(isset($dids->did_id) && is_countable($dids->did_id) ? count($dids->did_id) : 0);$i++) { ?>
 																<?php if(!empty($dids->did_id[$i])){ ?>
 																	<p><?php echo $dids->did_pattern[$i]; ?></p>
 																<?php } ?>
@@ -558,7 +558,7 @@
 														</div><!-- /input-group -->
 														<select class="form-control survey_first_audio_file_dropdown" id="survey_first_audio_file_dropdown" data-label="survey_first_audio_file">
 															<option value="">-- Default Value --</option>
-															<?php for($i=0;$i<=(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$i++) { ?>
+															<?php for($i=0;$i<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$i++) { ?>
 																<?php if(!empty($voicefiles->file_name[$i])) { ?>
 																																																							<option value="<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>"><?php echo substr($voicefiles->file_name[$i], 0, -4); ?></option>
 																<?php } ?>
@@ -700,7 +700,7 @@
 																	<select class="form-control" id="dial_status" name="dial_status">
 																		<option value="" selected>NONE</option>
 																		<optgroup label="System Statuses">
-																			<?php for($i=0;$i<=(isset($dialStatus->status->system) && is_countable($dialStatus->status->system) ? count($dialStatus->status->system) : 0);$i++) { ?>
+																			<?php for($i=0;$i<(isset($dialStatus->status->system) && is_countable($dialStatus->status->system) ? count($dialStatus->status->system) : 0);$i++) { ?>
 																				<?php if( !empty($dialStatus->status->system[$i]) && !in_array($dialStatus->status->system[$i], (is_array($dial_statuses) ? $dial_statuses : [])) ){ ?>
 																					<option value="<?php echo $dialStatus->status->system[$i]?>">
 																						<?php echo $dialStatus->status->system[$i]." - ".$dialStatus->status_name->system[$i]?>
@@ -710,7 +710,7 @@
 																		</optgroup>
 																		<?php if((isset($campdialStatus->status) && is_countable($campdialStatus->status) ? count($campdialStatus->status) : 0) > 0){ ?>
 																			<optgroup label="Campaign Statuses">
-																			<?php for($i=0;$i<=(isset($campdialStatus->status) && is_countable($campdialStatus->status) ? count($campdialStatus->status) : 0);$i++) { ?>
+																			<?php for($i=0;$i<(isset($campdialStatus->status) && is_countable($campdialStatus->status) ? count($campdialStatus->status) : 0);$i++) { ?>
 																				<?php if( !empty($campdialStatus->status[$i])  && !in_array($campdialStatus->status[$i], (is_array($dial_statuses) ? $dial_statuses : [])) ){ ?>
 																					<option value="<?php echo $campdialStatus->status[$i]?>">
 																						<?php echo $campdialStatus->status[$i]." - ".$campdialStatus->status_name[$i]?>
@@ -850,7 +850,7 @@
 																<div class="col-sm-9 mb">
 																	<select class="form-control" id="lead_filter" name="lead_filter">
 																		<option value="" <?php if($campaign->data->lead_filter_id == "") echo "selected";?>>NONE</option>
-																		<?php for($i=0;$i<=(isset($leadfilter->lead_filter_id) && is_countable($leadfilter->lead_filter_id) ? count($leadfilter->lead_filter_id) : 0);$i++) { ?>
+																		<?php for($i=0;$i<(isset($leadfilter->lead_filter_id) && is_countable($leadfilter->lead_filter_id) ? count($leadfilter->lead_filter_id) : 0);$i++) { ?>
 																			<?php if(!empty($leadfilter->lead_filter_id[$i])) { ?>
 																				<option value="<?php echo $leadfilter->lead_filter_id[$i]; ?>" <?php if($campaign->data->lead_filter_id == $leadfilter->lead_filter_id[$i]) echo "selected";?>><?php echo $leadfilter->lead_filter_name[$i]; ?></option>
 																			<?php } ?>
@@ -909,7 +909,7 @@
 																	</div><!-- /input-group -->
 																	<select class="form-control am_message_chooser" id="am_message_chooser" name="am_message_chooser">
 																		<option value="">-- Default Value --</option>
-																		<?php for($i=0;$i<=(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$i++) { ?>
+																		<?php for($i=0;$i<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$i++) { ?>
 																			<?php if(!empty($voicefiles->file_name[$i])) { ?>
 																				<option value="<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>"><?php echo substr($voicefiles->file_name[$i], 0, -4); ?></option>
 																			<?php } ?>
@@ -1132,7 +1132,7 @@
 																	<select class="form-control" id="dial_status" name="dial_status">
 																		<option value="" selected>NONE</option>
 																		<optgroup label="System Statuses">
-																		<?php for($i=0;$i<=(isset($dialStatus->status->system) && is_countable($dialStatus->status->system) ? count($dialStatus->status->system) : 0);$i++) { ?>
+																		<?php for($i=0;$i<(isset($dialStatus->status->system) && is_countable($dialStatus->status->system) ? count($dialStatus->status->system) : 0);$i++) { ?>
 																			<?php if( !empty($dialStatus->status->system[$i]) && !in_array($dialStatus->status->system[$i], (is_array($dial_statuses) ? $dial_statuses : [])) ){ ?>
 																				<option value="<?php echo $dialStatus->status->system[$i]?>">
 																					<?php echo $dialStatus->status->system[$i]." - ".$dialStatus->status_name->system[$i]?>
@@ -1142,7 +1142,7 @@
 																		</optgroup>
 																		<?php if((isset($campdialStatus->status) && is_countable($campdialStatus->status) ? count($campdialStatus->status) : 0) > 0){ ?>
 																			<optgroup label="Campaign Statuses">
-																			<?php for($i=0;$i<=(isset($campdialStatus->status) && is_countable($campdialStatus->status) ? count($campdialStatus->status) : 0);$i++) { ?>
+																			<?php for($i=0;$i<(isset($campdialStatus->status) && is_countable($campdialStatus->status) ? count($campdialStatus->status) : 0);$i++) { ?>
 																				<?php if( !empty($campdialStatus->status[$i])  && !in_array($campdialStatus->status[$i], (is_array($dial_statuses) ? $dial_statuses : [])) ){ ?>
 																					<option value="<?php echo $campdialStatus->status[$i]?>">
 																						<?php echo $campdialStatus->status[$i]." - ".$campdialStatus->status_name[$i]?>
@@ -1178,7 +1178,7 @@
 																	</div><!-- /input-group -->
 																	<select class="form-control am_message_chooser" id="am_message_chooser" name="am_message_chooser">
 																		<option value="">-- Default Value --</option>
-																		<?php for($i=0;$i<=(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$i++) { ?>
+																		<?php for($i=0;$i<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$i++) { ?>
 																			<?php if(!empty($voicefiles->file_name[$i])) { ?>
 																				<option value="<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>"><?php echo substr($voicefiles->file_name[$i], 0, -4); ?></option>
 																			<?php } ?>
@@ -1373,7 +1373,7 @@
 																<label class="col-sm-3 control-label"><?php $lh->translateText("call_time"); ?>:</label>
 																<div class="col-sm-9 mb">
 																	<select class="form-control" id="local_call_time" name="local_call_time">
-																		<?php for($i=0;$i<=(isset($calltimes->call_time_id) && is_countable($calltimes->call_time_id) ? count($calltimes->call_time_id) : 0);$i++) { ?>
+																		<?php for($i=0;$i<(isset($calltimes->call_time_id) && is_countable($calltimes->call_time_id) ? count($calltimes->call_time_id) : 0);$i++) { ?>
 																			<?php if(!empty($calltimes->call_time_id[$i])) { ?>
 																				<option value="<?php echo $calltimes->call_time_id[$i]; ?>"<?php if($campaign->data->local_call_time == $calltimes->call_time_id[$i]) echo "selected"; ?>><?php echo $calltimes->call_time_name[$i]; ?></option>
 																			<?php } ?>
@@ -1402,7 +1402,7 @@
 																	<select class="form-control" id="dial_status" name="dial_status">
 																		<option value="" selected>NONE</option>
 																		<optgroup label="System Statuses">
-																		<?php for($i=0;$i<=(isset($dialStatus->status->system) && is_countable($dialStatus->status->system) ? count($dialStatus->status->system) : 0);$i++) { ?>
+																		<?php for($i=0;$i<(isset($dialStatus->status->system) && is_countable($dialStatus->status->system) ? count($dialStatus->status->system) : 0);$i++) { ?>
 																			<?php if( !empty($dialStatus->status->system[$i]) && !in_array($dialStatus->status->system[$i], (is_array($dial_statuses) ? $dial_statuses : [])) ){ ?>
 																				<option value="<?php echo $dialStatus->status->system[$i]?>">
 																					<?php echo $dialStatus->status->system[$i]." - ".$dialStatus->status_name->system[$i]?>
@@ -1412,7 +1412,7 @@
 																		</optgroup>
 																		<?php if((isset($campdialStatus->status) && is_countable($campdialStatus->status) ? count($campdialStatus->status) : 0) > 0){ ?>
 																			<optgroup label="Campaign Statuses">
-																			<?php for($i=0;$i<=(isset($campdialStatus->status) && is_countable($campdialStatus->status) ? count($campdialStatus->status) : 0);$i++) { ?>
+																			<?php for($i=0;$i<(isset($campdialStatus->status) && is_countable($campdialStatus->status) ? count($campdialStatus->status) : 0);$i++) { ?>
 																				<?php if( !empty($campdialStatus->status[$i])  && !in_array($campdialStatus->status[$i], (is_array($dial_statuses) ? $dial_statuses : [])) ){ ?>
 																					<option value="<?php echo $campdialStatus->status[$i]?>">
 																						<?php echo $campdialStatus->status[$i]." - ".$campdialStatus->status_name[$i]?>
@@ -1552,7 +1552,7 @@
 																<div class="col-sm-9 mb">
 																	<select class="form-control" id="lead_filter" name="lead_filter">
 																		<option value="" <?php if($campaign->data->lead_filter_id == "") echo "selected";?>>NONE</option>
-																		<?php for($i=0;$i<=(isset($leadfilter->lead_filter_id) && is_countable($leadfilter->lead_filter_id) ? count($leadfilter->lead_filter_id) : 0);$i++) { ?>
+																		<?php for($i=0;$i<(isset($leadfilter->lead_filter_id) && is_countable($leadfilter->lead_filter_id) ? count($leadfilter->lead_filter_id) : 0);$i++) { ?>
 																			<?php if(!empty($leadfilter->lead_filter_id[$i])) { ?>
 																				<option value="<?php echo $leadfilter->lead_filter_id[$i]; ?>" <?php if($campaign->data->lead_filter_id == $leadfilter->lead_filter_id[$i]) echo "selected";?>><?php echo $leadfilter->lead_filter_name[$i]; ?></option>
 																			<?php } ?>
@@ -1620,7 +1620,7 @@
 																	</div><!-- /input-group -->
 																	<select class="form-control am_message_chooser" id="am_message_chooser" name="am_message_chooser">
 																		<option value="">-- Default Value --</option>
-																		<?php for($i=0;$i<=(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$i++) { ?>
+																		<?php for($i=0;$i<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$i++) { ?>
 																			<?php if(!empty($voicefiles->file_name[$i])) { ?>
 																				<option value="<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>"><?php echo substr($voicefiles->file_name[$i], 0, -4); ?></option>
 																			<?php } ?>
@@ -1792,7 +1792,7 @@
 																	<select class="form-control" id="dial_status" name="dial_status">
 																		<option value="" selected>NONE</option>
 																		<optgroup label="System Statuses">
-																			<?php for($i=0;$i<=(isset($dialStatus->status->system) && is_countable($dialStatus->status->system) ? count($dialStatus->status->system) : 0);$i++) { ?>
+																			<?php for($i=0;$i<(isset($dialStatus->status->system) && is_countable($dialStatus->status->system) ? count($dialStatus->status->system) : 0);$i++) { ?>
 																				<?php if( !empty($dialStatus->status->system[$i]) && !in_array($dialStatus->status->system[$i], (is_array($dial_statuses) ? $dial_statuses : [])) ){ ?>
 																					<option value="<?php echo $dialStatus->status->system[$i]?>">
 																						<?php echo $dialStatus->status->system[$i]." - ".$dialStatus->status_name->system[$i]?>
@@ -1802,7 +1802,7 @@
 																		</optgroup>
 																		<?php if((isset($campdialStatus->status) && is_countable($campdialStatus->status) ? count($campdialStatus->status) : 0) > 0){ ?>
 																			<optgroup label="Campaign Statuses">
-																			<?php for($i=0;$i<=(isset($campdialStatus->status) && is_countable($campdialStatus->status) ? count($campdialStatus->status) : 0);$i++) { ?>
+																			<?php for($i=0;$i<(isset($campdialStatus->status) && is_countable($campdialStatus->status) ? count($campdialStatus->status) : 0);$i++) { ?>
 																				<?php if( !empty($campdialStatus->status[$i])  && !in_array($campdialStatus->status[$i], (is_array($dial_statuses) ? $dial_statuses : [])) ){ ?>
 																					<option value="<?php echo $campdialStatus->status[$i]?>">
 																						<?php echo $campdialStatus->status[$i]." - ".$campdialStatus->status_name[$i]?>
@@ -1942,7 +1942,7 @@
 																<div class="col-sm-9 mb">
 																	<select class="form-control" id="lead_filter" name="lead_filter">
 																		<option value="" <?php if($campaign->data->lead_filter_id == "") echo "selected";?>>NONE</option>
-																		<?php for($i=0;$i<=(isset($leadfilter->lead_filter_id) && is_countable($leadfilter->lead_filter_id) ? count($leadfilter->lead_filter_id) : 0);$i++) { ?>
+																		<?php for($i=0;$i<(isset($leadfilter->lead_filter_id) && is_countable($leadfilter->lead_filter_id) ? count($leadfilter->lead_filter_id) : 0);$i++) { ?>
 																			<?php if(!empty($leadfilter->lead_filter_id[$i])) { ?>
 																				<option value="<?php echo $leadfilter->lead_filter_id[$i]; ?>" <?php if($campaign->data->lead_filter_id == $leadfilter->lead_filter_id[$i]) echo "selected";?>><?php echo $leadfilter->lead_filter_name[$i]; ?></option>
 																			<?php } ?>
@@ -2044,7 +2044,7 @@
 																	</div><!-- /input-group -->
 																	<select class="form-control am_message_chooser" id="am_message_chooser" name="am_message_chooser">
 																		<option value="">-- Default Value --</option>
-																		<?php for($i=0;$i<=(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$i++) { ?>
+																		<?php for($i=0;$i<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$i++) { ?>
 																			<?php if(!empty($voicefiles->file_name[$i])) { ?>
 																				<option value="<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>"><?php echo substr($voicefiles->file_name[$i], 0, -4); ?></option>
 																			<?php } ?>
@@ -2261,13 +2261,13 @@
 																		</div><!-- /input-group -->
 																		<select class="form-control select2 survey_ni_audio_file_dropdown" id="survey_ni_audio_file_dropdown" data-label="survey_ni_audio_file">
 																			<option value="">-- Default Value --</option>
-            <?php for($i=0;$i<=(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$i++) { ?>
+            <?php for($i=0;$i<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$i++) { ?>
                 <?php if(!empty($voicefiles->file_name[$i])) { ?>
                     <option value="<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>">
                         <?php echo substr($voicefiles->file_name[$i], 0, -4); ?>
                     </option>
 <!--old audio chooser-->
-<?php //for($i=0;$i<=(isset($audiofiles->data) && is_countable($audiofiles->data) ? count($audiofiles->data) : 0);$i++) { ?>
+<?php //for($i=0;$i<(isset($audiofiles->data) && is_countable($audiofiles->data) ? count($audiofiles->data) : 0);$i++) { ?>
 <?php //if(!empty($audiofiles->data[$i]) && (strpos($audiofiles->data[$i], "go_") !== false)) { ?>
 <!--option value="<?php //echo substr($audiofiles->data[$i], 0, -4); ?>"><?php //echo substr($audiofiles->data[$i], 0, -4); ?></option-->
 
@@ -2310,12 +2310,12 @@
 																		</div><!-- /input-group -->
 																		<select class="form-control select2 survey_third_audio_file_dropdown" id="survey_third_audio_file_dropdown" data-label="survey_third_audio_file">
 																			<option value="">-- Default Value --</option>
-            <?php for($i=0;$i<=(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$i++) { ?>
+            <?php for($i=0;$i<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$i++) { ?>
                 <?php if(!empty($voicefiles->file_name[$i])) { ?>
                     <option value="<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>">
                         <?php echo substr($voicefiles->file_name[$i], 0, -4); ?>
                     </option>
-<?php //for($i=0;$i<=(isset($audiofiles->data) && is_countable($audiofiles->data) ? count($audiofiles->data) : 0);$i++) { ?>
+<?php //for($i=0;$i<(isset($audiofiles->data) && is_countable($audiofiles->data) ? count($audiofiles->data) : 0);$i++) { ?>
 <?php //if(!empty($audiofiles->data[$i]) && (strpos($audiofiles->data[$i], "go_") !== false)) { ?>
 <!--option value="<?php //echo substr($audiofiles->data[$i], 0, -4); ?>"><?php //echo substr($audiofiles->data[$i], 0, -4); ?></option-->
 <?php } ?>
@@ -2362,12 +2362,12 @@
 																		</div><!-- /input-group -->
 																		<select class="form-control select2 survey_fourth_audio_file_dropdown" id="survey_fourth_audio_file_dropdown" data-label="survey_fourth_audio_file">
 																			<option value="">-- Default Value --</option>
-																			<?php for($i=0;$i<=(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$i++) { ?>
+																			<?php for($i=0;$i<(isset($voicefiles->file_name) && is_countable($voicefiles->file_name) ? count($voicefiles->file_name) : 0);$i++) { ?>
 																				<?php if(!empty($voicefiles->file_name[$i])) { ?>
 																					<option value="<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>">
 																						<?php echo substr($voicefiles->file_name[$i], 0, -4); ?>
 																					</option>
-																					<?php //for($i=0;$i<=(isset($audiofiles->data) && is_countable($audiofiles->data) ? count($audiofiles->data) : 0);$i++) { ?>
+																					<?php //for($i=0;$i<(isset($audiofiles->data) && is_countable($audiofiles->data) ? count($audiofiles->data) : 0);$i++) { ?>
 																					<?php //if(!empty($audiofiles->data[$i]) && (strpos($audiofiles->data[$i], "go_") !== false)) { ?>
 																					<!--option value="<?php //echo substr($audiofiles->data[$i], 0, -4); ?>"><?php //echo substr($audiofiles->data[$i], 0, -4); ?></option-->
 																				<?php } ?>
@@ -2491,7 +2491,7 @@
 															<div class="form-group">
 																<label class="col-sm-3 control-label"><?php $lh->translateText("inbound_groups"); ?>:</label>
 																<div class="col-sm-9 mb">
-																	<?php for($i=0;$i<=(isset($ingroups->group_id) && is_countable($ingroups->group_id) ? count($ingroups->group_id) : 0);$i++) { ?>
+																	<?php for($i=0;$i<(isset($ingroups->group_id) && is_countable($ingroups->group_id) ? count($ingroups->group_id) : 0);$i++) { ?>
 																		<?php if(!empty($ingroups->group_id[$i])) {?>
 																			<input type="checkbox" name="closer_campaigns[]" value="<?php echo $ingroups->group_id[$i]?>" <?php if(in_array($ingroups->group_id[$i], explode(" ", (string) ($campaign->data->closer_campaigns ?? '')))) echo "checked";?>>&nbsp;<?php echo $ingroups->group_id[$i]." - ".$ingroups->group_name[$i]; ?><br />
 																		<?php } ?>
@@ -2501,7 +2501,7 @@
 															<div class="form-group">
 																<label class="col-sm-3 control-label"><?php $lh->translateText("allowed_transfer_groups"); ?>:</label>
 																<div class="col-sm-9 mb">
-																	<?php for($i=0;$i<=(isset($ingroups->group_id) && is_countable($ingroups->group_id) ? count($ingroups->group_id) : 0);$i++) { ?>
+																	<?php for($i=0;$i<(isset($ingroups->group_id) && is_countable($ingroups->group_id) ? count($ingroups->group_id) : 0);$i++) { ?>
 																		<?php if(!empty($ingroups->group_id[$i])) {?>
 																			<input type="checkbox" name="xfer_groups[]" value="<?php echo $ingroups->group_id[$i]?>"<?php if(in_array($ingroups->group_id[$i], explode(" ", (string) ($campaign->data->xfer_groups ?? '')))) echo "checked";?>>&nbsp;<?php echo $ingroups->group_id[$i]." - ".$ingroups->group_name[$i]; ?><br />
 																		<?php } ?>
@@ -2737,10 +2737,10 @@
 													<label class="col-sm-3 control-label" for="edit_priority"><?php $lh->translateText("priority"); ?></label>
 													<div class="col-sm-9 mb">
 														<select id="edit_priority" name="edit_priority" class="form-control">
-															<?php
-															for ($i=1; $i<=10; $i++) {
-																echo "<option value='$i'>$i</option>\n";
-															}
+																							<?php
+																							for ($i=1; $i<=10; $i++) {
+																							echo "<option value='$i'>$i</option>\n";
+																							}
 															?>
 														</select>
 													</div>
@@ -2925,10 +2925,10 @@
 													<label class="col-sm-3 control-label" for="attempt_maximum"><?php $lh->translateText("attempt_maximum"); ?></label>
 													<div class="col-sm-9 mb">
 														<select id="attempt_maximum" name="attempt_maximum" class="form-control">
-															<?php
-															for ($i=1; $i<=10; $i++) {
-																echo "<option value='$i'>$i</option>\n";
-															}
+																							<?php
+																							for ($i=1; $i<=10; $i++) {
+																							echo "<option value='$i'>$i</option>\n";
+																							}
 															?>
 														</select>
 													</div>

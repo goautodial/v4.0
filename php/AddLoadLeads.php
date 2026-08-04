@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * @file        AddLoadLeads.php
  * @brief       Handles Upload Leads Request
@@ -32,22 +32,31 @@
 	ini_set('upload_max_filesize', '600M');
 	ini_set('post_max_size', '600M');
 	ini_set('max_execution_time', 3600);
-	
+
+	if (empty($_FILES['file_upload']['tmp_name']) || !is_uploaded_file($_FILES['file_upload']['tmp_name'])) {
+		print_r(json_encode([
+			'result' => 'error',
+			'msg' => 'No upload file was provided.',
+			'dups' => []
+		]));
+		exit;
+	}
+
 	$postfields = [
-		'goFileMe' => curl_file_create($_FILES['file_upload']['tmp_name'], $_FILES['file_upload']['type'], $_FILES["file_upload"]["name"]),
-		'goListId' => ($_REQUEST['list_id'] ?? ''), 
+		'goFileMe' => curl_file_create($_FILES['file_upload']['tmp_name'], $_FILES['file_upload']['type'] ?? 'text/csv', $_FILES["file_upload"]["name"] ?? 'leads.csv'),
+		'goListId' => ($_REQUEST['list_id'] ?? ''),
 		'goDupcheck' => ($_REQUEST['goDupcheck'] ?? ''),
 		'phone_code_override' => ($_REQUEST['phone_code_override'] ?? '')
 	];
-	
+
 	//customizations
 	$postfields["custom_delimiter"] = LEADUPLOAD_CUSTOM_DELIMITER;
-	
+
 	//if(LEADUPLOAD_LEAD_MAPPING === "y"){
                 if(!isset($_POST["LeadMapSubmit"]))
                         $postfields["goAction"]       = "goUploadMe";
                 elseif(isset($_POST["LeadMapSubmit"]) && $_POST["LeadMapSubmit"] === "1")
-                        $postfields["goAction"]       = "goUploadMe"; 
+                        $postfields["goAction"]       = "goUploadMe";
 		elseif(isset($_POST["LeadMapSubmit"]) && $_POST["LeadMapSubmit"] === "0")
                         $postfields["goAction"]       = "goReadUpload";
 		else
@@ -55,33 +64,34 @@
         /*}else{
                 $postfields["goAction"]       = "goUploadMe";
         }*/
-	
+
 	//if(LEADUPLOAD_LEAD_MAPPING === "y" && isset($_POST["LeadMapSubmit"]) && $_POST["LeadMapSubmit"] === "1"){
 	if(isset($_POST["LeadMapSubmit"]) && $_POST["LeadMapSubmit"] === "1"){
-                $map_data = ($_POST["map_data"] ?? '');
-		$map_data = implode(",",$map_data);
+                			$map_data = ($_POST["map_data"] ?? []);
+		$map_data = is_array($map_data) ? implode(",", $map_data) : (string) $map_data;
 		$postfields["lead_mapping_data"] = $map_data;
 
-		$map_fields = ($_POST["map_fields"] ?? '');
-		$map_fields = implode(",", $map_fields);
+		$map_fields = ($_POST["map_fields"] ?? []);
+		$map_fields = is_array($map_fields) ? implode(",", $map_fields) : (string) $map_fields;
 		$postfields["lead_mapping_fields"] = $map_fields;
 
 		$postfields["lead_mapping"] = "y";
 		//$postfields["lead_mapping"] = LEADUPLOAD_LEAD_MAPPING;
 	}
-	
+
+	$res = [];
 	$return = $api->API_Upload("goUploadLeads", $postfields, "data");
 	$output = $return["output"];
 	$data = $return["data"];
-	
+
 	//if(LEADUPLOAD_LEAD_MAPPING === "y" && ($_POST["LeadMapSubmit"] ?? '') === "0"){
 	if(isset($_POST["LeadMapSubmit"]) && $_POST["LeadMapSubmit"] === "0"){
 		print_r($data);
 	}else{
 
-		$res["result"] = $output->result;
-		$res["msg"] = $output->message;	
-		$res["dups"] = $output->duplicates;	
+		$res["result"] = is_object($output) ? ($output->result ?? 'error') : 'error';
+		$res["msg"] = is_object($output) ? ($output->message ?? '') : '';
+		$res["dups"] = is_object($output) ? ($output->duplicates ?? []) : [];
 		print_r(json_encode($res));
 		//var_dump($data);
 	}

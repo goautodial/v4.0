@@ -602,7 +602,8 @@
 						userID : $("#userID").val(),
 						userGroup : $("#userGroup").val(),
 						fromDate : $("#start_filterdate").val(),
-						toDate : $("#end_filterdate").val()
+						toDate : $("#end_filterdate").val(),
+						statuses : $("#statuses").val()
 					},
 					success: function(data) {
 						console.log(data);

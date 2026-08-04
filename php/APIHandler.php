@@ -151,12 +151,27 @@
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postdata));
 			$data = curl_exec($ch);
-			$output = json_decode($data);
 
-			if($request_data === true)
+			if($request_data === true) {
 				return $data;
-			else
-				return $output;
+			}
+
+			$output = is_string($data) ? json_decode($data) : null;
+			if ($output === null && json_last_error() !== JSON_ERROR_NONE) {
+				$output = (object) [
+					'result' => 'error',
+					'message' => 'Invalid API response',
+					'raw_response' => is_string($data) ? $data : ''
+				];
+			} elseif ($output === null) {
+				$output = (object) [
+					'result' => 'error',
+					'message' => 'Empty API response',
+					'raw_response' => ''
+				];
+			}
+
+			return $output;
 		}
 
 		/*
@@ -195,7 +210,20 @@
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 			$data = curl_exec($ch);
-			$output = json_decode($data);
+			$output = is_string($data) ? json_decode($data) : null;
+			if ($output === null && json_last_error() !== JSON_ERROR_NONE) {
+				$output = (object) [
+					'result' => 'error',
+					'message' => 'Invalid API response',
+					'raw_response' => is_string($data) ? $data : ''
+				];
+			} elseif ($output === null) {
+				$output = (object) [
+					'result' => 'error',
+					'message' => 'Empty API response',
+					'raw_response' => ''
+				];
+			}
 
 			if(!empty($return_data))
 				return ["output" => $output, "data" => $data, "URL" => $url, "CONNECTION" => $postdata];

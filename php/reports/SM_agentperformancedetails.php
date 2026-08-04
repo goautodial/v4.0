@@ -22,7 +22,7 @@
 */
 
 	require_once(__DIR__ . '/APIHandler.php');
-	
+
 	$api 										= \creamy\APIHandler::getInstance();
 	$pageTitle									= ($_POST['pageTitle'] ?? '');
 	$fromDate 									= date('Y-m-d 00:00:01');
@@ -31,53 +31,54 @@
 	$userID										= NULL;
 	$userGroup									= NULL;
 	$statuses									= NULL;
-	
+
 	if (isset($_POST['pageTitle']) && $pageTitle != "call_export_report") {
 		$pageTitle 								= ($_POST['pageTitle'] ?? '');
 		$pageTitle								= stripslashes((string) $pageTitle);
 	}
-			
+
 	if (isset($_POST["fromDate"])) {
 		$fromDate 								= date('Y-m-d H:i:s', strtotime(($_POST['fromDate'] ?? '')));
 	}
-	
+
 	if (($_POST["toDate"] ?? '') != "" && ($_POST["fromDate"] ?? '') != "") {
 		$toDate 								= date('Y-m-d H:i:s', strtotime(($_POST['toDate'] ?? '')));
 	}
-	
-			
-	if (isset($_POST["campaignID"])) { 
-		$campaign_id 							= ($_POST["campaignID"] ?? ''); 
+
+
+	if (isset($_POST["campaignID"])) {
+		$campaign_id 							= ($_POST["campaignID"] ?? '');
 		$campaign_id 							= stripslashes((string) $campaign_id);
 	}
-		
+
 	if (isset($_POST["userID"])) {
 		$userID 								= ($_POST["userID"] ?? '');
 		$userID									= stripslashes((string) $userID);
 	}
-	
+
 	if (isset($_POST["userGroup"])) {
 		$userGroup 								= ($_POST["userGroup"] ?? '');
 		$userGroup								= stripslashes((string) $userGroup);
 	}
-		
+
 	if (isset($_POST["statuses"])) {
 		$statuses 								= ($_POST["statuses"] ?? '');
 		$statuses								= stripslashes($statuses);
 	}
-		
+
 	$postfields 								= [
-		'goAction'								=> 'goGetAgentPerformanceDetails', //Service Monkey Performance Detail		
+		'goAction'								=> 'goGetAgentPerformanceDetails', //Service Monkey Performance Detail
 		//'goAction'                                                              => 'goGetPerformanceDetails',
 		'pageTitle' 								=> $pageTitle,
 		'fromDate' 								=> $fromDate,
 		'toDate' 								=> $toDate,
 		'campaignID' 								=> $campaign_id
-	];				
+	];
 
 	$output = $api->API_Request("goReports",$postfields);
+	$result = is_object($output) ? ($output->result ?? 'error') : 'error';
 
-	if ($output->result == "success") {
+	if ($result == "success") {
 		echo '<div class="animated bounceInUp">';
 	// AGENT PERFORMANCE DETAIL
 		$tablehtml = '';
@@ -114,7 +115,7 @@
 						<td>'.$output->call_vol[$i].'</td>
 						<td>'.$output->am[$i].'</td>
 						<td>'.$output->ni[$i].'</td>
-						<td>'.$output->cb[$i].'</td>	
+						<td>'.$output->cb[$i].'</td>
 					</tr>';
 				}
 
@@ -134,9 +135,9 @@
 						$tablehtml .= '</tr></tfoot>';
 					}
 			}else{
-				$tablehtml .= "";	
+				$tablehtml .= "";
 			}
-				$tablehtml .= '</table></div><br/>'; 
+				$tablehtml .= '</table></div><br/>';
 
 			//FORM TO BE PASSED WHEN EXPORT IS CALLED
 			$tablehtml .= '<form action="php/ExportPerformanceDetailsSM.php" id="export_agentPdetailSM_form"  method="POST">

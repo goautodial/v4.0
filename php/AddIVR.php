@@ -22,71 +22,73 @@
 */
 
 	require_once(__DIR__ . '/APIHandler.php');
-	
+
 	$api 											= \creamy\APIHandler::getInstance();
-	$route_option 									= ($_POST['option'] ?? '');
-	$route_desc 									= ($_POST['route_desc'] ?? '');
-	$route_menu 									= ($_POST['route_menu'] ?? '');
-	$option_callmenu_value 							= ($_POST['option_callmenu_value'] ?? '');
-	$option_ingroup_value 							= ($_POST['option_ingroup_value'] ?? '');
-	$option_did_value 								= ($_POST['option_did_value'] ?? '');
-	$option_hangup_value 							= ($_POST['option_hangup_value'] ?? '');
-	$option_extension_value 						= ($_POST['option_extension_value'] ?? '');
-	$option_phone_value 							= ($_POST['option_phone_value'] ?? '');
-	$option_voicemail_value 						= ($_POST['option_voicemail_value'] ?? '');
-	$option_agi_value 								= ($_POST['option_agi_value'] ?? '');
-	$option_route_context 							= ($_POST['option_route_value_context'] ?? '');
+	$route_option 									= is_array($_POST['option'] ?? null) ? $_POST['option'] : [];
+	$route_desc 									= is_array($_POST['route_desc'] ?? null) ? $_POST['route_desc'] : [];
+	$route_menu 									= is_array($_POST['route_menu'] ?? null) ? $_POST['route_menu'] : [];
+	$option_callmenu_value 							= is_array($_POST['option_callmenu_value'] ?? null) ? $_POST['option_callmenu_value'] : [];
+	$option_ingroup_value 							= is_array($_POST['option_ingroup_value'] ?? null) ? $_POST['option_ingroup_value'] : [];
+	$option_did_value 								= is_array($_POST['option_did_value'] ?? null) ? $_POST['option_did_value'] : [];
+	$option_hangup_value 							= is_array($_POST['option_hangup_value'] ?? null) ? $_POST['option_hangup_value'] : [];
+	$option_extension_value 						= is_array($_POST['option_extension_value'] ?? null) ? $_POST['option_extension_value'] : [];
+	$option_phone_value 							= is_array($_POST['option_phone_value'] ?? null) ? $_POST['option_phone_value'] : [];
+	$option_voicemail_value 						= is_array($_POST['option_voicemail_value'] ?? null) ? $_POST['option_voicemail_value'] : [];
+	$option_agi_value 								= is_array($_POST['option_agi_value'] ?? null) ? $_POST['option_agi_value'] : [];
+	$option_route_context 							= is_array($_POST['option_route_value_context'] ?? null) ? $_POST['option_route_value_context'] : [];
 	//$option_route_context_post = array_filter($option_route_context_post);
-	
+
 	$route_value 									= "";
-	for ($i=0; $i < 14; $i++) {
-		if ($route_menu[$i] == "CALLMENU") {
-			$route_value 							.= $option_callmenu_value[$i];
+	$route_count = count($route_menu);
+	for ($i=0; $i < $route_count; $i++) {
+		$current_route_menu = $route_menu[$i] ?? '';
+		if ($current_route_menu == "CALLMENU") {
+			$route_value 							.= $option_callmenu_value[$i] ?? '';
 		}
-		if ($route_menu[$i] == "INGROUP") {
-			$route_value 							.= $option_ingroup_value[$i];
+		if ($current_route_menu == "INGROUP") {
+			$route_value 							.= $option_ingroup_value[$i] ?? '';
 		}
-		if ($route_menu[$i] == "DID") {
-			$route_value 							.= $option_did_value[$i];
+		if ($current_route_menu == "DID") {
+			$route_value 							.= $option_did_value[$i] ?? '';
 		}
-		if ($route_menu[$i] == "HANGUP") {
-			$route_value 							.= $option_hangup_value[$i];
+		if ($current_route_menu == "HANGUP") {
+			$route_value 							.= $option_hangup_value[$i] ?? '';
 		}
-		if ($route_menu[$i] == "EXTENSION") {
-			$route_value 							.= $option_extension_value[$i];
+		if ($current_route_menu == "EXTENSION") {
+			$route_value 							.= $option_extension_value[$i] ?? '';
 		}
-		if ($route_menu[$i] == "PHONE") {
-			$route_value 							.= $option_phone_value[$i];
+		if ($current_route_menu == "PHONE") {
+			$route_value 							.= $option_phone_value[$i] ?? '';
 		}
-		if ($route_menu[$i] == "VOICEMAIL") {
-			$route_value 							.= $option_voicemail_value[$i];
+		if ($current_route_menu == "VOICEMAIL") {
+			$route_value 							.= $option_voicemail_value[$i] ?? '';
 		}
-		if ($route_menu[$i] == "AGI") {
-			$route_value 							.= $option_agi_value[$i];
+		if ($current_route_menu == "AGI") {
+			$route_value 							.= $option_agi_value[$i] ?? '';
 		}
 		$route_value 								.= "+";
 	}
 	//echo $route_value;
 	$option_route_value 							= explode("+", (string) ($route_value ?? ''));
-	
+
 	$ingroup_context 								= "";
-	for ($i=0; $i < 10; $i++) {
-		if ($route_menu[$i] == "INGROUP") {
-			$ingroup_context 						.= $_POST['handle_method_'.$i].",";
-			$ingroup_context 						.= $_POST['search_method_'.$i].",";
-			$ingroup_context 						.= $_POST['list_id_'.$i].",";
-			$ingroup_context 						.= $_POST['campaign_id_'.$i].",";
-			$ingroup_context 						.= $_POST['phone_code'.$i].",";
-			$ingroup_context 						.= $_POST['enter_filename_'.$i].",";
-			$ingroup_context 						.= $_POST['id_number_filename_'.$i].",";
-			$ingroup_context 						.= $_POST['confirm_filename_'.$i].",";
-			$ingroup_context 						.= $_POST['vid_digits_'.$i];
-			
+	for ($i=0; $i < $route_count; $i++) {
+		if (($route_menu[$i] ?? '') == "INGROUP") {
+			$ingroup_context 						.= ($_POST['handle_method_'.$i] ?? '').",";
+			$ingroup_context 						.= ($_POST['search_method_'.$i] ?? '').",";
+			$ingroup_context 						.= ($_POST['list_id_'.$i] ?? '').",";
+			$ingroup_context 						.= ($_POST['campaign_id_'.$i] ?? '').",";
+			$ingroup_context 						.= ($_POST['phone_code'.$i] ?? '').",";
+			$ingroup_context 						.= ($_POST['enter_filename_'.$i] ?? '').",";
+			$ingroup_context 						.= ($_POST['id_number_filename_'.$i] ?? '').",";
+			$ingroup_context 						.= ($_POST['confirm_filename_'.$i] ?? '').",";
+			$ingroup_context 						.= ($_POST['vid_digits_'.$i] ?? '');
+
 			$option_route_context[$i] 				= $ingroup_context;
 			$ingroup_context 						= "";
 		}
 	}
-	
+
 	$items 											= "";
     $counter = (is_countable($route_option) ? count($route_option) : 0);
 	for ($i=0;$i < $counter;$i++) {
@@ -95,7 +97,7 @@
 		if ($route_option[$i] == "C") $route_option[$i] = 'TIMECHECK';
 		if ($route_option[$i] == "D") $route_option[$i] = 'TIMEOUT';
 		if ($route_option[$i] == "E") $route_option[$i] = 'INVALID';
-		$items 										.= $route_option[$i]."+".$route_desc[$i]."+".$route_menu[$i]."+".$option_route_value[$i]."+".$option_route_context[$i];
+		$items 										.= ($route_option[$i] ?? '')."+".($route_desc[$i] ?? '')."+".($route_menu[$i] ?? '')."+".($option_route_value[$i] ?? '')."+".($option_route_context[$i] ?? '');
 		$items 										.= "|";
 	}
 
@@ -118,13 +120,13 @@
 	];
 
 	$output 										= $api->API_addIVR($postfields);
-	
-	if ($output->result=="success") { 
-		$status 									= 1; 
-	} else { 
-		$status 									= $output->result; 
+
+	if ($output->result=="success") {
+		$status 									= 1;
+	} else {
+		$status 									= $output->result;
 	}
-	
+
 	echo json_encode($status);
 
 ?>

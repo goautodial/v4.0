@@ -84,9 +84,10 @@
 	];
 
 	$output = $api->API_getAgentTimeDetails($postfields);
+	$result = is_object($output) ? ($output->result ?? 'error') : 'error';
 //var_dump($output);
 
-	if ($output->result == "success") {
+	if ($result == "success") {
 		echo '<div class="animated bounceInUp">';
 
 	// AGENT TIME DETAIL

@@ -31,6 +31,7 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	$dial_statuses = isset($dial_statuses) && is_array($dial_statuses) ? $dial_statuses : [];
 
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
@@ -147,7 +148,7 @@
 								   </thead>
 								   <tbody>
 									<?php
-										for($i=0;$i<=(isset($leads->list_id) && is_countable($leads->list_id) ? count($leads->list_id) : 0);$i++){
+										for($i=0;$i<(isset($leads->list_id) && is_countable($leads->list_id) ? count($leads->list_id) : 0);$i++){
 											if($leads->phone_number[$i] != ""){
 											$action_lead = $ui->ActionMenuForContacts($leads->lead_id[$i]);
 									?>
@@ -203,7 +204,7 @@
 										<option value="" selected>- - - <?php $lh->translateText("-none-"); ?> - - -</option>
 										<optgroup label="System Statuses">
 										<?php
-											for($i=0;$i<=(isset($dialStatus->status->system) && is_countable($dialStatus->status->system) ? count($dialStatus->status->system) : 0);$i++) {
+											for($i=0;$i<(isset($dialStatus->status->system) && is_countable($dialStatus->status->system) ? count($dialStatus->status->system) : 0);$i++) {
 												if (!empty($dialStatus->status->system[$i]) && !in_array($dialStatus->status->system[$i], (is_array($dial_statuses) ? $dial_statuses : []))) {
 										?>
 												<option value="<?php echo $dialStatus->status->system[$i]?>">

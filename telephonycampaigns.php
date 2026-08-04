@@ -853,7 +853,7 @@
 									<div class="col-lg-8 mb">
 										<select name="dial_prefix" id="dial_prefix" class="form-control">
 											<option value="CUSTOM" <?php if($campaign->data->dial_prefix == "CUSTOM"){echo "selected";}?>>CUSTOM DIAL PREFIX</option>
-											<?php for($i=0;$i<=(isset($carriers->carrier_id) && is_countable($carriers->carrier_id) ? count($carriers->carrier_id) : 0);$i++) { ?>
+											<?php for($i=0;$i<(isset($carriers->carrier_id) && is_countable($carriers->carrier_id) ? count($carriers->carrier_id) : 0);$i++) { ?>
 												<?php if(!empty($carriers->carrier_id[$i])  && $carriers->active[$i] == 'Y') {
 													$prefixes = explode("\n", (string) ($carriers->dialplan_entry[$i] ?? ''));
 													$prefix = explode(",", $prefixes[0]);
@@ -1317,7 +1317,7 @@
 												<?php
 													//$dialStatus = $api->API_getAllDialStatuses('ALL', 1);
 													 //foreach($output->status as key => $val){
-													for($i=0;$i<=(isset($dialStatus->status->system) && is_countable($dialStatus->status->system) ? count($dialStatus->status->system) : 0);$i++) {
+													for($i=0;$i<(isset($dialStatus->status->system) && is_countable($dialStatus->status->system) ? count($dialStatus->status->system) : 0);$i++) {
 												?>
 													<?php if( !empty($dialStatus->status->system[$i]) && !in_array($dialStatus->status->system[$i], (is_array($dial_statuses) ? $dial_statuses : [])) ){ ?>
 														<option value="<?php echo $dialStatus->status->system[$i]?>" selected>
