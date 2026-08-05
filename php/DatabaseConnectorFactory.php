@@ -107,8 +107,9 @@ class DatabaseConnectorFactory {
 				}
 			    // return MySQL database connector
 			    return $mysqldb;
-		    } catch (\Exception) {
-		    	throw new \Exception("Incorrect credentials. Access denied or incorrect parameters.");
+		    } catch (\Throwable $exception) {
+		    	error_log('Database connector failure: ' . $exception->getMessage());
+		    	throw new \Exception("Incorrect credentials. Access denied or incorrect parameters.", 0, $exception);
 		    }
 
 	    } else {
@@ -142,8 +143,9 @@ class DatabaseConnectorFactory {
 				//}
 			    // return MySQL database connector
 			    return $mysqldb;
-		    } catch (\Exception) {
-		    	throw new \Exception("Incorrect credentials. Access denied or incorrect parameters.");
+		    } catch (\Throwable $exception) {
+		    	error_log('Database connector failure: ' . $exception->getMessage());
+		    	throw new \Exception("Incorrect credentials. Access denied or incorrect parameters.", 0, $exception);
 		    }
 
 	    } else {

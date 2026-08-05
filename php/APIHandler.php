@@ -240,7 +240,7 @@
 			finfo_file($finfo, $upload_url);
 
 			//$goFileMe = new CURLFile($upload_url, 'text/csv');
-			//$goFileMe = curl_file_create($upload_url, 'text/csv', $upload_url);
+			$goFileMe = curl_file_create($upload_url, 'text/csv', $upload_url);
 
 			// Constant Data to be passed
 			$default_entries = [
@@ -1071,7 +1071,7 @@
 		}
 
 		public function API_getCustomizations($postfields){
-			return $this->API_Reguest("goSystemSettings", $postfields);
+			return $this->API_Request("goSystemSettings", $postfields);
 		}
 
 		public function API_getSystemSettingInfo(){

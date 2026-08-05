@@ -23,7 +23,7 @@
 */
 
 	require_once( __DIR__ . "/APIHandler.php" );
-	
+
 	$api 											= \creamy\APIHandler::getInstance();
 
 	$list_id 										= ($_POST["list_id"] ?? '');
@@ -47,125 +47,125 @@
 	// get name (mandatory), customer id and customer type
 	$first_name 									= ($_POST["first_name"] ?? '');
 	$first_name	 									= stripslashes( (string) $first_name );
-	
+
 	$middle_initial 								= ($_POST["middle_initial"] ?? '');
 	$middle_initial 								= stripslashes( (string) $middle_initial );
-	
+
 	$last_name 										= ($_POST["last_name"] ?? '');
 	$last_name 										= stripslashes( (string) $last_name );
-	
+
 	$lead_id 										= ($_POST["lead_id"] ?? '');
 	$lead_id 										= stripslashes( (string) $lead_id );
-	
+
 	$list_id 										= ($_POST["list_id"] ?? '');
 	$list_id 										= stripslashes( (string) $list_id );
-	
+
 	// email
-	$email 											= NULL; 
-	if ( isset($_POST["email"]) ) { 
-		$email 										= ($_POST["email"] ?? ''); 
+	$email 											= NULL;
+	if ( isset($_POST["email"]) ) {
+		$email 										= ($_POST["email"] ?? '');
 		$email 										= stripslashes( (string) $email );
 	}
 	// phone
-	$phone 											= NULL; 
-	if ( isset($_POST["phone_number"]) ) { 
+	$phone 											= NULL;
+	if ( isset($_POST["phone_number"]) ) {
 		$phone 										= ($_POST["phone_number"] ?? '');
 		$phone 										= preg_replace( "/[^0-9]/", "", (string) $phone );
 		$phone 										= stripslashes( $phone );
 	}
 	// alt phone
-	$alt_phone 										= NULL; 
-	if ( isset($_POST["alt_phone"]) ) { 
+	$alt_phone 										= NULL;
+	if ( isset($_POST["alt_phone"]) ) {
 		$alt_phone 									= ($_POST["alt_phone"] ?? '');
 		$alt_phone 									= preg_replace( "/[^0-9]/", "", (string) $alt_phone );
 		$alt_phone 									= stripslashes( $alt_phone );
 	}
 	// address1
-	$address1 										= NULL; 
-	if ( isset($_POST["address1"]) ) { 
-		$address1 									= ($_POST["address1"] ?? ''); 
+	$address1 										= NULL;
+	if ( isset($_POST["address1"]) ) {
+		$address1 									= ($_POST["address1"] ?? '');
 		$address1 									= stripslashes( (string) $address1 );
 	}
 	// address2
-	$address2 										= NULL; 
-	if ( isset($_POST["address2"]) ) { 
-		$address2 									= ($_POST["address2"] ?? ''); 
+	$address2 										= NULL;
+	if ( isset($_POST["address2"]) ) {
+		$address2 									= ($_POST["address2"] ?? '');
 		$address2 									= stripslashes( (string) $address2 );
 	}
 	// address3
-	$address3 										= NULL; 
-	if ( isset($_POST["address3"]) ) { 
-		$address3 									= ($_POST["address3"] ?? ''); 
+	$address3 										= NULL;
+	if ( isset($_POST["address3"]) ) {
+		$address3 									= ($_POST["address3"] ?? '');
 		$address3 									= stripslashes( (string) $address3 );
 	}
-	
+
 	// city
-	$city 											= NULL; 
-	if ( isset($_POST["city"]) ) { 
-		$city 										= ($_POST["city"] ?? ''); 
+	$city 											= NULL;
+	if ( isset($_POST["city"]) ) {
+		$city 										= ($_POST["city"] ?? '');
 		$city 										= stripslashes( (string) $city );
 	}
-	
+
 	// state
 	$state 											= NULL;
-	if ( isset($_POST["state"]) ) { 
-		$state 										= ($_POST["state"] ?? ''); 
+	if ( isset($_POST["state"]) ) {
+		$state 										= ($_POST["state"] ?? '');
 		$state 										= stripslashes( (string) $state );
 	}
 
 	// province
-	$province 										= NULL; 
-	if ( isset($_POST["province"]) ) { 
-		$province 									= ($_POST["province"] ?? ''); 
+	$province 										= NULL;
+	if ( isset($_POST["province"]) ) {
+		$province 									= ($_POST["province"] ?? '');
 		$province 									= stripslashes( (string) $province );
 	}
-	
+
 	// ZIP code
-	$postal_code 									= NULL; 
-	if ( isset($_POST["postal_code"]) ) { 
-		$postal_code 								= ($_POST["postal_code"] ?? ''); 
+	$postal_code 									= NULL;
+	if ( isset($_POST["postal_code"]) ) {
+		$postal_code 								= ($_POST["postal_code"] ?? '');
 		$postal_code 								= stripslashes( (string) $postal_code) ;
 	}
-	
+
 	// country
-	$country 										= NULL; 
-	if ( isset($_POST["country"]) ) { 
-		$country 									= ($_POST["country"] ?? ''); 
+	$country 										= NULL;
+	if ( isset($_POST["country"]) ) {
+		$country 									= ($_POST["country"] ?? '');
 		$country 									= stripslashes( (string) $country );
 	}
-	
+
 	// date_of_birth
-	$date_of_birth 									= NULL; 
-	if ( isset($_POST["date_of_birth"]) ) { 
-		$date_of_birth 								= ($_POST["date_of_birth"] ?? ''); 
+	$date_of_birth 									= NULL;
+	if ( isset($_POST["date_of_birth"]) ) {
+		$date_of_birth 								= ($_POST["date_of_birth"] ?? '');
 		$date_of_birth 								= date( "Y-m-d h:i:s", strtotime((string) $date_of_birth) );
 		$date_of_birth 								= stripslashes( $date_of_birth );
 	}
 
 	// gender
-	$gender 										= NULL; 
-	if ( isset($_POST["gender"]) ) { 
-		$gender 									= ($_POST["gender"] ?? ''); 
+	$gender 										= NULL;
+	if ( isset($_POST["gender"]) ) {
+		$gender 									= ($_POST["gender"] ?? '');
 		$gender 									= stripslashes((string) $gender);
 	}
-	
+
 	// dispo
-	$dispo 											= NULL; 
-	if ( isset($_POST["dispo"]) ) { 
-		$dispo 										= ($_POST["dispo"] ?? ''); 
+	$dispo 											= NULL;
+	if ( isset($_POST["dispo"]) ) {
+		$dispo 										= ($_POST["dispo"] ?? '');
 		$dispo 										= stripslashes( (string) $dispo );
 	}
 
 	// comments
-	$comments 										= NULL; 
-	if ( isset($_POST["comments"]) ) { 
-		$comments 									= ($_POST["comments"] ?? ''); 
+	$comments 										= NULL;
+	if ( isset($_POST["comments"]) ) {
+		$comments 									= ($_POST["comments"] ?? '');
 		$comments 									= stripslashes( $comments );
 	}
-	
+
 	// no enviar email
-	$donotsendemail 								= 0; 
-	if ( isset($_POST["donotsendemail"]) ) { 
+	$donotsendemail 								= 0;
+	if ( isset($_POST["donotsendemail"]) ) {
 		$donotsendemail 							= 1;
 	}
 
@@ -175,37 +175,41 @@
 	} else {
 		$is_customer = 0;
 	}
-	
-	if ( isset($_POST["custom_fields"]) ) {
+
+	$custom_fields 								= [];
+
+	if (isset($_POST["custom_fields"])) {
 		$c_fields = explode(",", ($_POST["custom_fields"] ?? ''));
 		foreach ($c_fields as $field) {
-			$custom_fields[$field] = $_POST[$field];
+			if ((string) $field !== '') {
+				$custom_fields[$field] = $_POST[$field] ?? '';
+			}
 		}
 	}
-		
-	$postfields 									= [	
+
+	$postfields 									= [
 		"goAction" 										=> "goEditLeads",
 		"list_id"										=> $list_id,
-		"lead_id" 										=> $lead_id, 
-		"first_name" 									=> $first_name, 
-		"middle_initial" 								=> $middle_initial, 
-		"last_name" 									=> $last_name, 
-		"gender" 										=> $gender, 
-		"email" 										=> $email, 
-		"phone_number" 									=> $phone_number, 
-		"alt_phone" 									=> $alt_phone, 
-		"address1"										=> $address1, 
-		"address2" 										=> $address2, 
-		"address3" 										=> $address3, 
+		"lead_id" 										=> $lead_id,
+		"first_name" 									=> $first_name,
+		"middle_initial" 								=> $middle_initial,
+		"last_name" 									=> $last_name,
+		"gender" 										=> $gender,
+		"email" 										=> $email,
+		"phone_number" 									=> $phone_number,
+		"alt_phone" 									=> $alt_phone,
+		"address1"										=> $address1,
+		"address2" 										=> $address2,
+		"address3" 										=> $address3,
 		"city" 											=> $city,
 		"state"											=> $state,
-		"province" 										=> $province, 
-		"postal_code" 									=> $postal_code, 
-		"country_code" 									=> $country, 
-		"date_of_birth" 								=> $date_of_birth, 
-		"title" 										=> $title, 
+		"province" 										=> $province,
+		"postal_code" 									=> $postal_code,
+		"country_code" 									=> $country,
+		"date_of_birth" 								=> $date_of_birth,
+		"title" 										=> $title,
 		"status" 										=> $dispo,
-		"comments"										=> $comments,		
+		"comments"										=> $comments,
 		"avatar" 										=> "",
 		"is_customer"									=> $is_customer,
 		"user_id" 										=> $user_id,
@@ -214,12 +218,12 @@
 
 	$output 										= $api->API_editLeads($postfields);
 
-	if ($output->result=="success") { 
-		$status 									= 1; 
-	} else { 
-		$status 									= $output->result; 
+	if ($output->result=="success") {
+		$status 									= 1;
+	} else {
+		$status 									= $output->result;
 	}
 
-	echo json_encode($status);    
+	echo json_encode($status);
 
 ?>

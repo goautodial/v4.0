@@ -123,7 +123,7 @@ class SessionHandler implements \SessionHandlerInterface {
 		// Run the garbage collector in 15% of f. calls
 		if (random_int(1, 100) <= 15) $this->_GC();
 		// Run the garbage collector for expired sessions
-		$session_id ??= '';
+		$session_id = session_id();
 		$this->db->where('session_id', md5($session_id));
 		$this->db->where('last_activity', time(), '<');
 		$this->db->get($this->table);

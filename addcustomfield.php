@@ -82,6 +82,54 @@
 			fieldset .form-group {
 			    margin-bottom: 15px;
 			}
+
+			#modal_custom_field .modal-dialog {
+				width: 640px;
+				max-width: calc(100% - 30px);
+			}
+
+			#modal_custom_field .modal-body {
+				padding: 18px 28px;
+			}
+
+			#modal_custom_field .form-group {
+				margin-bottom: 12px;
+			}
+
+			#modal_custom_field .control-label {
+				position: relative;
+				padding-top: 7px;
+				padding-right: 18px;
+				font-weight: 600;
+				white-space: nowrap;
+			}
+
+			#modal_custom_field .control-label .text-danger {
+				position: absolute;
+				right: 5px;
+				width: 8px;
+				text-align: left;
+			}
+
+			#modal_custom_field .custom-field-help {
+				font-size: 12px;
+			}
+
+			#modal_custom_field .custom-field-help-text {
+				margin: 4px 0 0;
+				font-size: 11px;
+				line-height: 1.35;
+				color: #777;
+			}
+
+			#modal_custom_field .custom-field-validation-message {
+				padding: 10px 12px;
+				font-size: 13px;
+			}
+
+			#modal_custom_field .type-dependent-muted {
+				display: none;
+			}
     </style>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
@@ -164,6 +212,10 @@
 											<div class="col-lg-12">
 												<h4 style="margin-top: 0px; border-bottom: 1px solid #777;">Form Preview</h4>
 												<?php
+
+													$viewall = '';
+													$helpHTML = '';
+													$helpcount = 0;
 
 													if((is_countable($customs) ? count($customs) : 0) > 0) {
 														$viewall .= "<form id=\"form_custom_{$modifyid}\">\n";
@@ -413,7 +465,7 @@
 				<!-- /.content -->
             </aside><!-- /.right-side -->
             <?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
-            
+
 			<?php print $ui->creamyFooter(); ?>
 			<?php print $ui->standardizedThemeJS();?>
         </div><!-- ./wrapper -->
@@ -446,6 +498,10 @@
 								<h4 class="modal-title">Custom Field Wizard</h4>
 							</div>
 							<div class="modal-body">
+								<p class="text-muted custom-field-help" style="margin-bottom: 15px;">
+									<span class="text-danger">*</span> Required fields. Requirements may change based on field type.
+								</p>
+								<div class="alert alert-danger custom-field-validation-message hide" style="margin-bottom: 15px;"></div>
 								<form id="wizard-form" class="form-horizontal" style="margin-top: 10px;">
 									<input type="hidden" name="field_id" class="field-id" value="">
 									<input type="hidden" name="field_label_old" class="form-control field-label" id="field_label_old" value="">
@@ -458,31 +514,32 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-lg-3">Label:</label>
+										<label class="control-label col-lg-3">Label <span class="text-danger">*</span></label>
 										<div class="col-lg-9">
-											<input type="text" class="form-control field-label" name="field_label" value="">
+											<input type="text" class="form-control field-label" name="field_label" value="" required>
+											<span class="help-block custom-field-help-text">Use letters, numbers, or underscores only.</span>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-lg-3">Rank:</label>
+										<label class="control-label col-lg-3">Rank <span class="text-danger">*</span></label>
 										<div class="col-lg-3">
-											<input type="number" class="form-control field-rank" name="field_rank" value="">
+											<input type="number" class="form-control field-rank" name="field_rank" value="" required>
 										</div>
-										<label class="control-label col-lg-2">Order:</label>
+										<label class="control-label col-lg-2">Order <span class="text-danger">*</span></label>
 										<div class="col-lg-3">
-											<input type="number" class="form-control field-order" name="field_order" value="">
+											<input type="number" class="form-control field-order" name="field_order" value="" required>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-lg-3">Name:</label>
+										<label class="control-label col-lg-3">Name <span class="text-danger">*</span></label>
 										<div class="col-lg-9">
-											<input type="text" class="form-control field-name" name="field_name" value="">
+											<input type="text" class="form-control field-name" name="field_name" value="" required>
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-lg-3">Position:</label>
+										<label class="control-label col-lg-3">Position <span class="text-danger">*</span></label>
 										<div class="col-lg-9">
-											<select class="form-control field-position" name="field_position">
+											<select class="form-control field-position" name="field_position" required>
 												<option value=""></option>
 												<option value="TOP">TOP</option>
 												<option value="LEFT">LEFT</option>
@@ -490,13 +547,13 @@
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-lg-3">Description:</label>
+										<label class="control-label col-lg-3">Description</label>
 										<div class="col-lg-9">
 											<input type="text" class="form-control field-description" name="field_description" value="">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-lg-3">Type:</label>
+										<label class="control-label col-lg-3">Type <span class="text-danger">*</span></label>
 										<div class="col-lg-9">
 											<!-- <input type="text" class="form-control type" name="type" value="" readonly> -->
 											<select name="field_type" class="select2-3 form-control field-type" style="width:100%;">
@@ -513,14 +570,15 @@
 											</select>
 										</div>
 									</div>
-									<div class="form-group">
-										<label class="control-label col-lg-3">Options:</label>
+									<div class="form-group options-group">
+										<label class="control-label col-lg-3">Options <span class="text-danger option-required-marker hide">*</span></label>
 										<div class="col-lg-9">
 											<textarea class="form-control field-options" style="resize: none;" name="field_options"></textarea>
+											<span class="help-block custom-field-help-text option-help-text">One option per line for SELECT, MULTI, RADIO, or CHECKBOX.</span>
 										</div>
 									</div>
-									<div class="form-group">
-										<label class="control-label col-lg-3">Option Position:</label>
+									<div class="form-group option-position-group">
+										<label class="control-label col-lg-3">Option Position <span class="text-danger option-position-required-marker hide">*</span></label>
 										<div class="col-lg-9">
 											<select class="form-control field-option-position" name="field_option_position">
 												<option value=""></option>
@@ -529,26 +587,26 @@
 											</select>
 										</div>
 									</div>
-									<div class="form-group">
-										<label class="control-label col-lg-3">Field Size:</label>
+									<div class="form-group field-size-group">
+										<label class="control-label col-lg-3">Field Size <span class="text-danger text-field-required-marker">*</span></label>
 										<div class="col-lg-9">
 											<input type="number" class="form-control field-size" name="field_size" value="">
 										</div>
 									</div>
-									<div class="form-group">
-										<label class="control-label col-lg-3">Field Max:</label>
+									<div class="form-group field-max-group">
+										<label class="control-label col-lg-3">Field Max <span class="text-danger text-field-required-marker">*</span></label>
 										<div class="col-lg-9">
 											<input type="number" class="form-control field-max" name="field_max" value="">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-lg-3">Field Default:</label>
+										<label class="control-label col-lg-3">Field Default</label>
 										<div class="col-lg-9">
 											<input type="text" class="form-control field-default" name="field_default" value="">
 										</div>
 									</div>
 									<div class="form-group">
-										<label class="control-label col-lg-3">Field Required:</label>
+										<label class="control-label col-lg-3">Field Required <span class="text-danger">*</span></label>
 										<div class="col-lg-9">
 											<select class="form-control field-requireds" name="field_required" required>
 												<option value=""></option>
@@ -638,6 +696,8 @@
 
 		<script type="text/javascript">
 			$(document).ready(function() {
+				var openingCustomFieldView = false;
+
 				$('.select2-3').select2({
 		        theme: 'bootstrap'
 		    });
@@ -661,9 +721,12 @@
 					//var type = $('.custom-fields-selection').val();
 					//$('.type').val(type);
 					$('.field-id').val("");
-//					$('.field-id').val("");
+//						$('.field-id').val("");
+					$('.field-type').val('TEXT').change();
 					$('.btn-create-field').removeClass('hide');
 					$('.btn-update-field').addClass('hide');
+					clearCustomFieldValidation();
+					updateCustomFieldRequirementHints();
 					$('#modal_custom_field').modal('show');
 					$('#wizard-form input[name="field_label"]').removeAttr('readonly');
 				});
@@ -673,10 +736,10 @@
 					console.log(data);
 					var viewHTML = '<table class="table"';
 							viewHTML += '<tr>';
-							
+
 							//if(data.field_type != "DISPLAY" && data.field_type != "SCRIPT") {
 								viewHTML += '<td><B>' + data.field_name + '</B></td>';
-							
+
 								viewHTML += '<td>';
 							//} else {
 							//	viewHTML += '<td colspan="2">';
@@ -810,20 +873,29 @@
 								viewHTML += '</SELECT>';
 							}
 
-							viewHTML += '<td>';
-							viewHTML += '<tr>';
+							viewHTML += '</td>';
+							viewHTML += '</tr>';
 							viewHTML += '</table>';
 
 					$('#viewContainer').html(viewHTML);
+					openingCustomFieldView = true;
+					$('#modal_custom_field_list').one('hidden.bs.modal', function(){
+						$('#modal_custom_field_view').modal('show');
+						$('body').addClass('modal-open');
+					});
 					$('#modal_custom_field_list').modal('hide');
-					$('#modal_custom_field_view').modal('show');
 				});
 
 				$(document).on('click', '.btn-edit-fields', function(){
 					$('#modal_custom_field_list').modal('show');
 				});
 
-				$('#modal_custom_field_list').on('hidden.bs.modal', function (e) {
+				$('#modal_custom_field_list').on('hidden.bs.modal', function () {
+					if (openingCustomFieldView) {
+						openingCustomFieldView = false;
+						return;
+					}
+
 					var field_id = $('.field-id').val();
 					if(field_id !== ""){
 						$('body').addClass('modal-open');
@@ -843,7 +915,7 @@
 						$('.field-option-position').val("").change();
 						$('.field-requireds').val("").change();
 						$('body').removeClass('modal-open');
-						
+
 						location.reload();
 					}
 				});
@@ -875,7 +947,7 @@
 
 				$('#modal_custom_field_view').on('hidden.bs.modal', function (e) {
 						$('#modal_custom_field_list').modal('show');
-				    $('body').addClass('modal-open');
+						$('body').addClass('modal-open');
 				});
 
 				$(document).on('click', '.btn-edit-cf', function(){
@@ -915,7 +987,7 @@
 					$('.field-order').val("");
 					$('.field-name').val("");
 					$('.field-description').val("");
-					$('.field-type').val("");
+					$('.field-type').val("TEXT").change();
 					$('.field-options').val("");
 					$('.field-size').val("");
 					$('.field-max').val("");
@@ -923,9 +995,111 @@
 					$('.field-position').val("").change();
 					$('.field-option-position').val("").change();
 					$('.field-requireds').val("").change();
+					clearCustomFieldValidation();
 				});
 
+				function clearCustomFieldValidation() {
+					$('#wizard-form .form-group').removeClass('has-error');
+					$('#wizard-form .custom-field-error').remove();
+					$('.custom-field-validation-message').addClass('hide').empty();
+				}
+
+				function addCustomFieldError($field, message) {
+					var $group = $field.closest('.form-group');
+					$group.addClass('has-error');
+					if (!$group.find('.custom-field-error').length) {
+						$field.closest('[class*="col-lg-"]').append('<span class="help-block custom-field-error">'+message+'</span>');
+					}
+				}
+
+				function updateCustomFieldRequirementHints() {
+					var type = $('.field-type').val();
+					var optionType = ['SELECT', 'MULTI', 'RADIO', 'CHECKBOX'].indexOf(type) !== -1;
+					var textType = ['TEXT', 'AREA'].indexOf(type) !== -1;
+
+					$('.option-required-marker, .option-position-required-marker').toggleClass('hide', !optionType);
+					$('.text-field-required-marker').toggleClass('hide', !textType);
+					$('.options-group, .option-position-group').toggleClass('type-dependent-muted', !optionType);
+					$('.field-size-group, .field-max-group').toggleClass('type-dependent-muted', !textType);
+				}
+
+				function validateCustomFieldForm() {
+					clearCustomFieldValidation();
+
+					var errors = [];
+					var $form = $('#wizard-form');
+					var $fieldLabel = $form.find('[name="field_label"]');
+					var $fieldRank = $form.find('[name="field_rank"]');
+					var $fieldOrder = $form.find('[name="field_order"]');
+					var $fieldName = $form.find('[name="field_name"]');
+					var $fieldPosition = $form.find('[name="field_position"]');
+					var $fieldType = $form.find('[name="field_type"]');
+					var $fieldOptions = $form.find('[name="field_options"]');
+					var $fieldOptionPosition = $form.find('[name="field_option_position"]');
+					var $fieldSize = $form.find('[name="field_size"]');
+					var $fieldMax = $form.find('[name="field_max"]');
+					var $fieldRequired = $form.find('[name="field_required"]');
+					var type = $fieldType.val();
+					var optionType = ['SELECT', 'MULTI', 'RADIO', 'CHECKBOX'].indexOf(type) !== -1;
+					var textType = ['TEXT', 'AREA'].indexOf(type) !== -1;
+					var requiredFields = [
+						{ field: $fieldLabel, name: 'Label' },
+						{ field: $fieldRank, name: 'Rank' },
+						{ field: $fieldOrder, name: 'Order' },
+						{ field: $fieldName, name: 'Name' },
+						{ field: $fieldPosition, name: 'Position' },
+						{ field: $fieldType, name: 'Type' },
+						{ field: $fieldRequired, name: 'Field Required' }
+					];
+
+					if (optionType) {
+						requiredFields.push({ field: $fieldOptions, name: 'Options' });
+						requiredFields.push({ field: $fieldOptionPosition, name: 'Option Position' });
+					}
+
+					if (textType) {
+						requiredFields.push({ field: $fieldSize, name: 'Field Size' });
+						requiredFields.push({ field: $fieldMax, name: 'Field Max' });
+					}
+
+					$.each(requiredFields, function(_, item) {
+						if ($.trim(item.field.val()) === '') {
+							errors.push(item.name);
+							addCustomFieldError(item.field, item.name + ' is required.');
+						}
+					});
+
+					if ($.trim($fieldLabel.val()) !== '' && !/^[A-Za-z0-9_]+$/.test($fieldLabel.val())) {
+						errors.push('Label format');
+						addCustomFieldError($fieldLabel, 'Use letters, numbers, or underscores only.');
+					}
+
+					if (errors.length) {
+						$('.custom-field-validation-message')
+							.removeClass('hide')
+							.html('<strong>Please complete the highlighted fields:</strong> ' + errors.join(', '));
+						$('#modal_custom_field .modal-body').animate({ scrollTop: 0 }, 200);
+						$('#wizard-form .has-error:first').find('input, select, textarea').first().focus();
+						return false;
+					}
+
+					return true;
+				}
+
+				$('.field-type').on('change', updateCustomFieldRequirementHints);
+				$('#wizard-form').on('input change', 'input, select, textarea', function(){
+					$(this).closest('.form-group').removeClass('has-error').find('.custom-field-error').remove();
+					if (!$('#wizard-form .has-error').length) {
+						$('.custom-field-validation-message').addClass('hide').empty();
+					}
+				});
+				updateCustomFieldRequirementHints();
+
 				$(document).on('click', '.btn-create-field', function(){
+					if (!validateCustomFieldForm()) {
+						return;
+					}
+
 					var form_data = new FormData($("#wizard-form")[0]);
 
 					swal({
@@ -975,10 +1149,14 @@
 				});
 
 				$(document).on('click', '.btn-update-field', function(){
+					if (!validateCustomFieldForm()) {
+						return;
+					}
+
 					var form_data = new FormData($("#wizard-form")[0]);
 					var field_label_old = $('#field_label_old').val();
 					form_data.append('field_label_old',field_label_old);
-					
+
 					swal({
 						title: "Are you sure?",
 						text: "This action cannot be undone.",

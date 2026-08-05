@@ -2,7 +2,7 @@
 /**
  * @file 		edittelephonylist.php
  * @brief 		Edit list details
- * @copyright 	Copyright (c) 2020 GOautodial Inc. 
+ * @copyright 	Copyright (c) 2020 GOautodial Inc.
  * @author		Demian Lizandro A. Biscocho
  * @author     	Alexander Jim H. Abenoja
  *
@@ -31,13 +31,13 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	
+
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
 			header("location: agent.php");
 		}
-	}	
+	}
 
 	$modifyid = NULL;
 	if (isset($_POST["modifyid"])) {
@@ -55,8 +55,8 @@
         <meta charset="UTF-8">
         <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("edit_list"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <?php 
-			print $ui->standardizedThemeCSS(); 
+        <?php
+			print $ui->standardizedThemeCSS();
 			print $ui->creamyThemeCSS();
 			print $ui->dataTablesTheme();
 		?>
@@ -65,7 +65,7 @@
     	select{
     		font-weight: normal;
     	}
- 
+
     	.table-bordered>tbody>tr>td,
     	.table-bordered>thead>tr>th{
     		border: 1px solid #f4f4f4;
@@ -254,7 +254,7 @@
 											<input type="text" class="form-control" name="xferconf_e_number" placeholder="<?php //$lh->translateText("xferconf_e_number"); ?>">
 										</div>
 									</div> -->
-								
+
 								</div><!-- tab 1 -->
 								<div id="tab_2" class="tab-pane">
 									<div id="example1_wrapper" class="dataTables_wrapper form-inline dt-bootstrap" style="margin-top: 10px;">
@@ -269,12 +269,12 @@
 													</tr>
 												</thead>
 												<tbody>
-													<?php 
+													<?php
 														$called = array();
 														$ncalled = array();
 													?>
 													<?php for($s=0;$s<(isset($statuses->stats) && is_countable($statuses->stats) ? count($statuses->stats) : 0);$s++){ ?>
-														<?php 
+														<?php
 															// if($statuses->called_since_last_reset[$s] == 'N'){
 															// 	$countCalled = 0;
 															// 	$countNCalled = $statuses->countvlists[$s];
@@ -301,7 +301,7 @@
 													<tr>
 														<td colspan="2" style="text-align: right;"><b><?php $lh->translateText("TOTAL"); ?></b></td>
 														<td colspan="2" style="text-align: center; width: 30%;">
-															<?php 
+															<?php
 																$total = array_sum($called) + array_sum($ncalled);
 																echo $total;
 															?>
@@ -325,25 +325,28 @@
 													</tr>
 												</thead>
 												<tbody>
-													<?php 
+													<?php
 														$tcalled = array();
 														$tncalled = array();
 													?>
 													<?php for($t=0;$t<(isset($timezones->gmt_offset_now) && is_countable($timezones->gmt_offset_now) ? count($timezones->gmt_offset_now) : 0);$t++){ ?>
-														<?php 
-															if($timezones->called_since_last_reset[$t] == 'N'){
+														<?php
+															$gmtOffsetRaw = $timezones->gmt_offset_now[$t] ?? 0;
+															$gmtOffset = is_numeric($gmtOffsetRaw) ? (float) $gmtOffsetRaw : 0;
+															$counttList = (int) ($timezones->counttlist[$t] ?? 0);
+															if(($timezones->called_since_last_reset[$t] ?? '') == 'N'){
 																$counttCalled = 0;
-																$counttNCalled = $timezones->counttlist[$t];
+																$counttNCalled = $counttList;
 
 															}else{
-																$counttCalled = $timezones->counttlist[$t];
+																$counttCalled = $counttList;
 																$counttNCalled = 0;
 															}
 															array_push($tcalled, $counttCalled);
 															array_push($tncalled, $counttNCalled);
 														?>
 														<tr>
-															<td><?php echo $timezones->gmt_offset_now[$t]." (".gmdate("D M Y H:i", time() + 3600 * $timezones->gmt_offset_now[$t]).")"; ?></td>
+															<td><?php echo $gmtOffsetRaw." (".gmdate("D M Y H:i", time() + (int) (3600 * $gmtOffset)).")"; ?></td>
 															<td style="text-align: center; width: 15%;"><?php echo $counttCalled; ?></td>
 															<td style="text-align: center; width: 15%;"><?php echo $counttNCalled; ?></td>
 														</tr>
@@ -356,7 +359,7 @@
 													<tr>
 														<td style="text-align: right;"><b><?php $lh->translateText("TOTAL"); ?></b></td>
 														<td colspan="2" style="text-align: center; width: 30%;">
-															<?php 
+															<?php
 																$totalt = array_sum($tcalled) + array_sum($tncalled);
 																echo $totalt;
 															?>
@@ -400,25 +403,25 @@
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 
         </div><!-- ./wrapper -->
-		
+
         <?php print $ui->standardizedThemeJS();?>
-		
+
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
-		
+
 		<script type="text/javascript">
 			$(document).ready(function() {
 				var list_read 	= <?php echo ($perm->list->list_create !== "N" ? 1 : 0 ) ?>;
 				var list_update = <?php echo ($perm->list->list_create !== "N" ? 1 : 0 ) ?>;
-				
+
 				$(document).on('click', '#cancel', function(){
 					swal({title: "<?php $lh->translateText("cancelled"); ?>", text: "<?php $lh->translateText("cancel_msg"); ?>", type: "error"},function(){window.location.href = 'telephonylist.php';});
 				});
-				
+
 				if (list_read == 1 && list_update == 1) {
 					$('#modifyListOkButton').attr('disabled', false);
 					$('#add_custom_field').attr('disabled', false);
-					
+
 					$(document).on('click','#modifyListOkButton',function() {
 						//submit the form
 						$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
@@ -442,7 +445,7 @@
 						});
 						//return false; //don't let the form refresh the page...
 					});
-		
+
 					$(document).on('click','#add_custom_field',function() {
 						var url = './addcustomfield.php';
 						var id = $(this).attr('data-id');
@@ -455,10 +458,10 @@
 					$('#modifyListOkButton').attr('disabled', true);
 					$('#add_custom_field').attr('disabled', false);
 				}
-	
+
 			});
 		</script>
-		
+
 		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>

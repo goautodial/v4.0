@@ -1,4 +1,4 @@
-<?php	
+<?php
 /**
  * @file        settingscalltimes.php
  * @brief       Manage Calltimes
@@ -31,23 +31,23 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	
+
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
 			header("location: agent.php");
 		}
-	}	
-	
+	}
+
 ?>
 <html>
     <head>
         <meta charset="UTF-8">
         <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("call_times"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        
-        <?php 
-			print $ui->standardizedThemeCSS(); 
+
+        <?php
+			print $ui->standardizedThemeCSS();
 			print $ui->creamyThemeCSS();
 			print $ui->dataTablesTheme();
 		?>
@@ -58,13 +58,130 @@
     	<link rel="stylesheet" href="css/easyWizard.css">
         <link href="css/style.css" rel="stylesheet" type="text/css" />
 
-        <!-- datetime picker --> 
+        <!-- datetime picker -->
 		<link rel="stylesheet" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
 
 		<!-- Date Picker -->
-        <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
-		<script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-    </head>
+	        <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
+			<script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+		<style type="text/css">
+			#view-calltime-modal .modal-dialog {
+				width: 760px;
+				max-width: calc(100% - 30px);
+			}
+
+			#view-calltime-modal .modal-header {
+				padding: 16px 20px;
+			}
+
+			#view-calltime-modal .modal-title {
+				font-size: 18px;
+				line-height: 1.3;
+			}
+
+			#view-calltime-modal .modal-body {
+				padding: 18px 24px 24px;
+				max-height: calc(100vh - 150px);
+				overflow-y: auto;
+			}
+
+			#view-calltime-modal #form_calltimes > .row {
+				margin-left: 0;
+				margin-right: 0;
+			}
+
+			#view-calltime-modal h4 {
+				margin: 0 0 12px;
+				font-size: 17px;
+				font-weight: 600;
+			}
+
+			#view-calltime-modal h4 small {
+				display: block;
+				margin-top: 2px;
+				font-size: 12px;
+				line-height: 1.35;
+				color: #777;
+			}
+
+			#view-calltime-modal fieldset {
+				border: 1px solid #e5e9ef;
+				border-radius: 4px;
+				padding: 16px 16px 10px;
+				margin-bottom: 22px;
+				background: #fff;
+			}
+
+			#view-calltime-modal fieldset:last-of-type {
+				margin-bottom: 0;
+			}
+
+			#view-calltime-modal .form-group {
+				margin-bottom: 10px;
+			}
+
+			#view-calltime-modal .control-label {
+				padding-top: 7px;
+				font-weight: 600;
+				white-space: nowrap;
+			}
+
+			#view-calltime-modal .form-control {
+				height: 34px;
+			}
+
+			#view-calltime-modal .select2-container .select2-selection--single {
+				height: 34px;
+			}
+
+			#view-calltime-modal fieldset:first-of-type .control-label {
+				width: 28%;
+			}
+
+			#view-calltime-modal fieldset:first-of-type .col-lg-8 {
+				width: 72%;
+			}
+
+			#view-calltime-modal fieldset:last-of-type .form-group {
+				margin-bottom: 8px;
+			}
+
+			#view-calltime-modal fieldset:last-of-type .control-label.col-lg-2 {
+				width: 16%;
+				padding-right: 12px;
+			}
+
+			#view-calltime-modal fieldset:last-of-type .col-lg-10 {
+				width: 84%;
+			}
+
+			#view-calltime-modal fieldset:last-of-type .row > .col-lg-3:first-child,
+			#view-calltime-modal fieldset:last-of-type .row > .col-lg-3:nth-child(2) {
+				width: 22%;
+			}
+
+			#view-calltime-modal fieldset:last-of-type .row > .col-lg-6 {
+				width: 56%;
+			}
+
+			#view-calltime-modal fieldset:last-of-type .form-group:first-child {
+				margin-bottom: 6px;
+				padding-bottom: 6px;
+				border-bottom: 1px solid #edf0f4;
+			}
+
+			#view-calltime-modal fieldset:last-of-type .form-group:first-child .row > label {
+				margin-top: 8px;
+			}
+
+			#view-calltime-modal fieldset:last-of-type .form-group:first-child label {
+				font-size: 12px;
+				color: #666;
+				font-weight: 700;
+			}
+		</style>
+	    </head>
     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
@@ -407,8 +524,8 @@
 	    <!-- End of modal content -->
 	  </div>
 	</div>
-	
-	
+
+
 	<div id="view-sched-modal" class="modal fade">
 		<div class="modal-dialog">
 			<center>
@@ -437,7 +554,7 @@
 										<?=$lh->translateText("sunday")?>
 									</div>
 									<div class="text"><span class="text-sm text-muted" id="sunday">1200 AM - 1200 PM</span></div>
-								</div>	                	
+								</div>
 								<div class="panel widget col-md-3 col-sm-3 col-xs-6 br text-center info_sun_boxes" style="padding: 10px;">
 									<div class="h4 m0">
 										<?=$lh->translateText("tuesday")?>
@@ -473,7 +590,7 @@
 							</div>
 						</div>
 					</div>
-					<?php/*<div class="col-sm-12">
+					<?php /*<div class="col-sm-12">
 						<div class="mt col-sm-row">
 							<div class="col-sm-12">
 								<h4><b><?php $lh->translateText("default"); ?> </b></h4>
@@ -537,7 +654,7 @@
 		</div>
 	</div>
 	<!-- End of modal -->
-	
+
 		<!-- Forms and actions -->
 		<?php print $ui->standardizedThemeJS(); ?>
 		<!-- JQUERY STEPS-->
@@ -546,15 +663,15 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		var checker = 0;
-		
+
 		/*********************
 		** INITIALIZATION
 		*********************/
 			// $('#view-calltime-modal').modal('show');
 				$('#calltimes').dataTable();
 
-			// init form wizard 
-				var form = $("#form_calltimes"); 
+			// init form wizard
+				var form = $("#form_calltimes");
 			    form.validate({
 			        errorPlacement: function errorPlacement(error, element) { element.after(error); }
 			    });
@@ -573,7 +690,7 @@
 							checker = 0;
 							return true;
 						}
-	
+
 						console.log(checker);
 						// Disable next if there are duplicates
 						if(checker > 0){
@@ -622,8 +739,8 @@
 							});
 			        }
 			    });
-		
-				
+
+
 				$(document).on('click','.view_sched',function() {
 					var id = $(this).attr('data-id');
 					var def = $(this).attr('data-def');
@@ -644,7 +761,7 @@
 					$('#friday').html(fri);
 					$('#saturday').html(sat);
 				});
-		
+
 		/*********************
 		** EDIT EVENT
 		*********************/
@@ -655,7 +772,7 @@
 					$('body').append(form);  // This line is not necessary
 					$(form).submit();
 				});
-				
+
 		/*********************
 		** DELETE EVENT
 		*********************/
@@ -680,7 +797,7 @@
                             	$.ajax({
 		                            url: "./php/DeleteCalltime.php",
 		                            type: 'POST',
-		                            data: { 
+		                            data: {
 		                                call_time_id:id,
 										log_user: log_user,
 										log_group: log_group,
@@ -701,7 +818,7 @@
                         }
                     );
 				});
-		
+
 	/*********************
 	** FILTERS
 	*********************/
@@ -729,25 +846,25 @@
 		/* initialize select2 */
 			$('.select2-1').select2({ theme: 'bootstrap' });
 			$.fn.select2.defaults.set( "theme", "bootstrap" );
-			
+
 		//initialize timepicker
 			$('.start_time').datetimepicker({
 				defaultDate: '',
                 format: 'LT'
-               
+
             });
            	$('.end_time').datetimepicker({
            		defaultDate: '',
                 format: 'LT'
             });
-		
+
 		// check duplicates
 			$("#call_time_id").keyup(function() {
 				clearTimeout($.data(this, 'timer'));
 				var wait = setTimeout(validate_id, 500);
 				$(this).data('timer', wait);
 			});
-		
+
 			function validate_id(){
 				var id_value = $('#call_time_id').val();
 		        if(id_value != ""){
@@ -766,7 +883,7 @@
 							}else{
 								$( "#call_time_id" ).removeClass("valid").addClass( "error" );
 								$( "#calltime-duplicate-error" ).text( data ).removeClass("avail").addClass("error");
-								
+
 								checker = 1;
 							}
 						}
@@ -775,7 +892,7 @@
 			}
 	}); // end of document ready
 </script>
-		
+
 		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>
