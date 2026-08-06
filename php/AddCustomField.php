@@ -24,6 +24,24 @@ declare(strict_types=1);
 	require_once(__DIR__ . '/APIHandler.php');
 	$api = \creamy\APIHandler::getInstance();
 
+	$fieldType = (string) ($_POST['field_type'] ?? '');
+	$fieldSize = $_POST['field_size'] ?? '';
+	$fieldMax = $_POST['field_max'] ?? '';
+	$fieldOptions = $_POST['field_options'] ?? '';
+	$fieldDefault = $_POST['field_default'] ?? '';
+
+	if ($fieldSize === '' && !in_array($fieldType, ['TEXT', 'AREA'], true)) {
+		$fieldSize = '1';
+	}
+
+	if ($fieldMax === '' && !in_array($fieldType, ['TEXT', 'AREA'], true)) {
+		$fieldMax = '1';
+	}
+
+	if ($fieldType === 'SCRIPT' && $fieldOptions === '' && $fieldDefault !== '') {
+		$fieldOptions = $fieldDefault;
+	}
+
 	$postfields = [
 			'goAction' => 'goAddCustomFields',
 			'list_id' => ($_POST['list_id'] ?? ''),
@@ -33,12 +51,12 @@ declare(strict_types=1);
 			'field_label' => ($_POST['field_label'] ?? ''),
 			'field_position' => ($_POST['field_position'] ?? ''),
 			'field_description' => ($_POST['field_description'] ?? ''),
-			'field_type' => ($_POST['field_type'] ?? ''),
-			'field_options' => ($_POST['field_options'] ?? ''),
+			'field_type' => $fieldType,
+			'field_options' => $fieldOptions,
 			'field_option_position' => ($_POST['field_option_position'] ?? ''),
-			'field_size' => ($_POST['field_size'] ?? ''),
-			'field_max' => ($_POST['field_max'] ?? ''),
-			'field_default' => ($_POST['field_default'] ?? ''),
+			'field_size' => $fieldSize,
+			'field_max' => $fieldMax,
+			'field_default' => $fieldDefault,
 			'field_required' => ($_POST['field_required'] ?? ''),
 			'log_user' => ($_POST['log_user'] ?? ''),
 			'log_group' => ($_POST['log_group'] ?? '')

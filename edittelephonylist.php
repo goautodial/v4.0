@@ -233,27 +233,13 @@
 									<div class="form-group clearfix">
 										<label class="control-label col-lg-3" style="text-align: left;"><?php $lh->translateText("transfer"); ?>:</label>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" name="xferconf_a_number" placeholder="<?php $lh->translateText("xferconf_a_number"); ?>">
+											<input type="text" class="form-control" name="xferconf_a_number" value="<?php echo htmlspecialchars((string) ($output->xferconf_a_number[0] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" placeholder="<?php $lh->translateText("xferconf_a_number"); ?>">
 										</div>
 										<div class="col-lg-4">
-											<input type="text" class="form-control" name="xferconf_b_number" placeholder="<?php $lh->translateText("xferconf_b_number"); ?>">
+											<input type="text" class="form-control" name="xferconf_b_number" value="<?php echo htmlspecialchars((string) ($output->xferconf_b_number[0] ?? ''), ENT_QUOTES, 'UTF-8'); ?>" placeholder="<?php $lh->translateText("xferconf_b_number"); ?>">
 										</div>
 									</div>
-									<!-- <div class="form-group clearfix">
-										<label class="control-label col-lg-3" style="text-align: left;"></label>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" name="xferconf_c_number" placeholder="<?php //$lh->translateText("xferconf_c_number"); ?>">
-										</div>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" name="xferconf_d_number" placeholder="<?php //$lh->translateText("xferconf_d_number"); ?>">
-										</div>
-									</div>
-									<div class="form-group clearfix">
-										<label class="control-label col-lg-3" style="text-align: left;"></label>
-										<div class="col-lg-4">
-											<input type="text" class="form-control" name="xferconf_e_number" placeholder="<?php //$lh->translateText("xferconf_e_number"); ?>">
-										</div>
-									</div> -->
+
 
 								</div><!-- tab 1 -->
 								<div id="tab_2" class="tab-pane">

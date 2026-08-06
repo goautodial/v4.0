@@ -290,16 +290,17 @@
 																$te=0;
 																while ($te < $field_options_count)
 																{
-																	if (preg_match("/,/",$field_options_array[$te])) {
+																	if (trim((string) $field_options_array[$te]) !== '') {
 																		$field_selected='';
-																		$field_options_value_array = explode(",",$field_options_array[$te]);
+																		$field_options_value_array = explode(",", $field_options_array[$te], 2);
+																		$field_option_value = trim((string) ($field_options_value_array[0] ?? ''));
+																		$field_option_text = trim((string) ($field_options_value_array[1] ?? $field_option_value));
 
 																		if ( ($A_field_type=='SELECT') or ($A_field_type=='MULTI') )
 																		{
 
-																			if ($A_field_default == "$field_options_value_array[0]") {$field_selected = 'SELECTED';}
-																			$field_option_text = (!empty($field_options_value_array[1])) ? $field_options_value_array[1] : $field_options_value_array[0];
-																			$field_HTML .= "<option value=\"$field_options_value_array[0]\" $field_selected>" . trim($field_option_text) . "</option>\n";
+																			if ($A_field_default == "$field_option_value") {$field_selected = 'SELECTED';}
+																			$field_HTML .= "<option value=\"$field_option_value\" $field_selected>" . trim($field_option_text) . "</option>\n";
 																		}
 
 																		if ( ($A_field_type=='RADIO') or ($A_field_type=='CHECKBOX') )
@@ -310,11 +311,11 @@
 																				$field_HTML .= " &nbsp; ";
 																			}
 
-																			if ($A_field_default == "$field_options_value_array[0]") {$field_selected = 'CHECKED';}
+																			if ($A_field_default == "$field_option_value") {$field_selected = 'CHECKED';}
 
 																			$lblname = $A_field_label.'[]';
 
-																			$field_HTML .= "<input type=$A_field_type name=$lblname id=\"{$lblname}_{$field_options_value_array[0]}\" value=\"$field_options_value_array[0]\" $field_selected> $field_options_value_array[1]\n";
+																			$field_HTML .= "<input type=$A_field_type name=$lblname id=\"{$lblname}_{$field_option_value}\" value=\"$field_option_value\" $field_selected> $field_option_text\n";
 
 
 																			if ($A_multi_position=='VERTICAL')
@@ -362,8 +363,8 @@
 															if ($A_field_type=='DATE')
 															{
 																if ( (strlen($A_field_default)<1) or ($A_field_default=='NULL') ) {$A_field_default=0;}
-																	$day_diff = $A_field_default;
-																	$default_date = date("Y-m-d", mktime(date("H"),date("i"),date("s"),date("m"),date("d")+$day_diff,date("Y")));
+																	$day_diff = is_numeric($A_field_default) ? (int) $A_field_default : 0;
+																	$default_date = date("Y-m-d", mktime((int) date("H"),(int) date("i"),(int) date("s"),(int) date("m"),(int) date("d") + $day_diff,(int) date("Y")));
 																	$field_HTML .= "<input type=text size=11 maxlength=10 name=$A_field_label id=$A_field_label value=\"$default_date\">\n";
 																	$field_HTML .= "<script language=\"JavaScript\">\n";
 																	$field_HTML .= "var o_cal = new tcal ({\n";
@@ -378,10 +379,11 @@
 
 															if ($A_field_type=='TIME')
 															{
-																$minute_diff = $A_field_default;
-																$default_time = date("H:i:s", mktime(date("H"),date("i")+$minute_diff,date("s"),date("m"),date("d"),date("Y")));
-																$default_hour = date("H", mktime(date("H"),date("i")+$minute_diff,date("s"),date("m"),date("d"),date("Y")));
-																$default_minute = date("i", mktime(date("H"),date("i")+$minute_diff,date("s"),date("m"),date("d"),date("Y")));
+																$minute_diff = is_numeric($A_field_default) ? (int) $A_field_default : 0;
+																$default_timestamp = mktime((int) date("H"),(int) date("i") + $minute_diff,(int) date("s"),(int) date("m"),(int) date("d"),(int) date("Y"));
+																$default_time = date("H:i:s", $default_timestamp);
+																$default_hour = date("H", $default_timestamp);
+																$default_minute = date("i", $default_timestamp);
 																$field_HTML .= "<input type=hidden name=$A_field_label id=$A_field_label value=\"$default_time\">";
 																$field_HTML .= "<SELECT name=HOUR_$A_field_label id=HOUR_$A_field_label>";
 																$field_HTML .= "<option>00</option>";
@@ -571,7 +573,7 @@
 										</div>
 									</div>
 									<div class="form-group options-group">
-										<label class="control-label col-lg-3">Options <span class="text-danger option-required-marker hide">*</span></label>
+										<label class="control-label col-lg-3"><span class="field-options-label">Options</span> <span class="text-danger option-required-marker hide">*</span></label>
 										<div class="col-lg-9">
 											<textarea class="form-control field-options" style="resize: none;" name="field_options"></textarea>
 											<span class="help-block custom-field-help-text option-help-text">One option per line for SELECT, MULTI, RADIO, or CHECKBOX.</span>
@@ -599,10 +601,11 @@
 											<input type="number" class="form-control field-max" name="field_max" value="">
 										</div>
 									</div>
-									<div class="form-group">
-										<label class="control-label col-lg-3">Field Default</label>
+									<div class="form-group field-default-group">
+										<label class="control-label col-lg-3">Field Default <span class="text-danger display-field-required-marker hide">*</span></label>
 										<div class="col-lg-9">
 											<input type="text" class="form-control field-default" name="field_default" value="">
+											<span class="help-block custom-field-help-text display-field-help-text hide">For DISPLAY fields, this text appears in the preview.</span>
 										</div>
 									</div>
 									<div class="form-group">
@@ -757,16 +760,21 @@
 								var option_array = data.field_options.split("\n");
 
 								$.each(option_array, function(index, value){
-				            var option_value_array = value.split(",");
+										if ($.trim(value) === '') {
+											return;
+										}
+            var option_value_array = value.split(",");
+										var optionValue = $.trim(option_value_array[0] || '');
+										var optionText = $.trim(option_value_array[1] || optionValue);
 
 										if ( (data.field_type == "SELECT") || (data.field_type == "MULTI") ){
-											if (data.field_default == option_value_array[0]) {
+											if (data.field_default == optionValue) {
 												var selected = 'SELECTED';
 											}else{
 												var selected = '';
 											}
 
-											viewHTML += '<option value="'+ option_value_array[0] +'" '+ selected +'>'+ option_value_array[1] +'</option>';
+											viewHTML += '<option value="'+ optionValue +'" '+ selected +'>'+ optionText +'</option>';
 										}
 
 										if ( (data.field_type == "RADIO") || (data.field_type == "CHECKBOX") ){
@@ -774,15 +782,15 @@
 												viewHTML += " &nbsp; ";
 											}
 
-											if (data.field_default == option_value_array[0]) {
-												var selected = 'SELECTED';
+											if (data.field_default == optionValue) {
+												var selected = 'CHECKED';
 											}else{
 												var selected = '';
 											}
 
 											var label_name = data.field_label + '[]';
 
-											viewHTML += '<input type="'+ data.field_type +'" name="'+ label_name +'" id="'+ label_name +'" value="'+ option_value_array[0] +'" '+ selected +'> '+ option_value_array[1] +'\n';
+											viewHTML += '<input type="'+ data.field_type +'" name="'+ label_name +'" id="'+ label_name +'" value="'+ optionValue +'" '+ selected +'> '+ optionText +'\n';
 
 											if (data.multi_position == "VERTICAL"){
 												viewHTML += "<br />\n";
@@ -1016,10 +1024,17 @@
 					var type = $('.field-type').val();
 					var optionType = ['SELECT', 'MULTI', 'RADIO', 'CHECKBOX'].indexOf(type) !== -1;
 					var textType = ['TEXT', 'AREA'].indexOf(type) !== -1;
+					var displayType = type === 'DISPLAY';
+					var scriptType = type === 'SCRIPT';
 
-					$('.option-required-marker, .option-position-required-marker').toggleClass('hide', !optionType);
+					$('.option-required-marker').toggleClass('hide', !(optionType || scriptType));
+					$('.option-position-required-marker').toggleClass('hide', !optionType);
 					$('.text-field-required-marker').toggleClass('hide', !textType);
-					$('.options-group, .option-position-group').toggleClass('type-dependent-muted', !optionType);
+					$('.display-field-required-marker, .display-field-help-text').toggleClass('hide', !displayType);
+					$('.field-options-label').text(scriptType ? 'Script' : 'Options');
+					$('.option-help-text').text(scriptType ? 'Text shown in the form preview for SCRIPT fields.' : 'One option per line for SELECT, MULTI, RADIO, or CHECKBOX.');
+					$('.options-group').toggleClass('type-dependent-muted', !(optionType || scriptType));
+					$('.option-position-group').toggleClass('type-dependent-muted', !optionType);
 					$('.field-size-group, .field-max-group').toggleClass('type-dependent-muted', !textType);
 				}
 
@@ -1039,9 +1054,12 @@
 					var $fieldSize = $form.find('[name="field_size"]');
 					var $fieldMax = $form.find('[name="field_max"]');
 					var $fieldRequired = $form.find('[name="field_required"]');
+					var $fieldDefault = $form.find('[name="field_default"]');
 					var type = $fieldType.val();
 					var optionType = ['SELECT', 'MULTI', 'RADIO', 'CHECKBOX'].indexOf(type) !== -1;
 					var textType = ['TEXT', 'AREA'].indexOf(type) !== -1;
+					var displayType = type === 'DISPLAY';
+					var scriptType = type === 'SCRIPT';
 					var requiredFields = [
 						{ field: $fieldLabel, name: 'Label' },
 						{ field: $fieldRank, name: 'Rank' },
@@ -1057,9 +1075,17 @@
 						requiredFields.push({ field: $fieldOptionPosition, name: 'Option Position' });
 					}
 
+					if (scriptType) {
+						requiredFields.push({ field: $fieldOptions, name: 'Script Text' });
+					}
+
 					if (textType) {
 						requiredFields.push({ field: $fieldSize, name: 'Field Size' });
 						requiredFields.push({ field: $fieldMax, name: 'Field Max' });
+					}
+
+					if (displayType) {
+						requiredFields.push({ field: $fieldDefault, name: 'Display Text' });
 					}
 
 					$.each(requiredFields, function(_, item) {

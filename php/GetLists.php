@@ -4,7 +4,7 @@
  * @brief       Handles Campaigns List Requests
  * @copyright   Copyright (c) 2018 GOautoial Inc.
  * @author      Noel Umandap
- * @author		Demian Lizandro A, Biscocho 
+ * @author		Demian Lizandro A, Biscocho
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -25,7 +25,13 @@
 	$api 											= \creamy\APIHandler::getInstance();
 	$campaign_id 									= ($_POST["campaign_id"] ?? '');
 	$output 										= $api->API_getAllListsCampaign($campaign_id);
-	
+	$details 									= [
+		'data' 										=> '[]',
+		'count_active' 							=> 0,
+		'count_inactive' 						=> 0,
+		'lead_count' 							=> 0
+	];
+
 	if(!empty($output)){
 		$data 										= '[';
 		$i											= 0;
@@ -33,12 +39,12 @@
 		$count_inactive 							= 0;
 		$lead_count 								= 0;
         $counter = (isset($output->list_id) && is_countable($output->list_id) ? count($output->list_id) : 0);
-		
-		for ($i=0;$i<=$counter;$i++) {
+
+		for ($i=0;$i<$counter;$i++) {
 			if (!empty($output->list_id[$i])) {
-				if ($output->active[$i] == "Y") {
+				if (($output->active[$i] ?? '') == "Y") {
 					$count_active += 1;
-					$lead_count += $output->tally[$i];
+					$lead_count += (int) ($output->tally[$i] ?? 0);
 				} else {
 					$count_inactive += 1;
 				}
@@ -61,38 +67,39 @@
 					'xferconf_d_number' 				=> $output->xferconf_d_number[$i],
 					'xferconf_e_number' 				=> $output->xferconf_e_number[$i]
 				];
-				
+
 				$info								= json_encode($info);
 				$info								= base64_encode($info);
-				
-				$calldate							= $output->list_lastcalldate[$i];
-				
+
+				$calldate							= $output->list_lastcalldate[$i] ?? '';
+
 				if (is_null($calldate) || empty($calldate) || strstr((string) $calldate, "0000-00-00")) {
 					$calldate						= "";
 				} else {
 					$calldate						= strtotime((string) $calldate);
 				}
-				
+				$calldateDisplay 				= is_int($calldate) ? date('M. d, Y h:i A', $calldate) : '';
+
 				$data 								.= '[';
 				$data 								.= '"'.$output->list_id[$i].'",';
 				$data 								.= '"'.$output->list_name[$i].'",';
 				$data 								.= '"'.$output->list_description[$i].'",';
 				$data 								.= '"'.$output->tally[$i].'",';
 				$data 								.= '"'.$output->active[$i].'",';
-				$data 								.= '"'.date('M. d, Y h:i A', $calldate).'",';
+				$data 								.= '"'.$calldateDisplay.'",';
 				$data 								.= '"<a title=\"Modify View List\" class=\"btn btn-primary btn-edit-list edit-list\" href=\"#\" data-info=\"'.$info.'\" data-id=\"'.$output->list_id[$i].'\" data-campaign=\"'.$output->campaign_id[$i].'\"><span class=\"fa fa-pencil\"></span></a></td>"';
 				$data 								.= '],';
 			}
 		}
 
-		$data 										= rtrim($data, ",");    
+		$data 										= rtrim($data, ",");
 		$data 										.= ']';
-		
+
 		$details['data'] 							= $data;
 		$details['count_active'] 					= $count_active;
 		$details['count_inactive'] 					= $count_inactive;
 		$details['lead_count'] 						= $lead_count;
-		
+
 	}
 
 	echo json_encode($details);
