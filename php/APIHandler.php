@@ -44,8 +44,12 @@
 	if(isset($_SESSION["user"])){
 		define("session_user", $_SESSION["user"]);
 		define("session_usergroup", $_SESSION["usergroup"]);
-		define("session_password", $_SESSION["phone_this"]);
-		define("log_pass", $_SESSION["password_hash"]);
+		$sessionPassword = $_SESSION["phone_this"] ?? '';
+		if ($sessionPassword === '' && !empty($_SESSION["password_hash"])) {
+			$sessionPassword = $_SESSION["password_hash"];
+		}
+		define("session_password", $sessionPassword);
+		define("log_pass", $_SESSION["password_hash"] ?? $sessionPassword);
 		//define("responsetype", "json");
 	}else{
 		define("session_user", "TEST DEBUG");
@@ -1661,7 +1665,7 @@
 			$escapers = ["\\", "/", "\"", "\n", "\r", "\t", "\x08", "\x0c", "	"];
 			$replacements = ["\\\\", "\\/", "\\\"", "\\n", "\\r", "\\t", "\\f", "\\b", " "];
 
-			return str_replace($escapers, $replacements, $value);
+			return str_replace($escapers, $replacements, (string) ($value ?? ''));
 		}
 	}
 

@@ -3,7 +3,7 @@
  * @file        API_getRealtimeAgentsMonitoring.php
  * @brief       Displays realtime monitoring data and HTML
  * @copyright   Copyright (c) 2020 GOautodial Inc.
- * @author		Demian Lizandro A. Biscocho 
+ * @author		Demian Lizandro A. Biscocho
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -19,21 +19,21 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-	
+
 	require_once(__DIR__ . '/APIHandler.php');
-	
+
 	$api 											= \creamy\APIHandler::getInstance();
 	$output 										= $api->API_getRealtimeAgentsMonitoring();
 
-    $barracks 										= '[';   
-    
+    $barracks 										= '[';
+
     if (is_array($output->data)) {
 		foreach ($output->data as $value) {
-	
+
 			$userid 								= $api->escapeJsonString($value->vu_user_id);
 			$agentid 								= $api->escapeJsonString($value->vla_user);
 			$agentname 								= $api->escapeJsonString($value->vu_full_name);
-			$campname 								= $api->escapeJsonString($value->vla_campaign_name);    
+			$campname 								= $api->escapeJsonString($value->vla_campaign_name);
 			$station 								= $api->escapeJsonString($value->vla_extension);
 			$user_group 							= $api->escapeJsonString($value->vu_user_group);
 			$sessionid 								= $api->escapeJsonString($value->vla_conf_exten);
@@ -48,25 +48,25 @@
 			$last_state_change 						= (isset($value->last_state_change)) ? $api->escapeJsonString($value->last_state_change) : $last_call_finish;
 			$lead_id 								= $api->escapeJsonString($value->vla_lead_id);
 			$agent_log_id 							= $api->escapeJsonString($value->vla_agent_log_id);
-			$vla_callerid 							= $api->escapeJsonString($value->vla_callerid);    
+			$vla_callerid 							= $api->escapeJsonString($value->vla_callerid);
 			$cust_phone 							= (isset($value->vl_phone_number)) ? $api->escapeJsonString($value->vl_phone_number) : "";
 			$pausecode 								= $api->escapeJsonString($value->vla_pausecode);
 			//$vla_conference						= $api->escapeJsonString($value->vla_conf_exten);
 			//$ol_conference							= (!isset($value->ol_conference)) ? "" : $api->escapeJsonString($value->ol_conference);
 			//$ol_callerid							= (!isset($value->ol_callerid)) ? "" : $api->escapeJsonString($value->ol_callerid);
-			
+
 			if (!empty($output->callerids)) {
 				foreach ($output->callerids as $callerids) {
-				
+
 					$vac_callerid 					= $api->escapeJsonString($callerids->vac_callerid);
 					$vac_lead_id 					= $api->escapeJsonString($callerids->vac_lead_id);
 					$vac_phone_number 				= $api->escapeJsonString($callerids->vac_phone_number);
-				}			
+				}
 			}
-			
+
 			if (!empty($output->parked)) {
 				foreach ($output->parked as $parked){
-				
+
 					$pc_channel 					= $parked->pc_channel;
 					$pc_channel_group 				= $parked->pc_channel_group;
 					$pc_extension 					= $parked->pc_extension;
@@ -74,11 +74,11 @@
 					$pc_parked_time 				= $parked->pc_parked_time;
 				}
 			}
-			
-			$CM 									= "";        
-			$STARTtime 								= date("U");       
+
+			$CM 									= "";
+			$STARTtime 								= date("U");
 			$sessionAvatar 							= "<div class='media'><avatar username='$agentname' :size='32'></avatar></div>";
-			
+
 			$call_time_S 							= ($STARTtime - $last_state_change);
 			$call_time_M 							= ($call_time_S / 60);
 			$call_time_M 							= round($call_time_M, 2);
@@ -86,145 +86,148 @@
 			$call_time_SEC 							= ($call_time_M - $call_time_M_int);
 			$call_time_SEC *= 60;
 			$call_time_SEC 							= round($call_time_SEC, 0);
-			
+
+			$pc_channel = $pc_channel ?? null;
+			$ol_callerid = $ol_callerid ?? '';
 			if ($status == "INCALL") {
-				$textclass 							= "text-success";        
-				
+				$textclass 							= "text-success";
+
 				if ($pc_channel != NULL) {
-					$status 						= "PARK"; 
+					$status 						= "PARK";
 				}
-				
+
 				if ($call_type == "AUTO") {
-					$CM								= " [A]"; 
+					$CM								= " [A]";
 				}
-				
+
 				if ($call_type == "INBOUND") {
-					$CM								= " [I]"; 
-				}            
-				
-				if ($call_type == "MANUAL") {
-					$CM								= " [M]"; 
+					$CM								= " [I]";
 				}
-				
+
+				if ($call_type == "MANUAL") {
+					$CM								= " [M]";
+				}
+
 				//if (($vla_callerid != $vac_callerid) && ($last_state_change != $last_call_time)) {
-				if (($vla_callerid != $ol_callerid) && ($last_state_change != $last_call_time)) {					
-					$status 						= "DEAD"; 
-				}				
+				if (($vla_callerid != $ol_callerid) && ($last_state_change != $last_call_time)) {
+					$status 						= "DEAD";
+				}
 			}
-			
+
 			if (preg_match("/READY|PAUSED|CLOSER/",$status)){
 				$last_call_time 					= $last_state_change;
 				$textclass 							= "text-info";
-				
-				if ($lead_id>0) { 
-					$status 						= "DISPO"; 
+
+				if ($lead_id>0) {
+					$status 						= "DISPO";
 				}
 			}
-				
+
 			if (!preg_match("/INCALL|QUEUE|PARK|3-WAY/",$status)){
 				$call_time_S 						= ($STARTtime - $last_state_change);
 				$textclass 							= "text-info";
-							
-				if ($call_time_M_int >= 3) { 
-					$textclass 						= "text-warning"; 
+
+				if ($call_time_M_int >= 3) {
+					$textclass 						= "text-warning";
 				}
-				
-				if ($call_time_M_int >= 5) { 
-					$textclass 						= "text-danger"; 
+
+				if ($call_time_M_int >= 5) {
+					$textclass 						= "text-danger";
 				}
-					
-			} else { 
-				$call_time_S 						= ($STARTtime - $last_call_time); 
+
+			} else {
+				$call_time_S 						= ($STARTtime - $last_call_time);
 			}
-			
+
 			if (preg_match("/3-WAY/",$status)) {
 				$call_time_S 						= ($STARTtime - $last_state_change);
 				$textclass 							= "text-success";
 			}
-				
-			if ($call_time_SEC < 10) { 
-				$call_time_SEC 						= "0$call_time_SEC"; 
+
+			if ($call_time_SEC < 10) {
+				$call_time_SEC 						= "0$call_time_SEC";
 			}
-			
+
 			$call_time_MS 							= "$call_time_M_int:$call_time_SEC";
 			$statustxt								= $status;
-			
+
 			switch ($status) {
 				case "PAUSED":
 					$circleclass 					= "circle circle-warning circle-lg text-left";
 					$textclass 						= "text-warning";
 					$nametextclass 					= "text-warning";
-					
-					if ((string) $pausecode !== '') { 
-						$CM 						= " [$pausecode]"; 
+
+					if ((string) $pausecode !== '') {
+						$CM 						= " [$pausecode]";
 					}
-					
-					if ($call_time_S >= 10){ 
+
+					if ($call_time_S >= 10){
 						$textclass 					= "text-warning";
 					}
-					
-					if ($call_time_M_int >= 1) { 
-						$textclass 					= "text-warning"; 
+
+					if ($call_time_M_int >= 1) {
+						$textclass 					= "text-warning";
 					}
-					
-					if ($call_time_M_int >= 5) { 
-						$textclass 					= "text-danger"; 
+
+					if ($call_time_M_int >= 5) {
+						$textclass 					= "text-danger";
 					}
-					
-					if ($call_time_M_int >= 15) { 
-						$textclass 					= "text"; 
+
+					if ($call_time_M_int >= 15) {
+						$textclass 					= "text";
 					}
-					
+
 				break;
-				
+
 				case "READY":
 					$textclass 						= "text-info";
-						
-					if ($call_time_M_int >= 3) { 
-						$textclass 					= "text-warning"; 
+
+					if ($call_time_M_int >= 3) {
+						$textclass 					= "text-warning";
 					}
-					
-					if ($call_time_M_int >= 5) { 
-						$textclass 					= "text-danger"; 
+
+					if ($call_time_M_int >= 5) {
+						$textclass 					= "text-danger";
 					}
-					
+
 				break;
-				
+
 				case "DISPO":
 					$textclass 						= "text-warning";
-					
-					if ($call_time_M_int >= 3) { 
-						$textclass 					= "text-danger"; 
+
+					if ($call_time_M_int >= 3) {
+						$textclass 					= "text-danger";
 					}
-					
-					if ($call_time_M_int >= 5) { 
-						$textclass 					= "text"; 
-					} 	
-					
+
+					if ($call_time_M_int >= 5) {
+						$textclass 					= "text";
+					}
+
 				break;
-				
+
 				case "DEAD":
 					$textclass 						= "text-danger";
 					$statustxt 						= "HUNGUP";
-					
+
 				break;
 			}
 
+			$textclass = $textclass ?? 'text';
 			$barracks 								.= '[';
 			$barracks 								.= '"'.$sessionAvatar.'",';
-			$barracks 								.= '"<a id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#modal_view_agent_information\" data-id=\"'.$userid.'\" data-user=\"'.$agentid.'\" class=\"text-blue\"><strong>'.$agentname.'</strong></a>",'; 
-			$barracks 								.= '"'.$user_group.'",';    
-			$barracks 								.= '"<b class=\"'.$textclass.'\">'.$statustxt.''.$CM.'</b>",';    
-			$barracks 								.= '"'.$cust_phone.'",';         
+			$barracks 								.= '"<a id=\"onclick-userinfo\" data-toggle=\"modal\" data-target=\"#modal_view_agent_information\" data-id=\"'.$userid.'\" data-user=\"'.$agentid.'\" class=\"text-blue\"><strong>'.$agentname.'</strong></a>",';
+			$barracks 								.= '"'.$user_group.'",';
+			$barracks 								.= '"<b class=\"'.$textclass.'\">'.$statustxt.''.$CM.'</b>",';
+			$barracks 								.= '"'.$cust_phone.'",';
 			$barracks 								.= '"<b class=\"'.$textclass.'\">'.$call_time_MS.'</b>",';
 			$barracks 								.= '"'.$campname.'"';
 			$barracks 								.= '],';
-		}    
-		
-		$barracks 									= rtrim($barracks, ","); 	
+		}
+
+		$barracks 									= rtrim($barracks, ",");
     }
-    
+
     $barracks 										.= ']';
 	echo json_encode($barracks);
-    
+
 ?>

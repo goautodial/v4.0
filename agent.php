@@ -55,6 +55,13 @@ $list_id_ct = (isset($output->list_id) && is_countable($output->list_id)) ? (iss
 $first_name = $middle_initial = $last_name = $email = $phone_number = $alt_phone = '';
 $address1 = $address2 = $address3 = $city = $province = $state = $postal_code = $country = '';
 $gender = $date_of_birth = $comments = $title = $call_count = $last_local_call_time = '';
+$list_id = $entry_list_id = $vendor_lead_code = $gmt_offset_now = $security_phrase = $rank = $uniqueid = $phone_code = '';
+$reply_user = $reply_subject = '';
+$totalcallstoday = $totalsalestoday = 0;
+$agentname = $user->getUserName();
+$agentid = (string) $user->getUserId();
+$user_group = $_SESSION['usergroup'] ?? '';
+$status = '';
 
 if ($list_id_ct > 0) {
 	for($i=0;$i < $list_id_ct;$i++){
@@ -79,6 +86,14 @@ if ($list_id_ct > 0) {
 		$title 			= $output->title[$i] ?? '';
 		$call_count 	= $output->call_count[$i] ?? '';
 		$last_local_call_time = $output->last_local_call_time[$i] ?? '';
+		$list_id 		= $output->list_id[$i] ?? '';
+		$entry_list_id 	= $output->entry_list_id[$i] ?? $list_id;
+		$vendor_lead_code = $output->vendor_lead_code[$i] ?? '';
+		$gmt_offset_now = $output->gmt_offset_now[$i] ?? '';
+		$security_phrase = $output->security_phrase[$i] ?? '';
+		$rank 			= $output->rank[$i] ?? '';
+		$uniqueid 		= $output->uniqueid[$i] ?? '';
+		$phone_code 	= $output->phone_code[$i] ?? '';
 	}
 }
 $fullname = trim($title.' '.$first_name.' '.$middle_initial.' '.$last_name);
@@ -1943,6 +1958,7 @@ dding-top: 10px;">
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
 
 		<?php print $ui->standardizedThemeJS();?>
+		<script src="modules/GOagent/GOagentJS.php" type="text/javascript"></script>
 		<script type="text/javascript">
 			var rcToken = "";
 			$(document).ready(function() {
@@ -2021,6 +2037,43 @@ dding-top: 10px;">
 				var folder = <?php print $folder; ?>;
 				var selectedAll = false;
 				var selectedMessages = [];
+
+				function showAgentLoadedContent(hash) {
+					var normalizedHash = (hash || '').replace(/^#/, '');
+					if (normalizedHash === 'callbackslist') {
+						normalizedHash = 'callbacks';
+					}
+
+					console.log('[agent nav] requested:', hash, 'normalized:', normalizedHash);
+
+					var $target = $('#contents-' + normalizedHash);
+					if (!$target.length) {
+						console.warn('[agent nav] missing panel:', '#contents-' + normalizedHash);
+						return false;
+					}
+
+					$('#loaded-contents div[id^="contents-"]').hide();
+					$target.show();
+					$('#cust_info').hide();
+					$('#loaded-contents').show();
+
+					if (normalizedHash === 'messages') {
+						$('.content-heading span').html("<?=$lh->translationFor('messages')?>");
+						updateMessages(<?=$user->getUserId()?>, folder);
+					} else if (normalizedHash === 'callbacks') {
+						$('.content-heading span').html("<?=$lh->translationFor('list_of_callbacks')?>");
+					}
+
+					console.log('[agent nav] displayed:', '#contents-' + normalizedHash);
+					return true;
+				}
+
+				$(document).off('click.agentNavFallback', 'a[href="#messages"], a[href="#callbackslist"]')
+					.on('click.agentNavFallback', 'a[href="#messages"], a[href="#callbackslist"]', function(e) {
+						e.preventDefault();
+						e.stopPropagation();
+						showAgentLoadedContent($(this).attr('href'));
+					});
 
 				$("#contacts-list").DataTable();
 
@@ -2651,7 +2704,9 @@ dding-top: 10px;">
 						?>
 
 						// Hijack links on left menu
-						$("a:regex(href, messages|composemail|readmail)").off('click', hijackThisLink).on('click', hijackThisLink);
+						$("a[href]").filter(function() {
+							return /messages|composemail|readmail/.test($(this).attr('href') || '');
+						}).off('click', hijackThisLink).on('click', hijackThisLink);
 					}
 				});
 			}

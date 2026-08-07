@@ -57,16 +57,28 @@ $show_letters = false; // Show letters on dial pad
 if (!isset($_REQUEST['action']) && !isset($_REQUEST['module_name'])) {
     //$result = get_user_info($_SESSION['user']);
     $result = $api->API_getLoginInfo($_SESSION['user']);
-    $default_settings = $result->default_settings;
-    $agent = $result->user_info;
-    $phone = $result->phone_info;
-    $system = $result->system_info;
-    $country_codes = $result->country_codes;
+    $default_settings = $result->default_settings ?? new \stdClass();
+    $agent = $result->user_info ?? new \stdClass();
+    $phone = $result->phone_info ?? new \stdClass();
+    $system = $result->system_info ?? new \stdClass();
+    $country_codes = $result->country_codes ?? [];
     if (isset($result->camp_info)) {
         $camp_info = $result->camp_info;
     }
 
-    $_SESSION['is_logged_in'] = $result->is_logged_in;
+    $_SESSION['is_logged_in'] = $result->is_logged_in ?? false;
+
+    $is_logged_in = !empty($_SESSION['is_logged_in']) ? 1 : 0;
+    $use_webrtc = $_SESSION['use_webrtc'] ?? 0;
+    $SIPserver = $_SESSION['SIPserver'] ?? 'kamailio';
+    $timezone = '';
+    $default_local_gmt = 0;
+    $disable_dispo_screen = 'DISPO_ENABLED';
+    $disable_dispo_status = '';
+    $campaign_recording = 'NEVER';
+    $vicidial_recording_override = 'DISABLED';
+    $vicidial_recording = 0;
+    $lang = [];
 
     header('Content-Type: text/javascript');
 
@@ -219,6 +231,117 @@ if (is_numeric($val) && !preg_match("/^(conf_exten|session_id)$/", (string) $idx
 }
 }
 echo "\n";
+?>
+var GOagentLegacyDefaults = {
+    dial_method: 'MANUAL',
+    DefaultALTDial: 0,
+    manual_dial_min_digits: 6,
+    agentcall_manual: 0,
+    AutoDialReady: 0,
+    AutoDialWaiting: 0,
+    live_customer_call: 0,
+    XD_live_customer_call: 0,
+    live_call_seconds: 0,
+    XD_live_call_seconds: 0,
+    dialingINprogress: 0,
+    check_r: 0,
+    epoch_sec: 0,
+    even: 0,
+    WaitingForNextStep: 0,
+    CloserSelecting: 0,
+    TerritorySelecting: 0,
+    open_dispo_screen: 0,
+    AgentDispoing: 0,
+    agent_choose_ingroups_skip_count: 0,
+    agent_select_territories_skip_count: 0,
+    logout_stop_timeouts: 0,
+    custchannellive: 0,
+    lastcustchannel: '',
+    nochannelinsession: 0,
+    no_empty_session_warnings: 0,
+    external_transferconf_count: 0,
+    manual_auto_hotkey: 0,
+    trigger_ready: 0,
+    MD_channel_look: 0,
+    XDcheck: '',
+    CB_count_check: 0,
+    update_fields: 0,
+    update_fields_data: '',
+    HKdispo_display: 0,
+    HKfinish: 0,
+    all_record: 'NO',
+    all_record_count: 0,
+    active_display: 0,
+    blind_monitoring_now: 0,
+    blind_monitoring_now_trigger: 0,
+    wrapup_counter: 0,
+    wrapup_waiting: 0,
+    consult_custom_wait: 0,
+    customerparked: 0,
+    customerparkedcounter: 0,
+    customer_3way_hangup_counter_trigger: 0,
+    customer_3way_hangup_counter: 0,
+    LIVE_campaign_recording: 'NEVER',
+    LIVE_campaign_rec_filename: '',
+    LIVE_default_xfer_group: '',
+    XFgroupCOUNT: 0,
+    INgroupCOUNT: 0,
+    EMAILgroupCOUNT: 0,
+    PHONEgroupCOUNT: 0,
+    VARxferGroups: [],
+    VARxferGroupsNames: [],
+    VARingroups: [],
+    VARingroup_handlers: [],
+    VARemailgroups: [],
+    VARphonegroups: [],
+    ivr_park_call: 'DISABLED',
+    agent_pause_codes_active: 'N',
+    call_requeue_button: 0,
+    quick_transfer_button_enabled: 0,
+    agent_status_view: 0,
+    view_calls_in_queue: 0,
+    view_calls_in_queue_active: 0,
+    agentonly_callbacks: '0',
+    agent_display_dialable_leads: 0,
+    agent_lead_search: 'DISABLED',
+    agent_lead_search_override: 'DISABLED',
+    disable_alter_custphone: '',
+    per_call_notes: 'DISABLED',
+    customer_3way_hangup_logging: 'DISABLED',
+    customer_3way_hangup_seconds: 0,
+    customer_3way_hangup_action: '',
+    blind_monitor_warning: '',
+    blind_monitor_filename: '',
+    wrapup_seconds: 0,
+    consult_custom_delay: 0,
+    enable_callback_alert: 0,
+    allow_closers: 'N',
+    default_xfer_group: '',
+    campaign_recording: 'NEVER',
+    campaign_rec_filename: '',
+    dialed_number: '',
+    custom_fields_enabled: 0,
+    xfer_select_agents_active: 0,
+    pause_calling: 0,
+    DispoSelectStop: false,
+    reselect_alt_dial: 0,
+    xfer_in_call: 0,
+    auto_dial_level: 0,
+    auto_resume_precall: 'N',
+    auto_pause_precall: 'N',
+    auto_pause_precall_code: '',
+    allcalls_delay: 0,
+    timer_action: 'NONE',
+    timer_action_seconds: -1,
+    dispo_check_all_pause: 0
+};
+for (var GOagentLegacyDefaultName in GOagentLegacyDefaults) {
+    if (Object.prototype.hasOwnProperty.call(GOagentLegacyDefaults, GOagentLegacyDefaultName)
+        && (typeof window[GOagentLegacyDefaultName] === 'undefined' || window[GOagentLegacyDefaultName] === '')) {
+        window[GOagentLegacyDefaultName] = GOagentLegacyDefaults[GOagentLegacyDefaultName];
+    }
+}
+<?php
 
 echo "// User Settings\n";
 foreach ($agent as $idx => $val) {
@@ -253,6 +376,21 @@ if (preg_match("/^(vicidial_recording|vicidial_recording_override)$/", (string) 
 }
 }
 //echo "// ".$result['user_group']."\n";
+
+$session_user = $_SESSION['user'] ?? '';
+$session_pass = $_SESSION['phone_this'] ?? '';
+if ($session_pass === '' && !empty($_SESSION['password_hash'])) {
+    $session_pass = $_SESSION['password_hash'];
+}
+if ($session_pass === '') {
+    $session_pass = $_SESSION['pass'] ?? ($_SESSION['userpass'] ?? '');
+}
+echo "if (typeof user === 'undefined') { var user = ".json_encode((string) $session_user)."; }\n";
+echo "if (typeof pass === 'undefined') { var pass = ".json_encode((string) $session_pass)."; }\n";
+echo "if ((typeof pass === 'undefined' || pass === '') && typeof pass_hash !== 'undefined' && pass_hash !== '') { pass = pass_hash; }\n";
+echo "if (typeof uName === 'undefined' || uName === '') { var uName = user; }\n";
+echo "if (typeof uPass === 'undefined' || uPass === '') { var uPass = pass; }\n";
+echo "if ((typeof uPass === 'undefined' || uPass === '') && typeof pass_hash !== 'undefined' && pass_hash !== '') { uPass = pass_hash; }\n";
 
 $phone_login = $_SESSION['phone_login'] ?? $phone_login;
 $phone_pass = $_SESSION['phone_pass'] ?? $phone_pass;
@@ -419,6 +557,11 @@ echo "var country_codes = $country_code_list;\n";
 var defaultFields = "vendor_lead_code,source_id,list_id,gmt_offset_now,called_since_last_reset,phone_code,phone_number,title,first_name,middle_initial,last_name,address1,address2,address3,city,state,province,postal_code,country_code,gender,date_of_birth,alt_phone,email,security_phrase,comments,called_count,last_local_call_time,rank,owner";
 
 $(document).ready(function() {
+if (window.GOagentJSInitialized) {
+    return;
+}
+window.GOagentJSInitialized = true;
+
 // Load current server time
 setInterval("displaytime()", 1000);
 checkLogin = 0;
@@ -1992,7 +2135,7 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
     });
 
     // Hijack links on left menu
-    $("a:regex(href, index|agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist|composemail|readmail)").on('click', hijackThisLink);
+    getAgentNavigationLinks().on('click', hijackThisLink);
 
     $("#submitCBDate").click(function() {
 	<?php if( ECCS_BLIND_MODE === 'y') { ?>
@@ -2225,6 +2368,13 @@ function checkSidebarIfOpen(startUp) {
     });
 }
 
+function getAgentNavigationLinks() {
+    var navigationLinkPattern = /index|agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist|composemail|readmail/;
+    return $("a[href]").filter(function() {
+        return navigationLinkPattern.test($(this).attr('href') || '');
+    });
+}
+
 function hijackThisLink(e) {
     e.preventDefault();
     if (!minimizedDispo) {
@@ -2303,7 +2453,7 @@ function hijackThisLink(e) {
 
         $(".content-heading ol").empty();
         $(".content-heading ol").html(breadCrumb);
-        $("a:regex(href, index|agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist|composemail|readmail)").off('click', hijackThisLink).on('click', hijackThisLink);
+        getAgentNavigationLinks().off('click', hijackThisLink).on('click', hijackThisLink);
 
         history.pushState('', document.title, window.location.pathname);
 
@@ -3039,6 +3189,7 @@ function checkIfStillLoggedIn(logged_out, last_call) {
             goPass: uPass,
             goPhone: phone_login,
             goPhonePass: phone_pass,
+            goSessionName: session_name,
             goCheckLastCall: checkLastCall,
             responsetype: 'json'
         };
@@ -4980,7 +5131,7 @@ function CallBacksCountCheck() {
                 }
             }
 
-            $("a:regex(href, index|agent|edituser|profile|customerslist|events|messages|notifications|tasks|callbackslist|composemail|readmail)").off('click', hijackThisLink).on('click', hijackThisLink);
+            getAgentNavigationLinks().off('click', hijackThisLink).on('click', hijackThisLink);
         }
     });
 }
@@ -10773,6 +10924,7 @@ Number.prototype.between = function (a, b, inclusive) {
                 $message["date"] = $ui->relativeTime($message["date"]);
 
                 $from = $db->getDataForUser($message["user_from"]);
+                $fromUser = [];
                 $fromUser["id"] = $from["user_id"];
                 $fromUser["user"] = ($from["user"] ?? $lh->translationFor("unknown"));
                 $fromUser["name"] = $from["full_name"];

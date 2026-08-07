@@ -1,19 +1,19 @@
 <?php
 /**
 	The MIT License (MIT)
-	
+
 	Copyright (c) 2015 Ignacio Nieto Carvajal
-	
+
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the "Software"), to deal
 	in the Software without restriction, including without limitation the rights
 	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 	copies of the Software, and to permit persons to whom the Software is
 	furnished to do so, subject to the following conditions:
-	
+
 	The above copyright notice and this permission notice shall be included in
 	all copies or substantial portions of the Software.
-	
+
 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -57,20 +57,18 @@ $smtp_status = $ui->API_getSMTPActivation();
     <meta charset="UTF-8">
     <title><?php print $lh->translationFor("compose_message"); ?> </title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-	
+
 	<!-- multiple emails plugin -->
     <link href="css/multiple-emails/multiple-emails.css" rel="stylesheet" type="text/css" />
-	
+
 	<?php print $ui->standardizedThemeCSS(); ?>
     <?php print $ui->creamyThemeCSS(); ?>
-	
-    <!-- Bootstrap WYSIHTML5 -->
-    <script src="js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
+
     <!-- Multi file upload -->
     <script src="js/plugins/multifile/jQuery.MultiFile.min.js" type="text/javascript"></script>
     <!-- Multiple emails -->
     <script src="js/plugins/multiple-emails/multiple-emails.js" type="text/javascript"></script>
-	
+
 	<!-- SELECT2-->
    		<link rel="stylesheet" src="js/dashboard/select2/dist/css/select2.css">
    		<link rel="stylesheet" src="js/dashboard/select2-bootstrap-theme/dist/select2-bootstrap.css">
@@ -170,20 +168,23 @@ $smtp_status = $ui->API_getSMTPActivation();
       </div><!-- /.content-wrapper -->
 	  <?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
     </div><!-- ./wrapper -->
-    
-    <!-- WYSIHTML5 edition -->
-    <script type="text/javascript"> $("#compose-textarea").wysihtml5(); </script>
-	
+
 	<?php print $ui->standardizedThemeJS(); ?>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#send_button').prop("disabled", true);
-			
+
 			/* initialize select2 */
 			$('.select2').select2({
 				theme: 'bootstrap'
 			});
-			
+
+			if ($.fn.wysihtml5) {
+				$("#compose-textarea").wysihtml5();
+			} else {
+				$("#compose-textarea").prop('disabled', false).show();
+			}
+
 			// external recipients
 			$('#external_recipients').multiple_emails();
 
@@ -196,7 +197,7 @@ $smtp_status = $ui->API_getSMTPActivation();
 					remove: '<i class="fa fa-times"></i>'
 				}
 			});
-			
+
 			 /* if an agent is selected */
 			$('#touserid').on('change', function() {
 				var external_email = $('#external_recipients').val();
@@ -208,7 +209,7 @@ $smtp_status = $ui->API_getSMTPActivation();
 					$('#send_button').attr("disabled", true);
 				}
 			});
-			
+
 			 /* if external email is given */
 			$('#external_recipients').on('change', function() {
 				var touserid = $('#touserid').val();
@@ -220,12 +221,12 @@ $smtp_status = $ui->API_getSMTPActivation();
 					$('#send_button').attr("disabled", true);
 				}
 			});
-			
+
 			 /* if external email is given */
 			 $(document).on("click",".multiple_emails-close",function(e) {
 				var external_email = $('#external_recipients').val();
 				var touserid = $('#touserid').val();
-				
+
 				if(external_email !== "[]") {
 					$('#send_button').attr("disabled", false);
 				}else if(touserid !== "0"){
@@ -234,8 +235,8 @@ $smtp_status = $ui->API_getSMTPActivation();
 					$('#send_button').attr("disabled", true);
 				}
 			});
-			
-			
+
+
 			// send a message
 			$("#send-message-form").validate({
 				rules: {
@@ -258,12 +259,12 @@ $smtp_status = $ui->API_getSMTPActivation();
 						$koMsg = $ui->dismissableAlertWithMessage($lh->translationFor("unable_send_message"), false, true);
 					?>
 					//submit the form
-					
+
 					$("#compose-mail-results").html();
 					$("#compose-mail-results").hide();
 					$('#send_button').html('<i class="fa fa-envelope-o"></i> <?php print $lh->translationFor("sending"); ?>');
 					$('#send_button').prop("disabled", true);
-					
+
 					$.ajax({
 				        url         : 'php/SendMessage.php',
 				        data        : formdata ? formdata : form.serialize(),
@@ -272,16 +273,16 @@ $smtp_status = $ui->API_getSMTPActivation();
 				        processData : false,
 				        type        : 'POST',
 				        success     : function(data, textStatus, jqXHR){
-						
+
 						$('#send_button').html('<i class="fa fa-envelope-o"></i> <?php print $lh->translationFor("send"); ?>');
 						$('#send_button').attr("disabled", false);
-							
+
 							if (data == 'success') {
 								$("#compose-mail-results").html('<?php print $okMsg; ?>');
 								$("#compose-mail-results").fadeIn(); //show confirmation message
 								$("#send-message-form")[0].reset();
 								$("#select2-touserid-container").text('<?php print $lh->translationFor("send_this_message_to"); ?>');
-								
+
 							} else { // failure
 								<?php if($smtp_status != 1){?>
 								$("#compose-mail-results").html('<?php print $koMsg; ?>');
@@ -305,10 +306,10 @@ $smtp_status = $ui->API_getSMTPActivation();
 				        processData : false,
 				        type        : 'POST',
 				        success     : function(data, textStatus, jqXHR){
-						
+
 						$('#send_button').html('<i class="fa fa-envelope-o"></i> <?php print $lh->translationFor("send"); ?>');
 						$('#send_button').attr("disabled", false);
-						
+
 							if (data == 'success') {
 								sweetAlert('<?php print $lh->translationFor("message_sent"); ?>', '<?php print $lh->translationFor("message_sent_msg"); ?>', 'success');
 								$("#send-message-form")[0].reset();
@@ -327,7 +328,7 @@ $smtp_status = $ui->API_getSMTPActivation();
 					return false; //don't let the form refresh the page...
 				}
 			});
-			
+
 			$('#send-message-form').on('keyup keypress', function(e) {
 				var keyCode = e.keyCode || e.which;
 				if (keyCode === 13) {
@@ -335,13 +336,13 @@ $smtp_status = $ui->API_getSMTPActivation();
 				  return false;
 				}
 			});
-			
+
 			// discard message
 			$('#compose-mail-discard').click(function(e) { history.back(); });
-			
+
 		});
 		// hooks
-		<?php print $ui->getComposeMessageActionJS(); ?>		    
+		<?php print $ui->getComposeMessageActionJS(); ?>
 	</script>
 	<?php print $ui->creamyFooter(); ?>
   </body>
