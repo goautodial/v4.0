@@ -26,6 +26,7 @@ require_once(__DIR__ . '/CRMDefaults.php');
 $api = \creamy\APIHandler::getInstance();
 ini_set('memory_limit', '2048M');
 
+$postfields = [];
 $postfields["goAction"] = "goExportCallReport";
 $postfields["pageTitle"] = "call_export_report";
 
@@ -61,7 +62,7 @@ if(isset($_POST['statuses']) && $_POST['statuses'] != NULL){
     $postfields["statuses"] = "";
 }
 
-$custom_fields = ($_POST['custom_fields'] ?? ''); 
+$custom_fields = ($_POST['custom_fields'] ?? '');
 $per_call_notes = ($_POST['per_call_notes'] ?? '');
 $rec_location = ($_POST['rec_location'] ?? '');
 
@@ -90,8 +91,10 @@ $data_header = [];
 $data_row = "";
 $display = "";
 $display2 = "";
+$output = null;
+$last_row_offset = 0;
 
-if($row_output->result == "success"){
+if(is_object($row_output) && ($row_output->result ?? '') == "success"){
 	$count = $row_output->row_count;
 
 	if($count > $limit){
@@ -101,7 +104,7 @@ if($row_output->result == "success"){
 			$postfields["offset"] = $offset;
 			$output = $api->API_Request("goReports", $postfields);
 
-			if($output->result == "success"){
+			if(is_object($output) && ($output->result ?? '') == "success"){
 
 				if($offset === 0){
 					$data_header = $output->header;
@@ -131,13 +134,13 @@ if($row_output->result == "success"){
 	    //         }
 		//     $i++;
         // }
-        
+
         $display = $data_row;
 	} else {
 		$output = $api->API_Request("goReports", $postfields);
-		$data_header = $output->header;
-		$data_row = $output->rows;
-		
+		$data_header = is_object($output) ? ($output->header ?? []) : [];
+		$data_row = is_object($output) ? ($output->rows ?? '') : '';
+
 		// $array_rows = json_decode(json_encode($data_row), true);
         // foreach($array_rows as $temp){
         //     foreach($temp as $value){
@@ -149,13 +152,13 @@ if($row_output->result == "success"){
         $display = $data_row;
 	}
 
-    if($output->result == "success"){
-    
+    if(is_object($output) && ($output->result ?? '') == "success"){
+
     //$header = implode(",",$output->header);
     $header = implode(",",$data_header);
 
     $filename = "Export_Call_Report.".date("Y-m-d").".csv";
-    
+
     header('Content-type: application/csv');
     header('Content-Disposition: attachment; filename='.$filename);
     header('Expires: 0');
@@ -166,7 +169,7 @@ if($row_output->result == "success"){
 
     echo $header."\n";
     echo $display;
-    
+
     }
 
 }

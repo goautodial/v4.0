@@ -143,7 +143,8 @@
 				'log_pass' => log_pass,
 				'hostname' => $_SERVER['REMOTE_ADDR']];
 
-			$postdata = array_merge($default_entries, $postfields);
+			$postfields = is_array($postfields) ? $postfields : [];
+				$postdata = array_merge($default_entries, $postfields);
 
 			// Call the API
 			$ch = curl_init();
@@ -201,7 +202,8 @@
 				'log_ip' => $_SERVER['REMOTE_ADDR'],
 				'hostname' => $_SERVER['REMOTE_ADDR']];
 
-			$postdata = array_merge($default_entries, $postfields);
+			$postfields = is_array($postfields) ? $postfields : [];
+				$postdata = array_merge($default_entries, $postfields);
 
 			// Call the API
 			$ch = curl_init();

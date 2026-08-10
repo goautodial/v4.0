@@ -2,7 +2,7 @@
 /**
  * @file 		callrecordings.php
  * @brief 		Display call recordings
- * @copyright 	Copyright (c) 2018 GOautodial Inc. 
+ * @copyright 	Copyright (c) 2018 GOautodial Inc.
  * @author		Demian Lizandro A. Biscocho
  * @author     	Alexander Jim H. Abenoja
  *
@@ -31,14 +31,14 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	
+
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
 			header("location: agent.php");
 		}
-	}	
-	
+	}
+
 	$perm = $api->goGetPermissions('recordings');
 ?>
 <html>
@@ -47,19 +47,19 @@
         <title><?php $lh->translateText("call_recordings"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
-        <?php 
-			print $ui->standardizedThemeCSS(); 
+        <?php
+			print $ui->standardizedThemeCSS();
 			print $ui->creamyThemeCSS();
 			print $ui->dataTablesTheme();
 		?>
-		
+
 		<!-- Bootstrap Player -->
 		<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
 
         <!-- Datetime picker -->
 	<link rel="stylesheet" href="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
 
-        <!-- Date Picker -->	
+        <!-- Date Picker -->
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
 		<script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 
@@ -133,11 +133,11 @@
 		</div>
 		<div class="panel panel-default">
 			<div class="panel-body">
-				
+
 				<div class="callrecordings_div">
 				<!-- Call Recordings panel tab -->
 					<legend><?php $lh->translateText("call_recordings"); ?></legend>
-		
+
 					<!--==== Call Recordings ====-->
 					<table class="table table-striped table-bordered table-hover" id="table_callrecordings">
 					   <thead>
@@ -156,12 +156,12 @@
 									$details = "<strong>".$lh->translationFor("phone")."</strong>: <i>".$callrecs->phone_number[$i]."</i><br/>";
 									$details .= "<strong>".$lh->translationFor("agent")."</strong>: <i>".$callrecs->users[$i]."</i><br/>";
 									$details .= "<strong>".$lh->translationFor("date")."</strong>: <i>".date("M.d,Y h:i A", strtotime($callrecs->end_last_local_call_time[$i]))."</i><br/>";
-									
+
 									$d1 = strtotime($callrecs->start_last_local_call_time[$i]);
 									$d2 = strtotime($callrecs->end_last_local_call_time[$i]);
 									$diff = abs($d2 - $d1);
 									$action_Call = $ui->getUserActionMenuForCallRecording($callrecs->uniqueid[$i], $callrecs->location[$i], $details);
-									
+
 							?>
 									<tr>
 										<td nowrap><?php echo date("M.d,Y h:i A", strtotime($callrecs->end_last_local_call_time[$i]));?></td>
@@ -330,9 +330,9 @@
                 });
 
 			    // initialize multiple selecting
-				$('.select2-3').select2({ theme: "bootstrap" });				
+				$('.select2-3').select2({ theme: "bootstrap" });
 				$.fn.select2.defaults.set( "theme", "bootstrap" );
-				
+
 				// limits checkboxes to single selecting
 				$("input:checkbox").on('click', function() {
 				  var $box = $(this);
@@ -344,14 +344,14 @@
 				    $box.prop("checked", false);
 				  }
 				});
-				
+
 				/****
 				** Change between Contacts and Recordings
 				****/
 					// shows call recordings datatable if Recordings tickbox is checked
 					$(document).on('change','#search_recordings',function() {
 						$("#search_recordings").prop("disabled", true);
-				
+
 						if($('#search_recordings').is(":checked")){
 
 							$(".callrecordings_div").show(); // show recordings table
@@ -422,7 +422,7 @@
 							}else{
 								var agent_filter_val = "";
 							}
-							
+
 		            		var start_filterdate_val = $('#start_filterdate').val();
 		                	var end_filterdate_val = $('#end_filterdate').val();
 
@@ -518,7 +518,7 @@
 							}else{
 								var agent_filter_val = "";
 							}
-		            		
+
 		            		var start_filterdate_val = $('#start_filterdate').val();
 		                	var end_filterdate_val = $('#end_filterdate').val();
 
@@ -556,7 +556,7 @@
 		                //init_contacts_table.destroy();
 
 		                	if($('#search').val() == ""){
-		                		$('#search_button').attr("disabled", false); 
+		                		$('#search_button').attr("disabled", false);
 		                		$('#search_button').text('<?php $lh->translateText("searching"); ?>');
 		                	}else{
 			                	$('#search_button').text('<?php $lh->translateText("searching"); ?>');
@@ -603,14 +603,15 @@
 				** For playing Call Recordings
 				*****/
 				$(document).on('click','.play_audio',function() {
-					var audioFile = $(this).attr('data-location');
-					audioFile = audioFile.replace("http", "https");
+					var audioFile = $(this).attr('data-location') || '';
+					// Preserve the recording URL as stored by Asterisk/GOautodial.
+					// Some recording servers only serve files over HTTP or a mapped IP.
 					//console.log(audioFile);
 					var voicedetails = "";
 					var sourceFile = '<audio class="audio_file" controls style="width:100%">';
 					    sourceFile += '<source src="'+ audioFile +'" type="audio/mpeg" download="true"/>';
 					    sourceFile += '</audio>';
-						
+
 					if(audioFile === ""){
 						voicedetails = "Recording is being processed... Please wait a few minutes and try again.";
 						$('.download-audio-file').attr('disabled', true);
@@ -619,19 +620,25 @@
 						$('.download-audio-file').attr('href', audioFile);
 						$('.audio-player').html(sourceFile);
 					}
-					
+
 					$('.voice-details').html(voicedetails);
 					goAvatar._init(goOptions);
-					
+
 					$('#call-playback-modal').modal('show');
 
 					var aud = $('.audio_file').get(0);
-					aud.play();
+					if (aud) {
+						aud.play().catch(function(error) {
+							console.log('Unable to autoplay recording:', error);
+						});
+					}
 				});
 
 				$('#call-playback-modal').on('hidden.bs.modal', function () {
 					var aud = $('.audio_file').get(0);
-					aud.pause();
+					if (aud) {
+						aud.pause();
+					}
 				});
 
 			});
