@@ -73,9 +73,10 @@ declare(strict_types=1);
 		];
 
 		$output = $api->API_Request("goCustomFields", $postfields);
+		$result = is_object($output) ? (string) ($output->result ?? '') : '';
 
-		if ($output->result=="success") { $status = 1; }
-			else { $status = $output->result; }
+		if ($result === "success") { $status = 1; }
+			else { $status = ($result !== '' ? $result : 'Error: Unable to modify custom field.'); }
 
 		echo json_encode($status);
 	}

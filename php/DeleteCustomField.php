@@ -46,11 +46,12 @@ $api = \creamy\APIHandler::getInstance();
     ];
 
     $output = $api->API_Request("goCustomFields", $postfields);
+    $result = is_object($output) ? (string) ($output->result ?? '') : '';
 
-	if ($output->result=="success") {
+	if ($result === "success") {
 		$status = "success";
 	} else {
-		$status = $output->result;
+		$status = ($result !== '' ? $result : 'Error: Unable to delete custom field.');
 	}
 
 	echo $status;

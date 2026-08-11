@@ -40,8 +40,9 @@ require_once('goCRMAPISettings.php');
 	];
 
 	$output = $api->API_Request("goCustomFields", $postfields);
+	$result = is_object($output) ? (string) ($output->result ?? '') : '';
 
-	if ($output->result=="success") {
+	if ($result === "success") {
 		$status = "success";
 	} else {
 		$status = "error";

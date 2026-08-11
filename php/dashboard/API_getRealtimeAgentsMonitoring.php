@@ -23,12 +23,15 @@
 	require_once(__DIR__ . '/APIHandler.php');
 
 	$api 											= \creamy\APIHandler::getInstance();
-	$output 										= $api->API_getRealtimeAgentsMonitoring();
+	$output 											= $api->API_getRealtimeAgentsMonitoring();
+		$data 											= (is_object($output) && isset($output->data) && is_array($output->data)) ? $output->data : [];
+		$callerids 									= (is_object($output) && isset($output->callerids) && is_array($output->callerids)) ? $output->callerids : [];
+		$parked 										= (is_object($output) && isset($output->parked) && is_array($output->parked)) ? $output->parked : [];
 
     $barracks 										= '[';
 
-    if (is_array($output->data)) {
-		foreach ($output->data as $value) {
+    if (is_array($data)) {
+		foreach ($data as $value) {
 
 			$userid 								= $api->escapeJsonString($value->vu_user_id);
 			$agentid 								= $api->escapeJsonString($value->vla_user);
@@ -55,21 +58,21 @@
 			//$ol_conference							= (!isset($value->ol_conference)) ? "" : $api->escapeJsonString($value->ol_conference);
 			//$ol_callerid							= (!isset($value->ol_callerid)) ? "" : $api->escapeJsonString($value->ol_callerid);
 
-			if (!empty($output->callerids)) {
-				foreach ($output->callerids as $callerids) {
+			if (!empty($callerids)) {
+				foreach ($callerids as $calleridRow) {
 
-					$vac_callerid 					= $api->escapeJsonString($callerids->vac_callerid);
-					$vac_lead_id 					= $api->escapeJsonString($callerids->vac_lead_id);
-					$vac_phone_number 				= $api->escapeJsonString($callerids->vac_phone_number);
+					$vac_callerid 					= $api->escapeJsonString($calleridRow->vac_callerid ?? '');
+					$vac_lead_id 					= $api->escapeJsonString($calleridRow->vac_lead_id ?? '');
+					$vac_phone_number 				= $api->escapeJsonString($calleridRow->vac_phone_number ?? '');
 				}
 			}
 
-			if (!empty($output->parked)) {
-				foreach ($output->parked as $parked){
+			if (!empty($parked)) {
+				foreach ($parked as $parkedRow){
 
-					$pc_channel 					= $parked->pc_channel;
-					$pc_channel_group 				= $parked->pc_channel_group;
-					$pc_extension 					= $parked->pc_extension;
+					$pc_channel 					= $parkedRow->pc_channel ?? '';
+					$pc_channel_group 				= $parkedRow->pc_channel_group ?? '';
+					$pc_extension 					= $parkedRow->pc_extension ?? '';
 					$pc_parked_by 					= $parked->pc_parked_by;
 					$pc_parked_time 				= $parked->pc_parked_time;
 				}

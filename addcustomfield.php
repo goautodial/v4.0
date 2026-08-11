@@ -39,7 +39,7 @@
 	}
 
 	$customFields = $api->API_getAllCustomFields($modifyid);
-	$customs = $customFields->data;
+	$customs = (isset($customFields->data) && is_iterable($customFields->data)) ? $customFields->data : [];
 
 	//echo "<pre>";
 	//print_r($customs);
@@ -110,6 +110,7 @@
 				width: 8px;
 				text-align: left;
 			}
+
 
 			#modal_custom_field .custom-field-help {
 				font-size: 12px;
@@ -224,22 +225,22 @@
 														$o=0;
 
 														foreach($customs as $fieldsvalues){
-															$A_field_id 					= $fieldsvalues->field_id;
-															$A_field_label 				= $fieldsvalues->field_label;
-															$A_field_name 				= $fieldsvalues->field_name;
-															$A_field_description 	= $fieldsvalues->field_description;
-															$A_field_rank 				=	$fieldsvalues->field_rank;
-															$A_field_help 				=	$fieldsvalues->field_help;
-															$A_field_type 				=	$fieldsvalues->field_type;
-															$A_field_options 			= $fieldsvalues->field_options;
-															$A_field_size 				=	$fieldsvalues->field_size;
-															$A_field_max 					= $fieldsvalues->field_max;
-															$A_field_default 			= $fieldsvalues->field_default;
-															$A_field_cost 				=	$fieldsvalues->field_cost;
-															$A_field_required 		= $fieldsvalues->field_required;
-															$A_multi_position 		=	$fieldsvalues->multi_position;
-															$A_name_position 			= $fieldsvalues->name_position;
-															$A_field_order 				= $fieldsvalues->field_order;
+															$A_field_id          = (string) ($fieldsvalues->field_id ?? '');
+															$A_field_label       = (string) ($fieldsvalues->field_label ?? '');
+															$A_field_name        = (string) ($fieldsvalues->field_name ?? '');
+															$A_field_description = (string) ($fieldsvalues->field_description ?? '');
+															$A_field_rank        = (string) ($fieldsvalues->field_rank ?? '');
+															$A_field_help        = (string) ($fieldsvalues->field_help ?? '');
+															$A_field_type        = (string) ($fieldsvalues->field_type ?? '');
+															$A_field_options     = (string) ($fieldsvalues->field_options ?? '');
+															$A_field_size        = (string) ($fieldsvalues->field_size ?? '');
+															$A_field_max         = (string) ($fieldsvalues->field_max ?? '');
+															$A_field_default     = (string) ($fieldsvalues->field_default ?? '');
+															$A_field_cost        = (string) ($fieldsvalues->field_cost ?? '');
+															$A_field_required    = (string) ($fieldsvalues->field_required ?? '');
+															$A_multi_position    = (string) ($fieldsvalues->multi_position ?? '');
+															$A_name_position     = (string) ($fieldsvalues->name_position ?? '');
+															$A_field_order       = (string) ($fieldsvalues->field_order ?? '');
 
 															if ($last_field_rank=="$A_field_rank") {
 																$viewall .= " &nbsp; &nbsp; &nbsp; &nbsp; ";
@@ -573,7 +574,7 @@
 										</div>
 									</div>
 									<div class="form-group options-group">
-										<label class="control-label col-lg-3"><span class="field-options-label">Options</span> <span class="text-danger option-required-marker hide">*</span></label>
+										<label class="control-label col-lg-3">Options <span class="text-danger option-required-marker hide">*</span></label>
 										<div class="col-lg-9">
 											<textarea class="form-control field-options" style="resize: none;" name="field_options"></textarea>
 											<span class="help-block custom-field-help-text option-help-text">One option per line for SELECT, MULTI, RADIO, or CHECKBOX.</span>
@@ -652,22 +653,22 @@
 											<tbody>
 												<?php
 												foreach($customs as $fieldsvalues){
-													$A_field_id 					= $fieldsvalues->field_id;
-													$A_field_label 				= $fieldsvalues->field_label;
-													$A_field_name 				= $fieldsvalues->field_name;
-													$A_field_description 	= $fieldsvalues->field_description;
-													$A_field_rank 				=	$fieldsvalues->field_rank;
-													$A_field_help 				=	$fieldsvalues->field_help;
-													$A_field_type 				=	$fieldsvalues->field_type;
-													$A_field_options 			= $fieldsvalues->field_options;
-													$A_field_size 				=	$fieldsvalues->field_size;
-													$A_field_max 					= $fieldsvalues->field_max;
-													$A_field_default 			= $fieldsvalues->field_default;
-													$A_field_cost 				=	$fieldsvalues->field_cost;
-													$A_field_required 		= $fieldsvalues->field_required;
-													$A_multi_position 		=	$fieldsvalues->multi_position;
-													$A_name_position 			= $fieldsvalues->name_position;
-													$A_field_order 				= $fieldsvalues->field_order;
+													$A_field_id          = (string) ($fieldsvalues->field_id ?? '');
+													$A_field_label       = (string) ($fieldsvalues->field_label ?? '');
+													$A_field_name        = (string) ($fieldsvalues->field_name ?? '');
+													$A_field_description = (string) ($fieldsvalues->field_description ?? '');
+													$A_field_rank        = (string) ($fieldsvalues->field_rank ?? '');
+													$A_field_help        = (string) ($fieldsvalues->field_help ?? '');
+													$A_field_type        = (string) ($fieldsvalues->field_type ?? '');
+													$A_field_options     = (string) ($fieldsvalues->field_options ?? '');
+													$A_field_size        = (string) ($fieldsvalues->field_size ?? '');
+													$A_field_max         = (string) ($fieldsvalues->field_max ?? '');
+													$A_field_default     = (string) ($fieldsvalues->field_default ?? '');
+													$A_field_cost        = (string) ($fieldsvalues->field_cost ?? '');
+													$A_field_required    = (string) ($fieldsvalues->field_required ?? '');
+													$A_multi_position    = (string) ($fieldsvalues->multi_position ?? '');
+													$A_name_position     = (string) ($fieldsvalues->name_position ?? '');
+													$A_field_order       = (string) ($fieldsvalues->field_order ?? '');
 												?>
 												<tr class="field-row">
 													<td><?php echo $A_field_rank." - ".$A_field_order;?></td>
@@ -1031,7 +1032,7 @@
 					$('.option-position-required-marker').toggleClass('hide', !optionType);
 					$('.text-field-required-marker').toggleClass('hide', !textType);
 					$('.display-field-required-marker, .display-field-help-text').toggleClass('hide', !displayType);
-					$('.field-options-label').text(scriptType ? 'Script' : 'Options');
+					$('.options-group > .control-label').contents().first()[0].textContent = scriptType ? 'Script ' : 'Options ';
 					$('.option-help-text').text(scriptType ? 'Text shown in the form preview for SCRIPT fields.' : 'One option per line for SELECT, MULTI, RADIO, or CHECKBOX.');
 					$('.options-group').toggleClass('type-dependent-muted', !(optionType || scriptType));
 					$('.option-position-group').toggleClass('type-dependent-muted', !optionType);

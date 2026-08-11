@@ -8837,21 +8837,24 @@ function GetCustomFields(listid, show, getData, viewFields) {
                                         customHTML += '<label for="' + field_prefix + thisField.field_label + '">' + thisField.field_name + '</label>';
                                         customHTML += '</div>';
                                     } else if (field_type == 'CHECKBOX' || field_type == 'RADIO') {
-                                        var checkBox = thisField.field_options.split("\n");
-                                        var default_check = thisField.field_default.split(",");
+                                        var checkBox = String(thisField.field_options || '').split("\n");
+                                        var default_check = String(thisField.field_default || '').split(",");
                                         customHTML += '<div class="mda-form-group">';
                                         if (thisField.multi_position == 'HORIZONTAL') {
                                             customHTML += '<div class="' + field_type.toLowerCase() + '">';
                                         }
                                         for (i = 0; i < checkBox.length; i++) {
+                                            if ($.trim(checkBox[i]).length < 1) continue;
                                             var checkBoxValue = checkBox[i].split(",");
-                                            var isChecked = (default_check.indexOf(checkBoxValue[0]) > -1) ? 'checked' : '';
+                                            var checkValue = $.trim(checkBoxValue[0] || '');
+                                            var checkLabel = $.trim(checkBoxValue.slice(1).join(',') || checkValue);
+                                            var isChecked = (default_check.indexOf(checkValue) > -1) ? 'checked' : '';
                                             if (thisField.multi_position == 'VERTICAL') {
                                                 customHTML += '<div class="' + field_type.toLowerCase() + '">';
                                             }
                                             customHTML += '<label style="margin-right: 15px;">';
-                                            customHTML += '<input data-type="' + field_type.toLowerCase() + '" type="' + field_type.toLowerCase() + '" name="' + field_prefix + thisField.field_label + '[]" id="' + field_prefix + thisField.field_label + '[]" value="' + checkBoxValue[0] + '"' + isDisabled + ' ' + isChecked + '>';
-                                            customHTML += checkBoxValue[1];
+                                            customHTML += '<input data-type="' + field_type.toLowerCase() + '" type="' + field_type.toLowerCase() + '" name="' + field_prefix + thisField.field_label + '[]" id="' + field_prefix + thisField.field_label + '[]" value="' + checkValue + '"' + isDisabled + ' ' + isChecked + '>';
+                                            customHTML += checkLabel;
                                             customHTML += '</label>';
                                             if (thisField.multi_position == 'VERTICAL') {
                                                 customHTML += '</div>';
@@ -8863,15 +8866,18 @@ function GetCustomFields(listid, show, getData, viewFields) {
                                         customHTML += '<div class="customform-label">' + thisField.field_name + '</div>';
                                         customHTML += '</div>';
                                     } else if (field_type == 'SELECT' || field_type == 'MULTI') {
-                                        var selectOptions = thisField.field_options.split("\n");
-                                        var default_selected = thisField.field_default.split(",");
+                                        var selectOptions = String(thisField.field_options || '').split("\n");
+                                        var default_selected = String(thisField.field_default || '').split(",");
                                         var isMulti = (field_type == 'MULTI') ? 'multiple size="' + thisField.field_size + '"' : '';
                                         customHTML += '<div class="mda-form-group">';
                                         customHTML += '<select ' + isMulti + ' id="' + field_prefix + thisField.field_label + '" name="' + field_prefix + thisField.field_label + '" data-type="' + field_type.toLowerCase() + '" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select"' + isDisabled + '>';
                                         for (i = 0; i < selectOptions.length; i++) {
+                                            if ($.trim(selectOptions[i]).length < 1) continue;
                                             var selectOption = selectOptions[i].split(",");
-                                            var isSelected = (default_selected.indexOf(selectOption[0]) > -1) ? 'selected' : '';
-                                            customHTML += '<option value="' + selectOption[0] + '" ' + isSelected + '>' + selectOption[1] + '</option>';
+                                            var optionValue = $.trim(selectOption[0] || '');
+                                            var optionLabel = $.trim(selectOption.slice(1).join(',') || optionValue);
+                                            var isSelected = (default_selected.indexOf(optionValue) > -1) ? 'selected' : '';
+                                            customHTML += '<option value="' + optionValue + '" ' + isSelected + '>' + optionLabel + '</option>';
                                         }
                                         customHTML += '</select>';
                                         customHTML += '<label for="' + field_prefix + thisField.field_label + '">' + thisField.field_name + '</label>';

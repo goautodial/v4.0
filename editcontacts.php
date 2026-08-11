@@ -2,8 +2,8 @@
 /**
  * @file 		editcontacts.php
  * @brief 		Modify customer accounts
- * @copyright 	Copyright (c) 2018 GOautodial Inc. 
- * @author     	Alexander Jim H. Abenoja 
+ * @copyright 	Copyright (c) 2018 GOautodial Inc.
+ * @author     	Alexander Jim H. Abenoja
  * @author		Demian Lizandro A. Biscocho
  *
  * @par <b>License</b>:
@@ -31,58 +31,63 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	
+
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
 			header("location: agent.php");
 		}
-	}	
+	}
 
 	$lead_id = ($_POST['modifyid'] ?? '');
 	$output = $api->API_getLeadsInfo($lead_id);
-	$list_id_ct = $output->data->list_id;
+	$result = is_object($output) ? (string) ($output->result ?? '') : '';
+	$data = (is_object($output) && isset($output->data) && is_object($output->data)) ? $output->data : new stdClass();
+	$list_id_ct = $data->list_id ?? null;
 
-	if($output->result !== "success"){
-		die($output->result);
+	if($result !== "success"){
+		die($result !== '' ? $result : 'Unable to retrieve lead information.');
 	}
 
 	if ($list_id_ct != NULL) {
-		$first_name 	= $output->data->first_name;
-		$middle_initial 	= $output->data->middle_initial;
-		$last_name 	= $output->data->last_name;
-		$email 	= $output->data->email;
-		$phone_number 	= $output->data->phone_number;
-		$alt_phone 	= $output->data->alt_phone;
-		$address1 	= $output->data->address1;
-		$address2 	= $output->data->address2;
-		$address3 	= $output->data->address3;
-		$city 	= $output->data->city;
-		$state 	= $output->data->state;
-		$country 	= $output->data->country_code;
-		$postal_code	= $output->data->postal_code;
-		$gender 	= $output->data->gender;
-		$date_of_birth 	= $output->data->date_of_birth;
-		$comments 	= $output->data->comments;
-		$title 	= $output->data->title;
-		$call_count 	= $output->data->call_count;
-		$last_local_call_time 	= $output->data->last_local_call_time;
-		$is_customer 	= $output->is_customer;
+		$first_name 	= $data->first_name ?? '';
+		$middle_initial 	= $data->middle_initial ?? '';
+		$last_name 	= $data->last_name ?? '';
+		$email 	= $data->email ?? '';
+		$phone_number 	= $data->phone_number ?? '';
+		$alt_phone 	= $data->alt_phone ?? '';
+		$address1 	= $data->address1 ?? '';
+		$address2 	= $data->address2 ?? '';
+		$address3 	= $data->address3 ?? '';
+		$city 	= $data->city ?? '';
+		$province 	= $data->province ?? '';
+		$state 	= $data->state ?? '';
+		$country 	= $data->country_code ?? '';
+		$postal_code	= $data->postal_code ?? '';
+		$gender 	= $data->gender ?? '';
+		$date_of_birth 	= $data->date_of_birth ?? '';
+		$comments 	= $data->comments ?? '';
+		$title 	= $data->title ?? '';
+		$call_count 	= $data->call_count ?? '';
+		$last_local_call_time 	= $data->last_local_call_time ?? '';
+		$is_customer 	= is_object($output) ? ($output->is_customer ?? 0) : 0;
 	}
-	
-	if (!empty($output->custom_fields)) {
+
+	$custom_fields = [];
+	$custom_fields_values = new stdClass();
+	if (is_object($output) && !empty($output->custom_fields) && is_iterable($output->custom_fields)) {
 		$custom_fields = $output->custom_fields;
-		$custom_fields_values = $output->custom_fields_values;
+		$custom_fields_values = (isset($output->custom_fields_values) && is_object($output->custom_fields_values)) ? $output->custom_fields_values : new stdClass();
 	}
-	
+
 	if (empty($is_customer) || is_null($is_customer)) {
 		$is_customer = 0;
 	}
 	$fullname 			= $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
-	$date_of_birth 			= date('m/d/Y', strtotime($date_of_birth));
+	$date_of_birth 			= ((string) $date_of_birth !== '') ? date('m/d/Y', strtotime((string) $date_of_birth)) : '';
 	$output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, $phone_number, $alt_phone, $address1, $address2, $address3, $city, $province, $state, $postal_code, $country);
 	$disposition = $api->API_getAllDispositions();
-	
+
 	$avatarHash = md5( strtolower( trim( $user->getUserId() ) ) );
 	$avatarURL50 = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=50&default=wavatar";
 	$avatarURL96 = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&size=96&default=wavatar";
@@ -95,16 +100,16 @@
         <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("contact_information"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
-        <?php 
-			print $ui->standardizedThemeCSS(); 
+        <?php
+			print $ui->standardizedThemeCSS();
 			print $ui->creamyThemeCSS();
 			print $ui->dataTablesTheme();
 		?>
-		
+
         <!-- Customized Style -->
         <link href="css/creamycrm_test.css" rel="stylesheet" type="text/css" />
 
-		<!-- Datetime picker CSS --> 
+		<!-- Datetime picker CSS -->
 		<link rel="stylesheet" href="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
 		<!-- DateTime Picker JS -->
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
@@ -126,9 +131,9 @@
 			.panel{
 				margin-bottom:0;
 			}
-			
+
 			.edit-profile-button{
-				font-size:14px; 
+				font-size:14px;
 				font-weight:normal;
 			}
 			#popup-hotkeys {
@@ -180,7 +185,7 @@
 							</div>
 						</div>
 					<!-- /.card heading -->
-						
+
 					<!-- Card body -->
 						<div class="card-body custom-tabpanel">
 							<div role="tabpanel" class="panel panel-transparent">
@@ -213,7 +218,7 @@
 								 </li>
 							  </ul>
 							</div>
-								
+
 							<!-- Tab panes-->
 							<div class="tab-content bg-white">
 								<div id="activity" role="tabpanel" class="tab-pane">
@@ -320,8 +325,8 @@
 																	<td><small>'.date('M. d, Y h:i A', strtotime($output->agentlog->event_time[$i])).'</small></td>
 																	<td><small>'.$output->agentlog->campaign_id[$i].'</small></td>
 																	<td><small>'.$output->agentlog->agent_log_id[$i].'</small></td>
-																	<td><small>'.gmdate('H:i:s', $output->agentlog->talk_sec[$i]).'</small></td>																	
-																	<td><small>'.$output->agentlog->status[$i].'</small></td>																
+																	<td><small>'.gmdate('H:i:s', $output->agentlog->talk_sec[$i]).'</small></td>
+																	<td><small>'.$output->agentlog->status[$i].'</small></td>
 																</tr>
 															';
 														}
@@ -348,12 +353,12 @@
 													</tr>
 												</thead>
 												<tbody>
-													<?php																											
+													<?php
 														for($i=0;$i < (isset($output->record->recording_id) && is_countable($output->record->recording_id) ? count($output->record->recording_id) : 0);$i++){
 															$start_epoch = $output->record->start_epoch[$i];
 															$end_epoch = $output->record->end_epoch[$i];
-															$length_in_sec = $end_epoch - $start_epoch;	
-															
+															$length_in_sec = $end_epoch - $start_epoch;
+
 															if ($length_in_sec > 0) {
 																$length_in_sec = gmdate("H:i:s", $length_in_sec);
 																echo '
@@ -375,7 +380,7 @@
 										<!-- /.box-body -->
 									</div>
 								</div>
-								
+
 								<div id="profile" role="tabpanel" class="tab-pane active" data-list-id="<?=$list_id_ct?>">
 									<fieldset>
 										<h4><a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">Edit Information</a></h4>
@@ -401,7 +406,7 @@
 											<input type="hidden" value="<?php echo $uniqueid;?>" name="uniqueid">
 											<!--SECONDS-->
 											<input type="hidden" value="" name="seconds">
-										
+
 										<div class="row">
 											<div class="col-sm-4">
 												<div class="mda-form-group label-floating">
@@ -428,7 +433,7 @@
 											</div>
 										</div>
 										</form>
-										
+
 										<form id="contact_details_form" class="formMain">
 											<!-- phone number & alternative phone number -->
 											<div class="row">
@@ -454,16 +459,16 @@
 												</div>
 											</div>
 											<!-- /.phonenumber & alt phonenumber -->
-											
+
 											<div class="mda-form-group label-floating">
 												<input id="address1" name="address1" type="text" width="auto" value="<?php echo $address1;?>"
 													class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">
-												<label for="address1"><?php $lh->translateText("address"); ?></label> 
+												<label for="address1"><?php $lh->translateText("address"); ?></label>
 												<!--<span class="mda-input-group-addon">
 													<em class="fa fa-home fa-lg"></em>
 												</span>-->
 											</div>
-											
+
 											<div class="mda-form-group label-floating">
 												<input id="address2" name="address2" type="text" value="<?php echo $address2;?>"
 													class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">
@@ -471,7 +476,7 @@
 											</div>
 
 											<input type="hidden" name="address3" value="<?php echo $address3;?>">
-											
+
 											<div class="row">
 												<div class="col-sm-4">
 													<div class="mda-form-group label-floating">
@@ -495,7 +500,7 @@
 													</div>
 												</div>
 											</div><!-- /.city,state,postalcode -->
-										
+
 											<div class="mda-form-group label-floating">
 												<input id="country" name="country" type="text" value="<?php echo $country;?>"
 													class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">
@@ -509,7 +514,7 @@
 													<em class="fa fa-at fa-lg"></em>
 												</span>-->
 											</div>
-										</form> 
+										</form>
 										<form role="form" id="gender_form" class="formMain form-inline" >
 											<div class="row">
 												<div class="col-sm-3">
@@ -523,7 +528,7 @@
 													<div class="mda-form-group label-floating">
 														<select id="gender" name="gender" value="<?php echo $gender;?>"
 															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select">
-															<?php 
+															<?php
 																if($gender == "M"){
 															?>
 																<option selected value="M"><?php $lh->translateText("male"); ?></option>
@@ -553,16 +558,16 @@
 															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched">
 														<label for="date_of_birth"><?php $lh->translateText("date_of_birth"); ?></label>
 													</div>
-												</div>									
+												</div>
 											</div><!-- /.gender & title -->
-											
+
 											<div class="mda-form-group label-floating">
 												<select name="dispo" id="dispo" class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select" >
 													<option value=""><?php $lh->translateText("-none-"); ?></option>
 													<?php
 														for($a=0; $a<(isset($disposition->status) && is_countable($disposition->status) ? count($disposition->status) : 0); $a++){
 													?>
-														<option value="<?php echo $disposition->status[$a];?>" <?php if($disposition->status[$a] === $output->data-> status) echo "selected";?>><?php echo $disposition->status[$a].' - '.$disposition->status_name[$a];?></option>
+														<option value="<?php echo $disposition->status[$a];?>" <?php if($disposition->status[$a] === ($data->status ?? '')) echo "selected";?>><?php echo $disposition->status[$a].' - '.$disposition->status_name[$a];?></option>
 													<?php
 														}
 													?>
@@ -573,7 +578,7 @@
 									<br/>
 								   </fieldset>
 								</div><!--End of Profile-->
-								
+
 								<?php
 								if (!empty($custom_fields)) {
 								?>
@@ -585,23 +590,24 @@
 												$viewall = '';
 												$cf_count = (is_countable($custom_fields) ? count($custom_fields) : 0);
 												foreach ($custom_fields as $idx => $fieldsvalues) {
-													$A_field_id 				= $fieldsvalues->field_id;
-													$A_field_label 				= $fieldsvalues->field_label;
-													$A_field_name 				= $fieldsvalues->field_name;
-													$A_field_description 		= $fieldsvalues->field_description;
-													$A_field_rank 				= $fieldsvalues->field_rank;
-													$A_field_help 				= $fieldsvalues->field_help;
-													$A_field_type 				= $fieldsvalues->field_type;
-													$A_field_options 			= $fieldsvalues->field_options;
-													$A_field_size 				= $fieldsvalues->field_size;
-													$A_field_max 				= $fieldsvalues->field_max;
-													$A_field_default 			= $fieldsvalues->field_default;
-													$A_field_cost 				= $fieldsvalues->field_cost;
-													$A_field_required 			= $fieldsvalues->field_required;
-													$A_multi_position 			= $fieldsvalues->multi_position;
-													$A_name_position 			= $fieldsvalues->name_position;
-													$A_field_order 				= $fieldsvalues->field_order;
-													
+													$A_field_id          = (string) ($fieldsvalues->field_id ?? '');
+													$A_field_label       = (string) ($fieldsvalues->field_label ?? '');
+													$A_field_name        = (string) ($fieldsvalues->field_name ?? '');
+													$A_field_description = (string) ($fieldsvalues->field_description ?? '');
+													$A_field_rank        = (string) ($fieldsvalues->field_rank ?? '');
+													$A_field_help        = (string) ($fieldsvalues->field_help ?? '');
+													$A_field_type        = (string) ($fieldsvalues->field_type ?? '');
+													$A_field_options     = (string) ($fieldsvalues->field_options ?? '');
+													$A_field_size        = (string) ($fieldsvalues->field_size ?? '');
+													$A_field_max         = (string) ($fieldsvalues->field_max ?? '');
+													$A_field_default     = (string) ($fieldsvalues->field_default ?? '');
+													$A_field_cost        = (string) ($fieldsvalues->field_cost ?? '');
+													$A_field_required    = (string) ($fieldsvalues->field_required ?? '');
+													$A_multi_position    = (string) ($fieldsvalues->multi_position ?? '');
+													$A_name_position     = (string) ($fieldsvalues->name_position ?? '');
+													$A_field_order       = (string) ($fieldsvalues->field_order ?? '');
+													$custom_field_value  = (string) ($custom_fields_values->{$A_field_label} ?? '');
+
 													$cf_fields[]				= $A_field_label;
 
 													$field_HTML='';
@@ -638,9 +644,10 @@
 																{
 
 																	//if ($A_field_default == "$field_options_value_array[0]") {$field_selected = 'SELECTED';}
-																	if ($custom_fields_values->{$A_field_label} == "$field_options_value_array[0]") {$field_selected = 'SELECTED';}
-																	$field_option_text = (!empty($field_options_value_array[1])) ? $field_options_value_array[1] : $field_options_value_array[0];
-																	$field_HTML .= "<option value=\"$field_options_value_array[0]\" $field_selected>" . trim($field_option_text) . "</option>\n";
+																	$field_option_value = trim((string) ($field_options_value_array[0] ?? ''));
+																	if ($custom_field_value == $field_option_value) {$field_selected = 'SELECTED';}
+																	$field_option_text = trim((string) ($field_options_value_array[1] ?? $field_option_value));
+																	$field_HTML .= "<option value=\"$field_option_value\" $field_selected>" . $field_option_text . "</option>\n";
 																}
 
 																if ( ($A_field_type=='RADIO') or ($A_field_type=='CHECKBOX') )
@@ -652,11 +659,13 @@
 																	}
 
 																	//if ($A_field_default == "$field_options_value_array[0]") {$field_selected = 'CHECKED';}
-																	if ($custom_fields_values->{$A_field_label} == "$field_options_value_array[0]") {$field_selected = 'CHECKED';}
+																	$field_option_value = trim((string) ($field_options_value_array[0] ?? ''));
+																	$field_option_text = trim((string) ($field_options_value_array[1] ?? $field_option_value));
+																	if ($custom_field_value == $field_option_value) {$field_selected = 'CHECKED';}
 
 																	$lblname = $A_field_label.'[]';
 
-																	$field_HTML .= "<input type=$A_field_type name=$lblname id=\"{$lblname}_{$field_options_value_array[0]}\" value=\"$field_options_value_array[0]\" $field_selected> $field_options_value_array[1]\n";
+																	$field_HTML .= "<input type=$A_field_type name=$lblname id=\"{$lblname}_{$field_option_value}\" value=\"$field_option_value\" $field_selected> $field_option_text\n";
 
 
 																	if ($A_multi_position=='VERTICAL')
@@ -680,13 +689,13 @@
 														{
 															$A_field_default='';
 														}
-														$field_HTML .= "<input type=text size=$A_field_size maxlength=$A_field_max name=$A_field_label id=$A_field_label value=\"{$custom_fields_values->{$A_field_label}}\" class=\"mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched\">\n";
+														$field_HTML .= "<input type=text size=$A_field_size maxlength=$A_field_max name=$A_field_label id=$A_field_label value=\"{$custom_field_value}\" class=\"mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched\">\n";
 														$field_HTML .= "<label for=\"$A_field_label\">$A_field_name</label>";
 													}
 													if ($A_field_type=='AREA')
 													{
 														$field_COL = 12;
-														$field_HTML .= "<textarea name=$A_field_label id=$A_field_label maxlength=$A_field_max rows=$A_field_size style='min-width: 90%' class='mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea'>{$custom_fields_values->{$A_field_label}}</textarea>\n";
+														$field_HTML .= "<textarea name=$A_field_label id=$A_field_label maxlength=$A_field_max rows=$A_field_size style='min-width: 90%' class='mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched textarea'>{$custom_field_value}</textarea>\n";
 														$field_HTML .= "<label for=\"$A_field_label\">$A_field_name</label>";
 													}
 													if ($A_field_type=='DISPLAY')
@@ -709,9 +718,8 @@
 													}
 													if ($A_field_type=='DATE')
 													{
-														if ( (strlen($custom_fields_values->{$A_field_label})<1) or ($custom_fields_values->{$A_field_label}=='NULL') ) {$custom_fields_values->{$A_field_label}=0;}
-														$day_diff = $custom_fields_values->{$A_field_label};
-														$default_date = date("Y-m-d", mktime(date("H"),date("i"),date("s"),date("m"),date("d")+$day_diff,date("Y")));
+														$day_diff = (strlen($custom_field_value) < 1 || $custom_field_value == 'NULL') ? 0 : (is_numeric($custom_field_value) ? (int) $custom_field_value : 0);
+														$default_date = date("Y-m-d", mktime((int) date("H"),(int) date("i"),(int) date("s"),(int) date("m"),(int) date("d")+$day_diff,(int) date("Y")));
 														$field_HTML .= "<input type=text size=11 maxlength=10 name=$A_field_label id=$A_field_label value=\"$default_date\">\n";
 														$field_HTML .= "<script language=\"JavaScript\">\n";
 														$field_HTML .= "var o_cal = new tcal ({\n";
@@ -726,10 +734,11 @@
 
 													if ($A_field_type=='TIME')
 													{
-														$minute_diff = $custom_fields_values->{$A_field_label};
-														$default_time = date("H:i:s", mktime(date("H"),date("i")+$minute_diff,date("s"),date("m"),date("d"),date("Y")));
-														$default_hour = date("H", mktime(date("H"),date("i")+$minute_diff,date("s"),date("m"),date("d"),date("Y")));
-														$default_minute = date("i", mktime(date("H"),date("i")+$minute_diff,date("s"),date("m"),date("d"),date("Y")));
+														$minute_diff = is_numeric($custom_field_value) ? (int) $custom_field_value : 0;
+														$default_timestamp = mktime((int) date("H"),(int) date("i")+$minute_diff,(int) date("s"),(int) date("m"),(int) date("d"),(int) date("Y"));
+														$default_time = date("H:i:s", $default_timestamp);
+														$default_hour = date("H", $default_timestamp);
+														$default_minute = date("i", $default_timestamp);
 														$field_HTML .= "<input type=hidden name=$A_field_label id=$A_field_label value=\"$default_time\">";
 														$field_HTML .= "<SELECT name=HOUR_$A_field_label id=HOUR_$A_field_label  class='mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select'>";
 														$field_HTML .= "<option>00</option>";
@@ -774,14 +783,14 @@
 														$field_HTML .= "<OPTION value=\"$default_minute\" selected>$default_minute</OPTION>";
 														$field_HTML .= "</SELECT>";
 													}
-													
+
 													$viewall .= "<div class=\"col-md-$field_COL col-sm-12\"><div class=\"mda-form-group label-floating\">\n";
 													$viewall .= " $field_HTML\n";
 													$viewall .= "</div></div>\n";
 												}
-												
+
 												echo $viewall;
-												
+
 												if (!empty($cf_fields)) {
 													$cf_fields = implode(",", $cf_fields);
 													echo "<input type=\"hidden\" value=\"$cf_fields\" name=\"custom_fields\">\n";
@@ -794,7 +803,7 @@
 								<?php
 								}
 								?>
-									
+
 									<div id="comments_tab" role="tabpanel" class="tab-pane">
 										<div class="row">
 											<div class="col-sm-12">
@@ -834,16 +843,16 @@
 						<div class="modal fade" id="script" name="script" tabindex="-1" role="dialog" aria-hidden="true">
 							<div class="modal-dialog">
 								<div class="modal-content">
-								
+
 									<div class="modal-header">
 										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 										<h4 class="modal-title"><i class="fa fa-edit"></i> <b><?php $lh->translateText("Script"); ?></b></h4>
 									</div>
 
 										<div class="modal-body">
-											
+
 										</div>
-									
+
 								</div><!-- /.modal-content -->
 							</div><!-- /.modal-dialog -->
 						</div><!-- /.modal -->
@@ -861,7 +870,7 @@
 
 					</div>
 				</div>
-				
+
 				<div id="popup-hotkeys" class="panel clearfix">
 					<div class="panel-heading"><b><?=$lh->translationFor('available_hotkeys')?></b></div>
 					<div class="panel-body"><?=$lh->translationFor('no_available_hotkeys')?></div>
@@ -890,9 +899,9 @@
 				//$('#lead_closer_records').dataTable();
 				//$('#lead_agent_log').dataTable();
 				//$('#lead_recordings').dataTable();
-				
+
 				$('#lead_calls').DataTable({
-					destroy:true,    
+					destroy:true,
 					responsive:true,
 					stateSave:true,
 					drawCallback:function(settings) {
@@ -900,19 +909,19 @@
 						pagination.toggle(this.api().page.info().pages > 1);
 					}
 				});
-				
+
 				$('#lead_closer_records').DataTable({
-					destroy:true,    
+					destroy:true,
 					responsive:true,
 					stateSave:true,
 					drawCallback:function(settings) {
 						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
 						pagination.toggle(this.api().page.info().pages > 1);
 					}
-				});				
-				
+				});
+
 				$('#lead_agent_log').DataTable({
-					destroy:true,    
+					destroy:true,
 					responsive:true,
 					stateSave:true,
 					drawCallback:function(settings) {
@@ -920,9 +929,9 @@
 						pagination.toggle(this.api().page.info().pages > 1);
 					}
 				});
-			
+
 				$('#lead_recordings').DataTable({
-					destroy:true,    
+					destroy:true,
 					responsive:true,
 					stateSave:true,
 					drawCallback:function(settings) {
@@ -930,14 +939,14 @@
 						pagination.toggle(this.api().page.info().pages > 1);
 					}
 				});
-				
+
 				var is_customer = <?php echo $is_customer; ?>;
 				if (is_customer > 0) {
 					$('#convert-customer').prop('checked', true);
 					$('#convert-customer').val("1");
 					//$('#convert-customer').prop('disabled', true);
 				}
-				
+
 				$('#heading_full_name').text("<?php echo $fullname;?>");
 				$('#heading_lead_id').text("<?php echo $lead_id;?>");
 				$('#comments').html("<?php echo htmlentities($comments);?>");
@@ -953,14 +962,14 @@
 						today: 'fa fa-crosshairs',
 						clear: 'fa fa-trash'
 					},
-				format: 'MM/DD/YYYY'					
-				});				
+				format: 'MM/DD/YYYY'
+				});
 
 				$("#submit_edit_form").click(function(){
 				//alert("User Created!");
 					$('#update_button').html("<i class='fa fa-edit'></i> <?php $lh->translateText("updating"); ?>");
 					$('#submit_edit_form').prop("disabled", true);
-					
+
 					var validate = 0;
 					var log_user = '<?=$_SESSION['user']?>';
 					var log_group = '<?=$_SESSION['usergroup']?>';
@@ -1009,13 +1018,13 @@
 						$("#first_name").removeClass("error");
 						$("#last_name").removeClass("error");
 					}
-				
+
 				});
-				
+
 				$('.form-control').on('focus blur', function (e) {
 					$(this).parents('.label-floating').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
 				}).trigger('blur');
-				
+
 				$('.label-floating .form-control').change(function() {
 					var thisVal = $(this).val();
 					$(this).parents('.label-floating').toggleClass('focused', (thisVal.length > 0));

@@ -63,11 +63,12 @@ declare(strict_types=1);
 		];
 
 	$output = $api->API_addCustomFields($postfields);
+	$result = is_object($output) ? (string) ($output->result ?? '') : '';
 
-	if (!preg_match("/^ERROR/i", (string) $output->result)) {
+	if ($result !== '' && !preg_match("/^ERROR/i", $result)) {
 		$status = "success";
 	} else {
-		$status = "\n\n".$output->result;
+		$status = "\n\n" . ($result !== '' ? $result : 'ERROR: Unable to add custom field.');
 	}
 
 	echo $status;
