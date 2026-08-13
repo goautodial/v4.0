@@ -3,9 +3,11 @@
  * Set modern bcrypt password hashes for vicidial_users.
  *
  * Usage:
- *   php bin/set_user_password.php --user=goadmin --password='new-password'
- *   php bin/set_user_password.php --user=goadmin --password-env=NEW_PASSWORD
- *   php bin/set_user_password.php --csv=/path/to/users.csv
+ *   php bin/set_user_password.php --user=<user> --password=<password>
+ *   php bin/set_user_password.php --user=<user> --password-env=<ENV_NAME>
+ *   php bin/set_user_password.php --csv=<csv-file>
+ *   php bin/set_user_password.php --status
+ *   php bin/set_user_password.php --enable-hashing
  *
  * CSV format: user,password
  */
@@ -52,8 +54,20 @@ function usage(int $exitCode = 0): void
         . "  php bin/set_user_password.php --enable-hashing\n\n"
         . "CSV format:\n"
         . "  user,password\n";
+    if (PHP_SAPI !== 'cli') {
+        if (!headers_sent()) {
+            header('Content-Type: text/plain; charset=UTF-8');
+        }
+        echo $message;
+        exit($exitCode);
+    }
+
     fwrite($exitCode === 0 ? STDOUT : STDERR, $message);
     exit($exitCode);
+}
+
+if (PHP_SAPI !== 'cli') {
+    usage(0);
 }
 
 $options = getopt('', ['user:', 'password:', 'password-env:', 'csv:', 'status', 'enable-hashing', 'help']);
