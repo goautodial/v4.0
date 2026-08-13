@@ -2,8 +2,8 @@
 /**
  * @file 		login.php
  * @brief 		login application
- * @copyright 	Copyright (c) 2020 GOautodial Inc. 
- * @author     	Christopher Lomuntad 
+ * @copyright 	Copyright (c) 2020 GOautodial Inc.
+ * @author     	Christopher Lomuntad
  * @author		Demian Lizandro A. Biscocho
  * @author		Ignacio Nieto Carvajal
  *
@@ -29,8 +29,8 @@
 	require_once('./php/DbHandler.php');
 	require_once('./php/LanguageHandler.php');
 	require_once('./php/SessionHandler.php');
-	$session_class = new \creamy\SessionHandler();		
-	
+	$session_class = new \creamy\SessionHandler();
+
 	// force https protocol
 	if(empty($_SERVER["HTTPS"]) || $_SERVER["HTTPS"] != "on") {
 		header("Location: https://" . $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"]);
@@ -43,7 +43,7 @@
 	} else {
 		session_start(); // Starting Session
 	}*/
-	
+
 	$lh = \creamy\LanguageHandler::getInstance();
 	$ui = \creamy\UIHandler::getInstance();
 	$error = ''; // Variable To Store Error Message
@@ -56,7 +56,7 @@
 			// Define $username and $password
 			$username=($_POST['username'] ?? '');
 			$password=($_POST['password'] ?? '');
-			
+
 			// To protect MySQL injection for Security purpose
 			$username = stripslashes($username);
 			$password = stripslashes($password);
@@ -89,7 +89,7 @@
                 $_SESSION["bcrypt"] = $result["bcrypt"];
 				$_SESSION["use_webrtc"] = $result["use_webrtc"];
 				$_SESSION["password_hash"] = $result["password_hash"];
-				
+
 				if (!empty($result["avatar"])) {
 					$_SESSION['avatar'] = $result["avatar"];
 				} else { // random avatar.
@@ -106,7 +106,7 @@
 			}
 		}
 	}
-	
+
 	$uname = (isset($_GET['username'])) ? $_GET['username'] : '';
 	$upass = (isset($_GET['password'])) ? $_GET['password'] : '';
 	//https://github.com/goautodial/v4.0/issues/48
@@ -119,7 +119,7 @@
         <meta charset="UTF-8">
         <title><?php $lh->translateText("system_access"); ?> </title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        
+
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <!-- Theme style -->
@@ -133,11 +133,11 @@
         <![endif]-->
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js" type="text/javascript"></script>
-   	
+
 	<?php if(ECCS_BLIND_MODE === 'y'){ ?>
 	<link href="./css/customizations/eccs_admin.css" rel="stylesheet" type="text/css" />
 	<?php }?>
- 
+
 	</head>
   <body class="login-page" style="overflow: hidden;">
     <div class="login-box" id="login-box">
@@ -162,7 +162,7 @@
           </div>
 	    	<div name="error-message" style="color: red;">
 	    	<?php
-	    		if (isset($error)) { print ("<p>".$error."</p>"); }
+	    		if (!empty($error)) { print ("<p>".htmlspecialchars($error, ENT_QUOTES, 'UTF-8')."</p>"); }
 	    	?>
 	    	</div>
           <div class="row">

@@ -129,14 +129,16 @@
 	if($session_destroyed) // Destroying All Sessions
 	{
 		$url = gourl."/goAdminLogs/goAPI.php"; #URL to GoAutoDial API. (required)
-		$postfields["goUser"] = goUser; #Username goes here. (required)
-		$postfields["goPass"] = goPass;
-		$postfields["goAction"] = "goLogActions"; #action performed by the [[API:Functions]]
-		$postfields["action"] = "LOGOUT";
-		$postfields["user"] = $log_user;
-		$postfields["user_group"] = $log_group;
-		$postfields["details"] = $details;
-		$postfields["ip_address"] = $_SERVER['REMOTE_ADDR'];
+		$postfields = [
+			"goUser" => goUser,
+			"goPass" => goPass,
+			"goAction" => "goLogActions",
+			"action" => "LOGOUT",
+			"user" => $log_user,
+			"user_group" => $log_group,
+			"details" => $details,
+			"ip_address" => $_SERVER['REMOTE_ADDR'],
+		];
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -144,9 +146,7 @@
 		curl_setopt($ch, CURLOPT_TIMEOUT, 100);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-		$data = curl_exec($ch);
-
-		$output = json_decode($data);
+		curl_exec($ch);
 
 		if(ROCKETCHAT_ENABLE !== 'y' || !isset($_SESSION['gad_authToken']))
 		header("Location: login.php"); // Redirecting To Login Page

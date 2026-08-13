@@ -46,6 +46,8 @@ require_once(__DIR__ . '/goCRMAPISettings.php');
  * @link URL http://digitalleaves.com
  */
 class DbHandler {
+	private const DISALLOWED_WEB_LOGIN_USERS = ['goapi'];
+
     /** Database connector */
     private $dbConnector;
 	private $dbConnectorAsterisk;
@@ -235,6 +237,11 @@ class DbHandler {
      * @return object an associative array containing the user's data if credentials are valid and login succeed, NULL otherwise.
      */
     public function checkLoginByName($name, $password, $ip_address) {
+		if ($this->isDisallowedWebLoginUser($name)) {
+			error_log('Login failed for user "' . $name . '": user is not allowed to log in through the web UI');
+			return NULL;
+		}
+
 		$url = gourl."/goUsers/goAPI.php"; #URL to GoAutoDial API. (required)
 		$postfields = [
 			'goUser' => goUser,
@@ -340,6 +347,11 @@ class DbHandler {
      * @return object an associative array containing the user's data if credentials are valid and login succeed, NULL otherwise.
      */
     public function checkLoginByEmail($email, $password, $ip_address) {
+		if ($this->isDisallowedWebLoginUser($email)) {
+			error_log('Login failed for email "' . $email . '": user is not allowed to log in through the web UI');
+			return NULL;
+		}
+
 		$url = gourl."/goUsers/goAPI.php";
         // fetching user by name and password
         //$this->dbConnector->where("email", $email);
@@ -436,6 +448,11 @@ class DbHandler {
 		return NULL;
 	}
     }
+
+	private function isDisallowedWebLoginUser($username): bool
+	{
+		return in_array(strtolower(trim((string) $username)), self::DISALLOWED_WEB_LOGIN_USERS, true);
+	}
 
     /**
  * Changes the user password to $password1 (= $password2) if $oldpassword matches current password.

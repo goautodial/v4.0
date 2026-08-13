@@ -3206,19 +3206,22 @@ function checkIfStillLoggedIn(logged_out, last_call) {
         })
         .done(function (result) {
             if (result.result == 'success') {
-                if (!result.logged_in) {
-                    if (alertLogout) {
-                        sendLogout(true);
-                        swal({
-                            title: "<?=$lh->translationFor('logged_out')?>",
-                            text: result.message,
-                            type: 'warning'
-                        }, function(){
-                            setTimeout(function() {
-                                location.reload(true);
-                            }, 5000);
-                        });
-                    }
+                if (!result.logged_in && alertLogout) {
+                    alertLogout = false;
+                    sendLogout(true);
+
+                    var forceLogoutRedirect = function() {
+                        window.location.href = './logout.php';
+                    };
+
+                    swal({
+                        title: "<?=$lh->translationFor('logged_out')?>",
+                        text: result.message || 'Your dialer session has ended. Please sign in again.',
+                        type: 'warning',
+                        confirmButtonText: 'OK'
+                    }, forceLogoutRedirect);
+
+                    setTimeout(forceLogoutRedirect, 5000);
                 }
                 return;
             } else {
