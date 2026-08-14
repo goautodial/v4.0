@@ -31,6 +31,7 @@ require_once(__DIR__ . '/LanguageHandler.php');
 require_once(__DIR__ . '/CRMUtils.php');
 require_once(__DIR__ . '/ModuleHandler.php');
 require_once(__DIR__ . '/goCRMAPISettings.php');
+require_once(__DIR__ . '/PerformanceTimer.php');
 //require_once('Session.php');
 
 // constants
@@ -76,11 +77,16 @@ error_reporting(E_ERROR | E_PARSE);
      */
     protected function __construct()
     {
-        require_once __DIR__ . '/DbHandler.php';
-        // opening db connection
-        $this->db = new \creamy\DbHandler();
-        $this->api = \creamy\APIHandler::getInstance();
-        $this->lh = \creamy\LanguageHandler::getInstance();
+        $timer = \creamy\PerformanceTimer::begin();
+        try {
+            require_once __DIR__ . '/DbHandler.php';
+            // opening db connection
+            $this->db = new \creamy\DbHandler();
+            $this->api = \creamy\APIHandler::getInstance();
+            $this->lh = \creamy\LanguageHandler::getInstance();
+        } finally {
+            \creamy\PerformanceTimer::end('ui_construct', $timer);
+        }
     }
 
     /**
@@ -5790,7 +5796,9 @@ error_reporting(E_ERROR | E_PARSE);
    		$css .= '<link href="css/calendar.css" rel="stylesheet" type="text/css"/>'."\n";
 
 		//for chat
+		$chatActivationTimer = \creamy\PerformanceTimer::begin();
 		$agent_chat_status = $this->API_getAgentChatActivation();
+		\creamy\PerformanceTimer::end('chat_activation', $chatActivationTimer);
 		if($agent_chat_status){
    $css .= '<link href="modules/GoChat/css/style.css" rel="stylesheet" type="text/css"/>'."\n";
   }
@@ -5967,26 +5975,29 @@ error_reporting(E_ERROR | E_PARSE);
 
 	public function goGetPermissions($type = 'dashboard', $group = null) {
 		$permissions = $this->API_goGetGroupPermission($group);
+		$return = null;
+
 		if (!is_null($permissions)) {
+			$permissionValues = is_object($permissions) ? get_object_vars($permissions) : (is_array($permissions) ? $permissions : []);
 			$types = explode(",", (string) $type);
+
 			if ((is_countable($types) ? count($types) : 0) > 1) {
+				$return = new \stdClass();
+
 				foreach ($types as $t) {
-					if (array_key_exists($t, $permissions)) {
-						$return->{$t} = $permissions->{$t};
+					if (array_key_exists($t, $permissionValues)) {
+						$return->{$t} = $permissionValues[$t];
 					}
 				}
 			} else {
 				if ($type == 'sidebar') {
 					$return = $permissions;
-				} else if (array_key_exists((string) $type, $permissions)) {
-					$return = $permissions->{$type};
-				} else {
-					$return = null;
+				} else if (array_key_exists((string) $type, $permissionValues)) {
+					$return = $permissionValues[(string) $type];
 				}
 			}
-		} else {
-			$return = null;
 		}
+
 		return $return;
 	}
 

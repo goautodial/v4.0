@@ -41,7 +41,6 @@
 	}
 
 	$perm = $api->goGetPermissions('campaign,disposition,pausecodes,hotkeys,list', $_SESSION['usergroup']);
-	$gopackage = $api->API_getGOPackage();
 
 	$emptyApiResult = static function (): stdClass {
 		$result = new stdClass();
@@ -49,6 +48,7 @@
 		return $result;
 	};
 
+	$gopackage = $gopackage ?? (object) ['packagetype' => ''];
 	$campaign = $campaign ?? $emptyApiResult();
 	$disposition = $disposition ?? $emptyApiResult();
 	$leadrecycling = $leadrecycling ?? $emptyApiResult();
@@ -301,18 +301,16 @@
 								/*
 								* API used for display in tables
 								*/
-								$campaign = $api->API_getAllCampaigns();
+								$pageApiResults = $api->API_getTelephonyCampaignsPageData();
+
+								$gopackage = $api->API_getGOPackage();
+								$campaign = $pageApiResults['campaign'] ?? $campaign;
 								if($campaign->result !== "success"){
 									// die("API ERROR: ".$campaign->result);
 								}
-								$disposition = $api->API_getAllDispositions();
-								$leadrecycling = $api->API_getAllLeadRecycling();
-								$dialStatus = $api->API_getAllDialStatuses('ALL', 1);
-								$ingroup = $api->API_getAllInGroups();
-								$ivr = $api->API_getAllIVRs();
-								$voicemails = $api->API_getAllVoiceFiles();
-								$users = $api->API_getAllUsers();
-								$carriers = $api->API_getAllCarriers();
+								$disposition = $pageApiResults['disposition'] ?? $disposition;
+								$leadrecycling = $pageApiResults['leadrecycling'] ?? $leadrecycling;
+								$dialStatus = $pageApiResults['dialStatus'] ?? $dialStatus;
 								$checkbox_all = $ui->getCheckAll("campaign");
 								//$areacode = $api->API_getAllAreacodes();
 
@@ -797,40 +795,16 @@
 									<!--	<input name="call_route_text" type="text" class="form-control">-->
 									<!--</div>-->
 									<div class="ingroup-div col-lg-8 mb">
-										<select id="ingroup-text" name="ingroup_text" class="form-control">
-											<?php
-												for($i=0;$i < (isset($ingroup->group_id) && is_countable($ingroup->group_id) ? count($ingroup->group_id) : 0);$i++){
-													echo '<option value="'.$ingroup->group_id[$i].'">'.$ingroup->group_name[$i].'</option>';
-												}
-											?>
-										</select>
+										<select id="ingroup-text" name="ingroup_text" class="form-control"></select>
 									</div>
 									<div class="ivr-div col-lg-8 mb hide">
-										<select id="ivr-text" name="ivr_text" class="form-control">
-											<?php
-												for($i=0;$i < (isset($ivr->menu_id) && is_countable($ivr->menu_id) ? count($ivr->menu_id) : 0);$i++){
-													echo '<option value="'.$ivr->menu_id[$i].'">'.$ivr->menu_name[$i].'</option>';
-												}
-											?>
-										</select>
+										<select id="ivr-text" name="ivr_text" class="form-control"></select>
 									</div>
 									<div class="agent-div col-lg-8 mb hide">
-										<select id="agent-text" name="agent_text" class="form-control">
-											<?php
-												for($i=0;$i < (isset($users->user_id) && is_countable($users->user_id) ? count($users->user_id) : 0);$i++){
-													echo '<option value="'.$users->user_id[$i].'">'.$users->full_name[$i].'</option>';
-												}
-											?>
-										</select>
+										<select id="agent-text" name="agent_text" class="form-control"></select>
 									</div>
 									<div class="voicemail-div col-lg-8 mb hide">
-										<select id="voicemail-text" name="voicemail_text" class="form-control">
-											<?php
-												for($i=0;$i < (isset($voicemails->voicemail_id) && is_countable($voicemails->voicemail_id) ? count($voicemails->voicemail_id) : 0);$i++){
-													echo '<option value="'.$voicemails->voicemail_id[$i].'">'.$voicemails->fullname[$i].'</option>';
-												}
-											?>
-										</select>
+										<select id="voicemail-text" name="voicemail_text" class="form-control"></select>
 									</div>
 								</div>
 				    			<div class="form-group group-color inbound blended hide">
@@ -852,24 +826,14 @@
 									<label class="control-label col-lg-4"><small><?php $lh->translateText("carrier_use_for_campaign"); ?></small>:</label>
 									<div class="col-lg-8 mb">
 										<select name="dial_prefix" id="dial_prefix" class="form-control">
-											<option value="CUSTOM" <?php if($campaign->data->dial_prefix == "CUSTOM"){echo "selected";}?>>CUSTOM DIAL PREFIX</option>
-											<?php for($i=0;$i<(isset($carriers->carrier_id) && is_countable($carriers->carrier_id) ? count($carriers->carrier_id) : 0);$i++) { ?>
-												<?php if(!empty($carriers->carrier_id[$i])  && $carriers->active[$i] == 'Y') {
-													$prefixes = explode("\n", (string) ($carriers->dialplan_entry[$i] ?? ''));
-													$prefix = explode(",", $prefixes[0]);
-													$dial_prefix = substr(ltrim($prefix[0], "exten => _ "), 0, (strpos(".",$prefix[0]) - 1));
-													$dial_prefix = str_replace("N", "", str_replace("X", "", $dial_prefix));
-												?>
-													<option value="<?php echo $dial_prefix; ?>" <?php if($campaign->data->dial_prefix == $carriers->carrier_id[$i]) echo "selected";?>><?php echo $carriers->carrier_name[$i]; ?></option>
-												<?php } ?>
-											<?php } ?>
+											<option value="CUSTOM" selected>CUSTOM DIAL PREFIX</option>
 										</select>
 									</div>
 								</div>
 								<div class="form-group carrier-to-use custom-prefix">
 									<label class="control-label col-lg-4 "><?php $lh->translateText("custom_prefix"); ?>:</label>
 									<div class="col-lg-8 mb">
-										<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" value="<?php if(($campaign->data->dial_prefix == "CUSTOM") && ($campaign->data->dial_prefix == 0) || ($campaign->data->dial_prefix == '')){echo 9;}else{echo $campaign->data->dial_prefix;} ?>" minlength="1" maxlength="20">
+										<input type="number" class="form-control" id="custom_prefix" name="custom_prefix" value="9" minlength="1" maxlength="20">
 									</div>
 								</div>
 				    			<div class="form-group survey hide">
@@ -1816,6 +1780,8 @@
 		}
 
 		$(document).ready(function(){
+			$(".preloader").stop(true, true).fadeOut(150);
+
 			// load cookies
 			var cook_donotshow = "yes";
 
@@ -1823,61 +1789,83 @@
 			$.fn.select2.defaults.set( "theme", "bootstrap" );
 
 			// Datatables initialization
-			var tableCampaign = $('#table_campaign').DataTable({
-				destroy:true,
-				responsive:true,
-				autoWidth:false,
-				stateSave:true,
-				drawCallback:function(settings) {
-					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
-					pagination.toggle(this.api().page.info().pages > 1);
-				},
-				columnDefs:[
-					{ width: "46px", targets: 0 },
-					{ width: "120px", targets: 1 },
-					{ width: "125px", targets: 3 },
-					{ width: "90px", targets: 4 },
-					{ width: "46px", targets: 5 },
-					{ width: "135px", targets: 6 },
-					//{ visible: false, targets: 1 },
-					{ searchable: false, targets: [ 0, 5, 6 ] },
-					{ orderable: false, targets: [ 0, 5, 6 ] },
-					{ responsivePriority: 1, targets: 6 },
-					{ responsivePriority: 2, targets: 5 },
-					{ targets: -1, className: "dt-body-right" }
-				]
-			});
+			var tableCampaign = null;
+			var tableDisposition = null;
+			var tableLeadRecycling = null;
+			var tableLeadFilter = null;
+			var tableAreaCode = null;
 
-			var tableDisposition = $('#table_disposition').DataTable({
-				destroy:true,
-				responsive:true,
-				autoWidth:false,
-				stateSave:true,
-				drawCallback:function(settings) {
-					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
-					pagination.toggle(this.api().page.info().pages > 1);
-				},
-				rowCallback: function( row, data ) {
-					//console.log(data[3]);
-					if ( data[3] == "" ) {
-						$(row).addClass('no_status_row');
-						$('.no_status_row').find($('li')).addClass('disabled');
-						$('.no_status_row').find($('.edit_disposition')).removeClass('edit_disposition').addClass('disabled_edit_disposition');
-						$('.no_status_row').find($('.view_disposition')).removeClass('view_disposition').addClass('disabled_view_disposition');
-						$('.no_status_row').find($('.delete_disposition_modal')).removeClass('delete_disposition_modal').addClass('disabled_delete_disposition');
-					}
-				},
-				columnDefs:[
-					{ width: "46px", targets: 0 },
-					{ width: "120px", targets: 1 },
-					{ width: "135px", targets: 4 },
-					{ searchable: false, targets: [ 0, 4 ] },
-					{ orderable: false, targets: [ 0, 4 ] },
-					{ responsivePriority: 1, targets: 4 },
-					{ responsivePriority: 2, targets: 2 },
-					{ targets: -1, className: "dt-body-right" }
-				]
-			});
+			function initCampaignTable() {
+				if (tableCampaign !== null) {
+					return tableCampaign;
+				}
+
+				tableCampaign = $('#table_campaign').DataTable({
+					destroy:true,
+					responsive:true,
+					autoWidth:false,
+					stateSave:true,
+					drawCallback:function(settings) {
+						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+						pagination.toggle(this.api().page.info().pages > 1);
+					},
+					columnDefs:[
+						{ width: "46px", targets: 0 },
+						{ width: "120px", targets: 1 },
+						{ width: "125px", targets: 3 },
+						{ width: "90px", targets: 4 },
+						{ width: "46px", targets: 5 },
+						{ width: "135px", targets: 6 },
+						//{ visible: false, targets: 1 },
+						{ searchable: false, targets: [ 0, 5, 6 ] },
+						{ orderable: false, targets: [ 0, 5, 6 ] },
+						{ responsivePriority: 1, targets: 6 },
+						{ responsivePriority: 2, targets: 5 },
+						{ targets: -1, className: "dt-body-right" }
+					]
+				});
+
+				return tableCampaign;
+			}
+
+			function initDispositionTable() {
+				if (tableDisposition !== null) {
+					return tableDisposition;
+				}
+
+				tableDisposition = $('#table_disposition').DataTable({
+					destroy:true,
+					responsive:true,
+					autoWidth:false,
+					stateSave:true,
+					drawCallback:function(settings) {
+						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+						pagination.toggle(this.api().page.info().pages > 1);
+					},
+					rowCallback: function( row, data ) {
+						//console.log(data[3]);
+						if ( data[3] == "" ) {
+							$(row).addClass('no_status_row');
+							$('.no_status_row').find($('li')).addClass('disabled');
+							$('.no_status_row').find($('.edit_disposition')).removeClass('edit_disposition').addClass('disabled_edit_disposition');
+							$('.no_status_row').find($('.view_disposition')).removeClass('view_disposition').addClass('disabled_view_disposition');
+							$('.no_status_row').find($('.delete_disposition_modal')).removeClass('delete_disposition_modal').addClass('disabled_delete_disposition');
+						}
+					},
+					columnDefs:[
+						{ width: "46px", targets: 0 },
+						{ width: "120px", targets: 1 },
+						{ width: "135px", targets: 4 },
+						{ searchable: false, targets: [ 0, 4 ] },
+						{ orderable: false, targets: [ 0, 4 ] },
+						{ responsivePriority: 1, targets: 4 },
+						{ responsivePriority: 2, targets: 2 },
+						{ targets: -1, className: "dt-body-right" }
+					]
+				});
+
+				return tableDisposition;
+			}
 
 			$(document).on('click', '#table_leadrecycling .dropdown-menu li.disabled a', function(e) {
 				e.preventDefault();
@@ -1885,65 +1873,142 @@
 				return false;
 			});
 
-			var tableLeadRecycling = $('#table_leadrecycling').DataTable({
-				destroy:true,
-				responsive:true,
-				autoWidth:false,
-				stateSave:true,
-				drawCallback:function(settings) {
-					var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
-					pagination.toggle(this.api().page.info().pages > 1);
-				},
-				rowCallback: function( row, data ) {
-					//console.log(data[3]);
-					if ( data[3] == "" ) {
-						var $row = $(row);
-						$row.addClass('no_leadrecycle_row');
-						$row.find('li').addClass('disabled');
-						$row.find('.view_leadrecycling')
-							.removeClass('view_leadrecycling')
-							.addClass('disabled_view_leadrecycling')
-							.removeAttr('href data-toggle data-target')
-							.attr({ 'aria-disabled': 'true', 'tabindex': '-1' });
-						$row.find('.delete_leadrecycling')
-							.removeClass('delete_leadrecycling')
-							.addClass('disabled_delete_leadrecycling')
-							.removeAttr('href')
-							.attr({ 'aria-disabled': 'true', 'tabindex': '-1' });
-					}
-				},
-				columnDefs:[
-					{ width: "46px", targets: 0 },
-					{ width: "120px", targets: 1 },
-					{ width: "135px", targets: 4 },
-					{ searchable: false, targets: [ 0, 4 ] },
-					{ orderable: false, targets: [ 0, 4 ] },
-					{ responsivePriority: 1, targets: 4 },
-					{ responsivePriority: 2, targets: 3 },
-					{ targets: -1, className: "dt-body-right" }
-				]
-			});
+			function initLeadRecyclingTable() {
+				if (tableLeadRecycling !== null) {
+					return tableLeadRecycling;
+				}
 
-			//$('#table_areacode').dataTable();
+				tableLeadRecycling = $('#table_leadrecycling').DataTable({
+					destroy:true,
+					responsive:true,
+					autoWidth:false,
+					stateSave:true,
+					drawCallback:function(settings) {
+						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
+						pagination.toggle(this.api().page.info().pages > 1);
+					},
+					rowCallback: function( row, data ) {
+						//console.log(data[3]);
+						if ( data[3] == "" ) {
+							var $row = $(row);
+							$row.addClass('no_leadrecycle_row');
+							$row.find('li').addClass('disabled');
+							$row.find('.view_leadrecycling')
+								.removeClass('view_leadrecycling')
+								.addClass('disabled_view_leadrecycling')
+								.removeAttr('href data-toggle data-target')
+								.attr({ 'aria-disabled': 'true', 'tabindex': '-1' });
+							$row.find('.delete_leadrecycling')
+								.removeClass('delete_leadrecycling')
+								.addClass('disabled_delete_leadrecycling')
+								.removeAttr('href')
+								.attr({ 'aria-disabled': 'true', 'tabindex': '-1' });
+						}
+					},
+					columnDefs:[
+						{ width: "46px", targets: 0 },
+						{ width: "120px", targets: 1 },
+						{ width: "135px", targets: 4 },
+						{ searchable: false, targets: [ 0, 4 ] },
+						{ orderable: false, targets: [ 0, 4 ] },
+						{ responsivePriority: 1, targets: 4 },
+						{ responsivePriority: 2, targets: 3 },
+						{ targets: -1, className: "dt-body-right" }
+					]
+				});
 
-			$('#table_leadfilter').DataTable({
-				destroy:true,
-				responsive:true,
-				autoWidth:false,
-				columnDefs:[
-					{ width: "46px", targets: 0 },
-					{ width: "120px", targets: 1 },
-					{ width: "135px", targets: 3 },
-					{ searchable: false, targets: [ 0, 3 ] },
-					{ orderable: false, targets: [ 0, 3 ] },
-					{ targets: -1, className: "dt-body-right" }
-				]
-			});
+				return tableLeadRecycling;
+			}
+
+			function initLeadFilterTable() {
+				if (tableLeadFilter !== null) {
+					return tableLeadFilter;
+				}
+
+				tableLeadFilter = $('#table_leadfilter').DataTable({
+					destroy:true,
+					responsive:true,
+					autoWidth:false,
+					columnDefs:[
+						{ width: "46px", targets: 0 },
+						{ width: "120px", targets: 1 },
+						{ width: "135px", targets: 3 },
+						{ searchable: false, targets: [ 0, 3 ] },
+						{ orderable: false, targets: [ 0, 3 ] },
+						{ targets: -1, className: "dt-body-right" }
+					]
+				});
+
+				return tableLeadFilter;
+			}
+
+			if ($('#T_campaign').hasClass('active')) {
+				initCampaignTable();
+			}
+			if ($('#T_disposition').hasClass('active')) {
+				initDispositionTable();
+			}
+			if ($('#T_recycling').hasClass('active')) {
+				initLeadRecyclingTable();
+			}
+			if ($('#T_leadfilter').hasClass('active')) {
+				initLeadFilterTable();
+			}
+			if ($('#T_areacode').hasClass('active')) {
+				initAreaCodeTable();
+			}
 
 			// FAB HOVER
 			$(".bottom-menu").on('mouseenter mouseleave', function () {
 				$(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
 			});
+
+			var campaignModalDataLoaded = false;
+			var campaignModalDataLoading = false;
+
+			function populateOptions($select, options) {
+				$select.empty();
+				$.each(options || [], function(index, option) {
+					$('<option>')
+						.val(option.value)
+						.text(option.label)
+						.appendTo($select);
+				});
+			}
+
+			function loadCampaignModalData() {
+				if (campaignModalDataLoaded || campaignModalDataLoading) {
+					return;
+				}
+
+				campaignModalDataLoading = true;
+				$.ajax({
+					url: './php/GetTelephonyCampaignModalData.php',
+					type: 'POST',
+					dataType: 'json',
+					success: function(response) {
+						populateOptions($('#ingroup-text'), response.ingroups);
+						populateOptions($('#ivr-text'), response.ivrs);
+						populateOptions($('#agent-text'), response.users);
+						populateOptions($('#voicemail-text'), response.voicemails);
+
+						var $dialPrefix = $('#dial_prefix');
+						$dialPrefix.empty().append($('<option>').val('CUSTOM').text('CUSTOM DIAL PREFIX'));
+						$.each(response.carriers || [], function(index, option) {
+							$('<option>')
+								.val(option.value)
+								.text(option.label)
+								.appendTo($dialPrefix);
+						});
+						$dialPrefix.val('CUSTOM').trigger('change');
+
+						campaignModalDataLoaded = true;
+					},
+					complete: function() {
+						campaignModalDataLoading = false;
+					}
+				});
+			}
 
 			var dial_prefix = $('#dial_prefix').val();
 			dialPrefix(dial_prefix);
@@ -1953,6 +2018,7 @@
 			});
 			$(".colorpicker").colorpicker();
 			$('#add_campaign').on('shown.bs.modal', function () {
+				loadCampaignModalData();
 				$(".colorpicker").colorpicker();
 				$('#did-tfn-extension').autocomplete({
 					//source: "php/searchDID.php",
@@ -2192,9 +2258,26 @@
 			});
 
 			$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-  				var target = $(e.target).attr("href") // activated tab
+  					var target = $(e.target).attr("href") // activated tab
 				var listid = $('.lists-id').val();
-  				if(target === "#tab_2"){
+
+				if(target === "#T_campaign"){
+					initCampaignTable();
+				}
+				if(target === "#T_disposition"){
+					initDispositionTable();
+				}
+				if(target === "#T_recycling"){
+					initLeadRecyclingTable();
+				}
+				if(target === "#T_leadfilter"){
+					initLeadFilterTable();
+				}
+				if(target === "#T_areacode"){
+					initAreaCodeTable();
+				}
+
+  					if(target === "#tab_2"){
 					$.ajax({
 						url: "./php/GetListsStatuses.php",
 						type: 'POST',
@@ -4202,7 +4285,12 @@
 					}
 				});
 
-			$('#table_areacode').DataTable( {
+			function initAreaCodeTable() {
+				if (tableAreaCode !== null) {
+					return tableAreaCode;
+				}
+
+				tableAreaCode = $('#table_areacode').DataTable( {
 				"processing": true,
 				"serverSide": true,
 				"autoWidth": false,
@@ -4269,6 +4357,9 @@
 					goAvatar._init(goOptions);
 				}
 			});
+
+				return tableAreaCode;
+			}
 
 		}); // end of document ready
 

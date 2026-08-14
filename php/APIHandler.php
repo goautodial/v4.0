@@ -35,6 +35,7 @@
 	require_once(__DIR__ . '/CRMUtils.php');
 	require_once(__DIR__ . '/goCRMAPISettings.php');
 	require_once(__DIR__ . '/SessionHandler.php');
+	require_once(__DIR__ . '/PerformanceTimer.php');
 	$session_class = new \creamy\SessionHandler();
 
 	// ini_set('display_errors', 1);
@@ -80,6 +81,8 @@
 
 		// language handler
 		private $lh;
+		private ?object $goPackageCache = null;
+		private ?object $groupPermissionCache = null;
 
 		/** Creation and class lifetime management */
 
@@ -128,55 +131,162 @@
 		* @return Array $output
 		*/
 		public function API_Request($folder, $postfields, $request_data = false){
-			$url = gourl."/".$folder."/goAPI.php";
-			$responsetype = "json";
+			$timer = \creamy\PerformanceTimer::begin();
+			$apiAction = is_array($postfields) ? ($postfields['goAction'] ?? '') : '';
+			$apiTimingLabel = 'api_request_' . preg_replace('/[^A-Za-z0-9_]/', '_', $folder . '_' . $apiAction);
+			try {
+				$url = gourl."/".$folder."/goAPI.php";
+				$responsetype = "json";
 
-			// Constant Data to be passed
+				// Constant Data to be passed
+				$default_entries = [
+					'goUser' => session_user,
+					'goPass' => session_password,
+					'responsetype' => $responsetype,
+					'session_user' => session_user,
+					'log_user' => session_user,
+					'log_group' => session_usergroup,
+					'log_ip' => $_SERVER['REMOTE_ADDR'],
+					'log_pass' => log_pass,
+					'hostname' => $_SERVER['REMOTE_ADDR']];
+
+				$postfields = is_array($postfields) ? $postfields : [];
+					$postdata = array_merge($default_entries, $postfields);
+
+				// Call the API
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_POST, 1);
+				curl_setopt($ch, CURLOPT_TIMEOUT, 0);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postdata));
+				$data = curl_exec($ch);
+
+				if($request_data === true) {
+					return $data;
+				}
+
+				$output = is_string($data) ? json_decode($data) : null;
+				if ($output === null && json_last_error() !== JSON_ERROR_NONE) {
+					$output = (object) [
+						'result' => 'error',
+						'message' => 'Invalid API response',
+						'raw_response' => is_string($data) ? $data : ''
+					];
+				} elseif ($output === null) {
+					$output = (object) [
+						'result' => 'error',
+						'message' => 'Empty API response',
+						'raw_response' => ''
+					];
+				}
+
+				return $output;
+			} finally {
+				\creamy\PerformanceTimer::logSlow('api_request', $timer, [
+					'folder' => $folder,
+					'action' => $apiAction,
+				]);
+				\creamy\PerformanceTimer::end('api_request', $timer);
+				\creamy\PerformanceTimer::end($apiTimingLabel, $timer);
+			}
+		}
+
+		public function API_RequestBatch(array $requests): array
+		{
+			if (!function_exists('curl_multi_init')) {
+				$results = [];
+				foreach ($requests as $key => $request) {
+					$results[$key] = $this->API_Request($request['folder'], $request['postfields'], $request['request_data'] ?? false);
+				}
+
+				return $results;
+			}
+
+			$batchTimer = \creamy\PerformanceTimer::begin();
+			$multiHandle = curl_multi_init();
+			$handles = [];
+			$results = [];
+
 			$default_entries = [
 				'goUser' => session_user,
 				'goPass' => session_password,
-				'responsetype' => $responsetype,
+				'responsetype' => 'json',
 				'session_user' => session_user,
 				'log_user' => session_user,
 				'log_group' => session_usergroup,
 				'log_ip' => $_SERVER['REMOTE_ADDR'],
 				'log_pass' => log_pass,
-				'hostname' => $_SERVER['REMOTE_ADDR']];
+				'hostname' => $_SERVER['REMOTE_ADDR']
+			];
 
-			$postfields = is_array($postfields) ? $postfields : [];
+			foreach ($requests as $key => $request) {
+				$folder = $request['folder'];
+				$postfields = is_array($request['postfields'] ?? null) ? $request['postfields'] : [];
 				$postdata = array_merge($default_entries, $postfields);
 
-			// Call the API
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_TIMEOUT, 0);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postdata));
-			$data = curl_exec($ch);
+				$handle = curl_init();
+				curl_setopt($handle, CURLOPT_URL, gourl . "/" . $folder . "/goAPI.php");
+				curl_setopt($handle, CURLOPT_POST, 1);
+				curl_setopt($handle, CURLOPT_TIMEOUT, 0);
+				curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, 0);
+				curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, 0);
+				curl_setopt($handle, CURLOPT_POSTFIELDS, http_build_query($postdata));
 
-			if($request_data === true) {
-				return $data;
-			}
-
-			$output = is_string($data) ? json_decode($data) : null;
-			if ($output === null && json_last_error() !== JSON_ERROR_NONE) {
-				$output = (object) [
-					'result' => 'error',
-					'message' => 'Invalid API response',
-					'raw_response' => is_string($data) ? $data : ''
-				];
-			} elseif ($output === null) {
-				$output = (object) [
-					'result' => 'error',
-					'message' => 'Empty API response',
-					'raw_response' => ''
+				curl_multi_add_handle($multiHandle, $handle);
+				$handles[$key] = [
+					'handle' => $handle,
+					'folder' => $folder,
+					'action' => $postfields['goAction'] ?? '',
+					'request_data' => $request['request_data'] ?? false,
 				];
 			}
 
-			return $output;
+			$running = null;
+			do {
+				$status = curl_multi_exec($multiHandle, $running);
+				if ($running) {
+					curl_multi_select($multiHandle, 1.0);
+				}
+			} while ($running && $status === CURLM_OK);
+
+			foreach ($handles as $key => $request) {
+				$handle = $request['handle'];
+				$data = curl_multi_getcontent($handle);
+				if ($request['request_data'] === true) {
+					$results[$key] = $data;
+				} else {
+					$output = is_string($data) ? json_decode($data) : null;
+					if ($output === null && json_last_error() !== JSON_ERROR_NONE) {
+						$output = (object) [
+							'result' => 'error',
+							'message' => 'Invalid API response',
+							'raw_response' => is_string($data) ? $data : ''
+						];
+					} elseif ($output === null) {
+						$output = (object) [
+							'result' => 'error',
+							'message' => 'Empty API response',
+							'raw_response' => ''
+						];
+					}
+
+					$results[$key] = $output;
+				}
+
+				curl_multi_remove_handle($multiHandle, $handle);
+			}
+
+			curl_multi_close($multiHandle);
+			\creamy\PerformanceTimer::logSlow('api_request_batch', $batchTimer, [
+				'count' => count($requests),
+			]);
+			\creamy\PerformanceTimer::end('api_request_batch', $batchTimer);
+
+			return $results;
 		}
 
 		/*
@@ -288,20 +398,32 @@
 		}
 
 		public function API_getGOPackage(){
+			if ($this->goPackageCache !== null) {
+				return $this->goPackageCache;
+			}
+
 			$postfields = [
 				'goAction' => 'goGetPackage'
 			];
 
-			return $this->API_Request("goPackages", $postfields);
+			$this->goPackageCache = $this->API_Request("goPackages", $postfields);
+
+			return $this->goPackageCache;
 		}
 
 		public function API_goGetGroupPermission() {
+			if ($this->groupPermissionCache !== null) {
+				return $this->groupPermissionCache;
+			}
+
 			$postfields = [
 				'goAction' => 'goGetUserGroupInfo',
 				'user_group' => session_usergroup
 			];
 
-			return $this->API_Request("goUserGroups", $postfields);
+			$this->groupPermissionCache = $this->API_Request("goUserGroups", $postfields);
+
+			return $this->groupPermissionCache;
 		}
 
 		public function goGetPermissions($type = 'dashboard') {
@@ -576,6 +698,59 @@
 			return $this->API_Request("goCampaigns", $postfields);
 		}
 
+		public function API_getTelephonyCampaignsPageData(): array
+		{
+			return $this->API_RequestBatch([
+				'campaign' => [
+					'folder' => 'goCampaigns',
+					'postfields' => ['goAction' => 'goGetAllCampaigns'],
+				],
+				'disposition' => [
+					'folder' => 'goDispositions',
+					'postfields' => ['goAction' => 'goGetAllDispositions'],
+				],
+				'leadrecycling' => [
+					'folder' => 'goLeadRecycling',
+					'postfields' => ['goAction' => 'goGetAllLeadRecycling'],
+				],
+				'dialStatus' => [
+					'folder' => 'goDialStatus',
+					'postfields' => [
+						'goAction' => 'goGetAllDialStatuses',
+						'campaign_id' => 'ALL',
+						'is_selectable' => 0,
+						'add_hotkey' => 1,
+					],
+				],
+			]);
+		}
+
+		public function API_getTelephonyCampaignModalData(): array
+		{
+			return $this->API_RequestBatch([
+				'ingroup' => [
+					'folder' => 'goInbound',
+					'postfields' => ['goAction' => 'goGetAllIngroup'],
+				],
+				'ivr' => [
+					'folder' => 'goInbound',
+					'postfields' => ['goAction' => 'goGetAllIVR'],
+				],
+				'voicemails' => [
+					'folder' => 'goVoiceFiles',
+					'postfields' => ['goAction' => 'goGetAllVoiceFiles'],
+				],
+				'users' => [
+					'folder' => 'goUsers',
+					'postfields' => ['goAction' => 'goGetAllUsers'],
+				],
+				'carriers' => [
+					'folder' => 'goCarriers',
+					'postfields' => ['goAction' => 'goGetAllCarriers'],
+				],
+			]);
+		}
+
 		public function API_getAllAudioFiles(){
 			$postfields = [
 				'goAction' => 'getAllAudioFiles'
@@ -629,6 +804,7 @@
 			];
 			return $this->API_Request("goDashboard", $postfields);
 		}
+
 
 		public function API_getTotalAgentsStatistics(){
 			$postfields = [

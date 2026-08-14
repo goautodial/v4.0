@@ -3,7 +3,7 @@
  * @file        API_getTotalAnsweredCalls.php
  * @brief       Displays total answered calls
  * @copyright   Copyright (c) 2018 GOautodial Inc.
- * @author		Demian Lizandro A. Biscocho 
+ * @author		Demian Lizandro A. Biscocho
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -21,16 +21,16 @@
 */
 
 	require_once(__DIR__ . '/APIHandler.php');
-	
+
 	$api 										= \creamy\APIHandler::getInstance();
-	$output 									= $api->API_getTotalAnsweredCalls(); 
-	
-    $calls 										= $output->data;
+	$output 									= $api->API_getTotalAnsweredCalls();
+
+    $calls 										= is_object($output) ? ($output->data ?? 0) : 0;
 
     if($calls == NULL || $calls == 0){
         $calls 									= 0;
     }
-        
-    echo number_format($calls); 
+
+    echo number_format($calls);
 
 ?>

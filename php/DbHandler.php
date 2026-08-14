@@ -33,6 +33,7 @@ require_once(__DIR__ . '/LanguageHandler.php');
 require_once(__DIR__ . '/APIHandler.php');
 require_once(__DIR__ . '/DatabaseConnectorFactory.php');
 require_once(__DIR__ . '/goCRMAPISettings.php');
+require_once(__DIR__ . '/PerformanceTimer.php');
 
 /**
  * DbHandler class.
@@ -59,17 +60,22 @@ class DbHandler {
 	/** Creation and class lifetime management */
 
     function __construct($dbConnectorType = CRM_DB_CONNECTOR_TYPE_MYSQL) {
-		// Database connector
-		$this->dbConnector = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType($dbConnectorType);
-		$this->dbConnectorAsterisk = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfTypeAsterisk($dbConnectorType);
-		$this->dbConnectorKamailio = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfTypeKamailio($dbConnectorType);
+			$timer = \creamy\PerformanceTimer::begin();
+			try {
+				// Database connector
+				$this->dbConnector = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType($dbConnectorType);
+				$this->dbConnectorAsterisk = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfTypeAsterisk($dbConnectorType);
+				$this->dbConnectorKamailio = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfTypeKamailio($dbConnectorType);
 
-		// language handler
-		$locale = $this->getLocaleSetting();
-		$this->lh = \creamy\LanguageHandler::getInstance($locale, $dbConnectorType);
+				// language handler
+				$locale = $this->getLocaleSetting();
+				$this->lh = \creamy\LanguageHandler::getInstance($locale, $dbConnectorType);
 
-		// api handler
-		$this->api = \creamy\APIHandler::getInstance();
+				// api handler
+				$this->api = \creamy\APIHandler::getInstance();
+			} finally {
+				\creamy\PerformanceTimer::end('dbhandler_construct', $timer);
+			}
 
     }
 

@@ -5,6 +5,7 @@ namespace creamy;
 require_once(__DIR__ . '/CRMDefaults.php');
 require_once(__DIR__ . '/LanguageHandler.php');
 require_once(__DIR__ . '/DatabaseConnectorFactory.php');
+require_once(__DIR__ . '/PerformanceTimer.php');
 
 class SessionHandler implements \SessionHandlerInterface {
 	/** Class version
@@ -47,25 +48,30 @@ class SessionHandler implements \SessionHandlerInterface {
 	 * @param bool	 	$encrypt 	- Encrypt session data
 	 */
 	function __construct ($table = NULL, $lifeTime = 0, /** Encrypt session data
-     */
+    */
     private $encrypt = TRUE) {
-		$this->db = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType(CRM_DB_CONNECTOR_TYPE_MYSQL);
+			$timer = \creamy\PerformanceTimer::begin();
+			try {
+				$this->db = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType(CRM_DB_CONNECTOR_TYPE_MYSQL);
 
-		$this->lifeTime = ($lifeTime === 0) ? CRM_SESSION_EXPIRATION : $lifeTime;
+				$this->lifeTime = ($lifeTime === 0) ? CRM_SESSION_EXPIRATION : $lifeTime;
 
-		// Session storage table
-		$this->table = ($table == NULL) ? $this->table : $table;
+				// Session storage table
+				$this->table = ($table == NULL) ? $this->table : $table;
 
-		if (session_status() === PHP_SESSION_ACTIVE) {
-			return;
+				if (session_status() === PHP_SESSION_ACTIVE) {
+					return;
+				}
+
+				// Hook up handler
+				session_set_save_handler($this, true);
+
+				// Start session
+				session_start();
+			} finally {
+				\creamy\PerformanceTimer::end('session_construct', $timer);
+			}
 		}
-
-		// Hook up handler
-		session_set_save_handler($this, true);
-
-		// Start session
-		session_start();
-	}
 
 	function __destruct () {
 		@session_write_close();
@@ -119,19 +125,24 @@ class SessionHandler implements \SessionHandlerInterface {
 	 * @return bool
 	 */
 	function _Close() {
-		//error_log('_Close');
-		// Run the garbage collector in 15% of f. calls
-		if (random_int(1, 100) <= 15) $this->_GC();
-		// Run the garbage collector for expired sessions
-		$session_id = session_id();
-		$this->db->where('session_id', md5($session_id));
-		$this->db->where('last_activity', time(), '<');
-		$this->db->get($this->table);
-		//error_log($this->db->getRowCount());
-		if ($this->db->getRowCount() > 0) {
-			$this->_GC();
+		$timer = \creamy\PerformanceTimer::begin();
+		try {
+			//error_log('_Close');
+			// Run the garbage collector in 15% of f. calls
+			if (random_int(1, 100) <= 15) $this->_GC();
+			// Run the garbage collector for expired sessions
+			$session_id = session_id();
+			$this->db->where('session_id', md5($session_id));
+			$this->db->where('last_activity', time(), '<');
+			$this->db->get($this->table);
+			//error_log($this->db->getRowCount());
+			if ($this->db->getRowCount() > 0) {
+				$this->_GC();
+			}
+			return TRUE;
+		} finally {
+			\creamy\PerformanceTimer::end('session_close', $timer);
 		}
-		return TRUE;
 	}
 
 	/** Read session data
@@ -139,21 +150,26 @@ class SessionHandler implements \SessionHandlerInterface {
 	 * @return string
 	 */
 	function _Read($session_id) {
-		// Read entry
-		//error_log('_Read');
-		$this->db->where('session_id', md5($session_id));
-		//$this->db->where('user_agent', $this->getUserAgent());
-		$this->db->where('ip_address', $this->getUserIP());
-		$this->db->where('last_activity', time(), '>');
-		$this->db->orderBy('last_activity', 'DESC');
-		$result = $this->db->getOne($this->table, 'user_data');
+		$timer = \creamy\PerformanceTimer::begin();
+		try {
+			// Read entry
+			//error_log('_Read');
+			$this->db->where('session_id', md5($session_id));
+			//$this->db->where('user_agent', $this->getUserAgent());
+			$this->db->where('ip_address', $this->getUserIP());
+			$this->db->where('last_activity', time(), '>');
+			$this->db->orderBy('last_activity', 'DESC');
+			$result = $this->db->getOne($this->table, 'user_data');
 
-		// Return data or null
-		//return ($this->db->getRowCount() > 0 && ($row = $result)) ? $this->encrypt ?  $this->decrypt($row['user_data']) : $row['user_data'] : NULL;
+			// Return data or null
+			//return ($this->db->getRowCount() > 0 && ($row = $result)) ? $this->encrypt ?  $this->decrypt($row['user_data']) : $row['user_data'] : NULL;
 
-		// Return empty string not null PHP > 7.0
-		// https://www.php.net/manual/en/function.session-start.php#120589
-		return ($this->db->getRowCount() > 0 && ($row = $result)) ? $this->encrypt ?  $this->decrypt($row['user_data']) : $row['user_data'] : '';
+			// Return empty string not null PHP > 7.0
+			// https://www.php.net/manual/en/function.session-start.php#120589
+			return ($this->db->getRowCount() > 0 && ($row = $result)) ? $this->encrypt ?  $this->decrypt($row['user_data']) : $row['user_data'] : '';
+		} finally {
+			\creamy\PerformanceTimer::end('session_read', $timer);
+		}
 	}
 
 	/** Initialize session
@@ -161,32 +177,37 @@ class SessionHandler implements \SessionHandlerInterface {
 	 * @param string 	$data 		- Session data
 	 */
 	function _Write($session_id, $data) {
-		//error_log('_Write');
-		if (!empty($data)) {
-			$insertData = [
-				'session_id' => md5($session_id),
-				'user_agent' => $this->getUserAgent(),
-				'last_activity' => time() + $this->lifeTime,
-				'user_data' => $this->encrypt ? $this->encrypt($data) : $data,
-				'ip_address' => $this->getUserIP()
-			];
+		$timer = \creamy\PerformanceTimer::begin();
+		try {
+			//error_log('_Write');
+			if (!empty($data)) {
+				$insertData = [
+					'session_id' => md5($session_id),
+					'user_agent' => $this->getUserAgent(),
+					'last_activity' => time() + $this->lifeTime,
+					'user_data' => $this->encrypt ? $this->encrypt($data) : $data,
+					'ip_address' => $this->getUserIP()
+				];
 
-			// Update first to avoid duplicate primary-key exceptions in PHP 8 mysqli.
-			$updateData = [
-				'user_agent' => $this->getUserAgent(),
-				'last_activity' => time() + $this->lifeTime,
-				'user_data' => $this->encrypt ? $this->encrypt($data) : $data,
-				'ip_address' => $this->getUserIP()
-			];
+				// Update first to avoid duplicate primary-key exceptions in PHP 8 mysqli.
+				$updateData = [
+					'user_agent' => $this->getUserAgent(),
+					'last_activity' => time() + $this->lifeTime,
+					'user_data' => $this->encrypt ? $this->encrypt($data) : $data,
+					'ip_address' => $this->getUserIP()
+				];
 
-			$this->db->where('session_id', md5($session_id));
-			$this->db->update($this->table, $updateData);
+				$this->db->where('session_id', md5($session_id));
+				$this->db->update($this->table, $updateData);
 
-			if ($this->db->getRowCount() < 1) {
-				$this->db->insert($this->table, $insertData);
+				if ($this->db->getRowCount() < 1) {
+					$this->db->insert($this->table, $insertData);
+				}
 			}
+			return TRUE;
+		} finally {
+			\creamy\PerformanceTimer::end('session_write', $timer);
 		}
-		return TRUE;
 	}
 
 	/** Destroy session
@@ -206,11 +227,16 @@ class SessionHandler implements \SessionHandlerInterface {
 	 * @return 	integer	- Affected rows
 	 */
 	function _GC($maxlifetime = 0) {
-		//error_log('_GC');
-		// Remove expired sessions
-		$this->db->where('last_activity', time(), '<');
-		$result = $this->db->delete($this->table);
-		return (bool) $result;
+		$timer = \creamy\PerformanceTimer::begin();
+		try {
+			//error_log('_GC');
+			// Remove expired sessions
+			$this->db->where('last_activity', time(), '<');
+			$result = $this->db->delete($this->table);
+			return (bool) $result;
+		} finally {
+			\creamy\PerformanceTimer::end('session_gc', $timer);
+		}
 	}
 
 	/** Encrypt session data

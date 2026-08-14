@@ -29,6 +29,7 @@ namespace creamy;
 require_once(__DIR__ . '/CRMDefaults.php');
 require_once(__DIR__ . '/CRMUtils.php');
 require_once(__DIR__ . '/DatabaseConnectorFactory.php');
+require_once(__DIR__ . '/PerformanceTimer.php');
 @include_once(__DIR__ . '/Config.php');
 
 define('CRM_LANGUAGE_DEFAULT_LOCALE', 'en_US');
@@ -53,11 +54,13 @@ define('CRM_LANGUAGE_BASE_DIR', DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR);
 	/** Creation and class lifetime management */
 
 	/**
-     * Returns the singleton instance of LanguageHandler.
-     * @staticvar LanguageHandler $instance The LanguageHandler instance of this class.
-     * @return LanguageHandler The singleton instance.
-     */
-    public static function getInstance($locale = null, $databaseConnectorType = CRM_DB_CONNECTOR_TYPE_MYSQL)
+	     * Returns the singleton instance of LanguageHandler.
+	     * @param string|null $locale
+	     * @param string $databaseConnectorType
+	     * @staticvar LanguageHandler $instance The LanguageHandler instance of this class.
+	     * @return LanguageHandler The singleton instance.
+	     */
+	    public static function getInstance($locale = null, $databaseConnectorType = CRM_DB_CONNECTOR_TYPE_MYSQL): self
     {
         static $instance = null;
         if (null === $instance) {
@@ -67,47 +70,56 @@ define('CRM_LANGUAGE_BASE_DIR', DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR);
         return $instance;
     }
 
-    /**
-     * Protected constructor to prevent creating a new instance of the
-     * *Singleton* via the `new` operator from outside of this class.
-     */
-    protected function __construct($locale = null, $databaseConnectorType = CRM_DB_CONNECTOR_TYPE_MYSQL)
+	    /**
+	     * Protected constructor to prevent creating a new instance of the
+	     * *Singleton* via the `new` operator from outside of this class.
+	     * @param string|null $locale
+	     * @param string $databaseConnectorType
+	     */
+	    protected function __construct($locale = null, $databaseConnectorType = CRM_DB_CONNECTOR_TYPE_MYSQL)
     {
-		// initialize language and user locale
-		if (isset($locale)) { $this->locale = $locale; } // if specified, set this locale.
-		else if (\creamy\DatabaseConnectorFactory::instantiationAvailableForConnectorOfType($databaseConnectorType)) {
-			// else if we have access to database, check the CRM locale setting.
-			$dbConnector = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType($databaseConnectorType);
-			$dbConnector->where("setting", CRM_SETTING_LOCALE);
-			if ($settingRow = $dbConnector->getOne(CRM_SETTINGS_TABLE_NAME)) { $this->locale = $settingRow["value"]; }
-		}
-		// if locale could not be stablished, fallback to default.
-		if ($this->locale === null) { $this->locale = CRM_LANGUAGE_DEFAULT_LOCALE; }
+			$timer = \creamy\PerformanceTimer::begin();
+			try {
+				// initialize language and user locale
+				if (isset($locale)) { $this->locale = $locale; } // if specified, set this locale.
+				else if (\creamy\DatabaseConnectorFactory::instantiationAvailableForConnectorOfType($databaseConnectorType)) {
+					// else if we have access to database, check the CRM locale setting.
+					$dbConnector = \creamy\DatabaseConnectorFactory::getInstance()->getDatabaseConnectorOfType($databaseConnectorType);
+					$dbConnector->where("setting", CRM_SETTING_LOCALE);
+					if ($settingRow = $dbConnector->getOne(CRM_SETTINGS_TABLE_NAME)) { $this->locale = $settingRow["value"]; }
+				}
+				// if locale could not be stablished, fallback to default.
+				if ($this->locale === null) { $this->locale = CRM_LANGUAGE_DEFAULT_LOCALE; }
 
-		// initialize map of language texts.
-		$filepath = dirname(__FILE__, 2).CRM_LANGUAGE_BASE_DIR.$this->locale;
-		$translations = $this->getTranslationsFromFile($filepath);
-		if (!isset($translations)) { // fallback to en_US installation (everybody knows english, don't they?)
-			$filepath = dirname(__FILE__, 2).CRM_LANGUAGE_BASE_DIR."en_US";
-			$this->locale = "en_US";
-			$translations = $this->getTranslationsFromFile($filepath);
-		}
-		$this->texts = $translations;
+				// initialize map of language texts.
+				$filepath = dirname(__FILE__, 2).CRM_LANGUAGE_BASE_DIR.$this->locale;
+				$translations = $this->getTranslationsFromFile($filepath);
+				if (!isset($translations)) { // fallback to en_US installation (everybody knows english, don't they?)
+					$filepath = dirname(__FILE__, 2).CRM_LANGUAGE_BASE_DIR."en_US";
+					$this->locale = "en_US";
+					$translations = $this->getTranslationsFromFile($filepath);
+				}
+				$this->texts = $translations;
+			} finally {
+				\creamy\PerformanceTimer::end('language_construct', $timer);
+			}
     }
 
-    /**
-     * Private clone method to prevent cloning of the instance of the
-     * *Singleton* instance.
-     */
-    private function __clone()
-    {
-    }
+	    /**
+	     * Private clone method to prevent cloning of the instance of the
+	     * *Singleton* instance.
+	     * @return void
+	     */
+	    private function __clone(): void
+	    {
+	    }
 
-    /**
-     * Private unserialize method to prevent unserializing of the *Singleton*
-     * instance.
-     */
-	    public function __unserialize(array $data): void
+	    /**
+	     * Private unserialize method to prevent unserializing of the *Singleton*
+	     * instance.
+	     * @param array<string, mixed> $data
+	     */
+		    public function __unserialize(array $data): void
     {
         foreach ($data as $property => $value) {
             if (property_exists($this, $property)) {
@@ -120,21 +132,26 @@ define('CRM_LANGUAGE_BASE_DIR', DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR);
 
     /**
 	 * Parses a translation file and returns the results as an array.
-	 * @param String $filepath path for the file to parse.
-	 * @return array an associative array containing the translations found in $filename or null if the file couldn't be found.
-	 */
-    protected function getTranslationsFromFile($filepath) {
-	    if (file_exists($filepath)) { return parse_ini_file($filepath); }
-	    else return null;
+	     * @param String $filepath path for the file to parse.
+	     * @return array|bool|null an associative array containing the translations found in $filename or null if the file couldn't be found.
+	     */
+	    protected function getTranslationsFromFile($filepath): array|bool|null {
+		    $timer = \creamy\PerformanceTimer::begin();
+		    try {
+		        if (file_exists($filepath)) { return parse_ini_file($filepath); }
+		        else return null;
+		    } finally {
+		        \creamy\PerformanceTimer::end('language_parse_ini', $timer);
+		    }
     }
 
     /**
 	 * Adds a set of translations from a custom file to this language handler.
 	 * If the file has conflicting or existing keys, they will be overwritten with the ones found in $filepath.
-	 * @param String $filepath path for the file to parse and extract more translations.
-	 * @return Bool true if the file was successfully added (even though it has no translations inside), false otherwise.
-	 */
-	public function addCustomTranslationsFromFile($filepath) {
+	     * @param String $filepath path for the file to parse and extract more translations.
+	     * @return Bool true if the file was successfully added (even though it has no translations inside), false otherwise.
+	     */
+		public function addCustomTranslationsFromFile($filepath): bool {
 		if (file_exists($filepath)) {
 			$translations = parse_ini_file($filepath);
 			if (is_array($translations)) {
@@ -149,9 +166,10 @@ define('CRM_LANGUAGE_BASE_DIR', DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR);
 
 	/**
 	 * Sets the locale of the LanguageHandler locale
-	 * $locale String locale to set. If a language file for the specified language does not exists, the language will default to en_US.
+	 * @param string $locale locale to set. If a language file for the specified language does not exists, the language will default to en_US.
+	 * @return void
 	 */
-	public function setLanguageHandlerLocale($locale) {
+	public function setLanguageHandlerLocale($locale): void {
 		$filepath = dirname(__FILE__, 2).CRM_LANGUAGE_BASE_DIR.$locale;
 		if (!file_exists($filepath)) {
 			// fallback to en_US installation (everybody knows english, don't they?)
@@ -165,18 +183,19 @@ define('CRM_LANGUAGE_BASE_DIR', DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR);
 
 	/**
 	 * Return the direct translation for the string term given as parameter, depending on the configured locale.
-	 * @param $string String the string to search for in the translation table
-	 * @return String the translated text.
-	 */
-	public function translationFor($string) {
+	     * @param $string String the string to search for in the translation table
+	     * @return mixed the translated text.
+	     */
+	    public function translationFor($string): mixed {
 		return $this->texts[$string] ?? $string;
 	}
 
 	/**
 	 * Prints the direct translation for the string term given as parameter, depending on the configured locale.
-	 * @param $string String the string to search for in the translation table
-	 */
-	public function translateText($string) {
+	     * @param $string String the string to search for in the translation table
+	     * @return void
+	     */
+	    public function translateText($string): void {
 		if (isset($this->texts[$string])) {
 			print $this->texts[$string];
 		}
@@ -186,23 +205,26 @@ define('CRM_LANGUAGE_BASE_DIR', DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR);
 	/**
 	 * Gets the locale that's currently been used by this Language Handler.
 	 */
-	public function getLanguageHandlerLocale() { return $this->locale; }
+	public function getLanguageHandlerLocale(): mixed { return $this->locale; }
 
 	/**
 	 * Returns the language name description for the LanguageHandler locale.
+	 * @return string|bool
 	 */
-	public function getDisplayLanguage() { return \Locale::getDisplayLanguage($this->locale); }
+	public function getDisplayLanguage(): string|bool { return \Locale::getDisplayLanguage($this->locale); }
 
 	/**
 	 * Returns the primary language code the LanguageHandler locale.
+	 * @return ?string
 	 */
-	public function getPrimaryLanguage() { return \Locale::getPrimaryLanguage($this->locale); }
+	public function getPrimaryLanguage(): ?string { return \Locale::getPrimaryLanguage($this->locale); }
 
 	/**
 	 * Gets the date format for the current locale, using "dd" for days, "mm" for months, "yyyy"
 	 * for years, and "/" as separator (i.e: dd/mm/yyyy or yyyy/mm/dd).
+	 * @return string|array
 	 */
-	public function getDateFormatForCurrentLocale() {
+	public function getDateFormatForCurrentLocale(): string|array {
 		// get basic format
 		$df = new \IntlDateFormatter($this->locale, \IntlDateFormatter::SHORT, \IntlDateFormatter::NONE);
 		$fmt = $df->getPattern();
@@ -217,10 +239,11 @@ define('CRM_LANGUAGE_BASE_DIR', DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR);
 
 	/**
 	 * Translates a text, substituting all appearances of the terms passed in the "terms" parameter with their proper values in the translation table.
-	 * @param $string String the text to translate.
-	 * @param $terms Array an array of strings containing the terms to find and replace in the String $string.
-	 */
-	public function translationForTerms($string, $terms) {
+	     * @param $string String the text to translate.
+	     * @param $terms Array an array of strings containing the terms to find and replace in the String $string.
+	     * @return string|array
+	     */
+	    public function translationForTerms($string, $terms): string|array {
 		$translatedString = $string;
 		// iterate through all the terms.
 		foreach ($terms as $term) {
@@ -235,18 +258,20 @@ define('CRM_LANGUAGE_BASE_DIR', DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR);
 	/**
 	 * prints the translated text consisting on substituting all appearances of the terms passed in the "terms" parameter with their
 	 * proper values in the translation table.
-	 * @param $string String the text to translate.
-	 * @param $terms Array an array of strings containing the terms to find and replace in the String $string.
-	 */
-	public function translateTerms($string, $terms) {
+	     * @param $string String the text to translate.
+	     * @param $terms Array an array of strings containing the terms to find and replace in the String $string.
+	     * @return void
+	     */
+	    public function translateTerms($string, $terms): void {
 		print $this->translationForTerms($string, $terms);
 	}
 
 	/**
 	 * Gets an array with all the enabled languages in the CRM in the following form:
 	 * [ "en_US" => "en_US (american english)", "es_ES" => "es_ES (spanish)", ... ]
+	 * @return array<string, string>
 	 */
-	public static function getAvailableLanguages() {
+	public static function getAvailableLanguages(): array {
 		$files = scandir(\creamy\CRMUtils::creamyBaseDirectoryPath(false).CRM_LANGUAGE_BASE_DIR);
 		$result = [];
 		$ignoreLocales = ["datatables"];
@@ -260,8 +285,11 @@ define('CRM_LANGUAGE_BASE_DIR', DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR);
 		return $result;
 	}
 
-	/** Datatables */
-	public function urlForDatatablesTranslation() {
+	/**
+	 * Datatables
+	 * @return string|null
+	 */
+	public function urlForDatatablesTranslation(): ?string {
 		if ($language = $this->getDisplayLanguage()) {
 			$fileindisk = \creamy\CRMUtils::creamyBaseDirectoryPath(false).CRM_LANGUAGE_BASE_DIR."datatables".DIRECTORY_SEPARATOR.$language.".json";
 			if (file_exists($fileindisk)) {

@@ -25,6 +25,7 @@
 
 // dependencies
 namespace creamy;
+require_once(__DIR__ . '/PerformanceTimer.php');
 @include_once(__DIR__ . "/Config.php");
 
 
@@ -92,6 +93,7 @@ class DatabaseConnectorFactory {
 
 	    if ($type == CRM_DB_CONNECTOR_TYPE_MYSQL) { // MySQL Database connector
 		    require_once(__DIR__ . "/db_connectors/MysqliDb.php");
+		    $timer = \creamy\PerformanceTimer::begin();
 		    try {
 			    @$mysqldb = new \MysqliDb($dbhost, $dbuser, $dbpass, $dbname, $dbport);
 			    if (empty($mysqldb)) { throw new \Exception("Database access failed. Incorrect credentials or missing parameters."); }
@@ -110,6 +112,8 @@ class DatabaseConnectorFactory {
 		    } catch (\Throwable $exception) {
 		    	error_log('Database connector failure: ' . $exception->getMessage());
 		    	throw new \Exception("Incorrect credentials. Access denied or incorrect parameters.", 0, $exception);
+		    } finally {
+			    \creamy\PerformanceTimer::end('db_connector_crm', $timer);
 		    }
 
 	    } else {
@@ -128,6 +132,7 @@ class DatabaseConnectorFactory {
 
 	    if ($type == CRM_DB_CONNECTOR_TYPE_MYSQL) { // MySQL Database connector
 		    require_once(__DIR__ . "/db_connectors/MysqliDb.php");
+		    $timer = \creamy\PerformanceTimer::begin();
 		    try {
 			    @$mysqldb = new \MysqliDb($dbhost, $dbuser, $dbpass, $dbname, $dbport);
 			    if (empty($mysqldb)) { throw new \Exception("Database access failed. Incorrect credentials or missing parameters."); }
@@ -146,6 +151,8 @@ class DatabaseConnectorFactory {
 		    } catch (\Throwable $exception) {
 		    	error_log('Database connector failure: ' . $exception->getMessage());
 		    	throw new \Exception("Incorrect credentials. Access denied or incorrect parameters.", 0, $exception);
+		    } finally {
+			    \creamy\PerformanceTimer::end('db_connector_asterisk', $timer);
 		    }
 
 	    } else {
@@ -164,6 +171,7 @@ class DatabaseConnectorFactory {
 
 	    if ($type == CRM_DB_CONNECTOR_TYPE_MYSQL) { // MySQL Database connector
 		    require_once(__DIR__ . "/db_connectors/MysqliDb.php");
+		    $timer = \creamy\PerformanceTimer::begin();
 		    try {
 			    @$mysqldb = new \MysqliDb($dbhost, $dbuser, $dbpass, $dbname, $dbport);
 			    if (empty($mysqldb)) { throw new \Exception("Database access failed. Incorrect credentials or missing parameters."); }
@@ -171,6 +179,8 @@ class DatabaseConnectorFactory {
 			    return $mysqldb;
 		    } catch (\Exception $e) {
 		    	throw new \Exception("Kamailio database access failed: " . $e->getMessage(), 0, $e);
+		    } finally {
+			    \creamy\PerformanceTimer::end('db_connector_kamailio', $timer);
 		    }
 
 	    } else {
