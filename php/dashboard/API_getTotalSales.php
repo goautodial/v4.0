@@ -5,7 +5,7 @@ declare(strict_types=1);
  * @file        API_getTotalSales.php
  * @brief       Displays total inbound and outbound calls
  * @copyright   Copyright (c) 2020 GOautodial Inc.
- * @author		Demian Lizandro A. Biscocho 
+ * @author		Demian Lizandro A. Biscocho
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -23,21 +23,21 @@ declare(strict_types=1);
 */
 
 	require_once(__DIR__ . '/APIHandler.php');
-	
+
 	$api 										= \creamy\APIHandler::getInstance();
 	$type										= "all-daily";
-	
+
 	if ( isset($_POST['type']) ) {
 		$type									= ($_POST['type'] ?? '');
-	}	
+	}
 
-	$output 									= $api->API_getTotalSales($type);	
-    $sales 										= $output->data;
-    
+	$output 									= $api->API_getTotalSales($type);
+    $sales 										= $output->data ?? 0;
+
     if ( empty($sales) || is_null($sales) ) {
         $sales 									= 0;
     }
-        
+
     echo json_encode($sales);
-   
+
 ?>

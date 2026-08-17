@@ -5,7 +5,7 @@ declare(strict_types=1);
  * @file        API_getTotalCalls.php
  * @brief       Displays total inbound and outbound calls
  * @copyright   Copyright (c) 2020 GOautodial Inc.
- * @author		Demian Lizandro A. Biscocho 
+ * @author		Demian Lizandro A. Biscocho
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -23,21 +23,21 @@ declare(strict_types=1);
 */
 
 	require_once(__DIR__ . '/APIHandler.php');
-	
+
 	$api 										= \creamy\APIHandler::getInstance();
 	$type										= "all";
 
 	if ( isset($_POST['type']) ) {
 		$type									= ($_POST['type'] ?? '');
 	}
-	
-	$output 									= $api->API_getTotalCalls($type); 	
-    $calls 										= $output->data;
-    
+
+	$output 									= $api->API_getTotalCalls($type);
+    $calls 										= $output->data ?? 0;
+
     if ( empty($calls) || is_null($calls) ) {
         $calls 									= 0;
     }
-        
+
     echo json_encode($calls);
-    
+
 ?>

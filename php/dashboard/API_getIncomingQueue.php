@@ -3,7 +3,7 @@
  * @file        API_getIncomingQueue.php
  * @brief       Displays calls in inbound queue
  * @copyright   Copyright (c) 2018 GOautodial Inc.
- * @author		Demian Lizandro A. Biscocho 
+ * @author		Demian Lizandro A. Biscocho
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -21,16 +21,16 @@
 */
 
 	require_once(__DIR__ . '/APIHandler.php');
-	
+
 	$api 										= \creamy\APIHandler::getInstance();
-	$output 									= $api->API_getIncomingQueue(); 
-	
-    $calls 										= $output->data;
+	$output 									= $api->API_getIncomingQueue();
+
+    $calls 										= $output->data ?? 0;
 
     if ( empty($calls) || is_null($calls) ) {
         $calls 									= 0;
     }
-        
-    echo number_format($calls);  
+
+    echo number_format($calls);
 
 ?>
