@@ -3,7 +3,7 @@
  * @file        API_getClusterStatus.php
  * @brief       Displays server status
  * @copyright   Copyright (c) 2020 GOautodial Inc.
- * @author		Demian Lizandro A. Biscocho 
+ * @author		Demian Lizandro A. Biscocho
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -21,26 +21,27 @@
 */
 
 	require_once(__DIR__ . '/APIHandler.php');
-	
-	
-	
+
+
+
 	$api 										= \creamy\APIHandler::getInstance();
-	$output 									= $api->API_getClusterStatus();    
-    $cluster 									= '[';
-     
-    foreach ($output->data as $value) {
-    
+	$output 									= $api->API_getClusterStatus();
+		$clusterData 							= is_iterable($output->data ?? null) ? $output->data : [];
+	    $cluster 									= '[';
+
+	    foreach ($clusterData as $value) {
+
         $serverid 								= $value->server_id;
         $serverdesc 							= $value->server_description;
         $serverip 								= $value->server_ip;
         $status 								= $value->active;
-        $load 									= $value->sysload;    
+        $load 									= $value->sysload;
         $channels 								= $value->channels_total;
         $cpuidlepercent 						= $value->cpu_idle_percent;
         $diskusage 								= $value->disk_usage;
         $stime 									= $value->s_time;
         $utime 									= $value->u_time;
-    
+
         $disk_ary 								= explode('|', (string) $diskusage);
         $disk_ary_ct 							= (is_countable($disk_ary) ? count($disk_ary) : 0);
 
@@ -48,12 +49,12 @@
             $status 							= "ACTIVE";
             $statustextclass 					= "text-success";
         }
-        
+
         if ($status == "N") {
             $status								= "INACTIVE";
             $statustextclass 					= "text-danger";
         }
-        
+
         $k 										= 0;
 
         while ($k < $disk_ary_ct) {
@@ -66,60 +67,60 @@
 					$disk 						= "$disk_ary[$k]";
 				}
 			}
-			
+
 			$k++;
         }
 
         if ($load < 60) {
             $loadtextclass 						= "text-info";
         }
-        
+
         if ($load >= 60) {
             $loadtextclass 						= "text-warning";
         }
-        
+
         if ($load >= 80) {
             $loadtextclass 						= "text-danger";
         }
-        
+
         $diskusage 								= $disk;
-        
+
         if ($diskusage < 60) {
             $disktextclass 						= "text-info";
         }
-        
+
         if ($diskusage >= 60) {
             $disktextclass 						= "text-warning";
         }
-        
+
         if ($diskusage >= 80) {
             $disktextclass 						= "text-danger";
         }
-        
+
         $diskvalue01 							= (100 - $diskusage);
         //$diskvalue02 							= ($diskvalue01 + $diskusage);
         $radial 								= "<canvas classyloader='' data-percentage='.$diskusage.' data-speed='20' data-font-size='20px' data-diameter='30' data-line-color='#f35839' data-remaining-line-color='#edf2f6' data-line-width='40' width=''40'' height='40' class='js-is-in-view'></canvas>";
         $sessionAvatar 							= "<div class='media'><avatar username='$serverid' :size='36'></avatar></div>";
-        
-        $cluster 								.= '[';  
-        $cluster 								.= '"'.$serverid.'",';   
-        $cluster 								.= '"'.$serverip.'",';  
+
+        $cluster 								.= '[';
+        $cluster 								.= '"'.$serverid.'",';
+        $cluster 								.= '"'.$serverip.'",';
         $cluster 								.= '"<b class=\"'.$statustextclass.'\">'.$status.'</b>",';
-        $cluster 								.= '"<b class=\"'.$loadtextclass.'\">'.$load.'%</b>",';    
+        $cluster 								.= '"<b class=\"'.$loadtextclass.'\">'.$load.'%</b>",';
         $cluster 								.= '"'.$channels.'",';
         $cluster 								.= '"<b class=\"'.$disktextclass.'\">'.$diskusage.'%</b>",';
         //$cluster 								.= '"<div data-label=\"'.$diskusage.'%\" class=\"radial-bar radial-bar-'.$diskusage.' radial-bar-xs\"></div>",';
         //$cluster 								.= '"'.$radial.'",';
         $cluster 								.= '"'.date('M. d, Y h:i A', strtotime((string) $stime)).'"';
         $cluster 								.= '],';
-    
+
     }
 
-    $cluster 									= rtrim($cluster, ",");    
+    $cluster 									= rtrim($cluster, ",");
     $cluster 									.= ']';
-    
-    echo json_encode($cluster);     
-    
+
+    echo json_encode($cluster);
+
 
 
 ?>
