@@ -2257,7 +2257,23 @@ class DbHandler {
 	    return ($this->dbConnectorAsterisk->getRowCount() > 0) ? $result['user_group'] : false;
     }
 
+    /**
+     * Returns Calls Per Hour rollup rows for one reporting scope and date.
+     */
+    public function getCallsPerHourRollup(string $reportDate, string $reportingScope): array {
+        $this->dbConnectorAsterisk->where('report_date', $reportDate);
+        $this->dbConnectorAsterisk->where('reporting_scope', $reportingScope);
+        $this->dbConnectorAsterisk->orderBy('hour_of_day', 'ASC');
+
+        return $this->dbConnectorAsterisk->get(
+            'vicidial_dashboard_calls_per_hour',
+            null,
+            'hour_of_day, inbound_calls, outbound_calls, dropped_calls, generated_at'
+        );
+    }
+
 	/**
+	 * Saves the data of the image of a user
 	 * Saves the data of the image of the specified user_id
 	 * @param Number $user_id to save as image id
 	 * @param String $type to save as image type

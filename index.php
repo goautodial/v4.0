@@ -70,41 +70,41 @@
 	 * API for call statistics
 	*/
 	$ingroup_list = $api->API_getAllInGroups();
-	$max = 0;
+	$results = ['result' => 'success'];
+	for ($hour = 1; $hour <= 24; $hour++) {
+		$results["Hour{$hour}"] = 0;
+		$results["Hour{$hour}o"] = 0;
+		$results["Hour{$hour}d"] = 0;
+	}
 
-	// Load CPH only between 9am to 11:59pm
-    $now = time();
-    $startTime = strtotime("today 9:00 AM");
-    $endTime = strtotime("today 11:59 PM");
+	$callsPerHourScope = trim((string) ($_SESSION['usergroup'] ?? ''));
+	$callsPerHourLastUpdated = 'No completed hourly data available yet';
 
-    if ($now >= $startTime && $now <= $endTime) {
-        $callsperhour = $api->API_getCallsPerHour();
-    }
+	if ($callsPerHourScope !== '') {
+		$callsPerHourRollup = $db->getCallsPerHourRollup(date('Y-m-d'), $callsPerHourScope);
+		$latestGeneratedAt = null;
 
-	foreach ($callsperhour AS $idx => $temp){
-		//$temp = explode("=", (string) ($temp ?? ''));
-		if ($idx == 'result') {
-			$results[$idx] = $temp;
-		} else {
-			foreach ($temp as $id2 => $item) {
-				$results[$id2] = $item;
+		foreach ($callsPerHourRollup as $rollupRow) {
+			$hour = (int) $rollupRow['hour_of_day'];
+			if ($hour < 1 || $hour > 24) {
+				continue;
 			}
+
+			$results["Hour{$hour}"] = (int) $rollupRow['inbound_calls'];
+			$results["Hour{$hour}o"] = (int) $rollupRow['outbound_calls'];
+			$results["Hour{$hour}d"] = (int) $rollupRow['dropped_calls'];
+			$latestGeneratedAt = max($latestGeneratedAt ?? '', (string) $rollupRow['generated_at']);
+		}
+
+		if ($latestGeneratedAt !== null) {
+			$callsPerHourLastUpdated = 'Last updated: ' . date('M j, Y g:i A', strtotime($latestGeneratedAt));
 		}
 	}
 
 	$outbound_calls = max($results["Hour8o"],$results["Hour9o"], $results["Hour10o"], $results["Hour11o"], $results["Hour12o"], $results["Hour13o"], $results["Hour14o"], $results["Hour15o"], $results["Hour16o"], $results["Hour17o"], $results["Hour18o"], $results["Hour19o"], $results["Hour20o"], $results["Hour21o"]);
 	$inbound_calls = max($results["Hour8"],$results["Hour9"], $results["Hour10"], $results["Hour11"], $results["Hour12"], $results["Hour13"], $results["Hour14"], $results["Hour15"], $results["Hour16"], $results["Hour17"], $results["Hour18"], $results["Hour19"], $results["Hour20"], $results["Hour21"]);
 	$dropped_calls = max($results["Hour8d"],$results["Hour9d"], $results["Hour10d"], $results["Hour11d"], $results["Hour12d"], $results["Hour13d"], $results["Hour14d"], $results["Hour15d"], $results["Hour16d"], $results["Hour17d"], $results["Hour18d"], $results["Hour19d"], $results["Hour20d"], $results["Hour21d"]);
-	$max = max($inbound_calls, $outbound_calls, $dropped_calls);
-
-	if($max <= 5)
-		$max = 5;
-	if($outbound_calls == NULL || $outbound_calls == 0)
-		$outbound_calls = 0;
-		if($inbound_calls == NULL || $inbound_calls == 0)
-		$inbound_calls = 0;
-	if($dropped_calls == NULL || $dropped_calls == 0)
-		$dropped_calls = 0;
+	$max = max($inbound_calls, $outbound_calls, $dropped_calls, 5);
 
 	//Whatsapp
 	$whatsapp_status = $ui->API_getWhatsappActivation();
@@ -496,7 +496,10 @@
 							<div class="row">
 								<div id="panelChart9" ng-controller="FlotChartController" class="panel panel-default">
 										<div class="panel-heading">
-											<div class="panel-title"><?=$lh->translateText("calls_per_hour")?></div>
+											<div class="panel-title">
+												<?=$lh->translateText("calls_per_hour")?>
+												<small class="text-muted pull-right"><?=htmlspecialchars($callsPerHourLastUpdated, ENT_QUOTES, 'UTF-8')?></small>
+											</div>
 										</div>
 										<div collapse="panelChart9" class="panel-wrapper">
 											<div class="panel-body">
