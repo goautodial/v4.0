@@ -2261,12 +2261,12 @@ class DbHandler {
      * Returns Calls Per Hour rollup rows for one reporting scope and date.
      */
     public function getCallsPerHourRollup(string $reportDate, string $reportingScope): array {
-        $this->dbConnectorAsterisk->where('report_date', $reportDate);
-        $this->dbConnectorAsterisk->where('reporting_scope', $reportingScope);
-        $this->dbConnectorAsterisk->orderBy('hour_of_day', 'ASC');
+        $this->dbConnector->where('report_date', $reportDate);
+        $this->dbConnector->where('reporting_scope', $reportingScope);
+        $this->dbConnector->orderBy('hour_of_day', 'ASC');
 
-        return $this->dbConnectorAsterisk->get(
-            'vicidial_dashboard_calls_per_hour',
+        return $this->dbConnector->get(
+            'go_dashboard_calls_per_hour',
             null,
             'hour_of_day, inbound_calls, outbound_calls, dropped_calls, generated_at'
         );

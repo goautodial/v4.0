@@ -24,7 +24,7 @@ if (PHP_SAPI !== 'cli') {
 
 require_once __DIR__ . '/../php/Config.php';
 
-const ROLLUP_TABLE = 'vicidial_dashboard_calls_per_hour';
+const ROLLUP_TABLE = 'go_dashboard_calls_per_hour';
 const ROLLUP_LOCK_NAME = 'dashboard_calls_per_hour_rollup';
 
 function usage(int $exitCode = 0): never
@@ -38,9 +38,9 @@ function usage(int $exitCode = 0): never
     exit($exitCode);
 }
 
-function connectToAsteriskDatabase(): mysqli
+function connectToDatabase(string $databaseNameConstant): mysqli
 {
-    foreach (['DB_HOST', 'DB_USERNAME', 'DB_PASSWORD', 'DB_NAME_ASTERISK', 'DB_PORT'] as $constant) {
+    foreach (['DB_HOST', 'DB_USERNAME', 'DB_PASSWORD', $databaseNameConstant, 'DB_PORT'] as $constant) {
         if (!defined($constant)) {
             throw new RuntimeException("Missing {$constant} database configuration.");
         }
@@ -52,12 +52,22 @@ function connectToAsteriskDatabase(): mysqli
         (string) DB_HOST,
         (string) DB_USERNAME,
         (string) DB_PASSWORD,
-        (string) DB_NAME_ASTERISK,
+        (string) constant($databaseNameConstant),
         (int) DB_PORT
     );
     $database->set_charset('utf8mb4');
 
     return $database;
+}
+
+function connectToAsteriskDatabase(): mysqli
+{
+    return connectToDatabase('DB_NAME_ASTERISK');
+}
+
+function connectToGoAutoDialDatabase(): mysqli
+{
+    return connectToDatabase('DB_NAME');
 }
 
 function bindParameters(mysqli_stmt $statement, array $parameters): void
@@ -264,25 +274,26 @@ try {
     }
 
     [$reportDate, $hour, $hourStart, $hourEnd] = resolveHour($options);
-    $database = connectToAsteriskDatabase();
+    $asteriskDatabase = connectToAsteriskDatabase();
+    $goAutoDialDatabase = connectToGoAutoDialDatabase();
 
-    $lockResult = $database->query("SELECT GET_LOCK('" . ROLLUP_LOCK_NAME . "', 0) AS acquired");
+    $lockResult = $goAutoDialDatabase->query("SELECT GET_LOCK('" . ROLLUP_LOCK_NAME . "', 0) AS acquired");
     $lock = $lockResult->fetch_assoc();
     if ((int) ($lock['acquired'] ?? 0) !== 1) {
         throw new RuntimeException('Another Calls Per Hour rollup is already running.');
     }
 
     try {
-        $tableExists = $database->query("SHOW TABLES LIKE '" . ROLLUP_TABLE . "'");
+        $tableExists = $goAutoDialDatabase->query("SHOW TABLES LIKE '" . ROLLUP_TABLE . "'");
         if ($tableExists->num_rows !== 1) {
             throw new RuntimeException('Rollup table is missing. Apply sql/dashboard_calls_per_hour_rollup.sql first.');
         }
 
         $scopeCount = 0;
-        foreach (fetchReportingScopes($database, $requestedScope) as $scope) {
-            [$campaignIds, $inboundGroupIds] = fetchScopeFilters($database, $scope);
-            $totals = calculateScopeTotals($database, $hourStart, $hourEnd, $campaignIds, $inboundGroupIds);
-            writeRollup($database, $reportDate, $scope, $hour, $totals);
+        foreach (fetchReportingScopes($asteriskDatabase, $requestedScope) as $scope) {
+            [$campaignIds, $inboundGroupIds] = fetchScopeFilters($asteriskDatabase, $scope);
+            $totals = calculateScopeTotals($asteriskDatabase, $hourStart, $hourEnd, $campaignIds, $inboundGroupIds);
+            writeRollup($goAutoDialDatabase, $reportDate, $scope, $hour, $totals);
 
             printf(
                 "%s hour %02d scope %s: inbound=%d outbound=%d dropped=%d\n",
@@ -298,8 +309,9 @@ try {
 
         printf("Generated %d Calls Per Hour rollup scope(s).\n", $scopeCount);
     } finally {
-        $database->query("SELECT RELEASE_LOCK('" . ROLLUP_LOCK_NAME . "')");
-        $database->close();
+        $goAutoDialDatabase->query("SELECT RELEASE_LOCK('" . ROLLUP_LOCK_NAME . "')");
+        $goAutoDialDatabase->close();
+        $asteriskDatabase->close();
     }
 } catch (Throwable $exception) {
     fwrite(STDERR, 'Calls Per Hour rollup failed: ' . $exception->getMessage() . "\n");

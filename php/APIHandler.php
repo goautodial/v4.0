@@ -651,6 +651,20 @@
 			return $this->API_Request("goFilters", $postfields);
 		}
 
+		public function API_getTelephonyFiltersPageData(): array
+		{
+			return $this->API_RequestBatch([
+				'filters' => [
+					'folder' => 'goFilters',
+					'postfields' => ['goAction' => 'goGetAllFilters'],
+				],
+				'user_groups' => [
+					'folder' => 'goUserGroups',
+					'postfields' => ['goAction' => 'goGetAllUserGroups'],
+				],
+			]);
+		}
+
 		public function API_getFilterInfo($filterid){
 			$postfields = [
 				'goAction' => 'goGetFilterInfo',
@@ -696,6 +710,20 @@
 				'goAction' => 'goGetAllCampaigns'
 			];
 			return $this->API_Request("goCampaigns", $postfields);
+		}
+
+		public function API_getTelephonyListPageData(): array
+		{
+			return $this->API_RequestBatch([
+				'lists' => [
+					'folder' => 'goLists',
+					'postfields' => ['goAction' => 'goGetAllLists'],
+				],
+				'campaigns' => [
+					'folder' => 'goCampaigns',
+					'postfields' => ['goAction' => 'goGetAllCampaigns'],
+				],
+			]);
 		}
 
 		public function API_getTelephonyCampaignsPageData(): array

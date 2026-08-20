@@ -1,8 +1,8 @@
-<?php	
+<?php
 /**
  * @file 		telephonyfilters.php
  * @brief 		Manage filters
- * @copyright 	Copyright (c) 2020 GOautodial Inc. 
+ * @copyright 	Copyright (c) 2020 GOautodial Inc.
  * @author		Christopher P. Lomuntad
  *
  * @par <b>License</b>:
@@ -30,32 +30,34 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	
+
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
 			header("location: agent.php");
 		}
-	}	
-	
-	$perm = $api->goGetPermissions('filters');	
-	$user_groups = $api->API_getAllUserGroups();
+	}
+
+	$perm = $api->goGetPermissions('filters');
+	$pageApiResults = $api->API_getTelephonyFiltersPageData();
+	$user_groups = $pageApiResults['user_groups'];
+	$filters = $pageApiResults['filters'];
 ?>
 <html>
     <head>
         <meta charset="UTF-8">
         <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("filters"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        
-        <?php 
-			print $ui->standardizedThemeCSS(); 
+
+        <?php
+			print $ui->standardizedThemeCSS();
 			print $ui->creamyThemeCSS();
 			print $ui->dataTablesTheme();
 		?>
-		
+
         <script src="js/plugins/ckeditor/ckeditor.js" type="text/javascript"></script>
         <script src="js/plugins/ckeditor/styles.js" type="text/javascript"></script>
-		
+
     </head>
 
      <?php print $ui->creamyBody(); ?>
@@ -86,7 +88,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <legend><?php $lh->translateText("filters"); ?></legend>
-							<?php print $ui->getListAllFilters($_SESSION['user'], $perm, $_SESSION['usergroup']); ?>
+							<?php print $ui->getListAllFilters($_SESSION['user'], $perm, $_SESSION['usergroup'], $filters); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->
@@ -98,7 +100,7 @@
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
-		
+
 	</div><!-- ./wrapper -->
 
 	<!-- FIXED ACTION BUTTON -->
@@ -109,7 +111,6 @@
 	/*
 	* APIs for add form
 	*/
-	$filters = $api->API_getAllFilters();
 
 ?>
 	<div class="modal fade" id="filters-modal" tabindex="-1" aria-labelledby="filters">
@@ -117,13 +118,13 @@
             <div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight" id="filters">
-						<i class="fa fa-info-circle" title="<?php $lh->translateText("filter_wizard_description"); ?>"></i> 
+						<i class="fa fa-info-circle" title="<?php $lh->translateText("filter_wizard_description"); ?>"></i>
 						<b><?php $lh->translateText("filter_wizard"); ?> » <?php $lh->translateText("new_filter"); ?></b>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					</h4>
 				</div>
 				<div class="modal-body">
-				
+
 					<form id="create_form" role="form">
 						<input type="hidden" name="log_user" value="<?php echo $_SESSION['user']; ?>" />
 						<input type="hidden" name="log_group" value="<?php echo $_SESSION['usergroup']; ?>" />
@@ -188,7 +189,7 @@
 							</fieldset>
 						</div>
 					</form>
-			
+
 				</div> <!-- end of modal body -->
 			</div>
 		</div>
@@ -197,7 +198,7 @@
 		<?php print $ui->standardizedThemeJS();?>
 		<!-- JQUERY STEPS-->
   		<script src="js/dashboard/js/jquery.steps/build/jquery.steps.js"></script>
-	
+
 <script>
 	$(document).ready(function(){
 		/*******************
@@ -205,7 +206,7 @@
 		*******************/
 
 		$('#filters_table').DataTable({
-			destroy:true, 
+			destroy:true,
 			responsive:true,
 			stateSave:true,
 			drawCallback:function(settings) {
@@ -223,7 +224,7 @@
 		/*******************
 		** INIT WIZARD & ADD EVENT
 		*******************/
-			var form = $("#create_form"); // init form wizard 
+			var form = $("#create_form"); // init form wizard
 
 		    form.validate({
 		        errorPlacement: function errorPlacement(error, element) { element.after(error); }
@@ -257,12 +258,12 @@
 		        },
 		        onFinished: function (event, currentIndex)
 		        {
-					
+
 					$('#finish').text("<?php $lh->translateText("loading"); ?>");
 					$('#finish').attr("disabled", true);
-					
+
 					/*********
-					** ADD EVENT 
+					** ADD EVENT
 					*********/
 						// Submit form via ajax
 						$.ajax({
@@ -317,9 +318,9 @@
 								url: "./php/DeleteFilter.php",
 								type: 'POST',
 								data: {
-									filter_id: id, 
-									log_user: '<?=$_SESSION['user']?>', 
-									log_group: '<?=$_SESSION['usergroup']?>' 
+									filter_id: id,
+									log_user: '<?=$_SESSION['user']?>',
+									log_group: '<?=$_SESSION['usergroup']?>'
 								},
 								success: function(data) {
 								//console.log(data);
@@ -336,7 +337,7 @@
 					}
 				);
 			});
-		
+
 		/*******************
 		** FILTERS
 		*******************/
@@ -372,7 +373,7 @@
 				});
 	}); // end of document ready
 </script>
-		
+
 		<?php print $ui->creamyFooter();?>
     </body>
 </html>

@@ -138,7 +138,8 @@
 						/****
 						** API to get data of tables
 						****/
-						$lists = $api->API_getAllLists();
+						$pageApiResults = $api->API_getTelephonyListPageData();
+						$lists = $pageApiResults['lists'];
 						
 						//echo "<!--\n";
 						//var_dump($lists);
@@ -421,7 +422,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 <?php print $ui->getCircleButton("list_and_call_recording", "pencil-square-o"); ?>
 </div>
 <?php
-	$campaign = $api->API_getAllCampaigns();
+	$campaign = $pageApiResults['campaigns'];
 	
 	$next_listname = "ListID ".$lists->next_listID;
 	$datenow = date("j-n-Y");

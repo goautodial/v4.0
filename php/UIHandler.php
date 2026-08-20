@@ -4315,8 +4315,8 @@ error_reporting(E_ERROR | E_PARSE);
 
 	// API Filters
 
-	public function getListAllFilters($userid, $perm, $user_group) {
-	    $output = $this->api->API_getAllFilters();
+	public function getListAllFilters($userid, $perm, $user_group, $output = null) {
+	    $output = $output ?? $this->api->API_getAllFilters();
 
 	    if ($output->result=="success") {
 	    # Result was OK!

@@ -1,12 +1,12 @@
 -- Calls Per Hour dashboard rollup table.
 --
--- Apply this to the Asterisk/VICIdial database before enabling the generator:
---   mysql -u <user> -p asterisk < sql/dashboard_calls_per_hour_rollup.sql
+-- Apply this to the GoAutoDial database before enabling the generator:
+--   mysql -u <user> -p goautodial < sql/dashboard_calls_per_hour_rollup.sql
 --
 -- One row stores all chart series for one completed hour and reporting scope.
 -- ADMIN is the unfiltered scope. Other scopes use the VICIdial user group ID.
 
-CREATE TABLE IF NOT EXISTS `vicidial_dashboard_calls_per_hour` (
+CREATE TABLE IF NOT EXISTS `go_dashboard_calls_per_hour` (
     `report_date` DATE NOT NULL,
     `reporting_scope` VARCHAR(64) NOT NULL,
     `hour_of_day` TINYINT UNSIGNED NOT NULL,
