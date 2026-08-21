@@ -2258,11 +2258,11 @@ class DbHandler {
     }
 
     /**
-     * Returns Calls Per Hour rollup rows for one reporting scope and date.
+     * Returns Calls Per Hour rollup rows for one user group and date.
      */
-    public function getCallsPerHourRollup(string $reportDate, string $reportingScope): array {
-        $this->dbConnector->where('report_date', $reportDate);
-        $this->dbConnector->where('reporting_scope', $reportingScope);
+    public function getCallsPerHourRollup(string $reportDate, string $userGroup): array {
+        $this->dbConnector->where('date', $reportDate);
+        $this->dbConnector->where('user_group', $userGroup);
         $this->dbConnector->orderBy('hour_of_day', 'ASC');
 
         return $this->dbConnector->get(

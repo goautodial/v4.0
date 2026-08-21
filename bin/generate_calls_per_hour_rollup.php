@@ -2,7 +2,7 @@
 /**
  * Generate completed hourly Calls Per Hour dashboard rollups.
  *
- * The generator writes one aggregate row per reporting scope. ADMIN stores
+ * The generator writes one aggregate row per user group. ADMIN stores
  * unfiltered totals; other rows use the campaign and inbound-group filters
  * that the existing goGetCallsPerHour dashboard API applies.
  *
@@ -201,16 +201,29 @@ function calculateScopeTotals(
     ];
 }
 
+function purgePreviousDayRollups(mysqli $database, string $reportDate): int
+{
+    $statement = $database->prepare(
+        'DELETE FROM ' . ROLLUP_TABLE . ' WHERE `date` < ?'
+    );
+    $statement->bind_param('s', $reportDate);
+    $statement->execute();
+    $deletedRowCount = $statement->affected_rows;
+    $statement->close();
+
+    return $deletedRowCount;
+}
+
 function writeRollup(
     mysqli $database,
     string $reportDate,
-    string $scope,
+    string $userGroup,
     int $hour,
     array $totals
 ): void {
     $statement = $database->prepare(
         'INSERT INTO ' . ROLLUP_TABLE . "
-            (report_date, reporting_scope, hour_of_day, inbound_calls, outbound_calls, dropped_calls, generated_at)
+            (`date`, user_group, hour_of_day, inbound_calls, outbound_calls, dropped_calls, generated_at)
          VALUES (?, ?, ?, ?, ?, ?, NOW())
          ON DUPLICATE KEY UPDATE
             inbound_calls = VALUES(inbound_calls),
@@ -221,7 +234,7 @@ function writeRollup(
     $statement->bind_param(
         'ssiiii',
         $reportDate,
-        $scope,
+        $userGroup,
         $hour,
         $totals['inboundCalls'],
         $totals['outboundCalls'],
@@ -273,6 +286,7 @@ try {
         throw new InvalidArgumentException('The --scope value must not be empty.');
     }
 
+    $isAutomaticRun = !isset($options['date']) && !isset($options['hour']);
     [$reportDate, $hour, $hourStart, $hourEnd] = resolveHour($options);
     $asteriskDatabase = connectToAsteriskDatabase();
     $goAutoDialDatabase = connectToGoAutoDialDatabase();
@@ -287,6 +301,11 @@ try {
         $tableExists = $goAutoDialDatabase->query("SHOW TABLES LIKE '" . ROLLUP_TABLE . "'");
         if ($tableExists->num_rows !== 1) {
             throw new RuntimeException('Rollup table is missing. Apply sql/dashboard_calls_per_hour_rollup.sql first.');
+        }
+
+        if ($isAutomaticRun && $hour === 0) {
+            $deletedRowCount = purgePreviousDayRollups($goAutoDialDatabase, $reportDate);
+            printf("Removed %d expired Calls Per Hour rollup row(s).\n", $deletedRowCount);
         }
 
         $scopeCount = 0;
