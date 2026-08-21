@@ -3,7 +3,7 @@
  * @file        module.php
  * @brief       Sippy Softswitch Module
  * @copyright   Copyright (c) 2018 GOautodial Inc.
- * @author		Demian Lizandro A, Biscocho 
+ * @author		Demian Lizandro A, Biscocho
  * @author      Ignacio Nieto Carvajal
  *
  * @par <b>License</b>:
@@ -31,11 +31,11 @@ include(CRM_MODULE_INCLUDE_DIRECTORY.'Session.php');
 class SippySoftswitch extends Module {
 
 	// module meta-data (ModuleData interface implementation).
-	
+
 	static function getModuleName() { return "Sippy Softswitch "; }
-	
+
 	static function getModuleVersion() { return "1.0"; }
-	
+
 	static function getModuleDescription() { return "A simple module that shows remaining balance of your Sippy softswitch account."; }
 
 	// lifecycle and respond to interactions.
@@ -43,18 +43,18 @@ class SippySoftswitch extends Module {
 	#[\Override]
     public function uponInit() {
 		error_log("Module \"Sippy Softswitch\" initializing...");
-		
+
 		// add the Sippy Softswitch translation files to our language handler.
 		$customLanguageFile = $this->getModuleLanguageFileForLocale($this->lh()->getLanguageHandlerLocale());
 		if (!isset($customLanguageFile)) { $customLanguageFile = $this->getModuleLanguageFileForLocale(CRM_LANGUAGE_DEFAULT_LOCALE); }
 		$this->lh()->addCustomTranslationsFromFile($customLanguageFile);
 	}
-		
+
 	#[\Override]
     public function uponActivation() {
 		error_log("Module \"Sippy Softswitch\" activating...");
 	}
-		
+
 	#[\Override]
     public function uponDeactivation() {
 		error_log("Module \"Sippy Softswitch\" deactivating...");
@@ -64,9 +64,9 @@ class SippySoftswitch extends Module {
     public function uponUninstall() {
 		error_log("Module \"Sippy Softswitch\" uninstalling...");
 	}
-	
+
 	// Private functions for this module.
-	
+
 	// https://support.sippysoft.com/support/solutions/articles/107525-simple-api
 	private function sectionWithRandomQuotes()
     {
@@ -86,12 +86,27 @@ class SippySoftswitch extends Module {
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postfields));
         $output = curl_exec($ch);
-        $output = round($output, 2);
-        $sippy_balance = json_encode($output);
-        $quoteBox = $this->ui()->boxWithQuote($this->lh()->translationFor("justgovoip_balance"), ($this->lh()->translationFor("remaining_balance")).": $".number_format($sippy_balance), '');
+        curl_close($ch);
+
+        $sippyBalance = null;
+        if (is_string($output) && preg_match('/\A\s*([+-]?(?:\d+(?:\.\d*)?|\.\d+))\s*(?:[A-Za-z]{3})?\s*\z/', $output, $matches) === 1) {
+            $sippyBalance = round((float) $matches[1], 2);
+        } else {
+            error_log('Sippy Softswitch returned an invalid balance response.');
+        }
+
+        $balanceDisplay = $sippyBalance === null
+            ? 'Unavailable'
+            : '$' . number_format($sippyBalance, 2);
+        $quoteBox = $this->ui()->boxWithQuote(
+            $this->lh()->translationFor("justgovoip_balance"),
+            $this->lh()->translationFor("remaining_balance") . ': ' . $balanceDisplay,
+            ''
+        );
+
         return $content . $this->ui()->fullRowWithContent($quoteBox);
     }
-	
+
 	// views and code generation
 
 	/** We return true here to indicate that we want access to the database */
@@ -116,28 +131,28 @@ class SippySoftswitch extends Module {
 	public function mainPageViewTitle() {
 		return $this->lh()->translationFor("sippy_softswitch");
 	}
-	
-	public function mainPageViewSubtitle() { 
-		return $this->lh()->translationFor("a_simple_creamy_module"); 
+
+	public function mainPageViewSubtitle() {
+		return $this->lh()->translationFor("a_simple_creamy_module");
 	}
-	
+
 	public function mainPageViewIcon() {
 		return "quote-left";
 	}
-	
+
 	// hooks
-	
+
 	public function dashboardHook($wantsFullRow = true) {
 		return $this->sectionWithRandomQuotes();
 	}
-	
+
 
 	/*public function setDataForSippy() {
 		$success = false;
-		
+
 		$sippy_api_url = $this->valueForModuleSetting("sippy_api_url");
 		$sippy_username = $this->valueForModuleSetting("sippy_username");
-		
+
 		if (isset($sippy_api_url) && isset($sippy_username)) {
 			// try to update current value
 			$data = array("sippy_api_url" => $sippy_api_url, "sippy_username" => $sippy_username);
@@ -145,11 +160,11 @@ class SippySoftswitch extends Module {
 		} else {
 			$data = array("sippy_api_url" => $sippy_api_url, "sippy_username" => $sippy_username);
 			$success = $this->db()->insert($this->databaseTableName(), $data);
-		}		
-		
+		}
+
 		return $success ? CRM_DEFAULT_SUCCESS_RESPONSE : $this->lh()->translationFor("unable_set_quote");
-	}	
-	
+	}
+
 	public function topBarHook() {
 		$numberOfQuotes = 3;
 		$header = $this->ui()->getTopbarMenuHeader("quote-left", $numberOfQuotes, CRM_UI_TOPBAR_MENU_STYLE_SIMPLE, $this->lh()->translationFor("some_random_quotes"));
@@ -161,13 +176,13 @@ class SippySoftswitch extends Module {
 		$footer = $this->ui()->getTopbarMenuFooter($this->lh()->translationFor("see_more_quotes"), $this->mainPageViewURL(null));
 		return $this->ui()->getTopbarCustomMenu($header, $elements, $footer);
 	}	*/
-	
+
 	// settings
-	
+
 	public function moduleSettings() {
-		return ["sippy_api_url" => CRM_SETTING_TYPE_STRING, "sippy_username" => CRM_SETTING_TYPE_STRING]; 
+		return ["sippy_api_url" => CRM_SETTING_TYPE_STRING, "sippy_username" => CRM_SETTING_TYPE_STRING];
 	}
-	
+
 }
 
 ?>
