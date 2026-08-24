@@ -656,6 +656,24 @@
 			return $this->API_Request("goScripts", $postfields);
 		}
 
+		public function API_getTelephonyScriptsPageData(): array
+		{
+			return $this->API_RequestBatch([
+				'scripts' => [
+					'folder' => 'goScripts',
+					'postfields' => ['goAction' => 'goGetAllScripts'],
+				],
+				'standard_fields' => [
+					'folder' => 'goScripts',
+					'postfields' => ['goAction' => 'goGetStandardFields'],
+				],
+				'user_groups' => [
+					'folder' => 'goUserGroups',
+					'postfields' => ['goAction' => 'goGetAllUserGroups'],
+				],
+			], 4);
+		}
+
 		public function API_getScriptInfo($scriptid){
 			$postfields = [
 				'goAction' => 'goGetScriptInfo',
@@ -726,6 +744,24 @@
 			return $this->API_Request("goMusicOnHold", $postfields);
 		}
 
+		public function API_getAudioFilesPageData(): array
+		{
+			return $this->API_RequestBatch([
+				'music_on_hold' => [
+					'folder' => 'goMusicOnHold',
+					'postfields' => ['goAction' => 'goGetAllMusicOnHold'],
+				],
+				'voicefiles' => [
+					'folder' => 'goVoiceFiles',
+					'postfields' => ['goAction' => 'goGetAllVoiceFiles'],
+				],
+				'user_groups' => [
+					'folder' => 'goUserGroups',
+					'postfields' => ['goAction' => 'goGetAllUserGroups'],
+				],
+			], 4);
+		}
+
 		public function API_getAllCampaigns(){
 			$postfields = [
 				'goAction' => 'goGetAllCampaigns'
@@ -772,6 +808,23 @@
 					],
 				],
 			]);
+		}
+
+		public function API_getTelephonyInboundPageData(): array
+		{
+			return $this->API_RequestBatch([
+				'ingroup' => ['folder' => 'goInbound', 'postfields' => ['goAction' => 'goGetAllIngroup']],
+				'ivr' => ['folder' => 'goInbound', 'postfields' => ['goAction' => 'goGetAllIVR']],
+				'phonenumber' => ['folder' => 'goInbound', 'postfields' => ['goAction' => 'goGetAllDID']],
+				'users' => ['folder' => 'goUsers', 'postfields' => ['goAction' => 'goGetAllUsers']],
+				'user_groups' => ['folder' => 'goUserGroups', 'postfields' => ['goAction' => 'goGetAllUserGroups']],
+				'campaign' => ['folder' => 'goCampaigns', 'postfields' => ['goAction' => 'goGetAllCampaigns']],
+				'voicemails' => ['folder' => 'goVoicemails', 'postfields' => ['goAction' => 'goGetAllVoicemails']],
+				'phones' => ['folder' => 'goPhones', 'postfields' => ['goAction' => 'goGetAllPhones']],
+				'scripts' => ['folder' => 'goScripts', 'postfields' => ['goAction' => 'goGetAllScripts']],
+				'voicefiles' => ['folder' => 'goVoiceFiles', 'postfields' => ['goAction' => 'goGetAllVoiceFiles']],
+				'calltimes' => ['folder' => 'goCalltimes', 'postfields' => ['goAction' => 'goGetAllCalltimes']],
+			], 4);
 		}
 
 		public function API_getTelephonyCampaignModalData(): array

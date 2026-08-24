@@ -1516,7 +1516,7 @@ error_reporting(E_ERROR | E_PARSE);
 					$(".reload-button").fadeOut("slow");
 				})
 
-				$(window).load(function() {
+				$(window).on("load", function() {
 					$(".reload-page").html("");
 					$(".reload-button").html("");
 				})
@@ -4081,10 +4081,10 @@ error_reporting(E_ERROR | E_PARSE);
 	    }
 	}
 
-	public function getListAllMusicOnHold($user_group) {
+	public function getListAllMusicOnHold($user_group, $perm = null, $output = null) {
 		//require_once('Session.php');
-		$perm = $this->api->goGetPermissions('moh');
-	    $output = $this->api->API_getAllMusicOnHold();
+		$perm = $perm ?? $this->api->goGetPermissions('moh');
+	    $output = $output ?? $this->api->API_getAllMusicOnHold();
 
 	    # Result was OK!
 	    $columns = [$this->lh->translationFor('moh_name'), $this->lh->translationFor('status'), $this->lh->translationFor('random_order'), $this->lh->translationFor('group'), $this->lh->translationFor('action')];
@@ -4164,10 +4164,10 @@ error_reporting(E_ERROR | E_PARSE);
 	    return json_decode($data);
 	}
 
-	public function getListAllVoiceFiles($user_group) {
+	public function getListAllVoiceFiles($user_group, $perm = null, $output = null) {
 		//require_once('Session.php');
-		$perm = $this->api->goGetPermissions('voicefiles');
-		$output = $this->api->API_getAllVoiceFiles();
+		$perm = $perm ?? $this->api->goGetPermissions('voicefiles');
+		$output = $output ?? $this->api->API_getAllVoiceFiles();
 	    //if ($output->result=="success") {
 	    # Result was OK!
 	    $columns = [$this->lh->translationFor('file_name'), $this->lh->translationFor('date'), $this->lh->translationFor('size'), $this->lh->translationFor('action')];
@@ -4244,8 +4244,8 @@ error_reporting(E_ERROR | E_PARSE);
 
 	// API Scripts
 
-	public function getListAllScripts($userid, $perm) {
-	    $output = $this->api->API_getAllScripts();
+	public function getListAllScripts($userid, $perm, $output = null) {
+	    $output = $output ?? $this->api->API_getAllScripts();
 
 	    if ($output->result=="success") {
 	    # Result was OK!

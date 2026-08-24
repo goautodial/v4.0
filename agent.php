@@ -234,7 +234,7 @@ $osTicket = $mh->moduleIsEnabled('osTicket');
         <script type="text/javascript">
 			history.pushState('', document.title, window.location.pathname);
 
-			$(window).load(function() {
+			$(window).on('load', function() {
 				$(".preloader").fadeOut("slow", function() {
 					if (use_webrtc && (!!$.prototype.snackbar) && phone.isConnected()) {
 						$.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; Please wait while we register your phone extension to the dialer...", timeout: 3000, htmlAllowed: true});

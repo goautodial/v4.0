@@ -63,11 +63,10 @@
 		<!-- FOR EXPORT -->
 		<!--<script src="js/plugins/datatables/bpampuch/pdfmake/vfs_fonts.js" type="text/javascript"></script>
 		<script src="js/plugins/datatables/bpampuch/pdfmake/pdfmake.min.js" type="text/javascript"></script>-->
-		<script src="js/plugins/datatables/buttons/buttons.html5.min.js" type="text/javascript"></script>
-		<script src="js/plugins/datatables/buttons/buttons.print.min.js" type="text/javascript"></script>
-		<script src="js/plugins/datatables/buttons/buttons.flash.min.js" type="text/javascript"></script>
 		<script src="js/plugins/datatables/buttons/dataTables.buttons.min.js" type="text/javascript"></script>
 		<script src="js/plugins/datatables/jszip.min.js" type="text/javascript"></script>
+		<script src="js/plugins/datatables/buttons/buttons.html5.min.js" type="text/javascript"></script>
+		<script src="js/plugins/datatables/buttons/buttons.print.min.js" type="text/javascript"></script>
 
         <!-- Datetime picker -->
         <link rel="stylesheet" href="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">

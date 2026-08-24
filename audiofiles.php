@@ -27,19 +27,26 @@
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
 
+	// Send the page and shared preloader together after render-critical data loads.
+	ob_start();
+
 	$ui = \creamy\UIHandler::getInstance();
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	
+
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
 			header("location: agent.php");
 		}
-	}	
-	
+	}
+
 	$perm = $api->goGetPermissions('voicefiles,moh', $_SESSION['usergroup']);
+	$pageApiResults = $api->API_getAudioFilesPageData();
+	$user_groups = $pageApiResults['user_groups'];
+	$audio_files = $pageApiResults['voicefiles'];
+	$music_on_hold = $pageApiResults['music_on_hold'];
 ?>
 <html>
     <head>
@@ -47,8 +54,8 @@
         <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("audiofiles"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
-        <?php 
-			print $ui->standardizedThemeCSS(); 
+        <?php
+			print $ui->standardizedThemeCSS();
 			print $ui->creamyThemeCSS();
 			print $ui->dataTablesTheme();
 		?>
@@ -125,17 +132,17 @@
 
 							<!--==== MOH ====-->
 							<div id="moh_tab" role="tabpanel" class="tab-pane<?=$activeMOH?>">
-								<?php print $ui->getListAllMusicOnHold($_SESSION['usergroup']); ?>
+								<?php print $ui->getListAllMusicOnHold($_SESSION['usergroup'], $perm->moh, $music_on_hold); ?>
 							</div>
 
 							<!--==== Voicefiles ====-->
 							<div id="voicefiles_tab" role="tabpanel" class="tab-pane<?=$activeVoicefiles?>">
-								<?php 
+								<?php
 									//$output2 = $api->API_getAllVoiceFiles();
-									
-									//echo "<pre>";									
+
+									//echo "<pre>";
 									//var_dump($output2);
-									print $ui->getListAllVoiceFiles($_SESSION['usergroup']); 
+									print $ui->getListAllVoiceFiles($_SESSION['usergroup'], $perm->voicefiles, $audio_files);
 								?>
 							</div>
 
@@ -182,13 +189,6 @@
 	<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
 </div><!-- ./wrapper -->
 
-<?php
- /*
-  * APIs needed for form
-  */
-   $user_groups = $api->API_getAllUserGroups();
-   $audio_files = $api->API_getAllVoiceFiles(); 
-?>
 <!-- MOH MODALS -->
 	<!-- Modal -->
 	<div id="view-moh-modal" class="modal fade" role="dialog">
@@ -254,7 +254,7 @@
 						?>
 							<option value="<?php echo $file;?>">  <?php echo $file; ?>  </option>
 	    		<?php
-           		    }		
+           		    }
             		?>
 				        </select>
 				</div>
@@ -270,7 +270,7 @@
 			   <button type="button" class="btn btn-primary btn-update-moh-info" data-id=""><span id="update_button"><i class="fa fa-check"></i> update</span></button>
 			   <?php
 			   } else {
-			   ?>			   
+			   ?>
 	           <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
 			   <?php
 			   }
@@ -633,7 +633,7 @@
 					console.log(moh_id);
                     $('#update_button').html("<i class='fa fa-edit'></i> Updating...");
                     $('.btn-update-moh-info').attr("disabled", true);
-                    
+
 					$.ajax({
 						url: "./php/UpdateMOH.php",
 						type: 'POST',
@@ -807,7 +807,7 @@
 								window.location.href = 'audiofiles.php';
 							}
 						);
-				<?php		
+				<?php
 					}
 				?>
 

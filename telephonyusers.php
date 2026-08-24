@@ -1,8 +1,8 @@
-<?php	
+<?php
 /**
  * @file 		telephonyusers.php
  * @brief 		List of all user accounts
- * @copyright 	Copyright (c) 2018 GOautodial Inc. 
+ * @copyright 	Copyright (c) 2018 GOautodial Inc.
  * @author		Demian Lizandro A. Biscocho <demian@goautodial.com>
  * @author     	Alexander Jim H. Abenoja <alex@goautodial.com>
  *
@@ -31,40 +31,40 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	
+
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
 			header("location: agent.php");
 		}
-	}	
+	}
 
 	$perm = $api->goGetPermissions('user');
 	$all_users = $api->API_getAllUsers();
-	
+
 ?>
 <html>
     <head>
         <meta charset="UTF-8">
         <title><?php $lh->translateText("portal_title"); ?> <?php $lh->translateText("users"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        
-        <?php 
-			print $ui->standardizedThemeCSS(); 
+
+        <?php
+			print $ui->standardizedThemeCSS();
 			print $ui->creamyThemeCSS();
 			print $ui->dataTablesTheme();
 		?>
-	
+
     	<!-- Wizard Form style -->
 		<link href="css/style.css" rel="stylesheet" type="text/css" />
 
         <!-- CHOSEN-->
    		<link rel="stylesheet" href="js/dashboard/chosen_v1.2.0/chosen.min.css">
-		
+
 		<!-- Date Range Picker -->
-		<script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>	
+		<script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
 	        <script type="text/javascript" src="js/plugins/daterangepicker/daterangepickerv3.js"></script>
-		<link rel="stylesheet" href="css/daterangepicker/daterangepickerv3.css"></link>  	
+		<link rel="stylesheet" href="css/daterangepicker/daterangepickerv3.css"></link>
     </head>
 
     <?php print $ui->creamyBody(); ?>
@@ -89,7 +89,7 @@
 						<li class="active"><?php $lh->translateText("users"); ?>
                     </ol>
                 </section>
-		
+
                 <!-- Main content -->
                 <section class="content">
                 <?php if ($perm->user_read !== 'N') {
@@ -107,13 +107,13 @@
 									 <?php
 										 if((isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0) || $_SESSION['show_phones'] == 1 ){
 									 ?>
-									 
+
 									 <!-- Phones panel tabs-->
 									 <li role="presentation" <?php if(isset($_GET['phone_tab']))echo 'class="active"';?>>
 										<a href="#phone_tab" aria-controls="phone_tab" role="tab" data-toggle="tab" class="bb0">
 											<?php $lh->translateText("phones"); ?></a>
 									 </li>
-									 <?php	
+									 <?php
 										}
 									 ?>
 								</ul>
@@ -123,7 +123,7 @@
 									<div id="users_tab" role="tabpanel" class="tab-pane <?php if(!isset($_GET['phone_tab']))echo 'active';?>">
 										<?php print $ui->goGetAllUserList($all_users, $perm); ?>
 									</div>
-									
+
 									<?php if((isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0) || $_SESSION['show_phones'] == 1 ){ ?>
 									<!--==== Phones ====-->
 									<div id="phone_tab" role="tabpanel" class="tab-pane <?php if(isset($_GET['phone_tab']))echo 'active';?>">
@@ -149,7 +149,7 @@
 <?php
 	if((isset($_SESSION['use_webrtc']) && $_SESSION['use_webrtc'] == 0) || $_SESSION['show_phones'] == 1 ){
 ?>
-    <!-- FIXED ACTION BUTTON --> 
+    <!-- FIXED ACTION BUTTON -->
 		<div class="bottom-menu skin-blue <?=($perm->user_create === 'N' ? 'hidden' : '')?>">
 			<div class="action-button-circle" data-toggle="modal">
 				<?php print $ui->getCircleButton("users", "plus"); ?>
@@ -170,7 +170,7 @@
 <?php
 	}
 ?>
-	
+
 <!-- MODALS -->
 <?php
 	//$output = $api->API_getAllUsers();
@@ -192,17 +192,17 @@
 	    <div class="modal fade" id="user-wizard-modal" aria-labelledby="T_User" >
 	        <div class="modal-dialog" role="document">
 	            <div class="modal-content">
-					
+
 					<div class="modal-header">
-						
+
 						<h4 class="modal-title animated bounceInRight" id="T_User">
-							<i class="fa fa-info-circle" title="<?php $lh->translateText("user_wizard_desc"); ?>"></i> 
+							<i class="fa fa-info-circle" title="<?php $lh->translateText("user_wizard_desc"); ?>"></i>
 							<b><?php $lh->translateText("user_wizard"); ?> » <?php $lh->translateText("add_new_user"); ?></b>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						</h4>
 					</div>
 					<div class="modal-body" style="overflow:hidden;">
-					
+
 					<form id="wizard_form" action="#">
 						<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 						<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
@@ -229,7 +229,7 @@
 													$max_create = 99;
 												else
 													$max_create = $avail_seats;
-												
+
 												for($i=1; $i <= $max_create; $i++){
 													echo '<option value="'.$i.'">'.$i.'</option>';
 												}
@@ -248,14 +248,14 @@
 	                        <fieldset>
 	                           <?php
 									$agent_num = $all_users->last_count;
-									$num_padded = sprintf("%03d", $agent_num);								
+									$num_padded = sprintf("%03d", $agent_num);
 									$fullname = "Agent ".$num_padded;
 									$user_id_for_form = "agent".$num_padded;
 								?>
 								<div class="form-group">
 									<label class="col-sm-4 control-label"> <?php $lh->translateText("user_id"); ?> </label>
 									<div class="col-sm-8 mb">
-										<input type="text" class="form-control" name="user_form" id="user_form" placeholder="<?php $lh->translateText("user_id"); ?> (<?php $lh->translateText("mandatory"); ?>)" 
+										<input type="text" class="form-control" name="user_form" id="user_form" placeholder="<?php $lh->translateText("user_id"); ?> (<?php $lh->translateText("mandatory"); ?>)"
 											value="<?php echo $user_id_for_form;?>" title="<?php $lh->translateText("alphanumberic_only_instruction"); ?>" maxlength="20" required>
 										<label id="user-duplicate-error"></label>
 									</div>
@@ -287,7 +287,7 @@
 								<div class="form-group" id="phone_logins_form" style="display:none;">
 									<label class="col-sm-4 control-label" for="phone_logins"> <?php $lh->translateText("phone_login"); ?> </label>
 									<div class="col-sm-8 mb">
-										<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" placeholder="<?php $lh->translateText("phone_login"); ?> (<?php $lh->translateText("mandatory"); ?>)" 
+										<input type="number" name="phone_logins" id="phone_logins" class="form-control" minlength="3" placeholder="<?php $lh->translateText("phone_login"); ?> (<?php $lh->translateText("mandatory"); ?>)"
 											value="<?php echo $phones->available_phone;?>" pattern=".{3,}" title="Minimum of 3 characters" maxlength="20" required>
 										<label id="phone_login-duplicate-error"></label>
 									</div>
@@ -301,7 +301,7 @@
 								</div>
 								<div class="form-group" id="password_div">
 									<label class="col-sm-4 control-label" for="password"><i class="fa fa-info-circle" title="<?php $lh->translateText("default_pass_is"); ?>: Go<?php echo date('Y');?>"></i>  <?php $lh->translateText("password"); ?> </label>
-									
+
 									<div class="col-sm-8 mb">
 										<input type="password" class="form-control" name="password" id="password" placeholder="Password (<?php $lh->translateText("mandatory"); ?>)" value="Go<?php echo date('Y');?>" maxlength="10" required>
 									</div>
@@ -310,7 +310,7 @@
 									<label class="col-sm-4 control-label" for="confirm"> <?php $lh->translateText("confirm_password"); ?> </label>
 									<div class="col-sm-8 mb">
 										<input type="password" class="form-control" id="confirm" name="confirm" placeholder="<?php $lh->translateText("reenter_pass"); ?> (<?php $lh->translateText("mandatory"); ?>)" value="Go<?php echo date('Y');?>" required>
-									</div> 
+									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-4 control-label" for="status"><?php $lh->translateText("active"); ?> </label>
@@ -340,7 +340,7 @@
 	                        </fieldset>
 	                     </div>
 					</form>
-			
+
 					</div> <!-- end of modal body -->
 				</div>
 			</div>
@@ -355,15 +355,15 @@
 	        <div class="modal-dialog" role="document">
 	            <div class="modal-content">
 					<div class="modal-header">
-						
+
 						<h4 class="modal-title animated bounceInRight" id="T_Phones">
-							<i class="fa fa-info-circle" title="<?php $lh->translateText("phone_wizard_desc"); ?>"></i> 
+							<i class="fa fa-info-circle" title="<?php $lh->translateText("phone_wizard_desc"); ?>"></i>
 							<b><?php $lh->translateText("phone_wizard"); ?> » <?php $lh->translateText("add_new_phone"); ?></b>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						</h4>
 					</div>
 					<div class="modal-body wizard-content">
-					
+
 					<form name="create_form" id="create_form" role="form">
 						<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 						<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
@@ -534,31 +534,31 @@
 	}
 ?>
 	<!-- Stats -->
-	<?php		
+	<?php
 		// outbound stats table
 		$columns = array($lh->translationFor("event_time"), $lh->translationFor("status"), $lh->translationFor("phone_number"), $lh->translationFor("campaign_id"), $lh->translationFor("user_group"), $lh->translationFor("list_id"), $lh->translationFor("lead_id"), $lh->translationFor("term_reason"));
 		$hideOnMedium = array($lh->translationFor("user_group"), $lh->translationFor("list_id"));
 		$hideOnLow = array($lh->translationFor("campaign_id"), $lh->translationFor("user_group"), $lh->translationFor("status"));
 		$result = $ui->generateTableHeaderWithItems($columns, "table_outbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
-	
-		
+
+
 		echo $ui->modalFormStructureAgentLog('modal_stats_outbound', 'outbound', $lh->translationFor("outbound"), $result.'</table>', '', 'info-circle', '');
-		
+
 		// inbound stats table
 		$columns = array($lh->translationFor("event_time"), $lh->translationFor("status"), $lh->translationFor("phone_number"), $lh->translationFor("campaign_id"), $lh->translationFor("user_group"), $lh->translationFor("list_id"), $lh->translationFor("lead_id"), $lh->translationFor("term_reason"));
 		$hideOnMedium = array($lh->translationFor("user_group"), $lh->translationFor("list_id"));
 		$hideOnLow = array($lh->translationFor("campaign_id"), $lh->translationFor("user_group"), $lh->translationFor("status"));
 		$result = $ui->generateTableHeaderWithItems($columns, "table_inbound", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
-		
-		echo $ui->modalFormStructureAgentLog('modal_stats_inbound', 'inbound', $lh->translationFor("inbound"), $result.'</table>', '', 'info-circle', '');	
-		
+
+		echo $ui->modalFormStructureAgentLog('modal_stats_inbound', 'inbound', $lh->translationFor("inbound"), $result.'</table>', '', 'info-circle', '');
+
 		// agent log
 		$columns = array($lh->translationFor("log_id"), $lh->translationFor("user"), $lh->translationFor("event"), $lh->translationFor("event_time"), $lh->translationFor("campaign_id"), $lh->translationFor("user_group"));
 		$hideOnMedium = array($lh->translationFor("log_id"), $lh->translationFor("list_id"));
 		$hideOnLow = array($lh->translationFor("log_id"), $lh->translationFor("user"));
 		$result = $ui->generateTableHeaderWithItems($columns, "table_userlog", "table-bordered table-striped", true, false, $hideOnMedium, $hideOnLow, '');
-		
-		echo $ui->modalFormStructureAgentLog('modal_stats_userlog', 'userlog', $lh->translationFor("userlog"), $result.'</table>', '', 'info-circle', '');			
+
+		echo $ui->modalFormStructureAgentLog('modal_stats_userlog', 'userlog', $lh->translationFor("userlog"), $result.'</table>', '', 'info-circle', '');
 	?>
 	<!-- ./stats -->
 <!-- end of modals -->
@@ -566,13 +566,12 @@
 		<?php print $ui->standardizedThemeJS();?>
 		<!-- JQUERY STEPS-->
   		<script src="js/dashboard/js/jquery.steps/build/jquery.steps.js"></script>
-	
+
 		<!-- Datatables Export -->
+		<script src="js/plugins/datatables/buttons/dataTables.buttons.min.js" type="text/javascript"></script>
+		<script src="js/plugins/datatables/jszip.min.js" type="text/javascript"></script>
 		<script src="js/plugins/datatables/buttons/buttons.html5.min.js" type="text/javascript"></script>
 		<script src="js/plugins/datatables/buttons/buttons.print.min.js" type="text/javascript"></script>
-		<script src="js/plugins/datatables/buttons/buttons.flash.min.js" type="text/javascript"></script>
-		<script src="js/plugins/datatables/buttons/dataTables.buttons.min.js" type="text/javascript"></script>
-		<script src="js/plugins/datatables/jszip.min.js" type="text/javascript"></script>        
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -592,14 +591,14 @@
                         <?php } ?>
 
 		// initialize select2
-		$('.select').select2({ theme: 'bootstrap' });		
+		$('.select').select2({ theme: 'bootstrap' });
 		$.fn.select2.defaults.set( "theme", "bootstrap" );
-		
+
 		var checker = 0;
-		
+
 		// users table
 		$('#T_userslist').DataTable({
-			destroy:true, 
+			destroy:true,
 			responsive:true,
 			stateSave:true,
 			drawCallback:function(settings) {
@@ -617,10 +616,10 @@
 				{ targets: -1, className: "dt-body-right" }
 			]
 		});
-			
+
 		// phones
 		$('#T_phones').DataTable({
-			destroy:true, 
+			destroy:true,
 			responsive:true,
 			stateSave:true,
 			drawCallback:function(settings) {
@@ -637,10 +636,10 @@
 				{ targets: -1, className: "dt-body-right" }
 			]
 		});
-			
+
 		// agent log - outbound
 		var outboundTable = $('#table_outbound').DataTable({
-			destroy:true,    
+			destroy:true,
 			stateSave:true,
 			drawCallback:function(settings) {
 				var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
@@ -655,10 +654,10 @@
 				"aTargets": [ 4, 6 ]
 			}]
 		});
-		
+
 		// agent log - inbound
 		var inboundTable = $('#table_inbound').DataTable({
-			destroy:true,    
+			destroy:true,
 			stateSave:true,
 			drawCallback:function(settings) {
 				var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
@@ -673,10 +672,10 @@
 				"aTargets": [ 6 ]
 			}]
 		});
-			
+
 		// agent log - userlog
 		var userlogTable = $('#table_userlog').DataTable({
-			destroy:true,    
+			destroy:true,
 			stateSave:true,
 			drawCallback:function(settings) {
 				var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
@@ -691,17 +690,17 @@
 				"aTargets": [ 1, 5 ]
 			}]
 		});
-		
+
 		// init wizards
-		var uform = $("#wizard_form"); // init user form wizard 
-		var pform = $("#create_form"); // init phone form wizard 
+		var uform = $("#wizard_form"); // init user form wizard
+		var pform = $("#create_form"); // init phone form wizard
 
 		// enable on hover event for FAB
 		// loads the fixed action button
 		$(".bottom-menu").on('mouseenter mouseleave', function () {
 			$(this).find(".fab-div-area").stop().slideToggle({ height: 'toggle', opacity: 'toggle' }, 'slow');
 		});
-			
+
 		// users form validate
 		uform.validate({
 			errorPlacement: function errorPlacement(error, element) { element.after(error); },
@@ -724,16 +723,16 @@
 			transitionEffect: "slideLeft",
 			onStepChanging: function (event, currentIndex, newIndex)
 			{
-				
+
 				// Disable next if there are duplicates
 				if(checker > 0){
 					$(".body:eq(" + newIndex + ") .error", uform).addClass("error");
 					return false;
 				}
-				
+
 				// form review
 				show_form_review();
-				
+
 				if($('#seats').val() > 1){
 					$('#password').attr("readonly", true);
 					$('#confirm').attr("readonly", true);
@@ -742,10 +741,10 @@
 				}else{
 					//var multipw = $('#password').val();
 					$('#password').attr("readonly", false);
-					$('#confirm').attr("readonly", false);					
+					$('#confirm').attr("readonly", false);
 					$('#submit-password-lbl').text('<?php $lh->translateText("password"); ?>: ');
 				}
-				
+
 				// Clean up if user went backward before
 				if (currentIndex < newIndex)
 				{
@@ -764,10 +763,10 @@
 			},
 			onFinished: function (event, currentIndex)
 			{
-				
+
 				$('#finish').text("<?php $lh->translateText("loading"); ?>");
 				$('#finish').attr("disabled", true);
-				
+
 				// Submit form via ajax
 				$.ajax({
 					url: "./php/AddUser.php",
@@ -795,7 +794,7 @@
 				});
 			}
 		});
-			
+
 		//phones
 		pform.children("div").steps({
 			headerTag: "h4",
@@ -803,14 +802,14 @@
 			transitionEffect: "slideLeft",
 			onStepChanging: function (event, currentIndex, newIndex)
 			{
-				
+
 			$("#phone_ext").val($("#start_ext").val());
-			
+
 				// Allways allow step back to the previous step even if the current step is not valid!
 				if (currentIndex > newIndex) {
 					return true;
 				}
-				
+
 				// Clean up if user went backward before
 				if (currentIndex < newIndex)
 				{
@@ -818,7 +817,7 @@
 					$(".body:eq(" + newIndex + ") label.error", pform).remove();
 					$(".body:eq(" + newIndex + ") .error", pform).removeClass("error");
 				}
-				
+
 				pform.validate().settings.ignore = ":disabled,:hidden";
 				return pform.valid();
 			},
@@ -831,7 +830,7 @@
 			{
 				$('#finish').text("<?php $lh->translateText("loading"); ?>");
 				$('#finish').attr("disabled", true);
-			
+
 				// Submit form via ajax
 					$.ajax({
 						url: "./php/AddPhone.php",
@@ -862,7 +861,7 @@
 			$('body').append(form);  // This line is not necessary
 			$(form).submit();
 		});
-		
+
 		// phone edit event
 		$(document).on('click','.edit-phone',function() {
 			var url = './editsettingsphones.php';
@@ -877,7 +876,7 @@
 		$(document).on('click','.view-stats',function() {
 			var agentlog = $(this).attr('data-agentlog');
 			var userid = $(this).attr('data-user');
-			var username = $(this).attr('data-name');	
+			var username = $(this).attr('data-name');
 
 			$('#table_'+agentlog).empty();
                        	$('#table_'+agentlog).DataTable().destroy();
@@ -889,14 +888,14 @@
                                 	var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
                                                 pagination.toggle(this.api().page.info().pages > 1);
                                         }
-                        });				
+                        });
 
 			$(".report-loader").fadeIn("slow");
 			$("#daterange_input-"+agentlog+"").val("");
 			$("#modal_stats_"+agentlog+"").modal("toggle");
 			$("#user_agentlog").val(userid);
 			$('#user_container').html(userid + " - " + username);
-			
+
 			$("#daterange_input-"+agentlog+"").daterangepicker({
 				"opens": "left",
 				"autoUpdateInput": false,
@@ -920,15 +919,15 @@
 					dataType: 'json',
 					success: function(data){
 						//console.log(data);
-						//$(".report-loader").fadeOut("slow");							
+						//$(".report-loader").fadeOut("slow");
 						var JSONStringdata = data;
-						var JSONObjectdata = JSON.parse(JSONStringdata);	
+						var JSONObjectdata = JSON.parse(JSONStringdata);
 						if (data !== "") {
 							var title = "<?php $lh->translateText("agent_log"); ?>";
 							if (agentlog == "outbound") {
 								var outboundTable = $('#table_outbound').DataTable({
 									data:JSONObjectdata,
-									destroy:true,    
+									destroy:true,
 									stateSave:true,
 									drawCallback:function(settings) {
 										var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
@@ -942,13 +941,13 @@
 										"bSortable": false,
 										"aTargets": [ 4, 6 ]
 									}]
-								});								
+								});
 							}
-							
+
 							if (agentlog == "inbound") {
 								var inboundTable = $('#table_inbound').DataTable({
 									data:JSONObjectdata,
-									destroy:true,    
+									destroy:true,
 									stateSave:true,
 									drawCallback:function(settings) {
 										var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
@@ -962,13 +961,13 @@
 										"bSortable": false,
 										"aTargets": [ 4, 6 ]
 									}]
-								});	
+								});
 							}
-							
+
 							if (agentlog == "userlog") {
 								var userlogTable = $('#table_userlog').DataTable({
 									data:JSONObjectdata,
-									destroy:true,    
+									destroy:true,
 									stateSave:true,
 									drawCallback:function(settings) {
 										var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
@@ -982,13 +981,13 @@
 										"bSortable": false,
 										"aTargets": [ 2, 5 ]
 									}]
-								});	
-							}											
-							
+								});
+							}
+
 						} else {
 							console.log("<?php echo $lh->translateText("no_data"); ?>");
 						}
-						
+
 					}
 				});
 			});
@@ -1000,18 +999,18 @@
 			var userid = $(this).attr('data-emergency-logout-username');
 			var name = $(this).attr('data-name');
 			console.log(userid);
-			swal({   
+			swal({
 				title: "<?php $lh->translateText("emergency_logout"); ?> : " + name,
-				type: "warning",   
-				showCancelButton: true,   
-				confirmButtonColor: "#DD6B55",   
-				confirmButtonText: "<?php $lh->translateText("agent_logout"); ?>",   
-				cancelButtonText: "<?php $lh->translateText("cancel_agent_logout"); ?>",   
-				closeOnConfirm: false,   
-				closeOnCancel: false 
-				}, 
-				function(isConfirm){   
-					if (isConfirm) { 
+				type: "warning",
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "<?php $lh->translateText("agent_logout"); ?>",
+				cancelButtonText: "<?php $lh->translateText("cancel_agent_logout"); ?>",
+				closeOnConfirm: false,
+				closeOnCancel: false
+				},
+				function(isConfirm){
+					if (isConfirm) {
 						$.ajax({
 							type: 'POST',
 							url: "php/EmergencyLogout.php",
@@ -1027,15 +1026,15 @@
 									sweetAlert("<?php $lh->translateText("emergency_logout"); ?>",data, "warning");
 								}
 							}
-						}); 
-					} else {     
-						swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
-					} 
+						});
+					} else {
+						swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+					}
 				}
 			);
 		});
-				
-		// delete user 
+
+		// delete user
 		$(document).on('click','.delete-T_user',function() {
 			var id = [];
 			id.push($(this).attr('data-id'));
@@ -1044,10 +1043,10 @@
 				title: "<?php $lh->translateText("are_you_sure"); ?>",
 				text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
 				type: "warning",
-				showCancelButton: true, 
-				confirmButtonColor: "#DD6B55", 
-				confirmButtonText: "<?php $lh->translateText("confirm_delete_user"); ?>", 
-				cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>", 
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "<?php $lh->translateText("confirm_delete_user"); ?>",
+				cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",
 				closeOnConfirm: false,
 				closeOnCancel: false
 			},
@@ -1056,7 +1055,7 @@
 					$.ajax({
 						url: "./php/DeleteUser.php",
 						type: 'POST',
-						data: { 
+						data: {
 							userid: id,
 							action: "delete_selected"
 						},
@@ -1069,13 +1068,13 @@
 							}
 						}
 					});
-				} else {     
-					swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
+				} else {
+					swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
 				}
 			}
 			);
 		});
-	
+
 		//delete multiple users
 		$(document).on('click','.delete-multiple-user',function() {
 			var arr = $('input:checkbox.check_user').filter(':checked').map(function () {
@@ -1086,10 +1085,10 @@
 				title: "<?php $lh->translateText("are_you_sure"); ?>",
 				text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
 				type: "warning",
-				showCancelButton: true, 
-				confirmButtonColor: "#DD6B55", 
-				confirmButtonText: "<?php $lh->translateText("confirm_delete_multiple_user"); ?>", 
-				cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>", 
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "<?php $lh->translateText("confirm_delete_multiple_user"); ?>",
+				cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",
 				closeOnConfirm: false,
 				closeOnCancel: false
 			},
@@ -1098,7 +1097,7 @@
 					$.ajax({
 						url: "./php/DeleteUser.php",
 						type: 'POST',
-						data: { 
+						data: {
 							userid: arr,
 							action: "delete_selected"
 						},
@@ -1111,35 +1110,35 @@
 							}
 						}
 					});
-				} else {     
-				swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
+				} else {
+				swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
 				}
 			}
 			);
 		});
-	
+
 		// delete phone
 		$(document).on('click','.delete-phone',function() {
 			var id = [];
-			id.push($(this).attr('data-id'));	
+			id.push($(this).attr('data-id'));
 			console.log(id);
-            swal({   
+            swal({
                 title: "<?php $lh->translateText("are_you_sure"); ?>",
 				text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
-                type: "warning",   
-                showCancelButton: true,   
-                confirmButtonColor: "#DD6B55",   
-                confirmButtonText: "<?php $lh->translateText("confirm_delete_phone"); ?>",   
-                cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",   
-                closeOnConfirm: false,   
-                closeOnCancel: false 
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "<?php $lh->translateText("confirm_delete_phone"); ?>",
+                cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",
+                closeOnConfirm: false,
+                closeOnCancel: false
                 },
-                function(isConfirm){   
-                    if (isConfirm) { 
+                function(isConfirm){
+                    if (isConfirm) {
 					$.ajax({
 					  url: "./php/DeletePhones.php",
 					  type: 'POST',
-					  data: { 
+					  data: {
 						exten_id: id,
 						action: "delete_selected"
 					  },
@@ -1152,13 +1151,13 @@
 							}
 						}
 					});
-                    } else {     
-                            swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>", "error");   
-                    } 
+                    } else {
+                            swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("something_went_wrong"); ?>", "error");
+                    }
                 }
             );
 		});
-	
+
 		// delete multiple phones
 		$(document).on('click','.delete-multiple-phone',function() {
 			var arr = $('input:checkbox.check_phone').filter(':checked').map(function () {
@@ -1169,10 +1168,10 @@
 				title: "<?php $lh->translateText("are_you_sure"); ?>",
 				text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
 				type: "warning",
-				showCancelButton: true, 
-				confirmButtonColor: "#DD6B55", 
-				confirmButtonText: "<?php $lh->translateText("confirm_delete_multiple_phones"); ?>", 
-				cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>", 
+				showCancelButton: true,
+				confirmButtonColor: "#DD6B55",
+				confirmButtonText: "<?php $lh->translateText("confirm_delete_multiple_phones"); ?>",
+				cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",
 				closeOnConfirm: false,
 				closeOnCancel: false
 			},
@@ -1181,7 +1180,7 @@
 					$.ajax({
 						url: "./php/DeletePhones.php",
 						type: 'POST',
-						data: { 
+						data: {
 						exten_id: arr,
 						action: "delete_selected"
 					},
@@ -1194,12 +1193,12 @@
 						}
 					}
 					});
-				} else {     
-				swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
+				} else {
+				swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
 				}
 			}
 			);
-		});		
+		});
 
 		// set max length for password
 		$(document).on('change','#user_group',function() {
@@ -1211,7 +1210,7 @@
 				$("#password").val('Go'+<?php echo date("Y");?>);
 			}
 		});
-	
+
 		// disable special characters on User ID
 		$('#user_form').bind('keypress', function (event) {
 		    var regex = new RegExp("^[a-zA-Z0-9]+$");
@@ -1221,7 +1220,7 @@
 		       return false;
 		    }
 		});
-		
+
 		// disable paste in User ID
 		$('#user_form').on("paste",function(event) {
 			event.preventDefault();
@@ -1261,11 +1260,11 @@
 		// check duplicates
 		$("#user_form").keyup(function() {
 			$("#next").attr('disabled', true);
-			
+
 			clearTimeout($.data(this, 'timer'));
 			var wait = setTimeout(validate_user, 500);
 			$(this).data('timer', wait);
-			
+
 		});
 
 		function validate_user(){
@@ -1294,7 +1293,7 @@
 								$( "#user_form" ).removeClass("valid").addClass( "error" );
 								$( "#user-duplicate-error" ).text( "<?php $lh->translateText("dup_check_error"); ?>" ).removeClass("avail").addClass("error");
 							//}
-							
+
 							checker = 1;
 						}
 					}
@@ -1326,9 +1325,9 @@
 		});
 
 	});
-	
+
 </script>
-		
+
 		<?php print $ui->creamyFooter();?>
     </body>
 </html>

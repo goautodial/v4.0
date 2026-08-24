@@ -4,19 +4,19 @@
 //error_reporting(E_ALL);
 /**
 	The MIT License (MIT)
-	
+
 	Copyright (c) 2015 Ignacio Nieto Carvajal
-	
+
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the "Software"), to deal
 	in the Software without restriction, including without limitation the rights
 	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 	copies of the Software, and to permit persons to whom the Software is
 	furnished to do so, subject to the following conditions:
-	
+
 	The above copyright notice and this permission notice shall be included in
 	all copies or substantial portions of the Software.
-	
+
 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -47,7 +47,7 @@ if ($list_id_ct > 0) {
 		$first_name 	= $output->first_name[$i];
 		$middle_initial = $output->middle_initial[$i];
 		$last_name 		= $output->last_name[$i];
-		
+
 		$email 			= $output->email[$i];
 		$phone_number 	= $output->phone_number[$i];
 		$alt_phone 		= $output->alt_phone[$i];
@@ -68,7 +68,7 @@ if ($list_id_ct > 0) {
 $fullname = $title.' '.$first_name.' '.$middle_initial.' '.$last_name;
 $date_of_birth = date('Y-m-d', strtotime($date_of_birth));
 //var_dump($output);
- $output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email, 
+ $output_script = $ui->getAgentScript($lead_id, $fullname, $first_name, $last_name, $middle_initial, $email,
  									  $phone_number, $alt_phone, $address1, $address2, $address3, $city, $province, $state, $postal_code, $country);
 
 $avatarHash = md5( strtolower( trim( $user->getUserId() ) ) );
@@ -97,8 +97,8 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
         <script src="js/bootstrap.min.js" type="text/javascript"></script>
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
         <script src="js/jquery.validate.min.js" type="text/javascript"></script>
-		
-        <!-- Creamy App 
+
+        <!-- Creamy App
         <script src="js/app.min.js" type="text/javascript"></script>
 		-->
         <!-- theme_dashboard folder -->
@@ -132,7 +132,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
         <link rel="stylesheet" href="css/customizedLoader.css">
 
         <script type="text/javascript">
-			$(window).load(function() {
+			$(window).on('load', function() {
 				$(".preloader").fadeOut("slow", function() {
 					if (use_webrtc) {
 						$.snackbar({content: "<i class='fa fa-exclamation-circle fa-lg text-warning' aria-hidden='true'></i>&nbsp; Please wait while we register your phone extension to the dialer...", timeout: 3000, htmlAllowed: true});
@@ -190,7 +190,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 						box-sizing: border-box;
 				padding-left: 0px;
 			}
-			
+
 			.form-control[disabled], fieldset[disabled] .form-control{
 				cursor: text;
 				background-color: white;
@@ -207,7 +207,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 				width:25%;
 			}*/
 			.edit-profile-button{
-				font-size:14px; 
+				font-size:14px;
 				font-weight:normal;
 			}
 			.hide_div{
@@ -261,7 +261,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 					<!-- standard custom edition form -->
 					<div class="container-custom ng-scope">
 						<div class="card">
-							
+
 								<div class="card-heading bg-inverse">
 									<div class="row">
 										<div class="col-md-2 text-center visible-md visible-lg">
@@ -274,7 +274,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 									</div>
 								</div>
 							<!-- /.card heading -->
-								
+
 							<!-- Card body -->
 						        <div class="card-body custom-tabpanel">
 				                	<div role="tabpanel" class="panel panel-transparent">
@@ -368,7 +368,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 							                    </tr>
 								            </table>
 										</div>
-									
+
 										<div id="profile" role="tabpanel" class="tab-pane active">
 
 											<fieldset>
@@ -377,7 +377,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 												</h4>
 												<br/>
 												<form role="form" id="name_form" class="formMain form-inline" >
-												
+
 												<!--LEAD ID-->
 												<input type="hidden" value="<?php echo $lead_id;?>" name="lead_id">
 												<!--LIST ID-->
@@ -398,7 +398,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 												<input type="hidden" value="<?php echo $uniqueid;?>" name="uniqueid">
 												<!--SECONDS-->
 												<input type="hidden" value="" name="seconds">
-												
+
 												<div class="row">
 													<div class="col-sm-4">
 														<div class="mda-form-group label-floating">
@@ -423,7 +423,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 													</div>
 												</div>
 												</form>
-												
+
 												<form id="contact_details_form" class="formMain">
 													<!-- phone number & alternative phone number -->
 													<div class="row">
@@ -449,22 +449,22 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 														</div>
 													</div>
 													<!-- /.phonenumber & alt phonenumber -->
-													
+
 													<div class="mda-form-group label-floating">
 														<input id="address1" name="address1" type="text" width="auto" value="<?php echo $address1;?>"
 															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
-														<label for="address1">Address</label> 
+														<label for="address1">Address</label>
 														<!--<span class="mda-input-group-addon">
 															<em class="fa fa-home fa-lg"></em>
 														</span>-->
 													</div>
-													
+
 													<div class="mda-form-group label-floating">
 														<input id="address2" name="address2" type="text" value="<?php echo $address2;?>"
 															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
 														<label for="address2">Address 2</label>
 													</div>
-													
+
 													<div class="row">
 														<div class="col-sm-4">
 															<div class="mda-form-group label-floating">
@@ -488,7 +488,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 															</div>
 														</div>
 													</div><!-- /.city,state,postalcode -->
-												
+
 													<div class="mda-form-group label-floating">
 														<input id="country" name="country" type="text" value="<?php echo $country;?>"
 															class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched input-disabled" disabled>
@@ -502,7 +502,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 															<em class="fa fa-at fa-lg"></em>
 														</span>-->
 													</div>
-												</form> 
+												</form>
 												<form role="form" id="gender_form" class="formMain form-inline" >
 													<div class="row">
 														<div class="col-sm-3">
@@ -516,7 +516,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 															<div class="mda-form-group label-floating">
 																<select id="gender" name="gender" value="<?php echo $gender;?>"
 																	class="mda-form-control ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched select input-disabled" disabled>
-																	<?php 
+																	<?php
 																		if($gender == "M"){
 																	?>
 																		<option selected value="M">Male</option>
@@ -547,7 +547,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 																<label for="date">Date Of Birth</label>
 															</div>
 														</div>
-													</div><!-- /.gender & title -->                   
+													</div><!-- /.gender & title -->
 												</form>
 							                <br/>
 							                <!-- NOTIFICATIONS -->
@@ -574,17 +574,17 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 							                </div>
 							               </fieldset>
 										</div><!--End of Profile-->
-										
+
 										<div id="comments" role="tabpanel" class="tab-pane">
 											<div class="row">
 												<div class="col-sm-12">
 													<h4><!--Comments-->
 														<a href="#" data-role="button" class="pull-right edit-profile-button hidden" id="edit-profile">Edit Information</a>
 													</h4>
-												
+
 													<form role="form" id="comment_form" class="formMain form-inline" >
 														<div class="mda-form-group hidden">
-															<p style="padding-right:0px;padding-top: 20px;">Comments:</p> 
+															<p style="padding-right:0px;padding-top: 20px;">Comments:</p>
 															<button id="ViewCommentButton" onClick="ViewComments('ON');" value="-History-" class="hidden"></button>
 														</div>
 														<div class="mda-form-group label-floating" style="float: left; width:100%;">
@@ -597,7 +597,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 												</div>
 											</div>
 										</div>
-										
+
 										<!-- Scripts -->
 										<div id="scripts" role="tabpanel" class="tab-pane">
 											<div class="row">
@@ -621,16 +621,16 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 							<div class="modal fade" id="script" name="script" tabindex="-1" role="dialog" aria-hidden="true">
 						        <div class="modal-dialog">
 						            <div class="modal-content">
-									
+
 						                <div class="modal-header">
 						                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						                    <h4 class="modal-title"><i class="fa fa-edit"></i> <b><?php $lh->translateText("Script"); ?></b></h4>
 						                </div>
 
 						                    <div class="modal-body">
-						                        
+
 											</div>
-										
+
 						            </div><!-- /.modal-content -->
 						        </div><!-- /.modal-dialog -->
 						    </div><!-- /.modal -->
@@ -648,7 +648,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 
 						</div>
 					</div>
-					
+
 					<div id="popup-hotkeys" class="panel clearfix">
 						<div class="panel-heading"><b><?=$lh->translationFor('available_hotkeys')?></b></div>
 						<div class="panel-body"><?=$lh->translationFor('no_available_hotkeys')?></div>
@@ -677,20 +677,20 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
       <!-- Home tab content -->
       <div class="tab-pane active" id="control-sidebar-dialer-tab">
         <ul class="control-sidebar-menu" id="go_agent_dialer">
-			
+
         </ul>
         <!-- /.control-sidebar-menu -->
 
         <ul class="control-sidebar-menu" id="go_agent_status" style="margin: 0 0 15px;padding: 0 0 10px;">
-			
+
         </ul>
-		
+
         <ul class="control-sidebar-menu" id="go_agent_manualdial" style="margin-top: -10px;padding: 0 15px;">
-			
+
         </ul>
 
         <ul class="control-sidebar-menu hidden-xs" id="go_agent_dialpad" style="margin-top: 15px;padding: 0 15px;">
-			
+
         </ul>
 
         <ul class="control-sidebar-menu hidden-xs" id="go_agent_other_buttons" style="margin-top: 15px;padding: 0 15px;">
@@ -719,11 +719,11 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 				<button type="button" id="show-callbacks-today" class="btn btn-link btn-block btn-raised"><?=$lh->translateText('Callbacks For Today')?> <span id="callbacks-active" class='badge pull-right bg-red'>0</span></button>
 			</li>
         </ul>
-		
+
         <ul class="control-sidebar-menu" id="go_agent_login" style="width: 100%; margin: 25px auto 15px; text-align: center;">
-			
+
         </ul>
-		
+
         <ul class="control-sidebar-menu" id="go_agent_logout" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px; text-align: center;">
 			<li>
 				<p><strong><?=$lh->translateText("Call Duration")?>:</strong> <span id="SecondsDISP">0</span> <?=$lh->translationFor('second')?></p>
@@ -732,7 +732,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 				<input type="hidden" id="callserverip" value="" />
 				<span id="custdatetime" class="hidden"></span>
 			</li>
-			
+
         </ul>
         <!-- /.control-sidebar-menu -->
 
@@ -768,12 +768,12 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 			}
 			?>
 		</ul>
-		
+
         <ul class="control-sidebar-menu" style="bottom: 0px; position: absolute; width: 100%; margin: 25px -15px 15px;">
 			<li>
 				<div class="center-block" style="text-align: center">
 					<a href="./edituser.php" class="btn btn-warning"><i class='fa fa-user'></i> <?=$lh->translationFor("my_profile")?></a>
-					 &nbsp; 
+					 &nbsp;
 					<a href="./logout.php" id="cream-agent-logout" class="btn btn-warning"><i class='fa fa-sign-out'></i> <?=$lh->translationFor("exit")?></a>
 				</div>
 			</li>
@@ -802,51 +802,51 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 				    //$('.hide_div').show();
 				    $("input:required, select:required").addClass("required_div");
 				    $('#edit-profile').hide();
-				    
+
 				    var txtBox=document.getElementById("first_name" );
 					txtBox.focus();
 				    //$("#submit_div").focus(function() { $(this).select(); } );
 				    //$('input[name="first_name"]').focus();
 				});
 
-				/** 
+				/**
 				 * Modifies a customer
-			 	
+
 				$("#modifycustomerform").validate({
 					submitHandler: function() {
 						//submit the form
 							$("#resultmessage").html();
 							$("#resultmessage").fadeOut();
 							$.post("./php/ModifyCustomer.php", //post
-							$("#name_form, #gender_form, #contact_details_form").serialize(), 
+							$("#name_form, #gender_form, #contact_details_form").serialize(),
 								function(data){
 									//if message is sent
 									if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
-									<?php 
+									<?php
 									$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("data_successfully_modified"), true, false);
-									print $ui->fadingInMessageJS($errorMsg, "modifycustomerresult"); 
-									?>				
+									print $ui->fadingInMessageJS($errorMsg, "modifycustomerresult");
+									?>
 									} else {
-									<?php 
+									<?php
 									$errorMsg = $ui->dismissableAlertWithMessage($lh->translationFor("error_modifying_data"), false, true);
-									print $ui->fadingInMessageJS($errorMsg, "modifycustomerresult"); 
+									print $ui->fadingInMessageJS($errorMsg, "modifycustomerresult");
 									?>
 									}
 									//
 								});
 						return false; //don't let the form refresh the page...
-					}					
+					}
 				});
 				 */
 				$("#submit_edit_form").click(function(){
 				//alert("User Created!");
-				
+
 				var validate = 0;
 
 					if($('#name_form')[0].checkValidity()) {
 					    if($('#gender_form')[0].checkValidity()) {
 					    	if($('#contact_details_form')[0].checkValidity()) {
-								
+
 								//alert("Form Submitted!");
 								var log_user = '<?=$_SESSION['user']?>';
 								var log_group = '<?=$_SESSION['usergroup']?>';
@@ -879,7 +879,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 						$('.output-message-incomplete').show().focus().delay(5000).fadeOut().queue(function(n){$(this).hide(); n();});
 						validate = 0;
 					}
-				
+
 				});
 				/**
 				 * Deletes a customer
@@ -890,7 +890,7 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 					if (r === true) {
 						var customerid = $(this).attr('href');
 						$.post("./php/DeleteContact.php", $("#modifycustomerform").serialize() ,function(data){
-							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { 
+							if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") {
 								alert("<?php $lh->translateText("Contact Successfully Deleted"); ?>");
 								window.location = "index.php";
 							}
@@ -898,11 +898,11 @@ $custDefaultAvatar = "https://www.gravatar.com/avatar/{$avatarHash}?rating=PG&si
 						});
 					}
 				 });
-				
+
 				$('.form-control').on('focus blur', function (e) {
 					$(this).parents('.label-floating').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
 				}).trigger('blur');
-				
+
 				$('.label-floating .form-control').change(function() {
 					var thisVal = $(this).val();
 					$(this).parents('.label-floating').toggleClass('focused', (thisVal.length > 0));

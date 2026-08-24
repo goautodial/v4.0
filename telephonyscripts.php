@@ -1,8 +1,8 @@
-<?php	
+<?php
 /**
  * @file 		telephonyscripts.php
  * @brief 		Manage scripts
- * @copyright 	Copyright (c) 2018 GOautodial Inc. 
+ * @copyright 	Copyright (c) 2018 GOautodial Inc.
  * @author		Demian Lizandro A. Biscocho
  * @author     	Alexander Jim H. Abenoja
  *
@@ -27,42 +27,45 @@
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
 
+	// Send the page and shared preloader together after render-critical data loads.
+	ob_start();
+
 	$ui = \creamy\UIHandler::getInstance();
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	
+
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
 			header("location: agent.php");
 		}
 	}
-	
-	$perm = $api->goGetPermissions('script');	
-	$user_groups = $api->API_getAllUserGroups();
+
+	$perm = $api->goGetPermissions('script');
+	$pageApiResults = $api->API_getTelephonyScriptsPageData();
+	$user_groups = $pageApiResults['user_groups'];
+	$standard_fields = $pageApiResults['standard_fields'];
+	$scripts = $pageApiResults['scripts'];
 ?>
 <html>
     <head>
         <meta charset="UTF-8">
         <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("scripts"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        
-        <?php 
-			print $ui->standardizedThemeCSS(); 
+
+        <?php
+			print $ui->standardizedThemeCSS();
 			print $ui->creamyThemeCSS();
 			print $ui->dataTablesTheme();
 		?>
-		
+
         <script src="js/plugins/ckeditor/ckeditor.js" type="text/javascript"></script>
         <script src="js/plugins/ckeditor/styles.js" type="text/javascript"></script>
-		
+
     </head>
 
-     <?php print $ui->creamyBody(); ?>
-     <?php 
-     	$standard_fields = $api->API_getStandardFields();
-     ?>
+	     <?php print $ui->creamyBody(); ?>
         <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyHeader($user); ?>
@@ -90,7 +93,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <legend><?php $lh->translateText("scripts"); ?></legend>
-							<?php print $ui->getListAllScripts($_SESSION['user'], $perm); ?>
+							<?php print $ui->getListAllScripts($_SESSION['user'], $perm, $scripts); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->
@@ -102,32 +105,26 @@
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
-		
+
 	</div><!-- ./wrapper -->
 
 	<!-- FIXED ACTION BUTTON -->
 	<div class="action-button-circle<?=($perm->script_create === 'N' ? ' hidden' : '')?>" data-toggle="modal" data-target="#scripts-modal">
 		<?php print $ui->getCircleButton("scripts", "plus"); ?>
 	</div>
-<?php
-	/*
-	* APIs for add form
-	*/
-	$scripts = $api->API_getAllScripts();
-
-?>
+		<div class="modal fade"
 	<div class="modal fade" id="scripts-modal" aria-labelledby="scripts">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight" id="scripts">
-						<i class="fa fa-info-circle" title="<?php $lh->translateText("script_wizard_description"); ?>"></i> 
+						<i class="fa fa-info-circle" title="<?php $lh->translateText("script_wizard_description"); ?>"></i>
 						<b><?php $lh->translateText("script_wizard"); ?> » <?php $lh->translateText("new_script"); ?></b>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					</h4>
 				</div>
 				<div class="modal-body">
-				
+
 					<form id="create_form" role="form">
 						<input type="hidden" name="log_user" value="<?php echo $_SESSION['user']; ?>" />
 						<input type="hidden" name="log_group" value="<?php echo $_SESSION['usergroup']; ?>" />
@@ -181,7 +178,7 @@
 											<option value="---ALL---" selected> - - - ALL - - -</option>
 											<?php
 											}
-											
+
 											if ($user_groups->result == 'success') {
 												foreach ($user_groups->user_group as $i => $group) {
 													$isSelected = '';
@@ -238,7 +235,7 @@
 							</fieldset>
 						</div>
 					</form>
-			
+
 				</div> <!-- end of modal body -->
 			</div>
 		</div>
@@ -247,7 +244,7 @@
 		<?php print $ui->standardizedThemeJS();?>
 		<!-- JQUERY STEPS-->
   		<script src="js/dashboard/js/jquery.steps/build/jquery.steps.js"></script>
-	
+
 <script>
 	// function wysihtml5(){
 	// 	$(".textarea").wysihtml5();
@@ -255,7 +252,7 @@
 	$(document).ready(function(){
 		$('#scripts-modal').on('shown.bs.modal', function(){
 	        // $('.textarea').wysihtml5();
-	        CKEDITOR.replace('script_text', 
+	        CKEDITOR.replace('script_text',
 	        	{
 	                toolbar: [
 	                    // { name: 'document', items: [ 'Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates' ] },
@@ -304,7 +301,7 @@
 		*******************/
 
 		$('#scripts_table').DataTable({
-			destroy:true, 
+			destroy:true,
 			responsive:true,
 			stateSave:true,
 			drawCallback:function(settings) {
@@ -322,7 +319,7 @@
 		/*******************
 		** INIT WIZARD & ADD EVENT
 		*******************/
-			var form = $("#create_form"); // init form wizard 
+			var form = $("#create_form"); // init form wizard
 
 		    form.validate({
 		        errorPlacement: function errorPlacement(error, element) { element.after(error); }
@@ -356,12 +353,12 @@
 		        },
 		        onFinished: function (event, currentIndex)
 		        {
-					
+
 					$('#finish').text("<?php $lh->translateText("loading"); ?>");
 					$('#finish').attr("disabled", true);
-					
+
 					/*********
-					** ADD EVENT 
+					** ADD EVENT
 					*********/
 						// Submit form via ajax
 						$.ajax({
@@ -417,9 +414,9 @@
 								url: "./php/DeleteScript.php",
 								type: 'POST',
 								data: {
-									script_id: id, 
-									log_user: '<?=$_SESSION['user']?>', 
-									log_group: '<?=$_SESSION['usergroup']?>' 
+									script_id: id,
+									log_user: '<?=$_SESSION['user']?>',
+									log_group: '<?=$_SESSION['usergroup']?>'
 								},
 								success: function(data) {
 								//console.log(data);
@@ -436,7 +433,7 @@
 					}
 				);
 			});
-		
+
 		/*******************
 		** FILTERS
 		*******************/
@@ -471,14 +468,14 @@
 				    }
 				});
 	}); // end of document ready
-	
+
 function addtext() {
 	var txtarea = document.getElementById('script_text');
 	var text = document.getElementById('script_text_dropdown').value;
 	CKEDITOR.instances.script_text.insertText( text );
 }
 </script>
-		
+
 		<?php print $ui->creamyFooter();?>
     </body>
 </html>

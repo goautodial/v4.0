@@ -572,7 +572,7 @@ window_focus = true;
 window_focus = false;
 }).trigger('focus');
 
-$(window).load(function() {
+$(window).on('load', function() {
 var refreshId = setInterval(function() {
     if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
         //Start of checking for live calls

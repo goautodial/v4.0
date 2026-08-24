@@ -26,23 +26,41 @@
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
 
+	// Send the page and shared preloader together after render-critical data loads.
+	ob_start();
+
 	$ui = \creamy\UIHandler::getInstance();
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	
+
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
 			header("location: agent.php");
 		}
-	}	
-	
+	}
+
 	$perm = $api->goGetPermissions('inbound,ivr,did');
 	$gopackage = $api->API_getGOPackage();
 
 	if($gopackage->packagetype === "gosmall" && ($_SESSION['user'] !== "goautodial" && $_SESSION !== "goAPI") ){
 		header("location:index.php");
+	}
+
+	if ($perm->inbound->inbound_read !== 'N' || $perm->ivr->ivr_read !== 'N' || $perm->did->did_read !== 'N') {
+		$pageApiResults = $api->API_getTelephonyInboundPageData();
+		$ingroup = $pageApiResults['ingroup'];
+		$ivr = $pageApiResults['ivr'];
+		$phonenumber = $pageApiResults['phonenumber'];
+		$users = $pageApiResults['users'];
+		$user_groups = $pageApiResults['user_groups'];
+		$campaign = $pageApiResults['campaign'];
+		$voicemails = $pageApiResults['voicemails'];
+		$phones = $pageApiResults['phones'];
+		$scripts = $pageApiResults['scripts'];
+		$voicefiles = $pageApiResults['voicefiles'];
+		$calltimes = $pageApiResults['calltimes'];
 	}
 ?>
 <html>
@@ -50,24 +68,24 @@
         <meta charset="UTF-8">
         <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("inbound"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        
-        <?php 
-			print $ui->standardizedThemeCSS(); 
+
+        <?php
+			print $ui->standardizedThemeCSS();
 			print $ui->creamyThemeCSS();
 			print $ui->dataTablesTheme();
 		?>
-		
+
 		<!-- Bootstrap Color Picker -->
   		<link rel="stylesheet" href="adminlte/colorpicker/bootstrap-colorpicker.min.css">
-		
+
      	<!-- bootstrap color picker -->
 		<script src="adminlte/colorpicker/bootstrap-colorpicker.min.js"></script>
 
     </head>
-    
+
     <?php print $ui->creamyBody(); ?>
 
-        <div class="wrapper">	
+        <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyHeader($user); ?>
             <!-- Left side column. contains the logo and sidebar -->
@@ -92,33 +110,13 @@
                 <section class="content">
                 <?php if ($perm->inbound->inbound_read !== 'N' || $perm->ivr->ivr_read !== 'N' || $perm->did->did_read !== 'N') { ?>
 
-<?php
-	/*
-	 * APIs used
-	 */
 
-	$ingroup = $api->API_getAllInGroups();
-	$ivr = $api->API_getAllIVRs();
-	$phonenumber = $api->API_getAllDIDs();
-
-	/*
-	 * APIs for getting lists for the some of the forms
-	 */
-	$users = $api->API_getAllUsers();
-	$user_groups = $api->API_getAllUserGroups();
-	$campaign = $api->API_getAllCampaigns();
-	$voicemails = $api->API_getAllVoicemails();
-	$phones = $api->API_getAllPhones();
-	$scripts = $api->API_getAllScripts();
-	$voicefiles = $api->API_getAllVoiceFiles();
-	$calltimes = $api->API_getAllCalltimes();
-?>
 			<div class="panel panel-default">
 				<div class="panel-body">
 					<legend><?php $lh->translateText("inbound"); ?>: <small><?php $lh->translateText("ingroup"); ?>, <?php $lh->translateText("call_menu"); ?>, <?php $lh->translateText('phone_numbers'); ?></small> </legend>
 
 		            <div role="tabpanel">
-						
+
 						<ul role="tablist" class="nav nav-tabs nav-justified">
 
 						<!-- In-group panel tabs-->
@@ -135,7 +133,7 @@
 						}
 						if ($perm->ivr->ivr_read === 'N') { $toggleIVR = ' class="T_ivr hidden"'; }
 						if ($perm->ivr->ivr_read !== 'N' && $perm->inbound->inbound_read === 'N') {
-							
+
 							$toggleIVR = ' class="T_ivr active"';
 							$activeIVR = ' active';
 						}
@@ -160,7 +158,7 @@
 								    <?php $lh->translateText('phone_numbers_did_tfn'); ?> </a>
 							 </li>
 						  </ul>
-						  
+
 						<!-- Tab panes-->
 						<div class="tab-content bg-white">
 
@@ -181,7 +179,7 @@
 								   <tbody>
 									   	<?php
 									   		for($i=0;$i < (isset($ingroup->group_id) && is_countable($ingroup->group_id) ? count($ingroup->group_id) : 0);$i++){
-							
+
 												if($ingroup->active[$i] == "Y"){
 													$ingroup->active[$i] = $lh->translationFor('active');
 												}else{
@@ -190,7 +188,7 @@
 
 											$action_INGROUP = $ui->getUserActionMenuForInGroups($ingroup->group_id[$i], $perm);
 
-									   	?>	
+									   	?>
 											<tr>
                                                 <td><avatar username='<?php echo $ingroup->group_name[$i];?>' :size='36'></avatar></td>
 												<td><strong><?php if (($_SESSION['usergroup'] === "ADMIN" && $perm->inbound->inbound_update !== 'N') || ($_SESSION['usergroup'] !== "ADMIN" && $perm->inbound->inbound_update !== 'N' && !preg_match("/^AGENTDIRECT/", $ingroup->group_id[$i]))) { echo '<a class="edit-ingroup" data-id="'.$ingroup->group_id[$i].'">'; } ?><?php echo $ingroup->group_id[$i];?><?php if ($perm->inbound->inbound_update !== 'N') { echo '</a>'; } ?></strong></td>
@@ -206,7 +204,7 @@
 								   </tbody>
 								</table>
 							</div>
-							
+
 							<!--==== IVR ====-->
 							<div id="T_ivr" role="tabpanel" class="tab-pane T_ivr <?=$activeIVR?>">
 								<table class="responsive display no-wrap table table-striped table-bordered table-hover" width="100%" id="table_ivr">
@@ -226,7 +224,7 @@
 
 											$action_IVR = $ui->ActionMenuForIVR($ivr->menu_id[$i], $ivr->menu_name[$i], $perm);
 
-									   	?>	
+									   	?>
 											<tr>
                                                 <td><avatar username='<?php echo $ivr->menu_name[$i];?>' :size='36'></avatar></td>
 												<td><strong><?php if ($perm->ivr->ivr_update !== 'N') { echo '<a class="edit-ivr" data-id="'.$ivr->menu_id[$i].'">'; } ?><?php echo $ivr->menu_id[$i];?><?php if ($perm->ivr->ivr_update !== 'N') { echo '</a>'; } ?></strong></td>
@@ -274,7 +272,7 @@
 
 											$action_DID = $ui->getUserActionMenuForDID($phonenumber->did_id[$i], $phonenumber->did_description[$i], $perm);
 
-									   	?>	
+									   	?>
 											<tr>
                                                 <td><avatar username='<?php echo $phonenumber->did_description[$i];?>' :size='36'></avatar></td>
 												<td><strong><?php if ($perm->did->did_update !== 'N') { echo '<a class="edit-phonenumber" data-id="'.$phonenumber->did_id[$i].'">'; } ?><?php echo $phonenumber->did_pattern[$i];?><?php if ($perm->inbound->inbound_update !== 'N') { echo '</a>'; } ?></strong></td>
@@ -298,7 +296,7 @@
 									print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 								}
 							?>
-							
+
 						<div class="bottom-menu skin-blue<?php if ($perm->inbound->inbound_create == 'N' && $perm->ivr->ivr_create == 'N' && $perm->did->did_create == 'N') { echo " hidden"; } ?>">
 							<div class="action-button-circle" data-toggle="modal">
 								<?php print $ui->getCircleButton("inbound", "plus"); ?>
@@ -351,13 +349,13 @@
 			<!-- Header -->
 				<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight" id="ingroup_modal">
-						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create ingroups."></i> 
+						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create ingroups."></i>
 						<b><?php $lh->translateText("in_group_wizard"); ?> » <?php $lh->translateText("create_new_ingroup"); ?></b>
 						<button type="button" class="close" data-dismiss="modal" aria-label="close_ingroup"><span aria-hidden="true">&times;</span></button>
 					</h4>
 				</div>
 				<div class="modal-body wizard-content">
-				
+
 				<form action="" method="POST" id="create_ingroup" role="form">
 					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
@@ -440,7 +438,7 @@
 										?>
 												<option value="<?php echo $voicemails->voicemail_id[$i];?>">
 													<?php echo $voicemails->voicemail_id[$i].' - '.$voicemails->fullname[$i];?>
-												</option>									
+												</option>
 										<?php
 												}
 											}
@@ -484,7 +482,7 @@
 										?>
 											<option value="<?php echo $scripts->script_id[$i];?>">
 												<?php echo $scripts->script_id[$i].' - '.$scripts->script_name[$i];?>
-											</option>									
+											</option>
 										<?php
 											}
 										?>
@@ -506,27 +504,27 @@
 							</div>
 						</fieldset>
 					</div><!-- end of step -->
-				
+
 				</form>
 
 				</div> <!-- end of modal body -->
 			</div>
 		</div>
 	</div><!-- end of modal -->
-	
+
 	<!-- ADD IVR MODAL -->
 		<div class="modal fade" id="add_ivr" aria-labelledby="ivr_modal" >
         <div class="modal-dialog modal-lg" role="document" style="height:90%;">
             <div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight" id="ivr_modal">
-						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create IVR."></i> 
+						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create IVR."></i>
 						<b><?php $lh->translateText("call_menu_wizard"); ?> » <?php $lh->translateText("create_new_call_menu"); ?></b>
 						<button type="button" class="close" data-dismiss="modal" aria-label="close_did"><span aria-hidden="true">&times;</span></button>
 					</h4>
 				</div>
 				<div class="modal-body wizard-content">
-				
+
 				<form action="" method="POST" id="create_ivr" role="form">
 					<div class="row">
 					<h4><?php $lh->translateText("call_menu_details"); ?>
@@ -546,7 +544,7 @@
 								<input type="text" name="menu_name" id="menu_name" class="form-control" placeholder="<?php $lh->translateText("menu_name"); ?>" required>
 							</div>
 						</div>
-						
+
 						<div class="form-group">
 							<label class="col-sm-3 control-label" for="menu_prompt"><?php $lh->translateText("menu_greeting"); ?></label>
 							<div class="col-sm-8 mb">
@@ -581,7 +579,7 @@
 										<option value="<?php echo $file;?>"><?php echo $file;?></option>
 									<?php
 										}
-									?>				
+									?>
 								</select>
 							</div>
 						</div>
@@ -597,7 +595,7 @@
 										<option value="<?php echo $file;?>"><?php echo $file;?></option>
 									<?php
 										}
-									?>				
+									?>
 								</select>
 							</div>
 						</div>
@@ -607,7 +605,7 @@
 								<input type="number" name="menu_repeat" id="menu_repeat" class="form-control" value="2" min="0" required>
 							</div>
 						</div>
-						
+
 						<div class="form-group" style="display:none;">
 							<label class="col-sm-3 control-label" for="menu_time_check"><?php $lh->translateText("menu_time_check"); ?></label>
 							<div class="col-sm-8 mb">
@@ -633,7 +631,7 @@
 						</div>
 						<div class="form-group" style="display:none;">
 							<label class="col-sm-3 control-label" for="track_in_vdac"><?php $lh->translateText("track_call_realtime_report"); ?>: </label>
-							<div class="col-sm-8 mb"> 
+							<div class="col-sm-8 mb">
 								<select name="track_in_vdac" id="track_in_vdac" class="form-control">
 									<option value="0" >0 - No Realtime Tracking</option>
 									<option value="1" selected>1 - Realtime Tracking</option>
@@ -675,12 +673,12 @@
 									<option value="<?php echo $user_groups->user_group[$i];?>">  <?php echo $user_groups->group_name[$i];?>  </option>
 								<?php
 								}
-								?>		
+								?>
 								</select>
 							</div>
 						</div>
 					</fieldset>
-					
+
 					<!-- STEP 2 -->
 					<h4><?php $lh->translateText("call_menu_entry"); ?>
 					   <br>
@@ -718,7 +716,7 @@
 											</select>
 										</div>
 										<div class="col-lg-7">
-											<?php $lh->translateText("description"); ?>: 
+											<?php $lh->translateText("description"); ?>:
 											<input type="text" name="route_desc[]" class="form-control route_desc_<?php echo $i;?>" placeholder="<?php $lh->translateText("description"); ?>"/>
 										</div>
 										<div class="col-lg-3">
@@ -992,25 +990,25 @@
 					</div><!-- End of Step -->
 				</form>
 				</div> <!-- end of modal body -->
-				
+
 			</div>
 		</div>
 	</div><!-- end of modal -->
 
-	
+
 	<!-- ADD DID MODAL -->
 	<div class="modal fade" id="add_phonenumbers" aria-labelledby="did_modal" >
         <div class="modal-dialog" role="document">
             <div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title animated bounceInRight" id="did_modal">
-						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create DID/TFN."></i> 
+						<i class="fa fa-info-circle" title="A step by step wizard that allows you to create DID/TFN."></i>
 						<b><?php $lh->translateText('did_wizard'); ?> » <?php $lh->translateText('create_new_did'); ?></b>
 						<button type="button" class="close" data-dismiss="modal" aria-label="close_did"><span aria-hidden="true">&times;</span></button>
 					</h4>
 				</div>
 				<div class="modal-body wizard-content">
-				
+
 				<form action="AddDID.php" method="POST" id="create_phonenumber" role="form">
 					<input type="hidden" name="log_user" value="<?=$_SESSION['user']?>" />
 					<input type="hidden" name="log_group" value="<?=$_SESSION['usergroup']?>" />
@@ -1094,7 +1092,7 @@
 											?>
 												<option value="<?php echo $users->user[$i];?>">
 													<?php echo $users->user[$i].' - '.$users->full_name[$i];?>
-												</option>									
+												</option>
 											<?php
 												}
 											?>
@@ -1113,9 +1111,9 @@
 									</div>
 								</div>
 							</div><!-- end of div agent-->
-							
+
 						<!-- IF DID ROUTE = IN-GROUP-->
-						
+
 							<div id="form_route_ingroup" style="display: none;">
 								<label class="col-sm-4 control-label" for="route_ingroupid"><?php $lh->translateText('agent_unavailable_action'); ?><?php $lh->translateText('ingroup_id'); ?></label>
 								<div class="col-sm-8 mb">
@@ -1125,14 +1123,14 @@
 										?>
 											<option value="<?php echo $ingroup->group_id[$i];?>">
 												<?php echo $ingroup->group_id[$i].' - '.$ingroup->group_name[$i];?>
-											</option>									
+											</option>
 										<?php
 											}
 										?>
 									</select>
 								</div>
 							</div><!-- end of ingroup div -->
-							
+
 						<!-- IF DID ROUTE = PHONE -->
 
 							<div id="form_route_phone" style="display: none;">
@@ -1145,7 +1143,7 @@
 											?>
 												<option value="<?php echo $phones->extension[$i];?>">
 													<?php echo $phones->extension[$i].' - '.$phones->server_ip[$i].' - '.$phones->dialplan_number[$i];?>
-												</option>									
+												</option>
 											<?php
 												}
 											?>
@@ -1170,7 +1168,7 @@
 									</div>
 								</div>
 							</div><!-- end of phone div -->
-							
+
 						<!-- IF DID ROUTE = IVR -->
 
 							<div id="form_route_callmenu" style="display: none;">
@@ -1184,7 +1182,7 @@
 											?>
 												<option value="<?php echo $ivr->menu_id[$i];?>">
 													<?php echo $ivr->menu_id[$i].' - '.$ivr->menu_name[$i];?>
-												</option>									
+												</option>
 											<?php
 												}
 											}else{
@@ -1197,7 +1195,7 @@
 									</div>
 								</div>
 							</div><!-- end of ivr div -->
-							
+
 						<!-- IF DID ROUTE = VoiceMail -->
 
 							<div id="form_route_voicemail" style="display: none;">
@@ -1205,22 +1203,22 @@
 									<label class="col-sm-4 control-label" for="route_voicemail"><?php $lh->translateText('voicemail_box'); ?></label>
 									<div class="col-sm-8 mb">
 										<select name="route_voicemail" id="route_voicemail" class="form-control select2-1" style="width:100%;">
-											
+
 											<?php
 												for($i=0;$i<(isset($voicemails->voicemail_id) && is_countable($voicemails->voicemail_id) ? count($voicemails->voicemail_id) : 0);$i++){
 											?>
 												<option value="<?php echo $voicemails->voicemail_id[$i];?>">
 													<?php echo $voicemails->voicemail_id[$i].' - '.$voicemails->fullname[$i];?>
-												</option>									
+												</option>
 											<?php
 												}
 											?>
-											
+
 										</select>
 									</div>
 								</div>
 							</div><!-- end of voicemail div -->
-							
+
 							<!-- IF DID ROUTE = Custom Extension -->
 
 							<div id="form_route_exten" style="display: none;">
@@ -1240,8 +1238,8 @@
 						</fieldset>
 						<?php */?>
 					</div><!-- End of Step -->
-				
-				
+
+
 
 				</div> <!-- end of modal body -->
 				</form>
@@ -1254,27 +1252,27 @@
 		<?php print $ui->standardizedThemeJS(); ?>
         <!-- JQUERY STEPS-->
   		<script src="js/dashboard/js/jquery.steps/build/jquery.steps.js"></script>
-	    
+
 
  <script type="text/javascript">
 	$(document).ready(function() {
 		if (window.location.href.indexOf("T_ingroup") > -1) {
 			$(".T_ingroup").addClass("active");
 			$(".T_ivr").removeClass("active");
-			$(".T_phonenumber").removeClass("active");					
+			$(".T_phonenumber").removeClass("active");
 		}
-		
+
 		if (window.location.href.indexOf("T_ivr") > -1) {
 			$(".T_ivr").addClass("active");
 			$(".T_ingroup").removeClass("active");
-			$(".T_phonenumber").removeClass("active");					
-		}		
-		
+			$(".T_phonenumber").removeClass("active");
+		}
+
 		if (window.location.href.indexOf("T_phonenumber") > -1) {
 			$(".T_phonenumber").addClass("active");
 			$(".T_ingroup").removeClass("active");
-			$(".T_ivr").removeClass("active");					
-		}		
+			$(".T_ivr").removeClass("active");
+		}
 		/*******************
 		** INITIALIZATIONS
 		*******************/
@@ -1285,7 +1283,7 @@
 
 			//loads datatable functions
 				$('#table_ingroup').DataTable({
-					destroy:true, 
+					destroy:true,
 					responsive:true,
 					stateSave:true,
 					drawCallback:function(settings) {
@@ -1300,9 +1298,9 @@
 						{ targets: -1, className: "dt-body-right" }
 					]
 				});
-				
+
 				$('#table_ivr').DataTable({
-					destroy:true, 
+					destroy:true,
 					responsive:true,
 					stateSave:true,
 					drawCallback:function(settings) {
@@ -1318,7 +1316,7 @@
 					]
 				});
 				$('#table_did').DataTable({
-					destroy:true, 
+					destroy:true,
 					responsive:true,
 					stateSave:true,
 					drawCallback:function(settings) {
@@ -1349,7 +1347,7 @@
 				});
 			*/
 			//-----------
-		
+
 		/*******************
 		** INBOUND EVENTS
 		*******************/
@@ -1357,7 +1355,7 @@
 			/*********
 			** INIT WIZARD
 			*********/
-				var ingroup_form = $("#create_ingroup"); // init form wizard 
+				var ingroup_form = $("#create_ingroup"); // init form wizard
 
 			    ingroup_form.validate({
 			        errorPlacement: function errorPlacement(error, element) { element.after(error); }
@@ -1396,7 +1394,7 @@
 			        	$('#finish').attr("disabled", true);
 
 			        	/*********
-						** ADD EVENT 
+						** ADD EVENT
 						*********/
 				            // Submit form via ajax
 					            $.ajax({
@@ -1421,7 +1419,7 @@
 								});
 			        }
 			    }); // end of wizard
-			
+
 			/*********
 			** EDIT INGROUP
 			*********/
@@ -1438,23 +1436,23 @@
 			*********/
 				$(document).on('click','.delete-ingroup',function() {
 				 	var id = $(this).attr('data-id');
-	                swal({   
-	                	title: "<?php $lh->translateText("are_you_sure"); ?>",   
-	                	text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",   
-	                	type: "warning",   
-	                	showCancelButton: true,   
-	                	confirmButtonColor: "#DD6B55",   
-	                	confirmButtonText: "<?php $lh->translateText("confirm_delete_inbound"); ?>",   
-	                	cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",   
-	                	closeOnConfirm: false,   
-	                	closeOnCancel: false 
-	                	}, 
-	                	function(isConfirm){   
-	                		if (isConfirm) { 
+	                swal({
+	                	title: "<?php $lh->translateText("are_you_sure"); ?>",
+	                	text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
+	                	type: "warning",
+	                	showCancelButton: true,
+	                	confirmButtonColor: "#DD6B55",
+	                	confirmButtonText: "<?php $lh->translateText("confirm_delete_inbound"); ?>",
+	                	cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",
+	                	closeOnConfirm: false,
+	                	closeOnCancel: false
+	                	},
+	                	function(isConfirm){
+	                		if (isConfirm) {
 	                			$.ajax({
 									url: "./php/DeleteInbound.php",
 									type: 'POST',
-									data: { 
+									data: {
 										groupid: id
 									},
 									success: function(data) {
@@ -1466,13 +1464,13 @@
 										}
 									}
 								});
-							} else {     
-		                			swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
-		                	} 
+							} else {
+		                			swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+		                	}
 	                	}
 	                );
 				});
-		
+
 		//-------------------- end of main ingroup events
 
 		/*******************
@@ -1482,8 +1480,8 @@
 			/*********
 			** INIT WIZARD
 			*********/
-				var ivr_form = $("#create_ivr"); // init form wizard 
-				
+				var ivr_form = $("#create_ivr"); // init form wizard
+
 			    ivr_form.validate({
 			        errorPlacement: function errorPlacement(error, element) { element.after(error); }
 			    });
@@ -1505,9 +1503,9 @@
 					        $(".body:eq(" + newIndex + ") label.error", ivr_form).remove();
 					        $(".body:eq(" + newIndex + ") .error", ivr_form).removeClass("error");
 					    }
-						
+
 						$("#create_ivr").find( ".content.clearfix" ).css( "height", "75%" );
-						
+
 			            ivr_form.validate().settings.ignore = ":disabled,:hidden";
 			            return ivr_form.valid();
 			        },
@@ -1519,7 +1517,7 @@
 			        onFinished: function (event, currentIndex)
 			        {
 					$('select option').prop('disabled', false);
-					
+
 			        	$('#finish').text("<?php $lh->translateText("loading"); ?>");
 			        	$('#finish').attr("disabled", true);
 
@@ -1539,11 +1537,11 @@
 								}
 							}
 						});
-							
+
 			        }
 			    }); // end of wizard
-			
-			
+
+
 			/*********
 			** EDIT IVR
 			*********/
@@ -1561,23 +1559,23 @@
 
 				$(document).on('click','.delete-ivr',function() {
 				 	var id = $(this).attr('data-id');
-	                swal({   
-	                	title: "<?php $lh->translateText("are_you_sure"); ?>",   
-	                	text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",   
-	                	type: "warning",   
-	                	showCancelButton: true,   
-	                	confirmButtonColor: "#DD6B55",   
-	                	confirmButtonText: "<?php $lh->translateText("confirm_delete_ivr"); ?>",   
-	                	cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",   
-	                	closeOnConfirm: false,   
-	                	closeOnCancel: false 
-	                	}, 
-	                	function(isConfirm){   
-	                		if (isConfirm) { 
+	                swal({
+	                	title: "<?php $lh->translateText("are_you_sure"); ?>",
+	                	text: "<?php $lh->translateText("action_cannot_be_undone"); ?>",
+	                	type: "warning",
+	                	showCancelButton: true,
+	                	confirmButtonColor: "#DD6B55",
+	                	confirmButtonText: "<?php $lh->translateText("confirm_delete_ivr"); ?>",
+	                	cancelButtonText: "<?php $lh->translateText("cancel_please"); ?>",
+	                	closeOnConfirm: false,
+	                	closeOnCancel: false
+	                	},
+	                	function(isConfirm){
+	                		if (isConfirm) {
 	                			$.ajax({
 									url: "./php/DeleteInbound.php",
 									type: 'POST',
-									data: { 
+									data: {
 										ivr: id
 									},
 									success: function(data) {
@@ -1589,13 +1587,13 @@
 										}
 									}
 								});
-							} else {     
-		                			swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");   
-		                	} 
+							} else {
+		                			swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
+		                	}
 	                	}
 	                );
 				});
-			
+
 		//-------------------- end of main ivr events
 
 		/*******************
@@ -1605,7 +1603,7 @@
 			/*********
 			** DID WIZARD
 			*********/
-				var did_form = $("#create_phonenumber"); // init form wizard 
+				var did_form = $("#create_phonenumber"); // init form wizard
 
 			    did_form.validate({
 			        errorPlacement: function errorPlacement(error, element) { element.after(error); }
@@ -1644,7 +1642,7 @@
 			        	$('#finish').attr("disabled", true);
 
 			        	/*********
-						** ADD EVENT 
+						** ADD EVENT
 						*********/
 				            $.ajax({
 								url: "./php/AddDID.php",
@@ -1661,16 +1659,16 @@
 									  }
 								}
 							});
-							
+
 			        }
 			    }); // end of wizard
-			
+
 			//------------------------
 
 			/*********
 			** EDIT DID
 			*********/
-	
+
 				$(document).on('click','.edit-phonenumber',function() {
 					var url = './edittelephonyinbound.php';
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="did" value="' + $(this).attr('data-id') + '" /></form>');
@@ -1685,25 +1683,25 @@
 				$(document).on('click','.delete-phonenumber',function() {
 				 	var id = $(this).attr('data-id');
 	                swal({
-	                	title: "<?php $lh->translateText('are_you_sure'); ?>",   
-	                	text: "<?php $lh->translateText('action_cannot_be_undone'); ?>",   
-	                	type: "warning",   
-	                	showCancelButton: true,   
-	                	confirmButtonColor: "#DD6B55",   
-	                	confirmButtonText: "<?php $lh->translateText('confirm_delete_phonenumber'); ?>",   
-	                	cancelButtonText: "<?php $lh->translateText('cancel_please'); ?>",   
-	                	closeOnConfirm: false,   
-	                	closeOnCancel: false 
-					}, 
-	                	function(isConfirm){   
-	                		if (isConfirm) { 
+	                	title: "<?php $lh->translateText('are_you_sure'); ?>",
+	                	text: "<?php $lh->translateText('action_cannot_be_undone'); ?>",
+	                	type: "warning",
+	                	showCancelButton: true,
+	                	confirmButtonColor: "#DD6B55",
+	                	confirmButtonText: "<?php $lh->translateText('confirm_delete_phonenumber'); ?>",
+	                	cancelButtonText: "<?php $lh->translateText('cancel_please'); ?>",
+	                	closeOnConfirm: false,
+	                	closeOnCancel: false
+					},
+	                	function(isConfirm){
+	                		if (isConfirm) {
 	                			$.ajax({
 									url: "./php/DeleteInbound.php",
 									type: 'POST',
-									data: { 
+									data: {
 										modify_did: id
 									},
-									
+
 									success: function(data) {
 									//console.log(modify_did);
 									console.log(data);
@@ -1714,13 +1712,13 @@
 										}
 									}
 								});
-	                		} else {     
-		                			swal("<?php $lh->translateText('cancelled'); ?>", "<?php $lh->translateText('cancel_msg'); ?>", "error");   
-		                	} 
+	                		} else {
+		                			swal("<?php $lh->translateText('cancelled'); ?>", "<?php $lh->translateText('cancel_msg'); ?>", "error");
+		                	}
 	                	}
 	                );
 				});
-		
+
 		//-------------------- end of main did events
 
 		/*******************
@@ -1732,7 +1730,7 @@
     		/* initialize select2 */
 				$('.select2-1').select2({ theme: 'bootstrap' });
 				$.fn.select2.defaults.set( "theme", "bootstrap" );
-				
+
 			/*** INGROUP ***/
 				// disable special characters on Ingroup ID
 					$('#groupid').bind('keypress', function (event) {
@@ -1771,7 +1769,7 @@
 					       return false;
 					    }
 					});
-					
+
 				$(document).on('change', '.route_option',function(){
 					//alert(this.value);
 					var id = this.value;
@@ -1779,42 +1777,42 @@
 					var object;
 					if(typeof old != 'undefined'){
 						$(this).attr('id', "option_"+id).attr('data-old', "option_"+old);
-						
+
 						object = "option_"+id;
 					}else{
 						$(this).attr('id', 'option_'+id);
 						old = "option_";
 					}
-					
+
 					showhide_option(object, id, old);
-					
+
 				});
-				
+
 				function showhide_option(object, id, old){
 					//var getId = object.attr('id');
 					var lastChar;
 					var old_lastChar;
-					
+
 					if (typeof object != 'undefined')
 						lastChar = object[object.length -1];
-					
+
 					if (typeof old != 'undefined')
 						old_lastChar = old[old.length -1];
-					
+
 					if(old_lastChar != "_"){
 						$(".route_option option[value="+old_lastChar+"]").attr("disabled", false).css({"background-color": "white", "color": "#3a3f51"});
 					}else{
 						$(".route_option option[value="+id+"]").attr("disabled", true).css({"background-color": "#c1c1c1", "color": "white"});
 					}
-					
+
 				}
-				
+
 				<?php for($i=0;$i < 10; $i++){ ?>
 				$(document).on('change', '.route_menu_<?php echo $i;?>',function(){
 					if(this.value == "CALLMENU") {
 						$('.route_callmenu_<?php echo $i;?>').show();
 						$(".route_callmenu_<?php echo $i;?> :input").prop('required',true);
-						
+
 						$('.route_ingroup_<?php echo $i;?>').hide();
 							$(".route_ingroup_<?php echo $i;?> :input").prop('required',false);
 						$('.route_did_<?php echo $i;?>').hide();
@@ -1829,7 +1827,7 @@
 							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
 						$('.route_agi_<?php echo $i;?>').hide();
 							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
-					
+
 					}if(this.value == "INGROUP") {
 						$('.route_ingroup_<?php echo $i;?>').show();
 						$(".route_ingroup_<?php echo $i;?> :input").prop('required',true);
@@ -1848,7 +1846,7 @@
 							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
 						$('.route_agi_<?php echo $i;?>').hide();
 							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
-						
+
 					}if(this.value == "DID") {
 						$('.route_did_<?php echo $i;?>').show();
 						$(".route_did_<?php echo $i;?> :input").prop('required',true);
@@ -1867,11 +1865,11 @@
 							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
 						$('.route_agi_<?php echo $i;?>').hide();
 							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
-						
+
 					}if(this.value == "HANGUP") {
 						$('.route_hangup_<?php echo $i;?>').show();
 						$(".route_hangup_<?php echo $i;?> :input").prop('required',true);
-						
+
 						$('.route_callmenu_<?php echo $i;?>').hide();
 							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
 						$('.route_ingroup_<?php echo $i;?>').hide();
@@ -1886,11 +1884,11 @@
 							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
 						$('.route_agi_<?php echo $i;?>').hide();
 							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
-						
+
 					}if(this.value == "EXTENSION") {
 						$('.route_exten_<?php echo $i;?>').show();
 						$(".route_exten_<?php echo $i;?> :input").prop('required',true);
-						
+
 						$('.route_callmenu_<?php echo $i;?>').hide();
 							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
 						$('.route_ingroup_<?php echo $i;?>').hide();
@@ -1905,11 +1903,11 @@
 							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
 						$('.route_agi_<?php echo $i;?>').hide();
 							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
-						
+
 					}if(this.value == "PHONE") {
 						$('.route_phone_<?php echo $i;?>').show();
 						$(".route_phone_<?php echo $i;?> :input").prop('required',true);
-						
+
 						$('.route_callmenu_<?php echo $i;?>').hide();
 							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
 						$('.route_ingroup_<?php echo $i;?>').hide();
@@ -1924,11 +1922,11 @@
 							$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
 						$('.route_agi_<?php echo $i;?>').hide();
 							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
-						
+
 					}if(this.value == "VOICEMAIL") {
 						$('.route_voicemail_<?php echo $i;?>').show();
 						$(".route_voicemail_<?php echo $i;?> :input").prop('required',false);
-						
+
 						$('.route_callmenu_<?php echo $i;?>').hide();
 							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
 						$('.route_ingroup_<?php echo $i;?>').hide();
@@ -1943,11 +1941,11 @@
 							$(".route_phone_<?php echo $i;?> :input").prop('required',false);
 						$('.route_agi_<?php echo $i;?>').hide();
 							$(".route_agi_<?php echo $i;?> :input").prop('required',false);
-						
+
 					}if(this.value == "AGI") {
 						$('.route_agi_<?php echo $i;?>').show();
 						$(".route_agi_<?php echo $i;?> :input").prop('required',true);
-						
+
 						$('.route_callmenu_<?php echo $i;?>').hide();
 							$(".route_callmenu_<?php echo $i;?> :input").prop('required',false);
 						$('.route_ingroup_<?php echo $i;?>').hide();
@@ -1987,7 +1985,7 @@
 					if(this.value == "CALLMENU") {
 						$('.route_callmenu_A').show();
 						$(".route_callmenu_A :input").prop('required',true);
-						
+
 						$('.route_ingroup_A').hide();
 							$(".route_ingroup_A :input").prop('required',false);
 						$('.route_did_A').hide();
@@ -2002,7 +2000,7 @@
 							$(".route_voicemail_A :input").prop('required',false);
 						$('.route_agi_A').hide();
 							$(".route_agi_A :input").prop('required',false);
-					
+
 					}if(this.value == "INGROUP") {
 						$('.route_ingroup_A').show();
 						$(".route_ingroup_A :input").prop('required',true);
@@ -2021,7 +2019,7 @@
 							$(".route_voicemail_A :input").prop('required',false);
 						$('.route_agi_A').hide();
 							$(".route_agi_A :input").prop('required',false);
-						
+
 					}if(this.value == "DID") {
 						$('.route_did_A').show();
 						$(".route_did_A :input").prop('required',true);
@@ -2040,11 +2038,11 @@
 							$(".route_voicemail_A :input").prop('required',false);
 						$('.route_agi_A').hide();
 							$(".route_agi_A :input").prop('required',false);
-						
+
 					}if(this.value == "HANGUP") {
 						$('.route_hangup_A').show();
 						$(".route_hangup_A :input").prop('required',true);
-						
+
 						$('.route_callmenu_A').hide();
 							$(".route_callmenu_A :input").prop('required',false);
 						$('.route_ingroup_A').hide();
@@ -2059,11 +2057,11 @@
 							$(".route_voicemail_A :input").prop('required',false);
 						$('.route_agi_A').hide();
 							$(".route_agi_A :input").prop('required',false);
-						
+
 					}if(this.value == "EXTENSION") {
 						$('.route_exten_A').show();
 						$(".route_exten_A :input").prop('required',true);
-						
+
 						$('.route_callmenu_A').hide();
 							$(".route_callmenu_A :input").prop('required',false);
 						$('.route_ingroup_A').hide();
@@ -2078,11 +2076,11 @@
 							$(".route_voicemail_A :input").prop('required',false);
 						$('.route_agi_A').hide();
 							$(".route_agi_A :input").prop('required',false);
-						
+
 					}if(this.value == "PHONE") {
 						$('.route_phone_A').show();
 						$(".route_phone_A :input").prop('required',true);
-						
+
 						$('.route_callmenu_A').hide();
 							$(".route_callmenu_A :input").prop('required',false);
 						$('.route_ingroup_A').hide();
@@ -2097,11 +2095,11 @@
 							$(".route_voicemail_A :input").prop('required',false);
 						$('.route_agi_A').hide();
 							$(".route_agi_A :input").prop('required',false);
-						
+
 					}if(this.value == "VOICEMAIL") {
 						$('.route_voicemail_A').show();
 						$(".route_voicemail_A :input").prop('required',true);
-						
+
 						$('.route_callmenu_A').hide();
 							$(".route_callmenu_A :input").prop('required',false);
 						$('.route_ingroup_A').hide();
@@ -2116,11 +2114,11 @@
 							$(".route_phone_A :input").prop('required',false);
 						$('.route_agi_A').hide();
 							$(".route_agi_A :input").prop('required',false);
-						
+
 					}if(this.value == "AGI") {
 						$('.route_agi_A').show();
 						$(".route_agi_A :input").prop('required',true);
-						
+
 						$('.route_callmenu_A').hide();
 							$(".route_callmenu_A :input").prop('required',false);
 						$('.route_ingroup_A').hide();
@@ -2159,7 +2157,7 @@
 					if(this.value == "CALLMENU") {
 						$('.route_callmenu_B').show();
 						$(".route_callmenu_B :input").prop('required',true);
-						
+
 						$('.route_ingroup_B').hide();
 							$(".route_ingroup_B :input").prop('required',false);
 						$('.route_did_B').hide();
@@ -2174,7 +2172,7 @@
 							$(".route_voicemail_B :input").prop('required',false);
 						$('.route_agi_B').hide();
 							$(".route_agi_B :input").prop('required',false);
-					
+
 					}if(this.value == "INGROUP") {
 						$('.route_ingroup_B').show();
 						$(".route_ingroup_B :input").prop('required',true);
@@ -2193,7 +2191,7 @@
 							$(".route_voicemail_B :input").prop('required',false);
 						$('.route_agi_B').hide();
 							$(".route_agi_B :input").prop('required',false);
-						
+
 					}if(this.value == "DID") {
 						$('.route_did_B').show();
 						$(".route_did_B :input").prop('required',true);
@@ -2212,11 +2210,11 @@
 							$(".route_voicemail_B :input").prop('required',false);
 						$('.route_agi_B').hide();
 							$(".route_agi_B :input").prop('required',false);
-						
+
 					}if(this.value == "HANGUP") {
 						$('.route_hangup_B').show();
 						$(".route_hangup_B :input").prop('required',true);
-						
+
 						$('.route_callmenu_B').hide();
 							$(".route_callmenu_B :input").prop('required',false);
 						$('.route_ingroup_B').hide();
@@ -2231,11 +2229,11 @@
 							$(".route_voicemail_B :input").prop('required',false);
 						$('.route_agi_B').hide();
 							$(".route_agi_B :input").prop('required',false);
-						
+
 					}if(this.value == "EXTENSION") {
 						$('.route_exten_B').show();
 						$(".route_exten_B :input").prop('required',true);
-						
+
 						$('.route_callmenu_B').hide();
 							$(".route_callmenu_B :input").prop('required',false);
 						$('.route_ingroup_B').hide();
@@ -2250,11 +2248,11 @@
 							$(".route_voicemail_B :input").prop('required',false);
 						$('.route_agi_B').hide();
 							$(".route_agi_B :input").prop('required',false);
-						
+
 					}if(this.value == "PHONE") {
 						$('.route_phone_B').show();
 						$(".route_phone_B :input").prop('required',true);
-						
+
 						$('.route_callmenu_B').hide();
 							$(".route_callmenu_B :input").prop('required',false);
 						$('.route_ingroup_B').hide();
@@ -2269,11 +2267,11 @@
 							$(".route_voicemail_B :input").prop('required',false);
 						$('.route_agi_B').hide();
 							$(".route_agi_B :input").prop('required',false);
-						
+
 					}if(this.value == "VOICEMAIL") {
 						$('.route_voicemail_B').show();
 						$(".route_voicemail_B :input").prop('required',true);
-						
+
 						$('.route_callmenu_B').hide();
 							$(".route_callmenu_B :input").prop('required',false);
 						$('.route_ingroup_B').hide();
@@ -2288,11 +2286,11 @@
 							$(".route_phone_B :input").prop('required',false);
 						$('.route_agi_B').hide();
 							$(".route_agi_B :input").prop('required',false);
-						
+
 					}if(this.value == "AGI") {
 						$('.route_agi_B').show();
 						$(".route_agi_B :input").prop('required',true);
-						
+
 						$('.route_callmenu_B').hide();
 							$(".route_callmenu_B :input").prop('required',false);
 						$('.route_ingroup_B').hide();
@@ -2331,7 +2329,7 @@
 					if(this.value == "CALLMENU") {
 						$('.route_callmenu_C').show();
 						$(".route_callmenu_C :input").prop('required',true);
-						
+
 						$('.route_ingroup_C').hide();
 							$(".route_ingroup_C :input").prop('required',false);
 						$('.route_did_C').hide();
@@ -2346,7 +2344,7 @@
 							$(".route_voicemail_C :input").prop('required',false);
 						$('.route_agi_C').hide();
 							$(".route_agi_C :input").prop('required',false);
-					
+
 					}if(this.value == "INGROUP") {
 						$('.route_ingroup_C').show();
 						$(".route_ingroup_C :input").prop('required',true);
@@ -2365,7 +2363,7 @@
 							$(".route_voicemail_C :input").prop('required',false);
 						$('.route_agi_C').hide();
 							$(".route_agi_C :input").prop('required',false);
-						
+
 					}if(this.value == "DID") {
 						$('.route_did_C').show();
 						$(".route_did_C :input").prop('required',true);
@@ -2384,11 +2382,11 @@
 							$(".route_voicemail_C :input").prop('required',false);
 						$('.route_agi_C').hide();
 							$(".route_agi_C :input").prop('required',false);
-						
+
 					}if(this.value == "HANGUP") {
 						$('.route_hangup_C').show();
 						$(".route_hangup_C :input").prop('required',true);
-						
+
 						$('.route_callmenu_C').hide();
 							$(".route_callmenu_C :input").prop('required',false);
 						$('.route_ingroup_C').hide();
@@ -2403,11 +2401,11 @@
 							$(".route_voicemail_C :input").prop('required',false);
 						$('.route_agi_C').hide();
 							$(".route_agi_C :input").prop('required',false);
-						
+
 					}if(this.value == "EXTENSION") {
 						$('.route_exten_C').show();
 						$(".route_exten_C :input").prop('required',true);
-						
+
 						$('.route_callmenu_C').hide();
 							$(".route_callmenu_C :input").prop('required',false);
 						$('.route_ingroup_C').hide();
@@ -2422,11 +2420,11 @@
 							$(".route_voicemail_C :input").prop('required',false);
 						$('.route_agi_C').hide();
 							$(".route_agi_C :input").prop('required',false);
-						
+
 					}if(this.value == "PHONE") {
 						$('.route_phone_C').show();
 						$(".route_phone_C :input").prop('required',true);
-						
+
 						$('.route_callmenu_C').hide();
 							$(".route_callmenu_C :input").prop('required',false);
 						$('.route_ingroup_C').hide();
@@ -2441,11 +2439,11 @@
 							$(".route_voicemail_C :input").prop('required',false);
 						$('.route_agi_C').hide();
 							$(".route_agi_C :input").prop('required',false);
-						
+
 					}if(this.value == "VOICEMAIL") {
 						$('.route_voicemail_C').show();
 						$(".route_voicemail_C :input").prop('required',true);
-						
+
 						$('.route_callmenu_C').hide();
 							$(".route_callmenu_C :input").prop('required',false);
 						$('.route_ingroup_C').hide();
@@ -2460,11 +2458,11 @@
 							$(".route_phone_C :input").prop('required',false);
 						$('.route_agi_C').hide();
 							$(".route_agi_C :input").prop('required',false);
-						
+
 					}if(this.value == "AGI") {
 						$('.route_agi_C').show();
 						$(".route_agi_C :input").prop('required',true);
-						
+
 						$('.route_callmenu_C').hide();
 							$(".route_callmenu_C :input").prop('required',false);
 						$('.route_ingroup_C').hide();
@@ -2503,7 +2501,7 @@
 					if(this.value == "CALLMENU") {
 						$('.route_callmenu_D').show();
 						$(".route_callmenu_D :input").prop('required',true);
-						
+
 						$('.route_ingroup_D').hide();
 							$(".route_ingroup_D :input").prop('required',false);
 						$('.route_did_D').hide();
@@ -2518,7 +2516,7 @@
 							$(".route_voicemail_D :input").prop('required',false);
 						$('.route_agi_D').hide();
 							$(".route_agi_D :input").prop('required',false);
-					
+
 					}if(this.value == "INGROUP") {
 						$('.route_ingroup_D').show();
 						$(".route_ingroup_D :input").prop('required',true);
@@ -2537,7 +2535,7 @@
 							$(".route_voicemail_D :input").prop('required',false);
 						$('.route_agi_D').hide();
 							$(".route_agi_D :input").prop('required',false);
-						
+
 					}if(this.value == "DID") {
 						$('.route_did_D').show();
 						$(".route_did_D :input").prop('required',true);
@@ -2556,11 +2554,11 @@
 							$(".route_voicemail_D :input").prop('required',false);
 						$('.route_agi_D').hide();
 							$(".route_agi_D :input").prop('required',false);
-						
+
 					}if(this.value == "HANGUP") {
 						$('.route_hangup_D').show();
 						$(".route_hangup_D :input").prop('required',true);
-						
+
 						$('.route_callmenu_D').hide();
 							$(".route_callmenu_D :input").prop('required',false);
 						$('.route_ingroup_D').hide();
@@ -2575,11 +2573,11 @@
 							$(".route_voicemail_D :input").prop('required',false);
 						$('.route_agi_D').hide();
 							$(".route_agi_D :input").prop('required',false);
-						
+
 					}if(this.value == "EXTENSION") {
 						$('.route_exten_D').show();
 						$(".route_exten_D :input").prop('required',true);
-						
+
 						$('.route_callmenu_D').hide();
 							$(".route_callmenu_D :input").prop('required',false);
 						$('.route_ingroup_D').hide();
@@ -2594,11 +2592,11 @@
 							$(".route_voicemail_D :input").prop('required',false);
 						$('.route_agi_D').hide();
 							$(".route_agi_D :input").prop('required',false);
-						
+
 					}if(this.value == "PHONE") {
 						$('.route_phone_D').show();
 						$(".route_phone_D :input").prop('required',true);
-						
+
 						$('.route_callmenu_D').hide();
 							$(".route_callmenu_D :input").prop('required',false);
 						$('.route_ingroup_D').hide();
@@ -2613,11 +2611,11 @@
 							$(".route_voicemail_D :input").prop('required',false);
 						$('.route_agi_D').hide();
 							$(".route_agi_D :input").prop('required',false);
-						
+
 					}if(this.value == "VOICEMAIL") {
 						$('.route_voicemail_D').show();
 						$(".route_voicemail_D :input").prop('required',true);
-						
+
 						$('.route_callmenu_D').hide();
 							$(".route_callmenu_D :input").prop('required',false);
 						$('.route_ingroup_D').hide();
@@ -2632,11 +2630,11 @@
 							$(".route_phone_D :input").prop('required',false);
 						$('.route_agi_D').hide();
 							$(".route_agi_D :input").prop('required',false);
-						
+
 					}if(this.value == "AGI") {
 						$('.route_agi_D').show();
 						$(".route_agi_D :input").prop('required',true);
-						
+
 						$('.route_callmenu_D').hide();
 							$(".route_callmenu_D :input").prop('required',false);
 						$('.route_ingroup_D').hide();
@@ -2675,7 +2673,7 @@
 					if(this.value == "CALLMENU") {
 						$('.route_callmenu_E').show();
 						$(".route_callmenu_E :input").prop('required',true);
-						
+
 						$('.route_ingroup_E').hide();
 							$(".route_ingroup_E :input").prop('required',false);
 						$('.route_did_E').hide();
@@ -2690,7 +2688,7 @@
 							$(".route_voicemail_E :input").prop('required',false);
 						$('.route_agi_E').hide();
 							$(".route_agi_E :input").prop('required',false);
-					
+
 					}if(this.value == "INGROUP") {
 						$('.route_ingroup_E').show();
 						$(".route_ingroup_E :input").prop('required',true);
@@ -2709,7 +2707,7 @@
 							$(".route_voicemail_E :input").prop('required',false);
 						$('.route_agi_E').hide();
 							$(".route_agi_E :input").prop('required',false);
-						
+
 					}if(this.value == "DID") {
 						$('.route_did_E').show();
 						$(".route_did_E :input").prop('required',true);
@@ -2728,11 +2726,11 @@
 							$(".route_voicemail_E :input").prop('required',false);
 						$('.route_agi_E').hide();
 							$(".route_agi_E :input").prop('required',false);
-						
+
 					}if(this.value == "HANGUP") {
 						$('.route_hangup_E').show();
 						$(".route_hangup_E :input").prop('required',true);
-						
+
 						$('.route_callmenu_E').hide();
 							$(".route_callmenu_E :input").prop('required',false);
 						$('.route_ingroup_E').hide();
@@ -2747,11 +2745,11 @@
 							$(".route_voicemail_E :input").prop('required',false);
 						$('.route_agi_E').hide();
 							$(".route_agi_E :input").prop('required',false);
-						
+
 					}if(this.value == "EXTENSION") {
 						$('.route_exten_E').show();
 						$(".route_exten_E :input").prop('required',true);
-						
+
 						$('.route_callmenu_E').hide();
 							$(".route_callmenu_E :input").prop('required',false);
 						$('.route_ingroup_E').hide();
@@ -2766,11 +2764,11 @@
 							$(".route_voicemail_E :input").prop('required',false);
 						$('.route_agi_E').hide();
 							$(".route_agi_E :input").prop('required',false);
-						
+
 					}if(this.value == "PHONE") {
 						$('.route_phone_E').show();
 						$(".route_phone_E :input").prop('required',true);
-						
+
 						$('.route_callmenu_E').hide();
 							$(".route_callmenu_E :input").prop('required',false);
 						$('.route_ingroup_E').hide();
@@ -2785,11 +2783,11 @@
 							$(".route_voicemail_E :input").prop('required',false);
 						$('.route_agi_E').hide();
 							$(".route_agi_E :input").prop('required',false);
-						
+
 					}if(this.value == "VOICEMAIL") {
 						$('.route_voicemail_E').show();
 						$(".route_voicemail_E :input").prop('required',true);
-						
+
 						$('.route_callmenu_E').hide();
 							$(".route_callmenu_E :input").prop('required',false);
 						$('.route_ingroup_E').hide();
@@ -2804,11 +2802,11 @@
 							$(".route_phone_E :input").prop('required',false);
 						$('.route_agi_E').hide();
 							$(".route_agi_E :input").prop('required',false);
-						
+
 					}if(this.value == "AGI") {
 						$('.route_agi_E').show();
 						$(".route_agi_E :input").prop('required',true);
-						
+
 						$('.route_callmenu_E').hide();
 							$(".route_callmenu_E :input").prop('required',false);
 						$('.route_ingroup_E').hide();
@@ -2843,7 +2841,7 @@
 							$(".route_agi_E :input").prop('required',false);
 					}
 				});
-				
+
 			/*** DID ***/
 				// disable special characters on DID Exten
 					$('#did_exten').bind('keypress', function (event) {
@@ -2868,7 +2866,7 @@
 					$('#route').on('change', function() {
 						if(this.value == "AGENT") {
 						  $('#form_route_agent').show();
-						  
+
 						  $('#form_route_ingroup').hide();
 						  $('#form_route_phone').hide();
 						  $('#form_route_callmenu').hide();
@@ -2876,7 +2874,7 @@
 						  $('#form_route_exten').hide();
 						}if(this.value == "IN_GROUP") {
 						  $('#form_route_ingroup').show();
-						  
+
 						  $('#form_route_agent').hide();
 						  $('#form_route_phone').hide();
 						  $('#form_route_callmenu').hide();
@@ -2884,7 +2882,7 @@
 						  $('#form_route_exten').hide();
 						}if(this.value == "PHONE") {
 						  $('#form_route_phone').show();
-						  
+
 						  $('#form_route_agent').hide();
 						  $('#form_route_ingroup').hide();
 						  $('#form_route_callmenu').hide();
@@ -2892,7 +2890,7 @@
 						  $('#form_route_exten').hide();
 						}if(this.value == "CALLMENU") {
 						  $('#form_route_callmenu').show();
-						  
+
 						  $('#form_route_agent').hide();
 						  $('#form_route_ingroup').hide();
 						  $('#form_route_phone').hide();
@@ -2900,7 +2898,7 @@
 						  $('#form_route_exten').hide();
 						}if(this.value == "VOICEMAIL") {
 						  $('#form_route_voicemail').show();
-						  
+
 						  $('#form_route_agent').hide();
 						  $('#form_route_ingroup').hide();
 						  $('#form_route_phone').hide();
@@ -2908,16 +2906,16 @@
 						  $('#form_route_exten').hide();
 						}if(this.value == "EXTEN") {
 						  $('#form_route_exten').show();
-						  
+
 						  $('#form_route_agent').hide();
 						  $('#form_route_ingroup').hide();
 						  $('#form_route_phone').hide();
 						  $('#form_route_voicemail').hide();
 						  $('#form_route_callmenu').hide();
 						}
-						
+
 					});
-				
+
 			// for voicemail
 				<?php for($i=0;$i < 10; $i++){ ?>
 				$(document).on('change', '#option_voicemail_select_<?php echo $i;?>',function(){
@@ -2945,7 +2943,7 @@
 					var val = $(this).val();
 					$('#option_voicemail_input_E').val(val);
 				});
-			
+
 			//advanced ingroup settings
 				<?php for($i=0;$i < 10; $i++){ ?>
 				$(document).on('change', '#enter_filename_select_<?php echo $i;?>',function(){
@@ -2953,14 +2951,14 @@
 					$('#edit_enter_filename_<?php echo $i;?>').val(val);
 				});
 				<?php } ?>
-				
+
 				<?php for($i=0;$i < 10; $i++){ ?>
 				$(document).on('change', '#edit_id_number_filename_select_<?php echo $i;?>',function(){
 					var val = $(this).val();
 					$('#edit_id_number_filename_<?php echo $i;?>').val(val);
 				});
 				<?php } ?>
-				
+
 				<?php for($i=0;$i < 10; $i++){ ?>
 				$(document).on('change', '#edit_confirm_filename_select_<?php echo $i;?>',function(){
 					var val = $(this).val();
@@ -2969,7 +2967,7 @@
 				<?php } ?>
 	});
 </script>
-		
+
 		<?php print $ui->creamyFooter(); ?>
     </body>
 </html>
