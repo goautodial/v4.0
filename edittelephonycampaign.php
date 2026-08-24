@@ -60,26 +60,22 @@
 		$lf_id = ($_POST["leadfilter"] ?? '');
 	}
 
-	// get campaign values
-	$campaign = $api->API_getCampaignInfo($campaign_id);
-	//$disposition = $api->API_getCampaignDispositions($campaign_id);
+	// Load independent campaign form data concurrently.
+	$pageData = $api->API_getEditTelephonyCampaignData($campaign_id);
+	$campaign = $pageData['campaign'];
+	$calltimes = $pageData['calltimes'];
+	$scripts = $pageData['scripts'];
+	$carriers = $pageData['carriers'];
+	$leadfilter = $pageData['leadfilter'];
+	$dialStatus = $pageData['dial_status'];
+	$campdialStatus = $pageData['campaign_dial_status'];
+	$dids = $pageData['dids'];
+	$voicefiles = $pageData['voicefiles'];
+	$ingroups = $pageData['ingroups'];
+	$ivr = $pageData['ivr'];
 
-	$calltimes = $api->API_getAllCalltimes();
-	$scripts = $api->API_getAllScripts();
-	$carriers = $api->API_getAllCarriers();
-	$leadfilter = $api->API_getAllLeadFilters();
-	$dialStatus = $api->API_getAllDialStatuses($campaign_id, '');
-	$sdialStatus = $api->API_getAllDialStatusesSurvey($campaign_id);
-	$campdialStatus = $api->API_getAllCampaignDialStatuses($campaign_id);
-	$dids = $api->API_getAllDIDs();
-	$voicefiles = $api->API_getAllVoiceFiles();
-	$ingroups = $api->API_getAllInGroups();
-	$ivr = $api->API_getAllIVRs();
-	$lists = $api->API_getAllLists();
-	$audiofiles = $api->API_getAllVoiceFiles();
-
-	// for autodial level options
-	$server_list = $api->API_getAllServers();
+	// The server detail request depends on the server list response.
+	$server_list = $pageData['server_list'];
 	$server_id = $server_list->server_id[0];
 	$server = $api->API_getServerInfo($server_id);
 

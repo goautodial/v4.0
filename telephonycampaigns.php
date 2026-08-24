@@ -59,6 +59,19 @@
 	$dialStatus = $dialStatus ?? $emptyApiResult();
 	$dial_statuses = isset($dial_statuses) && is_array($dial_statuses) ? $dial_statuses : [];
 	$id = $id ?? '';
+
+	if ($perm->campaign->campaign_read !== 'N') {
+		/*
+		 * Load table data before sending the response so the shared preloader
+		 * overlays the completed page rather than an empty background.
+		 */
+		$pageApiResults = $api->API_getTelephonyCampaignsPageData();
+		$gopackage = $api->API_getGOPackage();
+		$campaign = $pageApiResults['campaign'] ?? $campaign;
+		$disposition = $pageApiResults['disposition'] ?? $disposition;
+		$leadrecycling = $pageApiResults['leadrecycling'] ?? $leadrecycling;
+		$dialStatus = $pageApiResults['dialStatus'] ?? $dialStatus;
+	}
 ?>
 <html>
     <head>
@@ -296,27 +309,7 @@
                 		<div class="panel-body">
                 			<legend><?php $lh->translateText("campaigns"); ?></legend>
 							<?php if ($perm->campaign->campaign_read !== 'N') { ?>
-							<?php
-
-								/*
-								* API used for display in tables
-								*/
-								$pageApiResults = $api->API_getTelephonyCampaignsPageData();
-
-								$gopackage = $api->API_getGOPackage();
-								$campaign = $pageApiResults['campaign'] ?? $campaign;
-								if($campaign->result !== "success"){
-									// die("API ERROR: ".$campaign->result);
-								}
-								$disposition = $pageApiResults['disposition'] ?? $disposition;
-								$leadrecycling = $pageApiResults['leadrecycling'] ?? $leadrecycling;
-								$dialStatus = $pageApiResults['dialStatus'] ?? $dialStatus;
-								$checkbox_all = $ui->getCheckAll("campaign");
-								//$areacode = $api->API_getAllAreacodes();
-
-								//echo "<pre>";
-								//var_dump($areacodes);
-							?>
+							<?php $checkbox_all = $ui->getCheckAll("campaign"); ?>
 							 <div role="tabpanel">
 								<ul role="tablist" class="nav nav-tabs nav-justified">
 

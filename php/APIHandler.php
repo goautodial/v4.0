@@ -157,7 +157,8 @@
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, $url);
 				curl_setopt($ch, CURLOPT_POST, 1);
-				curl_setopt($ch, CURLOPT_TIMEOUT, 0);
+				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
+				curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
@@ -194,7 +195,7 @@
 			}
 		}
 
-		public function API_RequestBatch(array $requests): array
+		public function API_RequestBatch(array $requests, int $maxHostConnections = 0): array
 		{
 			if (!function_exists('curl_multi_init')) {
 				$results = [];
@@ -207,6 +208,10 @@
 
 			$batchTimer = \creamy\PerformanceTimer::begin();
 			$multiHandle = curl_multi_init();
+			if ($maxHostConnections > 0 && defined('CURLMOPT_MAX_HOST_CONNECTIONS')) {
+				curl_multi_setopt($multiHandle, CURLMOPT_MAX_HOST_CONNECTIONS, $maxHostConnections);
+			}
+
 			$handles = [];
 			$results = [];
 
@@ -230,7 +235,8 @@
 				$handle = curl_init();
 				curl_setopt($handle, CURLOPT_URL, gourl . "/" . $folder . "/goAPI.php");
 				curl_setopt($handle, CURLOPT_POST, 1);
-				curl_setopt($handle, CURLOPT_TIMEOUT, 0);
+				curl_setopt($handle, CURLOPT_CONNECTTIMEOUT, 3);
+				curl_setopt($handle, CURLOPT_TIMEOUT, 10);
 				curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, 0);
 				curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, 0);
@@ -255,6 +261,20 @@
 
 			foreach ($handles as $key => $request) {
 				$handle = $request['handle'];
+				$transferInfo = curl_getinfo($handle);
+				$transferStartedAt = $batchTimer > 0.0
+					? microtime(true) - ((float) ($transferInfo['total_time'] ?? 0.0))
+					: 0.0;
+				$timingLabel = 'api_batch_' . preg_replace(
+					'/[^A-Za-z0-9_]/',
+					'_',
+					$request['folder'] . '_' . $request['action']
+				);
+				\creamy\PerformanceTimer::end($timingLabel, $transferStartedAt);
+				\creamy\PerformanceTimer::logSlow($timingLabel, $transferStartedAt, [
+					'http_code' => $transferInfo['http_code'] ?? 0,
+				]);
+
 				$data = curl_multi_getcontent($handle);
 				if ($request['request_data'] === true) {
 					$results[$key] = $data;
@@ -283,6 +303,7 @@
 			curl_multi_close($multiHandle);
 			\creamy\PerformanceTimer::logSlow('api_request_batch', $batchTimer, [
 				'count' => count($requests),
+				'max_host_connections' => $maxHostConnections,
 			]);
 			\creamy\PerformanceTimer::end('api_request_batch', $batchTimer);
 
@@ -777,6 +798,71 @@
 					'postfields' => ['goAction' => 'goGetAllCarriers'],
 				],
 			]);
+		}
+
+		public function API_getEditTelephonyCampaignData($campaignId): array
+		{
+			return $this->API_RequestBatch([
+				'campaign' => [
+					'folder' => 'goCampaigns',
+					'postfields' => [
+						'goAction' => 'goGetCampaignInfo',
+						'campaign_id' => $campaignId,
+					],
+				],
+				'calltimes' => [
+					'folder' => 'goCalltimes',
+					'postfields' => ['goAction' => 'goGetAllCalltimes'],
+				],
+				'scripts' => [
+					'folder' => 'goScripts',
+					'postfields' => ['goAction' => 'goGetAllScripts'],
+				],
+				'carriers' => [
+					'folder' => 'goCarriers',
+					'postfields' => ['goAction' => 'goGetAllCarriers'],
+				],
+				'leadfilter' => [
+					'folder' => 'goLeadFilters',
+					'postfields' => ['goAction' => 'goGetAllLeadFilters'],
+				],
+				'dial_status' => [
+					'folder' => 'goDialStatus',
+					'postfields' => [
+						'goAction' => 'goGetAllDialStatuses',
+						'campaign_id' => $campaignId,
+						'is_selectable' => 0,
+						'add_hotkey' => '',
+					],
+				],
+				'campaign_dial_status' => [
+					'folder' => 'goDialStatus',
+					'postfields' => [
+						'goAction' => 'goGetAllCampaignDialStatuses',
+						'campaign_id' => $campaignId,
+					],
+				],
+				'dids' => [
+					'folder' => 'goInbound',
+					'postfields' => ['goAction' => 'goGetAllDID'],
+				],
+				'voicefiles' => [
+					'folder' => 'goVoiceFiles',
+					'postfields' => ['goAction' => 'goGetAllVoiceFiles'],
+				],
+				'ingroups' => [
+					'folder' => 'goInbound',
+					'postfields' => ['goAction' => 'goGetAllIngroup'],
+				],
+				'ivr' => [
+					'folder' => 'goInbound',
+					'postfields' => ['goAction' => 'goGetAllIVR'],
+				],
+				'server_list' => [
+					'folder' => 'goServers',
+					'postfields' => ['goAction' => 'goGetAllServers'],
+				],
+			], 4);
 		}
 
 		public function API_getAllAudioFiles(){

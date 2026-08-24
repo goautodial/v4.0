@@ -2,7 +2,7 @@
 /**
  * @file 		telephonylist.php
  * @brief 		Manage List and Upload Leads
- * @copyright 	Copyright (c) 2020 GOautodial Inc. 
+ * @copyright 	Copyright (c) 2020 GOautodial Inc.
  * @author		Demian Lizandro A. Biscocho
  * @author     	Alexander Jim H. Abenoja
  *
@@ -35,17 +35,22 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	
+
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
 			header("location: agent.php");
 		}
-	}	
+	}
 
 	$perm = $api->goGetPermissions('list,customfields');
 	$checkbox_all = $ui->getCheckAll("list");
-	
+
+	if ($perm->list->list_read !== 'N') {
+		/* Load the table before sending HTML so the preloader overlays content. */
+		$pageApiResults = $api->API_getTelephonyListPageData();
+		$lists = $pageApiResults['lists'];
+	}
 ?>
 <html>
     <head>
@@ -53,8 +58,8 @@
         <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("Lists"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
-        <?php 
-			print $ui->standardizedThemeCSS(); 
+        <?php
+			print $ui->standardizedThemeCSS();
 			print $ui->creamyThemeCSS();
 			print $ui->dataTablesTheme();
 		?>
@@ -80,7 +85,7 @@
 				height: 30px;
 				background-color: #367fa9;
 			}
-			
+
 			#progress-wrp .progress-bar {
 				border-radius: 3px;
 				position: absolute;
@@ -89,7 +94,7 @@
 				background-color: #00a65a;
 			  /* background-color: #4CAF50; */
 			}
-			
+
 			#progress-wrp .status {
 				top:3px;
 				left:50%;
@@ -135,15 +140,7 @@
                 <section class="content">
 				<?php
 					if ($perm->list->list_read !== 'N') {
-						/****
-						** API to get data of tables
-						****/
-						$pageApiResults = $api->API_getTelephonyListPageData();
-						$lists = $pageApiResults['lists'];
-						
-						//echo "<!--\n";
-						//var_dump($lists);
-						//echo "\n-->\n";
+
 				?>
                 	<div class="row">
                         <div class="col-lg-9">
@@ -151,9 +148,9 @@
 							<div class="panel-body">
 							<legend id="legend_title"><?php $lh->translateText("lists"); ?></legend>
 								<div role="tabpanel">
-							
+
 									<ul role="tablist" class="nav nav-tabs nav-justified">
-			
+
 									<!-- List panel tabs-->
 										 <li role="presentation" <?php if(!isset($_GET['dnc_tab']))echo 'class="active"';?>>
 											<a href="#list_tab" aria-controls="list_tab" role="tab" data-toggle="tab" class="bb0">
@@ -165,7 +162,7 @@
 												<?php $lh->translateText("dnc"); ?> </a>
 										 </li>
 									</ul>
-									  
+
 									<!-- Tab panes-->
 									<div class="tab-content bg-white">
 										<!--==== List ====-->
@@ -182,7 +179,7 @@
 													<th><?php $lh->translateText("field"); ?></th>
 													<?php if ($perm->list->list_delete !== 'N'){ ?>
 													<th><?php echo $checkbox_all;?></th>
-													<?php } ?>													
+													<?php } ?>
 													<th><?php $lh->translateText("action"); ?></th>
 													</tr>
 												</thead>
@@ -190,13 +187,13 @@
 												<?php
 												for($i=0;$i < (isset($lists->list_id) && is_countable($lists->list_id) ? count($lists->list_id) : 0);$i++){
 												// if no entry in user list
-												
+
 												if($lists->active[$i] == "Y"){
 												$lists->active[$i] = $lh->translationFor("active");
 												}else{
 												$lists->active[$i] = $lh->translationFor("inactive");
 												}
-												
+
 												$action_list = $ui->getUserActionMenuForLists($lists->list_id[$i], $lists->list_name[$i], $perm);
 												if($lists->list_id[$i] === 998 || $lists->list_id[$i] === 999)
 													$checkbox = "";
@@ -221,11 +218,11 @@
 												<td><?php echo $lists->cf_count[$i];?></td>
 												<?php if ($perm->list->list_delete !== 'N'){ ?>
 												<td><?php echo $checkbox;?></td>
-												<?php } ?>												
+												<?php } ?>
 												<td><?php echo $action_list;?></td>
 												</tr>
 												<?php
-												
+
 												}
 												?>
 												</tbody>
@@ -242,15 +239,15 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr id="dnc_result">														
+													<tr id="dnc_result">
 														<td colspan="3"><center><span id="dnc_error">- - - <?php $lh->translateText("search_filter_dnc");?> - - -</span></center></td>
 														<td></td>
-														<td></td>													
+														<td></td>
 													</tr>
 												</tbody>
 											</table>
 										</div><!-- /.dnc-tab -->
-										
+
 									</div><!-- /.tab-content -->
 								</div><!-- /.tab-panel -->
 							</div><!-- /.body -->
@@ -293,7 +290,7 @@
 					</SELECT>
 				</div>
 			</div>
-			
+
 			<div class="form-group">
                         <label><?php $lh->translateText("lead_mapping"); ?>  </label> &nbsp;&nbsp;
                         	<label class="switch">
@@ -301,8 +298,8 @@
   					<span class="slider round"></span>
 				</label>
 			</div>
-			
-			<div class="form-group">			
+
+			<div class="form-group">
 			<label><?php $lh->translateText("csv_file"); ?>:</label>
 			<div class="form-group" id="dvImportSegments">
 				<div class="input-group">
@@ -313,7 +310,7 @@
 				</div>
 				<input type="file" class="file-box hide" name="file_upload" id="txtFileUpload" accept=".csv">
 			</div>
-	
+
 			<div id="LeadMappingContainer" class="modal" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static">
  				<div class="modal-dialog" role="document">
     					<div class="modal-content">
@@ -341,7 +338,7 @@
 
 			<div id="goValuesContainer"></div>
 			</div>
-			
+
 			<!-- Progress bar -->
 			<div class="form-group">
 				<div id="progress-wrp">
@@ -351,22 +348,22 @@
 				<div id="output"><!-- error or success results --></div>
 				<br />
 				<div>
-				<div class="alert alert-success" style="display:none;" id="dStatus"> 
+				<div class="alert alert-success" style="display:none;" id="dStatus">
 				<div id="qstatus">  </div>
 				</div>
 				</div>
 			</div>
 			<!-- End Progress bar -->
-			
+
 			<div class="form-group">
 			<input type="button" id="btnUpload" name="btnUpload" value="<?php $lh->translateText("update"); ?>" class="btn btn-primary" onClick="goProgressBar();">
 			<!--										<div class="col-lg-12" style="margin-top: 10px;">
-			<div class="alert alert-success" style="display:none;" id="dStatus"> 
+			<div class="alert alert-success" style="display:none;" id="dStatus">
 			<div id="qstatus">  </div>
 			</div>
 			</div>-->
 			</div>
-			
+
 			<div id="jMapFieldsdiv">
 			<span id="jMapFieldsSpan"></span>
 			</div>
@@ -383,9 +380,9 @@
 	}
 	#var_dump($_GET);
 	?>
-	
+
 	</div><!-- ./upload leads -->
-	
+
 	<div class="col-lg-3" id="dnc_sidebar" style="display:none;">
 	<h3 class="m0 pb-lg"><?php $lh->translateText("filter_dnc"); ?></h3>
 		<div class="form-group">
@@ -423,7 +420,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 </div>
 <?php
 	$campaign = $pageApiResults['campaigns'];
-	
+
 	$next_listname = "ListID ".$lists->next_listID;
 	$datenow = date("j-n-Y");
 	$next_listdesc = "Auto-generated - ListID - ".$datenow;
@@ -553,7 +550,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 		</div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
 	<!-- End of modal -->
-	
+
 	<!-- Modal -->
 	<div id="dnc-modal" class="modal fade" role="dialog">
 	  <div class="modal-dialog">
@@ -597,7 +594,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 				</div>
 			</form>
 	      </div>
-		  
+
 	      <div class="modal-footer">
 			<button type="button" class="btn btn-primary" id="submit_dnc"><?php $lh->translateText("submit"); ?></button>
 	        <button type="button" class="btn btn-default" data-dismiss="modal"><?php $lh->translateText("close"); ?></button>
@@ -606,16 +603,16 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 	    <!-- End of modal content -->
 	  </div>
 	</div>
-	
+
 	<?php print $ui->standardizedThemeJS();?>
 	<!-- JQUERY STEPS-->
 	<script src="js/dashboard/js/jquery.steps/build/jquery.steps.js"></script>
-		
+
 	<script type="text/javascript">
 		$(document).ready(function() {
 			var list_create = <?php echo ($perm->list->list_create !== "N" ? 1 : 0 ) ?>;
 			var list_read 	= <?php echo ($perm->list->list_create !== "N" ? 1 : 0 ) ?>;
-			var list_update = <?php echo ($perm->list->list_create !== "N" ? 1 : 0 ) ?>;			
+			var list_update = <?php echo ($perm->list->list_create !== "N" ? 1 : 0 ) ?>;
 			var list_delete = <?php echo ($perm->list->list_delete !== "N" ? 1 : 0 ) ?>;
 			var list_upload = <?php echo ($perm->list->list_upload !== "N" ? 1 : 0 ) ?>;
 
@@ -624,7 +621,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 				$("#list_fab").attr("hidden", true);
 			} else {
 				$("#list_fab").attr("disabled", false);
-				$("#list_fab").attr("hidden", false);			
+				$("#list_fab").attr("hidden", false);
 			}
 			if (list_upload != 1) {
 				//console.log(list_upload);
@@ -637,14 +634,14 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 				$("#list_sidebar").find("select, textarea, input, .browse-btn").each(function() {
 					//console.log($(this).attr('name'));
 					$(this).attr("disabled", false);
-				});			
+				});
 			}
 
-				
+
 			// on tab change, change sidebar
 			$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 				var target = $(e.target).attr("href"); // activated tab
-				
+
 				if(target == "#list_tab"){
 					$("#list_sidebar").show();
 					$("#list_fab").show();
@@ -660,14 +657,14 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					$("#legend_title").text("DNC");
 				}
 			});
-			
+
 			$('body').on('keypress', '#search_dnc', function(args) {
 				if (args.keyCode == 13) {
 					$("#dnc_search_button").click();
 					return false;
 				}
 			});
-			
+
 			// initialize datatable
 			$('#table_lists').DataTable({
 				destroy: true,
@@ -682,19 +679,19 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					<?php if($perm->list->list_delete !== 'N'){?>
 						{ width: "8%", targets: 7 },
 						{ width: "5%", targets: 6 },
-						{ width: "5%", targets: 0 },						
+						{ width: "5%", targets: 0 },
 						{ searchable: false, targets: [ 6, 7 ] },
 						{ sortable: false, targets: [ 6, 7 ] },
 					<?php }else{ ?>
 						{ width: "10%", targets: 6 },
-						{ width: "5%", targets: 0 },					
+						{ width: "5%", targets: 0 },
 						{ searchable: false, targets: 6 },
 						{ sortable: false, targets: 6 },
 					<?php } ?>
 					{ targets: -1, className: "dt-body-right" }
 				]
 			});
-			
+
 			$('#table_dnc').DataTable({
 				destroy: true,
 				responsive: true,
@@ -706,9 +703,9 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					{ searchable: false, targets: 2 },
 					{ sortable: false, targets: 2 },
 					{ targets: -1, className: "dt-body-right" }
-				]									
-			});			
-				
+				]
+			});
+
 			// add list
 			if (list_create == 1) {
 				//console.log(list_create);
@@ -717,7 +714,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 				form.validate({
 					errorPlacement: function errorPlacement(error, element) { element.after(error); }
 				});
-				
+
 				form.children("div").steps({
 					headerTag: "h4",
 					bodyTag: "fieldset",
@@ -728,7 +725,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						if (currentIndex > newIndex) {
 							return true;
 						}
-	
+
 						// Clean up if user went backward before
 						if (currentIndex < newIndex)
 						{
@@ -736,7 +733,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							$(".body:eq(" + newIndex + ") label.error", form).remove();
 							$(".body:eq(" + newIndex + ") .error", form).removeClass("error");
 						}
-	
+
 						form.validate().settings.ignore = "";
 						return form.valid();
 					},
@@ -776,11 +773,11 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					//alert(extenid);
 					var form = $('<form action="' + url + '" method="post"><input type="hidden" name="modifyid" value="'+id+'" /></form>');
 					$('body').append(form);  // This line is not necessary
-					
+
 					$(form).submit();
 				});
 			}
-				
+
 			if (list_read == 1) {
 				$(document).on('click','.download-list',function() {
 					var url = 'php/ExportList.php';
@@ -834,7 +831,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						}
 					);
 				});
-				
+
 				$(document).on('click','.delete-multiple-list',function() {
 				var arr = $('input:checkbox.check_list').filter(':checked').map(function () {
 					return this.id;
@@ -875,7 +872,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					);
 				});
 			}
-					
+
 			if (list_read == 1) {
 				$(document).on('click', '.copy-custom-fields', function(){
 					var list_id = $(this).data('id');
@@ -934,7 +931,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					);
 				});
 			}
-					
+
 			$(document).on('click', '#auto_generate', function(){
 			// alert( this.value ); // or $(this).val()
 				if($('#auto_generate').is(":checked")){
@@ -979,7 +976,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						$('#dnc_search_button').text("<?php $lh->translateText("search"); ?>");
 						$('#dnc_search_button').attr("disabled", false);
 					}
-					
+
 					$.ajax({
 						url: "search_dnc.php",
 						type: 'POST',
@@ -1004,7 +1001,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 										{ searchable: false, targets: 2 },
 										{ sortable: false, targets: 2 },
 										{ targets: -1, className: "dt-body-right" }
-									]									
+									]
 								});
 								$('#dnc_error').html("");
 							} else {
@@ -1013,7 +1010,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						}
 					});
 				});
-			
+
 				// DNC Submit
 				$(document).on('click','#submit_dnc',function() {
 					$('#submit_dnc').text("<?php $lh->translateText("submitting"); ?>");
@@ -1029,24 +1026,24 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 							success: function(data) {
 								console.log(data);
 								$('#submit_dnc').text("<?php $lh->translateText("add_delete_dnc"); ?>");
-								$('#submit_dnc').attr("disabled", false);										
-								
+								$('#submit_dnc').attr("disabled", false);
+
 								if (data == 1) {
 									if (stageDNC == "ADD") {
 										swal({title: "<?php $lh->translateText("added_new"); ?> DNC", text: "<?php $lh->translateText("add_dnc"); ?>", type: "success"},function(){window.location.href = 'telephonylist.php?dnc_tab';});
 									}
 									if (stageDNC == "DELETE") {
 										swal({title: "<?php $lh->translateText("deleted"); ?> DNC", text: "<?php $lh->translateText("delete_dnc"); ?>", type: "success"},function(){window.location.href = 'telephonylist.php?dnc_tab';});
-									}								
+									}
 								} else {
 									if (data == 10116) {
 										sweetAlert("<?php echo $lh->translateText("oups"); ?>", "<?php echo $lh->translateText("dnc_already_exist"); ?>", "error");
-									}		
+									}
 									if (data == 10117) {
 										sweetAlert("<?php echo $lh->translateText("oups"); ?>", "<?php echo $lh->translateText("dnc_do_not_exist"); ?>", "error");
-									}									
+									}
 								}
-								
+
 							}
 						});
 					} else {
@@ -1054,16 +1051,16 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						$('#submit_dnc').attr("disabled", false);
 						swal("<?php $lh->translateText("dnc_incomplete"); ?>", "<?php $lh->translateText("dnc_incomplete_msg"); ?>", "error");
 					}
-					
+
 				});
 			}
-				
+
 			// Delete DNC
-			if (list_delete == 1) {				
+			if (list_delete == 1) {
 				$(document).on('click','.delete-dnc',function() {
 					var phone_number = $(this).data('id');
 					var campaign = $(this).data('campaign');
-					
+
 					$.ajax({
 						url: "php/ActionDNC.php",
 						type: 'POST',
@@ -1075,37 +1072,37 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						//type: 'json',
 						success: function(data) {
 							console.log(data);
-							
+
 							if (data == 1) {
-								swal({title: "<?php $lh->translateText("deleted"); ?> DNC", text: "<?php $lh->translateText("delete_dnc"); ?>", type: "success"},function(){window.location.href = 'telephonylist.php?dnc_tab';});								
+								swal({title: "<?php $lh->translateText("deleted"); ?> DNC", text: "<?php $lh->translateText("delete_dnc"); ?>", type: "success"},function(){window.location.href = 'telephonylist.php?dnc_tab';});
 								$("#dnc_sidebar").show();
 								$("#dnc_fab").show();
 								$("#list_sidebar").hide();
 								$("#list_fab").hide();
-								$("#legend_title").text("DNC");								
+								$("#legend_title").text("DNC");
 							} else {
 								if (data == 10116) {
 									sweetAlert("<?php echo $lh->translateText("oups"); ?>", "<?php echo $lh->translateText("dnc_already_exist"); ?>", "error");
-								}		
+								}
 								if (data == 10117) {
 									sweetAlert("<?php echo $lh->translateText("oups"); ?>", "<?php echo $lh->translateText("dnc_do_not_exist"); ?>", "error");
-								}									
+								}
 							}
 						}
 					});
 				});
 			}
-			
+
 			$('#phone_numbers').keypress(function(event){
 				if((event.ctrlKey === false && ((event.which < 48 || event.which > 57) && event.which !== 13 && event.which !== 8)) && (event.keyCode !== 9 && event.keyCode !== 46 && (event.keyCode < 37 || event.keyCode > 40)))
 				return false;
 			});
-			
+
 			var lines = 25;
-			
+
 			$('#phone_numbers').keydown(function(e) {
 				newLines = $(this).val().split("\n").length;
-			
+
 				if(e.keyCode == 13 && newLines >= lines) {
 					return false;
 				}
@@ -1114,37 +1111,37 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 			$('#phone_numbers').blur(function() {
 				this.value = this.value.replace('/[^0-9\r\n]/g','');
 			});
-			
+
 			if (window.location.href.indexOf("dnc_tab") > -1) {
 				$("#dnc_sidebar").show();
 				$("#dnc_fab").show();
 				$("#list_sidebar").hide();
 				$("#list_fab").hide();
-				$("#legend_title").text("DNC");						
-			}			
-			
+				$("#legend_title").text("DNC");
+			}
+
 			// RESET LEAD MAPPING CONTAINER ON CLOSE
 			$('#LeadMappingContainer').on('hidden.bs.modal', function () {
 				$('#LeadMapSubmit').val(0);
 				$('#lead_map_data').html("");
 				$('#lead_map_fields').html("");
-			});			
-	
+			});
+
 		});
-		
+
 		// Progress bar function
 		function goProgressBar() {
-			
+
 			var formData = new FormData($('#upload_form')[0]);
 			var progress_bar_id 		= '#progress-wrp'; //ID of an element for response output
 			var percent = 0;
-			
+
 			var result_output 			= '#output'; //ID of an element for response output
 			var my_form_id 				= '#upload_form'; //ID of an element for response output
 			var submit_btn  = $(this).find("input[type=button]"); //btnUpload
 
 			formData.append('tax_file', $('input[type=file]')[0].files);
-			
+
 			$.ajax({
 				url : "./php/AddLoadLeads.php",
 				type: "POST",
@@ -1161,28 +1158,28 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 					var xhr = $.ajaxSettings.xhr();
 					if (xhr.upload) {
 						xhr.upload.addEventListener('progress', function(event) {
-							
+
 							var position = event.loaded || event.position;
 							var total = event.total;
 							if (event.lengthComputable) {
 								percent = Math.ceil(position / total * 100);
 							}
-							
+
 							//update progressbar
 							$(progress_bar_id +" .progress-bar").css("width", + percent +"%");
 							$(progress_bar_id + " .status").text(percent +"%");
 							//$(progress_bar_id + " .status").innerHTML = percent + '%';
-							
+
 							if(percent === 100) {
-								
+
 								//$('#dStatus').css("display", "block");
 								//$('#dStatus').css("color", "#4CAF50");
 								//$('#qstatus').text("File Uploaded Successfully. Please wait for the TOTAL of leads uploaded.(Do not refresh the page)");
 								//$('#qstatus').text("Data Processing. Please Wait.");
 								//sweetAlert("Oops...", "Something went wrong!", "error");
-								
+
 								//var uploadMsgTotal = "Total Leads Uploaded: "+res;
-				
+
 								swal({
 									title: "<?php $lh->translateText('csv_upload_complete'); ?>",
 									text: "<?php $lh->translateText('data_processing'); ?>",
@@ -1190,11 +1187,11 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 									showCancelButton: false,
 									closeOnConfirm: false
 								});
-								
+
 							}
-							
+
 						}, true);
-						
+
 					}
 					return xhr;
 				},
@@ -1213,14 +1210,14 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 			}).done(function(res){
 				//console.log(res);
 				var data = jQuery.parseJSON(res);
-				
+
 					<?php
 						//if(LEADUPLOAD_LEAD_MAPPING === "y"){ // IF LEAD MAPPING IS ENABLED
 					?>
 						if($('#LeadMapSubmit').val() === "0" && $('#LeadMapSubmit').is(':checked')){
 							lead_mapping(res);
 						} else {
-							upload_alert(data.result, data.msg);						
+							upload_alert(data.result, data.msg);
 						}
 					<?php
 						/*}else{
@@ -1228,10 +1225,10 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 						upload_success(uploadMsgTotal);
 					<?php
 						}*/
-					?>	
-			});								
+					?>
+			});
 		}//function end
-		
+
 		function upload_alert(res, msg){
 		 if(res === "success")
 			var uploadMsgTotal = msg;
@@ -1269,8 +1266,8 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 			else
 				var all = sf;
 			var i;
-			console.log(cf[0]);	
-			console.log(all.length);	
+			console.log(cf[0]);
+			console.log(all.length);
 			for(i = 0; i < all.length;i++){
 				$('#lead_map_data').append('<div class="form-group"><label>'+all[i]+'</label><span id="span_'+all[i]+'"></span></span></div>');
 				$('<input>').attr({type: 'hidden',name: 'map_fields[]', value: all[i]}).appendTo('#lead_map_fields');
@@ -1287,7 +1284,7 @@ print $ui->calloutErrorMessage($lh->translationFor("you_dont_have_permission"));
 			swal.close();
 			$('#LeadMappingContainer').modal('show');
 		}
-			
+
 	</script>
 	<?php print $ui->creamyFooter();?>
     </body>

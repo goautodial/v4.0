@@ -59,11 +59,9 @@ if($isAgentUI !== ''){
 	}
 }
 
-if (!isset($_SESSION["username"])) {
-	header('Location: '.$realPath.'login.php'); // Redirecting To Login Page
-}
-if (!isset($_SESSION["userid"])) {
-	header('Location: '.$realPath.'login.php'); // Redirecting To Login Page
+if (!isset($_SESSION["username"]) || !isset($_SESSION["userid"])) {
+	header('Location: ' . $realPath . 'login.php');
+	exit;
 }
 if (!isset($_SESSION["userrole"])) {
 	$_SESSION["userrole"] = CRM_DEFAULTS_USER_ROLE_GUEST; // no privileged account by default.
