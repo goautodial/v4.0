@@ -59,7 +59,7 @@
         <link href="css/style.css" rel="stylesheet" type="text/css" />
 
         <!-- datetime picker -->
-		<link rel="stylesheet" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+		<link rel="stylesheet" href="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css?v=4.17.47">
 
 		<!-- Date Picker -->
 	        <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
@@ -85,6 +85,7 @@
 				max-height: calc(100vh - 150px);
 				overflow-y: auto;
 			}
+
 
 			#view-calltime-modal #form_calltimes > .row {
 				margin-left: 0;
@@ -158,11 +159,11 @@
 
 			#view-calltime-modal fieldset:last-of-type .row > .col-lg-3:first-child,
 			#view-calltime-modal fieldset:last-of-type .row > .col-lg-3:nth-child(2) {
-				width: 22%;
+				width: 27%;
 			}
 
 			#view-calltime-modal fieldset:last-of-type .row > .col-lg-6 {
-				width: 56%;
+				width: 46%;
 			}
 
 			#view-calltime-modal fieldset:last-of-type .form-group:first-child {
@@ -847,16 +848,50 @@
 			$('.select2-1').select2({ theme: 'bootstrap' });
 			$.fn.select2.defaults.set( "theme", "bootstrap" );
 
-		//initialize timepicker
-			$('.start_time').datetimepicker({
-				defaultDate: '',
-                format: 'LT'
+		var timePickerIcons = {
+			time: 'fa fa-clock-o',
+			date: 'fa fa-calendar',
+			up: 'fa fa-chevron-up',
+			down: 'fa fa-chevron-down',
+			previous: 'fa fa-chevron-left',
+			next: 'fa fa-chevron-right',
+			today: 'fa fa-crosshairs',
+			clear: 'fa fa-trash',
+			close: 'fa fa-times'
+		};
 
-            });
-           	$('.end_time').datetimepicker({
-           		defaultDate: '',
-                format: 'LT'
-            });
+		$('.start_time').datetimepicker({
+			defaultDate: '',
+			format: 'LT',
+			icons: timePickerIcons,
+			widgetParent: '#view-calltime-modal .modal-content'
+		});
+		$('.end_time').datetimepicker({
+			defaultDate: '',
+			format: 'LT',
+			icons: timePickerIcons,
+			widgetParent: '#view-calltime-modal .modal-content'
+		});
+
+		$('#view-calltime-modal').on('dp.show', '.start_time, .end_time', function (event) {
+			var $input = $(event.target);
+			var $widget = $('#view-calltime-modal .bootstrap-datetimepicker-widget');
+			var $widgetParent = $widget.parent();
+			var inputOffset = $input.offset();
+			var parentOffset = $widgetParent.offset();
+			var widgetTop = inputOffset.top - parentOffset.top + $input.outerHeight();
+			var widgetLeft = inputOffset.left - parentOffset.left;
+
+			if (widgetTop + $widget.outerHeight() > $widgetParent.innerHeight()) {
+				widgetTop = inputOffset.top - parentOffset.top - $widget.outerHeight();
+			}
+
+			$widget.css({
+				position: 'absolute',
+				top: widgetTop,
+				left: widgetLeft
+			});
+		});
 
 		// check duplicates
 			$("#call_time_id").keyup(function() {

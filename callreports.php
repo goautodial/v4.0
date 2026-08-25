@@ -69,10 +69,10 @@
 		<script src="js/plugins/datatables/buttons/buttons.print.min.js" type="text/javascript"></script>
 
         <!-- Datetime picker -->
-        <link rel="stylesheet" href="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css?v=4.17.47">
         <!-- Date Picker -->
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
-        <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+        <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js?v=4.17.47"></script>
 
 		<!-- CHOSEN-->
    		<link rel="stylesheet" src="js/dashboard/chosen_v1.2.0/chosen.min.css">
@@ -258,7 +258,7 @@
                                     <label><?php $lh->translateText("start_date"); ?></label>
                                     <div class="form-group">
                                         <div class='input-group date' id='datetimepicker1'>
-                                            <input type='text' class="form-control" id="start_filterdate" name="start_filterdate" placeholder="<?php echo date("m/d/Y");?> 12:00 AM" value="<?php echo date("m/d/Y");?> 00:00:00" />
+                                            <input type='text' class="form-control" id="start_filterdate" name="start_filterdate" placeholder="<?php echo date("m/d/Y");?> 12:00 AM" value="<?php echo date("m/d/Y");?> 12:00 AM" />
                                             <span class="input-group-addon">
                                                 <!-- <span class="glyphicon glyphicon-calendar"></span>-->
                                                 <span class="fa fa-calendar"></span>
@@ -317,14 +317,15 @@
 				$('body').append(form);  // This line is not necessary
 				$(form).submit();
 			});
+			$.fn.dataTable.Buttons.defaults.dom.button.className = 'dt-button btn btn-primary btn-sm';
 			filterchange();
-			$('#agent_detail_login').DataTable();
-			$('#table_agent_pdetailSM').DataTable();
 
 			$('.select2-3').select2({ theme: 'bootstrap' });
 			$.fn.select2.defaults.set( "theme", "bootstrap" );
 
 			$('#datetimepicker1').datetimepicker({
+				allowInputToggle: true,
+				format: 'MM/DD/YYYY hh:mm A',
 				icons: {
 					//time: 'fa fa-clock-o',
 					date: 'fa fa-calendar',
@@ -339,6 +340,8 @@
 			});
 
 			$('#datetimepicker2').datetimepicker({
+				allowInputToggle: true,
+				format: 'MM/DD/YYYY hh:mm A',
 				icons: {
 					//time: 'fa fa-clock-o',
 					date: 'fa fa-calendar',
@@ -403,7 +406,6 @@
 							statuses : $("#statuses").val()
 						},
 						success: function(data) {
-							console.log(data);
 							if (data !== "") {
 								$(".report-loader").fadeOut("slow");
 								$('#table').html(data);
@@ -445,21 +447,20 @@
 				$(".report-loader").fadeIn("slow");
 
 				$.ajax({
-						url: URL,
-						type: 'POST',
-						data: {
-							pageTitle : filter_type,
-							campaignID : $("#ingroup_id").val(),
-							request : request,
-							userID : $("#userID").val(),
-							userGroup : $("#userGroup").val(),
-							fromDate : $("#start_filterdate").val(),
-							toDate : $("#end_filterdate").val(),
-							statuses : $("#statuses").val()
-						},
-						success: function(data) {
-							console.log(data);
-							if (data !== "") {
+							url: URL,
+							type: 'POST',
+							data: {
+								pageTitle : filter_type,
+								campaignID : $("#ingroup_id").val(),
+								request : request,
+								userID : $("#userID").val(),
+								userGroup : $("#userGroup").val(),
+								fromDate : $("#start_filterdate").val(),
+								toDate : $("#end_filterdate").val(),
+								statuses : $("#statuses").val()
+							},
+							success: function(data) {
+								if (data !== "") {
 								$(".report-loader").fadeOut("slow");
 								$('#table').html(data);
 
@@ -535,7 +536,7 @@
 				"autoApply": true,
 				"endDate": "08/17/2016"
 			}, function(start, end, label) {
-				console.log("New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')");
+
 			});
 			*/
             });
@@ -605,7 +606,6 @@
 						statuses : $("#statuses").val()
 					},
 					success: function(data) {
-						console.log(data);
 						if (data !== "") {
 							$(".report-loader").fadeOut("slow");
 							$('#table').html(data);
@@ -633,7 +633,6 @@
 										{
 											text: 'Export Agent Time Detail',
 											action: function ( ) {
-												console.log("Exporting...");
 												$( "#export_agentdetail_form" ).submit();
 											}
 										}
@@ -685,7 +684,7 @@
 														return a + b*1;
 													}, 0) / 1;
 												statuses.push('<td>'+sformat(status)+'</td>');
-												//console.log(status);
+
 											}
 
 											return $('<tr/>').append('<td>'+group+'</td>'+statuses);
@@ -784,7 +783,7 @@
                                                                         //        {
                                                                         //                text: 'Export Agent Performance Detail',
                                                                         //                action: function ( ) {
-                                                                        //                        console.log("Exporting...");
+
                                                                         //                        $( "#export_agentPdetailSM_form" ).submit();
                                                                         //                }
                                                                         //        }

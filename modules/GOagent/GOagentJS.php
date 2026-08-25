@@ -556,6 +556,14 @@ echo "var country_codes = $country_code_list;\n";
 ?>
 var defaultFields = "vendor_lead_code,source_id,list_id,gmt_offset_now,called_since_last_reset,phone_code,phone_number,title,first_name,middle_initial,last_name,address1,address2,address3,city,state,province,postal_code,country_code,gender,date_of_birth,alt_phone,email,security_phrase,comments,called_count,last_local_call_time,rank,owner";
 
+function normalizeDateInputValue(dateValue) {
+    if (!dateValue || dateValue.indexOf('0000-00-00') === 0) {
+        return '';
+    }
+
+    return dateValue;
+}
+
 $(document).ready(function() {
 if (window.GOagentJSInitialized) {
     return;
@@ -572,7 +580,7 @@ window_focus = true;
 window_focus = false;
 }).trigger('focus');
 
-$(window).on('load', function() {
+function initializeAgentAfterLoad() {
 var refreshId = setInterval(function() {
     if (is_logged_in && ((use_webrtc && phoneRegistered) || !use_webrtc)) {
         //Start of checking for live calls
@@ -1049,24 +1057,37 @@ $(window).resize(function() {
 var d = new Date();
 //var currDate = new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes() + 15);
 var currDate = new Date(serverdate.getFullYear(), serverdate.getMonth(), serverdate.getDate(), serverdate.getHours(), serverdate.getMinutes() + 15);
-$("#cb-datepicker").datetimepicker({
+var callbackPickerIcons = {
+    time: 'fa fa-clock-o',
+    date: 'fa fa-calendar',
+    up: 'fa fa-chevron-up',
+    down: 'fa fa-chevron-down',
+    previous: 'fa fa-chevron-left',
+    next: 'fa fa-chevron-right',
+    today: 'fa fa-crosshairs',
+    clear: 'fa fa-trash',
+    close: 'fa fa-times'
+};
+var $callbackDatePicker = $("#cb-datepicker");
+$callbackDatePicker.datetimepicker({
     inline: true,
     sideBySide: true,
-    icons: {
-	time: 'fa fa-clock-o',
-	date: 'fa fa-calendar'
-    },
+    useCurrent: false,
+    format: 'MM/DD/YYYY hh:mm A',
+    icons: callbackPickerIcons,
     minDate: currDate
 });
 
+var callbackDatePicker = $callbackDatePicker.data('DateTimePicker');
 var selectedDate = moment(currDate).format('YYYY-MM-DD HH:mm:00');
 $("#date-selected").html(moment(currDate).format('dddd, MMMM Do YYYY, h:mm a'));
 $("#callback-date").val(selectedDate);
-$("#cb-datepicker").on("dp.change", function (e) {
+$callbackDatePicker.on("dp.change", function (e) {
     selectedDate = moment(e.date).format('YYYY-MM-DD HH:mm:00');
     $("#date-selected").html(moment(e.date).format('dddd, MMMM Do YYYY, h:mm a'));
     $("#callback-date").val(selectedDate);
 });
+callbackDatePicker.date(currDate);
 <?php if(ECCS_BLIND_MODE === 'y') { ?>
 
 $('#callback-datepicker').on('shown.bs.modal', function(){
@@ -1143,13 +1164,13 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
             $("#cb-container").slideToggle('slow');
         });
 
-        if (!$("aside.control-sidebar").hasClass("control-sidebar-open")) {
-            if (!is_logged_in && ((use_webrtc && !phoneRegistered) || !use_webrtc)) {
-                checkSidebarIfOpen(true);
-                //$.AdminLTE.controlSidebar.open($("aside.control-sidebar"), true);
-            }
-        }
-    });
+}
+
+if (document.readyState === 'complete') {
+    initializeAgentAfterLoad();
+} else {
+    $(window).one('load', initializeAgentAfterLoad);
+}
 
     var logoutRegX = new RegExp("logout\.php", "ig");
     $("#cream-agent-logout").click(function(event) {
@@ -1574,6 +1595,12 @@ $('#callback-datepicker').on('shown.bs.modal', function(){
     // device detection
     if (parseInt($("body").innerWidth()) < 768) {
         isMobile = true;
+    }
+
+    if (!$("aside.control-sidebar").hasClass("control-sidebar-open")
+        && !is_logged_in
+        && ((use_webrtc && !phoneRegistered) || !use_webrtc)) {
+        checkSidebarIfOpen(true);
     }
 
     window.addEventListener("beforeunload", function (e) {
@@ -3969,7 +3996,7 @@ function CheckForIncoming () {
             $(".formMain input[name='postal_code']").val(this_VDIC_data.postal_code).trigger('change');
             $(".formMain select[name='country_code']").val(this_VDIC_data.country_code).trigger('change');
             $(".formMain select[name='gender']").val(this_VDIC_data.gender).trigger('change');
-            var dateOfBirth = this_VDIC_data.date_of_birth;
+            var dateOfBirth = normalizeDateInputValue(this_VDIC_data.date_of_birth);
             $(".formMain input[name='date_of_birth']").val(dateOfBirth);
             $(".formMain input[name='alt_phone']").val(this_VDIC_data.alt_phone).trigger('change');
             $(".formMain input[name='email']").val(this_VDIC_data.email).trigger('change');
@@ -5351,7 +5378,7 @@ function UpdateFieldsData() {
             }
             var regUDdate_of_birth = new RegExp("date_of_birth,","ig");
             if (fields_list.match(regUDdate_of_birth)) {
-                var dateOfBirth = UDfieldsData.date_of_birth;
+                var dateOfBirth = normalizeDateInputValue(UDfieldsData.date_of_birth);
                 $(".formMain input[name='date_of_birth']").val(dateOfBirth);
             }
             var regUDalt_phone = new RegExp("alt_phone,","ig");
@@ -7595,7 +7622,7 @@ function ManualDialNext(mdnCBid, mdnBDleadid, mdnDiaLCodE, mdnPhonENumbeR, mdnSt
                     $(".formMain input[name='postal_code']").val(thisVdata.postal_code).trigger('change');
                     $(".formMain select[name='country_code']").val(thisVdata.country_code).trigger('change');
                     $(".formMain select[name='gender']").val(thisVdata.gender).trigger('change');
-                    var dateOfBirth = thisVdata.date_of_birth;
+                    var dateOfBirth = normalizeDateInputValue(thisVdata.date_of_birth);
                     $(".formMain input[name='date_of_birth']").val(dateOfBirth);
                     $(".formMain input[name='alt_phone']").val(thisVdata.alt_phone).trigger('change');
                     cust_email                              = thisVdata.email;

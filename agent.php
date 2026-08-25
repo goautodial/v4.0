@@ -206,7 +206,7 @@ $osTicket = $mh->moduleIsEnabled('osTicket');
 		<!-- WEATHER ICONS-->
 		<link rel="stylesheet" src="js/dashboard/weather-icons/css/weather-icons.min.css">
 		<!-- Datetime picker -->
-        <link rel="stylesheet" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+			<link rel="stylesheet" href="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css?v=4.17.47">
 		<!-- iCheck for checkboxes and radio inputs -->
 		<link href="css/iCheck/minimal/blue.css" rel="stylesheet" type="text/css" />
 		<!-- iCheck -->
@@ -217,7 +217,7 @@ $osTicket = $mh->moduleIsEnabled('osTicket');
 		<script src="js/jquery.md5.js" type="text/javascript"></script>
         <!-- Date Picker -->
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
-        <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+        <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js?v=4.17.47"></script>
         <!-- X-Editable -->
         <!--<link rel="stylesheet" src="js/dashboard/x-editable/dist/css/bootstrap-editable.css">-->
         <!--<script type="text/javascript" src="js/dashboard/x-editable/dist/js/bootstrap-editable.min.js"></script>-->

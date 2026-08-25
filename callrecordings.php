@@ -57,11 +57,11 @@
 		<link href="css/bootstrap-player.css" rel="stylesheet" type="text/css" />
 
         <!-- Datetime picker -->
-	<link rel="stylesheet" href="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+	<link rel="stylesheet" href="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css?v=4.17.47">
 
         <!-- Date Picker -->
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
-		<script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+		<script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js?v=4.17.47"></script>
 
 		<!-- CHOSEN-->
    		<link rel="stylesheet" src="js/dashboard/chosen_v1.2.0/chosen.min.css">
@@ -385,24 +385,26 @@
 
 				// ---- DATETIME PICKER INITIALIZATION
 
+				var dateTimePickerIcons = {
+					time: 'fa fa-clock-o',
+					date: 'fa fa-calendar',
+					up: 'fa fa-chevron-up',
+					down: 'fa fa-chevron-down',
+					previous: 'fa fa-chevron-left',
+					next: 'fa fa-chevron-right',
+					today: 'fa fa-crosshairs',
+					clear: 'fa fa-trash',
+					close: 'fa fa-times'
+				};
+
 				$('#datetimepicker3').datetimepicker({
-					icons: {
-						time: "fa fa-clock-o",
-						date: "fa fa-calendar",
-						up: "fa fa-arrow-up",
-						down: "fa fa-arrow-down"
-					}
+					icons: dateTimePickerIcons
 				});
 
-		                $('#datetimepicker4').datetimepicker({
-		                	useCurrent: false,
-	                   		icons: {
-						time: "fa fa-clock-o",
-						date: "fa fa-calendar",
-						up: "fa fa-arrow-up",
-						down: "fa fa-arrow-down"
-					}
-		                });
+			$('#datetimepicker4').datetimepicker({
+				useCurrent: false,
+				icons: dateTimePickerIcons
+			});
 
 	                // ---- DATE FILTERS
 

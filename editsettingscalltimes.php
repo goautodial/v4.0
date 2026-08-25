@@ -31,7 +31,7 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	
+
 
 $cid = NULL;
 if (isset($_POST["cid"])) {
@@ -44,17 +44,17 @@ if (isset($_POST["cid"])) {
         <meta charset="UTF-8">
         <title><?php $lh->translateText('portal_title'); ?> - <?php $lh->translateText("edit_call_times"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        
+
         <?php print $ui->standardizedThemeCSS(); ?>
 
         <?php print $ui->creamyThemeCSS(); ?>
 
-        <!-- datetime picker --> 
-		<link rel="stylesheet" href="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+        <!-- datetime picker -->
+		<link rel="stylesheet" href="js/dashboard/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css?v=4.17.47">
 
 		<!-- Date Picker -->
         <script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/moment.js"></script>
-		<script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+		<script type="text/javascript" src="js/dashboard/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js?v=4.17.47"></script>
 
         <script type="text/javascript">
 			$(window).ready(function() {
@@ -87,11 +87,11 @@ if (isset($_POST["cid"])) {
                         <li> <?php $lh->translateText("settings"); ?></li>
                         <?php
 							if(isset($_POST["cid"])){
-						?>	
+						?>
 							<li><a href="./settingscalltimes.php"><?php $lh->translateText("call_times"); ?></a></li>
                         <?php
 							}
-                        ?>	                    
+                        ?>
                         <li class="active"><?php $lh->translateText("modify"); ?></li>
                     </ol>
                 </section>
@@ -106,10 +106,10 @@ if (isset($_POST["cid"])) {
 						//echo "<pre>";
 						//var_dump($output);
 						if ($output->result == "success") {
-							
+
 							$user_groups = $api->API_getAllUserGroups();
 							$voicefiles = $api->API_getAllVoiceFiles();
-							
+
 							# Result was OK!
 							if($output->ct_default_start !== NULL && $output->ct_default_stop !== NULL){
 								$start_default =  date('h:i A', strtotime(sprintf("%04d", $output->ct_default_start)));
@@ -118,7 +118,7 @@ if (isset($_POST["cid"])) {
 								$start_default =  "NULL";
 								$stop_default =  "NULL";
 							}
-							
+
 							if($output->ct_sunday_start != $output->ct_sunday_stop){
 								$start_sunday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_sunday_start)));
 								$stop_sunday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_sunday_stop)));
@@ -126,7 +126,7 @@ if (isset($_POST["cid"])) {
 								$start_sunday =  "NULL";
 								$stop_sunday =  "NULL";
 							}
-							
+
 							if($output->ct_monday_start != $output->ct_monday_stop){
 								$start_monday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_monday_start)));
 								$stop_monday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_monday_stop)));
@@ -134,7 +134,7 @@ if (isset($_POST["cid"])) {
 								$start_monday =  "NULL";
 								$stop_monday =  "NULL";
 							}
-							
+
 							if($output->ct_tuesday_start != $output->ct_tuesday_stop){
 								$start_tuesday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_tuesday_start)));
 								$stop_tuesday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_tuesday_stop)));
@@ -142,7 +142,7 @@ if (isset($_POST["cid"])) {
 								$start_tuesday =  "NULL";
 								$stop_tuesday =  "NULL";
 							}
-							
+
 							if($output->ct_wednesday_start != $output->ct_wednesday_stop){
 								$start_wednesday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_wednesday_start)));
 								$stop_wednesday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_wednesday_stop)));
@@ -150,7 +150,7 @@ if (isset($_POST["cid"])) {
 								$start_wednesday =  "NULL";
 								$stop_wednesday =  "NULL";
 							}
-							
+
 							if($output->ct_thursday_start != $output->ct_thursday_stop){
 								$start_thursday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_thursday_start)));
 								$stop_thursday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_thursday_stop)));
@@ -158,7 +158,7 @@ if (isset($_POST["cid"])) {
 								$start_thursday =  "NULL";
 								$stop_thursday =  "NULL";
 							}
-							
+
 							if($output->ct_friday_start != $output->ct_friday_stop){
 								$start_friday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_friday_start)));
 								$stop_friday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_friday_stop)));
@@ -166,7 +166,7 @@ if (isset($_POST["cid"])) {
 								$start_friday =  "NULL";
 								$stop_friday =  "NULL";
 							}
-							
+
 							if($output->ct_saturday_start != $output->ct_saturday_stop){
 								$start_saturday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_saturday_start)));
 								$stop_saturday =  date('h:i A', strtotime(sprintf("%04d", $output->ct_saturday_stop)));
@@ -211,8 +211,8 @@ if (isset($_POST["cid"])) {
 												<?php
 													for($a=0;$a<(isset($user_groups->user_group) && is_countable($user_groups->user_group) ? count($user_groups->user_group) : 0);$a++){
 												?>
-													<option value="<?php echo $user_groups->user_group[$a];?>" <?php if($output->user_group == $user_groups->user_group[$a]){echo "selected";}?> >  
-														<?php echo $user_groups->user_group[$a].' - '.$user_groups->group_name[$a];?>  
+													<option value="<?php echo $user_groups->user_group[$a];?>" <?php if($output->user_group == $user_groups->user_group[$a]){echo "selected";}?> >
+														<?php echo $user_groups->user_group[$a].' - '.$user_groups->group_name[$a];?>
 													</option>
 												<?php
 													}
@@ -450,7 +450,7 @@ if (isset($_POST["cid"])) {
 									</div>
 								</fieldset>
 							</div><!-- tab 1 -->
-								
+
 							<!-- FOOTER BUTTONS -->
 							<fieldset class="footer-buttons">
 								<div class="box-footer">
@@ -460,7 +460,7 @@ if (isset($_POST["cid"])) {
 								   </div>
 								</div>
 							</fieldset>
-							
+
 							</div><!-- end of tab content -->
 						</div><!-- tab panel -->
 	                    </form>
@@ -470,7 +470,7 @@ if (isset($_POST["cid"])) {
 					<?php
 						}
 					?>
-					
+
 				<!-- /.content -->
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
@@ -482,28 +482,41 @@ if (isset($_POST["cid"])) {
 		<script type="text/javascript">
 			$(document).ready(function() {
 
-			    //initialize timepicker
+				var timePickerIcons = {
+					time: 'fa fa-clock-o',
+					date: 'fa fa-calendar',
+					up: 'fa fa-chevron-up',
+					down: 'fa fa-chevron-down',
+					previous: 'fa fa-chevron-left',
+					next: 'fa fa-chevron-right',
+					today: 'fa fa-crosshairs',
+					clear: 'fa fa-trash',
+					close: 'fa fa-times'
+				};
+
 				$('.start_time').datetimepicker({
 					defaultDate: '',
-                    format: 'LT'
-                });
-                $('.end_time').datetimepicker({
+					format: 'LT',
+					icons: timePickerIcons
+				});
+				$('.end_time').datetimepicker({
 					defaultDate: '',
-                    format: 'LT'
-                });
+					format: 'LT',
+					icons: timePickerIcons
+				});
 
                 $(document).on('click', '#cancel', function(){
 					swal("<?php $lh->translateText('cancelled'); ?>", "<?php $lh->translateText('cancel_msg'); ?>", "error");
 				});
-				
-				/** 
+
+				/**
 				 * Modifies a telephony list
 			 	 */
 			 	$(document).on('click','#modifyCalltimesOkButton',function() {
 					//submit the form
 					$('#update_button').html("<i class='fa fa-edit'></i> Updating.....");
 					$('#modifyCalltimesOkButton').prop("disabled", true);
-					
+
 					$.ajax({
                         			url: "./php/ModifyCalltimes.php",
                         			type: 'POST',
@@ -515,8 +528,8 @@ if (isset($_POST["cid"])) {
 							if(data == 1){
 								swal(
 									{
-										title: "<?php $lh->translateText("success"); ?>", 
-										text: "<?php $lh->translateText("calltime_modify_success"); ?>", 
+										title: "<?php $lh->translateText("success"); ?>",
+										text: "<?php $lh->translateText("calltime_modify_success"); ?>",
 										type: "success"
 									},
 									function() {
@@ -529,7 +542,7 @@ if (isset($_POST["cid"])) {
                         }
                     });
 				});
-				
+
 				$('#calltime_name').bind('keypress', function (event) {
 				    var regex = new RegExp("^[a-zA-Z0-9 ]+$");
 				    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
