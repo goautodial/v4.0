@@ -41,6 +41,7 @@
 		}
 	}
 
+	$api->API_prepareTelephonyInboundPageAccess();
 	$perm = $api->goGetPermissions('inbound,ivr,did');
 	$gopackage = $api->API_getGOPackage();
 
@@ -48,11 +49,27 @@
 		header("location:index.php");
 	}
 
+	$activeTable = 'ingroup';
+	if ($perm->inbound->inbound_read === 'N' && $perm->ivr->ivr_read !== 'N') {
+		$activeTable = 'ivr';
+	} elseif ($perm->inbound->inbound_read === 'N' && $perm->ivr->ivr_read === 'N' && $perm->did->did_read !== 'N') {
+		$activeTable = 'phonenumber';
+	}
+
+	$requestedTab = $_SERVER['QUERY_STRING'] ?? '';
+	if (strpos($requestedTab, 'T_ivr') !== false && $perm->ivr->ivr_read !== 'N') {
+		$activeTable = 'ivr';
+	} elseif (strpos($requestedTab, 'T_phonenumber') !== false && $perm->did->did_read !== 'N') {
+		$activeTable = 'phonenumber';
+	} elseif (strpos($requestedTab, 'T_ingroup') !== false && $perm->inbound->inbound_read !== 'N') {
+		$activeTable = 'ingroup';
+	}
+
 	if ($perm->inbound->inbound_read !== 'N' || $perm->ivr->ivr_read !== 'N' || $perm->did->did_read !== 'N') {
-		$pageApiResults = $api->API_getTelephonyInboundPageData();
+		$pageApiResults = $api->API_getTelephonyInboundPageData($activeTable);
 		$ingroup = $pageApiResults['ingroup'];
 		$ivr = $pageApiResults['ivr'];
-		$phonenumber = $pageApiResults['phonenumber'];
+		$phonenumber = $pageApiResults['phonenumber'] ?? null;
 		$users = $pageApiResults['users'];
 		$user_groups = $pageApiResults['user_groups'];
 		$campaign = $pageApiResults['campaign'];
@@ -142,6 +159,10 @@
 							$toggleDID = ' class="T_phonenumber active"';
 							$activeDID = ' active';
 						}
+
+						$activeInbound = $activeTable === 'ingroup' ? ' active' : '';
+						$activeIVR = $activeTable === 'ivr' ? ' active' : '';
+						$activeDID = $activeTable === 'phonenumber' ? ' active' : '';
 						?>
 							 <li role="presentation" class="T_ingroup <?=$activeInbound?>">
 								<a href="#T_ingroup" aria-controls="T_ingroup" role="tab" data-toggle="tab" class="bb0">
@@ -176,9 +197,9 @@
 										 <th><?php $lh->translateText('action'); ?></th>
 									  </tr>
 								   </thead>
-								   <tbody>
+								   <tbody data-loaded="true">
 									   	<?php
-									   		for($i=0;$i < (isset($ingroup->group_id) && is_countable($ingroup->group_id) ? count($ingroup->group_id) : 0);$i++){
+										for($i=0;$activeTable === 'ingroup' && $i < (isset($ingroup->group_id) && is_countable($ingroup->group_id) ? count($ingroup->group_id) : 0);$i++){
 
 												if($ingroup->active[$i] == "Y"){
 													$ingroup->active[$i] = $lh->translationFor('active');
@@ -218,9 +239,9 @@
 										 <th><?php $lh->translateText('action'); ?></th>
 									  </tr>
 								   </thead>
-								   <tbody>
+								   <tbody data-loaded="true">
 									   	<?php
-									   		for($i=0;$i < (isset($ivr->menu_id) && is_countable($ivr->menu_id) ? count($ivr->menu_id) : 0);$i++){
+										for($i=0;$i < (isset($ivr->menu_id) && is_countable($ivr->menu_id) ? count($ivr->menu_id) : 0);$i++){
 
 											$action_IVR = $ui->ActionMenuForIVR($ivr->menu_id[$i], $ivr->menu_name[$i], $perm);
 
@@ -253,9 +274,9 @@
 										 <th><?php $lh->translateText('action'); ?></th>
 									  </tr>
 								   </thead>
-								   <tbody>
+								   <tbody data-loaded="true">
 									   	<?php
-									   		for($i=0;$i < (isset($phonenumber->did_pattern) && is_countable($phonenumber->did_pattern) ? count($phonenumber->did_pattern) : 0);$i++){
+										for($i=0;$i < (isset($phonenumber->did_pattern) && is_countable($phonenumber->did_pattern) ? count($phonenumber->did_pattern) : 0);$i++){
 
 									   			if($phonenumber->active[$i] == "Y"){
 													$phonenumber->active[$i] = $lh->translationFor('active');
@@ -1331,6 +1352,8 @@
 						{ targets: -1, className: "dt-body-right" }
 					]
 				});
+
+				
 
 			//reloads page when modal closes
 			/*

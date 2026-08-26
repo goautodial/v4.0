@@ -4,7 +4,7 @@
  * @brief       Handles List Statuses Requests
  * @copyright   Copyright (c) 2018 GOautoial Inc.
  * @author      Noel Umandap
- * @author		Demian Lizandro A. Biscocho 
+ * @author		Demian Lizandro A. Biscocho
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -30,18 +30,23 @@
 	$called 									= [];
 	$ncalled 									= [];
     $counter = (isset($output->stats) && is_countable($output->stats) ? count($output->stats) : 0);
-	
+
 	for($s=0;$s<$counter;$s++){
-		$called[] = $output->is_called[$s];
-		$ncalled[] = $output->not_called[$s];
+		$status = htmlspecialchars((string) ($output->stats[$s] ?? ''), ENT_QUOTES, 'UTF-8');
+		$statusName = htmlspecialchars((string) ($output->status_name[$s] ?? ''), ENT_QUOTES, 'UTF-8');
+		$countCalled = (int) ($output->is_called[$s] ?? 0);
+		$countNotCalled = (int) ($output->not_called[$s] ?? 0);
+
+		$called[] = $countCalled;
+		$ncalled[] = $countNotCalled;
 		$data 									.= '<tr>';
-		$data 									.= '<td>'.$output->stats[$s].'</td>';
-		$data 									.= '<td>'.$output->status_name[$s].'</td>';
-		$data 									.= '<td style="text-align: center; width: 15%;">'.$output->is_called[$s].'</td>';
-		$data 									.= '<td style="text-align: center; width: 15%;">'.$output->not_called[$s].'</td>';
+		$data 									.= '<td>'.$status.'</td>';
+		$data 									.= '<td>'.$statusName.'</td>';
+		$data 									.= '<td style="text-align: center; width: 15%;">'.$countCalled.'</td>';
+		$data 									.= '<td style="text-align: center; width: 15%;">'.$countNotCalled.'</td>';
 		$data 									.= '</tr>';
 	}
-	
+
 	$total 										= array_sum($called) + array_sum($ncalled);
 
 	$data 										.= '<tr>';

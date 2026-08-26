@@ -2,7 +2,7 @@
 /**
  * @file 		edittelephonyscript.php
  * @brief 		Edit scripts
- * @copyright 	Copyright (c) 2020 GOautodial Inc. 
+ * @copyright 	Copyright (c) 2020 GOautodial Inc.
  * @author		Demian Lizandro A. Biscocho
  * @author     	Alexander Jim H. Abenoja
  *
@@ -31,13 +31,13 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	
+
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
 			header("location: agent.php");
 		}
-	}	
+	}
 
 	$script_id = NULL;
 	if (isset($_POST["script_id"])) {
@@ -46,21 +46,24 @@
 		header("location: telephonyscripts.php");
 	}
 
-	$user_groups = $api->API_getAllUserGroups();
+	$pageData = $api->API_getEditTelephonyScriptPageData($script_id);
+	$user_groups = $pageData['user_groups'];
+	$standard_fields = $pageData['standard_fields'];
+	$output = $pageData['script'];
 ?>
 <html>
     <head>
         <meta charset="UTF-8">
         <title><?php $lh->translateText("portal_title"); ?> - <?php $lh->translateText("edit_script"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        
+
         <!-- Call for standardized css -->
         <?php print $ui->standardizedThemeCSS();?>
 
         <?php print $ui->creamyThemeCSS(); ?>
         <script src="js/plugins/ckeditor/ckeditor.js" type="text/javascript"></script>
         <script src="js/plugins/ckeditor/styles.js" type="text/javascript"></script>
-		
+
     </head>
     <style>
     	select{
@@ -68,9 +71,6 @@
     	}
     </style>
     <?php print $ui->creamyBody(); ?>
-    <?php 
-	 	$standard_fields = $api->API_getStandardFields();
-	?>
         <div class="wrapper">
         <!-- header logo: style can be found in header.less -->
 		<?php print $ui->creamyHeader($user); ?>
@@ -102,7 +102,6 @@
 						<!-- standard custom edition form -->
 					<?php
 						$errormessage = NULL;
-						$output = $api->API_getScriptInfo($script_id);
 					?>
             <!-- Main content -->
             <section class="content">
@@ -147,7 +146,7 @@
 							}else{
 								$active .= '<option value="Y" > '.$lh->translationFor("go_yes").' </option>';
 							}
-							
+
 							if($output->active == "N" || $output->active == NULL){
 								$active .= '<option value="N" selected> '.$lh->translationFor("go_no").' </option>';
 							}else{
@@ -205,9 +204,9 @@
 						<?php //echo str_replace("\\\"", "", htmlspecialchars_decode($output->script_text, ENT_QUOTES)); ?>
 						<div class="panel">
 							<div class="panel-body">
-									
+
 								<textarea rows="14" class="form-control note-editor" id="script_text" name="script_text">
-									<?php //echo str_replace("\\\"", "", htmlspecialchars_decode($output->script_text, ENT_QUOTES)); 
+									<?php //echo str_replace("\\\"", "", htmlspecialchars_decode($output->script_text, ENT_QUOTES));
 									$filtered_script = str_replace('Â', '', htmlspecialchars_decode($output->script_text, ENT_QUOTES));
 									$filtered_script = stripslashes(str_replace("\"", "", $filtered_script));
 									echo $filtered_script; ?>
@@ -218,13 +217,13 @@
 				</div>
 			</fieldset>
 		</div><!-- tab 1 -->
-				
+
 			<!-- FOOTER BUTTONS -->
 			<fieldset class="footer-buttons">
 				<div class="box-footer">
 				   <div class="col-sm-3 pull-right">
 						<a href="telephonyscripts.php" id="cancel" type="button" class="btn btn-danger"><i class="fa fa-close"></i> Cancel </a>
-						<button type="submit" class="btn btn-primary" id="modifyOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> <?php $lh->translateText("update"); ?></span></button>						
+						<button type="submit" class="btn btn-primary" id="modifyOkButton" href=""> <span id="update_button"><i class="fa fa-check"></i> <?php $lh->translateText("update"); ?></span></button>
 				   </div>
 				</div>
 			</fieldset>
@@ -237,14 +236,14 @@
 				<!-- /.content -->
             </aside><!-- /.right-side -->
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
-			
+
         </div><!-- ./wrapper -->
 
-  		
+
 		<?php print $ui->standardizedThemeJS();?>
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
-		
+
 		<script>
 	  	$(function () {
 		    // Replace the <textarea id="editor1"> with a CKEditor
@@ -292,7 +291,7 @@
 					sweetAlert({title: "<?php $lh->translateText("cancelled"); ?>",text: "<?php $lh->translateText("cancel_msg"); ?>", type: "error"}, function(){window.location.href = 'telephonyscripts.php';});
 				});
 
-				/** 
+				/**
 				 * Modifies a telephony script
 			 	 */
 			 	$(document).on('click', '#modifyOkButton', function(){
@@ -307,7 +306,7 @@
                         	//console.log($("#modifyform").serialize() + '&script_text_value=' + encodeURIComponent(CKEDITOR.instances['script_text'].getData()));
 							$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
 	                        $('#modifyOkButton').prop("disabled", false);
-							
+
 	                        if (data == 1) {
 								swal({title: "<?php $lh->translateText("edit_script_success"); ?>",text: "<?php $lh->translateText("edit_script_success_msg"); ?>",type: "success"},function(){window.location.href = 'telephonyscripts.php';});
 							} else {
@@ -316,7 +315,7 @@
                         }
                     });
 				});
-				
+
 			});
 
 			function addtext() {
@@ -355,7 +354,7 @@
 				 	txtarea.selectionEnd = strPos;
 				 	txtarea.focus();
 				 }
-				
+
 				 txtarea.scrollTop = scrollPos;*/
 			}
 		</script>

@@ -45,10 +45,10 @@
 	}else{
 		header("location: telephonylist.php");
 	}
-	$statuses = $api->API_getStatusesWithCountCalledNCalled($modifyid);
-	$timezones = $api->API_getTZonesWithCountCalledNCalled($modifyid);
 	$scripts = $api->API_getAllScripts($_SESSION['user']);
 	$perm = $api->goGetPermissions('customfields');
+	$campaign = $api->API_getAllCampaigns();
+	$output = $api->API_getListInfo($modifyid);
 ?>
 <html>
     <head>
@@ -105,12 +105,7 @@
                 </section>
 
 		<!-- standard custom edition form -->
-		<?php
-			$errormessage = NULL;
-			//$campaign = $ui->API_getListAllCampaigns($_SESSION['usergroup']);
-			$campaign = $api->API_getAllCampaigns();
-		    $output = $api->API_getListInfo($modifyid);
-		?>
+		<?php $errormessage = NULL; ?>
 
             <!-- Main content -->
             <section class="content">
@@ -128,8 +123,8 @@
 						<!--<div class="nav-tabs-custom">-->
 							<ul role="tablist" class="nav nav-tabs nav-justified">
 								<li class="active"><a href="#tab_1" data-toggle="tab"><?php $lh->translateText("basic_settings"); ?></a></li>
-								<li><a href="#tab_2" data-toggle="tab"><?php $lh->translateText("statuses"); ?> </a></li>
-								<li><a href="#tab_3" data-toggle="tab"> <?php $lh->translateText("timezones"); ?></a></li>
+								<li><a href="#tab_2" data-toggle="tab" id="statuses_tab" data-list-id="<?php echo htmlspecialchars((string) $modifyid, ENT_QUOTES, 'UTF-8'); ?>"><?php $lh->translateText("statuses"); ?> </a></li>
+								<li><a href="#tab_3" data-toggle="tab" id="timezones_tab" data-list-id="<?php echo htmlspecialchars((string) $modifyid, ENT_QUOTES, 'UTF-8'); ?>"> <?php $lh->translateText("timezones"); ?></a></li>
 							</ul>
 			               <!-- Tab panes-->
 			               <div class="tab-content">
@@ -254,46 +249,7 @@
 														<th><?php $lh->translateText("not_called"); ?></th>
 													</tr>
 												</thead>
-												<tbody>
-													<?php
-														$called = array();
-														$ncalled = array();
-													?>
-													<?php for($s=0;$s<(isset($statuses->stats) && is_countable($statuses->stats) ? count($statuses->stats) : 0);$s++){ ?>
-														<?php
-															// if($statuses->called_since_last_reset[$s] == 'N'){
-															// 	$countCalled = 0;
-															// 	$countNCalled = $statuses->countvlists[$s];
-
-															// }else{
-															// 	$countCalled = $statuses->countvlists[$s];
-															// 	$countNCalled = 0;
-															// }
-															array_push($called, $statuses->is_called[$s]);
-															array_push($ncalled, $statuses->not_called[$s]);
-														?>
-														<tr>
-															<td><?php echo $statuses->stats[$s]; ?></td>
-															<td><?php echo $statuses->status_name[$s]; ?></td>
-															<td style="text-align: center; width: 15%;"><?php echo $statuses->is_called[$s]; ?></td>
-															<td style="text-align: center; width: 15%;"><?php echo $statuses->not_called[$s]; ?></td>
-														</tr>
-													<?php } ?>
-													<tr>
-														<td colspan="2" style="text-align: right;"><b><?php $lh->translateText("SUB_TOTAL"); ?></b></td>
-														<td style="text-align: center; width: 15%;"><?php echo array_sum($called); ?></td>
-														<td style="text-align: center; width: 15%;"><?php echo array_sum($ncalled); ?></td>
-													</tr>
-													<tr>
-														<td colspan="2" style="text-align: right;"><b><?php $lh->translateText("TOTAL"); ?></b></td>
-														<td colspan="2" style="text-align: center; width: 30%;">
-															<?php
-																$total = array_sum($called) + array_sum($ncalled);
-																echo $total;
-															?>
-														</td>
-													</tr>
-												</tbody>
+												<tbody id="list-statuses-content"></tbody>
 											</table>
 										</div>
 									</div>
@@ -310,48 +266,7 @@
 														<th><?php $lh->translateText("not_called"); ?></th>
 													</tr>
 												</thead>
-												<tbody>
-													<?php
-														$tcalled = array();
-														$tncalled = array();
-													?>
-													<?php for($t=0;$t<(isset($timezones->gmt_offset_now) && is_countable($timezones->gmt_offset_now) ? count($timezones->gmt_offset_now) : 0);$t++){ ?>
-														<?php
-															$gmtOffsetRaw = $timezones->gmt_offset_now[$t] ?? 0;
-															$gmtOffset = is_numeric($gmtOffsetRaw) ? (float) $gmtOffsetRaw : 0;
-															$counttList = (int) ($timezones->counttlist[$t] ?? 0);
-															if(($timezones->called_since_last_reset[$t] ?? '') == 'N'){
-																$counttCalled = 0;
-																$counttNCalled = $counttList;
-
-															}else{
-																$counttCalled = $counttList;
-																$counttNCalled = 0;
-															}
-															array_push($tcalled, $counttCalled);
-															array_push($tncalled, $counttNCalled);
-														?>
-														<tr>
-															<td><?php echo $gmtOffsetRaw." (".gmdate("D M Y H:i", time() + (int) (3600 * $gmtOffset)).")"; ?></td>
-															<td style="text-align: center; width: 15%;"><?php echo $counttCalled; ?></td>
-															<td style="text-align: center; width: 15%;"><?php echo $counttNCalled; ?></td>
-														</tr>
-													<?php } ?>
-													<tr>
-														<td style="text-align: right;"><b><?php $lh->translateText("SUB_TOTAL"); ?></b></td>
-														<td style="text-align: center; width: 15%;"><?php echo array_sum($tcalled); ?></td>
-														<td style="text-align: center; width: 15%;"><?php echo array_sum($tncalled); ?></td>
-													</tr>
-													<tr>
-														<td style="text-align: right;"><b><?php $lh->translateText("TOTAL"); ?></b></td>
-														<td colspan="2" style="text-align: center; width: 30%;">
-															<?php
-																$totalt = array_sum($tcalled) + array_sum($tncalled);
-																echo $totalt;
-															?>
-														</td>
-													</tr>
-												</tbody>
+												<tbody id="list-timezones-content"></tbody>
 											</table>
 										</div>
 									</div>
@@ -397,8 +312,44 @@
 
 		<script type="text/javascript">
 			$(document).ready(function() {
+				$(".preloader").stop(true, true).fadeOut(150);
+
 				var list_read 	= <?php echo ($perm->list->list_create !== "N" ? 1 : 0 ) ?>;
 				var list_update = <?php echo ($perm->list->list_create !== "N" ? 1 : 0 ) ?>;
+
+				function loadListTab(tabSelector, contentSelector, url, columnCount) {
+					var tab = $(tabSelector);
+					var content = $(contentSelector);
+
+					if (tab.data('loaded') || tab.data('loading')) {
+						return;
+					}
+
+					tab.data('loading', true);
+					content.html('<tr><td colspan="' + columnCount + '" class="text-center"><i class="fa fa-spinner fa-spin"></i></td></tr>');
+
+					$.ajax({
+						url: url,
+						type: 'POST',
+						dataType: 'json',
+						data: {list_id: tab.data('list-id')}
+					}).done(function(rows) {
+						content.html(rows);
+						tab.data('loaded', true);
+					}).fail(function() {
+						content.html('<tr><td colspan="' + columnCount + '" class="text-center">Unable to load data.</td></tr>');
+					}).always(function() {
+						tab.data('loading', false);
+					});
+				}
+
+				$('#statuses_tab').on('shown.bs.tab', function() {
+					loadListTab('#statuses_tab', '#list-statuses-content', './php/GetListsStatuses.php', 4);
+				});
+
+				$('#timezones_tab').on('shown.bs.tab', function() {
+					loadListTab('#timezones_tab', '#list-timezones-content', './php/GetListsTimezones.php', 3);
+				});
 
 				$(document).on('click', '#cancel', function(){
 					swal({title: "<?php $lh->translateText("cancelled"); ?>", text: "<?php $lh->translateText("cancel_msg"); ?>", type: "error"},function(){window.location.href = 'telephonylist.php';});

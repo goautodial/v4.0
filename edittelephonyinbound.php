@@ -57,6 +57,40 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 	header("location: telephonyinbound.php");
 }
 
+if ($groupid != NULL) {
+	$ingroupPageData = $api->API_getEditTelephonyInboundIngroupData($groupid);
+	$call_menu = $ingroupPageData['call_menu']; $call_time = $ingroupPageData['call_time']; $scripts = $ingroupPageData['scripts']; $voicemail = $ingroupPageData['voicemail']; $ingroup = $ingroupPageData['ingroup']; $voicefiles = $ingroupPageData['voicefiles']; $moh = $ingroupPageData['moh']; $phonenumber = $ingroupPageData['phonenumber']; $output = $ingroupPageData['output'];
+}
+
+if ($ivr_id != NULL) {
+	$ivrPageData = $api->API_getEditTelephonyInboundIvrData($ivr_id);
+	$output = $ivrPageData['output'];
+	$ivr_options = $ivrPageData['ivr_options'];
+	$user_groups = $ivrPageData['user_groups'];
+	$ingroups = $ivrPageData['ingroups'];
+	$phonenumber = $ivrPageData['phonenumber'];
+	$campaign = $ivrPageData['campaign'];
+	$voicemails = $ivrPageData['voicemails'];
+	$phone_extension = $ivrPageData['phone_extension'];
+
+	$voicefiles = $ivrPageData['voicefiles'];
+	$calltimes = $ivrPageData['calltimes'];
+	$ivr = $ivrPageData['ivr'];
+}
+
+if ($did != NULL) {
+	$didPageData = $api->API_getEditTelephonyInboundDidData($did);
+	$users = $didPageData['users'];
+	$ingroups = $didPageData['ingroups'];
+	$voicemails = $didPageData['voicemails'];
+	$phone_extension = $didPageData['phones'];
+	$ivr = $didPageData['ivr'];
+	$scripts = $didPageData['scripts'];
+	$voicefiles = $didPageData['voicefiles'];
+	$phones = $didPageData['phones'];
+	$output = $didPageData['output'];
+}
+
 ?>
 <html>
     <head>
@@ -127,17 +161,6 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 					// IF INGROUP
 					if ($groupid != NULL) {
 
-					/* APIs used for forms */
-						$call_menu = $api->API_getAllIVRs();
-						$call_time = $api->API_getAllCalltimes();
-						$scripts = $api->API_getAllScripts();
-						$voicemail = $api->API_getAllVoiceMails();
-						$ingroup = $api->API_getAllInGroups();
-						$voicefiles = $api->API_getAllVoiceFiles();
-						$moh = $api->API_getAllMusicOnHold();
-						$phonenumber = $api->API_getAllDIDs();
-
-						$output = $api->API_getInGroupInfo($groupid);
 
 						if ($output->result=="success") {
 
@@ -1103,9 +1126,6 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 									<div id="agents" class="tab-pane fade in">
 
 									<form id="agentrankform" class="form-horizontal">
-										<?php
-											$agents_rank = $api->API_getAllAgentRank($groupid);
-										?>
 										<table class="responsive display no-wrap table table-striped table-bordered table-hover" style="width:100%;" id="agent_rank_table">
 										   <thead>
 											  <tr>
@@ -1118,64 +1138,8 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 											  </tr>
 										   </thead>
 										   <tbody>
-											   	<?php
-											   		$count = (isset($agents_rank->user) && is_countable($agents_rank->user) ? count($agents_rank->user) : 0);
-											   		//var_dump($agents_rank->dropdown_rankdefvalues[0]);
-
-											   		for($a=0; $a < $count; $a++) {
-											   			$checkbox_fields = $agents_rank->checkbox_fields[$a];
-											   			$ischecked = $agents_rank->checkbox_ischecked[$a];
-
-											   			$rank_fields = $agents_rank->rank_fields[$a];
-											   			$rank_value = $agents_rank->values_rank[$a];
-
-											   			$grade_fields = $agents_rank->grade_fields[$a];
-											   			$grade_value = $agents_rank->values_grade[$a];
-
-											   	?>
-													<tr>
-														<td><?php echo $agents_rank->user[$a].' - '.$agents_rank->full_name[$a];?></td>
-														<td><?php echo $agents_rank->user_group[$a];?></td>
-														<td>
-															<center>
-																<label class="c-checkbox" for="<?php echo $checkbox_fields;?>">
-																	<input type="checkbox" id="<?php echo $checkbox_fields;?>" name="<?php echo $checkbox_fields;?>" value="YES" <?php echo $ischecked;?> />
-																	<span class="fa fa-check"></span>
-																</label>
-															</center>
-														</td>
-														<td>
-															<select class="form-control" name="<?php echo $rank_fields;?>">
-																<?php
-																$b = 9;
-																	while($b >= -9) {
-																?>
-																	<option value="<?php echo $b;?>" <?php if ($rank_value == $b) { echo "selected";}?>> <?php echo $b;?></option>
-																<?php
-																	$b--;
-																	}
-																?>
-															</select>
-														</td>
-														<td>
-															<select class="form-control" name="<?php echo $grade_fields;?>">
-																<?php
-																$c = 10;
-																	while($c >= 0) {
-																?>
-																	<option value="<?php echo $c;?>" <?php if ($grade_value == $c) { echo "selected";}?>> <?php echo $c;?></option>
-																<?php
-																	$c--;
-																	}
-																?>
-															</select>
-														</td>
-														<!--<td><?php //echo $agents_rank->call_today[$a];?></td>-->
-													</tr>
-												<?php
-													}
-												?>
-										   </tbody>
+												<tr><td colspan="5" class="text-center">Loading...</td></tr>
+											   </tbody>
 										</table>
 									</form>
 									<fieldset class="footer-buttons">
@@ -1207,21 +1171,7 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 
 				// IF IVR
 					if ($ivr_id != NULL) {
-						$output = $api->API_getIVRInfo($ivr_id);
-
 						if ($output->result=="success") {
-							$user_groups = $api->API_getAllUserGroups();
-							$ingroups = $api->API_getAllInGroups();
-							$phonenumber = $api->API_getAllDIDs();
-							$campaign = $api->API_getAllCampaigns();
-							$voicemails = $api->API_getAllVoicemails();
-							$phone_extension = $api->API_getAllPhones();
-							$scripts = $api->API_getAllScripts();
-							$voicefiles = $api->API_getAllVoiceFiles();
-							$calltimes = $api->API_getAllCalltimes();
-
-							$ivr_options = $api->API_getIVROptions($ivr_id);
-							$ivr = $api->API_getAllIVRs();
 						# Result was OK!
 					?>
 						<section class="content">
@@ -1823,15 +1773,7 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 				/*
 				* APIs for getting lists for the some of the forms
 				*/
-				$users = $api->API_getAllUsers();
-				$ingroups = $api->API_getAllInGroups();
-				$voicemails = $api->API_getAllVoicemails();
-				$phone_extension = $api->API_getAllPhones();
-				$ivr = $api->API_getAllIVRs();
-				$scripts = $api->API_getAllScripts();
-				$voicefiles = $api->API_getAllVoiceFiles();
-				$phones = $api->API_getAllPhones();
-				$output = $api->API_getDIDInfo($did);
+
 				//var_dump($ingroups);
 
 				if ($output->result=="success") {
@@ -2299,22 +2241,45 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 
 			// init datatables
 
-				$('#agent_rank_table').DataTable({
-					destroy:true,
-					responsive:true,
-					stateSave:true,
-					drawCallback:function(settings) {
-						var pagination = $(this).closest('.dataTables_wrapper').find('.dataTables_paginate');
-						pagination.toggle(this.api().page.info().pages > 1);
-					},
-					columnDefs:[
-						{ width: "15%", targets: [ 3, 4 ] },
-						{ width: "10%", targets: 2 },
-						{ searchable: false, targets: [  2, 3, 4 ] }
-						//{ sortable: false, targets: [  0, 1 ] },
-						//{ targets: -1, className: "dt-body-middle" }
-					]
-				});
+				var agentRankRequested = false;
+				var agentRankGroupId = <?php echo json_encode($groupid, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+
+				function initializeAgentRankTable() {
+					if ($.fn.DataTable.isDataTable("#agent_rank_table")) {
+						$("#agent_rank_table").DataTable().draw(false);
+						return;
+					}
+
+					$("#agent_rank_table").DataTable({
+						responsive: true,
+						stateSave: true,
+						drawCallback: function() {
+							var pagination = $(this).closest(".dataTables_wrapper").find(".dataTables_paginate");
+							pagination.toggle(this.api().page.info().pages > 1);
+						},
+						columnDefs: [
+							{ width: "15%", targets: [3, 4] },
+							{ width: "10%", targets: 2 },
+							{ searchable: false, targets: [2, 3, 4] }
+						]
+					});
+				}
+
+				function loadAgentRank() {
+					if (agentRankRequested || !agentRankGroupId) {
+						return;
+					}
+
+					agentRankRequested = true;
+					$.get("php/GetAgentRank.php", { groupid: agentRankGroupId })
+						.done(function(rows) {
+							$("#agent_rank_table tbody").html(rows);
+							initializeAgentRankTable();
+						})
+						.fail(function() {
+							$("#agent_rank_table tbody").html("<tr><td colspan=\"5\" class=\"text-center\">Unable to load agent ranks.</td></tr>");
+						});
+				}
 			// for cancelling
 				$(document).on('click', '#cancel', function() {
 					swal("<?php $lh->translateText("cancelled"); ?>", "<?php $lh->translateText("cancel_msg"); ?>", "error");
@@ -2554,7 +2519,8 @@ if (!isset($_POST["groupid"]) && !isset($_POST["ivr"]) && !isset($_POST["did"]))
 				$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 				  var target = $(e.target).attr("href"); // activated tab
 				  if (target == "#agents") {
-				  	$('#not_agent_rank').hide();
+                          $('#not_agent_rank').hide();
+                          loadAgentRank();
 				  } else {
 				  	$('#not_agent_rank').show();
 				  }

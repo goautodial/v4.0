@@ -74,10 +74,8 @@
 	$ingroups = $pageData['ingroups'];
 	$ivr = $pageData['ivr'];
 
-	// The server detail request depends on the server list response.
 	$server_list = $pageData['server_list'];
-	$server_id = $server_list->server_id[0];
-	$server = $api->API_getServerInfo($server_id);
+	$server = $pageData['server'];
 
 ?>
 <html>

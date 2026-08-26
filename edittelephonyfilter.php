@@ -2,7 +2,7 @@
 /**
  * @file 		edittelephonyfilter.php
  * @brief 		Edit scripts
- * @copyright 	Copyright (c) 2018 GOautodial Inc. 
+ * @copyright 	Copyright (c) 2018 GOautodial Inc.
  * @author		Christopher P. Lomuntad
  *
  * @par <b>License</b>:
@@ -30,13 +30,13 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	
+
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
 			header("location: agent.php");
 		}
-	}	
+	}
 
 	$filter_id = NULL;
 	if (isset($_POST["filter_id"])) {
@@ -45,19 +45,21 @@
 		header("location: telephonyfilters.php");
 	}
 
-	$user_groups = $api->API_getAllUserGroups();
+	$pageData = $api->API_getEditTelephonyFilterPageData($filter_id);
+	$user_groups = $pageData['user_groups'];
+	$output = $pageData['filter'];
 ?>
 <html>
     <head>
         <meta charset="UTF-8">
         <title><?php $lh->translateText("portal_title"); ?> - <?php $lh->translateText("edit_filter"); ?></title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        
+
         <!-- Call for standardized css -->
         <?php print $ui->standardizedThemeCSS();?>
 
         <?php print $ui->creamyThemeCSS(); ?>
-		
+
     </head>
     <style>
     	select{
@@ -96,7 +98,6 @@
 						<!-- standard custom edition form -->
 					<?php
 						$errormessage = NULL;
-						$output = $api->API_getFilterInfo($filter_id);
 					?>
             <!-- Main content -->
             <section class="content">
@@ -143,7 +144,7 @@
 									$isSelected = ' selected';
 								}
 								echo '<option value="---ALL---"'.$isSelected.'> - - - ALL - - -</option>';
-								
+
 								foreach ($user_groups->user_group as $x => $group) {
 									$isSelected = '';
 									if ($group == $myGroup) {
@@ -169,7 +170,7 @@
 				</div>
 			</fieldset>
 		</div><!-- tab 1 -->
-				
+
 			<!-- FOOTER BUTTONS -->
 			<fieldset class="footer-buttons">
 				<div class="box-footer">
@@ -194,21 +195,21 @@
 				<!-- /.content -->
             </aside><!-- /.right-side -->
 			<?php print $ui->getRightSidebar($user->getUserId(), $user->getUserName(), $user->getUserAvatar()); ?>
-			
+
         </div><!-- ./wrapper -->
 
-  		
+
 		<?php print $ui->standardizedThemeJS();?>
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>
-		
+
 		<script language="javascript" type="text/javascript">
 			$(document).ready(function() {
 				$(document).on('click', '#cancel', function(){
 					sweetAlert({title: "<?php $lh->translateText("cancelled"); ?>",text: "<?php $lh->translateText("cancel_msg"); ?>", type: "error"}, function(){window.location.href = 'telephonyfilters.php';});
 				});
 
-				/** 
+				/**
 				 * Modifies a telephony script
 			 	 */
 			 	$(document).on('click', '#modifyOkButton', function(){
@@ -224,7 +225,7 @@
                         	//console.log($("#modifyform").serialize() + '&script_text_value=' + encodeURIComponent(CKEDITOR.instances['script_text'].getData()));
 							$('#update_button').html("<i class='fa fa-check'></i> <?php $lh->translateText("update"); ?>");
 	                        $('#modifyOkButton').prop("disabled", false);
-							
+
 	                        if (data == 1) {
 								swal({title: "<?php $lh->translateText("edit_filter_success"); ?>",text: "<?php $lh->translateText("edit_filter_success_msg"); ?>",type: "success"},function(){window.location.href = 'telephonyfilters.php';});
 							} else {
@@ -233,7 +234,7 @@
                         }
                     });
 				});
-				
+
 			});
 		</script>
 

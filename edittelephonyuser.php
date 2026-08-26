@@ -52,11 +52,13 @@
 		$userrole = ($_POST["role"] ?? '');
 	}
 
-	$output = $api->API_getUserInfo($current_user, "userInfo");
-	$voicemails = $api->API_getAllVoiceMails()->result === "Empty" ? NULL : $api->API_getAllVoiceMails();
-	$user_groups = $api->API_getAllUserGroups();
+	$pageData = $api->API_getEditTelephonyUserPageData($current_user);
+	$output = $pageData['user'];
+	$voicemailResult = $pageData['voicemails'];
+	$voicemails = ($voicemailResult->result ?? '') === "Empty" ? null : $voicemailResult;
+	$user_groups = $pageData['user_groups'];
 	$perm = $api->goGetPermissions('user');
-	$use_webrtc = $api->CheckWebrtc();
+	$use_webrtc = $pageData['webrtc']->result ?? '';
 	//$modify_phones = $api->CheckPhones();
 
 	$admin_level = $_SESSION['level'];

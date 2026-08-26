@@ -447,6 +447,13 @@
 			return $this->groupPermissionCache;
 		}
 
+		public function API_prepareTelephonyInboundPageAccess(): void
+		{
+			$access = $this->API_RequestBatch(['package' => ['folder' => 'goPackages', 'postfields' => ['goAction' => 'goGetPackage']], 'group_permission' => ['folder' => 'goUserGroups', 'postfields' => ['goAction' => 'goGetUserGroupInfo', 'user_group' => session_usergroup]]]);
+			$this->goPackageCache = $access['package'];
+			$this->groupPermissionCache = $access['group_permission'];
+		}
+
 		public function goGetPermissions($type = 'dashboard') {
 
 			$permissions = $this->API_goGetGroupPermission();
@@ -674,6 +681,43 @@
 			], 4);
 		}
 
+		public function API_getEditTelephonyScriptPageData($scriptId): array
+		{
+			$pageData = $this->API_RequestBatch([
+				'script' => [
+					'folder' => 'goScripts',
+					'postfields' => [
+						'goAction' => 'goGetScriptInfo',
+						'script_id' => $scriptId,
+					],
+				],
+				'standard_fields' => [
+					'folder' => 'goScripts',
+					'postfields' => ['goAction' => 'goGetStandardFields'],
+				],
+				'user_groups' => [
+					'folder' => 'goUserGroups',
+					'postfields' => ['goAction' => 'goGetAllUserGroups'],
+				],
+				'package' => [
+					'folder' => 'goPackages',
+					'postfields' => ['goAction' => 'goGetPackage'],
+				],
+				'group_permission' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => session_usergroup,
+					],
+				],
+			], 5);
+
+			$this->goPackageCache = $pageData['package'];
+			$this->groupPermissionCache = $pageData['group_permission'];
+
+			return $pageData;
+		}
+
 		public function API_getScriptInfo($scriptid){
 			$postfields = [
 				'goAction' => 'goGetScriptInfo',
@@ -702,6 +746,39 @@
 					'postfields' => ['goAction' => 'goGetAllUserGroups'],
 				],
 			]);
+		}
+
+		public function API_getEditTelephonyFilterPageData($filterId): array
+		{
+			$pageData = $this->API_RequestBatch([
+				'filter' => [
+					'folder' => 'goFilters',
+					'postfields' => [
+						'goAction' => 'goGetFilterInfo',
+						'filter_id' => $filterId,
+					],
+				],
+				'user_groups' => [
+					'folder' => 'goUserGroups',
+					'postfields' => ['goAction' => 'goGetAllUserGroups'],
+				],
+				'package' => [
+					'folder' => 'goPackages',
+					'postfields' => ['goAction' => 'goGetPackage'],
+				],
+				'group_permission' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => session_usergroup,
+					],
+				],
+			], 4);
+
+			$this->goPackageCache = $pageData['package'];
+			$this->groupPermissionCache = $pageData['group_permission'];
+
+			return $pageData;
 		}
 
 		public function API_getFilterInfo($filterid){
@@ -827,6 +904,68 @@
 			], 4);
 		}
 
+
+		public function API_getEditTelephonyInboundIngroupData($groupId): array
+		{
+			$data = $this->API_RequestBatch([
+				'package' => ['folder' => 'goPackages', 'postfields' => ['goAction' => 'goGetPackage']],
+				'group_permission' => ['folder' => 'goUserGroups', 'postfields' => ['goAction' => 'goGetUserGroupInfo', 'user_group' => session_usergroup]],
+				'call_menu' => ['folder' => 'goInbound', 'postfields' => ['goAction' => 'goGetAllIVR']],
+				'call_time' => ['folder' => 'goCalltimes', 'postfields' => ['goAction' => 'goGetAllCalltimes']],
+				'scripts' => ['folder' => 'goScripts', 'postfields' => ['goAction' => 'goGetAllScripts']],
+				'voicemail' => ['folder' => 'goVoicemails', 'postfields' => ['goAction' => 'goGetAllVoicemails']],
+				'ingroup' => ['folder' => 'goInbound', 'postfields' => ['goAction' => 'goGetAllIngroup']],
+				'voicefiles' => ['folder' => 'goVoiceFiles', 'postfields' => ['goAction' => 'goGetAllVoiceFiles']],
+				'moh' => ['folder' => 'goMusicOnHold', 'postfields' => ['goAction' => 'goGetAllMusicOnHold']],
+				'phonenumber' => ['folder' => 'goInbound', 'postfields' => ['goAction' => 'goGetAllDID']],
+				'output' => ['folder' => 'goInbound', 'postfields' => ['goAction' => 'goGetIngroupInfo', 'group_id' => $groupId]],
+			], 11);
+			$this->goPackageCache = $data['package'];
+			$this->groupPermissionCache = $data['group_permission'];
+			return $data;
+		}
+
+		public function API_getEditTelephonyInboundIvrData($ivrId): array
+		{
+			$data = $this->API_RequestBatch([
+				'package' => ['folder' => 'goPackages', 'postfields' => ['goAction' => 'goGetPackage']],
+				'group_permission' => ['folder' => 'goUserGroups', 'postfields' => ['goAction' => 'goGetUserGroupInfo', 'user_group' => session_usergroup]],
+				'output' => ['folder' => 'goInbound', 'postfields' => ['goAction' => 'goGetIVRInfo', 'menu_id' => $ivrId]],
+				'ivr_options' => ['folder' => 'goInbound', 'postfields' => ['goAction' => 'goGetIVROptions', 'menu_id' => $ivrId]],
+				'user_groups' => ['folder' => 'goUserGroups', 'postfields' => ['goAction' => 'goGetAllUserGroups']],
+				'ingroups' => ['folder' => 'goInbound', 'postfields' => ['goAction' => 'goGetAllIngroup']],
+				'phonenumber' => ['folder' => 'goInbound', 'postfields' => ['goAction' => 'goGetAllDID']],
+				'campaign' => ['folder' => 'goCampaigns', 'postfields' => ['goAction' => 'goGetAllCampaigns']],
+				'voicemails' => ['folder' => 'goVoicemails', 'postfields' => ['goAction' => 'goGetAllVoicemails']],
+				'phone_extension' => ['folder' => 'goPhones', 'postfields' => ['goAction' => 'goGetAllPhones']],
+				'voicefiles' => ['folder' => 'goVoiceFiles', 'postfields' => ['goAction' => 'goGetAllVoiceFiles']],
+				'calltimes' => ['folder' => 'goCalltimes', 'postfields' => ['goAction' => 'goGetAllCalltimes']],
+				'ivr' => ['folder' => 'goInbound', 'postfields' => ['goAction' => 'goGetAllIVR']],
+			], 4);
+			$this->goPackageCache = $data['package'];
+			$this->groupPermissionCache = $data['group_permission'];
+			return $data;
+		}
+
+		public function API_getEditTelephonyInboundDidData($didId): array
+		{
+			$data = $this->API_RequestBatch([
+				'package' => ['folder' => 'goPackages', 'postfields' => ['goAction' => 'goGetPackage']],
+				'group_permission' => ['folder' => 'goUserGroups', 'postfields' => ['goAction' => 'goGetUserGroupInfo', 'user_group' => session_usergroup]],
+				'users' => ['folder' => 'goUsers', 'postfields' => ['goAction' => 'goGetAllUsers']],
+				'ingroups' => ['folder' => 'goInbound', 'postfields' => ['goAction' => 'goGetAllIngroup']],
+				'voicemails' => ['folder' => 'goVoicemails', 'postfields' => ['goAction' => 'goGetAllVoicemails']],
+				'phones' => ['folder' => 'goPhones', 'postfields' => ['goAction' => 'goGetAllPhones']],
+				'ivr' => ['folder' => 'goInbound', 'postfields' => ['goAction' => 'goGetAllIVR']],
+				'scripts' => ['folder' => 'goScripts', 'postfields' => ['goAction' => 'goGetAllScripts']],
+				'voicefiles' => ['folder' => 'goVoiceFiles', 'postfields' => ['goAction' => 'goGetAllVoiceFiles']],
+				'output' => ['folder' => 'goInbound', 'postfields' => ['goAction' => 'goGetDIDInfo', 'did_id' => $didId]],
+			], 4);
+			$this->goPackageCache = $data['package'];
+			$this->groupPermissionCache = $data['group_permission'];
+			return $data;
+		}
+
 		public function API_getTelephonyCampaignModalData(): array
 		{
 			return $this->API_RequestBatch([
@@ -855,7 +994,7 @@
 
 		public function API_getEditTelephonyCampaignData($campaignId): array
 		{
-			return $this->API_RequestBatch([
+			$pageData = $this->API_RequestBatch([
 				'campaign' => [
 					'folder' => 'goCampaigns',
 					'postfields' => [
@@ -916,6 +1055,34 @@
 					'postfields' => ['goAction' => 'goGetAllServers'],
 				],
 			], 4);
+
+			$serverId = $pageData['server_list']->server_id[0];
+			$sharedData = $this->API_RequestBatch([
+				'server' => [
+					'folder' => 'goServers',
+					'postfields' => [
+						'goAction' => 'goGetServerInfo',
+						'server_id' => $serverId,
+					],
+				],
+				'package' => [
+					'folder' => 'goPackages',
+					'postfields' => ['goAction' => 'goGetPackage'],
+				],
+				'group_permission' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => session_usergroup,
+					],
+				],
+			], 3);
+
+			$this->goPackageCache = $sharedData['package'];
+			$this->groupPermissionCache = $sharedData['group_permission'];
+			$pageData['server'] = $sharedData['server'];
+
+			return $pageData;
 		}
 
 		public function API_getAllAudioFiles(){
@@ -1349,6 +1516,36 @@
 				'goAction' => 'goGetAllUsers'
 			];
 			return $this->API_Request("goUsers", $postfields);
+		}
+
+		public function API_getEditTelephonyUserPageData($user): array
+		{
+			return $this->API_RequestBatch([
+				'user' => [
+					'folder' => 'goUsers',
+					'postfields' => [
+						'goAction' => 'goGetUserInfo',
+						'user' => $user,
+						'filter' => 'userInfo',
+						'user_id' => null,
+					],
+				],
+				'voicemails' => [
+					'folder' => 'goVoicemails',
+					'postfields' => ['goAction' => 'goGetAllVoicemails'],
+				],
+				'user_groups' => [
+					'folder' => 'goUserGroups',
+					'postfields' => ['goAction' => 'goGetAllUserGroups'],
+				],
+				'webrtc' => [
+					'folder' => 'goSettings',
+					'postfields' => [
+						'goAction' => 'goCheckWebrtc',
+						'user_id' => null,
+					],
+				],
+			], 4);
 		}
 
 		public function API_getUserInfo($user, $filter = null, $userid = null){

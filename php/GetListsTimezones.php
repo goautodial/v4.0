@@ -4,7 +4,7 @@
  * @brief       Handles Lists Timezones
  * @copyright   Copyright (c) 2018 GOautoial Inc.
  * @author      Noel Umandap
- * @author		Demian Lizandro A. Biscocho 
+ * @author		Demian Lizandro A. Biscocho
  *
  * @par <b>License</b>:
  *  This program is free software: you can redistribute it and/or modify
@@ -25,26 +25,31 @@
 	$api 										= \creamy\APIHandler::getInstance();
 	$list_id 									= ($_POST["list_id"] ?? '');
 	$output										= $api->API_getTZonesWithCountCalledNCalled($list_id);
-	
+
 	$data 										= '';
 	$t											= 0;
 	$tcalled 									= [];
 	$tncalled 									= [];
     $counter = (isset($output->gmt_offset_now) && is_countable($output->gmt_offset_now) ? count($output->gmt_offset_now) : 0);
-	
-	for($t=0;$t<$counter;$t++){
-		if($output->called_since_last_reset[$t] == 'N'){
-			$counttCalled = 0;
-			$counttNCalled = $output->counttlist[$t];
 
+	for($t=0;$t<$counter;$t++){
+		$gmtOffsetRaw = $output->gmt_offset_now[$t] ?? 0;
+		$gmtOffset = is_numeric($gmtOffsetRaw) ? (float) $gmtOffsetRaw : 0;
+		$counttList = (int) ($output->counttlist[$t] ?? 0);
+
+		if(($output->called_since_last_reset[$t] ?? '') === 'N'){
+			$counttCalled = 0;
+			$counttNCalled = $counttList;
 		}else{
-			$counttCalled = $output->counttlist[$t];
+			$counttCalled = $counttList;
 			$counttNCalled = 0;
 		}
+
+		$timezone = htmlspecialchars((string) $gmtOffsetRaw, ENT_QUOTES, 'UTF-8');
 		$tcalled[] = $counttCalled;
 		$tncalled[] = $counttNCalled;
 		$data .= '<tr>';
-		$data .= '<td>'.$output->gmt_offset_now[$t].' ('.gmdate("D M Y H:i", time() + 3600 * $output->gmt_offset_now[$t]).')</td>';
+		$data .= '<td>'.$timezone.' ('.gmdate("D M Y H:i", time() + (int) (3600 * $gmtOffset)).')</td>';
 		$data .= '<td style="text-align: center; width: 15%;">'.$counttCalled.'</td>';
 		$data .= '<td style="text-align: center; width: 15%;">'.$counttNCalled.'</td>';
 		$data .= '</tr>';
