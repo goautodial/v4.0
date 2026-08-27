@@ -40,6 +40,8 @@ if (isset($_POST["usergroup_id"])) {
 	$usergroup_id = ($_POST["usergroup_id"] ?? '');
 }
 
+$pageData = $api->API_getEditSettingsUserGroupPageData($usergroup_id);
+
 ?>
 <html>
     <head>
@@ -92,7 +94,7 @@ if (isset($_POST["usergroup_id"])) {
 					<?php
 						$userobj = NULL;
 						$errormessage = NULL;
-						$output = $api->API_getUserGroupInfo($usergroup_id);
+						$output = $pageData['user_group'];
 
 						//echo "<pre>";
 						//var_dump($output);						
@@ -229,7 +231,7 @@ if (isset($_POST["usergroup_id"])) {
 												<label><input id="camp-all" name="allowed_camp[]" type="checkbox" value="-ALL-CAMPAIGNS-"<?=$checkAllCamp?>><span class="fa fa-check"></span> <strong>ALL-CAMPAIGNS - USERS CAN VIEW ANY CAMPAIGN</strong></label>
 											</div>
 											<?php
-											$camp_list = $api->API_getAllCampaigns();
+											$camp_list = $pageData['campaigns'];
 											if ((isset($camp_list->campaign_id) && is_countable($camp_list->campaign_id) ? count($camp_list->campaign_id) : 0) > 0) {
 												foreach ($camp_list->campaign_id as $k => $camp) {
 													$checkCamp = (preg_match("/\s{$camp}\s/", $output->data->allowed_campaigns) ? ' checked' : '');

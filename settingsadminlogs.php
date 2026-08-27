@@ -31,6 +31,8 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	$pageData = $api->API_getSettingsAdminLogsPageData();
+	$adminLogs = $pageData['admin_logs'];
 	
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
@@ -110,7 +112,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body table" id="admin_logs">
                             <legend><?php $lh->translateText("admin_logs"); ?></legend>
-							<?php print $ui->getAdminLogsList($_SESSION['usergroup']); ?>
+							<?php print $ui->getAdminLogsList($adminLogs); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->

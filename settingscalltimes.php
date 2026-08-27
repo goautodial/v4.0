@@ -31,6 +31,10 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	$pageData = $api->API_getSettingsCalltimesPageData();
+	$calltimes = $pageData['calltimes'];
+	$user_groups = $pageData['user_groups'];
+	$voicefiles = $pageData['voicefiles'];
 
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
@@ -211,7 +215,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body table" id="recording_table">
                             <legend><?php $lh->translateText("call_times"); ?></legend>
-							<?php print $ui->getListAllCallTimes(); ?>
+							<?php print $ui->getListAllCallTimes($calltimes); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->
@@ -232,10 +236,6 @@
 			</div>
 		</div>
 
-<?php
-	$user_groups = $api->API_getAllUserGroups();
-	$voicefiles = $api->API_getAllVoiceFiles();
-?>
 	<!-- Modal -->
 
 	<div id="view-calltime-modal" class="modal fade">

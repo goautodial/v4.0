@@ -1992,7 +1992,7 @@ error_reporting(E_ERROR | E_PARSE);
 		if ($userrole != CRM_DEFAULTS_USER_ROLE_AGENT) {
 
 			$modulesWithSettings = $mh->modulesWithSettings();
-			$adminArea = '<li class="treeview"><a href="#"><i class="fa fa-dashboard"></i> <span>'.$this->lh->translationFor("administration").'</span><i class="fa fa-angle-left pull-right"></i></a>
+			$adminArea = '<li class="'.$this->getSidebarSectionClass(["adminsettings.php", "adminmodules.php", "modulesettings.php", "settingssmtp.php"]).'"><a href="#"><i class="fa fa-dashboard"></i> <span>'.$this->lh->translationFor("administration").'</span><i class="fa fa-angle-left pull-right"></i></a>
 			<ul class="treeview-menu">';
 
 			//if ($_SESSION['user'] === "goautodial" || $_SESSION['user'] === "goAPI")
@@ -2010,7 +2010,7 @@ error_reporting(E_ERROR | E_PARSE);
 			}*/
 
 			$adminArea .= '</ul></li>';
-			$telephonyArea = '<li class="treeview"><a href="#"><i class="fa fa-phone"></i> <span>'.$this->lh->translationFor("telephony").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
+			$telephonyArea = '<li class="'.$this->getSidebarSectionClass(["telephonyusers.php", "edittelephonyuser.php", "editsettingsphones.php", "telephonycampaigns.php", "edittelephonycampaign.php", "telephonylist.php", "edittelephonylist.php", "addcustomfield.php", "telephonyfilters.php", "edittelephonyfilter.php", "telephonyscripts.php", "edittelephonyscript.php", "telephonyinbound.php", "edittelephonyinbound.php", "audiofiles.php"]).'"><a href="#"><i class="fa fa-phone"></i> <span>'.$this->lh->translationFor("telephony").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
 			if ($perms->user->user_read == 'R')
 				$telephonyArea .= $this-> getSidebarItem("./telephonyusers.php", "users", $this->lh->translationFor("users"));
 			if ($perms->campaign->campaign_read == 'R')
@@ -2032,7 +2032,7 @@ error_reporting(E_ERROR | E_PARSE);
 
 			$rocketchatAnalytics = "";
 			if(ROCKETCHAT_ENABLE === 'y'){
-				$rocketchatAnalytics .= '<li class="treeview"><a href="#"><i class="fa fa-headphones"></i> <span>'.$this->lh->translationFor("livechat").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
+				$rocketchatAnalytics .= '<li class="'.$this->getSidebarSectionClass(["livechat.php"]).'"><a href="#"><i class="fa fa-headphones"></i> <span>'.$this->lh->translationFor("livechat").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
 				$rocketchatAnalytics .= $this-> getSidebarItem("./livechat.php?current_chats", "users", $this->lh->translationFor("current_chats"));
 				$rocketchatAnalytics .= $this-> getSidebarItem("./livechat.php?analytics", "users", $this->lh->translationFor("analytics"));
 				$rocketchatAnalytics .= $this-> getSidebarItem("./livechat.php?realtime_monitoring", "users", $this->lh->translationFor("realtime_monitoring"));
@@ -2040,7 +2040,7 @@ error_reporting(E_ERROR | E_PARSE);
 			}
 
 			if ($userrole == CRM_DEFAULTS_USER_ROLE_ADMIN) {
-				$settings = '<li class="treeview"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("settings").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
+				$settings = '<li class="'.$this->getSidebarSectionClass(["settingscalltimes.php", "editsettingscalltimes.php", "settingsvoicemails.php", "editsettingsvoicemail.php", "settingsusergroups.php", "editsettingsusergroup.php", "settingscarriers.php", "editsettingscarrier.php", "settingsservers.php", "editsettingsserver.php", "settingsadminlogs.php"]).'"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("settings").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
 				$settings .= $this-> getSidebarItem("./settingscalltimes.php", "list-ol", $this->lh->translationFor("call_times"));
 				$settings .= $this-> getSidebarItem("./settingsvoicemails.php", "envelope", $this->lh->translationFor("voice_mails"));
 				$settings .= $this-> getSidebarItem("./settingsusergroups.php", "users", $this->lh->translationFor("user_groups"));
@@ -2057,7 +2057,7 @@ error_reporting(E_ERROR | E_PARSE);
 				$settings .= '</ul></li>';
 			}
 
-			$callreports = '<li class="treeview"><a href="#"><i class="fa fa-bar-chart-o"></i> <span>'.$this->lh->translationFor("call_reports").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
+			$callreports = '<li class="'.$this->getSidebarSectionClass(["callreports.php", "callrecordings.php"]).'"><a href="#"><i class="fa fa-bar-chart-o"></i> <span>'.$this->lh->translationFor("call_reports").'</span><i class="fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
 			$callreports .= $this-> getSidebarItem("./callreports.php", "bar-chart", $this->lh->translationFor("reports_and_go_analytics"));
 
 			if ($perms->recordings->recordings_display == 'Y') {
@@ -2069,8 +2069,8 @@ error_reporting(E_ERROR | E_PARSE);
 			// WhatsApp Settings
    $whatsapp_status = 0; // permanently disabled -- chris
 			if ($whatsapp_status === 1) { // module is enabled.
-				$whatsapp = '<li class="treeview"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("WhatsApp").'</span><i class=
-"fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
+				$whatsapp = '<li class="'.$this->getSidebarSectionClass(["settingswhatsapp.php", "settingswhatsappdispo.php", "settingswhatsappreports.php"]).'"><a href="#"><i class="fa fa-gear"></i> <span>'.$this->lh->translationFor("WhatsApp").'</span><i class=
+	"fa fa-angle-left pull-right"></i></a><ul class="treeview-menu">';
                                 $whatsapp .= $this->getSidebarItem("./settingswhatsapp.php", "envelope-square", $this->lh->translationFor("whatsapp_settings"));
 				$whatsapp .= $this->getSidebarItem("./settingswhatsappdispo.php", "call-square", $this->lh->translationFor("whatsapp_dispo_settings"));
 				$whatsapp .= $this->getSidebarItem("./settingswhatsappreports.php", "call-square", $this->lh->translationFor("whatsapp_reports"));
@@ -2287,10 +2287,42 @@ error_reporting(E_ERROR | E_PARSE);
 	/**
 	 * Generates the HTML code for a sidebar link.
 	 */
+	private function getSidebarSectionClass(array $pages) {
+		$currentPage = basename((string) parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH));
+
+		return in_array($currentPage, $pages, true) ? 'treeview active' : 'treeview';
+	}
+
 	public function getSidebarItem($url, $icon, $title, $includeBadge = null, $badgeColor = "green", $listId = null) {
+		$currentUrl = $_SERVER['REQUEST_URI'] ?? '';
+		$currentPath = parse_url($currentUrl, PHP_URL_PATH);
+		$currentPage = basename((string) $currentPath);
+		$pageAliases = [
+			'addcustomfield.php' => 'telephonylist.php',
+			'editsettingsphones.php' => 'telephonyusers.php',
+			'editsettingscalltimes.php' => 'settingscalltimes.php',
+			'editsettingscarrier.php' => 'settingscarriers.php',
+			'editsettingsserver.php' => 'settingsservers.php',
+			'editsettingsusergroup.php' => 'settingsusergroups.php',
+			'editsettingsvoicemail.php' => 'settingsvoicemails.php',
+			'edittelephonycampaign.php' => 'telephonycampaigns.php',
+			'edittelephonyfilter.php' => 'telephonyfilters.php',
+			'edittelephonyinbound.php' => 'telephonyinbound.php',
+			'edittelephonylist.php' => 'telephonylist.php',
+			'edittelephonyscript.php' => 'telephonyscripts.php',
+			'edittelephonyuser.php' => 'telephonyusers.php',
+		];
+		$currentPage = $pageAliases[$currentPage] ?? $currentPage;
+		$linkPath = parse_url($url, PHP_URL_PATH);
+		$linkPage = basename((string) $linkPath);
+		$linkQuery = parse_url($url, PHP_URL_QUERY);
+		$currentQuery = parse_url($currentUrl, PHP_URL_QUERY);
+		$isActive = $currentPage === $linkPage && ($linkQuery === null || $linkQuery === $currentQuery);
+		$activeClass = $isActive ? ' class="active"' : '';
 		$badge = (isset($includeBadge)) ? '<small class="badge pull-right bg-'.$badgeColor.'">'.$includeBadge.'</small>' : '';
 		$thisID = (isset($listId)) ? ' id="'.$listId.'"' : '';
-		return '<li'.$thisID.'><a href="'.$url.'"><i class="fa fa-'.$icon.'"></i> <span>'.$title.'</span>'.$badge.'</a></li>';
+
+		return '<li'.$activeClass.$thisID.'><a href="'.$url.'"><i class="fa fa-'.$icon.'"></i> <span>'.$title.'</span>'.$badge.'</a></li>';
 	}
 
 	/** Customers */
@@ -3574,8 +3606,10 @@ error_reporting(E_ERROR | E_PARSE);
 		*/
 	}
 	//USERGROUPS LIST
-	public function goGetUserGroupsList() {
-		$output = $this->api->API_getAllUserGroups();
+	public function goGetUserGroupsList(?object $output = null) {
+		if ($output === null) {
+			$output = $this->api->API_getAllUserGroups();
+		}
 
 		if ($output->result=="success") {
 		# Result was OK!
@@ -3731,9 +3765,11 @@ error_reporting(E_ERROR | E_PARSE);
 		return json_decode($data);
 	}
 
-	public function getAdminLogsList() {
+	public function getAdminLogsList(?object $output = null) {
 		//$output = $this->API_goGetAdminLogsList($group, $limit);
-		$output = $this->api->API_getAdminLogsList();
+		if ($output === null) {
+			$output = $this->api->API_getAdminLogsList();
+		}
 		if ($output->result=="success") {
 		# Result was OK!
 
@@ -3852,8 +3888,10 @@ error_reporting(E_ERROR | E_PARSE);
 
 	}
 
-	public function getVoiceMails() {
-		$output = $this->api->API_getAllVoiceMails();
+	public function getVoiceMails(?object $output = null) {
+		if ($output === null) {
+			$output = $this->api->API_getAllVoiceMails();
+		}
 
 		if ($output->result=="success") {
 		# Result was OK!
@@ -4396,8 +4434,10 @@ error_reporting(E_ERROR | E_PARSE);
 	    return json_decode($data);
 	}
 
-	public function getListAllCallTimes() {
-	    $output = $this->api->API_getAllCalltimes();
+	public function getListAllCallTimes(?object $output = null) {
+	    if ($output === null) {
+	        $output = $this->api->API_getAllCalltimes();
+	    }
 	    if ($output->result=="success") {
 	    # Result was OK!
         //$columns = array($this->lh->translationFor('call_time_id'), $this->lh->translationFor('call_time_name'), $this->lh->translationFor('default_start'), $this->lh->translationFor('default_stop'), $this->lh->translationFor('user_group'), $this->lh->translationFor('action'));
@@ -4547,8 +4587,10 @@ error_reporting(E_ERROR | E_PARSE);
 	    return json_decode($data);
 	}
 
-	public function getServerList($perm) {
-		$output = $this->api->API_getAllServers();
+	public function getServerList($perm, ?object $output = null) {
+		if ($output === null) {
+			$output = $this->api->API_getAllServers();
+		}
 
 	    if ($output->result=="success") {
 	    # Result was OK!
@@ -4616,8 +4658,10 @@ error_reporting(E_ERROR | E_PARSE);
 
 
 
-	public function getListAllCarriers($perm) {
-		$output = $this->api->API_getAllCarriers();
+	public function getListAllCarriers($perm, ?object $output = null) {
+		if ($output === null) {
+			$output = $this->api->API_getAllCarriers();
+		}
 
 	    if ($output->result=="success") {
 	    # Result was OK!

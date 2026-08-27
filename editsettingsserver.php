@@ -37,6 +37,8 @@
 		$server_id = ($_POST["server_id"] ?? '');
 	}
 
+$pageData = $api->API_getEditSettingsServerPageData($server_id);
+
 ?>
 <html>
     <head>
@@ -85,12 +87,12 @@
 						<?php
 						$errormessage = NULL;
 						if(isset($server_id)) {
-							$output = $api->API_getServerInfo($server_id);
+							$output = $pageData['server'];
 							//echo "<pre>";
 					        //var_dump($output);
 							
 							if ($output->result=="success") {							
-								$user_groups = $api->API_getAllUserGroups();
+								$user_groups = $pageData['user_groups'];
 						?>
 				<legend><?php $lh->translateText("modify_server_id"); ?> : <u><?php echo $server_id;?></u></legend>
 				

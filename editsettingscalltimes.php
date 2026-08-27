@@ -38,6 +38,11 @@ if (isset($_POST["cid"])) {
 	$cid = ($_POST["cid"] ?? '');
 }
 
+$pageData = $api->API_getEditSettingsCalltimePageData($cid);
+$output = $pageData['calltime'];
+$user_groups = $pageData['user_groups'];
+$voicefiles = $pageData['voicefiles'];
+
 ?>
 <html>
     <head>
@@ -102,13 +107,9 @@ if (isset($_POST["cid"])) {
 						<!-- standard custom edition form -->
 					<?php
 						$errormessage = NULL;
-						$output = $api->API_getCalltimeInfo($cid);
 						//echo "<pre>";
 						//var_dump($output);
 						if ($output->result == "success") {
-
-							$user_groups = $api->API_getAllUserGroups();
-							$voicefiles = $api->API_getAllVoiceFiles();
 
 							# Result was OK!
 							if($output->ct_default_start !== NULL && $output->ct_default_stop !== NULL){

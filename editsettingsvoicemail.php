@@ -39,6 +39,11 @@ if (isset($_POST["vmid"])) {
 	header("location: settingsvoicemails.php");
 }
 
+$pageData = $api->API_getEditSettingsVoicemailPageData($vmid);
+$output = $pageData['voicemail'];
+$voicefiles = $pageData['voicefiles'];
+$systemSetting = $pageData['system_setting'];
+
 ?>
 <html>
     <head>
@@ -95,8 +100,6 @@ if (isset($_POST["vmid"])) {
 					<!-- standard custom edition form -->
 					<?php
 						$errormessage = NULL;						
-						$output = $api->API_getVoicemailInfo($vmid);
-						$voicefiles = $api->API_getAllVoiceFiles();
 						if ($output->result=="success") {
 					?>
                 <!-- Main content -->
@@ -188,8 +191,7 @@ if (isset($_POST["vmid"])) {
 										</div>
 										<?php 	
 											// Check if Voicemail Greeting is Enabled
-											$vg_result = $api->API_getSystemSettingInfo();
-											$vg_system_value = $vg_result->data->allow_voicemail_greeting;
+											$vg_system_value = $systemSetting->data->allow_voicemail_greeting;
 											if($vg_system_value){
 										?>
 										<div class="form-group">

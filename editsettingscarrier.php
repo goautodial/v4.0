@@ -37,6 +37,8 @@ if (isset($_POST["cid"])) {
 	$cid = ($_POST["cid"] ?? '');
 }
 
+$pageData = $api->API_getEditSettingsCarrierPageData($cid);
+
 ?>
 <html>
     <head>
@@ -92,8 +94,8 @@ if (isset($_POST["cid"])) {
 						$errormessage = NULL;						
 						
 						if(isset($cid)) {
-							$output = $api->API_getCarrierInfo($cid);
-							$servers = $api->API_getAllServers();
+							$output = $pageData['carrier'];
+							$servers = $pageData['servers'];
 							//echo "<pre>";
 							//var_dump($output->data->carrier_description);
 							if ($output->result=="success") {							

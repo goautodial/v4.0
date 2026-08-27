@@ -31,6 +31,9 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	$pageData = $api->API_getSettingsVoicemailsPageData();
+	$voicemails = $pageData['voicemails'];
+	$user_groups = $pageData['user_groups'];
 
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
@@ -81,7 +84,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body table" id="scripts_table">
                             <legend><?php $lh->translateText("voice_mails"); ?></legend>
-							<?php print $ui->getVoiceMails(); ?>
+							<?php print $ui->getVoiceMails($voicemails); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->
@@ -99,12 +102,6 @@
             <?php print $ui->getCircleButton("voicemails", "plus"); ?>
         </div>
 
-<?php
- /*
-  * APIs needed for form
-  */
-	$user_groups = $api->API_getAllUserGroups();
-?>
     <!-- ADD USER GROUP MODAL -->
         <div class="modal fade" id="addvoicemail-modal" tabindex="-1" aria-labelledby="addvoicemail-modal" >
             <div class="modal-dialog" role="document">

@@ -151,10 +151,14 @@ function fetchScopeFilters(mysqli $database, string $scope): array
     return [$campaignIds, $inboundGroupIds];
 }
 
-function buildScopeFilter(string $column, array $values, array &$parameters): string
-{
+function buildScopeFilter(
+    string $column,
+    array $values,
+    array &$parameters,
+    bool $allowUnfilteredResults
+): string {
     if ($values === []) {
-        return '';
+        return $allowUnfilteredResults ? '' : ' AND 1 = 0';
     }
 
     $placeholders = implode(', ', array_fill(0, count($values), '?'));
@@ -170,10 +174,16 @@ function calculateScopeTotals(
     string $hourStart,
     string $hourEnd,
     array $campaignIds,
-    array $inboundGroupIds
+    array $inboundGroupIds,
+    bool $allowUnfilteredResults
 ): array {
     $inboundParameters = [$hourStart, $hourEnd];
-    $inboundFilter = buildScopeFilter('campaign_id', $inboundGroupIds, $inboundParameters);
+    $inboundFilter = buildScopeFilter(
+        'campaign_id',
+        $inboundGroupIds,
+        $inboundParameters,
+        $allowUnfilteredResults
+    );
     $inboundCalls = fetchCount(
         $database,
         "SELECT COUNT(*) FROM vicidial_closer_log WHERE call_date >= ? AND call_date < ?{$inboundFilter}",
@@ -181,7 +191,12 @@ function calculateScopeTotals(
     );
 
     $outboundParameters = [$hourStart, $hourEnd];
-    $outboundFilter = buildScopeFilter('campaign_id', $campaignIds, $outboundParameters);
+    $outboundFilter = buildScopeFilter(
+        'campaign_id',
+        $campaignIds,
+        $outboundParameters,
+        $allowUnfilteredResults
+    );
     $statement = $database->prepare(
         "SELECT COUNT(*) AS outbound_calls,
                 COALESCE(SUM(status IN ('DROP', 'IVRXFR')), 0) AS dropped_calls
@@ -311,7 +326,14 @@ try {
         $scopeCount = 0;
         foreach (fetchReportingScopes($asteriskDatabase, $requestedScope) as $scope) {
             [$campaignIds, $inboundGroupIds] = fetchScopeFilters($asteriskDatabase, $scope);
-            $totals = calculateScopeTotals($asteriskDatabase, $hourStart, $hourEnd, $campaignIds, $inboundGroupIds);
+            $totals = calculateScopeTotals(
+                $asteriskDatabase,
+                $hourStart,
+                $hourEnd,
+                $campaignIds,
+                $inboundGroupIds,
+                strtoupper($scope) === 'ADMIN'
+            );
             writeRollup($goAutoDialDatabase, $reportDate, $scope, $hour, $totals);
 
             printf(

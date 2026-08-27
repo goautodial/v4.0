@@ -32,6 +32,10 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	$pageData = $api->API_getSettingsCarriersPageData();
+	$carriers = $pageData['carriers'];
+	$user_groups = $pageData['user_groups'];
+	$servers = $pageData['servers'];
 	
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
@@ -93,7 +97,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body table" id="recording_table">
                             <legend><?php $lh->translateText("carriers"); ?></legend>
-							<?php print $ui->getListAllCarriers($perm); ?>
+							<?php print $ui->getListAllCarriers($perm, $carriers); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->
@@ -114,9 +118,6 @@
 	/*
 	* MODAL
 	*/
-	$user_groups = $api->API_getAllUserGroups();
-	$carriers = $api->API_getAllCarriers();
-	$servers = $api->API_getAllServers();
 ?>
 	<!-- ADD WIZARD MODAL -->
 	<div class="modal fade" id="wizard-modal" tabindex="-1">

@@ -31,6 +31,9 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	$pageData = $api->API_getSettingsServersPageData();
+	$servers = $pageData['servers'];
+	$user_groups = $pageData['user_groups'];
 	
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
@@ -82,7 +85,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body table" id="servers">
                             <legend><?php $lh->translateText("servers"); ?></legend>
-							<?php print $ui->getServerList($perm); ?>
+							<?php print $ui->getServerList($perm, $servers); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->
@@ -102,8 +105,7 @@
         </div>
 		
 	<?php
-		$user_groups = $api->API_getAllUserGroups();
-	?>
+?>
     <!-- ADD USER GROUP MODAL -->
         <div class="modal fade" id="addserver-modal" tabindex="-1" aria-labelledby="addserver-modal" >
             <div class="modal-dialog" role="document">

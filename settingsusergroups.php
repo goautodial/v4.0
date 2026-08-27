@@ -22,11 +22,15 @@
 **/
 
 	require_once('./php/UIHandler.php');
+	require_once('./php/APIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
 
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
+	$pageData = $api->API_getSettingsUserGroupsPageData();
+	$userGroups = $pageData['user_groups'];
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 	
@@ -79,7 +83,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body table" id="table_usergroups">
                             <legend><?php $lh->translateText("user_groups"); ?></legend>
-							<?php print $ui->goGetUserGroupsList(); ?>
+							<?php print $ui->goGetUserGroupsList($userGroups); ?>
                         </div>
                     </div>
 				<!-- /fila con acciones, formularios y demás -->

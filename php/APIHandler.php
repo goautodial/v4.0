@@ -640,6 +640,77 @@
 			return $this->API_Request("goCalltimes", $postfields);
 		}
 
+		public function API_getSettingsCalltimesPageData(): array
+		{
+			$pageData = $this->API_RequestBatch([
+				'calltimes' => [
+					'folder' => 'goCalltimes',
+					'postfields' => ['goAction' => 'goGetAllCalltimes'],
+				],
+				'user_groups' => [
+					'folder' => 'goUserGroups',
+					'postfields' => ['goAction' => 'goGetAllUserGroups'],
+				],
+				'voicefiles' => [
+					'folder' => 'goVoiceFiles',
+					'postfields' => ['goAction' => 'goGetAllVoiceFiles'],
+				],
+				'package' => [
+					'folder' => 'goPackages',
+					'postfields' => ['goAction' => 'goGetPackage'],
+				],
+				'group_permission' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => session_usergroup,
+					],
+				],
+			], 5);
+
+			$this->goPackageCache = $pageData['package'];
+			$this->groupPermissionCache = $pageData['group_permission'];
+
+			return $pageData;
+		}
+
+		public function API_getEditSettingsCalltimePageData($callTimeId): array
+		{
+			$pageData = $this->API_RequestBatch([
+				'calltime' => [
+					'folder' => 'goCalltimes',
+					'postfields' => [
+						'goAction' => 'goGetCalltimeInfo',
+						'call_time_id' => $callTimeId,
+					],
+				],
+				'user_groups' => [
+					'folder' => 'goUserGroups',
+					'postfields' => ['goAction' => 'goGetAllUserGroups'],
+				],
+				'voicefiles' => [
+					'folder' => 'goVoiceFiles',
+					'postfields' => ['goAction' => 'goGetAllVoiceFiles'],
+				],
+				'package' => [
+					'folder' => 'goPackages',
+					'postfields' => ['goAction' => 'goGetPackage'],
+				],
+				'group_permission' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => session_usergroup,
+					],
+				],
+			], 5);
+
+			$this->goPackageCache = $pageData['package'];
+			$this->groupPermissionCache = $pageData['group_permission'];
+
+			return $pageData;
+		}
+
 		public function API_getCalltimeInfo($call_time_id){
 			$postfields = [
 				'goAction' => 'goGetCalltimeInfo',
@@ -795,6 +866,73 @@
 				'goAction' => 'goGetAllVoicemails'
 			];
 			return $this->API_Request("goVoicemails", $postfields);
+		}
+
+		public function API_getSettingsVoicemailsPageData(): array
+		{
+			$pageData = $this->API_RequestBatch([
+				'voicemails' => [
+					'folder' => 'goVoicemails',
+					'postfields' => ['goAction' => 'goGetAllVoicemails'],
+				],
+				'user_groups' => [
+					'folder' => 'goUserGroups',
+					'postfields' => ['goAction' => 'goGetAllUserGroups'],
+				],
+				'package' => [
+					'folder' => 'goPackages',
+					'postfields' => ['goAction' => 'goGetPackage'],
+				],
+				'group_permission' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => session_usergroup,
+					],
+				],
+			], 4);
+
+			$this->goPackageCache = $pageData['package'];
+			$this->groupPermissionCache = $pageData['group_permission'];
+
+			return $pageData;
+		}
+
+		public function API_getEditSettingsVoicemailPageData($voicemailId): array
+		{
+			$pageData = $this->API_RequestBatch([
+				'voicemail' => [
+					'folder' => 'goVoicemails',
+					'postfields' => [
+						'goAction' => 'goGetVoicemailInfo',
+						'voicemail_id' => $voicemailId,
+					],
+				],
+				'voicefiles' => [
+					'folder' => 'goVoiceFiles',
+					'postfields' => ['goAction' => 'goGetAllVoiceFiles'],
+				],
+				'system_setting' => [
+					'folder' => 'goSystemSettings',
+					'postfields' => ['goAction' => 'goGetSystemSettingInfo'],
+				],
+				'package' => [
+					'folder' => 'goPackages',
+					'postfields' => ['goAction' => 'goGetPackage'],
+				],
+				'group_permission' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => session_usergroup,
+					],
+				],
+			], 5);
+
+			$this->goPackageCache = $pageData['package'];
+			$this->groupPermissionCache = $pageData['group_permission'];
+
+			return $pageData;
 		}
 
 		public function API_getVoicemailInfo($voicemail_id) {
@@ -1450,6 +1588,73 @@
 			return $this->API_Request("goCarriers", $postfields);
 		}
 
+		public function API_getSettingsCarriersPageData(): array
+		{
+			$pageData = $this->API_RequestBatch([
+				'carriers' => [
+					'folder' => 'goCarriers',
+					'postfields' => ['goAction' => 'goGetAllCarriers'],
+				],
+				'user_groups' => [
+					'folder' => 'goUserGroups',
+					'postfields' => ['goAction' => 'goGetAllUserGroups'],
+				],
+				'servers' => [
+					'folder' => 'goServers',
+					'postfields' => ['goAction' => 'goGetAllServers'],
+				],
+				'package' => [
+					'folder' => 'goPackages',
+					'postfields' => ['goAction' => 'goGetPackage'],
+				],
+				'group_permission' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => session_usergroup,
+					],
+				],
+			], 5);
+
+			$this->goPackageCache = $pageData['package'];
+			$this->groupPermissionCache = $pageData['group_permission'];
+
+			return $pageData;
+		}
+
+		public function API_getEditSettingsCarrierPageData($carrierId): array
+		{
+			$pageData = $this->API_RequestBatch([
+				'carrier' => [
+					'folder' => 'goCarriers',
+					'postfields' => [
+						'goAction' => 'goGetCarrierInfo',
+						'carrier_id' => $carrierId,
+					],
+				],
+				'servers' => [
+					'folder' => 'goServers',
+					'postfields' => ['goAction' => 'goGetAllServers'],
+				],
+				'package' => [
+					'folder' => 'goPackages',
+					'postfields' => ['goAction' => 'goGetPackage'],
+				],
+				'group_permission' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => session_usergroup,
+					],
+				],
+			], 4);
+
+			$this->goPackageCache = $pageData['package'];
+			$this->groupPermissionCache = $pageData['group_permission'];
+
+			return $pageData;
+		}
+
 		public function API_getCarrierInfo($carrier_id){
 			$postfields = [
 				'goAction' => 'goGetCarrierInfo',
@@ -1465,6 +1670,69 @@
 			return $this->API_Request("goServers", $postfields);
 		}
 
+		public function API_getSettingsServersPageData(): array
+		{
+			$pageData = $this->API_RequestBatch([
+				'servers' => [
+					'folder' => 'goServers',
+					'postfields' => ['goAction' => 'goGetAllServers'],
+				],
+				'user_groups' => [
+					'folder' => 'goUserGroups',
+					'postfields' => ['goAction' => 'goGetAllUserGroups'],
+				],
+				'package' => [
+					'folder' => 'goPackages',
+					'postfields' => ['goAction' => 'goGetPackage'],
+				],
+				'group_permission' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => session_usergroup,
+					],
+				],
+			], 4);
+
+			$this->goPackageCache = $pageData['package'];
+			$this->groupPermissionCache = $pageData['group_permission'];
+
+			return $pageData;
+		}
+
+		public function API_getEditSettingsServerPageData($serverId): array
+		{
+			$pageData = $this->API_RequestBatch([
+				'server' => [
+					'folder' => 'goServers',
+					'postfields' => [
+						'goAction' => 'goGetServerInfo',
+						'server_id' => $serverId,
+					],
+				],
+				'user_groups' => [
+					'folder' => 'goUserGroups',
+					'postfields' => ['goAction' => 'goGetAllUserGroups'],
+				],
+				'package' => [
+					'folder' => 'goPackages',
+					'postfields' => ['goAction' => 'goGetPackage'],
+				],
+				'group_permission' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => session_usergroup,
+					],
+				],
+			], 4);
+
+			$this->goPackageCache = $pageData['package'];
+			$this->groupPermissionCache = $pageData['group_permission'];
+
+			return $pageData;
+		}
+
 		public function API_getServerInfo($server_id){
 			$postfields = [
 				'goAction' => 'goGetServerInfo',
@@ -1478,6 +1746,32 @@
 				'goAction' => 'goGetAdminLogsList'
 			];
 			return $this->API_Request("goAdminLogs", $postfields);
+		}
+
+		public function API_getSettingsAdminLogsPageData(): array
+		{
+			$pageData = $this->API_RequestBatch([
+				'admin_logs' => [
+					'folder' => 'goAdminLogs',
+					'postfields' => ['goAction' => 'goGetAdminLogsList'],
+				],
+				'package' => [
+					'folder' => 'goPackages',
+					'postfields' => ['goAction' => 'goGetPackage'],
+				],
+				'group_permission' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => session_usergroup,
+					],
+				],
+			], 3);
+
+			$this->goPackageCache = $pageData['package'];
+			$this->groupPermissionCache = $pageData['group_permission'];
+
+			return $pageData;
 		}
 
 		public function API_getAllCampaignDialStatuses($campaign_id){
@@ -1575,6 +1869,65 @@
 				'goAction' => 'goGetAllUserGroups'
 			];
 			return $this->API_Request("goUserGroups", $postfields);
+		}
+
+		public function API_getSettingsUserGroupsPageData(): array
+		{
+			$pageData = $this->API_RequestBatch([
+				'user_groups' => [
+					'folder' => 'goUserGroups',
+					'postfields' => ['goAction' => 'goGetAllUserGroups'],
+				],
+				'package' => [
+					'folder' => 'goPackages',
+					'postfields' => ['goAction' => 'goGetPackage'],
+				],
+				'group_permission' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => session_usergroup,
+					],
+				],
+			], 3);
+
+			$this->goPackageCache = $pageData['package'];
+			$this->groupPermissionCache = $pageData['group_permission'];
+
+			return $pageData;
+		}
+
+		public function API_getEditSettingsUserGroupPageData($groupId): array
+		{
+			$pageData = $this->API_RequestBatch([
+				'user_group' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => $groupId,
+					],
+				],
+				'campaigns' => [
+					'folder' => 'goCampaigns',
+					'postfields' => ['goAction' => 'goGetAllCampaigns'],
+				],
+				'package' => [
+					'folder' => 'goPackages',
+					'postfields' => ['goAction' => 'goGetPackage'],
+				],
+				'group_permission' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => session_usergroup,
+					],
+				],
+			], 4);
+
+			$this->goPackageCache = $pageData['package'];
+			$this->groupPermissionCache = $pageData['group_permission'];
+
+			return $pageData;
 		}
 
 		public function API_getUserGroupInfo($group_id) {
