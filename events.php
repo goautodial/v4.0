@@ -1,19 +1,19 @@
 <?php
 /**
 	The MIT License (MIT)
-	
+
 	Copyright (c) 2015 Ignacio Nieto Carvajal
-	
+
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the "Software"), to deal
 	in the Software without restriction, including without limitation the rights
 	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 	copies of the Software, and to permit persons to whom the Software is
 	furnished to do so, subject to the following conditions:
-	
+
 	The above copyright notice and this permission notice shall be included in
 	all copies or substantial portions of the Software.
-	
+
 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -25,26 +25,30 @@
 
 	// check if Creamy has been installed.
 	require_once('./php/CRMDefaults.php');
-	if (!file_exists(CRM_INSTALLED_FILE)) { // check if already installed 
+	if (!file_exists(CRM_INSTALLED_FILE)) { // check if already installed
 		header("location: ./install.php");
 	}
 
 	// initialize session and DDBB handler
 	require_once('./php/Session.php');
 	include_once('./php/UIHandler.php');
+	require_once('./php/APIHandler.php');
 	require_once('./php/LanguageHandler.php');
 	require_once('./php/DbHandler.php');
 	$ui = \creamy\UIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
 	$db = new \creamy\DbHandler();
-	
+
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
 			header("location: agent.php");
 		}
-	}	
+	}
+
+	$api = \creamy\APIHandler::getInstance();
+	$api->API_prepareEventsPageAccess();
 
 // create new event with client id?
 if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
@@ -163,7 +167,7 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
 		                  </div><!-- /input-group -->
 		                </div>
 		              </div>
-		            
+
 					<!-- Delete events -->
 		              <div class="box box-default" id="delete-event-trash">
 		                <div class="box-header with-border">
@@ -174,7 +178,7 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
 								<p><i class="fa fa-trash"> </i> <?php $lh->translateText("drop_here_delete"); ?></p>
 		                </div><!-- /.box-body -->
 		              </div><!-- /. box -->
-		           
+
 
 		            <!-- EDIT events -->
 		             <div class="box box-default">
@@ -213,7 +217,7 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
 			                </form>
 			            </div><!-- /.modal-content -->
 			        </div><!-- /.modal-dialog -->
-			    </div><!-- /.modal -->		
+			    </div><!-- /.modal -->
 
 				<!-- /CHANGE TASK MODAL -->
 		            <div class="col-md-8">
@@ -224,7 +228,7 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
 		                </div><!-- /.box-body -->
 		              </div><!-- /. box -->
 		            </div><!-- /.col -->
-					
+
 		          </div><!-- /.row -->
                 </section><!-- /.content -->
             </aside><!-- /.right-side -->
@@ -236,32 +240,32 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
 	    <!-- Page specific script -->
 	    <script type="text/javascript">
 	      $(function () {
-	
+
 	        /* initialize the external events
 	         -----------------------------------------------------------------*/
 	        function ini_events(ele) {
 	          ele.each(function () {
-	
+
 	            // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
 	            // it doesn't need to have a start or end
 	            var eventObject = {
 	              title: $.trim($(this).text()) // use the element's text as the event title
 	            };
-	
+
 	            // store the Event Object in the DOM element so we can get to it later
 	            $(this).data('eventObject', eventObject);
-	
+
 	            // make the event draggable using jQuery UI
 	            $(this).draggable({
 	              zIndex: 1070,
 	              revert: true, // will cause the event to go back to its
 	              revertDuration: 0  //  original position after the drag
 	            });
-	
+
 	          });
 	        }
 	        ini_events($('#external-events div.external-event'));
-	
+
 	        /* initialize the calendar
 	         -----------------------------------------------------------------*/
 	        //Date for the calendar events (dummy data)
@@ -280,7 +284,7 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
 	          if (!empty($_GET["initial_date"])) {
 		          $initialDate = ($_GET["initial_date"] ?? '');
 		          print "defaultDate: moment('$initialDate'), defaultView: 'agendaDay',";
-	          } 
+	          }
 			  ?>
 		      defaultTimedEventDuration: '01:00:00',
 		      forceEventDuration: true,
@@ -303,10 +307,10 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
                 var eventUrl = $(this).attr("event-url");
 				var endDate = date + 3600000; // 1 hour in milliseconds
 				var jsObject = $(this);
-	
+
 				// request the update first.
 				  $.post("./php/ModifyEvent.php", //post
-				  {"start_date": date+"", "end_date": endDate+"", "event_id": eventId, "all_day": !date.hasTime()}, 
+				  {"start_date": date+"", "end_date": endDate+"", "event_id": eventId, "all_day": !date.hasTime()},
 				  function(data) { // result is new event id or 0 if something went wrong.
 					if (data != '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') { // error
 						<?php print $ui->showCustomErrorMessageAlertJS($lh->translationFor("unable_modify_event")); ?>
@@ -315,20 +319,20 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
 			            var copiedEventObject = $.extend({}, originalEventObject);
 			            copiedEventObject.id = eventId;
 						copiedEventObject.url = eventUrl;
-			
+
 			            // assign it the date that was reported
 			            copiedEventObject.start = date;
 			            copiedEventObject.allDay = !date.hasTime();
 			            copiedEventObject.backgroundColor = jsObject.css("background-color");
 			            copiedEventObject.borderColor = jsObject.css("border-color");
-		
+
 			            // render the event on the calendar
-			            // the last `true` argument determines if the event "sticks" 
+			            // the last `true` argument determines if the event "sticks"
 			            $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
 						jsObject.remove(); // remove the element from the "Draggable Events" list
 					}
 				  });
-	
+
 	          },
 	          eventResize: function( event, delta, revertFunc, jsEvent, ui, view ) {
 			  	changeEventOrRevert(event, revertFunc);
@@ -352,7 +356,7 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
     				if (jsEvent.pageX >= x1 && jsEvent.pageX<= x2 && jsEvent.pageY>= y1 && jsEvent.pageY <= y2) {
     					 // try to delete the event.
 						 $.post("./php/DeleteEvent.php", //post
-						 {"eventid": event.id}, 
+						 {"eventid": event.id},
 						 function(data) { // result is new event id or 0 if something went wrong.
 							  if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') { // success
 		         				$('#calendar').fullCalendar('removeEvents', event.id);
@@ -363,11 +367,11 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
     				}
 	          }
 	        });
-	        
+
 	        function changeEventOrRevert(event, revertFunc) {
 				// request an event modification.
 				$.post("./php/ModifyEvent.php", //post
-				{"start_date": event.start+"", "end_date": event.end+"", "event_id": event.id, "all_day": event.allDay}, 
+				{"start_date": event.start+"", "end_date": event.end+"", "event_id": event.id, "all_day": event.allDay},
 				function(data) { // result is new event id or 0 if something went wrong.
 				if (data != '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') { // error
 					<?php print $ui->showCustomErrorMessageAlertJS($lh->translationFor("unable_modify_event")); ?>
@@ -375,7 +379,7 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
 				}
 				});
 	        }
-	
+
 	        /* ADDING EVENTS */
 	        var currColor = "#3c8dbc"; //blue by default
 	        //Color chooser button
@@ -403,7 +407,7 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
 			  var color = currColor;
 			  if ((/^rgb/).test(color)) { color = rgb2hex(color); }
 			  $.post("./php/CreateEvent.php", //post
-			  {"title": val, "color": rgb2hex(currColor)}, 
+			  {"title": val, "color": rgb2hex(currColor)},
 			  function(data) { // result is new event id or 0 if something went wrong.
 					$("#creating-event-spinner").remove();
 					if (data == '0') { // error
@@ -416,17 +420,17 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
 			          event.html(val);
 			          event.attr("event-id", eventId);
 			          $('#external-events').prepend(event);
-			
+
 			          //Add draggable funtionality
 			          ini_events(event);
-			
+
 			          //Remove event from text input
 			          $("#new-event").val("");
 					}
 				});
 	        });
 	      });
-	      			
+
 			/** EDIT EVENTS **/
 
 			/**
@@ -439,12 +443,12 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
                                 var ele = $(this).parents("li").first();
 				var events_id = ele.attr("id"); // events ID is contained in the ID element of the li object.
 				$('#edit-events-eventsid').val(events_id);
-				
+
 				// set the previous description of events.
 				var current_text = $('.text', ele);
 				$('#edit-events-title').val(current_text.text());
 			});
-		
+
 			/**
 			 * Edit the title of an events
 			 */
@@ -454,7 +458,7 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
 						$("#resultmessage").html();
 						$("#resultmessage").fadeOut();
 						$.post("./php/EditEvent.php", //post
-						$("#edit-events-form").serialize(), 
+						$("#edit-events-form").serialize(),
 							function(data){
 								//if message is sent
 								if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
@@ -466,19 +470,19 @@ if (isset($_GET["customerid"]) && isset($_GET["customer_type"])) {
 								//
 							});
 					return false; //don't let the form refresh the page...
-				}					
+				}
 			});
 
 
 	      /** Auxiliary functions */
-	      var hexDigits = new Array("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"); 
+	      var hexDigits = new Array("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f");
 	      //Function to convert hex format to a rgb color
 	      function rgb2hex(rgb) {
 		      rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
 		      if (rgb == null) { return "<?php print CRM_UI_COLOR_DEFAULT_HEX; ?>"; }
 			  return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
 		  }
-		
+
 		function hex(x) { return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16]; }
 	    </script>
     </body>

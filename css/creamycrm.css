@@ -715,7 +715,7 @@ a:focus {
     width: auto;
 }
 
-.sidebar-menu>li.treeview.active>a {
+.sidebar-menu>li.active>a {
     border-left-color: #72c546 !important;
 }
 

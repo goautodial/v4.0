@@ -31,6 +31,7 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	$pageData = $api->API_getCallReportsPageData();
 
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
@@ -101,9 +102,9 @@
                 </section>
 
             <?php
-                $campaigns = $api->API_getAllCampaigns();
-				$ingroups = $api->API_getAllInGroups();
-				$disposition = $api->API_getAllDispositions();
+                $campaigns = $pageData['campaigns'];
+				$ingroups = $pageData['ingroups'];
+				$disposition = $pageData['dispositions'];
             ?>
                 <!-- Main content -->
                 <section class="content">
@@ -743,25 +744,21 @@
 								$('#agent_pdetail_bottom').DataTable({
 									destroy: true,
 									responsive: true,
-									dom: 'Bfrtip'
-									//buttons: [
-									//	{ extend: 'copy', title: title },
-									//	{ extend: 'csv', title: title },
-									//	{ extend: 'excel', title: title },
-									//	{ extend: 'print', title: title }
-									//]
+									dom: 't',
+									paging: false,
+									searching: false,
+									info: false,
+									ordering: false
 								});
 
 								$('#agent_pdetail_login').DataTable({
 									destroy: true,
 									responsive: true,
-									dom: 'Bfrtip'
-									//buttons: [
-									//	{ extend: 'copy', title: title },
-									//	{ extend: 'csv', title: title },
-									//	{ extend: 'excel', title: title },
-									//	{ extend: 'print', title: title }
-									//]
+									dom: 't',
+									paging: false,
+									searching: false,
+									info: false,
+									ordering: false
 								});
 
 								$('.request_div').hide();

@@ -29,7 +29,7 @@ namespace creamy;
 require_once(__DIR__ . '/CRMDefaults.php');
 require_once(__DIR__ . '/CRMUtils.php');
 require_once(__DIR__ . '/DatabaseConnectorFactory.php');
-require_once(__DIR__ . '/PerformanceTimer.php');
+
 @include_once(__DIR__ . '/Config.php');
 
 define('CRM_LANGUAGE_DEFAULT_LOCALE', 'en_US');
@@ -78,8 +78,7 @@ define('CRM_LANGUAGE_BASE_DIR', DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR);
 	     */
 	    protected function __construct($locale = null, $databaseConnectorType = CRM_DB_CONNECTOR_TYPE_MYSQL)
     {
-			$timer = \creamy\PerformanceTimer::begin();
-			try {
+
 				// initialize language and user locale
 				if (isset($locale)) { $this->locale = $locale; } // if specified, set this locale.
 				else if (\creamy\DatabaseConnectorFactory::instantiationAvailableForConnectorOfType($databaseConnectorType)) {
@@ -100,9 +99,7 @@ define('CRM_LANGUAGE_BASE_DIR', DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR);
 					$translations = $this->getTranslationsFromFile($filepath);
 				}
 				$this->texts = $translations;
-			} finally {
-				\creamy\PerformanceTimer::end('language_construct', $timer);
-			}
+
     }
 
 	    /**
@@ -136,13 +133,8 @@ define('CRM_LANGUAGE_BASE_DIR', DIRECTORY_SEPARATOR.'lang'.DIRECTORY_SEPARATOR);
 	     * @return array|bool|null an associative array containing the translations found in $filename or null if the file couldn't be found.
 	     */
 	    protected function getTranslationsFromFile($filepath): array|bool|null {
-		    $timer = \creamy\PerformanceTimer::begin();
-		    try {
-		        if (file_exists($filepath)) { return parse_ini_file($filepath); }
-		        else return null;
-		    } finally {
-		        \creamy\PerformanceTimer::end('language_parse_ini', $timer);
-		    }
+		    if (file_exists($filepath)) { return parse_ini_file($filepath); }
+		    else return null;
     }
 
     /**

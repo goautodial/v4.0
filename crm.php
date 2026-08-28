@@ -40,6 +40,12 @@
 		}
 	}
 
+	$pageData = $api->API_getCrmPageData();
+	$leads = $pageData['leads'];
+	$lists = $pageData['lists'];
+	$disposition = $pageData['dispositions'];
+	$dialStatus = $pageData['dial_statuses'];
+
 ?>
 <html>
     <head>
@@ -103,9 +109,6 @@
 						<li class="active"><?php $lh->translateText("crm_title"); ?>
                     </ol>
                 </section>
-			<?php
-				$leads = $api->API_getLeads('', '', '', '', '', '');
-			?>
                 <!-- Main content -->
                 <section class="content">
                 <div class="row">
@@ -169,13 +172,6 @@
 						</div><!-- /.body -->
 					</div><!-- /.panel -->
 				</div><!-- /.col-lg-9 -->
-			<?php
-				$lists = $api->API_getAllLists();
-				$disposition = $api->API_getAllDispositions();
-				$dialStatus = $api->API_getAllDialStatuses("ALL", 1);
-				//echo "<pre>";
-				//var_dump($dialStatus);
-			?>
 			<div class="col-lg-3">
 				<h3 class="m0 pb-lg"><?php $lh->translateText("filters"); ?></h3>
 				<!-- <form id="search_form"> -->

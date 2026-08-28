@@ -25,13 +25,16 @@
 */
 	
 	require_once('./php/UIHandler.php');
+	require_once('./php/APIHandler.php');
 	require_once('./php/CRMDefaults.php');
     require_once('./php/LanguageHandler.php');
     include('./php/Session.php');
 
 	$ui = \creamy\UIHandler::getInstance();
+	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	$pageData = $api->API_getAdminSettingsPageData();
 
 	//var_dump($user->getUserRole());
 	if(!preg_match("/^(ADMIN)$/", $_SESSION['usergroup']) && $_SESSION['userrole'] > CRM_DEFAULTS_USER_ROLE_SUPERVISOR) {
@@ -82,7 +85,7 @@
                                     <h3 class="box-title"><?php $lh->translateText("settings"); ?></h3>
                                 </div>
                                 <div class="box-body">
-	                                <?php print $ui->getGeneralSettingsForm(); ?>
+	                                <?php print $ui->getGeneralSettingsForm($pageData['system_setting']); ?>
                                 </div>
                             </div>
                         </section>

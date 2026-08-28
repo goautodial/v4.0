@@ -31,6 +31,7 @@
 	$api = \creamy\APIHandler::getInstance();
 	$lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
+	$pageData = $api->API_getCallRecordingsPageData();
 
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
@@ -111,7 +112,7 @@
                 <section class="content">
 				<?php
 					if ($perm->recordings_display !== 'N') {
-					$callrecs = $api->API_getCallRecordingList("", "", "", "");
+					$callrecs = new \stdClass();
 					//var_dump($callrecs);
 				?>
                 	<div class="row">
@@ -181,7 +182,7 @@
 		</div><!-- /.panel -->
 	</div><!-- /.col-lg-9 -->
 						<?php
-							$agents = $api->API_getAllUsers();
+							$agents = $pageData['users'];
 						?>
 	               		<div class="col-lg-3">
 	           				<h3 class="m0 pb-lg"><?php $lh->translateText("filters"); ?></h3>

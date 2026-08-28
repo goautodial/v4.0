@@ -2,19 +2,19 @@
 <?php
 /**
 	The MIT License (MIT)
-	
+
 	Copyright (c) 2015 Ignacio Nieto Carvajal
-	
+
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the "Software"), to deal
 	in the Software without restriction, including without limitation the rights
 	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 	copies of the Software, and to permit persons to whom the Software is
 	furnished to do so, subject to the following conditions:
-	
+
 	The above copyright notice and this permission notice shall be included in
 	all copies or substantial portions of the Software.
-	
+
 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,8 +23,9 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 	THE SOFTWARE.
 */
-	
+
 	require_once('./php/UIHandler.php');
+	require_once('./php/APIHandler.php');
 	require_once('./php/CRMDefaults.php');
 	require_once('./php/LanguageHandler.php');
     require('./php/Session.php');
@@ -33,14 +34,17 @@
     $ui = \creamy\UIHandler::getInstance();
     $lh = \creamy\LanguageHandler::getInstance();
 	$user = \creamy\CreamyUser::currentUser();
-	
+
 	//proper user redirects
 	if($user->getUserRole() != CRM_DEFAULTS_USER_ROLE_ADMIN){
 		if($user->getUserRole() == CRM_DEFAULTS_USER_ROLE_AGENT){
 			header("location: agent.php");
 		}
 	}
-	
+
+	$api = \creamy\APIHandler::getInstance();
+	$api->API_prepareTasksPageAccess();
+
 ?>
 <html>
     <head>
@@ -105,7 +109,7 @@
 
                 <!-- Main content -->
                 <section class="content">
-	                
+
 				<?php if ($user->userHasBasicPermission()) { ?>
 
 				<!-- Unfinished tasks row -->
@@ -117,18 +121,18 @@
                                 <h3 class="box-title"> <?php $lh->translateText("unfinished_tasks"); ?></h3>
                             </div><!-- /.box-header -->
                             <div class="box-body table-responsive" id="task-table-container">
-								<?php 
-									print $ui->getUnfinishedTasksAsTable($user->getUserId()); 
+								<?php
+									print $ui->getUnfinishedTasksAsTable($user->getUserId());
 								?>
                             </div><!-- /.box-body -->
 
                         </div><!-- /.box -->
                     </div>
                 </div>
-       
+
                 <div class="row">
                     <div class="col-xs-12">
-						<div class="box collapsed-box box-default">
+						<div class="box collapsed-box box-default completed-tasks-box">
                             <div class="box-header">
 	                            <div class="box-tools pull-right">
                                     <button class="btn btn-sm" data-widget="collapse"><i class="fa fa-plus"></i></button>
@@ -137,19 +141,15 @@
                                 <i class="ion ion-clipboard"></i>
                                 <h3 class="box-title"><?php $lh->translateText("completed_tasks"); ?></h3>
                             </div>
-                            <div class="box-body table-responsive" id="task-table-container" style="display: none;">
-								<?php 
-									print $ui->getCompletedTasksAsTable($user->getUserId(), $user->getUserRole()); 
-								?>
-                            </div><!-- /.box-body -->
+	                                <div class="box-body table-responsive" id="completed-task-table-container" style="display: none;"></div><!-- /.box-body -->
                         </div>
 
                     </div>
                 </div>
-                    
+
                 <!-- Only users with write permission can create new tasks -->
                 <?php if ($user->userHasWritePermission()) { ?>
-                
+
                 <!-- .row -->
                 <div class="row">
                     <div class="col-xs-12">
@@ -172,7 +172,7 @@
 										<?php print $ui->generateSendToUserSelect($_SESSION["userid"], true, $lh->translationFor("assign_this_task_to")); ?>
                                     </div>
                                     <?php } ?>
-                                    
+
                                     <input type="hidden" id="userid" name="userid" value="<?php print($_SESSION["userid"]); ?>">
                                     <br>
                                     <div  id="resultmessage" name="resultmessage" style="display:none">
@@ -192,11 +192,11 @@
                 <?php } ?>
 
                 </section><!-- /.content -->
-				
-				<?php } else { print $ui->getUnauthotizedAccessMessage(); } 
+
+				<?php } else { print $ui->getUnauthotizedAccessMessage(); }
 				print $ui->getTasksActionFooter();
 				?>
-           
+
             </aside><!-- /.right-side -->
             <?php print $ui->creamyFooter(); ?>
         </div><!-- ./wrapper -->
@@ -218,7 +218,7 @@
                             	<input type="text required" class="form-control" id="edit-task-description" name="edit-task-description" placeholder="<?php $lh->translateText("new_description"); ?>">
                     	    	<!--<br/>
 				<center>
-				<label for="task-note">Add a note</label>	
+				<label for="task-note">Add a note</label>
                             	<textarea name="task-note" id="task-note" rows="4" cols="80" placeholder="Add Notes/Comments in your task..."></textarea>
 		</center>-->	</div>
 						<input type="hidden" id="edit-task-taskid" name="edit-task-taskid" value="">
@@ -231,17 +231,41 @@
                 </form>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->		
+    </div><!-- /.modal -->
 
 	<!-- /CHANGE TASK MODAL -->
-	
+
 	<!-- TASK DIALOGS -->
 
 	<!-- END TASK DIALOGS -->
 
 		<script type="text/javascript">
 		$(document).ready(function() {
-			/** 
+			var completedTasksLoaded = false;
+			var completedTasksLoading = false;
+
+			$('.completed-tasks-box').on('click', '[data-widget="collapse"]', function() {
+				if (completedTasksLoaded || completedTasksLoading) {
+					return;
+				}
+
+				completedTasksLoading = true;
+				$('#completed-task-table-container').html('<p class="text-muted">Loading...</p>');
+
+				$.get('./php/GetCompletedTasks.php')
+					.done(function(data) {
+						$('#completed-task-table-container').html(data);
+						completedTasksLoaded = true;
+					})
+					.fail(function() {
+						$('#completed-task-table-container').html('<p class="text-danger">Unable to load completed tasks.</p>');
+					})
+					.always(function() {
+						completedTasksLoading = false;
+					});
+			});
+
+			/**
 			 * Creates a new task.
 		 	 */
 			$("#createtask").validate({
@@ -253,7 +277,7 @@
 						$("#resultmessage").html();
 						$("#resultmessage").fadeOut();
 						$.post("./php/CreateTask.php", //post
-						$("#createtask").serialize(), 
+						$("#createtask").serialize(),
 							function(data){
 								//if message is sent
 								if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
@@ -265,13 +289,13 @@
 								//
 							});
 					return false; //don't let the form refresh the page...
-				}					
+				}
 			});
-		
+
 			/**
 			 * Delete a task
 			 */
-			 $(".delete-task-action").click(function(e) {
+			 $(document).on('click', '.delete-task-action', function(e) {
 				var r = confirm("<?php $lh->translateText("are_you_sure"); ?>");
 				e.preventDefault();
 				if (r == true) {
@@ -282,24 +306,24 @@
 					});
 				}
 			 });
-			 
+
 			/**
 			 * Show the edit task dialog, filling the edit fields properly.
 			 */
-			$(".edit-task-action").click(function(e) {
+			$(document).on('click', '.edit-task-action', function(e) {
 				// Set ID of the task to edit
-				
+
 				e.preventDefault();
 				$('#edit-task-modal').modal();
                                 var ele = $(this).parents("li").first();
 				var task_id = ele.attr("id"); // task ID is contained in the ID element of the li object.
 				$('#edit-task-taskid').val(task_id);
-				
+
 				// set the previous description of task.
 				var current_text = $('.text', ele);
 				$('#edit-task-description').val(current_text.text());
 			});
-		
+
 			/**
 			 * Edit the description of a task
 			 */
@@ -309,7 +333,7 @@
 						$("#resultmessage").html();
 						$("#resultmessage").fadeOut();
 						$.post("./php/ModifyTask.php", //post
-						$("#edit-task-form").serialize(), 
+						$("#edit-task-form").serialize(),
 							function(data){
 								//if message is sent
 								if (data == '<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>') {
@@ -321,10 +345,10 @@
 								//
 							});
 					return false; //don't let the form refresh the page...
-				}					
+				}
 			});
-		
-		
+
+
 			/**
 			 * React to checking and unchecking of boxes -- Mark tasks as completed.
 			 */
@@ -332,14 +356,14 @@
 		        var ele = $(this).parents("li").first();
 				// task ID is contained in the ID element of the li object.
 				var task_id = ele[0].id;
-				
+
 				// clear current result field
 				$("#changetaskresult").html();
 				$("#changetaskresult").fadeOut();
-				
-				// mark item as "done" and call ModifyTask. 
+
+				// mark item as "done" and call ModifyTask.
 		        ele.toggleClass("done");
-				$.post("./php/CompleteTask.php", {"complete-task-taskid": task_id, "complete-task-progress": "100" }, 
+				$.post("./php/CompleteTask.php", {"complete-task-taskid": task_id, "complete-task-progress": "100" },
 				function(data){
 					if (data == "<?php print CRM_DEFAULT_SUCCESS_RESPONSE; ?>") { location.reload(); }
 					else {
@@ -353,9 +377,9 @@
 		    	checkboxClass: 'icheckbox_minimal-blue',
 				radioClass: 'iradio_minimal-blue'
 		    });
-		
+
 		});
-		
+
 		</script>
 		<!-- Modal Dialogs -->
 		<?php include_once "./php/ModalPasswordDialogs.php" ?>

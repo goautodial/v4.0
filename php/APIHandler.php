@@ -35,7 +35,7 @@
 	require_once(__DIR__ . '/CRMUtils.php');
 	require_once(__DIR__ . '/goCRMAPISettings.php');
 	require_once(__DIR__ . '/SessionHandler.php');
-	require_once(__DIR__ . '/PerformanceTimer.php');
+
 	$session_class = new \creamy\SessionHandler();
 
 	// ini_set('display_errors', 1);
@@ -131,10 +131,7 @@
 		* @return Array $output
 		*/
 		public function API_Request($folder, $postfields, $request_data = false){
-			$timer = \creamy\PerformanceTimer::begin();
-			$apiAction = is_array($postfields) ? ($postfields['goAction'] ?? '') : '';
-			$apiTimingLabel = 'api_request_' . preg_replace('/[^A-Za-z0-9_]/', '_', $folder . '_' . $apiAction);
-			try {
+
 				$url = gourl."/".$folder."/goAPI.php";
 				$responsetype = "json";
 
@@ -185,14 +182,7 @@
 				}
 
 				return $output;
-			} finally {
-				\creamy\PerformanceTimer::logSlow('api_request', $timer, [
-					'folder' => $folder,
-					'action' => $apiAction,
-				]);
-				\creamy\PerformanceTimer::end('api_request', $timer);
-				\creamy\PerformanceTimer::end($apiTimingLabel, $timer);
-			}
+
 		}
 
 		public function API_RequestBatch(array $requests, int $maxHostConnections = 0): array
@@ -206,7 +196,7 @@
 				return $results;
 			}
 
-			$batchTimer = \creamy\PerformanceTimer::begin();
+
 			$multiHandle = curl_multi_init();
 			if ($maxHostConnections > 0 && defined('CURLMOPT_MAX_HOST_CONNECTIONS')) {
 				curl_multi_setopt($multiHandle, CURLMOPT_MAX_HOST_CONNECTIONS, $maxHostConnections);
@@ -261,19 +251,6 @@
 
 			foreach ($handles as $key => $request) {
 				$handle = $request['handle'];
-				$transferInfo = curl_getinfo($handle);
-				$transferStartedAt = $batchTimer > 0.0
-					? microtime(true) - ((float) ($transferInfo['total_time'] ?? 0.0))
-					: 0.0;
-				$timingLabel = 'api_batch_' . preg_replace(
-					'/[^A-Za-z0-9_]/',
-					'_',
-					$request['folder'] . '_' . $request['action']
-				);
-				\creamy\PerformanceTimer::end($timingLabel, $transferStartedAt);
-				\creamy\PerformanceTimer::logSlow($timingLabel, $transferStartedAt, [
-					'http_code' => $transferInfo['http_code'] ?? 0,
-				]);
 
 				$data = curl_multi_getcontent($handle);
 				if ($request['request_data'] === true) {
@@ -301,11 +278,6 @@
 			}
 
 			curl_multi_close($multiHandle);
-			\creamy\PerformanceTimer::logSlow('api_request_batch', $batchTimer, [
-				'count' => count($requests),
-				'max_host_connections' => $maxHostConnections,
-			]);
-			\creamy\PerformanceTimer::end('api_request_batch', $batchTimer);
 
 			return $results;
 		}
@@ -452,6 +424,51 @@
 			$access = $this->API_RequestBatch(['package' => ['folder' => 'goPackages', 'postfields' => ['goAction' => 'goGetPackage']], 'group_permission' => ['folder' => 'goUserGroups', 'postfields' => ['goAction' => 'goGetUserGroupInfo', 'user_group' => session_usergroup]]]);
 			$this->goPackageCache = $access['package'];
 			$this->groupPermissionCache = $access['group_permission'];
+		}
+
+		public function API_prepareAdminModulesPageAccess(): void
+		{
+			$access = $this->API_RequestBatch([
+				'package' => [
+					'folder' => 'goPackages',
+					'postfields' => ['goAction' => 'goGetPackage'],
+				],
+				'group_permission' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => session_usergroup,
+					],
+				],
+			], 2);
+
+			$this->goPackageCache = $access['package'];
+			$this->groupPermissionCache = $access['group_permission'];
+		}
+
+		public function API_prepareModuleSettingsPageAccess(): void
+		{
+			$this->API_prepareAdminModulesPageAccess();
+		}
+
+		public function API_prepareEventsPageAccess(): void
+		{
+			$this->API_prepareAdminModulesPageAccess();
+		}
+
+		public function API_prepareNotificationsPageAccess(): void
+		{
+			$this->API_prepareAdminModulesPageAccess();
+		}
+
+		public function API_prepareTasksPageAccess(): void
+		{
+			$this->API_prepareAdminModulesPageAccess();
+		}
+
+		public function API_prepareCreditsPageAccess(): void
+		{
+			$this->API_prepareAdminModulesPageAccess();
 		}
 
 		public function goGetPermissions($type = 'dashboard') {
@@ -1581,6 +1598,61 @@
 			return $this->API_Request("goGetLeads", $postfields);
 		}
 
+		public function API_getCrmPageData(): array
+		{
+			$pageData = $this->API_RequestBatch([
+				'leads' => [
+					'folder' => 'goGetLeads',
+					'postfields' => [
+						'goAction' => 'goGetLeads',
+						'search' => '',
+						'disposition_filter' => '',
+						'list_filter' => '',
+						'address_filter' => '',
+						'city_filter' => '',
+						'state_filter' => '',
+						'search_customers' => 0,
+						'goVarLimit' => 50,
+						'start_date' => null,
+						'end_date' => null,
+					],
+				],
+				'lists' => [
+					'folder' => 'goLists',
+					'postfields' => ['goAction' => 'goGetAllLists'],
+				],
+				'dispositions' => [
+					'folder' => 'goDispositions',
+					'postfields' => ['goAction' => 'goGetAllDispositions'],
+				],
+				'dial_statuses' => [
+					'folder' => 'goDialStatus',
+					'postfields' => [
+						'goAction' => 'goGetAllDialStatuses',
+						'campaign_id' => 'ALL',
+						'is_selectable' => 0,
+						'add_hotkey' => 1,
+					],
+				],
+				'package' => [
+					'folder' => 'goPackages',
+					'postfields' => ['goAction' => 'goGetPackage'],
+				],
+				'group_permission' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => session_usergroup,
+					],
+				],
+			], 6);
+
+			$this->goPackageCache = $pageData['package'];
+			$this->groupPermissionCache = $pageData['group_permission'];
+
+			return $pageData;
+		}
+
 		public function API_getAllCarriers(){
 			$postfields = [
 				'goAction' => 'goGetAllCarriers'
@@ -1957,6 +2029,66 @@
 			return $this->API_Request("goCallRecordings", $postfields);
 		}
 
+		public function API_getCallRecordingsPageData(): array
+		{
+			$pageData = $this->API_RequestBatch([
+				'users' => [
+					'folder' => 'goUsers',
+					'postfields' => ['goAction' => 'goGetAllUsers'],
+				],
+				'package' => [
+					'folder' => 'goPackages',
+					'postfields' => ['goAction' => 'goGetPackage'],
+				],
+				'group_permission' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => session_usergroup,
+					],
+				],
+			], 4);
+
+			$this->goPackageCache = $pageData['package'];
+			$this->groupPermissionCache = $pageData['group_permission'];
+
+			return $pageData;
+		}
+
+		public function API_getCallReportsPageData(): array
+		{
+			$pageData = $this->API_RequestBatch([
+				'campaigns' => [
+					'folder' => 'goCampaigns',
+					'postfields' => ['goAction' => 'goGetAllCampaigns'],
+				],
+				'ingroups' => [
+					'folder' => 'goInbound',
+					'postfields' => ['goAction' => 'goGetAllIngroup'],
+				],
+				'dispositions' => [
+					'folder' => 'goDispositions',
+					'postfields' => ['goAction' => 'goGetAllDispositions'],
+				],
+				'package' => [
+					'folder' => 'goPackages',
+					'postfields' => ['goAction' => 'goGetPackage'],
+				],
+				'group_permission' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => session_usergroup,
+					],
+				],
+			], 5);
+
+			$this->goPackageCache = $pageData['package'];
+			$this->groupPermissionCache = $pageData['group_permission'];
+
+			return $pageData;
+		}
+
 		public function API_getReports($postfields){
 			return $this->API_Request("goReports", $postfields);
 		}
@@ -1971,6 +2103,32 @@
 
 		public function API_getCustomizations($postfields){
 			return $this->API_Request("goSystemSettings", $postfields);
+		}
+
+		public function API_getAdminSettingsPageData(): array
+		{
+			$pageData = $this->API_RequestBatch([
+				'system_setting' => [
+					'folder' => 'goSystemSettings',
+					'postfields' => ['goAction' => 'goGetSystemSettingInfo'],
+				],
+				'package' => [
+					'folder' => 'goPackages',
+					'postfields' => ['goAction' => 'goGetPackage'],
+				],
+				'group_permission' => [
+					'folder' => 'goUserGroups',
+					'postfields' => [
+						'goAction' => 'goGetUserGroupInfo',
+						'user_group' => session_usergroup,
+					],
+				],
+			], 3);
+
+			$this->goPackageCache = $pageData['package'];
+			$this->groupPermissionCache = $pageData['group_permission'];
+
+			return $pageData;
 		}
 
 		public function API_getSystemSettingInfo(){

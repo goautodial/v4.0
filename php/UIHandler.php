@@ -31,7 +31,7 @@ require_once(__DIR__ . '/LanguageHandler.php');
 require_once(__DIR__ . '/CRMUtils.php');
 require_once(__DIR__ . '/ModuleHandler.php');
 require_once(__DIR__ . '/goCRMAPISettings.php');
-require_once(__DIR__ . '/PerformanceTimer.php');
+
 //require_once('Session.php');
 
 // constants
@@ -77,16 +77,13 @@ error_reporting(E_ERROR | E_PARSE);
      */
     protected function __construct()
     {
-        $timer = \creamy\PerformanceTimer::begin();
-        try {
+
             require_once __DIR__ . '/DbHandler.php';
             // opening db connection
             $this->db = new \creamy\DbHandler();
             $this->api = \creamy\APIHandler::getInstance();
             $this->lh = \creamy\LanguageHandler::getInstance();
-        } finally {
-            \creamy\PerformanceTimer::end('ui_construct', $timer);
-        }
+
     }
 
     /**
@@ -986,7 +983,7 @@ error_reporting(E_ERROR | E_PARSE);
     /* Administration & user management */
 
     /** Returns the HTML form for modyfing the system settings */
-    public function getGeneralSettingsForm() {
+    public function getGeneralSettingsForm(?object $systemSetting = null) {
 		// current settings values
 	    $baseURL = $this->db->getSettingValueForKey(CRM_SETTING_CRM_BASE_URL);
 	    $tz = $this->db->getSettingValueForKey(CRM_SETTING_TIMEZONE);
@@ -1002,8 +999,8 @@ error_reporting(E_ERROR | E_PARSE);
 	    if (isset($cl)) { $cl = $this->imageWithData($cl, "", null); }
 	    $tOpts = ["black" => "black", "blue" => "blue", "green" => "green", "minimalist" => "minimalist", "purple" => "purple", "red" => "red", "yellow" => "yellow"];
 	    // Voicemail Greeting
-	    $vg_result = $this->api->API_getSystemSettingInfo();
-	    $vg = $vg_result->data->allow_voicemail_greeting;
+	    $systemSetting ??= $this->api->API_getSystemSettingInfo();
+	    $vg = $systemSetting->data->allow_voicemail_greeting;
 	    $vg_text = $this->lh->translationFor("voicemail_greeting");
 	    $vgOpts = ["0" => "Disabled", "1" => "Enabled"];
 
@@ -5840,9 +5837,7 @@ error_reporting(E_ERROR | E_PARSE);
    		$css .= '<link href="css/calendar.css" rel="stylesheet" type="text/css"/>'."\n";
 
 		//for chat
-		$chatActivationTimer = \creamy\PerformanceTimer::begin();
 		$agent_chat_status = $this->API_getAgentChatActivation();
-		\creamy\PerformanceTimer::end('chat_activation', $chatActivationTimer);
 		if($agent_chat_status){
    $css .= '<link href="modules/GoChat/css/style.css" rel="stylesheet" type="text/css"/>'."\n";
   }
