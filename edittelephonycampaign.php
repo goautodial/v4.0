@@ -2502,8 +2502,14 @@
 																	<?php } ?>
 																</div>
 															</div>
+													</div>
+													<div class="form-group">
+														<label class="col-sm-3 control-label" for="dispo_call_url">Dispo Call Url:</label>
+														<div class="col-sm-9 mb">
+															<input type="text" class="form-control" id="dispo_call_url" name="dispo_call_url" value="<?php echo htmlspecialchars((string) ($campaign->data->dispo_call_url ?? ''), ENT_QUOTES, 'UTF-8'); ?>">
 														</div>
-													</fieldset>
+													</div>
+												</fieldset>
 												</div>
 												<!-- /.tab-pane -->
 

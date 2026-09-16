@@ -6487,6 +6487,8 @@ function DispoSelectSubmit() {
                 goComments: encodeURIComponent(CallBackComments),
                 goCustomFieldNames: custom_field_names,
                 goCallNotes: encodeURIComponent($("[name='call_notes_dispo']").val()),
+                goRecordingID: recording_id,
+                goRecordingFilename: recording_filename,
                 goQMDispoCode: DispoQMcsCODE,
                 goEmailEnabled: email_enabled,
                 goSendEmail: cb_sendemail,

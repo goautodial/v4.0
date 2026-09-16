@@ -42,6 +42,11 @@
 			$campaign_name 							= stripslashes((string) $campaign_name);
 		}
 
+		$dispo_call_url 								= NULL;
+		if (isset($_POST["dispo_call_url"])) {
+			$dispo_call_url 							= stripslashes((string) $_POST["dispo_call_url"]);
+		}
+
 		$campaign_desc 								= NULL;
 		if (isset($_POST["campaign_desc"])) {
 			$campaign_desc 							= ($_POST["campaign_desc"] ?? '');
@@ -630,7 +635,8 @@
 			"goAction" 									=> "goEditCampaign", #action performed by the [[API:Functions]]
 			"campaign_id" 								=> $campaign_id,
 			"campaign_name" 							=> $campaign_name,
-			"campaign_desc" 							=> $campaign_desc,
+			"campaign_desc" 								=> $campaign_desc,
+			"dispo_call_url" 							=> $dispo_call_url,
 			"active" 									=> $active,
 			"dial_method" 								=> $dial_method,
 			"auto_dial_level"							=> $auto_dial_level,
