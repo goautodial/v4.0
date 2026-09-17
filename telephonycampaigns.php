@@ -2026,13 +2026,9 @@
 							success: function(data) {
 								console.log(data);
 								if (data){
-                                    response(JSON.parse(data));
-									$('.call-route-mode').removeClass('hide');
-									$('.group-color').removeClass('hide');
-                                } else {
-									response('');
-									$('.call-route-mode').addClass('hide');
-									$('.group-color').addClass('hide');
+								response(JSON.parse(data));
+							} else {
+								response('');
 								}
 
 							}
@@ -2096,26 +2092,8 @@
 					$('.agent-div').addClass('hide');
 					$('.voicemail-div').addClass('hide');
 					$('.callroute-dummy-div').addClass('hide');
+					$('.call-route-mode').removeClass('hide');
 					$('.group-color').removeClass('hide');
-					$.ajax({
-						url: "./php/searchDID.php",
-						type: 'POST',
-						data: {
-							term : $('#did-tfn-extension').val()
-						},
-						dataType: 'json',
-						success: function(responsedata) {
-							//console.log(responsedata);
-							if (responsedata){
-								$('.call-route-mode').removeClass('hide');
-								$('.group-color').removeClass('hide');
-							}else{
-								$('.call-route-mode').addClass('hide');
-								$('.group-color').addClass('hide');
-							}
-
-						}
-					});
                 } else if (callroute == "IVR") {
                     $('.call-route-div-label').html("IVR:");
 					$('.ivr-div').removeClass('hide');
@@ -2123,26 +2101,8 @@
 					$('.agent-div').addClass('hide');
 					$('.voicemail-div').addClass('hide');
 					$('.callroute-dummy-div').addClass('hide');
+					$('.call-route-mode').removeClass('hide');
 					$('.group-color').addClass('hide');
-					$.ajax({
-						url: "./php/searchDID.php",
-						type: 'POST',
-						data: {
-							term : $('#did-tfn-extension').val()
-						},
-						dataType: 'json',
-						success: function(responsedata) {
-							//console.log(responsedata);
-							if (responsedata){
-								$('.call-route-mode').removeClass('hide');
-								$('.group-color').addClass('hide');
-							}else{
-								$('.call-route-mode').addClass('hide');
-								$('.group-color').addClass('hide');
-							}
-
-						}
-					});
                 } else if (callroute == "AGENT") {
                     $('.call-route-div-label').html("AGENT:");
 					$('.agent-div').removeClass('hide');
