@@ -1191,7 +1191,10 @@
 				],
 				'dids' => [
 					'folder' => 'goInbound',
-					'postfields' => ['goAction' => 'goGetAllDID'],
+					'postfields' => [
+						'goAction' => 'goGetCampaignDID',
+						'campaign_id' => $campaignId,
+					],
 				],
 				'voicefiles' => [
 					'folder' => 'goVoiceFiles',
