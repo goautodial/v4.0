@@ -4774,19 +4774,24 @@ function DialLog(taskMDstage, nodeletevdac) {
                     btnRecordCall('STOP', true);
                 }
 
-                MDlogRecordings = MDlogResponse_array[3];
-                if (window.MDlogRecorDings) {
-                    var MDlogRecordings_array = MDlogRecordings.split("|");
-            //		recording_filename = MDlogRecordings_array[2];
-            //		recording_id = MDlogRecordings_array[3];
+                var MDlogRecordings = MDlogResponse_array[3] || '';
+                if (MDlogRecordings.indexOf('REC_STOP|') === 0) {
+                    var MDlogRecordingsArray = MDlogRecordings.split("|");
+                    var returnedRecordingFilename = MDlogRecordingsArray[2] || '';
+                    var returnedRecordingID = MDlogRecordingsArray[3] || '';
 
-                    var RecDispName = MDlogRecorDings_array[2];
-                    if (RecDispName.length > 25) {
-                        RecDispName = RecDispName.substr(0,22);
-                        RecDispName = RecDispName + '...';
+                    if (returnedRecordingID !== '') {
+                        recording_filename = returnedRecordingFilename;
+                        recording_id = String(returnedRecordingID);
+
+                        var RecDispName = recording_filename;
+                        if (RecDispName.length > 25) {
+                            RecDispName = RecDispName.substr(0,22);
+                            RecDispName = RecDispName + '...';
+                        }
+                        $("#RecorDingFilename").html(RecDispName);
+                        $("#RecorDID").html(recording_id);
                     }
-                    $("#RecorDingFilename").html(RecDispName);
-                    $("#RecordID").html(MDlogRecordings_array[3]);
                 }
             }
         }
@@ -4890,8 +4895,8 @@ function ConfSendRecording(taskconfrectype, taskconfrec, taskconffile, taskfroma
     .done(function (result) {
         var RClookResponse = result;
         if (RClookResponse.result == 'success') {
-            var RClookFILE = RClookResponse.filename;
-            var RClookID = RClookResponse.recording_id;
+            var RClookFILE = String(RClookResponse.filename || '');
+            var RClookID = String(RClookResponse.recording_id || '');
             if (RClookID.length > 0) {
                 recording_filename = RClookFILE;
                 recording_id = RClookID;
