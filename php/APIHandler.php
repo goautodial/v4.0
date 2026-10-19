@@ -128,11 +128,13 @@
 		* @param String $folder - Folder Name where API is located (ex. goUsers, goInbound, goVoicemails)
 		* @param Array $postfields - Post Requests. API Name is required (ex. goAction => goGetUserGroupInfo, goAction => goGetAllUsers, goAction => goEditDID)
 		* @param Boolean $request_data - true or false. If true, converts return data to original format without json_decode. Returns json_decoded data if false.
+		* @param int $timeout - Maximum API request duration in seconds.
 		* @return Array $output
 		*/
-		public function API_Request($folder, $postfields, $request_data = false){
+		public function API_Request($folder, $postfields, $request_data = false, $timeout = 10){
 
 				$url = gourl."/".$folder."/goAPI.php";
+				$timeout = max(1, (int) $timeout);
 				$responsetype = "json";
 
 				// Constant Data to be passed
@@ -154,13 +156,34 @@
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, $url);
 				curl_setopt($ch, CURLOPT_POST, 1);
-				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
-				curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, min(3, $timeout));
+				curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 				curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postdata));
 				$data = curl_exec($ch);
+				$curlError = curl_error($ch);
+				$curlErrorCode = curl_errno($ch);
+				$httpStatus = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				curl_close($ch);
+
+				if ($data === false) {
+					return (object) [
+						'result' => 'error',
+						'message' => 'API request failed: ' . $curlError,
+						'curl_error_code' => $curlErrorCode,
+						'http_status' => $httpStatus
+					];
+				}
+
+				if ($httpStatus >= 300) {
+					return (object) [
+						'result' => 'error',
+						'message' => 'API request returned HTTP status ' . $httpStatus,
+						'http_status' => $httpStatus
+					];
+				}
 
 				if($request_data === true) {
 					return $data;

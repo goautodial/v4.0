@@ -74,7 +74,7 @@ $postfields["per_call_notes"] = $per_call_notes;
 $postfields["rec_location"] = $rec_location;
 
 $limit = 20000;
-$offset = 0;
+$exportTimeout = 300;
 
 if($toDate != NULL)
     $postfields["toDate"] = $toDate;
@@ -82,96 +82,50 @@ if($toDate != NULL)
 if($fromDate != NULL)
     $postfields["fromDate"] = $fromDate;
 
-$postfields["goAction"] = "goExportCountRows";
-$row_output = $api->API_Request("goReports", $postfields);
+$exportError = static function ($message): void {
+    http_response_code(502);
+    header('Content-Type: text/plain; charset=UTF-8');
+    echo "Unable to generate the call report. " . $message;
+    exit;
+};
 
 $postfields["goAction"] = "goExportCallReport";
+$postfields["limit"] = $limit;
+$postfields["offset"] = 0;
 
-$data_header = [];
-$data_row = "";
-$display = "";
-$display2 = "";
-$output = null;
-$last_row_offset = 0;
+$output = $api->API_Request("goReports", $postfields, false, $exportTimeout);
+if (!is_object($output) || ($output->result ?? '') !== 'success') {
+    $exportError(is_object($output) ? ($output->message ?? 'The report request failed.') : 'The report request failed.');
+}
 
-if(is_object($row_output) && ($row_output->result ?? '') == "success"){
-	$count = $row_output->row_count;
+$header = implode(',', is_array($output->header ?? null) ? $output->header : []);
+$filename = "Export_Call_Report.".date("Y-m-d").".csv";
 
-	if($count > $limit){
-		$postfields["limit"] = $limit;
-		$postfields["offset"] = $offset;
-		while($last_row_offset <= $count){
-			$postfields["offset"] = $offset;
-			$output = $api->API_Request("goReports", $postfields);
-
-			if(is_object($output) && ($output->result ?? '') == "success"){
-
-				if($offset === 0){
-					$data_header = $output->header;
-				}
-                //$data_row[] = json_decode(json_encode($output->rows), true);
-                $data_row .= $output->rows;
-			}
-			$last_row_offset = $offset;
-			$offset += $limit;
-			// $data_row = array_merge($data_row);
-		}
-		$i = 0;
-		// foreach($data_row as $array_rows){
-		//     foreach($array_rows as $temp){
-	    //     	foreach($temp as $value){
-		// 		if($i <= 250000){
-	    //     	    		$display .= $value.",";
-		// 		} else {
-		// 			$display2 .= $value.",";
-		// 		}
-		//         }
-		// 	if($i <= 250000){
-	    //     		$display .= "\n";
-		// 	} else {
-		// 		$display2 .= "\n";
-		// 	}
-	    //         }
-		//     $i++;
-        // }
-
-        $display = $data_row;
-	} else {
-		$output = $api->API_Request("goReports", $postfields);
-		$data_header = is_object($output) ? ($output->header ?? []) : [];
-		$data_row = is_object($output) ? ($output->rows ?? '') : '';
-
-		// $array_rows = json_decode(json_encode($data_row), true);
-        // foreach($array_rows as $temp){
-        //     foreach($temp as $value){
-        //         $display .= $value.",";
-        //     }
-        //     $display .= "\n";
-        // }
-
-        $display = $data_row;
-	}
-
-    if(is_object($output) && ($output->result ?? '') == "success"){
-
-    //$header = implode(",",$output->header);
-    $header = implode(",",$data_header);
-
-    $filename = "Export_Call_Report.".date("Y-m-d").".csv";
-
-    header('Content-type: application/csv');
-    header('Content-Disposition: attachment; filename='.$filename);
-    header('Expires: 0');
-    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-    header('Pragma: public');
+header('Content-Type: text/csv; charset=UTF-8');
+header('Content-Disposition: attachment; filename='.$filename);
+header('Expires: 0');
+header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+header('Pragma: public');
+if (ob_get_level() > 0) {
     ob_clean();
-    flush();
+}
 
-    echo $header."\n";
-    echo $display;
+echo $header."\n";
+echo (string) ($output->rows ?? '');
+flush();
 
+$rowsReturned = (int) ($output->row_count ?? 0);
+for ($offset = $limit; $rowsReturned === $limit; $offset += $limit) {
+    $postfields["offset"] = $offset;
+    $output = $api->API_Request("goReports", $postfields, false, $exportTimeout);
+
+    if (!is_object($output) || ($output->result ?? '') !== 'success') {
+        error_log('Call report export failed at offset ' . $offset . ': ' . (is_object($output) ? ($output->message ?? 'Unknown API error') : 'Invalid API response'));
+        break;
     }
 
+    echo (string) ($output->rows ?? '');
+    flush();
+    $rowsReturned = (int) ($output->row_count ?? 0);
 }
-//var_dump($array_rows);
 ?>
