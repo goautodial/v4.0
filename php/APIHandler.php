@@ -128,12 +128,13 @@
 		* @param String $folder - Folder Name where API is located (ex. goUsers, goInbound, goVoicemails)
 		* @param Array $postfields - Post Requests. API Name is required (ex. goAction => goGetUserGroupInfo, goAction => goGetAllUsers, goAction => goEditDID)
 		* @param Boolean $request_data - true or false. If true, converts return data to original format without json_decode. Returns json_decoded data if false.
-		* @param int $timeout - Maximum API request duration in seconds.
+		* @param ?int $timeout - Maximum API request duration in seconds.
 		* @return Array $output
 		*/
-		public function API_Request($folder, $postfields, $request_data = false, $timeout = 10){
+		public function API_Request($folder, $postfields, $request_data = false, $timeout = null){
 
 				$url = gourl."/".$folder."/goAPI.php";
+				$timeout = $timeout ?? ($folder === 'goReports' ? CRM_REPORT_API_TIMEOUT : 10);
 				$timeout = max(1, (int) $timeout);
 				$responsetype = "json";
 

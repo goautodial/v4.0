@@ -309,6 +309,40 @@
 	<script src="js/dashboard/js/flot-spline/js/jquery.flot.spline.min.js"></script>
 
 	<script type="text/javascript">
+		var reportRequestSequence = 0;
+		var activeReportRequest = null;
+		var reportRequestError = <?php echo json_encode($lh->translationFor("unknown_error"), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+
+		function beginReportRequest() {
+			reportRequestSequence += 1;
+
+			if (activeReportRequest !== null && activeReportRequest.readyState !== 4) {
+				activeReportRequest.abort();
+			}
+
+			return reportRequestSequence;
+		}
+
+		function finishReportRequest(requestSequence) {
+			if (requestSequence !== reportRequestSequence) {
+				return false;
+			}
+
+			activeReportRequest = null;
+			$(".report-loader").stop(true, true).fadeOut("slow");
+			return true;
+		}
+
+		function showReportRequestError(requestSequence) {
+			if (!finishReportRequest(requestSequence)) {
+				return;
+			}
+
+			$('#table').empty().append(
+				$('<div/>', {'class': 'alert alert-danger', 'role': 'alert'}).text(reportRequestError)
+			);
+		}
+
 		$(document).ready(function() {
 			$(document).on('click','.edit-contact',function() {
 				var url = './editcontacts.php';
@@ -392,8 +426,9 @@
 
 				$('#table').empty();
 				$(".report-loader").fadeIn("slow");
+				var requestSequence = beginReportRequest();
 
-				$.ajax({
+				activeReportRequest = $.ajax({
 						url: URL,
 						type: 'POST',
 						data: {
@@ -407,8 +442,12 @@
 							statuses : $("#statuses").val()
 						},
 						success: function(data) {
-							if (data !== "") {
-								$(".report-loader").fadeOut("slow");
+							if (requestSequence !== reportRequestSequence) {
+								return;
+							}
+
+							if ($.trim(data) !== "") {
+								finishReportRequest(requestSequence);
 								$('#table').html(data);
 
 								if (filter_type == "inbound_report") {
@@ -430,10 +469,13 @@
 									$('.campaign_div').hide();
 									$('.ingroup_div').show();
 								}
-
 							} else {
-								$(".report-loader").fadeOut("slow");
-								$('#table').html("<?php $lh->translateText("no_data"); ?>");
+								showReportRequestError(requestSequence);
+							}
+						},
+						error: function(jqXHR, textStatus) {
+							if (textStatus !== 'abort') {
+								showReportRequestError(requestSequence);
 							}
 						}
 					});
@@ -446,8 +488,9 @@
 
 				$('#table').empty();
 				$(".report-loader").fadeIn("slow");
+				var requestSequence = beginReportRequest();
 
-				$.ajax({
+				activeReportRequest = $.ajax({
 							url: URL,
 							type: 'POST',
 							data: {
@@ -461,34 +504,41 @@
 								statuses : $("#statuses").val()
 							},
 							success: function(data) {
-								if (data !== "") {
-								$(".report-loader").fadeOut("slow");
-								$('#table').html(data);
-
-								if (filter_type == "inbound_report") {
-									var title = "<?php $lh->translateText("inbound"); ?> Call Report";
-									$('#inbound_report').DataTable({
-										destroy: true,
-										responsive: true,
-										dom: 'Bfrtip',
-										buttons: [
-											{ extend: 'copy', title: title },
-											{ extend: 'csv', title: title },
-											{ extend: 'excel', title: title },
-											{ extend: 'print', title: title }
-										]
-									});
-									$('.request_div').hide();
-									$('.campaign_div').hide();
-									$('.ingroup_div').show();
+								if (requestSequence !== reportRequestSequence) {
+									return;
 								}
 
-							} else {
-								$(".report-loader").fadeOut("slow");
-								$('#table').html("<?php $lh->translateText("no_data"); ?>");
+								if ($.trim(data) !== "") {
+									finishReportRequest(requestSequence);
+									$('#table').html(data);
+
+									if (filter_type == "inbound_report") {
+										var title = "<?php $lh->translateText("inbound"); ?> Call Report";
+										$('#inbound_report').DataTable({
+											destroy: true,
+											responsive: true,
+											dom: 'Bfrtip',
+											buttons: [
+												{ extend: 'copy', title: title },
+												{ extend: 'csv', title: title },
+												{ extend: 'excel', title: title },
+												{ extend: 'print', title: title }
+											]
+										});
+										$('.request_div').hide();
+										$('.campaign_div').hide();
+										$('.ingroup_div').show();
+									}
+								} else {
+									showReportRequestError(requestSequence);
+								}
+							},
+							error: function(jqXHR, textStatus) {
+								if (textStatus !== 'abort') {
+									showReportRequestError(requestSequence);
+								}
 							}
-						}
-					});
+						});
 			});
 
 		/*
@@ -593,7 +643,14 @@
 				     URL = './php/reports/exportcallreport.php';
 				}
 
-				$.ajax({
+				var requestSequence = beginReportRequest();
+				if (!campaign_ID && filter_type !== "call_export_report") {
+					finishReportRequest(requestSequence);
+					$('#table').html("<?php $lh->translateText("no_data"); ?>");
+					return;
+				}
+
+				activeReportRequest = $.ajax({
 					url: URL,
 					type: 'POST',
 					data: {
@@ -607,8 +664,12 @@
 						statuses : $("#statuses").val()
 					},
 					success: function(data) {
-						if (data !== "") {
-							$(".report-loader").fadeOut("slow");
+						if (requestSequence !== reportRequestSequence) {
+							return;
+						}
+
+						if ($.trim(data) !== "") {
+							finishReportRequest(requestSequence);
 							$('#table').html(data);
 
 							if (filter_type == "stats") {
@@ -916,12 +977,16 @@
 								$('.ingroup_div').hide();
 								$('.request_div').hide();
 							}
-						} else {
-							$(".report-loader").fadeOut("slow");
-							$('#table').html("<?php $lh->translateText("no_data"); ?>");
+							} else {
+								showReportRequestError(requestSequence);
+							}
+						},
+						error: function(jqXHR, textStatus) {
+							if (textStatus !== 'abort') {
+								showReportRequestError(requestSequence);
+							}
 						}
-					}
-				});
+					});
             }
 
 			function sformat(seconds) {

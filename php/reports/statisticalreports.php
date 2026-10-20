@@ -85,7 +85,18 @@
 	$output 									= $api->API_getStatisticalReports($postfields);
 	$result 									= is_object($output) ? ($output->result ?? 'error') : 'error';
 
-	if ($result == "success") {
+	if ($result !== "success") {
+		$curlErrorCode = is_object($output) ? (int) ($output->curl_error_code ?? 0) : 0;
+		$upstreamStatus = is_object($output) ? (int) ($output->http_status ?? 0) : 0;
+		error_log('Statistical report API request failed: result=' . (string) $result . ', curl_error_code=' . $curlErrorCode . ', upstream_http_status=' . $upstreamStatus);
+
+		http_response_code($curlErrorCode === 28 || $upstreamStatus === 504 ? 504 : 502);
+		header('Content-Type: application/json; charset=utf-8');
+		echo json_encode(['error' => 'Unable to load the report. Please try again.']);
+		exit;
+	}
+
+	if ($result === "success") {
 		echo '<div class="animated bounceInUp">';
 
 	// STATISTICAL REPORT

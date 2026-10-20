@@ -44,6 +44,11 @@ if (!defined('REPORTS_SM_AGENT_PERFORMANCE_DETAIL')) {
 	define('REPORTS_SM_AGENT_PERFORMANCE_DETAIL', 'n');
 }
 
+// Report queries aggregate large call-log tables and can take longer than standard API calls.
+if (!defined('CRM_REPORT_API_TIMEOUT')) {
+	define('CRM_REPORT_API_TIMEOUT', 120);
+}
+
 
 define ('CRM_INSTALL_VERSION', '1.0');
 define ('CRM_INSTALLED_FILE', 'installed.txt');
