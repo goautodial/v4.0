@@ -205,12 +205,20 @@
 					<option value="">- - - ALL - - -</option>
                                         <?php
                                                 for($a=0; $a<(isset($disposition->status) && is_countable($disposition->status) ? count($disposition->status) : 0); $a++) {
-                                                        if($disposition->campaign_id[$a] != NULL){
-                                                                if(in_array($disposition->status[$a], (is_array($campaigns->campaign_id) ? $campaigns->campaign_id : []))){
-									echo '<option value="'.$disposition->status_name[$a].'">'.$disposition->status[$a].' - '.$disposition->status_name[$a].'</option>';
+                                                        $status = $disposition->status[$a] ?? '';
+                                                        $statusName = $disposition->status_name[$a] ?? $status;
+                                                        $campaignId = $disposition->campaign_id[$a] ?? null;
+
+                                                        if ($status === '') {
+                                                                continue;
+                                                        }
+
+                                                        if ($campaignId != NULL) {
+                                                                if (in_array($campaignId, (is_array($campaigns->campaign_id) ? $campaigns->campaign_id : []))) {
+                                                                        echo '<option value="'.htmlspecialchars($status, ENT_QUOTES, 'UTF-8').'">'.htmlspecialchars($status, ENT_QUOTES, 'UTF-8').' - '.htmlspecialchars($statusName, ENT_QUOTES, 'UTF-8').'</option>';
                                                                 }
                                                         } else {
-                                                        	echo '<option value="'.$disposition->status[$a].'">'.$disposition->status[$a].' - '.$disposition->status_name[$a].'</option>';
+                                                                echo '<option value="'.htmlspecialchars($status, ENT_QUOTES, 'UTF-8').'">'.htmlspecialchars($status, ENT_QUOTES, 'UTF-8').' - '.htmlspecialchars($statusName, ENT_QUOTES, 'UTF-8').'</option>';
                                                         }
                                                 }
                                         ?>
