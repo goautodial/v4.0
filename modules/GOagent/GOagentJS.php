@@ -104,6 +104,8 @@ var isMobile = false; //initiate as false
 var is_logged_in = <?=$is_logged_in?>;
 var logging_in = false;
 var logoutWarn = true;
+var reloadLogoutSent = false;
+var logoutAfterReload = false;
 var use_webrtc = <?=($use_webrtc ?: 0)?>;
 var NOW_TIME = '<?=$NOW_TIME?>';
 var SQLdate = '<?=$NOW_TIME?>';
@@ -2672,10 +2674,15 @@ function sendLogout (logMeOut) {
                     GetCustomFields(null, false);
                 }
 
-                $("#btnLogMeIn").addClass('disabled');
-                setTimeout(function() {
+                if (logoutAfterReload) {
+                    logoutAfterReload = false;
                     $("#btnLogMeIn").removeClass('disabled');
-                }, 5000);
+                } else {
+                    $("#btnLogMeIn").addClass('disabled');
+                    setTimeout(function() {
+                        $("#btnLogMeIn").removeClass('disabled');
+                    }, 5000);
+                }
             } else {
                 refresh_interval = 1000;
                 var thisMessage = result.message;
@@ -2697,6 +2704,35 @@ function sendLogout (logMeOut) {
     } else {
         refresh_interval = 1000;
     }
+}
+
+function isAgentPageReload () {
+    var navigationEntries = performance.getEntriesByType
+        ? performance.getEntriesByType('navigation')
+        : [];
+
+    if (navigationEntries.length > 0) {
+        return navigationEntries[0].type === 'reload';
+    }
+
+    return performance.navigation && performance.navigation.type === 1;
+}
+
+function logoutDialerAfterReload () {
+    if (reloadLogoutSent || !is_logged_in || !isAgentPageReload()) {
+        return;
+    }
+
+    reloadLogoutSent = true;
+    logoutAfterReload = true;
+    logoutWarn = false;
+    sendLogout(true);
+}
+
+if (document.readyState === 'complete') {
+    setTimeout(logoutDialerAfterReload, 0);
+} else {
+    window.addEventListener('load', logoutDialerAfterReload, { once: true });
 }
 
 function btnDialHangup (is_true) {
