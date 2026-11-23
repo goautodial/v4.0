@@ -1,3 +1,11 @@
+<IfModule php_module>
+    php_flag session.upload_progress.enabled Off
+</IfModule>
+
+<IfModule mod_php.c>
+    php_flag session.upload_progress.enabled Off
+</IfModule>
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /

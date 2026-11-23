@@ -62,6 +62,14 @@ class SessionHandler implements \SessionHandlerInterface {
 					return;
 				}
 
+				// PHP cannot register a custom session handler while upload-progress
+				// tracking is enabled. Use PHP's configured handler as a safe fallback
+				// until the per-directory setting disables upload-progress tracking.
+				if (filter_var(ini_get('session.upload_progress.enabled'), FILTER_VALIDATE_BOOLEAN)) {
+					session_start();
+					return;
+				}
+
 				// Hook up handler
 				session_set_save_handler($this, true);
 
