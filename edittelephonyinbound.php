@@ -2137,7 +2137,7 @@ if ($did != NULL) {
 															for($i = 0; $i < (isset($servers->server_ip) && is_countable($servers->server_ip) ? count($servers->server_ip) : 0); $i++) {
 														?>
 															<option value="<?php echo $servers->server_ip[$i];?>" <?php if ($servers->server_ip[$i] == $output->data->server_ip)echo "selected";?>>
-																<?php echo 'GOautodial - '.$servers->server_ip[$i];?>
+																<?php echo $servers->server_id[$i].' - '.$servers->server_ip[$i];?>
 															</option>
 														<?php
 															}
