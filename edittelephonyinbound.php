@@ -84,6 +84,7 @@ if ($did != NULL) {
 	$ingroups = $didPageData['ingroups'];
 	$voicemails = $didPageData['voicemails'];
 	$phone_extension = $didPageData['phones'];
+	$servers = $didPageData['servers'];
 	$ivr = $didPageData['ivr'];
 	$scripts = $didPageData['scripts'];
 	$voicefiles = $didPageData['voicefiles'];
@@ -2133,10 +2134,10 @@ if ($did != NULL) {
 													<select name="route_phone_server" id="route_phone_server" class="form-control">
 														<option value="" > <?php $lh->translateText("-none-"); ?> </option>
 														<?php
-															for($i=0;$i < 1;$i++) {
+															for($i = 0; $i < (isset($servers->server_ip) && is_countable($servers->server_ip) ? count($servers->server_ip) : 0); $i++) {
 														?>
-															<option value="<?php echo $phone_extension->server_ip[$i];?>" <?php if ($phone_extension->server_ip[$i] == $output->data->server_ip)echo "selected";?>>
-																<?php echo 'GOautodial - '.$phone_extension->server_ip[$i];?>
+															<option value="<?php echo $servers->server_ip[$i];?>" <?php if ($servers->server_ip[$i] == $output->data->server_ip)echo "selected";?>>
+																<?php echo 'GOautodial - '.$servers->server_ip[$i];?>
 															</option>
 														<?php
 															}

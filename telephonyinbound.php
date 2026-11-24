@@ -75,6 +75,7 @@
 		$campaign = $pageApiResults['campaign'];
 		$voicemails = $pageApiResults['voicemails'];
 		$phones = $pageApiResults['phones'];
+		$servers = $pageApiResults['servers'];
 		$scripts = $pageApiResults['scripts'];
 		$voicefiles = $pageApiResults['voicefiles'];
 		$calltimes = $pageApiResults['calltimes'];
@@ -1177,10 +1178,10 @@
 										<select name="route_phone_server" id="route_phone_server" class="form-control select2-1" style="width:100%;">
 											<option value="" ><?php $lh->translateText("-none-"); ?></option>
 											<?php
-												for($i=0;$i < 1;$i++){
+												for($i = 0; $i < (isset($servers->server_ip) && is_countable($servers->server_ip) ? count($servers->server_ip) : 0); $i++){
 											?>
-												<option value="<?php echo $phones->server_ip[$i];?>">
-													<?php echo 'GOautodial - '.$phones->server_ip[$i];?>
+												<option value="<?php echo $servers->server_ip[$i];?>">
+													<?php echo 'GOautodial - '.$servers->server_ip[$i];?>
 												</option>
 											<?php
 												}
@@ -1353,7 +1354,7 @@
 					]
 				});
 
-				
+
 
 			//reloads page when modal closes
 			/*
