@@ -42,33 +42,21 @@
         $stime 									= $value->s_time;
         $utime 									= $value->u_time;
 
-        $disk_ary 								= explode('|', (string) $diskusage);
-        $disk_ary_ct 							= (is_countable($disk_ary) ? count($disk_ary) : 0);
-
         if ($status == "Y") {
-            $status 							= "ACTIVE";
-            $statustextclass 					= "text-success";
+            $status = "ACTIVE";
+            $statustextclass = "text-success";
         }
 
         if ($status == "N") {
-            $status								= "INACTIVE";
-            $statustextclass 					= "text-danger";
+            $status = "INACTIVE";
+            $statustextclass = "text-danger";
         }
 
-        $k 										= 0;
+        $disk_ary = explode("|", (string) $diskusage);
+        $disk = trim(preg_replace("/^\\d* /", "", $disk_ary[0] ?? "0"));
 
-        while ($k < $disk_ary_ct) {
-			$disk_ary[$k] 						= preg_replace("/^\d* /","",$disk_ary[$k]);
-			//print_r($disk_ary);
-			if ($k<1) {
-				$disk 							= "$disk_ary[$k]";
-			} else {
-				if ($disk_ary[$k] > $disk) {
-					$disk 						= "$disk_ary[$k]";
-				}
-			}
-
-			$k++;
+        if ($disk === "" || !is_numeric($disk)) {
+            $disk = "0";
         }
 
         if ($load < 60) {
